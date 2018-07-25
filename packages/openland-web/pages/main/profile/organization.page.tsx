@@ -27,7 +27,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { OverviewPlaceholder, DOARListingPlaceholder, AboutPlaceholder, SocialPlaceholder, ContactPlaceholder, LocationPlaceholder, AvatartPlaceholder, CategoriesPlaceholder } from './placeholders';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import ContactEmailIc from './icons/contacts/ic-email.svg';
@@ -35,21 +34,35 @@ import ContactLinkedInIc from './icons/contacts/ic-linkedin.svg';
 import ContactPhoneIc from './icons/contacts/ic-phone.svg';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
+import { PostCard } from './components/postsCards';
+
 import {
     XHorizontalStyled,
     XVerticalStyled,
+    CardWrapper,
     Title,
     Text,
-    TextLink,
-    // TagRowMapMain,
+    TagWrapper,
+    Tag
 } from './components/profileComponents';
+
+import {
+    OverviewPlaceholder,
+    DOARListingPlaceholder,
+    SocialPlaceholder,
+    ContactPlaceholder,
+    LocationPlaceholder,
+    AvatartPlaceholder,
+    CategoriesPlaceholder,
+    InterestsPlaceholder
+} from './placeholders';
+
 import {
     DevelopmentOportunityShort,
     DevelopmentOportunityFull,
     AcquizitionRequestShort,
     AcquizitionRequestFull
 } from './components/listingsCards';
-import { PostCard } from './components/postsCards';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -62,7 +75,7 @@ const MainContentWrapper = Glamorous(XVertical)({
     padding: '0 40px'
 });
 
-const MainContent = Glamorous(XHorizontal)({
+const MainContent = Glamorous(XVertical)({
     maxWidth: 1160,
     width: '100%',
     margin: 'auto'
@@ -153,24 +166,31 @@ const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, pa
 const SocialLinksWrapper = Glamorous.div({
     marginLeft: -20,
     marginRight: -20,
-    // marginTop: 8,
     display: 'flex',
     alignItems: 'center',
-    paddingTop: 12,
+    paddingTop: 20,
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
     paddingLeft: 20,
     paddingRight: 20
 });
 
 const SocialLink = Glamorous(XLink)({
-    fontSize: '14px',
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: 15,
     fontWeight: 500,
-    lineHeight: '16px',
+    lineHeight: 1.33,
     color: '#334562',
-    letterSpacing: -0.5,
-    marginRight: 24,
+    letterSpacing: -0.2,
+    marginRight: 20,
     '&:hover': {
         color: '#5640d6'
+    },
+    '& > i': {
+        fontSize: 20,
+        color: '#bcc3cc',
+        marginTop: 4,
+        marginLeft: 6
     }
 });
 
@@ -180,7 +200,7 @@ const SocialLinkImg = Glamorous(XLink)({
     height: 24,
     backgroundColor: '#bcc3cc',
     borderRadius: 50,
-    marginRight: 10,
+    marginRight: 20,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 10,
     backgroundPosition: 'center',
@@ -200,48 +220,6 @@ const SocialLinkImg = Glamorous(XLink)({
     }
 });
 
-const ShowMoreBtn = Glamorous.div<{ marginTop?: number, marginBottom?: number }>((props) => ({
-    fontSize: 14,
-    fontWeight: 500,
-    color: '#765efd',
-    cursor: 'pointer',
-    marginTop: props.marginTop,
-    marginBottom: props.marginBottom
-}));
-
-class AboutContent extends React.Component<{ text: string }, { open: boolean }> {
-    constructor(props: { text: string }) {
-        super(props);
-
-        this.state = {
-            open: this.props.text.length >= 320 ? false : true,
-        };
-    }
-
-    switcher = () => {
-        let { open } = this.state;
-
-        this.setState({ open: !open });
-    }
-
-    render() {
-        let { text } = this.props;
-
-        let { open } = this.state;
-
-        let isBigText = this.props.text.length >= 320;
-        let textToShow = isBigText && !open ? this.props.text.substring(0, 320) + '...' : text;
-        let buttonText = this.state.open ? 'Show less' : 'Show more';
-
-        return (
-            <>
-                <Text lineHeight={1.34} letterSpacing={-0.2}>{textToShow}</Text>
-                {isBigText && <ShowMoreBtn onClick={this.switcher} marginTop={12}>{buttonText}</ShowMoreBtn>}
-            </>
-        );
-    }
-}
-
 const Field = Glamorous(XFormField)({
     flex: 1
 });
@@ -255,53 +233,8 @@ const AddLinkBtn = Glamorous(XButton)({
     marginTop: -8,
 });
 
-const ShowListingLink = Glamorous(XLink)({
-    fontSize: 14,
-    fontWeight: 500,
-    color: '#765efd',
-    cursor: 'pointer',
-    marginBottom: 23,
-    marginTop: 20,
-    letterSpacing: -0.4
-});
-
 const FormFieldTitle = Glamorous(XFormFieldTitle)({
     flexGrow: 1
-});
-
-const ViewAllIcon = Glamorous(XIcon)({
-    width: 22,
-    height: 22,
-    fontSize: 22,
-    color: '#654bfa',
-    opacity: 0.5,
-    textAlign: 'end',
-    marginBottom: 23,
-    marginTop: 20
-});
-
-const ListingsWrap = Glamorous(XVertical)({
-    border: '1px solid rgba(38,38,38,0.08)',
-    borderRadius: 5,
-
-    '> *': {
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-    },
-    '>:first-child': {
-        borderBottom: '1px solid rgba(38,38,38,0.08)',
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
-        backgroundColor: '#fff'
-
-    },
-    '>:last-child': {
-        borderBottom: 0,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-    }
 });
 
 const AddButton = Glamorous(XLink)({
@@ -336,9 +269,16 @@ const AddSeporator = Glamorous.div({
     backgroundColor: 'rgba(220, 222, 228, 0.45)',
 });
 
-export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
+const ContactLink = Glamorous.a({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:hover > svg > g > path:last-child': {
+        fill: '#5640d6'
+    }
+});
 
-    console.log('posts - ', props.data.organization.posts);
+export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
 
     let editDoTarget = (props.data.organization.developmentOportunities || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let editArTarget = (props.data.organization.acquisitionRequests || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
@@ -581,21 +521,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
     let currentPath = props.router.path.replace('#', '');
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
-    // let lsitingsAllPath = '/o/' + props.data.organization.id + '/listings/all';
 
     const { organization } = props.data;
-
-    let cardCountDO = 0;
-    let cardCountAR = 0;
-
-    let cardFilter = (cb: () => any, counter: number) => {
-        counter++;
-        if (counter <= 3) {
-            return cb();
-        } else {
-            return;
-        }
-    };
 
     let hasLogo = !!(organization.photo);
 
@@ -643,7 +570,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
                                                 )}
                                             </XWithRole>
-                                            {/* <Switcher path={lsitingsAllPath}>{'All Listings (' + ((organization.listingsAll && organization.listingsAll.length) || 0) + ')'}</Switcher> */}
                                         </SwitcherWrapper>
                                     </div >
                                 </XVerticalStyled>
@@ -688,7 +614,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 </>
                                             }
                                         />
-
                                     </XWithRole>
                                 </XHorizontalStyled>
                             </HeaderContent>
@@ -698,408 +623,192 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
 
                         <MainContentWrapper>
                             <MainContent>
-                                <XVerticalStyled
-                                    flexGrow={1}
-                                    maxwidth={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}
-                                    width2={currentPath === rootPath ? 'calc(100% - 286px)' : '100%'}
-                                >
-                                    <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                        {currentPath === rootPath && (
-                                            <>
-                                                <OverviewPlaceholder />
-                                            </>
-                                        )}
-                                    </XWithRole>
-                                    {currentPath === rootPath && (
-                                        <>
-                                            {organization.posts && (
+                                {currentPath === rootPath && (
+                                    <XHorizontal separator={9}>
+                                        <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
+                                            <OverviewPlaceholder />
+                                        </XWithRole>
+                                        <XVertical separator={9} minWidth={0}>
+                                            {(organization.posts && organization.posts.length > 0) && (
                                                 organization.posts.map((post, i) => (
                                                     <PostCard key={'post_' + i} orgId={organization.id} item={post} />
                                                 ))
                                             )}
 
-                                            {/* {(organization.organizationType || organization.locations || organization.interests) && (
-                                                <XCardStyled padding={0}>
-                                                    {organization.organizationType && (
-                                                        <TagRowMapMain
-                                                            title={TextOrganizationProfile.overviewOrganizationTypeTitle}
-                                                            items={organization.organizationType}
-                                                        />
-                                                    )}
-                                                    {organization.locations && (
-                                                        <TagRowMapMain
-                                                            title={TextOrganizationProfile.overviewOrganizationLocationsTitle}
-                                                            items={organization.locations}
-                                                        />
-                                                    )}
-                                                    {organization.interests && (
-                                                        <TagRowMapMain
-                                                            title={TextOrganizationProfile.overviewOrganizationInterestsTitle}
-                                                            items={organization.interests}
-                                                        />
-                                                    )}
-
-                                                </XCardStyled>
-                                            )} */}
-
-                                            {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability || (organization.developmentOportunities || []).length > 0) && (
-                                                <XCardStyled padding={0}>
-                                                    <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                        <Title marginBottom={24}>{TextOrganizationProfile.overviewDOTitle}</Title>
-                                                    </XVerticalStyled>
-
-                                                    {/* {(organization.doShapeAndForm || organization.doCurrentUse || organization.doGoodFitFor || organization.doSpecialAttributes || organization.doAvailability) && (
-                                                        <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
-                                                            {organization.doShapeAndForm && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewDOTagRowShapeAndFormTitle}
-                                                                    items={organization.doShapeAndForm}
-                                                                />
-                                                            )}
-                                                            {organization.doCurrentUse && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewDOTagRowCurrentUseTitle}
-                                                                    items={organization.doCurrentUse}
-                                                                />
-                                                            )}
-                                                            {organization.doGoodFitFor && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewDOTagRowGoodFitForTitle}
-                                                                    items={organization.doGoodFitFor}
-                                                                />
-                                                            )}
-                                                            {organization.doSpecialAttributes && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewDOTagRowSpecialAttributesTitle}
-                                                                    items={organization.doSpecialAttributes}
-                                                                />
-                                                            )}
-                                                            {organization.doAvailability && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewDOTagRowAvailabilityTitle}
-                                                                    items={organization.doAvailability}
-                                                                />
-                                                            )}
-
-                                                        </div>
-                                                    )} */}
-
-                                                    {organization.developmentOportunities && (
-                                                        organization.developmentOportunities.map((devop, i) => (
-                                                            cardFilter(() => <DevelopmentOportunityShort key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountAR)
-                                                        ))
-                                                    )}
-                                                    <XWithRole role={['org-' + organization.id + '-admin']}>
-                                                        <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                            {(organization.developmentOportunities || []).length > 0 && (
-                                                                <>
-                                                                    <ShowListingLink path={lsitingsPath}>
-                                                                        {TextOrganizationProfile.overviewListingsDoFooterNonEmpty} ({((organization.developmentOportunities || []).length) || 0})
-                                                                    </ShowListingLink>
-                                                                    <ViewAllIcon icon="keyboard_arrow_right" />
-                                                                </>
-                                                            )}
-                                                            {(organization.developmentOportunities || []).length === 0 && (
-                                                                <ShowListingLink query={{ field: 'addListing', value: 'DO' }}>
-                                                                    {TextOrganizationProfile.overviewListingsDoFooterAddListing}
-                                                                </ShowListingLink>
-                                                            )}
-
-                                                        </XHorizontal>
-                                                    </XWithRole>
-                                                    <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                                        {(organization.developmentOportunities || []).length > 0 && (
-                                                            <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                                <ShowListingLink path={lsitingsPath}>
-                                                                    {TextOrganizationProfile.overviewListingsDoFooterNonEmpty} ({((organization.developmentOportunities || []).length) || 0})
-                                                                </ShowListingLink>
-                                                                <ViewAllIcon icon="keyboard_arrow_right" />
-                                                            </XHorizontal>
-                                                        )}
-
-                                                    </XWithRole>
-                                                </XCardStyled>
+                                            {(organization.developmentOportunities && organization.developmentOportunities.length > 0) && (
+                                                organization.developmentOportunities.map((devop, i) => (
+                                                    <DevelopmentOportunityShort key={'do_' + devop.id} orgId={organization.id} item={devop} />
+                                                ))
                                             )}
 
-                                            {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime || (organization.acquisitionRequests || []).length > 0) && (
-                                                <XCardStyled padding={0}>
-                                                    <XVerticalStyled borderBottom={true} flexGrow={1} padding={24}>
-                                                        <Title marginBottom={24}>{TextOrganizationProfile.overviewArTitle}</Title>
-                                                    </XVerticalStyled>
+                                            {(organization.acquisitionRequests && organization.acquisitionRequests.length > 0) && (
+                                                organization.acquisitionRequests.map((devop, i) => (
+                                                    <AcquizitionRequestShort key={'ar_' + devop.id} orgId={organization.id} item={devop} />
+                                                ))
+                                            )}
+                                        </XVertical>
 
-                                                    {/* {(organization.arGeographies || organization.arAreaRange || organization.arHeightLimit || organization.arLandUse || organization.arSpecialAttributes || organization.arActivityStatus || organization.arAquisitionBudget || organization.arAquisitionRate || organization.arClosingTime) && (
-                                                        <div style={{ borderBottom: '1px solid rgba(220, 222, 228, 0.45)' }}>
-                                                            {organization.arGeographies && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowGeographiesTitle}
-                                                                    items={organization.arGeographies}
-                                                                />
-                                                            )}
-                                                            {organization.arAreaRange && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowAreaRangeTitle}
-                                                                    items={organization.arAreaRange}
-                                                                />
-                                                            )}
-                                                            {organization.arHeightLimit && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowHeightLimitTitle}
-                                                                    items={organization.arHeightLimit}
-                                                                />
-                                                            )}
-                                                            {organization.arLandUse && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowLandUseTitle}
-                                                                    items={organization.arLandUse}
-                                                                />
-                                                            )}
-                                                            {organization.arSpecialAttributes && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowSpecialAttributesTitle}
-                                                                    items={organization.arSpecialAttributes}
-                                                                />
-                                                            )}
-                                                            {organization.arActivityStatus && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowActivityStatusTitle}
-                                                                    items={organization.arActivityStatus}
-                                                                />
-                                                            )}
-                                                            {organization.arAquisitionBudget && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowAquisitionBudgetTitle}
-                                                                    items={organization.arAquisitionBudget}
-                                                                />
-                                                            )}
-                                                            {organization.arAquisitionRate && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowAquisitionRateTitle}
-                                                                    items={organization.arAquisitionRate}
-                                                                />
-                                                            )}
-                                                            {organization.arClosingTime && (
-                                                                <TagRowMapMain
-                                                                    title={TextOrganizationProfile.overviewArTagRowClosingTimeTitle}
-                                                                    items={organization.arClosingTime}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    )} */}
-
-                                                    {organization.acquisitionRequests && (
-                                                        organization.acquisitionRequests.map((devop, i) => (
-                                                            cardFilter(() => <AcquizitionRequestShort key={'do_' + devop.id} orgId={organization.id} item={devop} />, cardCountDO)
-                                                        ))
-                                                    )}
-                                                    <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                        {/* here
-                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                        {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
-                                                    </ShowListingLink> */}
-                                                        <XWithRole role={['org-' + organization.id + '-admin']}>
-                                                            <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                                {(organization.acquisitionRequests || []).length > 0 && (
-                                                                    <>
-                                                                        <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                                            {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
-                                                                        </ShowListingLink>
-                                                                        <ViewAllIcon icon="keyboard_arrow_right" />
-                                                                    </>
-                                                                )}
-                                                                {(organization.acquisitionRequests || []).length === 0 && (
-                                                                    <ShowListingLink query={{ field: 'addListing', value: 'AR' }}>
-                                                                        {TextOrganizationProfile.overviewListingsArFooterAddListing}
-                                                                    </ShowListingLink>
-                                                                )}
-
-                                                            </XHorizontal>
-                                                        </XWithRole>
-                                                        <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                                            {(organization.acquisitionRequests || []).length > 0 && (
-                                                                <XHorizontal justifyContent="center" alignItems="center" separator="none">
-                                                                    <ShowListingLink path={lsitingsPath + '?listingType=ar'}>
-                                                                        {TextOrganizationProfile.overviewListingsArFooterNonEmpty} ({((organization.acquisitionRequests || []).length) || 0})
-                                                                    </ShowListingLink>
-                                                                    <ViewAllIcon icon="keyboard_arrow_right" />
-                                                                </XHorizontal>)}
-
-                                                        </XWithRole>
-                                                    </XHorizontal>
+                                        <XVertical width={422} flexShrink={0}>
+                                            {((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
+                                                <XCardStyled padding={18} paddingTop={18} paddingBottom={20}>
+                                                    <XVertical separator={9}>
+                                                        <Title>{TextOrganizationProfile.additionalInfoContacts}</Title>
+                                                        <XVertical separator={8}>
+                                                            {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
+                                                                return (
+                                                                    <XHorizontal
+                                                                        key={i}
+                                                                        separator={10}
+                                                                        alignItems="center"
+                                                                    >
+                                                                        <XAvatar cloudImageUuid={contact.photo || undefined} size="medium" />
+                                                                        <XVertical separator={1}>
+                                                                            <XHorizontal separator={5} alignItems="center">
+                                                                                <Title>{contact.name}</Title>
+                                                                                {contact.phone && <ContactLink href={'tel:' + contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
+                                                                                {contact.email && <ContactLink href={'mailto:' + contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
+                                                                                {contact.link && <ContactLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
+                                                                            </XHorizontal>
+                                                                            <Title opacity={0.8}>{contact.position}</Title>
+                                                                        </XVertical>
+                                                                    </XHorizontal>
+                                                                );
+                                                            })}
+                                                        </XVertical>
+                                                        <SocialLinksWrapper>
+                                                            {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}<XIcon icon="launch" /></SocialLink>}
+                                                            {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
+                                                            {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
+                                                            {organization.linkedin && <SocialLinkImg className="li" href={organization.linkedin} />}
+                                                        </SocialLinksWrapper>
+                                                    </XVertical>
                                                 </XCardStyled>
                                             )}
-                                        </>
-                                    )}
+                                            {organization.interests && (
+                                                <XCardStyled padding={18}>
+                                                    <XVertical separator={3}>
+                                                        <Title>Intrerests</Title>
+                                                        <TagWrapper>
+                                                            {organization.interests.map((val, i) => (
+                                                                <Tag key={i + val}>{val}</Tag>
+                                                            ))}
+                                                        </TagWrapper>
+                                                    </XVertical>
+                                                </XCardStyled>
+                                            )}
+                                            <XWithRole role={['org-' + organization.id + '-admin']}>
+                                                <XVertical separator={9}>
+                                                    {!((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
+                                                        <XCardStyled padding={18}>
+                                                            <XVertical>
+                                                                {!(organization.contacts || []).length && <ContactPlaceholder />}
+                                                                {!(organization.website || organization.facebook || organization.linkedin || organization.twitter) && <SocialPlaceholder />}
+                                                            </XVertical>
+                                                        </XCardStyled>
+                                                    )}
+                                                    {!(organization.interests || []).length && (
+                                                        <InterestsPlaceholder />
+                                                    )}
+                                                </XVertical>
+                                            </XWithRole>
+                                        </XVertical>
+                                    </XHorizontal>
+                                )}
 
-                                    {currentPath === lsitingsPath && (
-                                        <>
-                                            <DOARListingPlaceholder />
-                                            {((organization.developmentOportunities || []).length > 0 || (organization.acquisitionRequests || []).length > 0) && (
-                                                <ListingsWrap separator="none">
+                                {currentPath === lsitingsPath && (
+                                    <>
+                                        <DOARListingPlaceholder />
+                                        {((organization.developmentOportunities || []).length > 0 || (organization.acquisitionRequests || []).length > 0) && (
+                                            <XVertical separator={9}>
+                                                <CardWrapper>
                                                     <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24} paddingTop={6}>
                                                         <SwitcherWrapper flatStyle={true} height={58}>
                                                             {(organization.developmentOportunities || []).length > 0 && <Switcher query={{ field: 'listingType' }}>{TextOrganizationProfile.listingsDoTabTitle}</Switcher>}
                                                             {(organization.acquisitionRequests || []).length > 0 && <Switcher query={{ field: 'listingType', value: 'ar' }}>{TextOrganizationProfile.listingsArTabTitle}</Switcher>}
-
                                                         </SwitcherWrapper>
                                                     </XVerticalStyled>
-                                                    {currentPath === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                        organization.developmentOportunities.map((devop, i) => <DevelopmentOportunityFull key={'do_' + i} orgId={organization.id} item={devop} />)
-                                                    )}
-                                                    {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                        organization.acquisitionRequests.map((devop, i) => <AcquizitionRequestFull key={'do_' + i} orgId={organization.id} item={devop} />)
-                                                    )}
-                                                </ListingsWrap>
-                                            )}
-                                        </>
-                                    )}
-
-                                    {/* {currentPath === lsitingsAllPath && (
-                                        <>
-                                            <DOARListingPlaceholder />
-                                            <XVertical>
-                                                {currentPath === lsitingsAllPath && organization && organization.listingsAll && (
-                                                    organization.listingsAll.map((l, i) => l.type === 'development_opportunity' ? <DevelopmentOportunityFull key={'do_' + i} orgId={organization.id} item={l} showType={true} isSoloComponent={true} /> : < AcquizitionRequestFull key={'do_' + i} orgId={organization.id} item={l} showType={true} isSoloComponent={true} />)
+                                                </CardWrapper>
+                                                {currentPath === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
+                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunityFull key={'do_' + i} orgId={organization.id} item={devop} />)
                                                 )}
                                                 {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequestFull key={'do_' + i} orgId={organization.id} item={devop} isSoloComponent={true} />)
+                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequestFull key={'do_' + i} orgId={organization.id} item={devop} />)
                                                 )}
                                             </XVertical>
-                                        </>
+                                        )}
+                                    </>
+                                )}
 
-                                    )} */}
-
-                                    {props.router.query.addListing && (
-                                        <XModalForm
-                                            scrollableContent={true}
-                                            title={props.router.query.addListing === 'DO' ? TextOrganizationProfile.listingCreateDoTitle : TextOrganizationProfile.listingCreateArTitle}
-
-                                            defaultAction={async (data) => {
-                                                let input = data.input || {};
-                                                let areaRange = input.areaRange === undefined ? null : input.areaRange === 'small' ? { from: 0, to: 10000 } : input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 };
-                                                await props.createListing({
-                                                    variables: {
-                                                        type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
-                                                        input: {
-                                                            name: input.name || '',
-                                                            summary: input.summary,
-                                                            specialAttributes: input.specialAttributes,
-
-                                                            location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
-                                                            locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
-                                                            availability: input.availability,
-                                                            area: input.area,
-                                                            price: input.price,
-                                                            dealType: input.dealType,
-                                                            shapeAndForm: input.shapeAndForm,
-                                                            currentUse: input.currentUse,
-                                                            goodFitFor: input.goodFitFor,
-
-                                                            photo: input.photo,
-                                                            shortDescription: input.shortDescription,
-                                                            areaRange: areaRange,
-                                                            geographies: input.geographies,
-                                                            landUse: input.landUse,
-                                                            unitCapacity: input.unitCapacity,
-                                                            status: 'open'
-                                                        }
-                                                    }
-                                                });
-                                            }}
-                                            targetQuery="addListing"
-                                        >
-                                            <XFormLoadingContent>
-                                                {editListinFields}
-                                            </XFormLoadingContent>
-                                        </XModalForm>
-
-                                    )}
-
+                                {props.router.query.addListing && (
                                     <XModalForm
-                                        title="Delete?"
-                                        submitProps={{ text: 'Delete' }}
+                                        scrollableContent={true}
+                                        title={props.router.query.addListing === 'DO' ? TextOrganizationProfile.listingCreateDoTitle : TextOrganizationProfile.listingCreateArTitle}
+
                                         defaultAction={async (data) => {
-                                            await props.deleteListing({
+                                            let input = data.input || {};
+                                            let areaRange = input.areaRange === undefined ? null : input.areaRange === 'small' ? { from: 0, to: 10000 } : input.areaRange === 'medium' ? { from: 10000, to: 100000 } : { from: 100000 };
+                                            await props.createListing({
                                                 variables: {
-                                                    id: props.router.query.deleteListing
+                                                    type: props.router.query.addListing === 'DO' ? 'development_opportunity' : 'acquisition_request',
+                                                    input: {
+                                                        name: input.name || '',
+                                                        summary: input.summary,
+                                                        specialAttributes: input.specialAttributes,
+
+                                                        location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
+                                                        locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
+                                                        availability: input.availability,
+                                                        area: input.area,
+                                                        price: input.price,
+                                                        dealType: input.dealType,
+                                                        shapeAndForm: input.shapeAndForm,
+                                                        currentUse: input.currentUse,
+                                                        goodFitFor: input.goodFitFor,
+
+                                                        photo: input.photo,
+                                                        shortDescription: input.shortDescription,
+                                                        areaRange: areaRange,
+                                                        geographies: input.geographies,
+                                                        landUse: input.landUse,
+                                                        unitCapacity: input.unitCapacity,
+                                                        status: 'open'
+                                                    }
                                                 }
                                             });
                                         }}
-                                        targetQuery="deleteListing"
-                                    />
-                                    {(editDoTarget || editArTarget) && (
-                                        <XModalForm
-                                            scrollableContent={true}
-                                            title={editDoTarget ? 'Edit development opportunity' : 'Edit acquizition request'}
-                                            defaultData={editListingDefaultData}
-                                            defaultAction={editListingDefaultAction}
-                                            targetQuery="editListing"
-                                        >
-                                            <XFormLoadingContent>
-                                                {editListinFields}
-                                            </XFormLoadingContent>
-                                        </XModalForm>
-                                    )}
+                                        targetQuery="addListing"
+                                    >
+                                        <XFormLoadingContent>
+                                            {editListinFields}
+                                        </XFormLoadingContent>
+                                    </XModalForm>
 
-                                </XVerticalStyled>
-                                {currentPath === rootPath && (
-                                    <XVertical width={270} flexShrink={0}>
-                                        {organization.about && (
-                                            <XCardStyled padding={20} paddingBottom={24} paddingTop={16}>
-                                                <Title small={true} marginBottom={12}>
-                                                    {TextOrganizationProfile.additionalInfoAbout}
-                                                </Title>
-                                                <AboutContent text={organization.about} />
-                                            </XCardStyled>
-                                        )}
-                                        <XWithRole role={['org-' + organization.id + '-admin']}>
-                                            {!organization.about && (
-                                                <AboutPlaceholder />
-                                            )}
-                                        </XWithRole>
+                                )}
 
-                                        {((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
-                                            <XCardStyled padding={20} paddingTop={16} paddingBottom={16}>
-                                                <XVertical separator={7}>
-                                                    <Title small={true}>{TextOrganizationProfile.additionalInfoContacts}</Title>
-                                                    <XVertical separator={10}>
-                                                        {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
-                                                            return (
-                                                                <XHorizontalStyled
-                                                                    key={i}
-                                                                    separator={8}
-                                                                >
-                                                                    <XAvatar cloudImageUuid={contact.photo || undefined} size="small" />
-                                                                    <XVertical separator={3.5}>
-                                                                        <Title small={true}>{contact.name}</Title>
-                                                                        <Text small={true} lineHeight="18px" fontWeight={600} letterSpacing={-0.3} opacity={0.5}>{contact.position}</Text>
-                                                                        {contact.phone && <XHorizontal alignItems="center" separator={4}><ContactPhoneIc width={20} height={20} style={{ padding: 3 }} /><TextLink fontWeight={600} showIcon={false} href={'tel:' + contact.phone} letterSpacing={0.1} small={true} opacity={0.5} content={contact.phone} /></XHorizontal>}
-                                                                        {contact.email && <XHorizontal alignItems="center" separator={4}><ContactEmailIc width={20} height={20} style={{ padding: 3 }} /><TextLink fontWeight={600} showIcon={false} href={'mailto:' + contact.email} letterSpacing={0.1} small={true} opacity={0.5} content={contact.email} /></XHorizontal>}
-                                                                        {contact.link && <XHorizontal alignItems="center" separator={4}><ContactLinkedInIc width={20} height={20} style={{ padding: 3, paddingTop: 0 }} /><TextLink fontWeight={600} showIcon={false} href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} content="LinkedIn" letterSpacing={0.1} small={true} opacity={0.5} /></XHorizontal>}
-                                                                    </XVertical>
-                                                                </XHorizontalStyled>
-                                                            );
-                                                        })}
-                                                    </XVertical>
-                                                    <SocialLinksWrapper>
-                                                        {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}</SocialLink>}
-                                                        {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
-                                                        {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
-                                                        {organization.linkedin && <SocialLinkImg className="li" href={organization.linkedin} />}
-                                                    </SocialLinksWrapper>
-                                                </XVertical>
-                                            </XCardStyled>
-                                        )}
-                                        <XWithRole role={['org-' + organization.id + '-admin']}>
-                                            {!((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
-                                                <XCardStyled padding={18}>
-                                                    <XVertical>
-                                                        {!(organization.contacts || []).length && <ContactPlaceholder />}
-                                                        {!(organization.website || organization.facebook || organization.linkedin || organization.twitter) && <SocialPlaceholder />}
-                                                    </XVertical>
-                                                </XCardStyled>
-                                            )}
-                                        </XWithRole>
-                                    </XVertical>
+                                <XModalForm
+                                    title="Delete?"
+                                    submitProps={{ text: 'Delete' }}
+                                    defaultAction={async (data) => {
+                                        await props.deleteListing({
+                                            variables: {
+                                                id: props.router.query.deleteListing
+                                            }
+                                        });
+                                    }}
+                                    targetQuery="deleteListing"
+                                />
+                                {(editDoTarget || editArTarget) && (
+                                    <XModalForm
+                                        scrollableContent={true}
+                                        title={editDoTarget ? 'Edit development opportunity' : 'Edit acquizition request'}
+                                        defaultData={editListingDefaultData}
+                                        defaultAction={editListingDefaultAction}
+                                        targetQuery="editListing"
+                                    >
+                                        <XFormLoadingContent>
+                                            {editListinFields}
+                                        </XFormLoadingContent>
+                                    </XModalForm>
                                 )}
                             </MainContent>
                         </MainContentWrapper>

@@ -19,6 +19,7 @@ import PlaceholderDO from '../icons/placeholder/img_placeholder_do.svg';
 import {
     XHorizontalStyled,
     XVerticalStyled,
+    CardWrapper,
     CardPath,
     CardTitle,
     CardPhoto,
@@ -47,12 +48,6 @@ export const Text = Glamorous.div({
     lineHeight: 1.28,
     letterSpacing: -0.3,
     color: '#334562'
-});
-
-const ListingCard = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    borderRadius: 4,
-    backgroundColor: '#fff'
 });
 
 const ClickableXStreetViewModalPreview = Glamorous.div({
@@ -89,7 +84,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
     const { item } = props;
 
     return (
-        <ListingCard>
+        <CardWrapper>
             <XVerticalStyled separator={3} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Development opportunity" date={item.updatedAt}/>
@@ -137,7 +132,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                     <XButton alignSelf="flex-end" text="View details" />
                 </XHorizontal>
             </XVerticalStyled>
-        </ListingCard>
+        </CardWrapper>
     );
 };
 
@@ -170,7 +165,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
     const { item } = props;
 
     return (
-        <ListingCard>
+        <CardWrapper>
             <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Development opportunity" date={item.updatedAt}/>
@@ -208,7 +203,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
                     {!item.location && (
                         <PlaceholderDO style={{ width: 160, height: 120 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxwidth={'calc(100% - 184px)'} paddingTop={8} separator={10}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 184px)'} paddingTop={8} separator={10}>
                         <CardTitle>{item.name}</CardTitle>
                         {/* {props.showType && <Text>{TextOrganizationProfile.listingDoTagRowTitileDealType}</Text>} */}
 
@@ -267,7 +262,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
                     </XVerticalStyled>
                 </XHorizontal>
             </XVerticalStyled>
-        </ListingCard>
+        </CardWrapper>
     );
 };
 
@@ -294,7 +289,7 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
     const { item } = props;
 
     return (
-        <ListingCard>
+        <CardWrapper>
             <XVerticalStyled separator={3} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Acquisition criteria" date={item.updatedAt}/>
@@ -333,12 +328,12 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                         {item.shortDescription && <Text>{item.shortDescription}</Text>}
                         <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto">
                             <XButton text="View details" />
-                            <XButton style="primary" text="Message" />
+                            <XButton style="primary" text="Message" path={'/mail/' + props.orgId} />
                         </XHorizontalStyled>
                     </XVerticalStyled>
                 </XHorizontal>
             </XVerticalStyled>
-        </ListingCard>
+        </CardWrapper>
     );
 };
 
@@ -364,7 +359,7 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
     const { item } = props;
 
     return (
-        <ListingCard>
+        <CardWrapper>
             <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Acquisition criteria" date={item.updatedAt}/>
@@ -398,7 +393,7 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
                     {!item.photo && (
                         <PlaceholderAR style={{ width: 160, height: 120 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxwidth={'calc(100% - 175px)'} paddingTop={8} separator={10}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 175px)'} paddingTop={8} separator={10}>
                         <CardTitle>{item.name}</CardTitle>
                         {/* {props.showType && <Text>{TextOrganizationProfile.listingArType}</Text>} */}
                         <FullCardTagsWrapper>
@@ -432,6 +427,6 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
                     </XVerticalStyled>
                 </XHorizontal>
             </XVerticalStyled>
-        </ListingCard>
+        </CardWrapper>
     );
 };

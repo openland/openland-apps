@@ -111,6 +111,7 @@ const clearPost = (c: DummyPost): DummyPost => {
                 h: c.image.crop.h
             } : null
         } : null,
+        pinned: c.pinned,
         links: c.links ? c.links.map(l => ({ text: l.text, url: l.url })) : null,
     };
 };
@@ -122,6 +123,7 @@ class PostItem extends React.Component<{ post: DummyPost, index: number }> {
                 <XAvatar size="x-large" style="organization" photoRef={this.props.post.image || undefined} />
 
                 <XVertical>
+                    {this.props.post.pinned && <ContactField>pinned</ContactField>}
                     <ContactField>{this.props.post.text}</ContactField>
                     <ContactField>{this.props.post.description}</ContactField>
                     <ContactField>{this.props.post.date}</ContactField>
