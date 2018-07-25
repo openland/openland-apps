@@ -23,9 +23,9 @@ const HomeTabs = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let iconName: string;
         if (routeName === 'Messages') {
-          iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+          iconName = `ios-chatbubbles`;
         } else if (routeName === 'Settings') {
-          iconName = `ios-options${focused ? '' : '-outline'}`;
+          iconName = `ios-cog`;
         }
 
         // You can return any component that you like here! We usually use an
@@ -34,8 +34,8 @@ const HomeTabs = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      activeTintColor: '#654BFA',
-      inactiveTintColor: 'gray',
+      activeTintColor: AppStyles.primaryColor,
+      inactiveTintColor: '#99a2b0',
     },
   });
 HomeTabs.navigationOptions = (args: { navigation: any }) => {
