@@ -1,13 +1,21 @@
 import * as React from 'react';
 import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, TextInput } from 'react-native';
+import { View, FlatList, Text, TextInput, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ZAvatar } from '../../components/ZAvatar';
 import { ZLoader } from '../../components/ZLoader';
+
+let keyboardVerticalOffset = 0;
+const isIPhoneX = Dimensions.get('window').height === 812;
+if (isIPhoneX) {
+    keyboardVerticalOffset = 55;
+} else if (Platform.OS === 'ios') {
+    keyboardVerticalOffset = 65;
+}
 
 class MessageComponent extends React.PureComponent<{ message: ModelMessage, engine: ConversationEngine }> {
     render() {
@@ -75,32 +83,36 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     }
     render() {
         return (
-            <SafeAreaView style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
-                <View
-                    style={{ backgroundColor: '#fff', width: '100%' }}
-                    flexBasis={0}
-                    flexGrow={1}
-                >
-                    <FlatList
-                        data={this.state.messages}
-                        renderItem={(itm) => <MessageComponent message={itm.item} engine={this.engine} />}
-                        keyExtractor={(itm) => isServerMessage(itm) ? itm.id : itm.key}
-                        inverted={true}
-                        flexBasis={0}
-                        flexGrow={1}
-                        ref={this.listRef}
-                    />
-                    {this.state.state.loading && <ZLoader />}
-                </View>
-                <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 10, paddingBottom: 10 }}>
-                    <TextInput
-                        onChangeText={this.handleTextChange}
-                        value={this.state.text}
-                        onSubmitEditing={() => this.handleSubmit()}
-                        style={{ backgroundColor: '#fff', borderRadius: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 2, paddingBottom: 2 }}
-                    />
-                </View>
-            </SafeAreaView>
+            <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
+                <SafeAreaView style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
+                    <View style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
+                        <View
+                            style={{ backgroundColor: '#fff', width: '100%' }}
+                            flexBasis={0}
+                            flexGrow={1}
+                        >
+                            <FlatList
+                                data={this.state.messages}
+                                renderItem={(itm) => <MessageComponent message={itm.item} engine={this.engine} />}
+                                keyExtractor={(itm) => isServerMessage(itm) ? itm.id : itm.key}
+                                inverted={true}
+                                flexBasis={0}
+                                flexGrow={1}
+                                ref={this.listRef}
+                            />
+                            {this.state.state.loading && <ZLoader />}
+                        </View>
+                        <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 10, paddingBottom: 10 }}>
+                            <TextInput
+                                onChangeText={this.handleTextChange}
+                                value={this.state.text}
+                                onSubmitEditing={() => this.handleSubmit()}
+                                style={{ backgroundColor: '#fff', borderRadius: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 2, paddingBottom: 2 }}
+                            />
+                        </View>
+                    </View>
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         );
     }
 }
