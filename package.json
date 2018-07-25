@@ -109,7 +109,6 @@
 	"devDependencies": {
 		"@babel/preset-typescript": "7.0.0-beta.42",
 		"@types/auth0-js": "^8.11.0",
-		"@types/auth0-lock": "^10.16.4",
 		"@types/chart.js": "^2.7.3",
 		"@types/classnames": "^2.2.3",
 		"@types/compression": "^0.0.35",
