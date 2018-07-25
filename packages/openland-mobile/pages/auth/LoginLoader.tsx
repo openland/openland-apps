@@ -24,7 +24,7 @@ export class LoginLoader extends React.Component<NavigationInjectedProps> {
                     saveClient(client);
                 }
             }
-            
+
             // Reset badge if not authenticated
             if (!userToken) {
                 AppBadge.setBadge(0);
@@ -35,6 +35,6 @@ export class LoginLoader extends React.Component<NavigationInjectedProps> {
         })();
     }
     render() {
-        return <ZLoader />;
+        return <ZLoader inverted={true} />;
     }
 }

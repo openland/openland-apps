@@ -6,34 +6,16 @@ import { Messages } from './pages/main/Messages';
 import { Settings } from './pages/main/Settings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Conversation } from './pages/main/Conversation';
+import { AppStyles } from './styles/AppStyles';
 
 //
-// Application Routes
+// Home Routes
 //
 
-const MessagesStack = createStackNavigator({
-  Messages: Messages,
-  Conversation: Conversation
-});
-MessagesStack.navigationOptions = (args: any) => {
-  let tabBarVisible = true;
-  if (args.navigation.state.index > 0) {
-    tabBarVisible = false;
-  }
-
-  return {
-    tabBarVisible,
-  };
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: Settings
-});
-
-const AppStack = createBottomTabNavigator(
+const HomeTabs = createBottomTabNavigator(
   {
-    Messages: MessagesStack,
-    Settings: SettingsStack
+    Messages: Messages,
+    Settings: Settings
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -49,12 +31,45 @@ const AppStack = createBottomTabNavigator(
         // You can return any component that you like here! We usually use an
         // icon component from react-native-vector-icons
         return <Ionicons name={iconName!!} size={25} color={tintColor!!} />;
-      },
+      }
     }),
     tabBarOptions: {
       activeTintColor: '#654BFA',
       inactiveTintColor: 'gray',
     },
+  });
+HomeTabs.navigationOptions = (args: { navigation: any }) => {
+  let { routeName } = args.navigation.state.routes[args.navigation.state.index];
+  if (routeName === 'Messages') {
+    return {
+      headerTitle: 'Messages'
+    };
+  }
+  return {
+    headerTitle: 'Settings'
+  };
+};
+
+//
+// App Routes
+//
+
+const AppStack = createStackNavigator(
+  {
+    Home: HomeTabs,
+    Conversation: Conversation
+  },
+  {
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: AppStyles.primaryColor,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        color: '#fff',
+        fontWeight: 'bold',
+      },
+    }
   });
 
 //
@@ -64,6 +79,10 @@ const AppStack = createBottomTabNavigator(
 const LoginStack = createStackNavigator({
   Home: Login
 });
+
+//
+// Root Routes
+//
 
 export default createSwitchNavigator(
   {
