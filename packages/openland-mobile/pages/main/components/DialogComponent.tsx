@@ -104,7 +104,12 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
         return (
             <ZListItem onPress={this.handlePress} height={80} separatorPaddingStart={80}>
                 <View width={80} height={80} alignItems="center" justifyContent="center">
-                    <ZAvatar src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined} size={60} />
+                    <ZAvatar
+                        src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                        size={60}
+                        placeholderKey={this.props.item.flexibleId}
+                        placeholderTitle={this.props.item.title}
+                    />
                 </View>
                 <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
                     <View flexDirection="row" height={18}>

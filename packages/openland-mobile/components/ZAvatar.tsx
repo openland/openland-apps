@@ -1,7 +1,20 @@
 import * as React from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, Text } from 'react-native';
+import { doSimpleHash } from 'openland-y-utils/hash';
+import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 
-export class ZAvatar extends React.PureComponent<{ size: number, src?: string | null }> {
+let colors = [
+    '#ffab00',
+    '#654bfa',
+    '#d75454',
+    '#4285f4',
+    '#00c851',
+    '#717fa1',
+    '#334562',
+    '#c72ce1'
+];
+
+export class ZAvatar extends React.PureComponent<{ size: 60 | 32, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
     render() {
         if (this.props.src) {
             let url = this.props.src;
@@ -10,7 +23,23 @@ export class ZAvatar extends React.PureComponent<{ size: number, src?: string | 
                 <Image source={{ uri: url }} style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />
             );
         } else {
-            return <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />;
+            let placeholderIndex = 0;
+            if (this.props.placeholderKey) {
+                placeholderIndex = doSimpleHash(this.props.placeholderKey);
+            }
+            let placeholderText = '?';
+            if (this.props.placeholderTitle) {
+                placeholderText = extractPlaceholder(this.props.placeholderTitle);
+            }
+            let textSize = 28;
+            if (this.props.size === 32) {
+                textSize = 12;
+            }
+            return (
+                <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % (colors.length - 1)] }} alignContent="center" justifyContent="center">
+                    <Text style={{ fontSize: textSize, width: '100%', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }}>{placeholderText}</Text>
+                </View>
+            );
         }
     }
 }
