@@ -14,7 +14,7 @@ let colors = [
     '#c72ce1'
 ];
 
-export class ZAvatar extends React.PureComponent<{ size: 60 | 32, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
+export class ZAvatar extends React.PureComponent<{ size: 60 | 40, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
     render() {
         if (this.props.src) {
             let url = this.props.src;
@@ -32,7 +32,7 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 32, src?: string |
                 placeholderText = extractPlaceholder(this.props.placeholderTitle);
             }
             let textSize = 28;
-            if (this.props.size === 32) {
+            if (this.props.size === 40) {
                 textSize = 12;
             }
             return (

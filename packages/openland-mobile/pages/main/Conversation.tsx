@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, TextInput, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
+import { View, FlatList, TextInput, KeyboardAvoidingView, Platform, Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
-import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
-import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
-import { ZAvatar } from '../../components/ZAvatar';
-import { ZLoader } from '../../components/ZLoader';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { MessagesListComponent } from './components/MessagesListComponent';
 
 let keyboardVerticalOffset = 0;
 const isIPhoneX = Dimensions.get('window').height === 812;
@@ -17,50 +14,39 @@ if (isIPhoneX) {
     keyboardVerticalOffset = 65;
 }
 
-class MessageComponent extends React.PureComponent<{ message: ModelMessage, engine: ConversationEngine }> {
-    render() {
-        let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
-        return (
-            <View flexDirection="row">
-                <ZAvatar src={sender.picture} size={32} />
-                <View>
-                    <Text>{sender.name}</Text>
-                    <Text>{this.props.message.message}</Text>
-                </View>
-            </View>
-        );
-    }
-}
+let styles = StyleSheet.create({
+    textContainer: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        alignItems: 'stretch',
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 10,
+        paddingBottom: 10
+    } as ViewStyle,
 
-class ConversationRoot extends React.Component<{ engine: MessengerEngine, conversationId: string }, { state: ConversationState, messages: ModelMessage[], text: string }> implements ConversationStateHandler {
-    unmount: (() => void) | null = null;
-    unmount2: (() => void) | null = null;
+    textInput: {
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 2,
+        paddingBottom: 2,
+        height: 34,
+        fontSize: 14,
+        borderColor: '#e6e6e6',
+        borderWidth: 1
+    } as ViewStyle
+});
+
+class ConversationRoot extends React.Component<{ engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
     constructor(props: { engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
-        this.unmount2 = this.engine.subscribe(this);
-        let msg = [...this.engine.getState().messages];
-        msg.reverse();
-        this.state = { state: this.engine.getState(), messages: msg, text: '' };
-    }
-
-    componentWillMount() {
-        this.unmount = this.props.engine.mountConversation(this.props.conversationId);
-    }
-
-    onConversationUpdated(state: ConversationState) {
-        let msg = [...this.engine.getState().messages];
-        msg.reverse();
-        this.setState({ state, messages: msg });
-    }
-
-    onMessageSend() {
-        if (this.listRef.current) {
-            this.listRef.current.scrollToIndex({ index: 0, animated: false });
-        }
+        this.state = { text: '' };
     }
 
     handleTextChange = (src: string) => {
@@ -75,39 +61,20 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
         }
     }
 
-    componentWillUnmount() {
-        if (this.unmount) {
-            this.unmount();
-            this.unmount = null;
-        }
-    }
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
-                <SafeAreaView style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
-                    <View style={{ backgroundColor: '#grey', height: '100%' }} flexDirection="column">
-                        <View
-                            style={{ backgroundColor: '#fff', width: '100%' }}
-                            flexBasis={0}
-                            flexGrow={1}
-                        >
-                            <FlatList
-                                data={this.state.messages}
-                                renderItem={(itm) => <MessageComponent message={itm.item} engine={this.engine} />}
-                                keyExtractor={(itm) => isServerMessage(itm) ? itm.id : itm.key}
-                                inverted={true}
-                                flexBasis={0}
-                                flexGrow={1}
-                                ref={this.listRef}
-                            />
-                            {this.state.state.loading && <ZLoader />}
-                        </View>
+                <SafeAreaView style={{ backgroundColor: '#fff', height: '100%' }} flexDirection="column">
+                    <View style={{ height: '100%' }} flexDirection="column">
+                        <MessagesListComponent engine={this.engine} />
                         <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 10, paddingBottom: 10 }}>
                             <TextInput
+                                placeholder="Message"
+                                placeholderTextColor="#aaaaaa"
                                 onChangeText={this.handleTextChange}
                                 value={this.state.text}
                                 onSubmitEditing={() => this.handleSubmit()}
-                                style={{ backgroundColor: '#fff', borderRadius: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 2, paddingBottom: 2 }}
+                                style={styles.textInput}
                             />
                         </View>
                     </View>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
 import { LoginLoader } from './pages/auth/LoginLoader';
 import { Login } from './pages/auth/Login';
-import { Messages } from './pages/main/Messages';
+import { Dialogs } from './pages/main/Dialogs';
 import { Settings } from './pages/main/Settings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Conversation } from './pages/main/Conversation';
@@ -14,7 +14,7 @@ import { AppStyles } from './styles/AppStyles';
 
 const HomeTabs = createBottomTabNavigator(
   {
-    Messages: Messages,
+    Dialogs: Dialogs,
     Settings: Settings
   },
   {
@@ -22,7 +22,7 @@ const HomeTabs = createBottomTabNavigator(
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName: string;
-        if (routeName === 'Messages') {
+        if (routeName === 'Dialogs') {
           iconName = `ios-chatbubbles`;
         } else if (routeName === 'Settings') {
           iconName = `ios-cog`;
@@ -40,7 +40,7 @@ const HomeTabs = createBottomTabNavigator(
   });
 HomeTabs.navigationOptions = (args: { navigation: any }) => {
   let { routeName } = args.navigation.state.routes[args.navigation.state.index];
-  if (routeName === 'Messages') {
+  if (routeName === 'Dialogs') {
     return {
       headerTitle: 'Messages'
     };

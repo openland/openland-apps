@@ -8,7 +8,7 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogListComponent } from './components/DialogListComponent';
 
-class MessagesComponent extends React.Component<NavigationInjectedProps> {
+class DialogsComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
         title: 'Messages',
     };
@@ -38,4 +38,4 @@ class MessagesComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const Messages = withApp(MessagesComponent);
+export const Dialogs = withApp(DialogsComponent);
