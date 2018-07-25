@@ -63,6 +63,20 @@ const XSwitcherItemStyle = Glamorous(XLink)<{ alignSelf?: 'stretch' | 'flex-star
     }
 }));
 
+const Counter = Glamorous.span({
+    fontSize: '12px',
+    background: '#bcc3cc',
+    borderRadius: 7,
+    color: '#fff',
+    marginLeft: 6,
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginTop: 2,
+    paddingTop: 1,
+    paddingBottom: 2,
+    fontWeight: 600,
+});
+
 interface XSwitcherItemProps extends XLinkProps {
     children: any;
     alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
@@ -74,7 +88,7 @@ function XSwitcherItem(props: XSwitcherItemProps) {
     return (
         <XSwitcherItemStyle alignSelf={props.alignSelf} {...other}>
             {children}
-            {count !== undefined && <span>{` (${count})`}</span>}
+            {count !== undefined && <Counter>{count}</Counter>}
         </XSwitcherItemStyle>
     );
 }
@@ -84,7 +98,7 @@ export class XSwitcher extends React.Component<XSwitcherProps> {
     static Item = XSwitcherItem;
 
     render() {
-        const {children, ...other} = this.props;
+        const { children, ...other } = this.props;
         return (
             <XSwitcherWrapper {...other}>
                 {children}

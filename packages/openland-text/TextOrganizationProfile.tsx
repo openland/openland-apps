@@ -207,9 +207,9 @@ export const TextOrganizationProfile = {
     placeholderContactsModalTwitterPlaceholder: 'Enter a link',
     placeholderContactsModalPositionPlaceholder: 'Position',
 
-    placeholderLocation: '+ Add locations',
+    placeholderLocation: 'Add locations',
     placeholderLocationModalLocationTitle: 'Location',
-    placeholderCategory: '+ Add categories',
+    placeholderCategory: 'Add categories',
     placeholderCategoryModalTitle: 'Category',
 
     placeholderLogo: (<><p>Add your</p><p>profile logo</p></>),

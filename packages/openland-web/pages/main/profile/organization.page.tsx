@@ -154,6 +154,7 @@ const OrganizationName = Glamorous.div({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     height: 25,
+    letterSpacing: 0.7,
     lineHeight: '25px'
 });
 
@@ -293,7 +294,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
     let semiEmpty = contentLength < 2;
 
     // prepare listings edit
-    let hasLogo = !!(organization.photo);
+    // let hasLogo = !!(organization.photo);
+    let hasLogo = false;
     let editDoTarget = (props.data.organization.developmentOportunities || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let editArTarget = (props.data.organization.acquisitionRequests || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let target = editDoTarget || editArTarget;
@@ -540,40 +542,42 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                     <Root>
                         <HeaderWrapper>
                             <HeaderContent>
-                                <AvatarWrapper>
-                                    {hasLogo && (
-                                        <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
-                                    )}
-                                    {!hasLogo && (
-                                        <>
-                                            <XWithRole role={['org-' + organization.id + '-admin']} >
-                                                <AvatartPlaceholder />
-                                            </XWithRole>
-                                            <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                                <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
-                                            </XWithRole>
-                                        </>
-                                    )}
-                                </AvatarWrapper>
 
-                                <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={31}>
-                                    <OrganizationName>{organization.name}</OrganizationName>
-                                    <div style={{ marginTop: 8 }}>
-                                        {(organization.locations || [])[0] && <Text opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>}
-                                        <XWithRole role={['org-' + organization.id + '-admin']}>
-                                            {!((organization.locations || [])[0]) && <LocationPlaceholder />}
-                                            {!((organization.organizationType || [])[0]) && <CategoriesPlaceholder />}
-                                        </XWithRole>
-                                    </div>
-                                    <div style={{ marginTop: 16 }}>
+                                <XVerticalStyled flexShrink={0} flexGrow={1} separator="none" paddingTop={27}>
+                                    <XHorizontal separator={12}>
+                                        <AvatarWrapper>
+                                            {(hasLogo) && (
+                                                <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
+                                            )}
+                                            {!hasLogo && (
+                                                <>
+                                                    <XWithRole role={['org-' + organization.id + '-admin']} >
+                                                        <AvatartPlaceholder />
+                                                    </XWithRole>
+                                                    <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
+                                                        <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
+                                                    </XWithRole>
+                                                </>
+                                            )}
+                                        </AvatarWrapper>
+                                        <XVerticalStyled paddingTop={4} separator={0}>
+                                            <OrganizationName>{organization.name}</OrganizationName>
+                                            {(organization.locations || [])[0] && <Text opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>}
+                                            <XWithRole role={['org-' + organization.id + '-admin']}>
+                                                {!((organization.locations || [])[0]) && <LocationPlaceholder />}
+                                                {!((organization.organizationType || [])[0]) && <CategoriesPlaceholder />}
+                                            </XWithRole>
+                                        </XVerticalStyled>
+                                    </XHorizontal>
+                                    <div style={{ marginTop: 9 }}>
                                         <SwitcherWrapper flatStyle={true} height={57} smallText={true}>
                                             <Switcher path={rootPath}>{TextOrganizationProfile.headerTabOverview}</Switcher>
                                             <XWithRole role={['org-' + organization.id + '-admin']}>
-                                                <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                                <Switcher path={lsitingsPath} count={(organization.listingsAll || []).length}>{TextOrganizationProfile.headerTabListings}</Switcher>
                                             </XWithRole>
                                             <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
                                                 {(organization.listingsAll || []).length > 0 && (
-                                                    <Switcher path={lsitingsPath}>{TextOrganizationProfile.headerTabListings + ' (' + (((organization.developmentOportunities && organization.developmentOportunities.length) || 0) + ((organization.acquisitionRequests && organization.acquisitionRequests.length) || 0)) + ')'}</Switcher>
+                                                    <Switcher path={lsitingsPath} count={(organization.listingsAll || []).length}>{TextOrganizationProfile.headerTabListings}</Switcher>
                                                 )}
                                             </XWithRole>
                                         </SwitcherWrapper>

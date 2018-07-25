@@ -20,6 +20,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import PlaceholderContact from './icons/placeholder/placeholder_contact.svg';
 import PlaceholderInterests from './icons/placeholder/placeholder_interests.svg';
+import PlaceholderLocations from './icons/placeholder/placeholder_locations.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
@@ -41,7 +42,7 @@ const Placeholder = Glamorous(XCard)<{ accent?: boolean, minHeigth?: number }>(p
     borderRadius: 5
 }));
 
-const XHorizontalMargins = Glamorous(XHorizontal)<{marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number}>(props => ({
+const XHorizontalMargins = Glamorous(XHorizontal)<{ marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number }>(props => ({
     marginLeft: props.marginLeft,
     marginRight: props.marginRight,
     marginTop: props.marginTop,
@@ -94,7 +95,7 @@ const PlaceholderViewerText = Glamorous.span(props => ({
     color: '#334562'
 }));
 
-const PlaceholderIcon = Glamorous.img<{margin?: string}>((props) => ({
+const PlaceholderIcon = Glamorous.img<{ margin?: string }>((props) => ({
     marginTop: 6,
     width: 60,
     height: 60,
@@ -625,6 +626,12 @@ class LocationSelect extends React.Component<{}, { val?: string }> {
     }
 }
 
+const HeaderPlaceholderWrap = Glamorous(XHorizontal)<{ marginTop: number }>(props => ({
+    cursor: 'pointer',
+    alignItems: 'center',
+    marginTop: props.marginTop,
+}));
+
 export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
         return null;
@@ -649,9 +656,10 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
                 });
             }}
             target={(
-                <div style={{ cursor: 'pointer' }}>
-                    <Text opacity={0.5}>{TextOrganizationProfile.placeholderLocation}</Text>
-                </div>
+                <HeaderPlaceholderWrap marginTop={20} separator={6}>
+                    <PlaceholderLocations style={{ marginLeft: 4, marginRight: 4 }} />
+                    <Text>{TextOrganizationProfile.placeholderLocation}</Text>
+                </HeaderPlaceholderWrap>
             )}
         >
             <XFormLoadingContent>
@@ -694,9 +702,10 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
                 });
             }}
             target={(
-                <div style={{ cursor: 'pointer' }}>
-                    <Text opacity={0.5}>{TextOrganizationProfile.placeholderCategory}</Text>
-                </div>
+                <HeaderPlaceholderWrap marginTop={9} separator={4}>
+                    <PlaceholderInterests style={{ marginLeft: 2}}/>
+                    <Text>{TextOrganizationProfile.placeholderCategory}</Text>
+                </HeaderPlaceholderWrap>
             )}
         >
             <ModalFormContentWrapper>
