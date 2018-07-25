@@ -585,6 +585,11 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 </XHorizontalStyled>
 
                                             )}
+                                            {(organization.organizationType || []).length > 0 && (
+                                                <XHorizontalStyled marginTop={20}>
+                                                    {organization.organizationType!!.map((l, i) => <XTag size="large" color="default" key={l + i} text={l} />)}
+                                                </XHorizontalStyled>
+                                            )}
                                             <XWithRole role={['org-' + organization.id + '-admin']}>
                                                 {!((organization.locations || [])[0]) && <LocationPlaceholder />}
                                                 {!((organization.organizationType || [])[0]) && <CategoriesPlaceholder />}
