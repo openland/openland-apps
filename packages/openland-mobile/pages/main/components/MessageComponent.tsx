@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
 import { formatTime } from '../../../utils/formatTime';
 import { layoutMedia } from './MediaLayout';
 import { ZCloudImage } from '../../../components/ZCloudImage';
 import { formatBytes } from '../../../utils/formatBytes';
+import { preprocessText } from '../../../utils/TextProcessor';
 
 let styles = StyleSheet.create({
     container: {
@@ -53,7 +54,17 @@ let styles = StyleSheet.create({
 
 class MessageTextContent extends React.PureComponent<{ text: string }> {
     render() {
-        return (<Text style={styles.message}>{this.props.text}</Text>);
+        let preprocessed = preprocessText(this.props.text);
+        let parts = preprocessed.map((v, i) => {
+            if (v.type === 'new_line') {
+                return <br key={'br-' + i} />;
+            } else if (v.type === 'link') {
+                return <Text key={'link-' + i} style={{ color: '#654bfa' }} onPress={() => Linking.openURL(v.link!!)}>{v.text}</Text>;
+            } else {
+                return <Text key={'text-' + i}>{v.text}</Text>;
+            }
+        });
+        return (<Text style={styles.message}>{parts}</Text>);
     }
 }
 
