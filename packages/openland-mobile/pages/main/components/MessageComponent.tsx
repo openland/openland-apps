@@ -6,6 +6,7 @@ import { ZAvatar } from '../../../components/ZAvatar';
 import { formatTime } from '../../../utils/formatTime';
 import { layoutMedia } from './MediaLayout';
 import { ZCloudImage } from '../../../components/ZCloudImage';
+import { formatBytes } from '../../../utils/formatBytes';
 
 let styles = StyleSheet.create({
     container: {
@@ -68,6 +69,20 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
     }
 }
 
+class MessageFileContent extends React.PureComponent<{ file: string, fileName?: string, size?: number }> {
+    render() {
+        return (
+            <View style={{ height: 56, borderRadius: 5, borderColor: '#e7e7ea', borderWidth: 1, width: 250, marginTop: 3, marginBottom: 3, flexDirection: 'row' }}>
+                <View style={{ width: 40, height: 40, backgroundColor: '#f4f4f4', borderRadius: 20, marginLeft: 12, marginRight: 12, marginTop: 8 }} />
+                <View flexGrow={1} flexBasis={0} flexDirection="column" marginTop={10} marginBottom={10}>
+                    <Text style={{ color: '#181818', height: 16, fontSize: 14, lineHeight: 16, fontWeight: '500' }}>{this.props.fileName || 'file'}</Text>
+                    <Text style={{ color: '#aaaaaa', height: 16, fontSize: 14, lineHeight: 16, marginTop: 4 }}>{formatBytes(this.props.size)}</Text>
+                </View>
+            </View>
+        );
+    }
+}
+
 export class MessageComponent extends React.PureComponent<{ message: ModelMessage, engine: ConversationEngine }> {
     render() {
         let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
@@ -80,10 +95,12 @@ export class MessageComponent extends React.PureComponent<{ message: ModelMessag
             if (this.props.message.file) {
                 let w = this.props.message.fileMetadata!!.imageWidth ? this.props.message.fileMetadata!!.imageWidth!! : undefined;
                 let h = this.props.message.fileMetadata!!.imageHeight ? this.props.message.fileMetadata!!.imageHeight!! : undefined;
-                // let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
-                // let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
+                let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
+                let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
                 if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
                     content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} />);
+                } else {
+                    content.push(<MessageFileContent file={this.props.message.file} fileName={name} size={size} />);
                 }
             }
         }
