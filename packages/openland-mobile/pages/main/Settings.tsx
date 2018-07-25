@@ -1,45 +1,37 @@
 import * as React from 'react';
-import CodePush from 'react-native-code-push';
 import { View, Text, Button, AsyncStorage, TouchableOpacity } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
 import { ProfileQuery } from 'openland-api';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ZLoader } from '../../components/ZLoader';
-import { CodePushStatus } from '../../routes';
+import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
+// import { CodePushStatus } from '../../routes';
 
-function convertStatus(status: number | null | undefined) {
-    if (status === undefined) {
-        return 'Checking for updates...';
-    }
-    if (status === null) {
-        return 'App is up to date';
-    }
-    switch (status) {
-        case 0:
-            return 'Checking for updates...';
-        case 2:
-        case 7:
-        case 3:
-            return 'Downloading update...';
-        case 5:
-        case 4:
+function convertStatus(status: UpdateStatus) {
+    switch (status.status) {
+        case UpdateStatusCode.UP_TO_DATE:
             return 'App is up to date';
-        case 1:
-        case 6:
+        case UpdateStatusCode.CHECKING_FOR_UPDATES:
+            return 'Checking for updates...';
+        case UpdateStatusCode.DOWNLOADING:
+            return 'Downloading update...';
+        case UpdateStatusCode.UPDATED:
             return 'Update downloaded. Press to restart app.';
+        case UpdateStatusCode.DISABLED:
+            return 'Updates disabled';
         default:
-            return 'Unknown status (' + status + ')';
+            return 'Unknown error. Press to try again.';
     }
 }
 
-class SettingsComponent extends React.Component<NavigationInjectedProps, { status: number | null | undefined }> {
+class SettingsComponent extends React.Component<NavigationInjectedProps, { status: UpdateStatus }> {
     static navigationOptions = {
         title: 'Settings',
     };
 
     state = {
-        status: CodePushStatus.status
+        status: AppUpdateTracker.status
     };
 
     handleLogout = () => {
@@ -47,15 +39,21 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
     }
 
     handleRestart = () => {
-        if (this.state.status === 6 || this.state.status === 1) {
-            CodePush.restartApp(true);
+        if (this.state.status.status === UpdateStatusCode.UPDATED) {
+            AppUpdateTracker.updateApp();
         }
     }
 
+    handleStatus = (status: UpdateStatus) => {
+        this.setState({ status });
+    }
+
     componentDidMount() {
-        CodePushStatus.watch((status) => {
-            this.setState({ status: status });
-        });
+        AppUpdateTracker.watch(this.handleStatus);
+    }
+
+    componentWillUnmount() {
+        AppUpdateTracker.unwatch(this.handleStatus);
     }
 
     render() {

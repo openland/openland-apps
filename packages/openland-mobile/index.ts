@@ -1,9 +1,10 @@
-import CodePush from 'react-native-code-push';
+// Import before everything to work correctly
+import 'openland-y-runtime/AppNotifications';
+
 import { AppRegistry } from 'react-native';
 import Routes from './routes';
 import Auth0 from 'react-native-auth0';
-// Import before everything to work correctly
-import 'openland-y-runtime/AppNotifications';
+import { withUpdateTracker } from './utils/UpdateTracker';
 
 // Disable annoying yellow box
 console.disableYellowBox = true;
@@ -18,4 +19,4 @@ export const Auth0Client = new Auth0({
     // scope: 'openid profile email'
 });
 
-AppRegistry.registerComponent('openland', () => CodePush()(Routes));
+AppRegistry.registerComponent('openland', () => withUpdateTracker(Routes));
