@@ -66,6 +66,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                     </>)}
                 </YQuery>
                 {/* {this.state.status === CodePush.SyncStatus.} */}
+                <Text>{AppUpdateTracker.status.bundleVersion}</Text>
                 <Button title="Log out" onPress={this.handleLogout} />
                 <TouchableOpacity onPress={this.handleRestart}>
                     <View style={{ height: 44, backgroundColor: 'grey' }}>
