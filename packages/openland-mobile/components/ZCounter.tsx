@@ -1,11 +1,34 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
-export class ZCounter extends React.PureComponent<{ value: number | string }> {
+const styles = StyleSheet.create({
+    container: {
+        height: 16,
+        paddingLeft: 4,
+        paddingRight: 4,
+        backgroundColor: '#816cf9',
+        borderRadius: 8,
+        minWidth: 16,
+        flexDirection: 'row',
+    } as ViewStyle,
+    containerMuted: {
+        backgroundColor: '#bcc3cc'
+    } as ViewStyle,
+    text: {
+        color: '#fff',
+        fontSize: 12,
+        lineHeight: 12,
+        minWidth: 8,
+        textAlign: 'center',
+        marginTop: 3,
+    } as TextStyle
+});
+
+export class ZCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
-            <View style={{ height: 16, paddingLeft: 8, paddingRight: 8, backgroundColor: 'red', borderRadius: 8 }}>
-                <Text style={{ color: '#fff', fontSize: 12, height: 16, textAlignVertical: 'center' }}>{this.props.value}</Text>
+            <View style={[styles.container, this.props.muted && styles.containerMuted]}>
+                <Text style={styles.text}>{this.props.value}</Text>
             </View>
         );
     }

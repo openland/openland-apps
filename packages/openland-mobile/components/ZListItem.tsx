@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TouchableHighlight, View } from 'react-native';
+import { AppStyles } from '../styles/AppStyles';
 
 export class ZListItem extends React.PureComponent<{ height?: number, separatorPaddingStart?: number, onPress?: () => void }> {
     render() {
@@ -10,7 +11,7 @@ export class ZListItem extends React.PureComponent<{ height?: number, separatorP
                     <View style={{ height: height, flexDirection: 'row' }}>
                         {this.props.children}
                     </View>
-                    <View style={{ backgroundColor: 'grey', height: 1, marginLeft: this.props.separatorPaddingStart }} />
+                    <View style={{ backgroundColor: AppStyles.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />
                 </View>
             </TouchableHighlight>
         );

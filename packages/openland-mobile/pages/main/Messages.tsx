@@ -17,14 +17,14 @@ class DialogComponent extends React.PureComponent<{ item: { key: string, title: 
 
     render() {
         return (
-            <ZListItem onPress={this.handlePress} height={66} separatorPaddingStart={72}>
-                <View paddingTop={5} paddingBottom={5} paddingLeft={8} paddingRight={6}>
-                    <ZAvatar src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined} size={56} />
+            <ZListItem onPress={this.handlePress} height={80} separatorPaddingStart={80}>
+                <View width={80} height={80} alignItems="center" justifyContent="center">
+                    <ZAvatar src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined} size={60} />
                 </View>
                 <View flexGrow={1} paddingTop={5} paddingBottom={5} paddingRight={8} alignItems="stretch">
                     <View flexDirection="row">
-                        <Text style={{ fontSize: 16, fontWeight: '500', height: 22, textAlignVertical: 'center' }}>{(this.props.item as any).title}</Text>
-                        <ZCounter value={this.props.item.counter} />
+                        <Text style={{ fontSize: 15, fontWeight: '500', height: 18, textAlignVertical: 'center' }}>{(this.props.item as any).title}</Text>
+                        {this.props.item.counter > 0 && <ZCounter value={this.props.item.counter} />}
                     </View>
                     <Text style={{ fontSize: 16, fontWeight: '400', height: 22, textAlignVertical: 'center' }}>Message line 1</Text>
                     <Text style={{ fontSize: 16, fontWeight: '400', height: 22, textAlignVertical: 'center' }}>Message line 2</Text>
