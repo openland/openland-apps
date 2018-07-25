@@ -41,6 +41,8 @@ interface XVerticalStyledProps {
     paddingBottom?: number;
     marginTop?: number;
     marginBottom?: number;
+    scrollable?: boolean;
+    maxHeight?: number;
 }
 
 export const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props) => ({
@@ -53,6 +55,8 @@ export const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>((props
     paddingBottom: props.paddingBottom,
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
+    overflowY: props.scrollable ? 'scroll' : undefined,
+    maxHeight: props.maxHeight,
 }));
 
 interface TitleProps {

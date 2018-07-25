@@ -5,8 +5,9 @@ import { XTag } from '../XTag';
 // import { XSelectProps, XSelectAsyncProps } from '../XSelect';
 import { XSelectProps } from '../XSelect';
 import { Option } from 'react-select';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
-const Container = Glamorous.div<XFlexStyles>([{
+const Container = Glamorous(XHorizontal)<XFlexStyles>([{
     minHeight: 48,
     display: 'flex',
     flexDirection: 'row',
@@ -159,6 +160,7 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
 
         return (
             <Container
+                separator={4}
                 alignSelf={alignSelf}
                 justifyContent={justifyContent}
                 flexGrow={flexGrow}

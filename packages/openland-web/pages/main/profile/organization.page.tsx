@@ -64,6 +64,8 @@ import {
     AcquizitionRequestShort,
     AcquizitionRequestFull
 } from './components/listingsCards';
+import { XTag } from 'openland-x/XTag';
+import { XPopper } from 'openland-x/XPopper';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -294,8 +296,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
     let semiEmpty = contentLength < 2;
 
     // prepare listings edit
-    // let hasLogo = !!(organization.photo);
-    let hasLogo = false;
+    let hasLogo = !!(organization.photo);
     let editDoTarget = (props.data.organization.developmentOportunities || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let editArTarget = (props.data.organization.acquisitionRequests || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let target = editDoTarget || editArTarget;
@@ -562,7 +563,28 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         </AvatarWrapper>
                                         <XVerticalStyled paddingTop={4} separator={0}>
                                             <OrganizationName>{organization.name}</OrganizationName>
-                                            {(organization.locations || [])[0] && <Text opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>}
+                                            {(organization.locations || []).length === 1 && (
+                                                <Text marginTop={8} opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>
+                                            )}
+                                            {(organization.locations || []).length > 1 && (
+                                                <XHorizontalStyled marginTop={8} separator={4}>
+                                                    <Text opacity={0.5} bold={true}>{(organization.locations || [])[0]}</Text>
+                                                    <XPopper
+                                                        showOnHover={true}
+                                                        placement="bottom-start"
+                                                        arrow={null}
+                                                        content={
+                                                            <XVerticalStyled padding={2} scrollable={true} maxHeight={254} separator={4} >
+                                                                {organization.locations!!.map((l, i) => <XTag size="large" color="gost" key={l + i} text={l} />)}
+                                                            </XVerticalStyled>}
+                                                    >
+                                                        <Text opacity={0.5} bold={true}>{' • More locations'}</Text>
+                                                    </XPopper>
+
+                                                    <img src="/static/X/ic-arrow-down.svg" />
+                                                </XHorizontalStyled>
+
+                                            )}
                                             <XWithRole role={['org-' + organization.id + '-admin']}>
                                                 {!((organization.locations || [])[0]) && <LocationPlaceholder />}
                                                 {!((organization.organizationType || [])[0]) && <CategoriesPlaceholder />}

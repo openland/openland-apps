@@ -8,14 +8,14 @@ interface XTagProps extends XFlexStyles {
     text?: string;
     icon?: string;
     size?: 'large' | 'default';
-    color?: 'primary' | 'default' | 'gray' | 'green';
+    color?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
     onIconClick?: () => void;
     onClick?: React.MouseEventHandler<any>;
 }
 
 interface StyledXTagProps extends XFlexStyles {
     tagSize?: 'large' | 'default';
-    tagColor?: 'primary' | 'default' | 'gray' | 'green';
+    tagColor?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
     pointer?: boolean;
 }
 
@@ -68,6 +68,12 @@ let colorStyles = styleResolver({
         backgroundColor: 'rgba(192, 235, 196, 0.45)',
         color: '#4e8653',
     },
+    'gost': {
+        backgroundColor: '#fff',
+        color: '#334562',
+        opacity: 0.5,
+        border: '1px solid #dedede'
+    },
 });
 
 let crossColorStyles = styleResolver({
@@ -87,6 +93,10 @@ let crossColorStyles = styleResolver({
         color: '#4e8653',
         opacity: 0.4
     },
+    'gost': {
+        color: '#334562',
+        opacity: 0.5
+    },
 });
 
 const XTagWrapper = Glamorous.div<StyledXTagProps>([
@@ -97,7 +107,8 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
         textOverflow: 'ellipsis',
         borderRadius: 4,
         whiteSpace: 'nowrap',
-        marginRight: 8,
+        flexShrink: 0,
+        // marginRight: 8,
         marginTop: 4,
         marginBottom: 4,
         cursor: props.pointer ? 'pointer' : undefined,

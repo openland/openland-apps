@@ -153,11 +153,6 @@ const OrganizationInterests = Glamorous.div({
     marginBottom: 6
 });
 
-const OrganizationTags = Glamorous.div({
-    display: 'flex',
-    flexWrap: 'wrap',
-});
-
 const OrganizationToolsWrapper = Glamorous(XHorizontal)({
     paddingTop: 4
 });
@@ -206,11 +201,11 @@ const OrganizationCard = (props: OrganizationCardProps) => (
 
                     {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
                     {props.item.organizationType && (
-                        <OrganizationTags>
+                        <XHorizontal separator={4}>
                             {props.item.organizationType.map((tag) => (
                                 <XTag key={props.item.id + tag} text={tag} onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })} />
                             ))}
-                        </OrganizationTags>
+                        </XHorizontal>
                     )}
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
@@ -293,8 +288,7 @@ const Text = Glamorous.div({
     marginBottom: 15
 });
 
-const TopTagsWrapper = Glamorous.div({
-    display: 'flex',
+const TopTagsWrapper = Glamorous(XHorizontal)({
     flexWrap: 'wrap',
     justifyContent: 'center',
     maxWidth: 480
@@ -318,7 +312,7 @@ class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) =>
                     <EmptySearchBlockTitle>No results found</EmptySearchBlockTitle>
                     <Separator />
                     <Text>Top searches</Text>
-                    <TopTagsWrapper>
+                    <TopTagsWrapper separator={4}>
                         <XTag
                             color="primary"
                             text="Big box retail"
@@ -482,8 +476,7 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
     }
 }
 
-const ConditionRenderWrapper = Glamorous.div({
-    display: 'flex',
+const ConditionRenderWrapper = Glamorous(XHorizontal)({
     flexWrap: 'wrap',
     padding: '0 4px 16px 24px',
 });
@@ -510,7 +503,7 @@ const SearchPickers = Glamorous(XHorizontal)({
 class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
     render() {
         return (
-            <ConditionRenderWrapper>
+            <ConditionRenderWrapper separator={4}>
                 {this.props.conditions.map((condition) => (
                     <XTag
                         key={condition.type + '_' + condition.value}
