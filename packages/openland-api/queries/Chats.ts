@@ -1,19 +1,13 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
+import { ConversationShort } from '../fragments/ConversationShort';
 
 export const ChatListQuery = gql`
     query ChatList {
         chats: alphaChats(first: 20) {
             conversations {
-                id
-                title
-                flexibleId
-                unreadCount
-                photos
-                topMessage {
-                    ...MessageFull
-                }
+                ...ConversationShort
             }
             seq
             next
@@ -23,6 +17,7 @@ export const ChatListQuery = gql`
             unreadCount
         }
     }
+    ${ConversationShort}
     ${MessageFull}
     ${UserShort}
 `;
