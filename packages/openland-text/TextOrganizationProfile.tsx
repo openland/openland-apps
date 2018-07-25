@@ -144,6 +144,10 @@ export const TextOrganizationProfile = {
     placeholderOverviewGeneralModalGeographiesTitle: 'Where are you looking for deals?',
     placeholderOverviewGeneralModalInterests: 'Interests',
     placeholderOverviewGeneralModalGeographiesDescription: 'Whole US? Specific state or city?',
+    placeholderSemiEmptyTitle: 'No additional updates yet',
+    placeholderSemiEmptySubTitle: 'Get notified about updates and listings from this organization',
+    placeholderSemiEmptyFollow: 'Follow',
+    placeholderSemiEmptyUnFolow: 'Following',
 
     placeholderOverviewDoMainText: 'Do you own development sites?',
     placeholderOverviewDOButton: 'Describe your portfolio',

@@ -47,14 +47,15 @@ import {
 } from './components/profileComponents';
 
 import {
-    OverviewPlaceholder,
     DOARListingPlaceholder,
     SocialPlaceholder,
     ContactPlaceholder,
     LocationPlaceholder,
     AvatartPlaceholder,
     CategoriesPlaceholder,
-    InterestsPlaceholder
+    InterestsPlaceholder,
+    EmptyPlaceholder,
+    SemiEmptyPlaceholder
 } from './placeholders';
 
 import {
@@ -156,7 +157,7 @@ const OrganizationName = Glamorous.div({
     lineHeight: '25px'
 });
 
-const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number , paddingLeft?: number, paddingRight?: number }>((props) => ({
+const XCardStyled = Glamorous(XCard)<{ padding?: number, paddingTop?: number, paddingBottom?: number, paddingLeft?: number, paddingRight?: number }>((props) => ({
     borderRadius: 5,
     padding: props.padding !== undefined ? props.padding : 24,
     paddingTop: props.paddingTop,
@@ -281,7 +282,18 @@ const ContactLink = Glamorous.a({
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
+    let currentPath = props.router.path.replace('#', '');
+    let rootPath = '/o/' + props.data.organization.id;
+    let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
 
+    const { organization } = props.data;
+
+    let contentLength = (organization.listingsAll || []).length + (organization.posts || []).length;
+    let empty = contentLength === 0;
+    let semiEmpty = contentLength < 2;
+
+    // prepare listings edit
+    let hasLogo = !!(organization.photo);
     let editDoTarget = (props.data.organization.developmentOportunities || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let editArTarget = (props.data.organization.acquisitionRequests || []).filter((devOp) => devOp.id === props.router.query.editListing)[0];
     let target = editDoTarget || editArTarget;
@@ -520,14 +532,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
         </XVertical>
     );
 
-    let currentPath = props.router.path.replace('#', '');
-    let rootPath = '/o/' + props.data.organization.id;
-    let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
-
-    const { organization } = props.data;
-
-    let hasLogo = !!(organization.photo);
-
     return (
         <>
             <XDocumentHead title={organization.name} />
@@ -627,27 +631,38 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                             <MainContent>
                                 {currentPath === rootPath && (
                                     <XHorizontal separator={9}>
-                                        <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
-                                            <DOARListingPlaceholder />
-                                        </XWithRole>
-                                        <XVertical separator={9} minWidth={0}>
-                                            {(organization.posts && organization.posts.length > 0) && (
-                                                organization.posts.map((post, i) => (
-                                                    <PostCard key={'post_' + i} orgId={organization.id} item={post} />
-                                                ))
-                                            )}
+                                        <XVertical flexGrow={1}>
 
-                                            {(organization.developmentOportunities && organization.developmentOportunities.length > 0) && (
-                                                organization.developmentOportunities.map((devop, i) => (
-                                                    <DevelopmentOportunityShort key={'do_' + devop.id} orgId={organization.id} item={devop} />
-                                                ))
-                                            )}
+                                            <XVertical separator={9} minWidth={0} >
+                                                <XWithRole role={['org-' + props.data.organization.id + '-admin']} >
+                                                    <DOARListingPlaceholder />
+                                                </XWithRole>
+                                                {!organization.isMine && empty && (
+                                                    <EmptyPlaceholder />
+                                                )}
 
-                                            {(organization.acquisitionRequests && organization.acquisitionRequests.length > 0) && (
-                                                organization.acquisitionRequests.map((devop, i) => (
-                                                    <AcquizitionRequestShort key={'ar_' + devop.id} orgId={organization.id} item={devop} />
-                                                ))
-                                            )}
+                                                {!organization.isMine && !empty && semiEmpty && (
+                                                    <SemiEmptyPlaceholder followed={organization.followed} orgId={organization.id} />
+                                                )}
+
+                                                {(organization.posts && organization.posts.length > 0) && (
+                                                    organization.posts.map((post, i) => (
+                                                        <PostCard key={'post_' + i} orgId={organization.id} item={post} />
+                                                    ))
+                                                )}
+
+                                                {(organization.developmentOportunities && organization.developmentOportunities.length > 0) && (
+                                                    organization.developmentOportunities.map((devop, i) => (
+                                                        <DevelopmentOportunityShort key={'do_' + devop.id} orgId={organization.id} item={devop} />
+                                                    ))
+                                                )}
+
+                                                {(organization.acquisitionRequests && organization.acquisitionRequests.length > 0) && (
+                                                    organization.acquisitionRequests.map((devop, i) => (
+                                                        <AcquizitionRequestShort key={'ar_' + devop.id} orgId={organization.id} item={devop} />
+                                                    ))
+                                                )}
+                                            </XVertical>
                                         </XVertical>
 
                                         <XVertical width={422} flexShrink={0}>

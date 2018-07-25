@@ -29,12 +29,37 @@ import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XMutation } from 'openland-x/XMutation';
+import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 
-const Placeholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
+const Placeholder = Glamorous(XCard)<{ accent?: boolean, minHeigth?: number }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
-    padding: 32,
-    paddingLeft: 42,
-    minHeight: 165,
+    minHeight: props.minHeigth !== undefined ? props.minHeigth : 165,
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative',
+    borderRadius: 5
+}));
+
+const XHorizontalMargins = Glamorous(XHorizontal)<{marginLeft?: number, marginRight?: number, marginTop?: number, marginBottom?: number}>(props => ({
+    marginLeft: props.marginLeft,
+    marginRight: props.marginRight,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
+}));
+
+const CenteredPlaceholder = Glamorous(XCard)<{ accent?: boolean }>(props => ({
+    paddingTop: 48,
+    paddingBottom: 60,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    borderRadius: 5
+}));
+
+const SmallPlaceholder = Glamorous(XCard)<{ accent?: boolean, minHeigth?: number }>(props => ({
+    backgroundColor: '#fff',
     flex: 1,
     justifyContent: 'center',
     position: 'relative',
@@ -45,16 +70,31 @@ const PlaceholderButton = Glamorous(XButton)({
     marginLeft: 16
 });
 
-const PlaceholderText = Glamorous.span<{ accent?: boolean }>(props => ({
-    marginLeft: 16,
-    fontSize: '16px',
+const PlaceholderText = Glamorous.span<{ accent?: boolean, marginLeft?: number, marginTop?: number }>(props => ({
+    marginLeft: props.marginLeft !== undefined ? props.marginLeft : 16,
+    fontSize: '18px',
     lineHeight: 1.44,
     letterSpacing: '-0.2px',
-    marginTop: -20,
+    marginTop: props.marginTop !== undefined ? props.marginTop : -20,
     color: props.accent ? '#ffffff' : '#334562'
 }));
 
-const PlaceholderIcon = Glamorous.img((props) => ({
+const PlaceholderSubText = Glamorous.span<{ accent?: boolean }>(props => ({
+    fontSize: '15px',
+    letterSpacing: '-0.2px',
+    color: props.accent ? '#ffffff' : '#334562',
+    opacity: 0.5,
+}));
+
+const PlaceholderViewerText = Glamorous.span(props => ({
+    fontSize: '18px',
+    lineHeight: 1.44,
+    letterSpacing: '-0.2px',
+    marginTop: 20,
+    color: '#334562'
+}));
+
+const PlaceholderIcon = Glamorous.img<{margin?: string}>((props) => ({
     marginTop: 6,
     width: 60,
     height: 60,
@@ -119,7 +159,7 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
                     >
                         <XVertical>
                             <XFormLoadingContent>
-                                <XVertical flexGrow={1} maxWidth={500}>
+                                <XVertical flexGrow={1}>
                                     <XFormField
                                         title={TextOrganizationProfile.placeholderOverviewGeneralModalOrganizationTypeTitle}
                                         description={TextOrganizationProfile.placeholderOverviewGeneralModalOrganizationTypeDescription}
@@ -187,303 +227,6 @@ class Closable extends React.Component<{ key: string, content: (closeCallback: (
     }
 }
 
-export const DOOverviewPlaceholder = withMyOrganizationProfile((props) => {
-    if (!(props.data && props.data.organizationProfile)) {
-        return null;
-    }
-    return (
-        props.data.organizationProfile && (
-            !props.data.organizationProfile.doShapeAndForm &&
-            !props.data.organizationProfile.doCurrentUse &&
-            !props.data.organizationProfile.doGoodFitFor &&
-            !props.data.organizationProfile.doSpecialAttributes &&
-            !props.data.organizationProfile.doAvailability
-        ) ? (
-                <Closable
-                    key="DOPlaceholder"
-                    content={close => (
-                        <Placeholder>
-                            <Close
-                                icon="close"
-                                onClick={close}
-                            />
-                            <XVertical>
-                                <XHorizontal>
-                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
-                                    <XVertical maxWidth={452}>
-                                        <PlaceholderText>{TextOrganizationProfile.placeholderOverviewDoMainText}</PlaceholderText>
-                                        <XModalForm
-                                            defaultData={{
-                                                input: {
-                                                    doShapeAndForm: props.data.organizationProfile!!.doShapeAndForm,
-                                                    doCurrentUse: props.data.organizationProfile!!.doCurrentUse,
-                                                    doGoodFitFor: props.data.organizationProfile!!.doGoodFitFor,
-                                                    doSpecialAttributes: props.data.organizationProfile!!.doSpecialAttributes,
-                                                    doAvailability: props.data.organizationProfile!!.doAvailability,
-                                                }
-                                            }}
-                                            defaultAction={async (data) => {
-                                                await props.updateOrganizaton({
-                                                    variables: {
-                                                        input: {
-                                                            alphaDOShapeAndForm: data.input.doShapeAndForm,
-                                                            alphaDOCurrentUse: data.input.doCurrentUse,
-                                                            alphaDOGoodFitFor: data.input.doGoodFitFor,
-                                                            alphaDOSpecialAttributes: data.input.doSpecialAttributes,
-                                                            alphaDOAvailability: data.input.doAvailability,
-                                                        }
-                                                    }
-                                                });
-                                            }}
-                                            target={<PlaceholderButton
-                                                style="primary"
-                                                text={TextOrganizationProfile.placeholderOverviewDOButton}
-                                                alignSelf="flex-start"
-                                            />}
-                                        >
-                                            <XVertical maxWidth={500}>
-                                                <XFormLoadingContent>
-                                                    <XVertical>
-                                                        <XFormField field="input.doShapeAndForm" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalShapeAndFormTitle}>
-                                                            <XSelect
-                                                                field="input.doShapeAndForm"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.doCurrentUse" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalCurrentUseTitle}>
-                                                            <XSelect
-                                                                field="input.doCurrentUse"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.doGoodFitFor" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalGoodFitForTitle}>
-                                                            <XSelect
-                                                                field="input.doGoodFitFor"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.doSpecialAttributes" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalSpecialAttributesTitle}>
-                                                            <XSelect
-                                                                field="input.doSpecialAttributes"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.doAvailability" optional={true} title={TextOrganizationProfile.placeholderOverviewDOModalAvailabilityTitle}>
-                                                            <XSelect
-                                                                field="input.doAvailability"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                    </XVertical>
-                                                </XFormLoadingContent>
-                                            </XVertical>
-                                        </XModalForm>
-
-                                    </XVertical>
-
-                                </XHorizontal>
-                            </XVertical>
-
-                        </Placeholder>
-                    )}
-                />
-
-            ) : null);
-});
-
-export const AROverviewPlaceholder = withMyOrganizationProfile((props) => {
-    if (!(props.data && props.data.organizationProfile)) {
-        return null;
-    }
-    return (
-        props.data.organizationProfile && (
-            !props.data.organizationProfile.arGeographies &&
-            !props.data.organizationProfile.arAreaRange &&
-            !props.data.organizationProfile.arHeightLimit &&
-            !props.data.organizationProfile.arActivityStatus &&
-            !props.data.organizationProfile.arAquisitionBudget &&
-            !props.data.organizationProfile.arAquisitionRate &&
-            !props.data.organizationProfile.arClosingTime &&
-            !props.data.organizationProfile.arSpecialAttributes &&
-            !props.data.organizationProfile.arLandUse
-        ) ? (
-                <Closable
-                    key="ARPlaceholder"
-                    content={close => (
-                        <Placeholder>
-                            <Close
-                                icon="close"
-
-                                onClick={close}
-                            />
-                            <XVertical>
-                                <XHorizontal>
-
-                                    <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
-                                    <XVertical maxWidth={452}>
-                                        <PlaceholderText>{TextOrganizationProfile.placeholderOverviewArMainText}</PlaceholderText>
-                                        <XModalForm
-                                            defaultData={{
-                                                input: {
-                                                    arGeographies: props.data.organizationProfile!!.arGeographies,
-                                                    arAreaRange: props.data.organizationProfile!!.arAreaRange,
-                                                    arHeightLimit: props.data.organizationProfile!!.arHeightLimit,
-                                                    arActivityStatus: props.data.organizationProfile!!.arActivityStatus,
-                                                    arAquisitionBudget: props.data.organizationProfile!!.arAquisitionBudget,
-                                                    arAquisitionRate: props.data.organizationProfile!!.arAquisitionRate,
-                                                    arClosingTime: props.data.organizationProfile!!.arClosingTime,
-                                                    arSpecialAttributes: props.data.organizationProfile!!.arSpecialAttributes,
-                                                    arLandUse: props.data.organizationProfile!!.arLandUse,
-                                                }
-                                            }}
-                                            defaultAction={async (data) => {
-                                                await props.updateOrganizaton({
-                                                    variables: {
-                                                        input: {
-                                                            alphaARGeographies: data.input.arGeographies,
-                                                            alphaARAreaRange: data.input.arAreaRange,
-                                                            alphaARHeightLimit: data.input.arHeightLimit,
-                                                            alphaARActivityStatus: data.input.arActivityStatus,
-                                                            alphaARAquisitionBudget: data.input.arAquisitionBudget,
-                                                            alphaARAquisitionRate: data.input.arAquisitionRate,
-                                                            alphaARClosingTime: data.input.arClosingTime,
-                                                            alphaARSpecialAttributes: data.input.arSpecialAttributes,
-                                                            alphaARLandUse: data.input.arLandUse,
-                                                        }
-                                                    }
-                                                });
-                                            }}
-                                            target={<PlaceholderButton
-                                                style="primary"
-                                                text={TextOrganizationProfile.placeholderOverviewArButton}
-                                                alignSelf="flex-start"
-                                            />}
-                                        >
-                                            <XVertical maxWidth={500}>
-                                                <XFormLoadingContent>
-                                                    <XVertical>
-
-                                                        <XFormField field="input.arGeographies" title={TextOrganizationProfile.placegolderOverviewArModalTagRowGeographiesTitle}>
-                                                            <XSelect
-                                                                field="input.arGeographies"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arAreaRange" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowAreaRangeTitle}>
-                                                            <XSelect
-                                                                field="input.arAreaRange"
-                                                                creatable={true}
-                                                                multi={true}
-                                                                options={[{ label: 'up to 10,000 ft²', value: 'up to 10,000 ft²' }, { label: '10,000 ft² - 100,000 ft²', value: '10,000 ft² - 100,000 ft²' }, { label: '100,000+ ft²', value: '100,000+ ft²' }]}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arHeightLimit" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowHeightLimitTitle}>
-                                                            <XSelect
-                                                                field="input.arHeightLimit"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arActivityStatus" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowActivityStatusTitle}>
-                                                            <XSelect
-                                                                field="input.arActivityStatus"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arAquisitionBudget" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowAquisitionBudgetTitle}>
-                                                            <XSelect
-                                                                field="input.arAquisitionBudget"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arAquisitionRate" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowAquisitionRateTitle}>
-                                                            <XSelect
-                                                                field="input.arAquisitionRate"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arClosingTime" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowClosingTimeTitle}>
-                                                            <XSelect
-                                                                field="input.arClosingTime"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arSpecialAttributes" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowSpecialAttributesTitle}>
-                                                            <XSelect
-                                                                field="input.arSpecialAttributes"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                        <XFormField field="input.arLandUse" optional={true} title={TextOrganizationProfile.placegolderOverviewArModalTagRowLandUseTitle}>
-                                                            <XSelect
-                                                                field="input.arLandUse"
-                                                                creatable={true}
-                                                                multi={true}
-                                                            />
-                                                        </XFormField>
-
-                                                    </XVertical>
-                                                </XFormLoadingContent>
-                                            </XVertical>
-                                        </XModalForm>
-
-                                    </XVertical>
-
-                                </XHorizontal>
-                            </XVertical>
-
-                        </Placeholder>
-                    )}
-                />
-
-            ) : null);
-});
-
-export const DOAROverviewPlaceholder = withMyOrganizationProfile((props) => {
-    if (!(props.data && props.data.organizationProfile)) {
-        return null;
-    }
-    return (
-        props.data.organizationProfile && ((!props.data.organizationProfile.doShapeAndForm &&
-            !props.data.organizationProfile.doCurrentUse &&
-            !props.data.organizationProfile.doGoodFitFor &&
-            !props.data.organizationProfile.doSpecialAttributes &&
-            !props.data.organizationProfile.doAvailability) ||
-            (!props.data.organizationProfile.arGeographies &&
-                !props.data.organizationProfile.arAreaRange &&
-                !props.data.organizationProfile.arHeightLimit &&
-                !props.data.organizationProfile.arActivityStatus &&
-                !props.data.organizationProfile.arAquisitionBudget &&
-                !props.data.organizationProfile.arAquisitionRate &&
-                !props.data.organizationProfile.arClosingTime &&
-                !props.data.organizationProfile.arSpecialAttributes &&
-                !props.data.organizationProfile.arLandUse)) ? <XHorizontal><DOOverviewPlaceholder /><AROverviewPlaceholder /></XHorizontal> : null);
-});
-
 export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
         return null;
@@ -501,15 +244,15 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
                                 onClick={close}
                             />
                             <XVertical>
-                                <XHorizontal>
+                                <XHorizontalMargins marginLeft={24} marginRight={32}>
 
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
-                                    <XVertical maxWidth={452}>
+                                    <XVertical>
                                         <PlaceholderText>{TextOrganizationProfile.placeholderListongsDoMainText}</PlaceholderText>
                                         <PlaceholderButton query={{ field: 'addListing', value: 'DO' }} style="primary" text={TextOrganizationProfile.placeholderListingsDoButton} />
                                     </XVertical>
 
-                                </XHorizontal>
+                                </XHorizontalMargins>
                             </XVertical>
 
                         </Placeholder>
@@ -536,15 +279,15 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
                                 onClick={close}
                             />
                             <XVertical>
-                                <XHorizontal>
+                                <XHorizontalMargins marginLeft={24} marginRight={32}>
 
                                     <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_ar.svg'} />
-                                    <XVertical maxWidth={452}>
+                                    <XVertical>
                                         <PlaceholderText>{TextOrganizationProfile.placeholderListongsArMainText}</PlaceholderText>
                                         <PlaceholderButton query={{ field: 'addListing', value: 'AR' }} style="primary" text={TextOrganizationProfile.placeholderListingsArButton} />
                                     </XVertical>
 
-                                </XHorizontal>
+                                </XHorizontalMargins>
                             </XVertical>
 
                         </Placeholder>
@@ -582,7 +325,7 @@ export const NewsPlaceholder = withMyOrganizationProfile((props) => {
                         <XHorizontal>
 
                             <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
-                            <XVertical maxWidth={452}>
+                            <XVertical>
                                 <PlaceholderText>Share your recent press coverage</PlaceholderText>
                                 <PlaceholderButton
                                     style="primary"
@@ -970,6 +713,49 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
 
     );
 });
+
+export const EmptyPlaceholder = () => {
+    return (
+        <CenteredPlaceholder>
+            <XVertical separator={4} alignItems="center">
+                <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_info.svg'} />
+                <PlaceholderViewerText>There is no organisation overview yet</PlaceholderViewerText>
+                <PlaceholderSubText>Follow to get notified about new updates</PlaceholderSubText>
+            </XVertical>
+
+        </CenteredPlaceholder>
+    );
+};
+
+const OrganizationFollowBtn = withOrganizationFollow((props) => {
+    return (
+        <XMutation mutation={props.followOrganization} variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}>
+            <XButton
+                iconOpacity={0.4}
+                style={(props as any).followed ? 'ghost' : 'primary'}
+                text={(props as any).followed ? TextOrganizationProfile.placeholderSemiEmptyUnFolow : TextOrganizationProfile.placeholderSemiEmptyFollow}
+                icon={(props as any).followed ? 'check' : undefined}
+            />
+        </XMutation>
+    );
+}) as React.ComponentType<{ organizationId: string, followed: boolean }>;
+
+export const SemiEmptyPlaceholder = (props: { followed: boolean, orgId: string }) => {
+    return (
+        <SmallPlaceholder>
+            <XHorizontalMargins marginLeft={32} marginTop={31} marginRight={27} marginBottom={25} alignItems="center">
+                <PlaceholderIcon src={'/static/img/icons/organization/profile/placeholder_do.svg'} />
+                <XVertical flexGrow={1} separator={1}>
+                    <PlaceholderText marginLeft={0}>{TextOrganizationProfile.placeholderSemiEmptyTitle}</PlaceholderText>
+                    <PlaceholderSubText >{TextOrganizationProfile.placeholderSemiEmptySubTitle}</PlaceholderSubText>
+                </XVertical>
+
+                <OrganizationFollowBtn followed={props.followed} organizationId={props.orgId} />
+
+            </XHorizontalMargins>
+        </SmallPlaceholder>
+    );
+};
 
 const LogoPlaceholder = Glamorous(XVertical)({
     cursor: 'pointer',
