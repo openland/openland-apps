@@ -28,7 +28,7 @@ export class Login extends React.Component<NavigationInjectedProps, { loading: b
 
             let res = await Auth0Client.webAuth.authorize({
                 scope: 'openid profile email',
-                audience: 'https://auth.openland.com/userinfo',
+                audience: 'https://statecraft.auth0.com/userinfo',
                 connection: 'google-oauth2',
             });
 

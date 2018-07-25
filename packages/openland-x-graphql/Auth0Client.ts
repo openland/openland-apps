@@ -5,7 +5,7 @@ export function createAuth0Client() {
         domain: 'auth.openland.com',
         clientID: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
         redirectUri: window.location.origin + '/auth/complete',
-        audience: 'https://auth.openland.com/userinfo',
+        audience: 'https://statecraft.auth0.com/userinfo',
         responseType: 'token id_token',
         scope: 'openid profile email'
     });
