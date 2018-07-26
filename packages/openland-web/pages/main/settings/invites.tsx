@@ -253,12 +253,13 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     <XButton style={'primary'} text={'Copy'} onClick={this.copyLink} autoClose={true} />
                 )}
                 {!this.state.showLink && (
-                    <XFormSubmit style={'primary'} text={'Save'} keyDownSubmit={true} {...submitProps} />
+                    <XFormSubmit succesText={TextInvites.sent} style={'primary'} text={'Save'} keyDownSubmit={true} {...submitProps} />
                 )}
             </FooterWrap>
         );
         return (
             <XModalForm
+                autoClose={1500}
                 useTopCloser={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
                 defaultAction={async (data) => {

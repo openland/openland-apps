@@ -48,7 +48,7 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     fontSize: 15,
     lineHeight: 1.33,
     fontWeight: 500,
-    color: '#334562',
+    color: props.selected ? '#6b50ff' : '#334562',
     letterSpacing: -0.2,
     backgroundColor: props.selected ? '#f8f8fb' : undefined,
     overflow: 'hidden',
@@ -56,8 +56,8 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     textOverflow: 'ellipsis',
     cursor: 'pointer',
     ':hover': {
-        color: '#334562',
         ...(props.hover ? {
+            color: '#6b50ff',
             backgroundColor: '#f8f8fb'
         } : {})
     }
@@ -96,7 +96,6 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                 let c = container as Element;
                 let t = target as Element;
                 let targetY = c.scrollTop + t.getBoundingClientRect().top - c.getBoundingClientRect().top;
-                console.warn(t.getBoundingClientRect().top, c.getBoundingClientRect().top, t.getBoundingClientRect().bottom, c.getBoundingClientRect().bottom);
                 if (t.getBoundingClientRect().top < c.getBoundingClientRect().top) {
                     c.scrollTo(0, targetY);
                 } else if (t.getBoundingClientRect().bottom > c.getBoundingClientRect().bottom) {
@@ -189,8 +188,8 @@ export class LocationPopperPicker extends React.Component<{ onPick: (q: SearchCo
         this.setState({ query: v });
     }
 
-    onPick = (q: SearchCondition) => {
-        this.props.onPick(q);
+    onPick = (q: string) => {
+        this.props.onPick({ type: 'location', value: q, label: q });
         this.setState({ query: '', popper: false });
     }
 
@@ -198,7 +197,7 @@ export class LocationPopperPicker extends React.Component<{ onPick: (q: SearchCo
         if (this.state.query.length === 0) {
             return;
         }
-        this.onPick({ type: 'location', value: this.state.query, label: this.state.query });
+        this.onPick(this.state.query);
     }
 
     switch = () => {
@@ -216,13 +215,7 @@ export class LocationPopperPicker extends React.Component<{ onPick: (q: SearchCo
                     <XInput placeholder={TextDirectory.locationSearchPlaceholder} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
-                <PickerTitle>Top locations</PickerTitle>
-                <PickerEntries separator="none">
-                    <EntriesComponent title={TextDirectory.locationCities} query={this.state.query} options={Cities} onPick={this.onPick} />
-                    <EntriesComponent title={TextDirectory.locationMetropolitanAreas} query={this.state.query} options={MetropolitanAreas} onPick={this.onPick} />
-                    <EntriesComponent title={TextDirectory.locationStates} query={this.state.query} options={States} onPick={this.onPick} />
-                    <EntriesComponent title={TextDirectory.locationMultiStateRegions} query={this.state.query} options={MultiStateRegions} onPick={this.onPick} />
-                </PickerEntries>
+                <LocationControlledPicker onPick={this.onPick} query={this.state.query} />
             </PickerWrapper>
         );
 
@@ -255,6 +248,7 @@ interface MultoplePickerProps {
     options: { label: string, values: string[] }[];
     query?: string;
     onPick: (location: string) => void;
+    title?: string;
 }
 
 interface MultiplePickerState {
@@ -347,22 +341,38 @@ class MultiplePicker extends React.Component<MultoplePickerProps, MultiplePicker
             <>
                 {this.state.empty && <HelpText>{'Press Enter to add "' + this.props.query + '" location'}</HelpText>}
                 {!this.state.empty && (
-                    <XVertical separator={9}>
-                        <PickerTitle>Top locations</PickerTitle>
-                        <PickerEntries separator="none">
-                            {this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0).map((o, i) => (
-                                <EntriesComponent
-                                    scrollToTarget={this.state.scrollToSelected}
-                                    onHover={index => this.setState({ selected: [i, index], scrollToSelected: false })}
-                                    key={o.label + '_' + i}
-                                    selected={i === this.state.selected[0] ? this.state.selected[1] : undefined}
-                                    title={o.label}
-                                    query={this.props.query}
-                                    options={o.values}
-                                    onPick={sq => this.props.onPick(sq.label)}
-                                />
-                            ))}
-                        </PickerEntries>
+                    <XVertical separator={9} width="100%">
+                        {this.props.title && <PickerTitle>{this.props.title}</PickerTitle>}
+                        {this.props.options.length === 1 && (
+                            <EntriesComponent
+                                scrollToTarget={this.state.scrollToSelected}
+                                onHover={index => this.setState({ selected: [0, index], scrollToSelected: false })}
+                                key={this.props.options[0].label + '_' + 0}
+                                selected={0 === this.state.selected[0] ? this.state.selected[1] : undefined}
+                                title={this.props.options[0].label}
+                                query={this.props.query}
+                                options={this.props.options[0].values}
+                                onPick={sq => this.props.onPick(sq.label)}
+                            />
+                        )}
+                        {this.props.options.length > 1 && (
+
+                            <PickerEntries separator="none">
+                                {this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0).map((o, i) => (
+                                    <EntriesComponent
+                                        scrollToTarget={this.state.scrollToSelected}
+                                        onHover={index => this.setState({ selected: [i, index], scrollToSelected: false })}
+                                        key={o.label + '_' + i}
+                                        selected={i === this.state.selected[0] ? this.state.selected[1] : undefined}
+                                        title={o.label}
+                                        query={this.props.query}
+                                        options={o.values}
+                                        onPick={sq => this.props.onPick(sq.label)}
+                                    />
+                                ))}
+                            </PickerEntries>
+                        )}
+
                     </XVertical>
                 )}
             </>
@@ -376,6 +386,15 @@ export class LocationControlledPicker extends React.Component<{ query?: string, 
         { label: TextDirectory.locationMetropolitanAreas, values: MetropolitanAreas },
         { label: TextDirectory.locationStates, values: States },
         { label: TextDirectory.locationMultiStateRegions, values: MultiStateRegions },
+    ];
+    render() {
+        return (<MultiplePicker title="Top locations" options={this.options} onPick={this.props.onPick} query={this.props.query} />);
+    }
+}
+
+export class InterestsControlledPicker extends React.Component<{ query?: string, onPick: (location: string) => void }> {
+    options = [
+        { label: TextDirectory.interestTop, values: TextDirectoryData.interestPicker.map(e => e.value) },
     ];
     render() {
         return (<MultiplePicker options={this.options} onPick={this.props.onPick} query={this.props.query} />);

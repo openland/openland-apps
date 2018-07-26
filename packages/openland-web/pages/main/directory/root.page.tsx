@@ -525,6 +525,7 @@ const ResetButton = Glamorous(XButton)({
 });
 
 class SearchComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
+    input?: any;
     constructor(props: any) {
         super(props);
 
@@ -572,6 +573,9 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
     }
 
     keydownHandler = (e: any) => {
+        if (e.target !== this.input) {
+            return;
+        }
         if (e.code === 'Enter') {
             e.preventDefault();
 
@@ -597,6 +601,10 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         document.removeEventListener('keydown', this.keydownHandler);
     }
 
+    onSearchFocus = (e: any) => {
+        this.input = e.target;
+    }
+
     render() {
 
         const { searchText, conditions } = this.state;
@@ -608,6 +616,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                             <AutocompletePopper
                                 target={
                                     <SearchInput
+                                        onFocus={this.onSearchFocus}
                                         value={searchText}
                                         autoFocus={true}
                                         onChange={this.handleSearchChange}
@@ -621,6 +630,7 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
 
                         <XWithRole role={'software-developer'} negate={true}>
                             <SearchInput
+                                onFocus={this.onSearchFocus}
                                 value={searchText}
                                 autoFocus={true}
                                 onChange={this.handleSearchChange}

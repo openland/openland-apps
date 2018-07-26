@@ -41,6 +41,8 @@ export const TextInvites = {
     
     backToEmailInvites: 'Invite by email',
 
+    sent: 'Invitations sent!',
+    
     membersMgmt: {
         inviteButton: 'Invite new members',
 

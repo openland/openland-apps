@@ -8,7 +8,7 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
-export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger';
+export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
 
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
@@ -235,6 +235,19 @@ let colorStyles = styleResolver({
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        }
+    },
+    'success': {
+        backgroundColor: '#3cca66',
+        color: '#ffffff',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            backgroundColor: '#3cca66',
+            color: '#ffffff'
+        },
+        '&:active': {
+            backgroundColor: '#3cca66',
+            color: '#ffffff'
         }
     },
     'danger': {
