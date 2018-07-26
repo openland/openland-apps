@@ -1,4 +1,4 @@
-package com.openland;
+package com.korshakov.testing.openland;
 
 import com.facebook.react.ReactActivity;
 

@@ -14,7 +14,7 @@ let colors = [
     '#c72ce1'
 ];
 
-export class ZAvatar extends React.PureComponent<{ size: 60 | 32 | 40, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
+export class ZAvatar extends React.PureComponent<{ size: 60 | 56 | 32 | 40, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
     render() {
         if (this.props.src) {
             let s = PixelRatio.getPixelSizeForLayoutSize(this.props.size);
@@ -41,6 +41,9 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 32 | 40, src?: str
             }
             if (this.props.size === 32) {
                 textSize = 14;
+            }
+            if (this.props.size === 56) {
+                textSize = 26;
             }
             return (
                 <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % (colors.length - 1)] }} alignContent="center" justifyContent="center">

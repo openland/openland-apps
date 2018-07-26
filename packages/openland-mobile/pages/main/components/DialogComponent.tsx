@@ -6,44 +6,48 @@ import { ZCounter } from '../../../components/ZCounter';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { formatDate } from '../../../utils/formatDate';
+import { isAndroid } from '../../../utils/isAndroid';
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 15,
-        fontWeight: '500',
+        fontSize: isAndroid ? 16 : 15,
+        fontWeight: isAndroid ? '500' : '600',
+        lineHeight: 18,
         height: 18,
-        textAlignVertical: 'center',
         flexGrow: 1,
-        flexBasis: 0
+        flexBasis: 0,
+        paddingRight: 8,
+        color: '#181818'
     } as TextStyle,
     date: {
         fontSize: 13,
         height: 18,
-        fontWeight: '300',
-        color: '#99a2b0'
+        lineHeight: 18,
+        fontWeight: 'normal',
+        color: '#aaaaaa'
     } as TextStyle,
     message: {
         fontSize: 14,
-        fontWeight: '300',
+        fontWeight: 'normal',
         lineHeight: 18,
         height: 36,
-        textAlignVertical: 'center',
-        color: '#99a2b0'
+        textAlignVertical: 'top',
+        color: '#7b7b7b'
     } as TextStyle,
     messageSingle: {
         fontSize: 14,
-        fontWeight: '300',
+        fontWeight: 'normal',
         lineHeight: 18,
         height: 18,
-        textAlignVertical: 'center',
-        color: '#99a2b0'
+        textAlignVertical: 'top',
+        color: '#7b7b7b'
     } as TextStyle,
     sender: {
         fontSize: 14,
-        fontWeight: '300',
+        fontWeight: 'normal',
         lineHeight: 18,
         height: 18,
-        color: '#334562'
+        color: '#181818'
     } as TextStyle
 });
 
@@ -75,17 +79,17 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
                 <View width={80} height={80} alignItems="center" justifyContent="center">
                     <ZAvatar
                         src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
-                        size={60}
+                        size={isAndroid ? 56 : 60}
                         placeholderKey={this.props.item.flexibleId}
                         placeholderTitle={this.props.item.title}
                     />
                 </View>
                 <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
                     <View flexDirection="row" height={18}>
-                        <Text style={styles.title}>{this.props.item.title}</Text>
+                        <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</Text>
                         <Text style={styles.date}>{messageDate}</Text>
                     </View>
-                    <View flexDirection="row" height={36} marginTop={4}>
+                    <View flexDirection="row" height={36} marginTop={3}>
                         <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
                             {this.props.item.topMessage && this.props.item.topMessage.sender.id === this.props.engine.user.id && (
                                 <Text style={styles.message} numberOfLines={2}>{messageText}</Text>

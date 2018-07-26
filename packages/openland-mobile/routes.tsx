@@ -7,6 +7,7 @@ import { Settings } from './pages/main/Settings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Conversation } from './pages/main/Conversation';
 import { AppStyles } from './styles/AppStyles';
+import { Platform } from 'react-native';
 
 //
 // Home Routes
@@ -69,7 +70,17 @@ const AppStack = createStackNavigator(
         color: '#fff',
         fontWeight: 'bold',
       },
-    }
+    },
+    transitionConfig: () => {
+      if (Platform.OS === 'android') {
+        return {
+          screenInterpolator: sceneProps => {
+            return require('react-navigation/src/views/StackView/StackViewStyleInterpolator').default.forHorizontal(sceneProps);
+          }
+        };
+      }
+      return {};
+    },
   });
 
 //

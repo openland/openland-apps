@@ -1,4 +1,4 @@
-package com.openland;
+package com.korshakov.testing.openland;
 
 import android.app.Application;
 

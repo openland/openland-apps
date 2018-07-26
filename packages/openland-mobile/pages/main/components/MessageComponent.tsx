@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking, Image } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
 import { formatTime } from '../../../utils/formatTime';
 import { layoutMedia } from './MediaLayout';
@@ -86,7 +86,9 @@ class MessageFileContent extends React.PureComponent<{ file: string, fileName?: 
     render() {
         return (
             <View style={{ height: 56, borderRadius: 5, borderColor: '#e7e7ea', borderWidth: 1, width: 250, marginTop: 3, marginBottom: 3, flexDirection: 'row' }}>
-                <View style={{ width: 40, height: 40, backgroundColor: '#f4f4f4', borderRadius: 20, marginLeft: 12, marginRight: 12, marginTop: 8 }} />
+                <View style={{ width: 40, height: 40, backgroundColor: '#f4f4f4', borderRadius: 20, marginLeft: 12, marginRight: 12, marginTop: 8, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('assets/ic-signup-1.png')} style={{ width: 12, height: 16 }} />
+                </View>
                 <View flexGrow={1} flexBasis={0} flexDirection="column" marginTop={10} marginBottom={10}>
                     <Text style={{ color: '#181818', height: 16, fontSize: 14, lineHeight: 16, fontWeight: '500' }}>{this.props.fileName || 'file'}</Text>
                     <Text style={{ color: '#aaaaaa', height: 16, fontSize: 14, lineHeight: 16, marginTop: 4 }}>{formatBytes(this.props.size)}</Text>

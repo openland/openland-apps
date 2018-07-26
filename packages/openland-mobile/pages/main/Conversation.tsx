@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, TextInput, KeyboardAvoidingView, Platform, Dimensions, StyleSheet, ViewStyle, Image, TouchableOpacity } from 'react-native';
+import {
+    View, FlatList,
+    TextInput,
+    StyleSheet,
+    ViewStyle,
+    Image,
+    TouchableOpacity,
+} from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessagesListComponent } from './components/MessagesListComponent';
-
-let keyboardVerticalOffset = 0;
-const isIPhoneX = Dimensions.get('window').height === 812;
-if (isIPhoneX) {
-    keyboardVerticalOffset = 55;
-} else if (Platform.OS === 'ios') {
-    keyboardVerticalOffset = 65;
-}
+import { KeyboardHider } from './components/KeyboardHider';
+import { YKeyboardAvoidingView } from '../../components/YKeyboardAvoidingView';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -67,7 +68,7 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
-            <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
+            <YKeyboardAvoidingView>
                 <SafeAreaView style={{ backgroundColor: '#fff', height: '100%' }} flexDirection="column">
                     <View style={{ height: '100%' }} flexDirection="column">
                         <MessagesListComponent engine={this.engine} />
@@ -90,15 +91,13 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
                         </View>
                     </View>
                 </SafeAreaView>
-            </KeyboardAvoidingView>
+            </YKeyboardAvoidingView>
         );
     }
 }
 
 class ConversationComponent extends React.Component<NavigationInjectedProps> {
-    // static navigationOptions = {
-    //     title: 'Conversation',
-    // };
+
     static navigationOptions = (args: any) => {
         return {
             title: args.navigation.getParam('title', 'Conversation'),
@@ -107,13 +106,16 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
 
     render() {
         return (
-            <MessengerContext.Consumer>
-                {messenger => {
-                    return (
-                        <ConversationRoot engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
-                    );
-                }}
-            </MessengerContext.Consumer>
+            <>
+                <MessengerContext.Consumer>
+                    {messenger => {
+                        return (
+                            <ConversationRoot engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
+                        );
+                    }}
+                </MessengerContext.Consumer>
+                <KeyboardHider navigation={this.props.navigation} />
+            </>
         );
     }
 }

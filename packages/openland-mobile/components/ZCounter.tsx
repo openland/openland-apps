@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { AppStyles } from '../styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
         height: 16,
         paddingLeft: 4,
         paddingRight: 4,
-        backgroundColor: '#816cf9',
+        backgroundColor: AppStyles.primaryColor,
         borderRadius: 8,
         minWidth: 16,
         flexDirection: 'row',
