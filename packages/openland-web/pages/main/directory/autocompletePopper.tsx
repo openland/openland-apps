@@ -40,6 +40,8 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, {
 
     componentWillReceiveProps(nextProps: AutocompleteProps) {
         let newentries: EntryProps[] = [];
+
+        //  TODO search in top tags
         let sugestedLocation = [...TextDirectoryData.locationPicker.Cities, ...TextDirectoryData.locationPicker.MetropolitanAreas, ...TextDirectoryData.locationPicker.States, ...TextDirectoryData.locationPicker.MultiStateRegions].filter(e => ([...e.split(' '), e]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0)[0];
         let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0).map(v => ({...v, label: v.label.replace('• ', '')}))[0];
         let sugestedInterest = [...TextDirectoryData.interestPicker].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0)[0];
@@ -53,10 +55,6 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, {
         if (sugestedInterest) {
             newentries.push({ selected: false, entry: { type: 'interest', value: sugestedInterest.value, label: sugestedInterest.label }, sugestion: true, onPick: nextProps.onPick });
         }
-
-        newentries.push({ selected: false, entry: { type: 'location', value: nextProps.query, label: nextProps.query }, sugestion: false, onPick: nextProps.onPick });
-        newentries.push({ selected: false, entry: { type: 'organizationType', value: nextProps.query, label: nextProps.query }, sugestion: false, onPick: nextProps.onPick });
-        newentries.push({ selected: false, entry: { type: 'interest', value: nextProps.query, label: nextProps.query }, sugestion: false, onPick: nextProps.onPick });
 
         this.setState({
             select: -1,
