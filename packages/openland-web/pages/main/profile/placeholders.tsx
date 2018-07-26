@@ -73,24 +73,24 @@ const PlaceholderButton = Glamorous(XButton)({
 
 const PlaceholderText = Glamorous.span<{ accent?: boolean, marginLeft?: number, marginTop?: number }>(props => ({
     marginLeft: props.marginLeft !== undefined ? props.marginLeft : 16,
-    fontSize: '18px',
+    fontSize: 18,
     lineHeight: 1.44,
-    letterSpacing: '-0.2px',
+    letterSpacing: -0.2,
     marginTop: props.marginTop !== undefined ? props.marginTop : -20,
     color: props.accent ? '#ffffff' : '#334562'
 }));
 
 const PlaceholderSubText = Glamorous.span<{ accent?: boolean }>(props => ({
-    fontSize: '15px',
+    fontSize: 15,
     letterSpacing: '-0.2px',
     color: props.accent ? '#ffffff' : '#334562',
     opacity: 0.5,
 }));
 
 const PlaceholderViewerText = Glamorous.span(props => ({
-    fontSize: '18px',
+    fontSize: 18,
     lineHeight: 1.44,
-    letterSpacing: '-0.2px',
+    letterSpacing: -0.2,
     marginTop: 20,
     color: '#334562'
 }));
@@ -435,7 +435,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal alignItems="center">
+                    <XHorizontal alignItems="center" minWidth={200}>
                         <PlaceholderSocial /> <Text marginWidth={18}>{TextOrganizationProfile.placeholderSocial}</Text>
                     </XHorizontal>
                 </div>
@@ -497,8 +497,9 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal alignItems="center">
-                        <PlaceholderContact /> <Text marginWidth={18}>{TextOrganizationProfile. placeholderContacts}</Text>
+                    <XHorizontal alignItems="center" minWidth={200}>
+                        <PlaceholderContact /> 
+                        <Text marginWidth={18}>{TextOrganizationProfile. placeholderContacts}</Text>
                     </XHorizontal>
                 </div>
             )}
@@ -558,7 +559,7 @@ export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <div style={{ cursor: 'pointer' }}>
                     <XCardStyled padding={18}>
-                        <XHorizontal alignItems="center">
+                        <XHorizontal alignItems="center" minWidth={164}>
                             <PlaceholderInterests /><Text marginWidth={18}>Add intrerests</Text>
                         </XHorizontal>
                     </XCardStyled>

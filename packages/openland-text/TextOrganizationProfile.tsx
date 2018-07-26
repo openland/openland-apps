@@ -170,10 +170,10 @@ export const TextOrganizationProfile = {
     placegolderOverviewArModalTagRowLandUseTitle: 'Land use',
 
     placeholderListongsDoMainText: 'Do you own development sites?',
-    placeholderListingsDoButton: 'Add an development opportunity',
+    placeholderListingsDoButton: 'Add development opportunity',
 
     placeholderListongsArMainText: 'Are you intrested in land acquisition?',
-    placeholderListingsArButton: 'Add an acquisition request',
+    placeholderListingsArButton: 'Add acquisition request',
 
     placeholderAbout: 'Add an intro paragraph',
     placeholderAboutModalAboutTitle: 'About',

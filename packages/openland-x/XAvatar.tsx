@@ -37,8 +37,8 @@ let sizeStyles = styleResolver({
         width: 100,
     },
     'medium': {
-        height: 48,
-        width: 48,
+        height: 46,
+        width: 46,
     },
     'default': {
         height: 40,

@@ -29,17 +29,16 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import ContactEmailIc from './icons/contacts/ic-email.svg';
 import ContactLinkedInIc from './icons/contacts/ic-linkedin.svg';
 import ContactPhoneIc from './icons/contacts/ic-phone.svg';
-import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 
 import { PostCard } from './components/postsCards';
 
 import {
     XHorizontalStyled,
     XVerticalStyled,
-    CardWrapper,
     Title,
     Text,
     TagWrapper,
@@ -79,7 +78,7 @@ const MainContentWrapper = Glamorous(XVertical)({
 });
 
 const MainContent = Glamorous(XVertical)({
-    maxWidth: 1160,
+    maxWidth: 1240,
     width: '100%',
     margin: 'auto'
 });
@@ -92,7 +91,7 @@ const HeaderWrapper = Glamorous.div({
 
 const HeaderContent = Glamorous.div({
     display: 'flex',
-    maxWidth: 1160,
+    maxWidth: 1240,
     margin: 'auto'
 });
 
@@ -663,7 +662,6 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                 {currentPath === rootPath && (
                                     <XHorizontal separator={9}>
                                         <XVertical flexGrow={1}>
-
                                             <XVertical separator={9} minWidth={0} >
                                                 <XWithRole role={['org-' + props.data.organization.id + '-admin']} >
                                                     <DOARListingPlaceholder />
@@ -677,26 +675,39 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 )}
 
                                                 {(organization.posts && organization.posts.length > 0) && (
-                                                    organization.posts.map((post, i) => (
-                                                        <PostCard key={'post_' + i} orgId={organization.id} item={post} />
-                                                    ))
+                                                    <>
+                                                        {organization.posts.map((post, i) => {
+                                                            if (post.pinned === true) {
+                                                                return <PostCard key={'post_' + i} orgId={organization.id} item={post} pinned={true} />;
+                                                            } else {
+                                                                return null;
+                                                            }
+                                                        })}
+                                                        {organization.posts.map((post, i) => {
+                                                            if (post.pinned === true) {
+                                                                return null;
+                                                            } else {
+                                                                return <PostCard key={'post_' + i} orgId={organization.id} item={post} />;
+                                                            }
+                                                        })}
+                                                    </>
                                                 )}
 
                                                 {(organization.developmentOportunities && organization.developmentOportunities.length > 0) && (
-                                                    organization.developmentOportunities.map((devop, i) => (
+                                                    organization.developmentOportunities.map((devop) => (
                                                         <DevelopmentOportunityShort key={'do_' + devop.id} orgId={organization.id} item={devop} />
                                                     ))
                                                 )}
 
                                                 {(organization.acquisitionRequests && organization.acquisitionRequests.length > 0) && (
-                                                    organization.acquisitionRequests.map((devop, i) => (
+                                                    organization.acquisitionRequests.map((devop) => (
                                                         <AcquizitionRequestShort key={'ar_' + devop.id} orgId={organization.id} item={devop} />
                                                     ))
                                                 )}
                                             </XVertical>
                                         </XVertical>
 
-                                        <XVertical width={422} flexShrink={0}>
+                                        <XVertical maxWidth={422} flexShrink={0}>
                                             {((organization.contacts || []).length > 0 || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
                                                 <XCardStyled padding={18} paddingBottom={20}>
                                                     <XVertical separator={9}>
@@ -776,23 +787,12 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                         <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
                                             <DOARListingPlaceholder />
                                         </XWithRole>
-                                        {((organization.developmentOportunities || []).length > 0 || (organization.acquisitionRequests || []).length > 0) && (
-                                            <XVertical separator={9}>
-                                                <CardWrapper>
-                                                    <XVerticalStyled flexGrow={1} padding={0} paddingLeft={24} paddingRight={24} paddingTop={6}>
-                                                        <SwitcherWrapper flatStyle={true} height={58}>
-                                                            {(organization.developmentOportunities || []).length > 0 && <Switcher query={{ field: 'listingType' }}>{TextOrganizationProfile.listingsDoTabTitle}</Switcher>}
-                                                            {(organization.acquisitionRequests || []).length > 0 && <Switcher query={{ field: 'listingType', value: 'ar' }}>{TextOrganizationProfile.listingsArTabTitle}</Switcher>}
-                                                        </SwitcherWrapper>
-                                                    </XVerticalStyled>
-                                                </CardWrapper>
-                                                {currentPath === lsitingsPath && props.router.query.listingType === undefined && organization && organization.developmentOportunities && (
-                                                    organization.developmentOportunities.map((devop, i) => <DevelopmentOportunityFull key={'do_' + i} orgId={organization.id} item={devop} />)
-                                                )}
-                                                {currentPath === lsitingsPath && props.router.query.listingType === 'ar' && organization && organization.acquisitionRequests && (
-                                                    organization.acquisitionRequests.map((devop, i) => <AcquizitionRequestFull key={'do_' + i} orgId={organization.id} item={devop} />)
-                                                )}
-                                            </XVertical>
+                                        {(organization.listingsAll && organization.listingsAll.length > 0) && (
+                                            organization.listingsAll.map((l) => (
+                                                l.type === 'development_opportunity'
+                                                    ? <DevelopmentOportunityFull key={'do_' + l.id} orgId={organization.id} item={l} showType={true} />
+                                                    : < AcquizitionRequestFull key={'do_' + l.id} orgId={organization.id} item={l} showType={true} />
+                                            ))
                                         )}
                                     </>
                                 )}

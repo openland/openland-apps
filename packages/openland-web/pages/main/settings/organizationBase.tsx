@@ -1,8 +1,8 @@
 import '../../init';
 import '../../../globals';
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XTitle } from 'openland-x/XTitle';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { ContactPerson } from '../../../utils/OrganizationProfileFields';
@@ -14,11 +14,9 @@ import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import Glamorous from 'glamorous';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XStoreContext } from 'openland-x-store/XStoreContext';
@@ -26,13 +24,39 @@ import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XPhotoRef } from 'openland-x/XCloudImage';
 import { DateFormater } from 'openland-x-format/XDate';
 import { XLink } from 'openland-x/XLink';
+import { XIcon } from 'openland-x/XIcon';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
-import { XText } from 'openland-x/XText';
+
+import ContactEmailIc from '../profile/icons/contacts/ic-email.svg';
+import ContactLinkedInIc from '../profile/icons/contacts/ic-linkedin.svg';
+import ContactPhoneIc from '../profile/icons/contacts/ic-phone.svg';
+
+const Content = Glamorous(XContent)({
+    paddingTop: 30
+});
+
+const CategoryTitle = Glamorous.div({
+    fontSize: 24,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    color: '#1f3449'
+});
+
+const AddContactButton = Glamorous(XLink)({
+    alignSelf: 'flex-start',
+    fontSize: 15,
+    letterSpacing: -0.2,
+    paddingLeft: 17,
+    color: 'rgba(51, 69, 98, 0.4)',
+    backgroundImage: 'url(\'/static/X/ic-add-small.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'left center',
+});
 
 const CenteredButton = Glamorous(XButton)({
     alignSelf: 'center'
@@ -48,21 +72,77 @@ const ContactField = Glamorous.div({
     marginLeft: 0,
 });
 
-class ContactPersonItem extends React.Component<{ contact: ContactPerson, index: number }> {
-    render() {
-        return (
-            <XHorizontal>
-                <XAvatar photoRef={this.props.contact.photoRef || undefined} />
-                <ContactField>{this.props.contact.name}</ContactField>
-                <ContactField>{this.props.contact.position}</ContactField>
-                <ContactField>{this.props.contact.phone}</ContactField>
-                <ContactField>{this.props.contact.email}</ContactField>
-                <ContactField>{this.props.contact.link}</ContactField>
-                <CenteredButton text="delete" style="danger" query={{ field: 'deleteContact', value: String(this.props.index) }} />
-            </XHorizontal>
-        );
+const ContactWrapper = Glamorous.div({
+    borderRadius: 5,
+    border: 'solid 1px rgba(220, 222, 228, 0.45)',
+    paddingTop: 14,
+    paddingBottom: 14,
+    paddingLeft: 14,
+    paddingRight: 20,
+    maxWidth: 480
+});
+
+const ContactTitle = Glamorous.div<{ opacity?: number }>((props) => ({
+    opacity: props.opacity,
+    fontSize: 15,
+    fontWeight: 500,
+    lineHeight: 1.33,
+    color: '#334562',
+    letterSpacing: -0.2
+}));
+
+const ContactLink = Glamorous.a({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:hover > svg > g > path:last-child': {
+        fill: '#5640d6'
     }
-}
+});
+
+const ContactButton = Glamorous(XLink)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    width: 32,
+    height: 32,
+    borderRadius: 4,
+    backgroundColor: 'rgba(243, 243, 245, 0.7)',
+    '&:hover': {
+        backgroundColor: 'rgba(243, 243, 245)',
+        '& > i': {
+            color: '#6B50FF'
+        }
+    },
+    '& > i': {
+        fontSize: 13,
+        color: '#bcc3cc'
+    }
+});
+
+const ContactPersonItem = (props: { contact: ContactPerson, index: number }) => (
+    <ContactWrapper>
+        <XHorizontal alignItems="center" justifyContent="space-between">
+            <XHorizontal separator={10} alignItems="center">
+                <XAvatar photoRef={props.contact.photoRef || undefined} size="medium" />
+                <XVertical separator={1}>
+                    <XHorizontal separator={5} alignItems="center">
+                        <ContactTitle>{props.contact.name}</ContactTitle>
+                        {props.contact.phone && <ContactLink href={'tel:' + props.contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
+                        {props.contact.email && <ContactLink href={'mailto:' + props.contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
+                        {props.contact.link && <ContactLink href={props.contact.link.startsWith('http') ? props.contact.link : 'https://' + props.contact.link} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
+                    </XHorizontal>
+                    <ContactTitle opacity={0.8}>{props.contact.position}</ContactTitle>
+                </XVertical>
+            </XHorizontal>
+            <XHorizontal separator={4} alignItems="center">
+                <ContactButton query={{ field: 'deleteContact', value: String(props.index) }}><XIcon icon="clear" /></ContactButton>
+                <ContactButton query={{ field: 'editContact', value: String(props.index) }}><XIcon icon="edit" /></ContactButton>
+            </XHorizontal>
+        </XHorizontal>
+    </ContactWrapper>
+);
 
 const clearContact = (c: ContactPerson): ContactPerson => {
 
@@ -182,10 +262,37 @@ const activities = [
     { label: 'Strategic assessment', value: 'Strategic assessment' },
 ];
 
+const SACreatedBlock = Glamorous.div({
+    padding: 18,
+    borderRadius: 5,
+    border: 'solid 1px rgba(220, 222, 228, 0.45)',
+    alignSelf: 'flex-start'
+});
+
+const SACreatedText = Glamorous.div({
+    fontSize: 15,
+    lineHeight: 1.27,
+    letterSpacing: -0.2,
+    color: '#334562',
+    '& .bold': {
+        fontWeight: 600
+    },
+    '& .author': {
+        color: '#654bfa'
+    }
+});
+
 const AdminTools = withSuperAccountActions(props => {
     return (
-        <>
-            <XText>{'Created ' + (props.data.superAccount.createdAt ? DateFormater(props.data.superAccount.createdAt) : 'once') + ' by ' + (props.data.superAccount.createdBy ? props.data.superAccount.createdBy.name : 'John Doe')}</XText>
+        <XVertical separator={12}>
+            <SACreatedBlock>
+                <SACreatedText>
+                    <span>Created </span>
+                    <span className="bold">{props.data.superAccount.createdAt ? DateFormater(props.data.superAccount.createdAt) : 'once'} </span>
+                    <span>by </span>
+                    <span className="bold author">{props.data.superAccount.createdBy ? props.data.superAccount.createdBy.name : 'John Doe'}</span>
+                </SACreatedText>
+            </SACreatedBlock>
             <XForm
                 defaultData={{
                     input: {
@@ -213,155 +320,188 @@ const AdminTools = withSuperAccountActions(props => {
                 defaultLayout={false}
             >
 
-                <XVertical>
+                <XVertical separator={24}>
                     <XFormLoadingContent>
                         <XCheckbox label="Activated" trueValue="ACTIVATED" falseValue="PENDING" field="input.activated" />
                         <XCheckbox label="Published" trueValue="published" falseValue="unpublished" field="input.published" />
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
+                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
                 </XVertical>
             </XForm>
-        </>
+        </XVertical>
     );
 }) as React.ComponentType<{ updateOrganizatonMutations: any, published: boolean, editorial: boolean, variables: { accountId: string, viaOrgId: true } }>;
+
+const Separator = Glamorous.div({
+    width: '100%',
+    height: 1,
+    backgroundColor: 'rgba(220, 222, 228, 0.45)',
+    marginTop: '30px !important',
+    marginBottom: '30px !important',
+});
 
 export const OrganizationSettigs = ((props: any) => {
     return (
         <Navigation title="Organization profile">
-            <XHeader text="Organization profile" />
-            <XContent>
-                <XVertical alignSelf="stretch">
-                    <XForm
-                        defaultData={{
+            <Content>
+                <XVertical alignSelf="stretch" separator={36}>
+                    <XVertical separator={15}>
+                        <CategoryTitle id="general">General</CategoryTitle>
+                        <XForm
+                            defaultData={{
 
-                            input: {
-                                name: props.data.organizationProfile!!.name,
-                                photo: props.data.organizationProfile!!.photoRef,
-                                primaryLocation: [(props.data.organizationProfile!!.locations || [])[0]].filter(l => !!(l)),
-                                locations: shiftArray(props.data.organizationProfile!!.locations || []),
-                                photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
-                                organizationType: props.data.organizationProfile!!.organizationType,
-                                interests: props.data.organizationProfile!!.interests,
-                                published: props.data.organizationProfile!!.published ? 'published' : 'unpublished',
-                                editorial: props.data.organizationProfile!!.editorial ? 'editorial' : 'noneditorial',
-                            }
-                        }}
-                        defaultAction={async (data) => {
-                            // console.warn(data);
-                            await props.updateOrganizaton({
-                                variables: {
-                                    input: {
-                                        name: data.input.name,
-                                        photoRef: data.input.photoRef,
-                                        alphaOrganizationType: data.input.organizationType,
-                                        alphaInterests: data.input.interests,
-                                        alphaLocations: [...(data.input.primaryLocation || []), ...(data.input.locations || [])],
-                                        alphaPublished: data.input.published === 'published',
-                                        alphaEditorial: data.input.editorial === 'editorial',
-                                    }
+                                input: {
+                                    name: props.data.organizationProfile!!.name,
+                                    photo: props.data.organizationProfile!!.photoRef,
+                                    primaryLocation: [(props.data.organizationProfile!!.locations || [])[0]].filter(l => !!(l)),
+                                    locations: shiftArray(props.data.organizationProfile!!.locations || []),
+                                    photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
+                                    organizationType: props.data.organizationProfile!!.organizationType,
+                                    interests: props.data.organizationProfile!!.interests,
+                                    published: props.data.organizationProfile!!.published ? 'published' : 'unpublished',
+                                    editorial: props.data.organizationProfile!!.editorial ? 'editorial' : 'noneditorial',
                                 }
-                            });
-                        }}
-                        defaultLayout={false}
-                    >
-                        <XVertical>
-                            <XFormLoadingContent>
-                                <XHorizontal>
-                                    <XVertical flexGrow={1} maxWidth={500}>
+                            }}
+                            defaultAction={async (data) => {
+                                // console.warn(data);
+                                await props.updateOrganizaton({
+                                    variables: {
+                                        input: {
+                                            name: data.input.name,
+                                            photoRef: data.input.photoRef,
+                                            alphaOrganizationType: data.input.organizationType,
+                                            alphaInterests: data.input.interests,
+                                            alphaLocations: [...(data.input.primaryLocation || []), ...(data.input.locations || [])],
+                                            alphaPublished: data.input.published === 'published',
+                                            alphaEditorial: data.input.editorial === 'editorial',
+                                        }
+                                    }
+                                });
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XVertical separator={24}>
+                                <XFormLoadingContent>
+                                    <XHorizontal separator={12}>
+                                        <XVertical flexGrow={1} maxWidth={480}>
 
-                                        <XFormField title="Name" field="input.name">
-                                            <XInput field="input.name" />
+                                            <XFormField title="Organization name" field="input.name">
+                                                <XInput field="input.name" size="medium" />
+                                            </XFormField>
+
+                                            <Separator />
+
+                                            <XFormField title="Primary location" field="input.primaryLocation" optional={true}>
+                                                <XSelect large={true} creatable={true} multi={true} field="input.primaryLocation" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                            </XFormField>
+                                            <XFormField title="More locations" field="input.locations" optional={true}>
+                                                <XSelect large={true} creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                            </XFormField>
+
+                                            <XFormField title="Categories" field="input.organizationType" optional={true}>
+                                                <XSelect large={true} options={OrgCategoties} multi={true} field="input.organizationType" />
+                                            </XFormField>
+                                            <XFormField title="Interests" field="input.interests" optional={true}>
+                                                <XSelect large={true} creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
+                                            </XFormField>
+
+                                        </XVertical>
+                                        <XFormField title="Logo" field="input.photoRef" optional={true}>
+                                            <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
+                                        </XFormField>
+                                    </XHorizontal>
+                                </XFormLoadingContent>
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                            </XVertical>
+                        </XForm>
+                    </XVertical>
+
+                    <XVertical separator={15}>
+                        <CategoryTitle id="contacts">Contacts</CategoryTitle>
+                        <XVertical separator={9}>
+                            {props.data.organizationProfile!!.contacts.filter((c: any) => c !== null).map((c: any, i: any) => (
+                                <ContactPersonItem key={i} contact={c!!} index={i} />
+                            ))}
+                            <AddContactButton query={{ field: 'addContact', value: 'true' }}>Add another</AddContactButton>
+                        </XVertical>
+                    </XVertical>
+
+                    <XVertical separator={15}>
+                        <CategoryTitle id="links">Links</CategoryTitle>
+                        <XForm
+                            defaultData={{
+                                input: {
+                                    website: props.data.organizationProfile!!.website,
+                                    twitter: props.data.organizationProfile!!.twitter,
+                                    facebook: props.data.organizationProfile!!.facebook,
+                                    linkedin: props.data.organizationProfile!!.linkedin,
+                                }
+                            }}
+                            defaultAction={async (data) => {
+                                await props.updateOrganizaton({
+                                    variables: {
+                                        input: {
+                                            website: data.input.website,
+                                            twitter: data.input.twitter,
+                                            facebook: data.input.facebook,
+                                            linkedin: data.input.linkedin,
+                                        }
+                                    }
+                                });
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XVertical separator={24}>
+                                <XFormLoadingContent>
+                                    <XVertical flexGrow={1} maxWidth={480}>
+                                        <XFormField title="Website" field="input.website" optional={true}>
+                                            <XHorizontal separator={7}>
+                                                <XInput size="medium" flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
+                                                <XInput size="medium" flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
+                                            </XHorizontal>
                                         </XFormField>
 
-                                        <XFormField title="Primary Location" field="input.primaryLocation" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.primaryLocation" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                        <XFormField title="Twitter" field="input.twitter" optional={true}>
+                                            <XInput size="medium" field="input.twitter" />
                                         </XFormField>
-                                        <XFormField title="Locations" field="input.locations" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                        <XFormField title="Facebook" field="input.facebook" optional={true}>
+                                            <XInput size="medium" field="input.facebook" />
                                         </XFormField>
-
-                                        <XFormField title="Categories" field="input.organizationType" optional={true}>
-                                            <XSelect options={OrgCategoties} multi={true} field="input.organizationType" />
+                                        <XFormField title="LinkedIn" field="input.linkedin" optional={true}>
+                                            <XInput size="medium" field="input.linkedin" />
                                         </XFormField>
-                                        <XFormField title="Interests" field="input.interests" optional={true}>
-                                            <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
-                                        </XFormField>
-
                                     </XVertical>
-                                    <XFormField title="Photo" field="input.photoRef" optional={true}>
-                                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
-                                    </XFormField>
-                                </XHorizontal>
-                            </XFormLoadingContent>
-                            <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
-                        </XVertical>
-                    </XForm>
-
-                    <XForm
-                        defaultData={{
-                            input: {
-                                website: props.data.organizationProfile!!.website,
-                                twitter: props.data.organizationProfile!!.twitter,
-                                facebook: props.data.organizationProfile!!.facebook,
-                                linkedin: props.data.organizationProfile!!.linkedin,
-                            }
-                        }}
-                        defaultAction={async (data) => {
-                            await props.updateOrganizaton({
-                                variables: {
-                                    input: {
-                                        website: data.input.website,
-                                        twitter: data.input.twitter,
-                                        facebook: data.input.facebook,
-                                        linkedin: data.input.linkedin,
-                                    }
-                                }
-                            });
-                        }}
-                        defaultLayout={false}
-                    >
-                        <XVertical>
-                            <XFormLoadingContent>
-                                <XVertical flexGrow={1} maxWidth={500}>
-                                    <XFormField title="Website" field="input.website" optional={true}>
-                                        <XHorizontal>
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
-                                        </XHorizontal>
-                                    </XFormField>
-
-                                    <XFormField title="Twitter" field="input.twitter" optional={true}>
-                                        <XInput field="input.twitter" />
-                                    </XFormField>
-                                    <XFormField title="Facebook" field="input.facebook" optional={true}>
-                                        <XInput field="input.facebook" />
-                                    </XFormField>
-                                    <XFormField title="LinkedIn" field="input.linkedin" optional={true}>
-                                        <XInput field="input.linkedin" />
-                                    </XFormField>
-                                </XVertical>
-                            </XFormLoadingContent>
-                            <XFormSubmit text="Save" alignSelf="flex-start" style="primary" />
-                        </XVertical>
-                    </XForm>
-
-                    <XTitle id="contacts">Contacts</XTitle>
-                    {props.data.organizationProfile!!.contacts.filter((c: any) => c !== null).map((c: any, i: any) => <ContactPersonItem key={i} contact={c!!} index={i} />)}
-                    <XButton query={{ field: 'addContact', value: 'true' }} text="Add Contact" style="primary" alignSelf="flex-start" />
+                                </XFormLoadingContent>
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                            </XVertical>
+                        </XForm>
+                    </XVertical>
 
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>
-                        <XTitle id="super-admin">Super admin</XTitle>
-                        <AdminTools variables={{ accountId: props.data.organizationProfile!!.id, viaOrgId: true }} updateOrganizatonMutations={props.updateOrganizaton} published={props.data.organizationProfile!!.published} editorial={props.data.organizationProfile!!.editorial} />
+                        <XVertical separator={36}>
+                            <XVertical separator={15}>
+                                <CategoryTitle id="super-admin">Super admin</CategoryTitle>
+                                <AdminTools
+                                    variables={{ accountId: props.data.organizationProfile!!.id, viaOrgId: true }}
+                                    updateOrganizatonMutations={props.updateOrganizaton}
+                                    published={props.data.organizationProfile!!.published}
+                                    editorial={props.data.organizationProfile!!.editorial}
+                                />
+                            </XVertical>
 
-                        {/* Just for admins/editors - temp solution before full functional posts are made - give up design */}
-                        <XTitle id="super-admin">Dummy posts</XTitle>
+                            <XVertical separator={15}>
+                                {/* Just for admins/editors - temp solution before full functional posts are made - give up design */}
+                                <CategoryTitle id="dummi-posts">Dummy posts</CategoryTitle>
 
-                        {(props.data.organizationProfile!!.posts || []).filter((c: any) => c !== null).map((c: any, i: any) => <PostItem key={i} post={c!!} index={i} />)}
+                                <XVertical>
+                                    {(props.data.organizationProfile!!.posts || []).filter((c: any) => c !== null).map((c: any, i: any) => <PostItem key={i} post={c!!} index={i} />)}
 
-                        <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
-
+                                    <XButton query={{ field: 'addPost', value: 'true' }} text="Add Post" style="primary" alignSelf="flex-start" />
+                                </XVertical>
+                            </XVertical>
+                        </XVertical>
                     </XWithRole>
 
                     {/* MODALS */}
@@ -587,7 +727,7 @@ export const OrganizationSettigs = ((props: any) => {
                     </XWithRole>
 
                 </XVertical>
-            </XContent>
+            </Content>
         </Navigation >
     );
 }) as React.ComponentType<XWithRouter & { updateOrganizaton: any, data: { organizationProfile: any }, orgId?: string }>;
