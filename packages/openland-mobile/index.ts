@@ -1,3 +1,5 @@
+// Install fonts
+import './utils/installAndroidFonts';
 // Start notifications ASAP
 import 'openland-y-runtime/AppNotifications';
 
