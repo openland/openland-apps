@@ -8,6 +8,7 @@ import { layoutMedia } from './MediaLayout';
 import { ZCloudImage } from '../../../components/ZCloudImage';
 import { formatBytes } from '../../../utils/formatBytes';
 import { preprocessText } from '../../../utils/TextProcessor';
+import { isAndroid } from '../../../utils/isAndroid';
 
 let styles = StyleSheet.create({
     container: {
@@ -31,7 +32,7 @@ let styles = StyleSheet.create({
         height: 16,
         lineHeight: 16,
         fontSize: 15,
-        fontWeight: '600',
+        fontWeight: isAndroid ? '500' : '600',
         marginBottom: 3,
         // flexBasis: 0,
         flexShrink: 1,

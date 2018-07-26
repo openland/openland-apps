@@ -16,45 +16,70 @@ let robotoFamilies = {
 // };
 
 if (isAndroid) {
-
-    // Preprocessor
-    let patchStyles = (src: any) => {
-        if (src && !src.fontFamily && src.fontWeight) {
-            if (src.fontWeight in robotoFamilies) {
-                return {
-                    ...src,
-                    fontFamily: robotoFamilies[src.fontWeight],
-                    fontWeight: 'normal'
-                };
-            }
-            // if (src.fontWeight in latoFamilies) {
-            //     return {
-            //         ...src,
-            //         fontFamily: latoFamilies[src.fontWeight],
-            //         fontWeight: 'normal'
-            //     };
-            // }
-            // return {
-            //     ...src,
-            //     fontFamily: 'American-Typewriter'
-            // };
-        }
-        return src;
-    };
-    let recursivePatch: (src: any) => any = (src: any) => {
-        if (!src) {
-            return src;
-        }
+    let findFonts: (src: any) => any = (src: any) => {
         if (Array.isArray(src)) {
-            return src.map((v) => recursivePatch(v));
+            let ex = undefined;
+            for (let s of src) {
+                let f = findFonts(s);
+                if (f) {
+                    if (ex) {
+                        ex = {
+                            ...ex as any,
+                            ...f
+                        };
+                    } else {
+                        ex = f;
+                    }
+                }
+            }
+            return ex;
         }
-        return patchStyles(src);
+        if (src && (src.fontFamily || src.fontWeight)) {
+            return {
+                fontFamily: src.fontFamily,
+                fontWeight: src.fontWeight
+            };
+        }
+        return undefined;
+    };
+    let patchStyles: (src: any) => any = (src: any) => {
+
+        // Resolving current font
+        let fonts = findFonts(src);
+        let weight: string = '400';
+        if (fonts) {
+            if (fonts.fontFamily === 'sans-serif') {
+                weight = '400';
+            } else if (fonts.fontFamily) {
+                return src;
+            } else {
+                if (fonts.fontWeight === 'normal') {
+                    weight = '400';
+                }
+                if (fonts.fontWeight in robotoFamilies) {
+                    weight = fonts.fontWeight;
+                }
+            }
+        }
+
+        // Building a patch
+        let patchedStyle = {
+            fontWeight: 'normal',
+            fontFamily: robotoFamilies[weight],
+            // color: 'magenta'
+        };
+
+        if (src) {
+            return [src, patchedStyle];
+        } else {
+            return patchedStyle;
+        }
     };
 
     // Mangling
 
     let sourceRender = (Text as any).render;
     (Text as any).render = function render(props: any, ref: any) {
-        return sourceRender.apply(this, [{ ...props, style: recursivePatch(props.style) }, ref]);
+        return sourceRender.apply(this, [{ ...props, style: patchStyles(props.style) }, ref]);
     };
 }
