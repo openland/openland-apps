@@ -32,6 +32,9 @@ import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMutation } from 'openland-x/XMutation';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
+import * as Cookie from 'js-cookie';
+import { SharedStorage } from 'openland-x-utils/SharedStorage';
+import { XStorageContext } from 'openland-x-routing/XStorageContext';
 
 const Placeholder = Glamorous(XCard)<{ accent?: boolean, minHeigth?: number }>(props => ({
     backgroundColor: props.accent ? '#654bfa' : '#fff',
@@ -203,28 +206,24 @@ export const OverviewPlaceholder = withMyOrganizationProfile((props) => {
 
 });
 
-class Closable extends React.Component<{ key: string, content: (closeCallback: () => void) => any }, { closed: boolean }> {
+class Closable extends React.Component<{ ckey: string, content: (closeCallback: () => void) => any }> {
 
-    constructor(props: any) {
-        super(props);
-        // closed by default to prevent accedently show closed component (SSR dont know about localStorage)
-        let closed = true;
-        if (canUseDOM) {
-            closed = !!(localStorage.getItem('__is' + this.props.key + '_closed'));
-        }
-        this.state = {
-            closed: closed,
-        };
-    }
-
-    onClose = () => {
-        if (canUseDOM) {
-            localStorage.setItem('__is' + this.props.key + '_closed', 'yep');
-        }
+    onClose = (strorage: SharedStorage) => {
+        strorage.writeValue('is_' + this.props.ckey + '_closed', 'yep');
         this.setState({ closed: true });
     }
     render() {
-        return (!this.state.closed ? this.props.content(this.onClose) : null);
+        return (
+            <XStorageContext.Consumer>
+                {(storage) => {
+                    if (!storage) {
+                        throw Error('Cookies not configured!');
+                    }
+
+                    return !storage.readValue('is_' + this.props.ckey + '_closed') ? this.props.content(() => this.onClose(storage)) : null;
+                }}
+            </XStorageContext.Consumer>
+        );
     }
 }
 
@@ -237,12 +236,15 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
             !(props.data.organizationProfile.developmentOportunities || []).length
         ) ? (
                 <Closable
-                    key="DOListingPlaceholder"
+                    ckey="DOListingPlaceholder"
                     content={close => (
                         <Placeholder>
                             <Close
                                 icon="close"
-                                onClick={close}
+                                onClick={() => {
+                                    close();
+                                    (props as any).closeCallback();
+                                }}
                             />
                             <XVertical>
                                 <XHorizontalMargins marginLeft={24} marginRight={32}>
@@ -261,7 +263,7 @@ export const DOListingPlaceholder = withMyOrganizationProfile((props) => {
                 />
 
             ) : null);
-});
+}) as React.ComponentClass<{ closeCallback: () => void }>;
 
 export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
@@ -272,12 +274,15 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
             !(props.data.organizationProfile.acquisitionRequests || []).length
         ) ? (
                 <Closable
-                    key="ArListingPlaceholder"
+                    ckey="ArListingPlaceholder"
                     content={close => (
                         <Placeholder>
                             <Close
                                 icon="close"
-                                onClick={close}
+                                onClick={() => {
+                                    close();
+                                    (props as any).closeCallback();
+                                }}
                             />
                             <XVertical>
                                 <XHorizontalMargins marginLeft={24} marginRight={32}>
@@ -296,15 +301,44 @@ export const ARListingPlaceholder = withMyOrganizationProfile((props) => {
                 />
 
             ) : null);
-});
+}) as React.ComponentClass<{ closeCallback: () => void }>;
+
+class DOARListingPlaceholderInner extends React.Component<{ organizationProfile: any }> {
+
+    doClosed = () => {
+        this.setState({
+            doClosed: true
+        });
+    }
+
+    arClosed = () => {
+        this.setState({
+            arClosed: true
+        });
+    }
+    render() {
+        console.warn(this.state);
+        return (
+            <XStorageContext.Consumer>
+                {(storage) => {
+                    if (!storage) {
+                        throw Error('Cookies not configured!');
+                    }
+                    let doClosed = storage.readValue('is_DOListingPlaceholder_closed');
+                    let arClosed = storage.readValue('is_ArListingPlaceholder_closed');
+                    return (this.props.organizationProfile && ((!(this.props.organizationProfile.developmentOportunities || []).length) ||
+                        (!(this.props.organizationProfile.acquisitionRequests || []).length)) && !(doClosed && arClosed)) ? (<XHorizontal ><DOListingPlaceholder closeCallback={this.doClosed} /><ARListingPlaceholder closeCallback={this.arClosed} /></XHorizontal>) : null;
+                }}
+            </XStorageContext.Consumer>
+        );
+    }
+}
 
 export const DOARListingPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
         return null;
     }
-    return (
-        props.data.organizationProfile && ((!(props.data.organizationProfile.developmentOportunities || []).length) ||
-            (!(props.data.organizationProfile.acquisitionRequests || []).length)) ? <XHorizontal><DOListingPlaceholder /><ARListingPlaceholder /></XHorizontal> : null);
+    return (<DOARListingPlaceholderInner organizationProfile={props.data.organizationProfile} />);
 });
 
 export const NewsPlaceholder = withMyOrganizationProfile((props) => {
@@ -313,7 +347,7 @@ export const NewsPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (props.data.organizationProfile.developmentOportunities ? (
         <Closable
-            key="NewsPlaceholder"
+            ckey="NewsPlaceholder"
             content={close => (
                 <Placeholder>
                     <Close
@@ -498,7 +532,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <div style={{ cursor: 'pointer' }}>
                     <XHorizontal alignItems="center" minWidth={200}>
-                        <PlaceholderContact /> 
+                        <PlaceholderContact />
                         <Text marginWidth={18}>{TextOrganizationProfile. placeholderContacts}</Text>
                     </XHorizontal>
                 </div>
@@ -704,7 +738,7 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <HeaderPlaceholderWrap marginTop={9} separator={4}>
-                    <PlaceholderInterests style={{ marginLeft: 2}}/>
+                    <PlaceholderInterests style={{ marginLeft: 2 }} />
                     <Text>{TextOrganizationProfile.placeholderCategory}</Text>
                 </HeaderPlaceholderWrap>
             )}
