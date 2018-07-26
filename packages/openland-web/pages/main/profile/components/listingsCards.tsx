@@ -122,8 +122,8 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                     {!item.location && (
                         <PlaceholderDO style={{ width: 133, height: 100 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} width={'calc(100% - 300px)'} separator={5} paddingTop={8}>
-                        <CardTitle>{item.name}</CardTitle>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 300px)'} separator={5} paddingTop={8}>
+                        <CardTitle maxWidth={300}>{item.name}</CardTitle>
                         {item.locationTitle && <Text>{item.locationTitle}</Text>}
                         {!item.location && <Text><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
                         {item.area && <Text>{`Area: ${item.area} ft²`}</Text>}
@@ -323,8 +323,8 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                     {!item.photo && (
                         <PlaceholderAR style={{ width: 133, height: 100 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} width={'calc(100% - 300px)'} separator={5} paddingTop={8}>
-                        <CardTitle>{item.name}</CardTitle>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 155px)'} separator={5} paddingTop={8}>
+                        <CardTitle maxWidth={300}>{item.name}</CardTitle>
                         {item.shortDescription && <Text>{item.shortDescription}</Text>}
                         <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto">
                             <XButton text="View details" anchor={'/o/' + props.orgId + '/listings#' + item.id} />

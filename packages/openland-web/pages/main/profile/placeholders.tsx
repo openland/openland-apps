@@ -467,7 +467,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal alignItems="center" minWidth={200}>
+                    <XHorizontal alignItems="center">
                         <PlaceholderSocial /> <Text marginWidth={18}>{TextOrganizationProfile.placeholderSocial}</Text>
                     </XHorizontal>
                 </div>
@@ -529,7 +529,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
             }}
             target={(
                 <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal alignItems="center" minWidth={200}>
+                    <XHorizontal alignItems="center">
                         <PlaceholderContact />
                         <Text marginWidth={18}>{TextOrganizationProfile. placeholderContacts}</Text>
                     </XHorizontal>
@@ -591,7 +591,7 @@ export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
             target={(
                 <div style={{ cursor: 'pointer' }}>
                     <XCardStyled padding={18}>
-                        <XHorizontal alignItems="center" minWidth={164}>
+                        <XHorizontal alignItems="center">
                             <PlaceholderInterests /><Text marginWidth={18}>Add intrerests</Text>
                         </XHorizontal>
                     </XCardStyled>
