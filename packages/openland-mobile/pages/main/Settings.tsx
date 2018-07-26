@@ -73,6 +73,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                         <Text>{convertStatus(this.state.status)}</Text>
                     </View>
                 </TouchableOpacity>
+                <Button title="Typography" onPress={() => this.props.navigation.navigate('DevTypography')} />
             </View>
         );
     }

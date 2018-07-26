@@ -11,7 +11,7 @@ import { isAndroid } from '../../../utils/isAndroid';
 const styles = StyleSheet.create({
     title: {
         fontSize: isAndroid ? 16 : 15,
-        fontWeight: isAndroid ? '500' : '600',
+        fontWeight: isAndroid ? '400' : '600',
         lineHeight: 18,
         height: 18,
         flexGrow: 1,

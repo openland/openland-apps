@@ -1,15 +1,11 @@
-// Import before everything to work correctly
+// Start notifications ASAP
 import 'openland-y-runtime/AppNotifications';
-
-import { AppRegistry } from 'react-native';
-import Routes from './routes';
-import Auth0 from 'react-native-auth0';
-import { withUpdateTracker } from './utils/UpdateTracker';
 
 // Disable annoying yellow box
 console.disableYellowBox = true;
 
 // Init static Auth0 Client just for case
+import Auth0 from 'react-native-auth0';
 export const Auth0Client = new Auth0({
     domain: 'auth.openland.com',
     clientId: 'v3R2Rr6D4LzzcWKHf91jwKJyDnEm4L96',
@@ -19,4 +15,8 @@ export const Auth0Client = new Auth0({
     // scope: 'openid profile email'
 });
 
+// App Root
+import { AppRegistry } from 'react-native';
+import Routes from './routes';
+import { withUpdateTracker } from './utils/UpdateTracker';
 AppRegistry.registerComponent('openland', () => withUpdateTracker(Routes));

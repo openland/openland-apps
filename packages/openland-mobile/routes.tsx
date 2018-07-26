@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Conversation } from './pages/main/Conversation';
 import { createZStackNavigator } from './components/ZNavigatorStack';
 import { createZTabNavigator } from './components/ZNavigatorTabs';
+import { Typography } from './pages/dev/Typography';
 
 //
 // Home Routes
@@ -56,7 +57,8 @@ const AppStack = createZStackNavigator({
       headerBackTitle: '\u200B'
     }
   },
-  Conversation: Conversation
+  Conversation: Conversation,
+  DevTypography: Typography
 });
 
 //
