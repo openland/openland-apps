@@ -9,6 +9,7 @@ import { XInput } from 'openland-x/XInput';
 import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
+import { InterestsControlledPicker } from './locationPicker';
 
 const Interests = TextDirectoryData.interestPicker;
 
@@ -88,8 +89,8 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
         this.setState({ query: v });
     }
 
-    onPick = (q: SearchCondition) => {
-        this.props.onPick(q);
+    onPick = (q: string) => {
+        this.props.onPick({ type: 'interest', value: q, label: q });
         this.setState({ query: '', popper: false });
     }
 
@@ -97,7 +98,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
         if (this.state.query.length === 0) {
             return;
         }
-        this.onPick({ type: 'interest', value: this.state.query, label: this.state.query });
+        this.onPick(this.state.query);
     }
 
     switch = () => {
@@ -115,8 +116,8 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                     <XInput placeholder={TextDirectory.interestSearchPlaceholder} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
-                <PickerEntries separator="none">
-                    <EntriesComponent title={TextDirectory.interestTop} query={this.state.query} options={Interests} onPick={this.onPick} />
+                <PickerEntries separator="none" width="100%">
+                    <InterestsControlledPicker query={this.state.query} onPick={this.onPick}/>
                 </PickerEntries>
             </PickerWrapper>
         );
