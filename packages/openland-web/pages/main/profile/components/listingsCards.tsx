@@ -299,8 +299,8 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item autoClose={true} query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
-                                    <XOverflow.Item autoClose={true} style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
+                                    <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
+                                    <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
                                 </>
                             )}
                         />
@@ -369,8 +369,8 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item autoClose={true} query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
-                                    <XOverflow.Item autoClose={true} style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
+                                    <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
+                                    <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
                                 </>
                             )}
                         />
