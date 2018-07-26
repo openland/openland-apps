@@ -476,18 +476,27 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
     }
 }
 
-const ConditionRenderWrapper = Glamorous(XHorizontal)({
-    flexWrap: 'wrap',
-    padding: '0 4px 16px 24px',
+const SearchFormWrapper = Glamorous(XHorizontal)({
+    paddingLeft: 14,
+    paddingRight: 14,
+    minHeight: 60,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
 });
 
-const SearchForm = Glamorous(XHorizontal)({
-    padding: '15px 24px 5px 24px'
+const SearchFormContent = Glamorous(XHorizontal)({
+    display: 'flex',
+    flexWrap: 'wrap',
+    paddingTop: 10,
+    paddingBottom: 10
 });
 
 const SearchInput = Glamorous.input({
-    height: 32,
-    lineHeight: '34px',
+    height: '100%',
+    minHeight: 40,
+    paddingLeft: 5,
+    lineHeight: 1.43,
     flexGrow: 1,
     '::placeholder': {
         fontWeight: 500
@@ -503,7 +512,7 @@ const SearchPickers = Glamorous(XHorizontal)({
 class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
     render() {
         return (
-            <ConditionRenderWrapper separator={4}>
+            <>
                 {this.props.conditions.map((condition) => (
                     <XTag
                         key={condition.type + '_' + condition.value}
@@ -515,14 +524,10 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
                     />
                 ))}
                 {this.props.conditions.length === 0 && <XTag text={TextDirectory.searchConditionAll} size="large" color="primary" />}
-            </ConditionRenderWrapper>
+            </>
         );
     }
 }
-
-const ResetButton = Glamorous(XButton)({
-    backgroundColor: 'none'
-});
 
 class SearchComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
     input?: any;
@@ -611,43 +616,36 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
         return (
             <XVertical>
                 <XCardStyled>
-                    <SearchForm>
-                        <XWithRole role={'software-developer'}>
-                            <AutocompletePopper
-                                target={
-                                    <SearchInput
-                                        onFocus={this.onSearchFocus}
-                                        value={searchText}
-                                        autoFocus={true}
-                                        onChange={this.handleSearchChange}
-                                        placeholder={TextDirectory.searchInputPlaceholder}
-                                    />
-                                }
-                                onPick={this.addCondition}
-                                query={this.state.searchText}
-                            />
-                        </XWithRole>
+                    <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
+                        <SearchFormContent separator={4} flexGrow={1}>
+                            <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
 
-                        <XWithRole role={'software-developer'} negate={true}>
-                            <SearchInput
-                                onFocus={this.onSearchFocus}
-                                value={searchText}
-                                autoFocus={true}
-                                onChange={this.handleSearchChange}
-                                placeholder={TextDirectory.searchInputPlaceholder}
-                            />
-                        </XWithRole>
+                            <XWithRole role={'software-developer'}>
+                                <AutocompletePopper
+                                    target={
+                                        <SearchInput
+                                            onFocus={this.onSearchFocus}
+                                            value={searchText}
+                                            autoFocus={true}
+                                            onChange={this.handleSearchChange}
+                                            placeholder={TextDirectory.searchInputPlaceholder}
+                                        />
+                                    }
+                                    onPick={this.addCondition}
+                                    query={this.state.searchText}
+                                />
+                            </XWithRole>
+                        </SearchFormContent>
 
-                        <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
-                    </SearchForm>
-                    <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                        <XHorizontal separator={5}>
+                            <XButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
+                            <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
+                        </XHorizontal>
+                    </SearchFormWrapper>
                     <SearchPickers separator="none">
                         <LocationPopperPicker onPick={this.addCondition} />
                         <CategoryPicker onPick={this.addCondition} />
                         <InterestPicker onPick={this.addCondition} />
-                        <XVertical alignItems="flex-end" flexGrow={1}>
-                            <ResetButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
-                        </XVertical>
                     </SearchPickers>
                 </XCardStyled>
                 <Organizations conditions={conditions} onPick={this.replaceConditions} />
