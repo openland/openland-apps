@@ -3,7 +3,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
-import { EntryItem } from './locationPicker';
+import { EntryItem } from './multiplePicker';
 
 interface EntryProps {
     i?: number;
