@@ -13,7 +13,6 @@ import { XSelect } from 'openland-x/XSelect';
 import { XFormField } from 'openland-x-forms/XFormField';
 import XStyles from 'openland-x/XStyles';
 import { XIcon } from 'openland-x/XIcon';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import PlaceholderAbout from './icons/placeholder/placeholder_about.svg';
 import PlaceholderSocial from './icons/placeholder/placeholder_social.svg';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -32,7 +31,6 @@ import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMutation } from 'openland-x/XMutation';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
-import * as Cookie from 'js-cookie';
 import { SharedStorage } from 'openland-x-utils/SharedStorage';
 import { XStorageContext } from 'openland-x-routing/XStorageContext';
 
