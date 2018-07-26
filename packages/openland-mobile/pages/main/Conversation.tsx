@@ -14,6 +14,8 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessagesListComponent } from './components/MessagesListComponent';
 import { KeyboardHider } from './components/KeyboardHider';
 import { ZSafeAreaView } from '../../components/ZSaveAreaView';
+import { ChatHeader } from './components/ChatHeader';
+import { ChatRight } from './components/ChatRight';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -98,7 +100,8 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
 
     static navigationOptions = (args: any) => {
         return {
-            title: args.navigation.getParam('title', 'Conversation'),
+            headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} />,
+            headerRight: <ChatRight conversationId={args.navigation.getParam('id', 'Conversation')} />
         };
     }
 

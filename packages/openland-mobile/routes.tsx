@@ -50,7 +50,12 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
 //
 
 const AppStack = createZStackNavigator({
-  Home: HomeTabs,
+  Home: {
+    screen: HomeTabs,
+    navigationOptions: {
+      headerBackTitle: '\u200B'
+    }
+  },
   Conversation: Conversation
 });
 
