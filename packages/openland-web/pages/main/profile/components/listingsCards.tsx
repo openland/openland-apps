@@ -129,7 +129,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                         {item.area && <Text>{`Area: ${item.area} ft²`}</Text>}
                         {item.price && <Text>{`Price: $${item.price}`}</Text>}
                     </XVerticalStyled>
-                    <XButton alignSelf="flex-end" text="View details" />
+                    <XButton alignSelf="flex-end" text="View details" anchor={'/o/' + props.orgId + '/listings#' + item.id} />
                 </XHorizontal>
             </XVerticalStyled>
         </CardWrapper>
@@ -165,7 +165,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
     const { item } = props;
 
     return (
-        <CardWrapper>
+        <CardWrapper id={item.id}>
             <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Development opportunity" date={item.updatedAt}/>
@@ -327,7 +327,7 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                         <CardTitle>{item.name}</CardTitle>
                         {item.shortDescription && <Text>{item.shortDescription}</Text>}
                         <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto">
-                            <XButton text="View details" />
+                            <XButton text="View details" anchor={'/o/' + props.orgId + '/listings#' + item.id} />
                             <XButton style="primary" text="Message" path={'/mail/' + props.orgId} />
                         </XHorizontalStyled>
                     </XVerticalStyled>
@@ -359,7 +359,7 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
     const { item } = props;
 
     return (
-        <CardWrapper>
+        <CardWrapper id={item.id}>
             <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Acquisition criteria" date={item.updatedAt}/>

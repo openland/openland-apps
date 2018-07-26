@@ -694,13 +694,13 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 )}
 
                                                 {(organization.developmentOportunities && organization.developmentOportunities.length > 0) && (
-                                                    organization.developmentOportunities.map((devop, i) => (
+                                                    organization.developmentOportunities.map((devop) => (
                                                         <DevelopmentOportunityShort key={'do_' + devop.id} orgId={organization.id} item={devop} />
                                                     ))
                                                 )}
 
                                                 {(organization.acquisitionRequests && organization.acquisitionRequests.length > 0) && (
-                                                    organization.acquisitionRequests.map((devop, i) => (
+                                                    organization.acquisitionRequests.map((devop) => (
                                                         <AcquizitionRequestShort key={'ar_' + devop.id} orgId={organization.id} item={devop} />
                                                     ))
                                                 )}
@@ -788,10 +788,10 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             <DOARListingPlaceholder />
                                         </XWithRole>
                                         {(organization.listingsAll && organization.listingsAll.length > 0) && (
-                                            organization.listingsAll.map((l, i) => (
+                                            organization.listingsAll.map((l) => (
                                                 l.type === 'development_opportunity'
-                                                    ? <DevelopmentOportunityFull key={'do_' + i} orgId={organization.id} item={l} showType={true} />
-                                                    : < AcquizitionRequestFull key={'do_' + i} orgId={organization.id} item={l} showType={true} />
+                                                    ? <DevelopmentOportunityFull key={'do_' + l.id} orgId={organization.id} item={l} showType={true} />
+                                                    : < AcquizitionRequestFull key={'do_' + l.id} orgId={organization.id} item={l} showType={true} />
                                             ))
                                         )}
                                     </>
