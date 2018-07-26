@@ -122,7 +122,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                     {!item.location && (
                         <PlaceholderDO style={{ width: 133, height: 100 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 300px)'} separator={5} paddingTop={8}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 180px)'} separator={5} paddingTop={8}>
                         <CardTitle maxWidth={300}>{item.name}</CardTitle>
                         {item.locationTitle && <Text>{item.locationTitle}</Text>}
                         {!item.location && <Text><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
@@ -203,7 +203,7 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
                     {!item.location && (
                         <PlaceholderDO style={{ width: 160, height: 120 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 184px)'} paddingTop={8} separator={10}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 180px)'} paddingTop={8} separator={10}>
                         <CardTitle>{item.name}</CardTitle>
                         {/* {props.showType && <Text>{TextOrganizationProfile.listingDoTagRowTitileDealType}</Text>} */}
 
