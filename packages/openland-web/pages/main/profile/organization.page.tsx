@@ -576,7 +576,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         arrow={null}
                                                         content={
                                                             <XVerticalStyled padding={2} scrollable={true} maxHeight={254} separator={4} >
-                                                                {organization.locations!!.map((l, i) => <XTag size="large" color="gost" key={l + i} text={l} />)}
+                                                                {organization.locations!!.filter((l, i) => i !== 0).map((l, i) => <XTag size="large" color="gost" key={l + i} text={l} />)}
                                                             </XVerticalStyled>}
                                                     >
                                                         <Text opacity={0.5} bold={true}>{' • More locations'}</Text>
@@ -647,8 +647,8 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                             <AddSeporator />
                                                         </>
                                                     )}
-                                                    <XOverflow.Item autoClose={true} query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
-                                                    <XOverflow.Item autoClose={true} query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
+                                                    <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
                                                 </>
                                             }
                                         />

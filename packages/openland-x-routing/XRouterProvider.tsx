@@ -77,7 +77,8 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         if (q !== '') {
             q = '?' + q;
         }
-        this.props.routes.Router.pushRoute(this.xRouterState.path + q);
+        let pathParts = this.xRouterState.path.split('#');
+        this.props.routes.Router.pushRoute(pathParts[0] + q);
     }
 
     pushQueryParams = (params?: {}) => {
@@ -85,8 +86,8 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         if (q !== '') {
             q = '?' + q;
         }
-        this.props.routes.Router.pushRoute(this.xRouterState.path + q);
-
+        let pathParts = this.xRouterState.path.split('#');
+        this.props.routes.Router.pushRoute(pathParts[0] + q);
     }
 
     replace = (path: string) => {
@@ -94,7 +95,8 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
             .then(this.scrollToTop);
     }
     replaceQuery = (field: string, value?: string) => {
-        this.props.routes.Router.replaceRoute(this.xRouterState.path + '?' + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
+        let pathParts = this.xRouterState.path.split('#');
+        this.props.routes.Router.replaceRoute(pathParts[0] + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
     }
 
     replaceQueryParams = (params?: {}) => {
@@ -102,7 +104,8 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         if (q !== '') {
             q = '?' + q;
         }
-        this.props.routes.Router.replaceRoute(this.xRouterState.path + q);
+        let pathParts = this.xRouterState.path.split('#');
+        this.props.routes.Router.replaceRoute(pathParts[0] + q);
 
     }
 
