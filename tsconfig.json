@@ -120,7 +120,8 @@
     "**/*.spec.ts"
   ],
   "files": [
-    "./packages/openland-web/typings.d.ts"
+    "./packages/openland-web/typings.d.ts",
+    "./packages/openland-mobile/typings.d.ts"
   ],
   "include": [
     "./packages/openland-web",

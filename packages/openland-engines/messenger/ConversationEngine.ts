@@ -7,7 +7,7 @@ import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
 import { MessageFullFragment } from 'openland-api/Types';
 import { ConversationState } from './ConversationState';
-import { PendingMessage, isPendingMessage, isServerMessage } from './types';
+import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile } from './types';
 import { MessageSendHandler } from './MessageSender';
 
 const CHAT_SUBSCRIPTION = gql`
@@ -108,14 +108,10 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendFile = (file: UploadCare.File) => {
-        let isFirst = true;
-        file.progress((v) => {
-            if (!isFirst) {
-                return;
-            }
-            isFirst = false;
-            let name = v.incompleteFileInfo.name || 'image.jpg';
+    sendFile = (file: UploadingFile) => {
+        (async () => {
+            let info = await file.fetchInfo();
+            let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendFile(this.conversationId, file, this);
             this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
@@ -124,7 +120,7 @@ export class ConversationEngine implements MessageSendHandler {
             for (let l of this.listeners) {
                 l.onMessageSend();
             }
-        });
+        })();
     }
 
     retryMessage = (key: string) => {

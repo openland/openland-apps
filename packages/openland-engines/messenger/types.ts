@@ -18,3 +18,18 @@ export function isPendingMessage(src: ModelMessage): src is PendingMessage {
 export function isServerMessage(message: MessageFullFragment | PendingMessage): message is MessageFullFragment {
     return !!(message as any).__typename;
 }
+
+export interface FileMetadata {
+    name?: string;
+}
+
+export enum UploadStatus {
+    UPLOADING,
+    FAILED,
+    COMPLETED
+}
+
+export interface UploadingFile {
+    fetchInfo(): Promise<FileMetadata>;
+    watch(handler: (state: { status: UploadStatus, progress?: number, uuid?: string }) => void): void;
+}

@@ -16,6 +16,8 @@ import { KeyboardHider } from './components/KeyboardHider';
 import { ZSafeAreaView } from '../../components/ZSaveAreaView';
 import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
+import Picker from 'react-native-image-picker';
+import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -44,6 +46,7 @@ let styles = StyleSheet.create({
 
 const icon = require('assets/ic-send.png');
 const iconActive = require('assets/ic-send-active.png');
+const iconAttach = require('assets/ic-attachment.png');
 
 class ConversationRoot extends React.Component<{ engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
@@ -67,6 +70,12 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
         }
     }
 
+    handleAttach = () => {
+        Picker.showImagePicker({ title: 'Send file' }, (response) => {
+            this.engine.sendFile(new UploadCareDirectUploading(response.fileName || 'image.jpg', response.uri));
+        });
+    }
+
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
@@ -74,6 +83,11 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
                 <View style={{ height: '100%' }} flexDirection="column">
                     <MessagesListComponent engine={this.engine} />
                     <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
+                        <TouchableOpacity onPress={this.handleAttach}>
+                            <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
+                                <Image source={iconAttach} style={{ width: 24, height: 24 }} />
+                            </View>
+                        </TouchableOpacity>
                         <TextInput
                             flexGrow={1}
                             flexBasis={0}

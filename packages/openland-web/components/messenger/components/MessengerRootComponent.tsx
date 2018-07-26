@@ -9,6 +9,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { ConversationContainer } from './view/ConversationContainer';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { UplaodCareUploading } from '../UploadCareUploading';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -50,7 +51,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     handleSendFile = (file: UploadCare.File) => {
-        this.conversation.sendFile(file);
+        this.conversation.sendFile(new UplaodCareUploading(file));
     }
 
     // 

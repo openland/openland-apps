@@ -1,6 +1,7 @@
 import UUID from 'uuid/v4';
 import { SendMessageMutation } from 'openland-api/SendMessageMutation';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
+import { UploadingFile, UploadStatus } from './types';
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -17,23 +18,23 @@ export class MessageSender {
         this.client = client;
     }
 
-    sendFile(conversationId: string, file: UploadCare.File, callback: MessageSendHandler) {
+    sendFile(conversationId: string, file: UploadingFile, callback: MessageSendHandler) {
         let key = UUID();
         (async () => {
             try {
                 if (!this.uploadedFiles.has(key)) {
-                    let res = await new Promise<UploadCare.FileInfo>((resolver, reject) => {
-                        file.fail(() => {
-                            reject();
-                        });
-                        file.progress((p) => {
-                            callback.onProgress(key, p.progress);
-                        });
-                        file.done((f) => {
-                            resolver(f);
+                    let res = await new Promise<string>((resolver, reject) => {
+                        file.watch((state) => {
+                            if (state.status === UploadStatus.FAILED) {
+                                reject();
+                            } else if (state.status === UploadStatus.UPLOADING) {
+                                callback.onProgress(key, state.progress!!);
+                            } else if (state.status === UploadStatus.COMPLETED) {
+                                resolver(state.uuid!!);
+                            }
                         });
                     });
-                    this.uploadedFiles.set(key, res.uuid);
+                    this.uploadedFiles.set(key, res);
                 }
             } catch (e) {
                 callback.onFailed(key);
