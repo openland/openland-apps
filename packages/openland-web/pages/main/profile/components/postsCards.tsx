@@ -15,7 +15,6 @@ import {
     XVerticalStyled,
     CardWrapper,
     CardPath,
-    CardTitle
 } from './profileComponents';
 
 const Separator = Glamorous.div({
@@ -28,6 +27,14 @@ const Separator = Glamorous.div({
 
 const PostPhoto = Glamorous(XCloudImage)({
     borderRadius: 4
+});
+
+export const CardTitle = Glamorous.div({
+    fontSize: 18,
+    lineHeight: 1.44,
+    letterSpacing: 0.6,
+    color: '#334562',
+    maxWidth: '100%'
 });
 
 const PostDescription = Glamorous.div({
@@ -84,9 +91,12 @@ const UpperCase = Glamorous.span({
     textTransform: 'capitalize'
 });
 
-const PostPath = (props: { type: string, date: string }) => (
+const PostPath = (props: { type: string, date: string, pinned?: boolean }) => (
     <CardPath>
-        <span><UpperCase>{props.type}</UpperCase> • {DateFormater(props.date)}</span>
+        {props.pinned !== true && (
+            <span><UpperCase>{props.type}</UpperCase> • {DateFormater(props.date)}</span>
+        )}
+        {props.pinned === true && <span>Pinned</span>}
     </CardPath>
 );
 
@@ -104,14 +114,14 @@ interface PostCardProps {
     pinned: boolean | null;
 }
 
-export const PostCard = (props: { item: PostCardProps, orgId: string }) => {
+export const PostCard = (props: { item: PostCardProps, orgId: string, pinned?: boolean }) => {
     const { item } = props;
 
     return (
         <CardWrapper>
             <XVerticalStyled separator={8} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
-                    <PostPath type={item.type} date={item.date} />
+                    <PostPath type={item.type} date={item.date} pinned={props.pinned} />
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
                         <XOverflow
                             horizontal={true}

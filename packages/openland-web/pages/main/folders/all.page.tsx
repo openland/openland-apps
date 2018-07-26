@@ -508,7 +508,7 @@ export default withApp('Folders', 'viewer', withFolders(withQueryLoader((props) 
             <XDocumentHead title={['Folders']} />
             <Scaffold>
                 <Scaffold.Menu>
-                    <Sidebar title="Folders">
+                    <Sidebar title="Folders" paddingTop={15}>
                         {props.data.folders.map((v) => {
                             const type = v.special;
                             let icon = '';

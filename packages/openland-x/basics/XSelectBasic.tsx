@@ -12,7 +12,7 @@ const SelectAnimationSpin = glamor.keyframes({
     'to': { transform: 'rotate(1turn)' }
 });
 
-const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
+const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' }) => ({
     minWidth: 100,
     '&.Select': {
         position: 'relative'
@@ -64,7 +64,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         paddingRight: 42
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
-        fontSize: 14,
+        fontSize: props.large === true ? 15 : 14,
         color: '#334562',
         fontWeight: 500,
         verticalAlign: 'middle'
@@ -104,7 +104,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         display: 'table',
         borderSpacing: 0,
         borderCollapse: 'separate',
-        height: 38,
+        height: props.large === true ? 48 : 38,
         outline: 'none',
         overflow: 'hidden',
         position: 'relative',
@@ -122,7 +122,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         bottom: 0,
         // color: 'rgba(51, 69, 98, 0.25)',
         color: 'rgb(157, 157, 157)',
-        fontSize: 14,
+        fontSize: props.large === true ? 15 : 14,
         // color: '#C1CAD2',
         left: 0,
         // lineHeight: '30px',
@@ -140,14 +140,14 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--single > .Select-control .Select-value': {
         // paddingTop: 'calc(5% - 10px)'
-        marginTop: 8
+        marginTop: props.large === true ? 11 : 8
     },
     '& .Select-placeholder': {
         // paddingTop: 'calc(5% - 8px)'
-        marginTop: 8
+        marginTop: props.large === true ? 13 : 8
     },
     '& .Select-input': {
-        height: 28,
+        height: props.large === true ? 32 : 28,
         paddingLeft: 10,
         paddingRight: 10,
         // verticalAlign: 'middle',
@@ -170,11 +170,11 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         // lineHeight: '17px',
         // padding: '8px 0 12px',
         WebkitAppearance: 'none',
-        fontSize: 14,
-        fontWeight: 500,
+        fontSize: props.large === true ? 15 : 14,
+        fontWeight: props.large === true ? undefined : 500,
         alignSelf: 'center',
         verticalAlign: 'middle',
-        // marginTop: 9
+        marginTop: props.large === true ? 8 : undefined
     },
     '&.is-focused .Select-input > input': {
         cursor: 'text'
@@ -254,7 +254,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--multi .Select-multi-value-wrapper': {
         display: 'inline-block',
-        paddingTop: 6
+        paddingTop: props.large === true ? 7 : 6
     },
     '& .Select-multi-value-wrapper': {
         display: 'inline-block',
@@ -262,7 +262,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--multi .Select-multi-value-wrapper .Select-placeholder': {
         // paddingTop: 'calc(5% - 10px)'
-        marginTop: 8
+        marginTop: props.large === true ? 14 : 8
     },
     '&.Select .Select-aria-only': {
         position: 'absolute',
@@ -348,11 +348,12 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
     },
     '&.Select--multi .Select-value': {
         backgroundColor: '#ebf5ff',
-        borderRadius: 2,
+        borderRadius: props.large ? 4 : 2,
         border: '1px solid #c2e0ff',
         color: '#007eff',
-        display: 'inline-block',
-        fontSize: '.9em',
+        display: props.large === true ? 'inline-flex' : 'inline-block',
+        flexDirection: props.large === true ? 'row-reverse' : undefined,
+        fontSize: props.large === true ? 14 : '.9em',
         lineHeight: 1.4,
         marginLeft: 7,
         // marginTop: 6,
@@ -367,7 +368,7 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         borderBottomRightRadius: 2,
         borderTopRightRadius: 2,
         cursor: 'default',
-        padding: '2px 5px'
+        padding: props.large === true ? '6px 5px' : '2px 5px'
     },
     '&.Select--multi a.Select-value-label': {
         color: '#007eff',
@@ -381,8 +382,8 @@ const Styles = ((props: & { attach?: 'left' | 'right' | 'both' }) => ({
         cursor: 'pointer',
         borderBottomLeftRadius: 2,
         borderTopLeftRadius: 2,
-        borderRight: '1px solid #c2e0ff',
-        padding: '1px 5px 3px'
+        borderRight: props.large === true ? 'none' : '1px solid #c2e0ff',
+        padding: props.large === true ? '5px 5px 3px' : '1px 5px 3px'
     },
     '&.Select--multi .Select-value-icon:focus, &.Select--multi .Select-value-icon:hover': {
         backgroundColor: '#d8eafd',
@@ -421,6 +422,7 @@ export type XSelectBasicProps = ReactSelectProps & {
     attach?: 'left' | 'right' | 'both';
     creatable?: boolean;
     render?: any;
+    large?: boolean;
 };
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
@@ -428,7 +430,11 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 
 export function XSelectBasic(props: XSelectBasicProps) {
     return (
-        props.render ? React.cloneElement(props.render, props) : props.creatable ? <StyledSelectCreatable {...props} shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13}/> : <StyledSelect {...props} />
+        props.render 
+        ? React.cloneElement(props.render, props) 
+        : props.creatable 
+            ? <StyledSelectCreatable {...props} shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13}/> 
+            : <StyledSelect {...props} />
     );
 }
 
