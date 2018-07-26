@@ -62,11 +62,11 @@ export function stopProgress(src: number) {
     }
 }
 
-NRouter.events.on('routeChangeStart', (url: string) => {
+(NRouter as any).onRouteChangeStart = (url: any) => {
     // Hotfix Current Url (for initial render)
     if (currentPath == null) {
-        currentPath = NRouter.asPath!!;
-        currentPathName = NRouter.pathname;
+        currentPath = (NRouter as any as RouterProps).asPath!!;
+        currentPathName = (NRouter as any as RouterProps).pathname;
     }
     if (currentPath !== null) {
         console.log(`Naviating to: ${currentPath} -> ${url}`);
@@ -74,9 +74,9 @@ NRouter.events.on('routeChangeStart', (url: string) => {
     currentPath = url;
 
     startProgress(0);
-});
+};
 
-NRouter.events.on('routeChangeComplete', () => {
+(NRouter as any).onRouteChangeComplete = () => {
     // tslint:disable
     console.log(`Naviating Complete`);
     // tslint:enable
@@ -87,9 +87,9 @@ NRouter.events.on('routeChangeComplete', () => {
     stopProgress(0);
 
     trackPage();
-});
+};
 
-NRouter.events.on('routeChangeError', (error: any) => {
+(NRouter as any).onRouteChangeError = (error: any) => {
     // Ignore if route canceled
     if ('' + error === 'Error: Route Cancelled') {
         return;
@@ -101,4 +101,4 @@ NRouter.events.on('routeChangeError', (error: any) => {
 
     trackError(error);
     stopProgress(0);
-});
+};
