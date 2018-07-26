@@ -81,7 +81,7 @@ export class XModalForm extends React.Component<XModalFormProps> {
             <XModal {...other} customContent={true} scrollableContent={this.props.scrollableContent} useTopCloser={this.props.useTopCloser}>
                 {(this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser style="flat" icon="close" autoClose={true} />}</XModalHeader>}
                 {!this.props.title && <XModalHeaderEmpty />}
-                <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={true}>
+                <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={this.props.autoClose || true}>
                     {body}
                     {footer}
                 </XForm>

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { XButton, XButtonStyleProps } from 'openland-x/XButton';
 import { XFormContext, XFormContextValue } from './XFormContext';
+import { delay } from 'openland-y-utils/timer';
 
-class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormContextValue }, { loading: boolean }> {
+class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormContextValue }, { loading: boolean, success: boolean }> {
     state = {
-        loading: false
+        loading: false,
+        success: false,
     };
 
-    keydownHandler = (e: any) => {
+    keydownHandler = async (e: any) => {
         if (e.keyCode === 13 && (e.ctrlKey || e.metaKey) && this.props.keyDownSubmit !== false) {
-            this.setState({ loading: true });
-            this.props.form.submit(this.props.action);
-            this.setState({ loading: false });
+            await this.submit();
         }
     }
 
@@ -24,20 +24,33 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
     }
 
     handleClick = async () => {
+        await this.submit();
+    }
+
+    submit = async () => {
         this.setState({ loading: true });
         await this.props.form.submit(this.props.action);
-        this.setState({ loading: false });
+        if (this.props.succesText) {
+            this.setState({ loading: false, success: !this.props.form.store.readValue('form.error') });
+            delay(2000).then(() => this.setState({ success: false }));
+        } else {
+            this.setState({ loading: false });
+        }
+
     }
 
     render() {
         let { action, ...other } = this.props;
         let formEnabled = !!this.props.form.store.readValue('form.enabled');
+        other.text = this.state.success ? this.props.succesText : other.text;
         return (
             <XButton
                 {...other}
                 onClick={this.handleClick}
                 enabled={this.state.loading || formEnabled}
                 loading={this.state.loading}
+                style={this.state.success ? 'success' : other.style}
+                iconRight={this.state.success ? 'check' : other.iconRight}
             />
         );
     }
@@ -46,6 +59,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
 export interface XFormSubmitProps extends XButtonStyleProps {
     action?: (data: any) => any;
     keyDownSubmit?: boolean;
+    succesText?: string;
 }
 
 export function XFormSubmit(props: XFormSubmitProps) {

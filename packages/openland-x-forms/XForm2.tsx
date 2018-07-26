@@ -10,6 +10,7 @@ import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';
 import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
+import { delay } from 'openland-y-utils/timer';
 
 const LOGGING = false;
 
@@ -20,7 +21,7 @@ export interface XFormProps {
     resetAfterSubmit?: boolean;
     className?: string;
     defaultLayout?: boolean;
-    autoClose?: boolean;
+    autoClose?: boolean | number;
 }
 
 interface XFormControllerProps {
@@ -37,7 +38,7 @@ const FormContainer = Glamorous.form({
     flexDirection: 'column'
 });
 
-class XFormController extends React.PureComponent<XFormControllerProps & { modal?: XModalContextValue, autoClose?: boolean }, { loading: boolean, error?: string }> {
+class XFormController extends React.PureComponent<XFormControllerProps & { modal?: XModalContextValue, autoClose?: boolean | number }, { loading: boolean, error?: string }> {
 
     // Keep local copy since setState is async
     private _isLoading = false;
@@ -82,7 +83,11 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             await act(data);
             if (this.props.autoClose) {
                 if (this.props.modal) {
-                    this.props.modal.close();
+                    if (typeof this.props.autoClose === 'number') {
+                        delay(this.props.autoClose).then(this.props.modal.close);
+                    } else {
+                        this.props.modal.close();
+                    }
                 }
             }
             this.setState({ loading: false, error: undefined });
