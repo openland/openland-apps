@@ -284,9 +284,11 @@ const ContactLink = Glamorous.a({
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
-    let currentPath = props.router.path.replace('#', '');
+    let currentPath = props.router.path;
     let rootPath = '/o/' + props.data.organization.id;
     let lsitingsPath = '/o/' + props.data.organization.id + '/listings';
+
+    let listingsPathReg = /^[A-Za-z0-9]+$/;
 
     const { organization } = props.data;
 
@@ -782,7 +784,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     </XHorizontal>
                                 )}
 
-                                {currentPath === lsitingsPath && (
+                                {((currentPath === lsitingsPath) || listingsPathReg.test(currentPath.replace('/o/' + props.data.organization.id + '/listings#', ''))) && (
                                     <>
                                         <XWithRole role={['org-' + props.data.organization.id + '-admin']}>
                                             <DOARListingPlaceholder />
