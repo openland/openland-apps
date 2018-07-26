@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { LoginLoader } from './pages/auth/LoginLoader';
 import { Login } from './pages/auth/Login';
 import { Dialogs } from './pages/main/Dialogs';
 import { Settings } from './pages/main/Settings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Conversation } from './pages/main/Conversation';
-import { AppStyles } from './styles/AppStyles';
-import { Platform } from 'react-native';
+import { createZStackNavigator } from './components/ZNavigatorStack';
+import { createZTabNavigator } from './components/ZNavigatorTabs';
 
 //
 // Home Routes
 //
 
-const HomeTabs = createBottomTabNavigator(
+const HomeTabs = createZTabNavigator(
   {
     Dialogs: Dialogs,
     Settings: Settings
@@ -28,17 +28,11 @@ const HomeTabs = createBottomTabNavigator(
         } else if (routeName === 'Settings') {
           iconName = `ios-cog`;
         }
-
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
         return <Ionicons name={iconName!!} size={25} color={tintColor!!} />;
       }
     }),
-    tabBarOptions: {
-      activeTintColor: AppStyles.primaryColor,
-      inactiveTintColor: '#99a2b0',
-    },
   });
+
 HomeTabs.navigationOptions = (args: { navigation: any }) => {
   let { routeName } = args.navigation.state.routes[args.navigation.state.index];
   if (routeName === 'Dialogs') {
@@ -55,33 +49,10 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
 // App Routes
 //
 
-const AppStack = createStackNavigator(
-  {
-    Home: HomeTabs,
-    Conversation: Conversation
-  },
-  {
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: AppStyles.primaryColor,
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        color: '#fff',
-        fontWeight: 'bold',
-      },
-    },
-    transitionConfig: () => {
-      if (Platform.OS === 'android') {
-        return {
-          screenInterpolator: sceneProps => {
-            return require('react-navigation/src/views/StackView/StackViewStyleInterpolator').default.forHorizontal(sceneProps);
-          }
-        };
-      }
-      return {};
-    },
-  });
+const AppStack = createZStackNavigator({
+  Home: HomeTabs,
+  Conversation: Conversation
+});
 
 //
 // Authentication Routes

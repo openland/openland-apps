@@ -9,7 +9,7 @@ if (isIPhoneX) {
     keyboardVerticalOffset = 65;
 }
 
-export class YKeyboardAvoidingView extends React.PureComponent {
+export class ZKeyboardAvoidingView extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={keyboardVerticalOffset}>

@@ -525,3 +525,23 @@ declare module "draft-js-emoji-plugin" {
 declare module "react-emojione" {
     export function emojify(src: string, opts?: any): any
 }
+
+declare type Dimensions =
+    | "REAL_WINDOW_HEIGHT"
+    | "REAL_WINDOW_WIDTH"
+    | "STATUS_BAR_HEIGHT"
+    | "SOFT_MENU_BAR_HEIGHT"
+    | "SMART_BAR_HEIGHT";
+
+declare interface ExtraDimensions {
+    get: (dim: Dimensions) => number;
+}
+
+declare module "react-native-extra-dimensions-android" {
+    const instance: ExtraDimensions;
+    export = instance;
+}
+
+declare module 'react-navigation-material-bottom-tabs' {
+    export function createMaterialBottomTabNavigator(arg1: any, arg2?: any): any;
+}

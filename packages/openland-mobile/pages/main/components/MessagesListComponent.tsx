@@ -20,7 +20,7 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
         let initialState = props.engine.getState();
         let msg = [...initialState.messages];
         msg.reverse();
-        this.state = { loading: initialState.loading, messages: msg };
+        this.state = { loading: true, messages: msg };
     }
 
     componentDidMount() {

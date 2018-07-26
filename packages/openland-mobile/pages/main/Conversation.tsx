@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
+import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import {
     View, FlatList,
@@ -13,7 +13,7 @@ import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEng
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessagesListComponent } from './components/MessagesListComponent';
 import { KeyboardHider } from './components/KeyboardHider';
-import { YKeyboardAvoidingView } from '../../components/YKeyboardAvoidingView';
+import { ZSafeAreaView } from '../../components/ZSaveAreaView';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -68,30 +68,28 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
-            <YKeyboardAvoidingView>
-                <SafeAreaView style={{ backgroundColor: '#fff', height: '100%' }} flexDirection="column">
-                    <View style={{ height: '100%' }} flexDirection="column">
-                        <MessagesListComponent engine={this.engine} />
-                        <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
-                            <TextInput
-                                flexGrow={1}
-                                flexBasis={0}
-                                placeholder="Message"
-                                placeholderTextColor="#aaaaaa"
-                                onChangeText={this.handleTextChange}
-                                value={this.state.text}
-                                onSubmitEditing={this.handleSubmit}
-                                style={styles.textInput}
-                            />
-                            <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
-                                <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                                    <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+            <ZSafeAreaView>
+                <View style={{ height: '100%' }} flexDirection="column">
+                    <MessagesListComponent engine={this.engine} />
+                    <View alignSelf="stretch" alignItems="stretch" style={{ paddingLeft: 15, paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
+                        <TextInput
+                            flexGrow={1}
+                            flexBasis={0}
+                            placeholder="Message"
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={this.handleTextChange}
+                            value={this.state.text}
+                            onSubmitEditing={this.handleSubmit}
+                            style={styles.textInput}
+                        />
+                        <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
+                            <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
+                                <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </SafeAreaView>
-            </YKeyboardAvoidingView>
+                </View>
+            </ZSafeAreaView>
         );
     }
 }
