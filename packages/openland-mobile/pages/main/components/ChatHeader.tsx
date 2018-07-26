@@ -16,7 +16,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string }> 
                         if (isAndroid) {
                             return (
                                 <View flexDirection="row">
-                                    <View paddingRight={12}>
+                                    <View paddingRight={12} paddingLeft={8}>
                                         <ZAvatar
                                             src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
                                             size={40}
@@ -24,9 +24,9 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string }> 
                                             placeholderTitle={res.data!!.chat.title}
                                         />
                                     </View>
-                                    <View flexDirection="column">
-                                        <Text style={{ fontSize: 18, height: 21, color: '#fff' }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
-                                        <Text style={{ fontSize: 14, height: 16, color: '#fff', opacity: 0.6 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>
+                                    <View flexDirection="column" marginTop={-2}>
+                                        <Text style={{ fontWeight: '500', fontSize: 18, height: 21, color: '#fff', letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
+                                        <Text style={{ fontSize: 14, height: 16, color: '#fff', opacity: 0.6, marginTop: 1 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>
                                     </View>
                                 </View>
                             );

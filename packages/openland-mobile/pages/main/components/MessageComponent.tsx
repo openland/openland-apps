@@ -36,7 +36,8 @@ let styles = StyleSheet.create({
         marginBottom: 3,
         // flexBasis: 0,
         flexShrink: 1,
-        color: '#181818'
+        color: '#181818',
+        letterSpacing: 0.3
     } as TextStyle,
     date: {
         height: 16,
@@ -52,6 +53,7 @@ let styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'normal',
         color: '#5b5b5b',
+        letterSpacing: 0.3
     } as TextStyle
 });
 
