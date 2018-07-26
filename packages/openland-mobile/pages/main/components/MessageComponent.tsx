@@ -12,43 +12,45 @@ import { preprocessText } from '../../../utils/TextProcessor';
 let styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingLeft: 10,
-        paddingTop: 8,
-        paddingBottom: 8,
-        paddingRight: 10,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
         width: '100%'
     } as ViewStyle,
     messageContainer: {
         flexDirection: 'column',
-        paddingLeft: 10,
+        paddingLeft: 12,
         flexGrow: 1,
         flexBasis: 0
     } as ViewStyle,
     header: {
         flexDirection: 'row',
-        height: 18,
+        height: 16,
+        marginBottom: 1
     } as ViewStyle,
     sender: {
-        height: 18,
-        lineHeight: 18,
+        height: 16,
+        lineHeight: 16,
         fontSize: 15,
-        fontWeight: '500',
+        fontWeight: '600',
         marginBottom: 3,
         // flexBasis: 0,
-        flexShrink: 1
+        flexShrink: 1,
+        color: '#181818'
     } as TextStyle,
     date: {
-        height: 18,
-        lineHeight: 18,
-        fontSize: 13,
+        height: 16,
+        lineHeight: 16,
+        fontSize: 12,
         color: '#aaaaaa',
-        marginLeft: 5
+        marginLeft: 5,
+        fontWeight: 'normal'
     } as TextStyle,
     message: {
+        marginTop: 1,
         lineHeight: 18,
         fontSize: 14,
-        fontWeight: '400',
-        color: '#181818',
+        fontWeight: 'normal',
+        color: '#5b5b5b',
     } as TextStyle
 });
 
@@ -57,7 +59,7 @@ class MessageTextContent extends React.PureComponent<{ text: string }> {
         let preprocessed = preprocessText(this.props.text);
         let parts = preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
-                return <br key={'br-' + i} />;
+                return <Text key={'br-' + i}>{'\n'}</Text>;
             } else if (v.type === 'link') {
                 return <Text key={'link-' + i} style={{ color: '#654bfa' }} onPress={() => Linking.openURL(v.link!!)}>{v.text}</Text>;
             } else {
@@ -73,7 +75,7 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
         let maxSize = Math.min(Dimensions.get('window').width - 70, 400);
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
         return (
-            <View width={layout.width} height={layout.height} style={{ marginTop: 2, marginBottom: 2 }}>
+            <View width={layout.width} height={layout.height} style={{ marginTop: 4, marginBottom: 4 }}>
                 <ZCloudImage src={this.props.file} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
             </View>
         );
@@ -120,7 +122,7 @@ export class MessageComponent extends React.PureComponent<{ message: ModelMessag
         }
         return (
             <View style={styles.container}>
-                <ZAvatar src={sender.picture} size={40} placeholderKey={sender.id} placeholderTitle={sender.name} />
+                <ZAvatar src={sender.picture} size={32} placeholderKey={sender.id} placeholderTitle={sender.name} />
                 <View style={styles.messageContainer}>
                     <View style={styles.header}>
                         <Text style={styles.sender}>{sender.name}</Text>

@@ -14,14 +14,17 @@ let colors = [
     '#c72ce1'
 ];
 
-export class ZAvatar extends React.PureComponent<{ size: 60 | 40, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
+export class ZAvatar extends React.PureComponent<{ size: 60 | 32 | 40, src?: string | null, placeholderKey?: string, placeholderTitle?: string }> {
     render() {
         if (this.props.src) {
             let s = PixelRatio.getPixelSizeForLayoutSize(this.props.size);
             let url = this.props.src;
             url += '-/scale_crop/' + s + 'x' + s + '/';
             return (
-                <Image source={{ uri: url }} style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />
+                <View style={{ width: this.props.size, height: this.props.size }}>
+                    <Image source={{ uri: url }} style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />
+                    <View style={{ position: 'absolute', width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, borderColor: '#f1f1f1', borderWidth: 0.5 }} />
+                </View>
             );
         } else {
             let placeholderIndex = 0;
@@ -35,6 +38,9 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 40, src?: string |
             let textSize = 28;
             if (this.props.size === 40) {
                 textSize = 16;
+            }
+            if (this.props.size === 32) {
+                textSize = 14;
             }
             return (
                 <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % (colors.length - 1)] }} alignContent="center" justifyContent="center">

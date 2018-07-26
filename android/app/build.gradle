@@ -154,3 +154,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+//task bundleReleaseJsAndAssets(overwrite: true) {
+//
+//}
