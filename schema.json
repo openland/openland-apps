@@ -2315,6 +2315,49 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaHitsPopular",
+              "description": "",
+              "args": [
+                {
+                  "name": "categories",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "LIST",
+                      "name": null,
+                      "ofType": {
+                        "kind": "NON_NULL",
+                        "name": null,
+                        "ofType": {
+                          "kind": "SCALAR",
+                          "name": "String",
+                          "ofType": null
+                        }
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CategoryHits",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "wall",
               "description": "",
               "args": [
@@ -2840,6 +2883,16 @@
               "args": [
                 {
                   "name": "query",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sort",
                   "description": "",
                   "type": {
                     "kind": "SCALAR",
@@ -9274,6 +9327,22 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaFeatured",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "alphaFollowed",
               "description": "",
               "args": [],
@@ -11424,6 +11493,57 @@
         },
         {
           "kind": "OBJECT",
+          "name": "CategoryHits",
+          "description": "",
+          "fields": [
+            {
+              "name": "category",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "tags",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "WallEntityConnection",
           "description": "",
           "fields": [
@@ -12022,6 +12142,22 @@
             },
             {
               "name": "alphaEditorial",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "alphaFeatured",
               "description": "",
               "args": [],
               "type": {
@@ -15381,6 +15517,41 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaHitsAdd",
+              "description": "",
+              "args": [
+                {
+                  "name": "hits",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "LIST",
+                      "name": null,
+                      "ofType": {
+                        "kind": "NON_NULL",
+                        "name": null,
+                        "ofType": {
+                          "kind": "INPUT_OBJECT",
+                          "name": "HitInput",
+                          "ofType": null
+                        }
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "wallAddPost",
               "description": "",
               "args": [
@@ -17819,6 +17990,53 @@
         },
         {
           "kind": "INPUT_OBJECT",
+          "name": "HitInput",
+          "description": "",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "category",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "tags",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
           "name": "WallPostInput",
           "description": "",
           "fields": null,
@@ -19268,6 +19486,20 @@
                 "kind": "SCALAR",
                 "name": "Boolean",
                 "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "alphaFeatured",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },

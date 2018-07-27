@@ -299,6 +299,7 @@ const AdminTools = withSuperAccountActions(props => {
                         activated: props.data && props.data.superAccount.state,
                         published: (props as any).published ? 'published' : 'unpublished',
                         editorial: (props as any).editorial ? 'editorial' : 'noneditorial',
+                        featured: (props as any).featured ? 'featured' : 'nonfeatured',
                     }
                 }}
                 defaultAction={async (data) => {
@@ -307,6 +308,7 @@ const AdminTools = withSuperAccountActions(props => {
                             input: {
                                 alphaPublished: data.input.published === 'published',
                                 alphaEditorial: data.input.editorial === 'editorial',
+                                alphaFeatured: data.input.featured === 'featured',
                             }
                         }
                     });
@@ -325,13 +327,14 @@ const AdminTools = withSuperAccountActions(props => {
                         <XCheckbox label="Activated" trueValue="ACTIVATED" falseValue="PENDING" field="input.activated" />
                         <XCheckbox label="Published" trueValue="published" falseValue="unpublished" field="input.published" />
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
+                        <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
                     </XFormLoadingContent>
                     <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
                 </XVertical>
             </XForm>
         </XVertical>
     );
-}) as React.ComponentType<{ updateOrganizatonMutations: any, published: boolean, editorial: boolean, variables: { accountId: string, viaOrgId: true } }>;
+}) as React.ComponentType<{ updateOrganizatonMutations: any, published: boolean, editorial: boolean, featured: boolean, variables: { accountId: string, viaOrgId: true } }>;
 
 const Separator = Glamorous.div({
     width: '100%',
@@ -488,6 +491,7 @@ export const OrganizationSettigs = ((props: any) => {
                                     updateOrganizatonMutations={props.updateOrganizaton}
                                     published={props.data.organizationProfile!!.published}
                                     editorial={props.data.organizationProfile!!.editorial}
+                                    featured={props.data.organizationProfile!!.featured}
                                 />
                             </XVertical>
 
