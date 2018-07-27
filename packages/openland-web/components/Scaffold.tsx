@@ -101,7 +101,12 @@ const NavigationDivider = Glamorous.div({
     alignSelf: 'center',
     backgroundColor: '#000000',
     opacity: 0.05,
-    flexShrink: 0
+    flexShrink: 0,
+
+    '@media (min-height: 768px)': {
+        marginTop: 5,
+        marginBottom: 5,
+    },
 });
 
 const NavigatorIcon = Glamorous(XIcon)({
@@ -120,6 +125,11 @@ const NavigatorItem = Glamorous(XLink)({
     flexShrink: 0,
     color: '#939ca8',
     cursor: 'pointer',
+
+    '@media (min-height: 768px)': {
+        paddingTop: 22,
+        paddingBottom: 22,
+    },
 
     '& > svg *': {
         fill: '#939ca8',
@@ -183,7 +193,7 @@ const ProfileTitle = Glamorous.div({
     fontWeight: 600,
     lineHeight: 1.25,
     color: '#334562',
-    marginLeft: 14,
+    marginLeft: 15,
     maxWidth: 164,
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -195,14 +205,13 @@ const ProfileSubTitle = Glamorous(XLink)({
     fontWeight: 600,
     lineHeight: 1.25,
     color: '#334562',
-    marginLeft: 14,
+    marginLeft: 15,
     opacity: 0.5,
     letterSpacing: '-0.3px',
 });
 
 const ProfileTitleContainer = Glamorous(XHorizontal)({
-    padding: 16,
-    paddingBottom: 8,
+    padding: '16px 18px 12px',
     ':hover': {
         background: '#f8f8fb',
         '& > div': {
@@ -223,7 +232,7 @@ const OrganizationTitleContainer = makeNavigable((props) => {
 
 const MenuItem = Glamorous(XMenuItem)({
     color: 'rgba(51, 69, 98, 0.8)!important',
-    height: 38,
+    height: 40,
     lineHeight: '38px'
 });
 
@@ -281,6 +290,8 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                 onClickOutside={this.closer}
                 show={this.state.show}
                 padding={25}
+                marginLeft={32}
+                marginBottom={5}
                 content={(
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
@@ -299,7 +310,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     </XWithRole>
                                     {this.props.hasMultipleOrganizations && <MenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</MenuItem>}
 
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 8 }} />
+                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 12 }} />
                                 </>
                             )}
 
@@ -692,7 +703,8 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                 contentContainer={<XMenuVertical />}
                 placement="right-start"
                 show={this.state.show}
-                padding={0}
+                marginTop={5}
+                marginLeft={16}
                 content={<AddListingContent />}
                 onClickOutside={this.closer}
             >
@@ -737,6 +749,8 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
                 placement="right-end"
                 show={this.state.show}
                 padding={0}
+                marginLeft={16}
+                marginBottom={5}
                 content={<AddListingContent />}
                 onClickOutside={this.closer}
             >
