@@ -349,7 +349,7 @@ const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    overflow: 'hidden',
+    // overflow: 'hidden',
     // borderTopLeftRadius: 8,
     // borderBottomLeftRadius: 8,
     backgroundColor: '#ffffff',

@@ -66,6 +66,11 @@ import {
 import { XTag } from 'openland-x/XTag';
 import { XPopper } from 'openland-x/XPopper';
 
+const StickyContent = Glamorous(XVertical)({
+    position: 'sticky',
+    top: 10
+});
+
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
     backgroundColor: '#f9fafb',
@@ -281,6 +286,15 @@ const ContactLink = Glamorous.a({
     '&:hover > svg > g > path:last-child': {
         fill: '#5640d6'
     }
+});
+
+const ContactsContainer = Glamorous(XVertical)({
+    minWidth: 422,
+
+    '@media(max-width: 1200px)': {
+        minWidth: 220,
+    },
+
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
@@ -709,78 +723,80 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             </XVertical>
                                         </XVertical>
 
-                                        <XVertical maxWidth={422} flexShrink={0}>
-                                            {((organization.contacts || []).length > 0 || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
-                                                <XCardStyled padding={18} paddingBottom={20}>
+                                        <ContactsContainer flexShrink={0}>
+                                            <StickyContent>
+                                                {((organization.contacts || []).length > 0 || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
+                                                    <XCardStyled padding={18} paddingBottom={20}>
+                                                        <XVertical separator={9}>
+                                                            {(organization.contacts || []).length > 0 && (
+                                                                <>
+                                                                    <Title>{TextOrganizationProfile.additionalInfoContacts}</Title>
+                                                                    <XVertical separator={8}>
+                                                                        {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
+                                                                            return (
+                                                                                <XHorizontal
+                                                                                    key={i}
+                                                                                    separator={10}
+                                                                                    alignItems="center"
+                                                                                >
+                                                                                    <XAvatar cloudImageUuid={contact.photo || undefined} size="medium" />
+                                                                                    <XVertical separator={1}>
+                                                                                        <XHorizontal separator={5} alignItems="center">
+                                                                                            <Title>{contact.name}</Title>
+                                                                                            {contact.phone && <ContactLink href={'tel:' + contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
+                                                                                            {contact.email && <ContactLink href={'mailto:' + contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
+                                                                                            {contact.link && <ContactLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
+                                                                                        </XHorizontal>
+                                                                                        <Title opacity={0.8}>{contact.position}</Title>
+                                                                                    </XVertical>
+                                                                                </XHorizontal>
+                                                                            );
+                                                                        })}
+                                                                    </XVertical>
+                                                                </>
+                                                            )}
+
+                                                            {(organization.website || organization.facebook || organization.twitter || organization.linkedin) && (
+                                                                <SocialLinksWrapper topBorder={(organization.contacts || []).length > 0}>
+                                                                    {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}<XIcon icon="launch" /></SocialLink>}
+                                                                    {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
+                                                                    {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
+                                                                    {organization.linkedin && <SocialLinkImg className="li" href={organization.linkedin} />}
+                                                                </SocialLinksWrapper>
+                                                            )}
+
+                                                        </XVertical>
+                                                    </XCardStyled>
+                                                )}
+                                                {organization.interests && (
+                                                    <XCardStyled padding={18}>
+                                                        <XVertical separator={3}>
+                                                            <Title>Intrerests</Title>
+                                                            <TagWrapper>
+                                                                {organization.interests.map((val, i) => (
+                                                                    <Tag key={i + val}>{val}</Tag>
+                                                                ))}
+                                                            </TagWrapper>
+                                                        </XVertical>
+                                                    </XCardStyled>
+                                                )}
+                                                <XWithRole role={['org-' + organization.id + '-admin']}>
                                                     <XVertical separator={9}>
-                                                        {(organization.contacts || []).length > 0 && (
-                                                            <>
-                                                                <Title>{TextOrganizationProfile.additionalInfoContacts}</Title>
-                                                                <XVertical separator={8}>
-                                                                    {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
-                                                                        return (
-                                                                            <XHorizontal
-                                                                                key={i}
-                                                                                separator={10}
-                                                                                alignItems="center"
-                                                                            >
-                                                                                <XAvatar cloudImageUuid={contact.photo || undefined} size="medium" />
-                                                                                <XVertical separator={1}>
-                                                                                    <XHorizontal separator={5} alignItems="center">
-                                                                                        <Title>{contact.name}</Title>
-                                                                                        {contact.phone && <ContactLink href={'tel:' + contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
-                                                                                        {contact.email && <ContactLink href={'mailto:' + contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
-                                                                                        {contact.link && <ContactLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
-                                                                                    </XHorizontal>
-                                                                                    <Title opacity={0.8}>{contact.position}</Title>
-                                                                                </XVertical>
-                                                                            </XHorizontal>
-                                                                        );
-                                                                    })}
+                                                        {!((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
+                                                            <XCardStyled padding={18}>
+                                                                <XVertical>
+                                                                    {!(organization.contacts || []).length && <ContactPlaceholder />}
+                                                                    {!(organization.website || organization.facebook || organization.linkedin || organization.twitter) && <SocialPlaceholder />}
                                                                 </XVertical>
-                                                            </>
+                                                            </XCardStyled>
                                                         )}
-
-                                                        {(organization.website || organization.facebook || organization.twitter || organization.linkedin) && (
-                                                            <SocialLinksWrapper topBorder={(organization.contacts || []).length > 0}>
-                                                                {organization.website && <SocialLink href={organization.website}>{TextOrganizationProfile.additionalInfoWebsite}<XIcon icon="launch" /></SocialLink>}
-                                                                {organization.facebook && <SocialLinkImg className="fb" href={organization.facebook} />}
-                                                                {organization.twitter && <SocialLinkImg className="tw" href={organization.twitter} />}
-                                                                {organization.linkedin && <SocialLinkImg className="li" href={organization.linkedin} />}
-                                                            </SocialLinksWrapper>
+                                                        {!(organization.interests || []).length && (
+                                                            <InterestsPlaceholder />
                                                         )}
-
                                                     </XVertical>
-                                                </XCardStyled>
-                                            )}
-                                            {organization.interests && (
-                                                <XCardStyled padding={18}>
-                                                    <XVertical separator={3}>
-                                                        <Title>Intrerests</Title>
-                                                        <TagWrapper>
-                                                            {organization.interests.map((val, i) => (
-                                                                <Tag key={i + val}>{val}</Tag>
-                                                            ))}
-                                                        </TagWrapper>
-                                                    </XVertical>
-                                                </XCardStyled>
-                                            )}
-                                            <XWithRole role={['org-' + organization.id + '-admin']}>
-                                                <XVertical separator={9}>
-                                                    {!((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
-                                                        <XCardStyled padding={18}>
-                                                            <XVertical>
-                                                                {!(organization.contacts || []).length && <ContactPlaceholder />}
-                                                                {!(organization.website || organization.facebook || organization.linkedin || organization.twitter) && <SocialPlaceholder />}
-                                                            </XVertical>
-                                                        </XCardStyled>
-                                                    )}
-                                                    {!(organization.interests || []).length && (
-                                                        <InterestsPlaceholder />
-                                                    )}
-                                                </XVertical>
-                                            </XWithRole>
-                                        </XVertical>
+                                                </XWithRole>
+                                            </StickyContent>
+                                        </ContactsContainer>
                                     </XHorizontal>
                                 )}
 

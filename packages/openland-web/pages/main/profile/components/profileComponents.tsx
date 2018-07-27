@@ -110,7 +110,7 @@ export const CardWrapper = Glamorous.div({
     backgroundColor: '#fff'
 });
 
-export const CardTitle = Glamorous.div({
+export const CardTitle = Glamorous.div<{maxWidth?: number}>(props => ({
     fontSize: 18,
     lineHeight: 1.11,
     letterSpacing: 0.6,
@@ -118,8 +118,8 @@ export const CardTitle = Glamorous.div({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    maxWidth: '100%'
-});
+    maxWidth: props.maxWidth ? props.maxWidth : '100%'
+}));
 
 export const CardPhoto = Glamorous(XCloudImage)({
     borderRadius: 4,

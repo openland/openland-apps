@@ -347,14 +347,17 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         marginLeft: 5
     },
     '&.Select--multi .Select-value': {
-        backgroundColor: '#ebf5ff',
-        borderRadius: props.large ? 4 : 2,
-        border: '1px solid #c2e0ff',
-        color: '#007eff',
+        backgroundColor: '#edf3fe',
+        borderRadius: props.large === true ? 4 : 2,
+        border: props.large === true ? 'none' : '1px solid #c2e0ff',
+        color: '#4285f4',
         display: props.large === true ? 'inline-flex' : 'inline-block',
         flexDirection: props.large === true ? 'row-reverse' : undefined,
         fontSize: props.large === true ? 14 : '.9em',
+        fontWeight: props.large === true ? 500 : undefined,
+        letterSpacing: props.large === true ? -0.2 : undefined,
         lineHeight: 1.4,
+        height: props.large === true ? 32 : undefined,
         marginLeft: 7,
         // marginTop: 6,
         marginBottom: 6,
@@ -368,7 +371,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         borderBottomRightRadius: 2,
         borderTopRightRadius: 2,
         cursor: 'default',
-        padding: props.large === true ? '6px 5px' : '2px 5px'
+        padding: props.large === true ? '6px 5px 6px 10px' : '2px 5px'
     },
     '&.Select--multi a.Select-value-label': {
         color: '#007eff',
@@ -381,12 +384,14 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
     '&.Select--multi .Select-value-icon': {
         cursor: 'pointer',
         borderBottomLeftRadius: 2,
+        fontSize: 20,
+        fontWeight: 'normal',
         borderTopLeftRadius: 2,
         borderRight: props.large === true ? 'none' : '1px solid #c2e0ff',
-        padding: props.large === true ? '5px 5px 3px' : '1px 5px 3px'
+        padding: props.large === true ? '1px 10px 1px 0' : '1px 5px 3px'
     },
     '&.Select--multi .Select-value-icon:focus, &.Select--multi .Select-value-icon:hover': {
-        backgroundColor: '#d8eafd',
+        backgroundColor: props.large === true ? undefined : '#d8eafd',
         color: '#0071e6'
     },
     '&.Select--multi .Select-value-icon:active': {

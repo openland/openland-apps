@@ -1,9 +1,25 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XPopper } from 'openland-x/XPopper';
-import { XVertical } from 'openland-x-layout/XVertical';
+import { XTag } from 'openland-x/XTag';
 import { SearchCondition } from './root.page';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
-import { EntryItem } from './multiplePicker';
+
+const ContentWrapper = Glamorous(XPopper.Content)({
+    padding: 0
+});
+
+const ContentValue = Glamorous.div<{ empty?: boolean }>((props) => ({
+    padding: props.empty ? 0 : '8px 16px',
+    width: props.empty ? 0 : 240
+}));
+
+const TagWrap = Glamorous.div({
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+});
 
 interface EntryProps {
     i?: number;
@@ -13,25 +29,30 @@ interface EntryProps {
     onPick: (entry: SearchCondition) => void;
     onHover?: (i: number) => void;
 }
-class EntryComponent extends React.Component<EntryProps> {
-    render() {
-        return (
-            <div onMouseEnter={() => this.props.onHover ? this.props.onHover(this.props.i!!) : false}>
-                <EntryItem selected={this.props.selected} onClick={() => this.props.onPick(this.props.entry)}>{this.props.entry.label + ' ' + (this.props.sugestion ? '' : this.props.entry.type === 'organizationType' ? 'category' : this.props.entry.type === 'interest' ? 'intereset' : this.props.entry.type === 'location' ? 'location' : '')}</EntryItem>
-            </div>
-        );
-    }
-}
+
+const EntryComponent = (props: EntryProps) => (
+    <TagWrap onMouseEnter={() => props.onHover ? props.onHover(props.i!!) : false}>
+        <XTag
+            text={props.entry.label + ' ' + (props.sugestion ? '' : props.entry.type === 'organizationType' ? 'category' : props.entry.type === 'interest' ? 'intereset' : props.entry.type === 'location' ? 'location' : '')}
+            size="large"
+            color="primary"
+            onClick={() => props.onPick(props.entry)}
+        />
+    </TagWrap>
+);
 
 interface AutocompleteProps {
     onPick: (q: SearchCondition) => void;
     query: string;
     target: any;
 }
-export class AutocompletePopper extends React.Component<AutocompleteProps, {
-    select: number,
-    entries: EntryProps[],
-}> {
+
+interface AutocompletePopperState {
+    select: number;
+    entries: EntryProps[];
+}
+
+export class AutocompletePopper extends React.Component<AutocompleteProps, AutocompletePopperState> {
 
     constructor(props: AutocompleteProps) {
         super(props);
@@ -43,7 +64,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, {
 
         //  TODO search in top tags
         let sugestedLocation = [...TextDirectoryData.locationPicker.Cities, ...TextDirectoryData.locationPicker.MetropolitanAreas, ...TextDirectoryData.locationPicker.States, ...TextDirectoryData.locationPicker.MultiStateRegions].filter(e => ([...e.split(' '), e]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0)[0];
-        let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0).map(v => ({...v, label: v.label.replace('• ', '')}))[0];
+        let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0).map(v => ({ ...v, label: v.label.replace('• ', '') }))[0];
         let sugestedInterest = [...TextDirectoryData.interestPicker].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0)[0];
 
         if (sugestedLocation) {
@@ -84,7 +105,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, {
         if (e.code === 'Enter') {
             e.preventDefault();
             if (this.state.select === -1) {
-                this.props.onPick({type: 'name', value: this.props.query, label: this.props.query});
+                this.props.onPick({ type: 'name', value: this.props.query, label: this.props.query });
             } else {
                 this.props.onPick(this.state.entries[this.state.select].entry);
             }
@@ -100,16 +121,25 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, {
     render() {
 
         let content = (
-            <XVertical>
-                {this.state.entries.map((e, i) => <EntryComponent i={i} onHover={ii => this.setState({select: ii})} key={e.entry.type + e.entry.label + i} {...e} selected={i === this.state.select} />)}
-            </XVertical>
+            <ContentValue empty={this.state.entries.length === 0}>
+                {this.state.entries.map((e, i) => (
+                    <EntryComponent
+                        i={i}
+                        onHover={ii => this.setState({ select: ii })}
+                        key={e.entry.type + e.entry.label + i}
+                        selected={i === this.state.select}
+                        {...e}
+                    />
+                ))}
+            </ContentValue>
         );
         return (
             <XPopper
                 placement="bottom-start"
                 show={!!(this.props.query.trim())}
-                content={content}
                 arrow={null}
+                content={content}
+                contentContainer={<ContentWrapper />}
             >
                 {this.props.target}
             </XPopper>
