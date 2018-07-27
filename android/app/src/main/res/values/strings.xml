@@ -1,4 +1,4 @@
 <resources>
-    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">MNEpl1rmOgWXcaHhd-zq-Q_8nkFLB1jDiuuVQ</string>
     <string name="app_name">Openland</string>
 </resources>
