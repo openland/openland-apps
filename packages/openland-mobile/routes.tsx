@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 import { LoginLoader } from './pages/auth/LoginLoader';
 import { Login } from './pages/auth/Login';
 import { Dialogs } from './pages/main/Dialogs';
@@ -65,9 +65,9 @@ const AppStack = createZStackNavigator({
 // Authentication Routes
 //
 
-const LoginStack = createStackNavigator({
-  Home: Login
-});
+// const LoginStack = createStackNavigator({
+//   Home: Login
+// });
 
 //
 // Root Routes
@@ -75,9 +75,15 @@ const LoginStack = createStackNavigator({
 
 export default createSwitchNavigator(
   {
-    Root: LoginLoader,
+    Root: {
+      screen: LoginLoader,
+      portraitOnlyMode: true
+    },
     App: AppStack,
-    Login: LoginStack
+    Login: { 
+      screen: Login,
+      portraitOnlyMode: true
+    }
   },
   { initialRouteName: 'Root' }
 );

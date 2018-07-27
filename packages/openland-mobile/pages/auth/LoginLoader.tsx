@@ -1,13 +1,20 @@
 import * as React from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger } from '../../utils/messenger';
 import { ZLoader } from '../../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
+import { AppStyles } from '../../styles/AppStyles';
 
-export class LoginLoader extends React.Component<NavigationInjectedProps> {
+export class LoginLoader extends React.Component<NavigationInjectedProps, { shouldDisplayLoader: boolean }> {
+    constructor(props: NavigationInjectedProps) {
+        super(props);
+        this.state = {
+            shouldDisplayLoader: false
+        };
+    }
     componentDidMount() {
         (async () => {
             let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
@@ -35,6 +42,10 @@ export class LoginLoader extends React.Component<NavigationInjectedProps> {
         })();
     }
     render() {
-        return <ZLoader inverted={true} />;
+        if (this.state.shouldDisplayLoader) {
+            return <ZLoader inverted={true} />;
+        } else {
+            return (<View style={{ backgroundColor: AppStyles.primaryColor, width: '100%', height: '100%' }} />);
+        }
     }
 }
