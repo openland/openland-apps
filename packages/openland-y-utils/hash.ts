@@ -5,5 +5,5 @@ export function doSimpleHash(key: string): number {
             h = (h << 5) - h + key.charCodeAt(i++) | 0;
         }
     }
-    return h;
+    return Math.abs(h);
 }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, View, Text, PixelRatio } from 'react-native';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
+import { isAndroid } from '../utils/isAndroid';
 
 let colors = [
     '#ffab00',
@@ -23,7 +24,7 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 56 | 40 | 32 | 30,
             return (
                 <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
                     <Image source={{ uri: url }} style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />
-                    <View style={{ position: 'absolute', width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, borderColor: '#f1f1f1', borderWidth: 0.5 }} />
+                    {!isAndroid && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#f1f1f1', borderWidth: 0.5 }} />}
                 </View>
             );
         } else {
@@ -49,7 +50,7 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 56 | 40 | 32 | 30,
                 textSize = 26;
             }
             return (
-                <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % (colors.length - 1)] }} alignContent="center" justifyContent="center">
+                <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % colors.length] }} alignContent="center" justifyContent="center">
                     <Text style={{ fontSize: textSize, width: '100%', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }}>{placeholderText}</Text>
                 </View>
             );
