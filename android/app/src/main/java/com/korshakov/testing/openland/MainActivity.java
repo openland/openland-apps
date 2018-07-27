@@ -1,8 +1,6 @@
 package com.korshakov.testing.openland;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 
 import com.facebook.react.ReactActivity;
 import com.microsoft.appcenter.AppCenter;
@@ -13,8 +11,8 @@ import com.microsoft.appcenter.distribute.Distribute;
 public class MainActivity extends ReactActivity {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         // Disable app center for local development
         AppCenter.setEnabled(!BuildConfig.DEBUG);
