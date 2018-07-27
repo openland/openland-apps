@@ -35,7 +35,10 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
     };
 
     handleLogout = () => {
-        AsyncStorage.clear();
+        (async () => { 
+            AsyncStorage.clear();
+            AppUpdateTracker.restartApp();
+        })();
     }
 
     handleRestart = () => {

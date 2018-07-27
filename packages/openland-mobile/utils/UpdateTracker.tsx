@@ -41,6 +41,9 @@ export const AppUpdateTracker = {
     },
     updateApp() {
         CodePush.restartApp(true);
+    },
+    restartApp() {
+        CodePush.restartApp(false);
     }
 };
 
