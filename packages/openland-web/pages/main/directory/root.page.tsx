@@ -19,11 +19,14 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
-import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
+import { TextDirectory } from 'openland-text/TextDirectory';
 import { XLink } from 'openland-x/XLink';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 import { AutocompletePopper } from './autocompletePopper';
 import { SortPicker } from './sortPicker';
+import { Query, Mutation } from '../../../../../node_modules/react-apollo';
+import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
+import { HitsAddMutation } from 'openland-api/HitsAddMutation';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -109,6 +112,11 @@ const TopSearchTags = Glamorous(XHorizontal)({
     }
 });
 
+const CategoriesTitleMap = {
+    directory_location: 'Location',
+    directory_organizationType: 'Organization category',
+    directory_interest: 'Interests',
+};
 class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> {
 
     onPick = (q: SearchCondition) => {
@@ -124,20 +132,27 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
             <XVertical flexGrow={1} flexShrink={0} width={320} maxWidth={320}>
                 <TopTagsWrapper separator={12}>
                     <TopTagsTitle>Top searches</TopTagsTitle>
-                    <XVertical separator={9}>
-                        <TopSearchCategory>Interests</TopSearchCategory>
-                        <TopSearchTags separator={0}>
-                            {TextDirectoryData.interestPicker.map((val, i) => (
-                                <XTag
-                                    key={'top_search_' + i + val.label}
-                                    color="primary"
-                                    text={val.label}
-                                    size="large"
-                                    onClick={() => this.onClick({ type: 'interest', value: val.value, label: val.label })}
-                                />
+                    <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }}>
+                        {data =>
+                            ((data.data && data.data.hitsPopular) || []).map((val: { category: string, tags: string[] }, i: number) => (
+                                <XVertical separator={9} key={i + '_container_' + val.category}>
+                                    <TopSearchCategory key={i + '_title_' + val.category}>{CategoriesTitleMap[val.category] || val.category}</TopSearchCategory>
+                                    <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
+                                        {val.tags.map((tag, iter) => (
+                                            <XTag
+                                                key={'top_search_' + iter + val}
+                                                color="primary"
+                                                text={tag}
+                                                size="large"
+                                                onClick={() => this.onClick({ type: 'interest', value: tag, label: tag })}
+                                            />
+                                        ))}
+                                    </TopSearchTags>
+                                </XVertical>
                             ))}
-                        </TopSearchTags>
-                    </XVertical>
+
+                    </Query>
+
                 </TopTagsWrapper>
             </XVertical>
         );
@@ -406,7 +421,8 @@ class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderB
 
     render() {
         let clauses: any[] = [];
-        let groups = this.groupByType(this.props.conditions);
+        let groups: { [type: string]: SearchCondition[] } = this.groupByType(this.props.conditions);
+        let hits = [];
         for (let type of Object.keys(groups)) {
             let group = groups[type];
 
@@ -435,7 +451,23 @@ class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderB
                     return clause;
                 })],
                 '$or'));
+
+            hits.push({
+                category: 'directory_' + type, tags: group.map((c: SearchCondition) => c.value).reduce(
+                    (res, x) => {
+                        if (Array.isArray(x)) {
+                            (res as string[]).push(...x);
+                        } else {
+                            (res as string[]).push(x);
+                        }
+                        return res;
+                    },
+                    []
+                )
+            });
+
         }
+
         let q = this.buildQuery(clauses, '$and');
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
         if (this.props.featuredFirst) {
@@ -452,6 +484,12 @@ class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderB
                         sort: JSON.stringify(sort),
                     }}
                 />
+                <Mutation mutation={HitsAddMutation.document} variables={{ hits: hits }}>
+                    {data => {
+                        data();
+                        return null;
+                    }}
+                </Mutation>
             </XVertical>
         );
     }

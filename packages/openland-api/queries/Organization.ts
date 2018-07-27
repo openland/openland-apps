@@ -287,3 +287,18 @@ export const OrganizationAlterPublishedMutation = gql`
     }
     ${OrganizationSearch}
 `;
+
+export const HitsPopularQuery = gql`
+    query HitsPopular($categories: [String!]!){
+        hitsPopular: alphaHitsPopular(categories: $categories){
+            category
+            tags
+        }
+    }
+`;
+
+export const HitsAddMutation = gql`
+    mutation HitsAdd($hits: [HitInput!]!){
+        hitsAdd: alphaHitsAdd(hits: $hits)
+    }
+`;

@@ -208,6 +208,11 @@ export interface InviteRequestOrganization {
   lastName?: string | null,
 };
 
+export interface HitInput {
+  category: string,
+  tags: Array< string >,
+};
+
 export enum OwnerType {
   CITY = "CITY",
   EXCLUDED = "EXCLUDED",
@@ -2799,6 +2804,26 @@ export interface OrganizationAlterPublishedMutation {
     editorial: boolean,
     featured: boolean,
   },
+};
+
+export interface HitsPopularQueryVariables {
+  categories: Array< string >,
+};
+
+export interface HitsPopularQuery {
+  hitsPopular:  Array< {
+    __typename: "CategoryHits",
+    category: string,
+    tags: Array< string >,
+  } > | null,
+};
+
+export interface HitsAddMutationVariables {
+  hits: Array< HitInput >,
+};
+
+export interface HitsAddMutation {
+  hitsAdd: string | null,
 };
 
 export interface BlocksConnectionQueryVariables {
