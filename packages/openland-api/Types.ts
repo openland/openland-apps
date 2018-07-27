@@ -96,7 +96,7 @@ export interface UpdateOrganizationProfileInput {
   contacts?: Array< ContactPersonInput > | null,
   alphaPublished?: boolean | null,
   alphaEditorial?: boolean | null,
-  alphaFeatured: boolean,
+  alphaFeatured?: boolean | null,
   alphaLocations?: Array< string > | null,
   alphaInterests?: Array< string > | null,
   alphaOrganizationType?: Array< string > | null,
@@ -2523,6 +2523,7 @@ export interface FollowOrganizationMutation {
 
 export interface ExploreOrganizationsQueryVariables {
   query?: string | null,
+  sort?: string | null,
   page?: number | null,
 };
 

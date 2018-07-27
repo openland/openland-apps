@@ -642,8 +642,8 @@ class LocationSelect extends React.Component<{}, { val?: string }> {
                                 query={this.state.val}
                                 onPick={(l) => {
                                     // prevent duplicates
-                                    if (locations.indexOf(l) === -1) {
-                                        locations.push(l);
+                                    if (locations.indexOf(l.value) === -1) {
+                                        locations.push(l.value);
                                     }
                                     if (store) {
                                         store.writeValue('fields.input.locations', locations);

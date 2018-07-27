@@ -23,6 +23,7 @@ import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 import { XLink } from 'openland-x/XLink';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 import { AutocompletePopper } from './autocompletePopper';
+import { SortPicker } from './sortPicker';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -377,9 +378,9 @@ const OrganizationCards = withExploreOrganizations((props) => {
 
         </XVertical>
     );
-}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string }, onSearchReset?: React.MouseEventHandler<any> }>;
+}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string, sort?: string }, onSearchReset?: React.MouseEventHandler<any> }>;
 
-class Organizations extends React.PureComponent<{ conditions: SearchCondition[], onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
+class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderBy: string, conditions: SearchCondition[], onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
 
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
@@ -436,6 +437,10 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
                 '$or'));
         }
         let q = this.buildQuery(clauses, '$and');
+        let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
+        if (this.props.featuredFirst) {
+            sort.unshift({ ['featured']: { order: 'desc' } });
+        }
 
         return (
             <XVertical flexGrow={1}>
@@ -443,7 +448,8 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
                     onPick={this.props.onPick}
                     onSearchReset={this.props.onSearchReset}
                     variables={{
-                        query: q ? JSON.stringify(q) : undefined
+                        query: q ? JSON.stringify(q) : undefined,
+                        sort: JSON.stringify(sort),
                     }}
                 />
             </XVertical>
@@ -481,7 +487,14 @@ const SearchInput = Glamorous.input({
 const SearchPickers = Glamorous(XHorizontal)({
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#f9fafb',
-    padding: '10px 14px 10px 10px',
+    padding: '10px 0px 10px 10px',
+});
+
+const SortContainer = Glamorous(XHorizontal)({
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)',
+    borderLeft: '1px solid rgba(220, 222, 228, 0.45)',
+    backgroundColor: '#f9fafb',
+    padding: '10px 10px 10px 10px',
 });
 
 class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
@@ -504,14 +517,15 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
     }
 }
 
-class RootComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
+class RootComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[], sort: { orederBy: string, featured: boolean } }> {
     input?: any;
     constructor(props: any) {
         super(props);
 
         this.state = {
             searchText: '',
-            conditions: []
+            conditions: [],
+            sort: { orederBy: 'createdAt', featured: true }
         };
     }
 
@@ -520,6 +534,10 @@ class RootComponent extends React.Component<{}, { searchText: string, conditions
         this.setState({
             searchText: val
         });
+    }
+
+    changeSort = (sort: { orederBy: string, featured: boolean }) => {
+        this.setState({ sort: sort });
     }
 
     addCondition = (condition: SearchCondition) => {
@@ -617,14 +635,19 @@ class RootComponent extends React.Component<{}, { searchText: string, conditions
                             <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
                         </XHorizontal>
                     </SearchFormWrapper>
-                    <SearchPickers separator="none">
-                        <LocationPicker onPick={this.addCondition} />
-                        <CategoryPicker onPick={this.addCondition} />
-                        <InterestPicker onPick={this.addCondition} />
-                    </SearchPickers>
+                    <XHorizontal separator={0}>
+                        <SearchPickers separator="none" flexGrow={1}>
+                            <LocationPicker onPick={this.addCondition} />
+                            <CategoryPicker onPick={this.addCondition} />
+                            <InterestPicker onPick={this.addCondition} />
+                        </SearchPickers>
+                        <SortContainer>
+                            <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                        </SortContainer>
+                    </XHorizontal>
                 </XCardStyled>
                 <XHorizontal>
-                    <Organizations conditions={conditions} onPick={this.replaceConditions} onSearchReset={this.reset} />
+                    <Organizations featuredFirst={this.state.sort.featured} orderBy={this.state.sort.orederBy} conditions={conditions} onPick={this.replaceConditions} onSearchReset={this.reset} />
                     <TopTags onPick={this.addCondition} />
                 </XHorizontal>
             </XVertical>

@@ -4,7 +4,6 @@ import * as ReactDOM from 'react-dom';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import Glamorous from 'glamorous';
-import { SearchCondition } from './root.page';
 
 const EntryScrollable = Glamorous(XVertical)({
     overflowY: 'scroll',
@@ -59,17 +58,17 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     }
 }));
 
-const filterOptions = (options: string[], q: string) => {
-    return options.filter(e => ([...e.split(' '), e]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
+const filterOptions = (options: { label: string, value: string }[], q: string) => {
+    return options.filter(e => ([...e.label.split(' '), e.label]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
 };
 
 interface EntriesComponentProps {
     title: string;
-    options: string[];
+    options: { label: string, value: string }[];
     scrollToTarget?: boolean;
     selected?: number;
     query?: string;
-    onPick: (q: SearchCondition) => void;
+    onPick: (q: { label: string, value: string }) => void;
     onHover?: (i: number) => void;
 }
 
@@ -115,17 +114,17 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                 >
                     {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
                         <div
-                            key={e}
+                            key={e.value}
                             onMouseEnter={() => this.props.onHover ? this.props.onHover(i) : false}
                         >
                             <EntryItem
                                 hover={!this.props.onHover}
                                 innerRef={i === this.props.selected ? this.captureTargetRef : undefined}
                                 selected={i === this.props.selected}
-                                onClick={() => this.props.onPick({ type: 'location', value: e, label: e })}
+                                onClick={() => this.props.onPick({ value: e.value, label: e.label })}
                                 key={e + '_' + i}
                             >
-                                {e}
+                                {e.label}
                             </EntryItem>
                         </div>
                     ))}
@@ -160,16 +159,16 @@ const HelpText = Glamorous.div({
 });
 
 interface MultoplePickerProps {
-    options: { label: string, values: string[] }[];
+    options: { label: string, values: { label: string, value: string }[] }[];
     query?: string;
-    onPick: (location: string) => void;
+    onPick: (location: { label: string, value: string }) => void;
     title?: string;
 }
 
 interface MultiplePickerState {
     selected: number[];
     empty: boolean;
-    filteredOptions: { label: string, values: string[] }[];
+    filteredOptions: { label: string, values: { label: string, value: string }[] }[];
     scrollToSelected?: boolean;
 }
 
@@ -226,7 +225,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
             if (!this.state.empty) {
                 this.props.onPick(this.state.filteredOptions[this.state.selected[0]].values[this.state.selected[1]]);
             } else {
-                this.props.onPick(this.props.query || '');
+                this.props.onPick({ label: this.props.query || '', value: this.props.query || '' });
             }
         }
 
@@ -267,7 +266,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
                                 title={this.props.options[0].label}
                                 query={this.props.query}
                                 options={this.props.options[0].values}
-                                onPick={sq => this.props.onPick(sq.label)}
+                                onPick={sq => this.props.onPick({ label: sq.label, value: sq.value })}
                             />
                         )}
                         {this.props.options.length > 1 && (
@@ -282,7 +281,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
                                         title={o.label}
                                         query={this.props.query}
                                         options={o.values}
-                                        onPick={sq => this.props.onPick(sq.label)}
+                                        onPick={sq => this.props.onPick(sq)}
                                     />
                                 ))}
                             </PickerEntries>

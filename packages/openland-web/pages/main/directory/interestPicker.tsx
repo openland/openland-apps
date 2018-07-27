@@ -37,9 +37,9 @@ const PickerEntries = Glamorous(XHorizontal)({
     margin: 0
 });
 
-class InterestsControlledPicker extends React.Component<{ query?: string, onPick: (location: string) => void }> {
+class InterestsControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void }> {
     options = [
-        { label: TextDirectory.interestTop, values: TextDirectoryData.interestPicker.map(e => e.value) },
+        { label: TextDirectory.interestTop, values: TextDirectoryData.interestPicker },
     ];
     render() {
         return (<MultiplePicker options={this.options} onPick={this.props.onPick} query={this.props.query} />);
@@ -55,8 +55,8 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
         this.setState({ query: v });
     }
 
-    onPick = (q: string) => {
-        this.props.onPick({ type: 'interest', value: q, label: q });
+    onPick = (q: { label: string, value: string }) => {
+        this.props.onPick({ type: 'interest', ...q });
         this.setState({ query: '', popper: false });
     }
 
@@ -76,7 +76,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerEntries separator="none" width="100%">
-                    <InterestsControlledPicker query={this.state.query} onPick={this.onPick}/>
+                    <InterestsControlledPicker query={this.state.query} onPick={this.onPick} />
                 </PickerEntries>
             </PickerWrapper>
         );
