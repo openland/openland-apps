@@ -288,6 +288,15 @@ const ContactLink = Glamorous.a({
     }
 });
 
+const ContactsContainer = Glamorous(XVertical)({
+    minWidth: 422,
+
+    '@media(max-width: 1200px)': {
+        minWidth: 220,
+    },
+
+});
+
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
     let currentPath = props.router.path;
     let rootPath = '/o/' + props.data.organization.id;
@@ -714,7 +723,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                             </XVertical>
                                         </XVertical>
 
-                                        <XVertical maxWidth={422} minWidth={250} flexShrink={0}>
+                                        <ContactsContainer flexShrink={0}>
                                             <StickyContent>
                                                 {((organization.contacts || []).length > 0 || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
                                                     <XCardStyled padding={18} paddingBottom={20}>
@@ -787,7 +796,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                     </XVertical>
                                                 </XWithRole>
                                             </StickyContent>
-                                        </XVertical>
+                                        </ContactsContainer>
                                     </XHorizontal>
                                 )}
 
