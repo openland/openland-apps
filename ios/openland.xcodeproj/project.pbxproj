@@ -1611,7 +1611,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.testing.openland;
+				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.testing.openland.debug;
 				PRODUCT_NAME = openland;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

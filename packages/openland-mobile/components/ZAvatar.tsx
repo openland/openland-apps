@@ -24,7 +24,7 @@ export class ZAvatar extends React.PureComponent<{ size: 60 | 56 | 40 | 32 | 30,
             return (
                 <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
                     <Image source={{ uri: url }} style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2 }} />
-                    {!isAndroid && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#f1f1f1', borderWidth: 0.5 }} />}
+                    {!isAndroid && <View style={{ position: 'absolute', top: 0.5, left: 0.5, bottom: 0.5, right: 0.5, borderRadius: this.props.size / 2, borderColor: '#f1f1f1', borderWidth: 0.5 }} />}
                 </View>
             );
         } else {
