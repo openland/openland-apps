@@ -73,7 +73,9 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.js",
+    inputExcludes: ["android/**", "ios/**", "node_modules/**"],
+    // bundleInRelease: false
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
