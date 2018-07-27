@@ -38,6 +38,7 @@ export const OrganizationProfileFull = gql`
         
         published: alphaPublished
         editorial: alphaEditorial
+        featured: alphaFeatured
 
         organizationType: alphaOrganizationType
         interests: alphaInterests

@@ -121,6 +121,8 @@ export let XModalFooter = Glamorous.div({
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: '#f9fafb',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
     borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 

@@ -69,8 +69,8 @@ export const FollowOrganizationMutation = gql`
 `;
 
 export const ExploreOrganizationsQuery = gql`
-    query ExploreOrganizations($query: String, $page: Int) {
-        items: alphaOrganizations(query: $query, page: $page, first: 100) {
+    query ExploreOrganizations($query: String, $sort: String, $page: Int) {
+        items: alphaOrganizations(query: $query, sort: $sort, page: $page, first: 100) {
             edges {
                 node {
                     ...OrganizationSearch
@@ -286,4 +286,19 @@ export const OrganizationAlterPublishedMutation = gql`
         }
     }
     ${OrganizationSearch}
+`;
+
+export const HitsPopularQuery = gql`
+    query HitsPopular($categories: [String!]!){
+        hitsPopular: alphaHitsPopular(categories: $categories){
+            category
+            tags
+        }
+    }
+`;
+
+export const HitsAddMutation = gql`
+    mutation HitsAdd($hits: [HitInput!]!){
+        hitsAdd: alphaHitsAdd(hits: $hits)
+    }
 `;

@@ -36,12 +36,12 @@ const PickerSearchIcon = Glamorous(XIcon)({
     lineHeight: '40px'
 });
 
-export class LocationControlledPicker extends React.Component<{ query?: string, onPick: (location: string) => void }> {
+export class LocationControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void }> {
     options = [
-        { label: TextDirectory.locationCities, values: Cities },
-        { label: TextDirectory.locationMetropolitanAreas, values: MetropolitanAreas },
-        { label: TextDirectory.locationStates, values: States },
-        { label: TextDirectory.locationMultiStateRegions, values: MultiStateRegions },
+        { label: TextDirectory.locationCities, values: Cities.map(v => ({ label: v, value: v })) },
+        { label: TextDirectory.locationMetropolitanAreas, values: MetropolitanAreas.map(v => ({ label: v, value: v })) },
+        { label: TextDirectory.locationStates, values: States.map(v => ({ label: v, value: v })) },
+        { label: TextDirectory.locationMultiStateRegions, values: MultiStateRegions.map(v => ({ label: v, value: v })) },
     ];
     render() {
         return (<MultiplePicker title="Top locations" options={this.options} onPick={this.props.onPick} query={this.props.query} />);
@@ -57,8 +57,8 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
         this.setState({ query: v });
     }
 
-    onPick = (q: string) => {
-        this.props.onPick({ type: 'location', value: q, label: q });
+    onPick = (q: { label: string, value: string }) => {
+        this.props.onPick({ type: 'location', value: q.value, label: q.label });
         this.setState({ query: '', popper: false });
     }
 
@@ -66,7 +66,7 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
         if (this.state.query.length === 0) {
             return;
         }
-        this.onPick(this.state.query);
+        this.onPick({ label: this.state.query, value: this.state.query });
     }
 
     switch = () => {

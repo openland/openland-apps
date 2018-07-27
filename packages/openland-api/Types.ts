@@ -96,6 +96,7 @@ export interface UpdateOrganizationProfileInput {
   contacts?: Array< ContactPersonInput > | null,
   alphaPublished?: boolean | null,
   alphaEditorial?: boolean | null,
+  alphaFeatured?: boolean | null,
   alphaLocations?: Array< string > | null,
   alphaInterests?: Array< string > | null,
   alphaOrganizationType?: Array< string > | null,
@@ -205,6 +206,11 @@ export interface InviteRequestOrganization {
   emailText?: string | null,
   firstName?: string | null,
   lastName?: string | null,
+};
+
+export interface HitInput {
+  category: string,
+  tags: Array< string >,
 };
 
 export enum OwnerType {
@@ -1474,6 +1480,7 @@ export interface MyOrganizationQuery {
     id: string,
     isMine: boolean,
     editorial: boolean,
+    featured: boolean,
     name: string,
     photo: string | null,
     website: string | null,
@@ -1703,6 +1710,7 @@ export interface MyOrganizationProfileQuery {
     } >,
     published: boolean,
     editorial: boolean,
+    featured: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -1927,6 +1935,7 @@ export interface UpdateOrganizationMutation {
     } >,
     published: boolean,
     editorial: boolean,
+    featured: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -2103,6 +2112,7 @@ export interface OrganizationQuery {
     id: string,
     isMine: boolean,
     editorial: boolean,
+    featured: boolean,
     name: string,
     photo: string | null,
     website: string | null,
@@ -2336,6 +2346,7 @@ export interface OrganizationProfileQuery {
     } >,
     published: boolean,
     editorial: boolean,
+    featured: boolean,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
@@ -2517,6 +2528,7 @@ export interface FollowOrganizationMutation {
 
 export interface ExploreOrganizationsQueryVariables {
   query?: string | null,
+  sort?: string | null,
   page?: number | null,
 };
 
@@ -2537,6 +2549,7 @@ export interface ExploreOrganizationsQuery {
         followed: boolean,
         published: boolean,
         editorial: boolean,
+        featured: boolean,
       },
       cursor: string,
     } >,
@@ -2789,7 +2802,28 @@ export interface OrganizationAlterPublishedMutation {
     followed: boolean,
     published: boolean,
     editorial: boolean,
+    featured: boolean,
   },
+};
+
+export interface HitsPopularQueryVariables {
+  categories: Array< string >,
+};
+
+export interface HitsPopularQuery {
+  hitsPopular:  Array< {
+    __typename: "CategoryHits",
+    category: string,
+    tags: Array< string >,
+  } > | null,
+};
+
+export interface HitsAddMutationVariables {
+  hits: Array< HitInput >,
+};
+
+export interface HitsAddMutation {
+  hitsAdd: string | null,
 };
 
 export interface BlocksConnectionQueryVariables {
@@ -5014,6 +5048,7 @@ export interface OrganizationFullFragment {
   id: string,
   isMine: boolean,
   editorial: boolean,
+  featured: boolean,
   name: string,
   photo: string | null,
   website: string | null,
@@ -5241,6 +5276,7 @@ export interface OrganizationProfileFullFragment {
   } >,
   published: boolean,
   editorial: boolean,
+  featured: boolean,
   organizationType: Array< string > | null,
   interests: Array< string > | null,
   locations: Array< string > | null,
@@ -5418,6 +5454,7 @@ export interface OrganizationSearchFragment {
   followed: boolean,
   published: boolean,
   editorial: boolean,
+  featured: boolean,
 };
 
 export interface OrganizationShortFragment {

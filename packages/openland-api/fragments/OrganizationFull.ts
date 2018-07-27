@@ -5,6 +5,7 @@ export const OrganizationFull = gql`
         id
         isMine
         editorial: alphaEditorial
+        featured: alphaFeatured
 
         name
         photo

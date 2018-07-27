@@ -19,10 +19,14 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
-import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
+import { TextDirectory } from 'openland-text/TextDirectory';
 import { XLink } from 'openland-x/XLink';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 import { AutocompletePopper } from './autocompletePopper';
+import { SortPicker } from './sortPicker';
+import { Query, Mutation } from '../../../../../node_modules/react-apollo';
+import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
+import { HitsAddMutation } from 'openland-api/HitsAddMutation';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -108,6 +112,11 @@ const TopSearchTags = Glamorous(XHorizontal)({
     }
 });
 
+const CategoriesTitleMap = {
+    directory_location: 'Location',
+    directory_organizationType: 'Organization category',
+    directory_interest: 'Interests',
+};
 class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> {
 
     onPick = (q: SearchCondition) => {
@@ -123,20 +132,27 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
             <XVertical flexGrow={1} flexShrink={0} width={320} maxWidth={320}>
                 <TopTagsWrapper separator={12}>
                     <TopTagsTitle>Top searches</TopTagsTitle>
-                    <XVertical separator={9}>
-                        <TopSearchCategory>Interests</TopSearchCategory>
-                        <TopSearchTags separator={0}>
-                            {TextDirectoryData.interestPicker.map((val, i) => (
-                                <XTag
-                                    key={'top_search_' + i + val.label}
-                                    color="primary"
-                                    text={val.label}
-                                    size="large"
-                                    onClick={() => this.onClick({ type: 'interest', value: val.value, label: val.label })}
-                                />
+                    <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }}>
+                        {data =>
+                            ((data.data && data.data.hitsPopular) || []).map((val: { category: string, tags: string[] }, i: number) => (
+                                <XVertical separator={9} key={i + '_container_' + val.category}>
+                                    <TopSearchCategory key={i + '_title_' + val.category}>{CategoriesTitleMap[val.category] || val.category}</TopSearchCategory>
+                                    <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
+                                        {val.tags.map((tag, iter) => (
+                                            <XTag
+                                                key={'top_search_' + iter + val}
+                                                color="primary"
+                                                text={tag}
+                                                size="large"
+                                                onClick={() => this.onClick({ type: 'interest', value: tag, label: tag })}
+                                            />
+                                        ))}
+                                    </TopSearchTags>
+                                </XVertical>
                             ))}
-                        </TopSearchTags>
-                    </XVertical>
+
+                    </Query>
+
                 </TopTagsWrapper>
             </XVertical>
         );
@@ -377,9 +393,9 @@ const OrganizationCards = withExploreOrganizations((props) => {
 
         </XVertical>
     );
-}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string }, onSearchReset?: React.MouseEventHandler<any> }>;
+}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string, sort?: string }, onSearchReset?: React.MouseEventHandler<any> }>;
 
-class Organizations extends React.PureComponent<{ conditions: SearchCondition[], onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
+class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderBy: string, conditions: SearchCondition[], onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
 
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
@@ -405,7 +421,8 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
 
     render() {
         let clauses: any[] = [];
-        let groups = this.groupByType(this.props.conditions);
+        let groups: { [type: string]: SearchCondition[] } = this.groupByType(this.props.conditions);
+        let hits = [];
         for (let type of Object.keys(groups)) {
             let group = groups[type];
 
@@ -434,8 +451,28 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
                     return clause;
                 })],
                 '$or'));
+
+            hits.push({
+                category: 'directory_' + type, tags: group.map((c: SearchCondition) => c.value).reduce(
+                    (res, x) => {
+                        if (Array.isArray(x)) {
+                            (res as string[]).push(...x);
+                        } else {
+                            (res as string[]).push(x);
+                        }
+                        return res;
+                    },
+                    []
+                )
+            });
+
         }
+
         let q = this.buildQuery(clauses, '$and');
+        let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
+        if (this.props.featuredFirst) {
+            sort.unshift({ ['featured']: { order: 'desc' } });
+        }
 
         return (
             <XVertical flexGrow={1}>
@@ -443,9 +480,16 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
                     onPick={this.props.onPick}
                     onSearchReset={this.props.onSearchReset}
                     variables={{
-                        query: q ? JSON.stringify(q) : undefined
+                        query: q ? JSON.stringify(q) : undefined,
+                        sort: JSON.stringify(sort),
                     }}
                 />
+                <Mutation mutation={HitsAddMutation.document} variables={{ hits: hits }}>
+                    {data => {
+                        data();
+                        return null;
+                    }}
+                </Mutation>
             </XVertical>
         );
     }
@@ -481,7 +525,14 @@ const SearchInput = Glamorous.input({
 const SearchPickers = Glamorous(XHorizontal)({
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#f9fafb',
-    padding: '10px 14px 10px 10px',
+    padding: '10px 0px 10px 10px',
+});
+
+const SortContainer = Glamorous(XHorizontal)({
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)',
+    borderLeft: '1px solid rgba(220, 222, 228, 0.45)',
+    backgroundColor: '#f9fafb',
+    padding: '10px 10px 10px 10px',
 });
 
 class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
@@ -504,14 +555,15 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
     }
 }
 
-class RootComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
+class RootComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[], sort: { orederBy: string, featured: boolean } }> {
     input?: any;
     constructor(props: any) {
         super(props);
 
         this.state = {
             searchText: '',
-            conditions: []
+            conditions: [],
+            sort: { orederBy: 'createdAt', featured: true }
         };
     }
 
@@ -520,6 +572,10 @@ class RootComponent extends React.Component<{}, { searchText: string, conditions
         this.setState({
             searchText: val
         });
+    }
+
+    changeSort = (sort: { orederBy: string, featured: boolean }) => {
+        this.setState({ sort: sort });
     }
 
     addCondition = (condition: SearchCondition) => {
@@ -617,14 +673,19 @@ class RootComponent extends React.Component<{}, { searchText: string, conditions
                             <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
                         </XHorizontal>
                     </SearchFormWrapper>
-                    <SearchPickers separator="none">
-                        <LocationPicker onPick={this.addCondition} />
-                        <CategoryPicker onPick={this.addCondition} />
-                        <InterestPicker onPick={this.addCondition} />
-                    </SearchPickers>
+                    <XHorizontal separator={0}>
+                        <SearchPickers separator="none" flexGrow={1}>
+                            <LocationPicker onPick={this.addCondition} />
+                            <CategoryPicker onPick={this.addCondition} />
+                            <InterestPicker onPick={this.addCondition} />
+                        </SearchPickers>
+                        <SortContainer>
+                            <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                        </SortContainer>
+                    </XHorizontal>
                 </XCardStyled>
                 <XHorizontal>
-                    <Organizations conditions={conditions} onPick={this.replaceConditions} onSearchReset={this.reset} />
+                    <Organizations featuredFirst={this.state.sort.featured} orderBy={this.state.sort.orederBy} conditions={conditions} onPick={this.replaceConditions} onSearchReset={this.reset} />
                     <TopTags onPick={this.addCondition} />
                 </XHorizontal>
             </XVertical>
