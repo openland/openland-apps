@@ -48,7 +48,7 @@ export class LocationControlledPicker extends React.Component<{ query?: string, 
     }
 }
 
-export class LocationPopperPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { query: string, popper: boolean }> {
+export class LocationPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { query: string, popper: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { query: '', popper: false };

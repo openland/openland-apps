@@ -12,14 +12,14 @@ import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { LocationPopperPicker } from './locationPicker';
+import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
 import { XTag } from 'openland-x/XTag';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
-import { TextDirectory } from 'openland-text/TextDirectory';
+import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 import { XLink } from 'openland-x/XLink';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 import { AutocompletePopper } from './autocompletePopper';
@@ -31,19 +31,16 @@ const Root = Glamorous(XVertical)({
 });
 
 const HeaderWrapper = Glamorous.div({
-    backgroundColor: '#fff',
-    backgroundImage: 'url(/static/directory-head@2x.png)',
-    backgroundSize: 'auto 100%',
-    backgroundPosition: 'center center',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.4)',
-    padding: '42px 40px 40px',
+    paddingTop: 30,
+    paddingLeft: 40,
+    paddingRight: 40
 });
 
 const HeaderContent = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    maxWidth: 952,
+    maxWidth: 1280,
     margin: 'auto'
 });
 
@@ -51,51 +48,105 @@ const HeaderTitle = Glamorous.div({
     fontSize: 24,
     fontWeight: 700,
     letterSpacing: 0.4,
-    color: '#1f3449',
-    marginBottom: 16
+    color: '#1f3449'
 });
 
-const HeaderText = Glamorous.div({
-    opacity: 0.8,
-    fontSize: 15,
-    lineHeight: '20px',
-    letterSpacing: 0.35,
-    color: '#1f3449',
+const HeaderCounter = Glamorous(XHorizontal)({
+    marginTop: 4
 });
 
-const Header = () => (
+const OrganizationCounter = Glamorous.div({
+    fontSize: 18,
+    letterSpacing: -0.2,
+    color: '#99a2b0',
+});
+
+const Header = withExploreOrganizations(props => (
     <HeaderWrapper>
         <HeaderContent>
-            <div>
+            <XHorizontal alignItems="center" separator={6}>
                 <HeaderTitle>{TextDirectory.headerTitle}</HeaderTitle>
-                <HeaderText>{TextDirectory.headerText}</HeaderText>
-            </div>
-            <XButton path="/createOrganization" text={TextDirectory.headerButtonAddOrganization} />
+                <HeaderCounter separator={4}>
+                    <img src="/static/X/ic-arrow-rignt.svg" />
+                    <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>
+                </HeaderCounter>
+            </XHorizontal>
+            <XButton style="ghost" path="/createOrganization" text={TextDirectory.headerButtonAddOrganization} />
         </HeaderContent>
     </HeaderWrapper>
-);
+));
+
+const TopTagsWrapper = Glamorous(XVertical)({
+    borderRadius: 5,
+    backgroundColor: '#ffffff',
+    border: 'solid 1px rgba(220, 222, 228, 0.4)',
+    position: 'sticky',
+    top: 10,
+    padding: 24
+});
+
+const TopTagsTitle = Glamorous.div({
+    fontSize: 20,
+    fontWeight: 500,
+    lineHeight: 1,
+    letterSpacing: 0.6,
+    color: '#334562'
+});
+
+const TopSearchCategory = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: 1.25,
+    letterSpacing: -0.2,
+    color: '#334562'
+});
+
+const TopSearchTags = Glamorous(XHorizontal)({
+    flexWrap: 'wrap',
+    '& > div': {
+        marginRight: 8
+    }
+});
+
+class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> {
+
+    onPick = (q: SearchCondition) => {
+        this.props.onPick(q);
+    }
+
+    onClick = (category: { type: any, value: string, label: string }) => {
+        this.onPick({ type: category.type, value: category.value, label: category.label });
+    }
+
+    render() {
+        return (
+            <XVertical flexGrow={1} flexShrink={0} width={320} maxWidth={320}>
+                <TopTagsWrapper separator={12}>
+                    <TopTagsTitle>Top searches</TopTagsTitle>
+                    <XVertical separator={9}>
+                        <TopSearchCategory>Interests</TopSearchCategory>
+                        <TopSearchTags separator={0}>
+                            {TextDirectoryData.interestPicker.map((val, i) => (
+                                <XTag
+                                    key={'top_search_' + i + val.label}
+                                    color="primary"
+                                    text={val.label}
+                                    size="large"
+                                    onClick={() => this.onClick({ type: 'interest', value: val.value, label: val.label })}
+                                />
+                            ))}
+                        </TopSearchTags>
+                    </XVertical>
+                </TopTagsWrapper>
+            </XVertical>
+        );
+    }
+}
 
 const XCardStyled = Glamorous(XCard)({
     borderRadius: 5,
     overflow: 'hidden'
 });
-
-interface OrganizationCardProps {
-    item: {
-        id: string,
-        name: string,
-        photo: string | null,
-        locations: string[] | null,
-        interests: string[] | null,
-        organizationType: string[] | null,
-        isMine: boolean,
-        followed: boolean,
-        published: boolean,
-        editorial: boolean,
-    };
-    onPick: (q: SearchCondition) => void;
-
-}
 
 const OrganizationCardWrapper = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
@@ -106,7 +157,7 @@ const OrganizationCardWrapper = Glamorous.div({
     }
 });
 
-const OrganizationWrapper = Glamorous(XHorizontal)({
+const OrganizationContentWrapper = Glamorous(XHorizontal)({
     flexGrow: 1,
     marginLeft: 8
 });
@@ -163,24 +214,43 @@ export interface SearchCondition {
     label: string;
 }
 
-const OrganizationFollowBtn = withOrganizationFollow((props) => {
-    return (
-        <XMutation mutation={props.followOrganization} variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}>
-            <XButton
-                iconOpacity={0.4}
-                style={(props as any).followed ? 'ghost' : 'default'}
-                text={(props as any).followed ? TextDirectory.buttonFollowing : TextDirectory.buttonFollow}
-                icon={(props as any).followed ? 'check' : undefined}
-            />
-        </XMutation>
-    );
-}) as React.ComponentType<{ organizationId: string, followed: boolean }>;
+const OrganizationFollowBtn = withOrganizationFollow((props) => (
+    <XMutation mutation={props.followOrganization} variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}>
+        <XButton
+            iconOpacity={0.4}
+            style={(props as any).followed ? 'ghost' : 'default'}
+            text={(props as any).followed ? TextDirectory.buttonFollowing : TextDirectory.buttonFollow}
+            icon={(props as any).followed ? 'check' : undefined}
+        />
+    </XMutation>
+)) as React.ComponentType<{ organizationId: string, followed: boolean }>;
 
-const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => {
-    return (
-        <XButton text={(props as any).published ? 'Hide from search' : 'Publish'} style="flat" action={async () => props.alterPublished({ variables: { organizationId: (props as any).orgId, published: !(props as any).published } })} />
-    );
-}) as React.ComponentType<{ orgId: string, published: boolean }>;
+const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
+    <XButton text={(props as any).published ? 'Hide from search' : 'Publish'} style="flat" action={async () => props.alterPublished({ variables: { organizationId: (props as any).orgId, published: !(props as any).published } })} />
+)) as React.ComponentType<{ orgId: string, published: boolean }>;
+
+interface OrganizationCardProps {
+    item: {
+        id: string,
+        name: string,
+        photo: string | null,
+        locations: string[] | null,
+        interests: string[] | null,
+        organizationType: string[] | null,
+        isMine: boolean,
+        followed: boolean,
+        published: boolean,
+        editorial: boolean,
+    };
+    onPick: (q: SearchCondition) => void;
+}
+
+const OrganizationCardTypeWrapper = Glamorous(XHorizontal)({
+    flexWrap: 'wrap',
+    '& > div': {
+        marginRight: 8
+    }
+});
 
 const OrganizationCard = (props: OrganizationCardProps) => (
     <OrganizationCardWrapper>
@@ -192,7 +262,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                     style="organization"
                 />
             </XLink>
-            <OrganizationWrapper>
+            <OrganizationContentWrapper>
                 <OrganizationInfoWrapper>
                     <OrganizationTitleWrapper>
                         <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
@@ -201,11 +271,11 @@ const OrganizationCard = (props: OrganizationCardProps) => (
 
                     {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
                     {props.item.organizationType && (
-                        <XHorizontal separator={4}>
+                        <OrganizationCardTypeWrapper separator={0}>
                             {props.item.organizationType.map((tag) => (
                                 <XTag key={props.item.id + tag} text={tag} onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })} />
                             ))}
-                        </XHorizontal>
+                        </OrganizationCardTypeWrapper>
                     )}
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
@@ -238,30 +308,14 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                         )}
                     />
                 </OrganizationToolsWrapper>
-            </OrganizationWrapper>
+            </OrganizationContentWrapper>
         </XHorizontal>
     </OrganizationCardWrapper>
 );
 
-const OrganizationCounter = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    fontSize: 15,
-    lineHeight: '20px',
-    letterSpacing: 0.6,
-    color: 'rgba(31, 52, 73, 0.5)',
-    padding: '20px 5px 20px 24px',
-    fontWeight: 500
-});
-
-const EmptySearchWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
+const EmptySearchWrapper = Glamorous(XVertical)({
     paddingTop: 85,
-    paddingBottom: 85,
-    '& > img': {
-        marginBottom: 24
-    }
+    paddingBottom: 85
 });
 
 const EmptySearchBlockTitle = Glamorous.div({
@@ -270,31 +324,7 @@ const EmptySearchBlockTitle = Glamorous.div({
     color: '#334562'
 });
 
-const Separator = Glamorous.div({
-    width: 253,
-    height: 1,
-    opacity: 0.73,
-    backgroundColor: '#f9fafb',
-    border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    marginTop: 17,
-    marginBottom: 16,
-});
-
-const Text = Glamorous.div({
-    opacity: 0.5,
-    fontSize: 15,
-    letterSpacing: -0.2,
-    color: '#334562',
-    marginBottom: 15
-});
-
-const TopTagsWrapper = Glamorous(XHorizontal)({
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    maxWidth: 480
-});
-
-class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) => void }> {
+class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
 
     onPick = (q: SearchCondition) => {
         this.props.onPick(q);
@@ -307,67 +337,12 @@ class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) =>
     render() {
         return (
             <XCardStyled>
-                <EmptySearchWrapper>
-                    <img src="/static/X/directory-empty.svg" />
-                    <EmptySearchBlockTitle>No results found</EmptySearchBlockTitle>
-                    <Separator />
-                    <Text>Top searches</Text>
-                    <TopTagsWrapper separator={4}>
-                        <XTag
-                            color="primary"
-                            text="Big box retail"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'organizationType', value: 'Big box retail', label: 'Big box retail' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Selling"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'interest', value: 'Selling', label: 'Selling' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Buying"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'interest', value: 'Buying', label: 'Buying' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Leasing"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'interest', value: 'Leasing', label: 'Leasing' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Joint ventures"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'interest', value: 'Joint ventures', label: 'Joint ventures' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Parking"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'organizationType', value: 'Parking', label: 'Parking' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Gas station"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'organizationType', value: 'Gas station', label: 'Gas station' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Railway"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'organizationType', value: 'Railway', label: 'Railway' })}
-                        />
-                        <XTag
-                            color="primary"
-                            text="Car wash"
-                            size="large"
-                            onClick={() => this.onClick({ type: 'organizationType', value: 'Car wash', label: 'Car wash' })}
-                        />
-                    </TopTagsWrapper>
+                <EmptySearchWrapper separator={12} alignItems="center">
+                    <XVertical separator={9}>
+                        <img src="/static/X/directory-empty.svg" />
+                        <EmptySearchBlockTitle>No results found</EmptySearchBlockTitle>
+                    </XVertical>
+                    <XButton text="See all organizations" style="ghost" onClick={this.props.onSearchReset} />
                 </EmptySearchWrapper>
             </XCardStyled>
         );
@@ -382,14 +357,13 @@ const OrganizationCards = withExploreOrganizations((props) => {
         <XVertical>
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
                 <XCardStyled>
-                    <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>
                     {props.data.items.edges.map((i, j) => (
                         <OrganizationCard key={i.node.id + j} item={i.node} onPick={(props as any).onPick} />))
                     }
                 </XCardStyled>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
-                <EmptySearchBlock onPick={(props as any).onPick} />
+                <EmptySearchBlock onPick={(props as any).onPick} onSearchReset={(props as any).onSearchReset} />
             )}
 
             <XHorizontal justifyContent="flex-end">
@@ -403,9 +377,9 @@ const OrganizationCards = withExploreOrganizations((props) => {
 
         </XVertical>
     );
-}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string } }>;
+}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string }, onSearchReset?: React.MouseEventHandler<any> }>;
 
-class Organizations extends React.PureComponent<{ conditions: SearchCondition[], onPick: (q: SearchCondition) => void }> {
+class Organizations extends React.PureComponent<{ conditions: SearchCondition[], onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
 
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
@@ -464,14 +438,15 @@ class Organizations extends React.PureComponent<{ conditions: SearchCondition[],
         let q = this.buildQuery(clauses, '$and');
 
         return (
-            <div>
+            <XVertical flexGrow={1}>
                 <OrganizationCards
                     onPick={this.props.onPick}
+                    onSearchReset={this.props.onSearchReset}
                     variables={{
                         query: q ? JSON.stringify(q) : undefined
                     }}
                 />
-            </div>
+            </XVertical>
         );
     }
 }
@@ -529,7 +504,7 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
     }
 }
 
-class SearchComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
+class RootComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[] }> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -643,12 +618,15 @@ class SearchComponent extends React.Component<{}, { searchText: string, conditio
                         </XHorizontal>
                     </SearchFormWrapper>
                     <SearchPickers separator="none">
-                        <LocationPopperPicker onPick={this.addCondition} />
+                        <LocationPicker onPick={this.addCondition} />
                         <CategoryPicker onPick={this.addCondition} />
                         <InterestPicker onPick={this.addCondition} />
                     </SearchPickers>
                 </XCardStyled>
-                <Organizations conditions={conditions} onPick={this.replaceConditions} />
+                <XHorizontal>
+                    <Organizations conditions={conditions} onPick={this.replaceConditions} onSearchReset={this.reset} />
+                    <TopTags onPick={this.addCondition} />
+                </XHorizontal>
             </XVertical>
         );
     }
@@ -659,7 +637,7 @@ const ContentWrapper = Glamorous.div({
 });
 
 const MainContent = Glamorous.div({
-    maxWidth: 952,
+    maxWidth: 1280,
     margin: 'auto'
 });
 
@@ -673,7 +651,7 @@ export default withApp('Directory', 'viewer', (props) => {
                         <Header />
                         <ContentWrapper>
                             <MainContent>
-                                <SearchComponent />
+                                <RootComponent />
                             </MainContent>
                         </ContentWrapper>
                     </Root>
