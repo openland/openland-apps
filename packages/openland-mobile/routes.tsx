@@ -9,6 +9,7 @@ import { Conversation } from './pages/main/Conversation';
 import { createZStackNavigator } from './components/ZNavigatorStack';
 import { createZTabNavigator } from './components/ZNavigatorTabs';
 import { Typography } from './pages/dev/Typography';
+import { Components } from './pages/dev/Components';
 
 //
 // Home Routes
@@ -58,7 +59,8 @@ const AppStack = createZStackNavigator({
     }
   },
   Conversation: Conversation,
-  DevTypography: Typography
+  DevTypography: Typography,
+  DevComponents: Components
 });
 
 //

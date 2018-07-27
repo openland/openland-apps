@@ -1,4 +1,5 @@
 export const AppStyles = {
     primaryColor: '#4747EC',
-    separatorColor: '#eaeaea'
+    separatorColor: '#eaeaea',
+    backyardColor: '#f3f3f3'
 };

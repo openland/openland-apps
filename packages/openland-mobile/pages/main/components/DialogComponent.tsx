@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ZListItem } from '../../../components/ZListItem';
+import { ZListItemBase } from '../../../components/ZListItemBase';
 import { View, Text, StyleSheet, TextStyle } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
 import { ZCounter } from '../../../components/ZCounter';
@@ -75,7 +75,7 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
             }
         }
         return (
-            <ZListItem onPress={this.handlePress} height={80} separatorPaddingStart={80}>
+            <ZListItemBase onPress={this.handlePress} height={80} separatorPaddingStart={80}>
                 <View width={80} height={80} alignItems="center" justifyContent="center">
                     <ZAvatar
                         src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
@@ -108,7 +108,7 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
                         )}
                     </View>
                 </View>
-            </ZListItem>
+            </ZListItemBase>
         );
     }
 }

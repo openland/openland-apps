@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
 import { buildNativeClient, saveClient } from '../../utils/apolloClient';
 import { Auth0Client } from '../../index';
 import { AccountQuery } from 'openland-api/AccountQuery';
@@ -41,9 +41,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '600',
         color: '#000',
-        height: 18,
+        height: 56,
+        lineHeight: 56,
         flexGrow: 1,
-        textAlign: 'center'
+        textAlign: 'center',
+        textAlignVertical: 'center'
     } as TextStyle,
     footer: {
         color: '#fff',
@@ -126,7 +128,7 @@ export class Login extends React.Component<NavigationInjectedProps, { initing: b
             <View style={{ backgroundColor: AppStyles.primaryColor, width: '100%', height: '100%' }}>
                 <Image source={require('assets/img-back.png')} style={{ width: '100%', height: '100%', opacity: this.state.initing ? 0 : 1 }} fadeDuration={0} onLoadEnd={() => this.setState({ initing: false })} />
                 {!this.state.initing && (
-                    <View style={styles.container}>
+                    <SafeAreaView style={styles.container}>
                         {/* {this.state.loading && <ZLoader />} */}
                         <Text style={styles.title}>Welcome to Openland!</Text>
                         <View flexDirection="column" style={{ marginTop: 35 }}>
@@ -148,7 +150,7 @@ export class Login extends React.Component<NavigationInjectedProps, { initing: b
                             <Text style={styles.footer}>By creating an account you are accepting our</Text>
                             <Text style={styles.footer}>Terms of Service and Privacy Policy</Text>
                         </View>
-                    </View>
+                    </SafeAreaView>
                 )}
             </View>
         );
