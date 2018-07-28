@@ -34,6 +34,15 @@ const Root = Glamorous(XVertical)({
     paddingBottom: 80
 });
 
+const ContentWrapper = Glamorous.div({
+    padding: '0 40px'
+});
+
+const MainContent = Glamorous.div({
+    maxWidth: 1280,
+    margin: 'auto'
+});
+
 const HeaderWrapper = Glamorous.div({
     paddingTop: 30,
     paddingLeft: 40,
@@ -764,15 +773,6 @@ class RootComponent extends React.Component<{}, RootComponentState> {
         );
     }
 }
-
-const ContentWrapper = Glamorous.div({
-    padding: '0 40px'
-});
-
-const MainContent = Glamorous.div({
-    maxWidth: 1280,
-    margin: 'auto'
-});
 
 export default withApp('Directory', 'viewer', (props) => {
     return (
