@@ -19,7 +19,7 @@ export const TextDirectory = {
     buttonFollowing: 'Following',
 
     counterOrganizations: function (value: number) {
-        return value + ((value !== 1) ? ' organizations' : ' organization');
+        return value + ((value !== 1) ? ' results found' : ' result found');
     },
 
     emptyResults: 'Empty',

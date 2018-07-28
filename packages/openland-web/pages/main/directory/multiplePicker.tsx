@@ -155,7 +155,8 @@ const HelpText = Glamorous.div({
     lineHeight: 1.27,
     letterSpacing: -0.1,
     color: '#334562',
-    marginBottom: '24px !important'
+    marginBottom: '24px !important',
+    marginTop: 10
 });
 
 interface MultoplePickerProps {
@@ -270,7 +271,6 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
                             />
                         )}
                         {this.props.options.length > 1 && (
-
                             <PickerEntries separator="none">
                                 {this.props.options.filter(o => filterOptions(o.values, this.props.query || '').length > 0).map((o, i) => (
                                     <EntriesComponent
@@ -286,7 +286,6 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
                                 ))}
                             </PickerEntries>
                         )}
-
                     </XVertical>
                 )}
             </>
