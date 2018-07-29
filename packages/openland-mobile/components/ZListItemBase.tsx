@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { TouchableHighlight, View } from 'react-native';
+import { TouchableHighlight, View, Image } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
+import { isAndroid } from '../utils/isAndroid';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
@@ -31,6 +32,9 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
                 <View style={{ height: height + (this.props.separator !== false ? 1 : 0), flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
                     <View style={{ height: height, flexDirection: 'row' }}>
                         <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
+                        {!isAndroid && this.props.path && (
+                            <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} />
+                        )}
                     </View>
                     {this.props.separator !== false && <View style={{ backgroundColor: AppStyles.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
                 </View>
