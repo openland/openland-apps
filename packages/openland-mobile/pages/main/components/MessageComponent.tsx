@@ -132,7 +132,12 @@ class MessageFileContent extends React.PureComponent<{ file: string, fileName?: 
     }
 }
 
-export class MessageComponent extends React.PureComponent<{ message: ModelMessage, engine: ConversationEngine }> {
+export class MessageComponent extends React.PureComponent<{ onAvatarPress: (userId: string) => void, message: ModelMessage, engine: ConversationEngine }> {
+    handlePress = () => {
+        let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
+        this.props.onAvatarPress(sender.id);
+    }
+
     render() {
         let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
         let content: any[] = [];
@@ -158,7 +163,9 @@ export class MessageComponent extends React.PureComponent<{ message: ModelMessag
         }
         return (
             <View style={styles.container}>
-                <ZAvatar src={sender.picture} size={32} placeholderKey={sender.id} placeholderTitle={sender.name} />
+                <TouchableOpacity onPress={this.handlePress}>
+                    <ZAvatar src={sender.picture} size={32} placeholderKey={sender.id} placeholderTitle={sender.name} />
+                </TouchableOpacity>
                 <View style={styles.messageContainer}>
                     <View style={styles.header}>
                         <Text style={styles.sender}>{sender.name}</Text>

@@ -12,6 +12,10 @@ class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
         title: 'Info'
     };
+    handleSend = () => {
+        this.props.navigation.navigate('Conversation', { 'id': this.props.navigation.getParam('id') });
+    }
+
     render() {
         return (
             <ZQuery query={UserQuery} variables={{ userId: this.props.navigation.getParam('id') }}>
@@ -24,9 +28,10 @@ class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
                                     title={resp.data.user.name}
                                     subtitle="Person"
                                 />
+                                <ZListItem text="Send message" appearance="action" onPress={this.handleSend} />
                                 {resp.data.user.about && <ZListItem text={resp.data.user.about} />}
                             </ZListItemGroup>
-                            
+
                             <ZListItemGroup header="Contacts">
                                 {resp.data.user.email && <ZListItem text={resp.data.user.email} />}
                                 {resp.data.user.phone && <ZListItem text={resp.data.user.phone} />}

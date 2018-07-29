@@ -7,6 +7,7 @@ import { MessageComponent } from './MessageComponent';
 import { ZLoader } from '../../../components/ZLoader';
 
 export interface MessagesListProps {
+    onAvatarPress: (userId: string) => void;
     engine: ConversationEngine;
 }
 
@@ -60,7 +61,7 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
             >
                 <FlatList
                     data={this.state.messages}
-                    renderItem={(itm) => <MessageComponent message={itm.item} engine={this.props.engine} />}
+                    renderItem={(itm) => <MessageComponent onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />}
                     keyExtractor={(itm) => isServerMessage(itm) ? itm.id : itm.key}
                     inverted={true}
                     flexBasis={0}

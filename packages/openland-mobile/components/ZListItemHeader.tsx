@@ -6,7 +6,7 @@ import { ZAvatar } from './ZAvatar';
 export class ZListItemHeader extends React.PureComponent<{ photo?: string | null, id?: string, title?: string, subtitle?: string, path?: string }> {
     render() {
         return (
-            <ZListItemBase path={this.props.path} height={80} backgroundColor="#fff">
+            <ZListItemBase path={this.props.path} height={80} backgroundColor="#fff" separator={false}>
                 <View width={80} height={80} alignItems="center" justifyContent="center">
                     <ZAvatar src={this.props.photo} placeholderTitle={this.props.title} placeholderKey={this.props.id} size={60} />
                 </View>

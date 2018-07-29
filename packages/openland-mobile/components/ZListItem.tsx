@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
 import { View, Text, Switch, Image } from 'react-native';
+import { AppStyles } from '../styles/AppStyles';
 
 export interface ZListItemProps {
     leftIcon?: any | null;
@@ -12,6 +13,7 @@ export interface ZListItemProps {
     onToggle?: (value: boolean) => void;
     path?: string;
     onPress?: () => void;
+    appearance?: 'default' | 'action';
 }
 
 export class ZListItem extends React.PureComponent<ZListItemProps> {
@@ -20,7 +22,7 @@ export class ZListItem extends React.PureComponent<ZListItemProps> {
             <ZListItemBase onPress={this.props.onPress} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path}>
                 <View flexDirection="row" paddingLeft={15} paddingRight={15} flexGrow={1} alignItems="center">
                     {this.props.leftIcon && <Image source={this.props.leftIcon} />}
-                    <Text style={{ fontSize: 16, color: '#181818', lineHeight: 44, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }}>
+                    <Text style={{ fontSize: 16, color: this.props.appearance === 'action' ? AppStyles.primaryColor : '#181818', lineHeight: 44, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }}>
                         {this.props.text}
                     </Text>
                     {this.props.description && (

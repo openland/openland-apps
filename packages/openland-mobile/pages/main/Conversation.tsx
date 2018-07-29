@@ -48,11 +48,11 @@ const icon = require('assets/ic-send.png');
 const iconActive = require('assets/ic-send-active.png');
 const iconAttach = require('assets/ic-attachment.png');
 
-class ConversationRoot extends React.Component<{ engine: MessengerEngine, conversationId: string }, { text: string }> {
+class ConversationRoot extends React.Component<{ navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
-    constructor(props: { engine: MessengerEngine, conversationId: string }) {
+    constructor(props: {navigator: any,  engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
         this.state = { text: '' };
@@ -76,11 +76,15 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
         });
     }
 
+    handleAvatarPress = (userId: string) => {
+        this.props.navigator.navigate('ProfileUser', { 'id': userId });
+    }
+
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
             <View style={{ height: '100%' }} flexDirection="column">
-                <MessagesListComponent engine={this.engine} />
+                <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
                 <View alignSelf="stretch" alignItems="stretch" style={{ paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
                     <TouchableOpacity onPress={this.handleAttach}>
                         <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
@@ -123,7 +127,7 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
                 <MessengerContext.Consumer>
                     {messenger => {
                         return (
-                            <ConversationRoot engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
+                            <ConversationRoot navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
                         );
                     }}
                 </MessengerContext.Consumer>
