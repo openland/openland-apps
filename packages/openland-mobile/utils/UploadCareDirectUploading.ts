@@ -21,6 +21,9 @@ export class UploadCareDirectUploading implements UploadingFile {
                 name: 'UPLOADCARE_PUB_KEY',
                 data: 'b70227616b5eac21ba88',
             }, {
+                name: 'UPLOADCARE_STORE',
+                data: '1'
+            }, {
                 name: 'file',
                 filename: this.name,
                 data: RNFetchBlob.wrap(this.uri)

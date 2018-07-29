@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
-import { View, Button } from 'react-native';
+import { View, Button, Image } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../components/ZListItemEdit';
 import { ZQuery } from '../../components/ZQuery';
@@ -9,7 +9,11 @@ import { ProfileQuery } from 'openland-api/ProfileQuery';
 import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ProfileUpdateMutation, AccountQuery } from 'openland-api';
-import { delay } from 'openland-y-utils/timer';
+import { ZAvatarPicker } from '../../components/ZAvatarPicker';
+import { ZListItemBase } from '../../components/ZListItemBase';
+import { ZTextInput } from '../../components/ZTextInput';
+import { AppStyles } from '../../styles/AppStyles';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 
 class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { firstName: string, lastName: string, loaded: boolean }> {
     private ref = React.createRef<ZForm>();
@@ -46,6 +50,11 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
         }
     }
 
+    handleAvatarChanged = (src: any) => {
+        console.log(src);
+        //
+    }
+
     render() {
         return (
             <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
@@ -62,6 +71,7 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
                                     input: {
                                         firstName: resp.data.profile!!.firstName,
                                         lastName: resp.data.profile!!.lastName,
+                                        photoRef: sanitizeIamgeRef(resp.data.profile!!.photoRef),
                                         phone: resp.data.profile!!.phone,
                                         email: resp.data.profile!!.email,
                                         website: resp.data.profile!!.website,
@@ -69,9 +79,17 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
                                     }
                                 }}
                             >
-                                <ZListItemGroup header="Profile">
-                                    <ZListItemEdit title="First name" field="input.firstName" />
-                                    <ZListItemEdit title="Last name" field="input.lastName" />
+                                <ZListItemGroup>
+                                    <ZListItemBase height={96} separator={false}>
+                                        <View padding={15}>
+                                            <ZAvatarPicker field="input.photoRef" />
+                                        </View>
+                                        <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4}>
+                                            <ZTextInput placeholder="First name" field="input.firstName" height={44} style={{ fontSize: 16 }} />
+                                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                                            <ZTextInput placeholder="Last name" field="input.lastName" height={44} style={{ fontSize: 16 }} />
+                                        </View>
+                                    </ZListItemBase>
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Contacts">
                                     <ZListItemEdit title="Phone number" field="input.phone" />
