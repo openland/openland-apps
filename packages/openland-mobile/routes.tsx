@@ -17,6 +17,7 @@ import { ConversationInfo } from './pages/main/ConversationInfo';
 import { ProfileUser } from './pages/main/ProfileUser';
 import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
+import { Directory } from './pages/main/Directory';
 
 //
 // Home Routes
@@ -24,6 +25,7 @@ import { ProfileGroup } from './pages/main/ProfileGroup';
 
 const HomeTabs = createZTabNavigator(
   {
+    Directory: Directory,
     Dialogs: Dialogs,
     Settings: Settings
   },
@@ -32,12 +34,14 @@ const HomeTabs = createZTabNavigator(
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName: string;
-        if (routeName === 'Dialogs') {
+        if (routeName === 'Directory') {
+          iconName = `ios-home`;
+        } else if (routeName === 'Dialogs') {
           iconName = `ios-chatbubbles`;
-        } else if (routeName === 'Settings') {
+        } else {
           iconName = `ios-cog`;
         }
-        return <Ionicons name={iconName!!} size={25} color={tintColor!!} />;
+        return <Ionicons name={iconName} size={25} color={tintColor!!} />;
       }
     }),
   });
@@ -47,6 +51,11 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
   if (routeName === 'Dialogs') {
     return {
       headerTitle: 'Messages'
+    };
+  }
+  if (routeName === 'Directory') {
+    return {
+      headerTitle: 'Directory'
     };
   }
   return {
