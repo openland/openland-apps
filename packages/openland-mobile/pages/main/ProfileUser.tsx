@@ -25,6 +25,7 @@ class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
                             <ZListItemGroup>
                                 <ZListItemHeader
                                     photo={resp.data.user.photo}
+                                    id={resp.data.user.id}
                                     title={resp.data.user.name}
                                     subtitle="Person"
                                 />

@@ -23,6 +23,12 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
                         if (res.data!!.chat.__typename === 'PrivateConversation') {
                             destPath = 'ProfileUser';
                             destPathArgs = { id: res.data!!.chat.flexibleId };
+                        } else if (res.data!!.chat.__typename === 'SharedConversation') {
+                            destPath = 'ProfileOrganization';
+                            destPathArgs = { id: res.data!!.chat.flexibleId };
+                        } else if (res.data!!.chat.__typename === 'GroupConversation') {
+                            destPath = 'ProfileGroup';
+                            destPathArgs = { id: res.data!!.chat.id };
                         }
 
                         return (

@@ -15,6 +15,8 @@ import { Button, View } from 'react-native';
 import { SettingsNotifications } from './pages/main/SettingsNotifications';
 import { ConversationInfo } from './pages/main/ConversationInfo';
 import { ProfileUser } from './pages/main/ProfileUser';
+import { ProfileOrganization } from './pages/main/ProfileOrganization';
+import { ProfileGroup } from './pages/main/ProfileGroup';
 
 //
 // Home Routes
@@ -76,6 +78,8 @@ const AppStack = createZStackNavigator({
   },
   Conversation: Conversation,
   ProfileUser: ProfileUser,
+  ProfileOrganization: ProfileOrganization,
+  ProfileGroup: ProfileGroup,
   SettingsProfile: SettingsProfile,
   SettingsNotifications: SettingsNotifications,
   DevTypography: Typography,

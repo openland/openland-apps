@@ -4919,6 +4919,7 @@ export interface UserQueryVariables {
 export interface UserQuery {
   user:  {
     __typename: "User",
+    id: string,
     name: string,
     firstName: string,
     lastName: string | null,
