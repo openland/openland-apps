@@ -6,10 +6,12 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string }> {
     render() {
         let components: any[] = [];
         React.Children.forEach(this.props.children, (c) => {
-            if (components.length > 0) {
-                components.push(<View style={{ paddingLeft: 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
+            if (c !== null && c !== undefined) {
+                if (components.length > 0) {
+                    components.push(<View key={'div-' + components.length} style={{ paddingLeft: 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
+                }
+                components.push(c);
             }
-            components.push(c);
         });
 
         return (

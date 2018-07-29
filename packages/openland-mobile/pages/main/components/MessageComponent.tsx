@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking, Imag
 import { ZAvatar } from '../../../components/ZAvatar';
 import { formatTime } from '../../../utils/formatTime';
 import { layoutMedia } from './MediaLayout';
-import { ZCloudImage } from '../../../components/ZCloudImage';
+import { ZImage } from '../../../components/ZImage';
 import { formatBytes } from '../../../utils/formatBytes';
 import { preprocessText } from '../../../utils/TextProcessor';
 import { isAndroid } from '../../../utils/isAndroid';
@@ -73,13 +73,13 @@ class MessageTextContent extends React.PureComponent<{ text: string }> {
     }
 }
 
-class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number }> {
+class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean }> {
     render() {
         let maxSize = Math.min(Dimensions.get('window').width - 70, 400);
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
         return (
             <View width={layout.width} height={layout.height} style={{ marginTop: 4, marginBottom: 4 }}>
-                <ZCloudImage src={this.props.file} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
+                <ZImage source={{ uuid: this.props.file }} resize={!this.props.isGif} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
             </View>
         );
     }
@@ -116,7 +116,7 @@ export class MessageComponent extends React.PureComponent<{ message: ModelMessag
                 let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
                 let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
                 if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
-                    content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} />);
+                    content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} isGif={this.props.message.fileMetadata!!.imageFormat === 'GIF'} />);
                 } else {
                     content.push(<MessageFileContent file={this.props.message.file} fileName={name} size={size} />);
                 }

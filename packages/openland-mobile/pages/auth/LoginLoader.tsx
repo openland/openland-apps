@@ -19,6 +19,7 @@ export class LoginLoader extends React.Component<NavigationInjectedProps, { shou
         (async () => {
             let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
             if (userToken) {
+                this.setState({ shouldDisplayLoader: true });
                 let client = buildNativeClient(userToken);
                 let res = await client.client.query<any>({
                     query: AccountQuery.document

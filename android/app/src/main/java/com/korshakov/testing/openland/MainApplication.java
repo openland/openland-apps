@@ -3,6 +3,7 @@ package com.korshakov.testing.openland;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 
@@ -39,6 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new FastImageViewPackage(),
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
                     new ExtraDimensionsPackage(),
