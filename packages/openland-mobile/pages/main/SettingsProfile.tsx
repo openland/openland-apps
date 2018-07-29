@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
-import { View, Button, ScrollView } from 'react-native';
+import { View, Button } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../components/ZListItemEdit';
 import { ZQuery } from '../../components/ZQuery';
@@ -9,6 +9,7 @@ import { ProfileQuery } from 'openland-api/ProfileQuery';
 import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ProfileUpdateMutation, AccountQuery } from 'openland-api';
+import { delay } from 'openland-y-utils/timer';
 
 class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { firstName: string, lastName: string, loaded: boolean }> {
     private ref = React.createRef<ZForm>();
@@ -45,25 +46,26 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
         }
     }
 
-    performSave = (mutation: any, data: any) => {
-        console.log(data);
-    }
-
     render() {
         return (
             <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
                 {(save) => (
-                    <ZQuery query={ProfileQuery}>
+                    <ZQuery query={ProfileQuery} fetchPolicy="network-only">
                         {(resp) => (
                             <ZForm
                                 action={async (args) => {
                                     await save({ variables: args });
                                 }}
+                                onSuccess={() => this.props.navigation.goBack()}
                                 ref={this.ref}
                                 defaultData={{
                                     input: {
                                         firstName: resp.data.profile!!.firstName,
                                         lastName: resp.data.profile!!.lastName,
+                                        phone: resp.data.profile!!.phone,
+                                        email: resp.data.profile!!.email,
+                                        website: resp.data.profile!!.website,
+                                        alphaLinkedin: resp.data.profile!!.linkedin
                                     }
                                 }}
                             >
@@ -72,10 +74,10 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
                                     <ZListItemEdit title="Last name" field="input.lastName" />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Contacts">
-                                    <ZListItemEdit title="Phone number" value="" />
-                                    <ZListItemEdit title="Email" value="" />
-                                    <ZListItemEdit title="Web Site" value="" />
-                                    <ZListItemEdit title="Linkedin" value="" />
+                                    <ZListItemEdit title="Phone number" field="input.phone" />
+                                    <ZListItemEdit title="Email" field="input.email" />
+                                    <ZListItemEdit title="Web Site" field="input.website" />
+                                    <ZListItemEdit title="Linkedin" field="input.alphaLinkedin" />
                                 </ZListItemGroup>
                             </ZForm>
                         )}

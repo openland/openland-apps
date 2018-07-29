@@ -21,4 +21,5 @@ export const Auth0Client = new Auth0({
 import { AppRegistry } from 'react-native';
 import Routes from './routes';
 import { withUpdateTracker } from './utils/UpdateTracker';
-AppRegistry.registerComponent('openland', () => withUpdateTracker(Routes));
+import { withGlobalLoader } from './components/ZGlobalLoader';
+AppRegistry.registerComponent('openland', () => withUpdateTracker(withGlobalLoader(Routes)));
