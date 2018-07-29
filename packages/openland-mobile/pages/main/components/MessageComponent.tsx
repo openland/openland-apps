@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking, Image } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking, Image, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
 import { formatTime } from '../../../utils/formatTime';
 import { layoutMedia } from './MediaLayout';
@@ -9,6 +9,8 @@ import { ZImage } from '../../../components/ZImage';
 import { formatBytes } from '../../../utils/formatBytes';
 import { preprocessText } from '../../../utils/TextProcessor';
 import { isAndroid } from '../../../utils/isAndroid';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { ZLoader } from '../../../components/ZLoader';
 
 let styles = StyleSheet.create({
     container: {
@@ -73,14 +75,43 @@ class MessageTextContent extends React.PureComponent<{ text: string }> {
     }
 }
 
-class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean }> {
+class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean }, { modal: boolean }> {
+    state = {
+        modal: false
+    };
+
+    handleTouch = () => {
+        this.setState({ modal: true });
+    }
+
+    handleClose = () => {
+        this.setState({ modal: false });
+    }
+
     render() {
         let maxSize = Math.min(Dimensions.get('window').width - 70, 400);
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
         return (
-            <View width={layout.width} height={layout.height} style={{ marginTop: 4, marginBottom: 4 }}>
-                <ZImage source={{ uuid: this.props.file }} resize={!this.props.isGif} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
-            </View>
+            <TouchableOpacity onPress={this.handleTouch}>
+                <View width={layout.width} height={layout.height} style={{ marginTop: 4, marginBottom: 4 }}>
+                    <ZImage source={{ uuid: this.props.file }} resize={!this.props.isGif} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
+                    <Modal visible={this.state.modal} transparent={true}>
+                        <ImageViewer
+                            imageUrls={[{ url: 'https://ucarecdn.com/' + this.props.file + '/' }]}
+                            onSwipeDown={this.handleClose}
+                            loadingRender={() => <ActivityIndicator
+                                color="#fff"
+                                style={{
+                                    height: Dimensions.get('window').height,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            />}
+                            enableSwipeDown={true}
+                        />
+                    </Modal>
+                </View>
+            </TouchableOpacity>
         );
     }
 }

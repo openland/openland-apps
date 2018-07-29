@@ -19,7 +19,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": true,
     "typeRoots": [
@@ -108,7 +108,7 @@
     "importHelpers": true
   },
   "exclude": [
-    "node_modules",
+    "node_modules/**/*",
     "build",
     "scripts",
     "acceptance-tests",
