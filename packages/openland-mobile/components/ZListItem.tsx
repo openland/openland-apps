@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, Image } from 'react-native';
 
 export interface ZListItemProps {
+    leftIcon?: any;
     separator?: boolean;
     text?: string;
     description?: string;
@@ -18,6 +19,7 @@ export class ZListItem extends React.PureComponent<ZListItemProps> {
         return (
             <ZListItemBase onPress={this.props.onPress} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path}>
                 <View flexDirection="row" paddingLeft={15} paddingRight={15} flexGrow={1} alignItems="center">
+                    {this.props.leftIcon && <Image source={this.props.leftIcon} />}
                     <Text style={{ fontSize: 16, color: '#181818', lineHeight: 44, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }}>
                         {this.props.text}
                     </Text>

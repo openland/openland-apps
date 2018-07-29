@@ -10,6 +10,8 @@ import { createZStackNavigator } from './components/ZNavigatorStack';
 import { createZTabNavigator } from './components/ZNavigatorTabs';
 import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
+import { SettingsProfile } from './pages/main/SettingsProfile';
+import { Button, View } from 'react-native';
 
 //
 // Home Routes
@@ -43,7 +45,18 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
     };
   }
   return {
-    headerTitle: 'Settings'
+    headerTitle: 'Settings',
+    headerRight: (
+      <View style={{ marginRight: 10 }}>
+        <Button
+          onPress={() => {
+            args.navigation.navigate('SettingsProfile');
+          }}
+          title="Edit"
+          color="#fff"
+        />
+      </View>
+    ),
   };
 };
 
@@ -59,6 +72,7 @@ const AppStack = createZStackNavigator({
     }
   },
   Conversation: Conversation,
+  SettingsProfile: SettingsProfile,
   DevTypography: Typography,
   DevComponents: Components
 });
@@ -82,7 +96,7 @@ export default createSwitchNavigator(
       portraitOnlyMode: true
     },
     App: AppStack,
-    Login: { 
+    Login: {
       screen: Login,
       portraitOnlyMode: true
     }
