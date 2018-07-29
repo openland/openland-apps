@@ -103,6 +103,9 @@
       ],
       "openland-mobile": [
         "openland-mobile"
+      ],
+      "openland-y-forms": [
+        "openland-y-forms"
       ]
     },
     "importHelpers": true
@@ -136,6 +139,7 @@
     "./packages/openland-x-modal",
     "./packages/openland-y-store",
     "./packages/openland-x-forms",
+    "./packages/openland-y-forms",
     "./packages/openland-x-layout",
     "./packages/openland-x-permissions",
     "./packages/openland-x-graphql",

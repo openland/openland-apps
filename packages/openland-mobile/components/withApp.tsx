@@ -15,7 +15,7 @@ export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, a
                 <MessengerContext.Provider value={getMessenger()}>
                     <PushManager client={getClient()} />
                     {args && args.noSafeWrapper && <Wrapped {...props} />}
-                    {!(args && args.noSafeWrapper) && <ZSafeAreaView> <Wrapped {...props} /></ZSafeAreaView>}
+                    {!(args && args.noSafeWrapper) && <ZSafeAreaView><Wrapped {...props} /></ZSafeAreaView>}
                 </MessengerContext.Provider>
             </YApolloProvider>
         );

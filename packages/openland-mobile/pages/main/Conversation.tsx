@@ -13,11 +13,11 @@ import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEng
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessagesListComponent } from './components/MessagesListComponent';
 import { KeyboardHider } from './components/KeyboardHider';
-import { ZSafeAreaView } from '../../components/ZSaveAreaView';
 import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
+import { ZSafeAreaView } from '../../components/ZSaveAreaView';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -119,7 +119,7 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
 
     render() {
         return (
-            <>
+            <ZSafeAreaView backgroundColor="#fff">
                 <MessengerContext.Consumer>
                     {messenger => {
                         return (
@@ -128,9 +128,9 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
                     }}
                 </MessengerContext.Consumer>
                 <KeyboardHider navigation={this.props.navigation} />
-            </>
+            </ZSafeAreaView>
         );
     }
 }
 
-export const Conversation = withApp(ConversationComponent);
+export const Conversation = withApp(ConversationComponent, { noSafeWrapper: true });

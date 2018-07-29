@@ -2,15 +2,17 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
 import { View, Button, ScrollView } from 'react-native';
-import { ZSafeAreaView } from '../../components/ZSaveAreaView';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../components/ZListItemEdit';
-import { AppStyles } from '../../styles/AppStyles';
 import { ZQuery } from '../../components/ZQuery';
 import { ProfileQuery } from 'openland-api/ProfileQuery';
 import { ZForm } from '../../components/ZForm';
+import { YMutation } from 'openland-y-graphql/YMutation';
+import { ProfileUpdateMutation, AccountQuery } from 'openland-api';
 
 class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { firstName: string, lastName: string, loaded: boolean }> {
+    private ref = React.createRef<ZForm>();
+
     static navigationOptions = (args: any) => ({
         title: 'Edit profile',
         headerRight: (
@@ -38,28 +40,48 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
     }
 
     handleSave = () => {
-        // TODO: Handle save
+        if (this.ref.current) {
+            this.ref.current!!.submitForm();
+        }
+    }
+
+    performSave = (mutation: any, data: any) => {
+        console.log(data);
     }
 
     render() {
         return (
-            <ZQuery query={ProfileQuery} >
-                {(resp) => (
-                    <ZForm>
-                        <ZListItemGroup header="Profile">
-                            <ZListItemEdit title="First name" value={resp.data.profile!!.firstName!!} onChange={(v) => this.setState({ firstName: v })} />
-                            <ZListItemEdit title="Last name" value={resp.data.profile!!.lastName!!} onChange={(v) => this.setState({ lastName: v })} />
-                            <ZListItemEdit title="Role" value={resp.data.profile!!.role!!} />
-                        </ZListItemGroup>
-                        <ZListItemGroup header="Contacts">
-                            <ZListItemEdit title="Phone number" value="" />
-                            <ZListItemEdit title="Email" value="" />
-                            <ZListItemEdit title="Web Site" value="" />
-                            <ZListItemEdit title="Linkedin" value="" />
-                        </ZListItemGroup>
-                    </ZForm>
+            <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
+                {(save) => (
+                    <ZQuery query={ProfileQuery}>
+                        {(resp) => (
+                            <ZForm
+                                action={async (args) => {
+                                    await save({ variables: args });
+                                }}
+                                ref={this.ref}
+                                defaultData={{
+                                    input: {
+                                        firstName: resp.data.profile!!.firstName,
+                                        lastName: resp.data.profile!!.lastName,
+                                    }
+                                }}
+                            >
+                                <ZListItemGroup header="Profile">
+                                    <ZListItemEdit title="First name" field="input.firstName" />
+                                    <ZListItemEdit title="Last name" field="input.lastName" />
+                                </ZListItemGroup>
+                                <ZListItemGroup header="Contacts">
+                                    <ZListItemEdit title="Phone number" value="" />
+                                    <ZListItemEdit title="Email" value="" />
+                                    <ZListItemEdit title="Web Site" value="" />
+                                    <ZListItemEdit title="Linkedin" value="" />
+                                </ZListItemGroup>
+                            </ZForm>
+                        )}
+                    </ZQuery>
                 )}
-            </ZQuery>
+            </YMutation>
         );
     }
 }
