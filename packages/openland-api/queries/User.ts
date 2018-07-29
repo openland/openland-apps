@@ -9,3 +9,20 @@ export const UsersQuery = gql`
         }
     }
 `;
+
+export const UserQuery = gql`
+    query User($userId: ID!) {
+        user: user(id: $userId) {
+            name
+            firstName
+            lastName
+            photo
+            phone
+            email
+            website
+            about
+            location
+            isBot
+        }
+    }
+`;

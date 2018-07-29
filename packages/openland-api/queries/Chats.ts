@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
 import { ConversationShort } from '../fragments/ConversationShort';
+import { OrganizationShort } from '../fragments/OrganizationShort';
 
 export const ChatListQuery = gql`
     query ChatList {
@@ -53,6 +54,34 @@ export const ChatInfoQuery = gql`
             photos
         }
     }
+`;
+
+export const ChatFullInfoQuery = gql`
+    query ChatFullInfo($conversationId: ID!) {
+        chat: alphaChat(conversationId: $conversationId) {
+            id
+            flexibleId
+            title
+            photos
+            ... on PrivateConversation {
+                user {
+                    ...UserShort
+                }
+            }
+            ... on GroupConversation {
+                members {
+                    ...UserShort
+                }
+            }
+            ... on SharedConversation {
+                organizations {
+                    ...OrganizationShort
+                }
+            }
+        }
+    }
+    ${OrganizationShort}
+    ${UserShort}
 `;
 
 export const SendMessageMutation = gql`

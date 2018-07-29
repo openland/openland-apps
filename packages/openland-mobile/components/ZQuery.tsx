@@ -3,6 +3,7 @@ import { Query, QueryResult } from 'react-apollo';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { ZLoader } from './ZLoader';
 import { FetchPolicy } from 'apollo-client';
+import { Alert } from 'react-native';
 
 export interface ZQueryProps<QUERY, VARIABLES> {
     query: GraphqlTypedQuery<QUERY, VARIABLES>;
@@ -16,6 +17,9 @@ export class ZQuery<QUERY, VARIABLES> extends React.PureComponent<ZQueryProps<QU
         return (
             <Query query={this.props.query.document} variables={this.props.variables} fetchPolicy={this.props.fetchPolicy}>
                 {(resp) => {
+                    if (resp.error) {
+                        Alert.alert(resp.error!!.message);
+                    }
                     if (resp.loading || !resp.data) {
                         return <ZLoader />;
                     }

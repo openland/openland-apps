@@ -766,6 +766,63 @@ export interface ChatInfoQuery {
   ),
 };
 
+export interface ChatFullInfoQueryVariables {
+  conversationId: string,
+};
+
+export interface ChatFullInfoQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+      organizations:  Array< {
+        __typename: "Organization",
+        id: string,
+        name: string,
+        photo: string | null,
+      } >,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+      user:  {
+        __typename: "User",
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+      },
+    } | {
+      __typename: "GroupConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+      members:  Array< {
+        __typename: "User",
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+      } >,
+    }
+  ),
+};
+
 export interface SendMessageMutationVariables {
   conversationId: string,
   message?: string | null,
@@ -4853,6 +4910,26 @@ export interface UsersQuery {
     title: string,
     subtitle: string | null,
   } >,
+};
+
+export interface UserQueryVariables {
+  userId: string,
+};
+
+export interface UserQuery {
+  user:  {
+    __typename: "User",
+    name: string,
+    firstName: string,
+    lastName: string | null,
+    photo: string | null,
+    phone: string | null,
+    email: string | null,
+    website: string | null,
+    about: string | null,
+    location: string | null,
+    isBot: boolean,
+  },
 };
 
 export interface ChartFullFragment {

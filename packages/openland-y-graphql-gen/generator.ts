@@ -112,7 +112,7 @@ async function doIteration(file: string): Promise<{ import: string, contents: st
     genres.then((v) => console.warn('post2'));
     await genres;
     await new Promise<string>((r) => {
-        setTimeout(() => { r(''); }, 100);
+        setTimeout(() => { r(''); }, 500);
     });
     fs.unlinkSync(__dirname + '/_tmp.js');
     return postProcess(file);

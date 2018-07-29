@@ -110,10 +110,10 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
 
 class ConversationComponent extends React.Component<NavigationInjectedProps> {
 
-    static navigationOptions = (args: any) => {
+    static navigationOptions = (args: NavigationInjectedProps) => {
         return {
-            headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} />,
-            headerRight: <ChatRight conversationId={args.navigation.getParam('id', 'Conversation')} />
+            headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
+            headerRight: <ChatRight conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />
         };
     }
 

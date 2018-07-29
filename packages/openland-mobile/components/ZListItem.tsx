@@ -3,12 +3,12 @@ import { ZListItemBase } from './ZListItemBase';
 import { View, Text, Switch, Image } from 'react-native';
 
 export interface ZListItemProps {
-    leftIcon?: any;
-    separator?: boolean;
-    text?: string;
+    leftIcon?: any | null;
+    separator?: boolean | null;
+    text?: string | null;
     description?: string;
-    toggle?: boolean;
-    toggleDisabled?: boolean;
+    toggle?: boolean | null;
+    toggleDisabled?: boolean | null;
     onToggle?: (value: boolean) => void;
     path?: string;
     onPress?: () => void;
@@ -29,7 +29,7 @@ export class ZListItem extends React.PureComponent<ZListItemProps> {
                         </Text>
                     )}
                     {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined)) && (
-                        <Switch style={{ marginLeft: 15 }} value={this.props.toggle} onValueChange={this.props.onToggle} disabled={this.props.toggleDisabled} />
+                        <Switch style={{ marginLeft: 15 }} value={this.props.toggle ? this.props.toggle : undefined} onValueChange={this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
                     )}
                 </View>
             </ZListItemBase>
