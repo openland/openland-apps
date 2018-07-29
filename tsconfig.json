@@ -74,8 +74,8 @@
       "openland-x-analytics": [
         "openland-x-analytics"
       ],
-      "openland-x-store": [
-        "openland-x-store"
+      "openland-y-store": [
+        "openland-y-store"
       ],
       "openland-y-graphql-gen": [
         "openland-y-graphql-gen"
@@ -134,6 +134,7 @@
     "./packages/openland-x-map",
     "./packages/openland-x-charts",
     "./packages/openland-x-modal",
+    "./packages/openland-y-store",
     "./packages/openland-x-forms",
     "./packages/openland-x-layout",
     "./packages/openland-x-permissions",

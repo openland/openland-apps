@@ -1,8 +1,8 @@
 import * as React from 'react';
 import XStyles from './XStyles';
 import Glamorous from 'glamorous';
-import { XStoreState } from 'openland-x-store/XStoreState';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
     display: 'flex',

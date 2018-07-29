@@ -79,33 +79,31 @@ class ConversationRoot extends React.Component<{ engine: MessengerEngine, conver
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
-            <ZSafeAreaView>
-                <View style={{ height: '100%' }} flexDirection="column">
-                    <MessagesListComponent engine={this.engine} />
-                    <View alignSelf="stretch" alignItems="stretch" style={{ paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
-                        <TouchableOpacity onPress={this.handleAttach}>
-                            <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                                <Image source={iconAttach} style={{ width: 24, height: 24 }} />
-                            </View>
-                        </TouchableOpacity>
-                        <TextInput
-                            flexGrow={1}
-                            flexBasis={0}
-                            placeholder="Message"
-                            placeholderTextColor="#aaaaaa"
-                            onChangeText={this.handleTextChange}
-                            value={this.state.text}
-                            onSubmitEditing={this.handleSubmit}
-                            style={styles.textInput}
-                        />
-                        <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
-                            <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                                <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+            <View style={{ height: '100%' }} flexDirection="column">
+                <MessagesListComponent engine={this.engine} />
+                <View alignSelf="stretch" alignItems="stretch" style={{ paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
+                    <TouchableOpacity onPress={this.handleAttach}>
+                        <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
+                            <Image source={iconAttach} style={{ width: 24, height: 24 }} />
+                        </View>
+                    </TouchableOpacity>
+                    <TextInput
+                        flexGrow={1}
+                        flexBasis={0}
+                        placeholder="Message"
+                        placeholderTextColor="#aaaaaa"
+                        onChangeText={this.handleTextChange}
+                        value={this.state.text}
+                        onSubmitEditing={this.handleSubmit}
+                        style={styles.textInput}
+                    />
+                    <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
+                        <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
+                            <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
+                        </View>
+                    </TouchableOpacity>
                 </View>
-            </ZSafeAreaView>
+            </View>
         );
     }
 }

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XStore } from 'openland-x-store/XStore';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { XStoreState } from 'openland-x-store/XStoreState';
+import { XStore } from 'openland-y-store/XStore';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { storeMerge } from 'openland-x-store/utils/storeMerge';
+import { storeMerge } from 'openland-y-store/utils/storeMerge';
 import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';

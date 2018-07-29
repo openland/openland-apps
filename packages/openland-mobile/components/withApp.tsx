@@ -6,14 +6,16 @@ import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getMessenger } from '../utils/messenger';
 import { PushManager } from './PushManager';
+import { ZSafeAreaView } from './ZSaveAreaView';
 
-export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>) => {
+export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, args?: { noSafeWrapper: boolean }) => {
     let res = (props: NavigationInjectedProps) => {
         return (
             <YApolloProvider client={getClient()}>
                 <MessengerContext.Provider value={getMessenger()}>
                     <PushManager client={getClient()} />
-                    <Wrapped {...props} />
+                    {args && args.noSafeWrapper && <Wrapped {...props} />}
+                    {!(args && args.noSafeWrapper) && <ZSafeAreaView> <Wrapped {...props} /></ZSafeAreaView>}
                 </MessengerContext.Provider>
             </YApolloProvider>
         );

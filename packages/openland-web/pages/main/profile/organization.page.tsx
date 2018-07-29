@@ -26,7 +26,7 @@ import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';

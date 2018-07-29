@@ -4,11 +4,11 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
-import { XStore } from 'openland-x-store/XStore';
+import { XStore } from 'openland-y-store/XStore';
 import { XInput } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XButton } from 'openland-x/XButton';
 export default withApp('UI Framework - Store', 'viewer', (props) => {
     return (

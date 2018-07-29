@@ -19,7 +19,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XPhotoRef } from 'openland-x/XCloudImage';
 import { DateFormater } from 'openland-x-format/XDate';

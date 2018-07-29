@@ -6,8 +6,8 @@ import { XButton } from 'openland-x/XButton';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XInput } from 'openland-x/XInput';
-import { XStoreState } from 'openland-x-store/XStoreState';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 
 const MapSearcher = Glamorous(XMapGeocoder)({
     height: 52,

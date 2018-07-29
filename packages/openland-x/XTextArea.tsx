@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XTextAreaBasicProps, XTextAreaBasic } from './basics/XTextAreaBasic';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
-import { XStoreState } from 'openland-x-store/XStoreState';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
 
 export interface XTextAreaProps extends XTextAreaBasicProps {
     valueStoreKey?: string;

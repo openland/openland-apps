@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XAvatarUploadBasicProps, XAvatarUploadBasic } from './basics/XAvatarUploadBasic';
-import { XStoreState } from 'openland-x-store/XStoreState';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { UploadedFile } from './files/XFileUpload';
 
 class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { store: XStoreState }> {

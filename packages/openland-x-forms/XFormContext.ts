@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XStoreState } from 'openland-x-store/XStoreState';
+import { XStoreState } from 'openland-y-store/XStoreState';
 
 export interface XFormContextValue {
     store: XStoreState;

@@ -15,7 +15,7 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
     };
 
     handleItemClick = (item: ConversationShortFragment) => {
-        this.props.navigation.navigate('Conversation', { id: item.id, title: item.title  });
+        this.props.navigation.navigate('Conversation', { id: item.id, title: item.title });
     }
 
     render() {
@@ -39,4 +39,4 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const Dialogs = withApp(DialogsComponent);
+export const Dialogs = withApp(DialogsComponent, { noSafeWrapper: true });

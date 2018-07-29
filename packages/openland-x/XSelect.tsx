@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XSelectAsyncBasic, XSelectBasic, XSelectBasicProps, XSelectAsyncBasicProps } from './basics/XSelectBasic';
-import { XStoreState } from 'openland-x-store/XStoreState';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 
 //
 // Sync

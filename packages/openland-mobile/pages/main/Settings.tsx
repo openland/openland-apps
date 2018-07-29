@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { AsyncStorage, ScrollView, View, Text, Button } from 'react-native';
+import { AsyncStorage, ScrollView } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZLoader } from '../../components/ZLoader';
-import { ZListItemBase } from '../../components/ZListItemBase';
-import { ZAvatar } from '../../components/ZAvatar';
 import { AccountQuery } from 'openland-api/AccountQuery';
-// import { CodePushStatus } from '../../routes';
+import { ZListItemHeader } from '../../components/ZListItemHeader';
+import { ZQuery } from '../../components/ZQuery';
+import { AppStyles } from '../../styles/AppStyles';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -61,22 +59,17 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
 
     render() {
         return (
-            <YQuery query={AccountQuery}>
+            <ZQuery query={AccountQuery}>
                 {resp => {
-                    if (resp.loading) {
-                        return <ZLoader />;
-                    }
                     return (
-                        <ScrollView width="100%" height="100%">
-                            <ZListItemBase path="SettingsProfile" height={80} backgroundColor="#fff">
-                                <View width={80} height={80} alignItems="center" justifyContent="center">
-                                    <ZAvatar src={resp.data!!.me!!.picture} size={60} />
-                                </View>
-                                <View flexGrow={1} flexBasis={0} justifyContent="center" marginLeft={5}>
-                                    <Text style={{ height: 19, lineHeight: 19, marginBottom: 5, fontWeight: '500', fontSize: 16, color: '#181818' }} numberOfLines={1}>{resp.data!!.me!!.name}</Text>
-                                    <Text style={{ color: '#aaaaaa', fontSize: 14, lineHeight: 18, height: 18 }} numberOfLines={1}>{resp.data!!.organization!!.name}</Text>
-                                </View>
-                            </ZListItemBase>
+                        <ScrollView width="100%" height="100%" backgroundColor={AppStyles.backyardColor}>
+                            <ZListItemHeader
+                                photo={resp.data!!.me!!.picture}
+                                id={resp.data!!.me!!.id}
+                                title={resp.data!!.me!!.name}
+                                subtitle={resp.data!!.organization!!.name}
+                                path="SettingsProfile"
+                            />
                             <ZListItemGroup header="Settings">
                                 <ZListItem text="Notifications" path="SettingsNotifications" />
                             </ZListItemGroup>
@@ -93,9 +86,9 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                         </ScrollView>
                     );
                 }}
-            </YQuery>
+            </ZQuery>
         );
     }
 }
 
-export const Settings = withApp(SettingsComponent);
+export const Settings = withApp(SettingsComponent, { noSafeWrapper: true });

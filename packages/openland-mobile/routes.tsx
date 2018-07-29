@@ -12,6 +12,7 @@ import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
 import { Button, View } from 'react-native';
+import { SettingsNotifications } from './pages/main/SettingsNotifications';
 
 //
 // Home Routes
@@ -73,6 +74,7 @@ const AppStack = createZStackNavigator({
   },
   Conversation: Conversation,
   SettingsProfile: SettingsProfile,
+  SettingsNotifications: SettingsNotifications,
   DevTypography: Typography,
   DevComponents: Components
 });

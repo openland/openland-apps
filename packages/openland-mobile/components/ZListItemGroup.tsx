@@ -15,10 +15,12 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string }> {
         });
 
         return (
-            <View>
+            <View backgroundColor={AppStyles.backyardColor}>
                 {this.props.header && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.header}</Text>}
                 <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-                {components}
+                <View backgroundColor="#fff">
+                    {components}
+                </View>
                 <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
             </View>
         );

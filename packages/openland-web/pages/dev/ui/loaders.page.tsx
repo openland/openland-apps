@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
-import { XStore } from 'openland-x-store/XStore';
+import { XStore } from 'openland-y-store/XStore';
 import { XTitle } from 'openland-x/XTitle';
 import { XLoadingBar } from 'openland-x/XLoadingBar';
 import { XButton } from 'openland-x/XButton';

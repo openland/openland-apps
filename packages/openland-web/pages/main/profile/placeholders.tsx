@@ -26,7 +26,7 @@ import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions, LocationControlledPicker } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
-import { XStoreContext } from 'openland-x-store/XStoreContext';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMutation } from 'openland-x/XMutation';
