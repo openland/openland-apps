@@ -34,6 +34,15 @@ const Root = Glamorous(XVertical)({
     paddingBottom: 80
 });
 
+const ContentWrapper = Glamorous.div({
+    padding: '0 40px'
+});
+
+const MainContent = Glamorous.div({
+    maxWidth: 1280,
+    margin: 'auto'
+});
+
 const HeaderWrapper = Glamorous.div({
     paddingTop: 30,
     paddingLeft: 40,
@@ -65,28 +74,36 @@ const OrganizationCounter = Glamorous.div({
     color: '#99a2b0',
 });
 
-const Header = withExploreOrganizations(props => (
+const Header = (props: { orgCount: number, tagsCount: number }) => (
     <HeaderWrapper>
         <HeaderContent>
             <XHorizontal alignItems="center" separator={6}>
                 <HeaderTitle>{TextDirectory.headerTitle}</HeaderTitle>
                 <HeaderCounter separator={4}>
                     <img src="/static/X/ic-arrow-rignt.svg" />
-                    <OrganizationCounter>{TextDirectory.counterOrganizations(props.data.items.pageInfo.itemsCount)}</OrganizationCounter>
+                    {props.tagsCount !== 0
+                        ? <OrganizationCounter>{TextDirectory.counterOrganizations(props.orgCount)}</OrganizationCounter>
+                        : <OrganizationCounter>All organizations</OrganizationCounter>
+                    }
                 </HeaderCounter>
             </XHorizontal>
             <XButton style="ghost" path="/createOrganization" text={TextDirectory.headerButtonAddOrganization} />
         </HeaderContent>
     </HeaderWrapper>
-));
+);
 
 const TopTagsWrapper = Glamorous(XVertical)({
     borderRadius: 5,
     backgroundColor: '#ffffff',
     border: 'solid 1px rgba(220, 222, 228, 0.4)',
+    padding: 24,
+});
+
+const TopTagsScrollable = Glamorous(XVertical)({
+    maxHeight: 'calc(100vh - 20px)',
+    overflowY: 'scroll',
     position: 'sticky',
     top: 10,
-    padding: 24
 });
 
 const TopTagsTitle = Glamorous.div({
@@ -130,30 +147,30 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
     render() {
         return (
             <XVertical flexGrow={1} flexShrink={0} width={320} maxWidth={320}>
-                <TopTagsWrapper separator={12}>
-                    <TopTagsTitle>Top searches</TopTagsTitle>
-                    <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }}>
-                        {data =>
-                            ((data.data && data.data.hitsPopular) || []).map((val: { category: string, tags: string[] }, i: number) => (
-                                <XVertical separator={9} key={i + '_container_' + val.category}>
-                                    <TopSearchCategory key={i + '_title_' + val.category}>{CategoriesTitleMap[val.category] || val.category}</TopSearchCategory>
-                                    <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
-                                        {val.tags.map((tag, iter) => (
-                                            <XTag
-                                                key={'top_search_' + iter + val}
-                                                color="primary"
-                                                text={tag}
-                                                size="large"
-                                                onClick={() => this.onClick({ type: 'interest', value: tag, label: tag })}
-                                            />
-                                        ))}
-                                    </TopSearchTags>
-                                </XVertical>
-                            ))}
-
-                    </Query>
-
-                </TopTagsWrapper>
+                <TopTagsScrollable>
+                    <TopTagsWrapper separator={12} flexShrink={0}>
+                        <TopTagsTitle>Top searches</TopTagsTitle>
+                        <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }}>
+                            {data =>
+                                ((data.data && data.data.hitsPopular) || []).map((val: { category: string, tags: string[] }, i: number) => (
+                                    <XVertical separator={9} key={i + '_container_' + val.category}>
+                                        <TopSearchCategory key={i + '_title_' + val.category}>{CategoriesTitleMap[val.category] || val.category}</TopSearchCategory>
+                                        <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
+                                            {val.tags.map((tag, iter) => (
+                                                <XTag
+                                                    key={'top_search_' + iter + val}
+                                                    color="primary"
+                                                    text={tag}
+                                                    size="large"
+                                                    onClick={() => this.onClick({ type: 'interest', value: tag, label: tag })}
+                                                />
+                                            ))}
+                                        </TopSearchTags>
+                                    </XVertical>
+                                ))}
+                        </Query>
+                    </TopTagsWrapper>
+                </TopTagsScrollable>
             </XVertical>
         );
     }
@@ -365,12 +382,20 @@ class EmptySearchBlock extends React.Component<{ onPick: (q: SearchCondition) =>
     }
 }
 
+interface OrganizationCardsProps {
+    onPick: (q: SearchCondition) => void;
+    variables: { query?: string, sort?: string };
+    onSearchReset?: React.MouseEventHandler<any>;
+    tagsCount: (n: number) => void;
+}
+
 const OrganizationCards = withExploreOrganizations((props) => {
     if (!(props.data && props.data.items)) {
         return null;
     }
     return (
         <XVertical>
+            {(props as any).tagsCount(props.data.items.pageInfo.itemsCount)}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
                 <XCardStyled>
                     {props.data.items.edges.map((i, j) => (
@@ -393,9 +418,18 @@ const OrganizationCards = withExploreOrganizations((props) => {
 
         </XVertical>
     );
-}) as React.ComponentType<{ onPick: (q: SearchCondition) => void, variables: { query?: string, sort?: string }, onSearchReset?: React.MouseEventHandler<any> }>;
+}) as React.ComponentType<OrganizationCardsProps>;
 
-class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderBy: string, conditions: SearchCondition[], onPick: (q: SearchCondition) => void, onSearchReset?: React.MouseEventHandler<any> }> {
+interface OrganizationsProps {
+    featuredFirst: boolean;
+    orderBy: string;
+    conditions: SearchCondition[];
+    onPick: (q: SearchCondition) => void;
+    onSearchReset?: React.MouseEventHandler<any>;
+    tagsCount: (n: number) => void;
+}
+
+class Organizations extends React.PureComponent<OrganizationsProps> {
 
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
@@ -417,6 +451,10 @@ class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderB
             },
             {}
         );
+    }
+
+    tagsCount = (n: number) => {
+        this.props.tagsCount(n);
     }
 
     render() {
@@ -479,6 +517,7 @@ class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderB
                 <OrganizationCards
                     onPick={this.props.onPick}
                     onSearchReset={this.props.onSearchReset}
+                    tagsCount={this.tagsCount}
                     variables={{
                         query: q ? JSON.stringify(q) : undefined,
                         sort: JSON.stringify(sort),
@@ -494,6 +533,17 @@ class Organizations extends React.PureComponent<{ featuredFirst: boolean, orderB
         );
     }
 }
+
+const SearchRoot = Glamorous(XCard)({
+    borderRadius: 5,
+    overflow: 'hidden',
+    '& > .search-pickers-wrapper': {
+        height: 0
+    },
+    '&:focus-within > .search-pickers-wrapper': {
+        height: 53
+    }
+});
 
 const SearchFormWrapper = Glamorous(XHorizontal)({
     paddingLeft: 14,
@@ -520,6 +570,10 @@ const SearchInput = Glamorous.input({
     '::placeholder': {
         fontWeight: 500
     }
+});
+
+const SearchPickersWrapper = Glamorous(XHorizontal)({
+    transition: 'all .2s'
 });
 
 const SearchPickers = Glamorous(XHorizontal)({
@@ -555,7 +609,14 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
     }
 }
 
-class RootComponent extends React.Component<{}, { searchText: string, conditions: SearchCondition[], sort: { orederBy: string, featured: boolean } }> {
+interface RootComponentState {
+    searchText: string;
+    conditions: SearchCondition[];
+    sort: { orederBy: string, featured: boolean };
+    orgCount: number;
+}
+
+class RootComponent extends React.Component<{}, RootComponentState> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -563,7 +624,8 @@ class RootComponent extends React.Component<{}, { searchText: string, conditions
         this.state = {
             searchText: '',
             conditions: [],
-            sort: { orederBy: 'createdAt', featured: true }
+            sort: { orederBy: 'createdAt', featured: true },
+            orgCount: 0
         };
     }
 
@@ -641,66 +703,76 @@ class RootComponent extends React.Component<{}, { searchText: string, conditions
         this.input = e.target;
     }
 
+    tagsCount = (n: number) => {
+        return this.setState({
+            orgCount: n
+        });
+    }
+
     render() {
 
-        const { searchText, conditions } = this.state;
+        const { searchText, conditions, orgCount } = this.state;
         return (
-            <XVertical>
-                <XCardStyled>
-                    <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                        <SearchFormContent separator={4} flexGrow={1}>
-                            <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+            <Root separator={14}>
+                <Header orgCount={orgCount} tagsCount={this.state.conditions.length} />
+                <ContentWrapper>
+                    <MainContent>
+                        <XVertical>
+                            <SearchRoot>
+                                <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
+                                    <SearchFormContent separator={4} flexGrow={1}>
+                                        <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                                        <XWithRole role={'software-developer'}>
+                                            <AutocompletePopper
+                                                target={
+                                                    <SearchInput
+                                                        onFocus={this.onSearchFocus}
+                                                        value={searchText}
+                                                        autoFocus={true}
+                                                        onChange={this.handleSearchChange}
+                                                        placeholder={TextDirectory.searchInputPlaceholder}
+                                                    />
+                                                }
+                                                onPick={this.addCondition}
+                                                query={searchText}
+                                            />
+                                        </XWithRole>
+                                    </SearchFormContent>
 
-                            <XWithRole role={'software-developer'}>
-                                <AutocompletePopper
-                                    target={
-                                        <SearchInput
-                                            onFocus={this.onSearchFocus}
-                                            value={searchText}
-                                            autoFocus={true}
-                                            onChange={this.handleSearchChange}
-                                            placeholder={TextDirectory.searchInputPlaceholder}
-                                        />
-                                    }
-                                    onPick={this.addCondition}
-                                    query={this.state.searchText}
+                                    <XHorizontal separator={5}>
+                                        <XButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
+                                        <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
+                                    </XHorizontal>
+                                </SearchFormWrapper>
+                                <SearchPickersWrapper separator={0} className="search-pickers-wrapper">
+                                    <SearchPickers separator="none" flexGrow={1}>
+                                        <LocationPicker onPick={this.addCondition} />
+                                        <CategoryPicker onPick={this.addCondition} />
+                                        <InterestPicker onPick={this.addCondition} />
+                                    </SearchPickers>
+                                    <SortContainer>
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                    </SortContainer>
+                                </SearchPickersWrapper>
+                            </SearchRoot>
+                            <XHorizontal>
+                                <Organizations
+                                    featuredFirst={this.state.sort.featured}
+                                    orderBy={this.state.sort.orederBy}
+                                    conditions={conditions}
+                                    onPick={this.replaceConditions}
+                                    onSearchReset={this.reset}
+                                    tagsCount={this.tagsCount}
                                 />
-                            </XWithRole>
-                        </SearchFormContent>
-
-                        <XHorizontal separator={5}>
-                            <XButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
-                            <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
-                        </XHorizontal>
-                    </SearchFormWrapper>
-                    <XHorizontal separator={0}>
-                        <SearchPickers separator="none" flexGrow={1}>
-                            <LocationPicker onPick={this.addCondition} />
-                            <CategoryPicker onPick={this.addCondition} />
-                            <InterestPicker onPick={this.addCondition} />
-                        </SearchPickers>
-                        <SortContainer>
-                            <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                        </SortContainer>
-                    </XHorizontal>
-                </XCardStyled>
-                <XHorizontal>
-                    <Organizations featuredFirst={this.state.sort.featured} orderBy={this.state.sort.orederBy} conditions={conditions} onPick={this.replaceConditions} onSearchReset={this.reset} />
-                    <TopTags onPick={this.addCondition} />
-                </XHorizontal>
-            </XVertical>
+                                <TopTags onPick={this.addCondition} />
+                            </XHorizontal>
+                        </XVertical>
+                    </MainContent>
+                </ContentWrapper>
+            </Root>
         );
     }
 }
-
-const ContentWrapper = Glamorous.div({
-    padding: '0 40px'
-});
-
-const MainContent = Glamorous.div({
-    maxWidth: 1280,
-    margin: 'auto'
-});
 
 export default withApp('Directory', 'viewer', (props) => {
     return (
@@ -708,14 +780,7 @@ export default withApp('Directory', 'viewer', (props) => {
             <XDocumentHead title="Organization directory" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
-                    <Root separator={14}>
-                        <Header />
-                        <ContentWrapper>
-                            <MainContent>
-                                <RootComponent />
-                            </MainContent>
-                        </ContentWrapper>
-                    </Root>
+                    <RootComponent />
                 </Scaffold.Content>
             </Scaffold>
         </>

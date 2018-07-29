@@ -290,11 +290,10 @@ const ContactLink = Glamorous.a({
 
 const ContactsContainer = Glamorous(XVertical)({
     minWidth: 422,
-
+    maxWidth: 422,
     '@media(max-width: 1200px)': {
         minWidth: 220,
     },
-
 });
 
 export default withApp('Organization profile', 'viewer', withOrganization(withQueryLoader((props) => {
