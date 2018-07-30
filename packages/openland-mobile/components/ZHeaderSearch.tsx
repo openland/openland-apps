@@ -25,7 +25,7 @@ export class ZHeaderSearch extends React.PureComponent<{ show: boolean, navigati
     render() {
         return (
             <Animated.ScrollView
-                paddingTop={44}
+                paddingTop={58}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
                     { useNativeDriver: true }

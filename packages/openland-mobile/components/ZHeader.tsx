@@ -44,8 +44,8 @@ let styles = StyleSheet.create({
         textAlign: 'left',
         textAlignVertical: 'bottom',
         fontSize: 28,
-        fontWeight: '600',
-        lineHeight: 140
+        fontWeight: 'bold',
+        lineHeight: 140,
     } as TextStyle,
     titleContainer: {
         position: 'absolute',
