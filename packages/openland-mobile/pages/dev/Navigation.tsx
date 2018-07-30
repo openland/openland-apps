@@ -6,6 +6,9 @@ import { ZHeader } from '../../components/ZHeader';
 import { ZHeaderSearch } from '../../components/ZHeaderSearch';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListItemEdit } from '../../components/ZListItemEdit';
+import { ZSafeAreaView } from '../../components/ZSaveAreaView';
+import { ZKeyboardAvoidingView } from '../../components/ZKeyboardAvoidingView';
 
 export class Navigation extends React.PureComponent<NavigationInjectedProps, { hide: boolean }> {
 
@@ -31,45 +34,44 @@ export class Navigation extends React.PureComponent<NavigationInjectedProps, { h
     render() {
         return (
             <View width="100%" height="100%" backgroundColor={AppStyles.backyardColor}>
-                <SafeAreaView>
-                    <ZHeaderSearch show={true} navigation={this.props.navigation}>
-                        <ZListItemGroup>
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                            <ZListItem text="Item" />
-                        </ZListItemGroup>
-                    </ZHeaderSearch>
-                </SafeAreaView>
+                <ZHeaderSearch show={true} navigation={this.props.navigation}>
+                    <ZListItemGroup>
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItemEdit title="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                    </ZListItemGroup>
+                </ZHeaderSearch>
             </View>
         );
     }

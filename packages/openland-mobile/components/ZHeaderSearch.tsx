@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { ScrollView, Animated } from 'react-native';
+import { View, Animated } from 'react-native';
 
 export class ZHeaderSearch extends React.PureComponent<{ show: boolean, navigation: NavigationScreenProp<NavigationParams> }> {
 
@@ -25,13 +25,14 @@ export class ZHeaderSearch extends React.PureComponent<{ show: boolean, navigati
     render() {
         return (
             <Animated.ScrollView
-                paddingTop={58}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
                     { useNativeDriver: true }
                 )}
                 scrollEventThrottle={1}
+                contentInsetAdjustmentBehavior="always"
             >
+                <View height={58} />
                 {this.props.children}
             </Animated.ScrollView>
         );
