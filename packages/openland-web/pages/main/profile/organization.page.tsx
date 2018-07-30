@@ -732,21 +732,22 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                     <Title>{TextOrganizationProfile.additionalInfoContacts}</Title>
                                                                     <XVertical separator={8}>
                                                                         {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
+                                                                            console.warn(contact);
                                                                             return (
                                                                                 <XHorizontal
                                                                                     key={i}
                                                                                     separator={10}
                                                                                     alignItems="center"
                                                                                 >
-                                                                                    <XAvatar cloudImageUuid={contact.photo || undefined} size="medium" />
+                                                                                    <XAvatar photoRef={contact.photo || undefined} size="medium" />
                                                                                     <XVertical separator={1}>
                                                                                         <XHorizontal separator={5} alignItems="center">
-                                                                                            <Title>{contact.name}</Title>
+                                                                                            <Title>{((contact.firstName || '') + ' ' + (contact.lastName || '')).trim()}</Title>
                                                                                             {contact.phone && <ContactLink href={'tel:' + contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
                                                                                             {contact.email && <ContactLink href={'mailto:' + contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
-                                                                                            {contact.link && <ContactLink href={contact.link.startsWith('http') ? contact.link : 'https://' + contact.link} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
+                                                                                            {contact.linkedin && <ContactLink href={contact.linkedin.startsWith('http') ? contact.linkedin : 'https://' + contact.linkedin} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
                                                                                         </XHorizontal>
-                                                                                        <Title opacity={0.8}>{contact.position}</Title>
+                                                                                        <Title opacity={0.8}>{contact.role}</Title>
                                                                                     </XVertical>
                                                                                 </XHorizontal>
                                                                             );

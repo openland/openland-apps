@@ -4,11 +4,11 @@ import Glamorous from 'glamorous';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 
-const CheckboxInputDiv = Glamorous.div<{ active: boolean }>((props) => ({
+const CheckboxInputDiv = Glamorous.div<{ active: boolean, marginBottom?: number }>((props) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: props.marginBottom !== undefined ? props.marginBottom : 14,
     '> input': {
         display: 'none'
     },
@@ -66,7 +66,7 @@ const Divided = Glamorous.div({
     }
 });
 
-interface XCheckboxBasicProps { label: string; trueValue?: string; falseValue?: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
+interface XCheckboxBasicProps { label: string; trueValue?: string; marginBottom?: number; falseValue?: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
 
 export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChecked: boolean }> {
     static defaultProps = {
@@ -100,7 +100,7 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
         console.warn(this.state.isChecked);
         return (
-            <CheckboxInputDiv active={this.state.isChecked} >
+            <CheckboxInputDiv active={this.state.isChecked} marginBottom={this.props.marginBottom}>
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
                 <label htmlFor={id}>
                     <div className="top-content">

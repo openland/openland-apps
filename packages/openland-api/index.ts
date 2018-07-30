@@ -92,6 +92,7 @@ export const OrganizationActivateByInviteMutation = typedMutation<Types.Organiza
 export const OrganizationAlterPublishedMutation = typedMutation<Types.OrganizationAlterPublishedMutation, Types.OrganizationAlterPublishedMutationVariables>(Organization.OrganizationAlterPublishedMutation);
 export const HitsPopularQuery = typedQuery<Types.HitsPopularQuery, Types.HitsPopularQueryVariables>(Organization.HitsPopularQuery);
 export const HitsAddMutation = typedMutation<Types.HitsAddMutation, Types.HitsAddMutationVariables>(Organization.HitsAddMutation);
+export const AlterMemberAsContactMutation = typedMutation<Types.AlterMemberAsContactMutation, Types.AlterMemberAsContactMutationVariables>(Organization.AlterMemberAsContactMutation);
 export const BlocksConnectionQuery = typedQuery<Types.BlocksConnectionQuery, Types.BlocksConnectionQueryVariables>(Parcels.BlocksConnectionQuery);
 export const BlockQuery = typedQuery<Types.BlockQuery, Types.BlockQueryVariables>(Parcels.BlockQuery);
 export const ParcelsConnectionQuery = typedQuery<Types.ParcelsConnectionQuery, Types.ParcelsConnectionQueryVariables>(Parcels.ParcelsConnectionQuery);

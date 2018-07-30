@@ -37,16 +37,16 @@ const PickerEntries = Glamorous(XHorizontal)({
     margin: 0
 });
 
-class InterestsControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void }> {
+class InterestsControlledPicker extends React.Component<{ query?: string, top?: { tags: string[] }, onPick: (location: { label: string, value: string }) => void }> {
     options = [
-        { label: TextDirectory.interestTop, values: TextDirectoryData.interestPicker },
+        { label: TextDirectory.interestTop, values: this.props.top ? this.props.top.tags.map(tag => ({ label: tag, value: tag })) : TextDirectoryData.interestPicker },
     ];
     render() {
         return (<MultiplePicker options={this.options} onPick={this.props.onPick} query={this.props.query} />);
     }
 }
 
-export class InterestPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { query: string, popper: boolean }> {
+export class InterestPicker extends React.PureComponent<{ onPick: (q: SearchCondition) => void, top?: { tags: string[] } }, { query: string, popper: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { query: '', popper: false };
@@ -76,7 +76,7 @@ export class InterestPicker extends React.Component<{ onPick: (q: SearchConditio
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerEntries separator="none" width="100%">
-                    <InterestsControlledPicker query={this.state.query} onPick={this.onPick} />
+                    <InterestsControlledPicker top={this.props.top} query={this.state.query} onPick={this.onPick} />
                 </PickerEntries>
             </PickerWrapper>
         );

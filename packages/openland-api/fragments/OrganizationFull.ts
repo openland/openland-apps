@@ -17,13 +17,17 @@ export const OrganizationFull = gql`
         facebook
         linkedin
         location
-        contacts{
-            name
-            photo
-            position
-            email
+        contacts: alphaContacts{
+            firstName
+            lastName
+            photo: photoRef {
+                uuid
+            }
             phone
-            link
+            email
+            role: alphaRole
+            linkedin: alphaLinkedin
+            twitter: alphaTwitter
         }
 
         organizationType: alphaOrganizationType
