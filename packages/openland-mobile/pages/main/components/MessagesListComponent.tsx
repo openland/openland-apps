@@ -67,6 +67,7 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
                     flexBasis={0}
                     flexGrow={1}
                     ref={this.listRef}
+                    keyboardDismissMode="interactive"
                 />
                 {this.state.loading && <ZLoader />}
             </View>
