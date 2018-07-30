@@ -177,7 +177,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                         )}
                     </Query>
                     <XVertical separator={15}>
-                        <HeadTitle>Contacts</HeadTitle>
+                        <HeadTitle>Super admin</HeadTitle>
                         <XWithRole role="super-admin">
                             <XVertical separator={9}>
                                 {props.data.profile && props.data.profile.joinedAt && (
@@ -187,7 +187,9 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                 )}
                                 {props.data.profile && (
                                     <CardText>
-                                        <span>Invited by <span className="bold person">{(props.data.profile.invitedBy || 'John Doe')}</span></span>
+                                        {!props.data.profile.invitedBy && <span>Self-registered</span>}
+                                        {props.data.profile.invitedBy && <span>Invited by <span className="bold person">{(props.data.profile.invitedBy || 'John Doe')}</span></span>}
+
                                     </CardText>
                                 )}
                             </XVertical>
