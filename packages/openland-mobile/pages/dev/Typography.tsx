@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { View, ScrollView, Text } from 'react-native';
+import { ZHeader } from '../../components/ZHeader';
 
 export class Typography extends React.PureComponent {
     static navigationOptions = (args: any) => {
         return {
-            title: 'Typography'
+            title: 'Typography',
+            header: ZHeader
         };
     }
 

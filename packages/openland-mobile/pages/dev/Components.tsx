@@ -3,11 +3,13 @@ import { View, ScrollView, SafeAreaView } from 'react-native';
 import { ZListItem } from '../../components/ZListItem';
 import { AppStyles } from '../../styles/AppStyles';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZHeader } from '../../components/ZHeader';
 
 export class Components extends React.PureComponent {
     static navigationOptions = (args: any) => {
         return {
-            title: 'Components'
+            title: 'Components',
+            header: ZHeader
         };
     }
 

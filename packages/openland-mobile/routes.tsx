@@ -11,13 +11,15 @@ import { createZTabNavigator } from './components/ZNavigatorTabs';
 import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
-import { Button, View } from 'react-native';
+import { Button, View, Text } from 'react-native';
 import { SettingsNotifications } from './pages/main/SettingsNotifications';
 import { ConversationInfo } from './pages/main/ConversationInfo';
 import { ProfileUser } from './pages/main/ProfileUser';
 import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Directory } from './pages/main/Directory';
+import { Navigation } from './pages/dev/Navigation';
+import { ZHeader } from './components/ZHeader';
 
 //
 // Home Routes
@@ -50,16 +52,19 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
   let { routeName } = args.navigation.state.routes[args.navigation.state.index];
   if (routeName === 'Dialogs') {
     return {
-      headerTitle: 'Messages'
+      headerTitle: 'Messages',
+      // header: ZHeader
     };
   }
   if (routeName === 'Directory') {
     return {
-      headerTitle: 'Directory'
+      headerTitle: 'Directory',
+      // header: ZHeader
     };
   }
   return {
     headerTitle: 'Settings',
+    // header: ZHeader,
     headerRight: (
       <View style={{ marginRight: 10 }}>
         <Button
@@ -92,7 +97,8 @@ const AppStack = createZStackNavigator({
   SettingsProfile: SettingsProfile,
   SettingsNotifications: SettingsNotifications,
   DevTypography: Typography,
-  DevComponents: Components
+  DevComponents: Components,
+  DevNavigation: Navigation
 });
 
 //

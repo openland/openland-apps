@@ -22,7 +22,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
 
     renderHeader = () => {
         return (
-            <View height={4} />
+            <View height={4}/>
         );
     }
 
