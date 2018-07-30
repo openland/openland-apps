@@ -14,7 +14,7 @@ export const TextAppBar = {
         devTools: 'DevTools',
         addDevelopmentOpportunity: 'New development opportunity',
         addAquisitionRequest: 'New acquisition request',
-        adminMenu: 'Super admin settings',
+        adminMenu: 'Super admin',
         xFramework: 'Design system',
     }
 };

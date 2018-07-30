@@ -21,7 +21,7 @@ export const TextOrganizationProfile = {
     overviewOrganizationLookingForTitle: 'Looking for',
     overviewOrganizationGeographiesTitle: 'Geographies',
     overviewOrganizationLocationsTitle: 'Locations',
-    overviewOrganizationInterestsTitle: 'Interests',
+    overviewOrganizationInterestsTitle: 'Channels',
 
     overviewDOTitle: 'Development opportunities',
     overviewDOTagRowShapeAndFormTitle: 'Shape and form',
@@ -142,7 +142,7 @@ export const TextOrganizationProfile = {
     placeholderOverviewGeneralModalLocations: 'Locations',
     placeholderOverviewGeneralModalLookingForDescription: 'Tell us more about your goals. What you are struggling to find?',
     placeholderOverviewGeneralModalGeographiesTitle: 'Where are you looking for deals?',
-    placeholderOverviewGeneralModalInterests: 'Interests',
+    placeholderOverviewGeneralModalInterests: 'Channels',
     placeholderOverviewGeneralModalGeographiesDescription: 'Whole US? Specific state or city?',
     placeholderSemiEmptyTitle: 'No additional updates yet',
     placeholderSemiEmptySubTitle: 'Get notified about updates and listings from this organization',

@@ -35,7 +35,7 @@ const EntryComponent = (props: EntryProps) => (
         <XTag
             text={props.entry.label + ' ' + (props.sugestion ? '' : props.entry.type === 'organizationType' ? 'category' : props.entry.type === 'interest' ? 'intereset' : props.entry.type === 'location' ? 'location' : '')}
             size="large"
-            color="primary"
+            color={props.selected ? 'primary' : 'green'}
             onClick={() => props.onPick(props.entry)}
         />
     </TagWrap>
@@ -119,7 +119,6 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
     }
 
     render() {
-
         let content = (
             <ContentValue empty={this.state.entries.length === 0}>
                 {this.state.entries.map((e, i) => (
@@ -127,8 +126,8 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
                         i={i}
                         onHover={ii => this.setState({ select: ii })}
                         key={e.entry.type + e.entry.label + i}
-                        selected={i === this.state.select}
                         {...e}
+                        selected={i === this.state.select}
                     />
                 ))}
             </ContentValue>
