@@ -322,6 +322,7 @@ export interface UpdateProfileInput {
   alphaRole?: string | null,
   alphaLocations?: Array< string > | null,
   alphaLinkedin?: string | null,
+  alphaTwitter?: string | null,
   alphaPrimaryOrganizationId?: string | null,
 };
 
@@ -1548,13 +1549,18 @@ export interface MyOrganizationQuery {
     linkedin: string | null,
     location: string | null,
     contacts:  Array< {
-      __typename: "OrganizationContact",
-      name: string,
-      photo: string | null,
-      position: string | null,
-      email: string | null,
+      __typename: "Profile",
+      firstName: string | null,
+      lastName: string | null,
+      photo:  {
+        __typename: "ImageRef",
+        uuid: string,
+      } | null,
       phone: string | null,
-      link: string | null,
+      email: string | null,
+      role: string | null,
+      linkedin: string | null,
+      twitter: string | null,
     } >,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
@@ -2180,13 +2186,18 @@ export interface OrganizationQuery {
     linkedin: string | null,
     location: string | null,
     contacts:  Array< {
-      __typename: "OrganizationContact",
-      name: string,
-      photo: string | null,
-      position: string | null,
-      email: string | null,
+      __typename: "Profile",
+      firstName: string | null,
+      lastName: string | null,
+      photo:  {
+        __typename: "ImageRef",
+        uuid: string,
+      } | null,
       phone: string | null,
-      link: string | null,
+      email: string | null,
+      role: string | null,
+      linkedin: string | null,
+      twitter: string | null,
     } >,
     organizationType: Array< string > | null,
     interests: Array< string > | null,
@@ -2742,6 +2753,7 @@ export interface OrganizationMembersQuery {
         email: string | null,
       },
       joinedAt: string | null,
+      showInContacts: boolean,
       email: string,
       role: OrganizationMemberRole,
     }
@@ -2881,6 +2893,16 @@ export interface HitsAddMutationVariables {
 
 export interface HitsAddMutation {
   hitsAdd: string | null,
+};
+
+export interface AlterMemberAsContactMutationVariables {
+  orgId: string,
+  memberId: string,
+  showInContacts: boolean,
+};
+
+export interface AlterMemberAsContactMutation {
+  alphaAlterMemberAsContact: string,
 };
 
 export interface BlocksConnectionQueryVariables {
@@ -5137,13 +5159,18 @@ export interface OrganizationFullFragment {
   linkedin: string | null,
   location: string | null,
   contacts:  Array< {
-    __typename: "OrganizationContact",
-    name: string,
-    photo: string | null,
-    position: string | null,
-    email: string | null,
+    __typename: "Profile",
+    firstName: string | null,
+    lastName: string | null,
+    photo:  {
+      __typename: "ImageRef",
+      uuid: string,
+    } | null,
     phone: string | null,
-    link: string | null,
+    email: string | null,
+    role: string | null,
+    linkedin: string | null,
+    twitter: string | null,
   } >,
   organizationType: Array< string > | null,
   interests: Array< string > | null,
