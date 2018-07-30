@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationInjectedProps, NavigationScreenProp, NavigationParams } from 'react-navigation';
-import NanoId from 'nanoid';
+// import NanoId from 'nanoid';
 import { Button, TouchableOpacity } from 'react-native';
 
 export interface ZHeaderButtonDescription {
@@ -10,7 +10,7 @@ export interface ZHeaderButtonDescription {
 
 export class ZHeaderButton extends React.PureComponent<{ title: string, onPress: () => void, navigation: NavigationScreenProp<NavigationParams> }> {
 
-    private id = NanoId();
+    private id = Math.random() + '-';
 
     componentDidMount() {
         let existing = this.props.navigation.getParam('__z_header_actions', []) as ZHeaderButtonDescription[];
