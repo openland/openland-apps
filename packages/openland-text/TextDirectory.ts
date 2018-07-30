@@ -34,9 +34,9 @@ export const TextDirectory = {
 
     categoryPicker: 'Organization category',
 
-    interestPicker: 'Interests',
+    interestPicker: 'Channels',
     interestSearchPlaceholder: 'Enter an interest',
-    interestTop: 'Top interests',
+    interestTop: 'Top channels',
 };
 
 export const TextDirectoryData = {

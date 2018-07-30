@@ -132,7 +132,7 @@ const TopSearchTags = Glamorous(XHorizontal)({
 const CategoriesTitleMap = {
     directory_location: 'Location',
     directory_organizationType: 'Organization category',
-    directory_interest: 'Interests',
+    directory_interest: 'Channels',
 };
 class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> {
 
@@ -302,7 +302,7 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                         <OrganizationLocation>{(props.item.locations || [])[0]}</OrganizationLocation>
                     </OrganizationTitleWrapper>
 
-                    {props.item.interests && (<OrganizationInterests>{props.item.interests.join(' • ')}</OrganizationInterests>)}
+                    {props.item.interests && (<OrganizationInterests>{[...(props.item.interests || []).filter((e, i) => i <= 2), ...(props.item.interests.length > 3 ? ['+ ' + String(props.item.interests.length - 3) + (props.item.interests.length === 4 ? ' channel' : ' channels')] : [])].join(' • ')}</OrganizationInterests>)}
                     {props.item.organizationType && (
                         <OrganizationCardTypeWrapper separator={0}>
                             {props.item.organizationType.map((tag) => (
@@ -616,6 +616,10 @@ interface RootComponentState {
     orgCount: number;
 }
 
+const ResetButton = Glamorous(XButton)({
+    color: '#99a2b0'
+});
+
 class RootComponent extends React.Component<{}, RootComponentState> {
     input?: any;
     constructor(props: any) {
@@ -722,25 +726,22 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                                 <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
                                     <SearchFormContent separator={4} flexGrow={1}>
                                         <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                                        <XWithRole role={'software-developer'}>
-                                            <AutocompletePopper
-                                                target={
-                                                    <SearchInput
-                                                        onFocus={this.onSearchFocus}
-                                                        value={searchText}
-                                                        autoFocus={true}
-                                                        onChange={this.handleSearchChange}
-                                                        placeholder={TextDirectory.searchInputPlaceholder}
-                                                    />
-                                                }
-                                                onPick={this.addCondition}
-                                                query={searchText}
-                                            />
-                                        </XWithRole>
+                                        <AutocompletePopper
+                                            target={
+                                                <SearchInput
+                                                    onFocus={this.onSearchFocus}
+                                                    value={searchText}
+                                                    onChange={this.handleSearchChange}
+                                                    placeholder={TextDirectory.searchInputPlaceholder}
+                                                />
+                                            }
+                                            onPick={this.addCondition}
+                                            query={searchText}
+                                        />
                                     </SearchFormContent>
 
                                     <XHorizontal separator={5}>
-                                        <XButton text={TextDirectory.buttonReset} style="flat" enabled={this.state.conditions.length > 0} onClick={this.reset} />
+                                        {this.state.conditions.length > 0 && <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
                                         <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
                                     </XHorizontal>
                                 </SearchFormWrapper>

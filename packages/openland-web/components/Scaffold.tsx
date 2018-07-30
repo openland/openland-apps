@@ -876,6 +876,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                     title={TextGlobal.switch}
                     targetQuery="org"
                     size="small"
+                    scrollableContent={true}
                 >
                     <OrganizationPicker />
                 </XModal>
