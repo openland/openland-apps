@@ -242,38 +242,36 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         //
 
         return (
-            <View height={88}>
+            <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
                 <Animated.View style={{ position: 'absolute', left: 0, right: 0, top: 0, transform: [{ translateY: backgroundOffset }], backgroundColor: AppStyles.primaryColor, height: BACKGROUND_SIZE }} />
-                <SafeAreaView zIndex={10}>
-                    <View flexDirection="row">
-                        <Animated.View style={{ opacity: backButtonOpacity, zIndex: 10 }}>
-                            <TouchableOpacity onPress={this.handleBack}>
-                                <Image
-                                    source={require('assets/back-icon.png')}
-                                    style={{
-                                        height: 21,
-                                        width: 13,
-                                        marginLeft: 9,
-                                        marginRight: 22,
-                                        marginVertical: 12,
-                                        resizeMode: 'contain',
-                                        tintColor: '#fff'
-                                    }}
-                                />
-                            </TouchableOpacity>
-                        </Animated.View>
-                        <View flexGrow={1} flexBasis={0}>
-                            {titles}
-                        </View>
-                        {right.length > 0 && (
-                            <View paddingRight={15} paddingLeft={10}>
-                                {right}
-                            </View>
-                        )}
-                        {right.length === 0 && (<View width={44} />)}
+                <View flexDirection="row" height={44}>
+                    <Animated.View style={{ opacity: backButtonOpacity, zIndex: 10 }}>
+                        <TouchableOpacity onPress={this.handleBack}>
+                            <Image
+                                source={require('assets/back-icon.png')}
+                                style={{
+                                    height: 21,
+                                    width: 13,
+                                    marginLeft: 9,
+                                    marginRight: 22,
+                                    marginVertical: 12,
+                                    resizeMode: 'contain',
+                                    tintColor: '#fff'
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </Animated.View>
+                    <View flexGrow={1} flexBasis={0}>
+                        {titles}
                     </View>
-                </SafeAreaView>
-            </View>
+                    {right.length > 0 && (
+                        <View paddingRight={15} paddingLeft={10}>
+                            {right}
+                        </View>
+                    )}
+                    {right.length === 0 && (<View width={44} />)}
+                </View>
+            </SafeAreaView>
         );
     }
 }
