@@ -227,7 +227,6 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
 
     copyLink = () => {
         if (this.linkComponent) {
-            console.warn(this.linkComponent);
             this.linkComponent.copy();
         }
     }
@@ -253,10 +252,10 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     <RenewInviteLinkButton />
                 )}
                 {this.state.showLink && (
-                    <XButton style={'primary'} text={'Copy'} onClick={this.copyLink} autoClose={true} />
+                    <XFormSubmit key="link" style={'primary'} succesText={TextInvites.copied} {...submitProps} text={'Copy'} />
                 )}
                 {!this.state.showLink && (
-                    <XFormSubmit succesText={TextInvites.sent} style={'primary'} text={'Save'} keyDownSubmit={true} {...submitProps} />
+                    <XFormSubmit key="invites" succesText={TextInvites.sent} style={'primary'} keyDownSubmit={true} {...submitProps} />
                 )}
             </FooterWrap>
         );
@@ -266,12 +265,17 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 useTopCloser={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
                 defaultAction={async (data) => {
-                    let invites = data.inviteRequests.filter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({ ...invite, role: this.props.useRoles !== false ? invite.role : undefined, emailText: this.state.customTextAreaOpen ? data.customText : null }));
-                    await this.props.mutation({
-                        variables: {
-                            inviteRequests: invites
-                        }
-                    });
+                    if (!this.state.showLink) {
+                        let invites = data.inviteRequests.filter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({ ...invite, role: this.props.useRoles !== false ? invite.role : undefined, emailText: this.state.customTextAreaOpen ? data.customText : null }));
+                        await this.props.mutation({
+                            variables: {
+                                inviteRequests: invites
+                            }
+                        });
+                    } else {
+                        this.copyLink();
+                    }
+
                 }}
                 scrollableContent={true}
                 defaultData={{
