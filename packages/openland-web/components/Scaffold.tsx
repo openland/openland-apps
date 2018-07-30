@@ -802,7 +802,7 @@ const CreateOrganization = withCreateOrganization((props) => {
         <XModalForm
             targetQuery="createOrganization"
             useTopCloser={true}
-            title="Create new organization"
+            title={InitTexts.create_organization_popper.title}
             defaultAction={async (data) => {
                 let res = await props.createOrganization({
                     variables:
@@ -834,10 +834,10 @@ const CreateOrganization = withCreateOrganization((props) => {
                             flexGrow={1}
                             field="input.name"
                             size="medium"
-                            placeholder={InitTexts.create_organization.namePlaceholder}
+                            placeholder={InitTexts.create_organization_popper.namePlaceholder}
                         // tooltipContent={<InputTooltip />}
                         />
-                        <XFormSubmit style="primary" text={InitTexts.create_organization.continue} size="medium" alignSelf="flex-end" />
+                        <XFormSubmit style="primary" text={InitTexts.create_organization_popper.submit} size="medium" alignSelf="flex-end" />
                     </XHorizontal>
                 </XFormLoadingContent>
 
