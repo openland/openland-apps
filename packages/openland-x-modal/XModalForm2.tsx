@@ -67,7 +67,7 @@ export class XModalForm extends React.Component<XModalFormProps> {
                 </ModalBodyContainer>
             );
         }
-        let footer = this.props.customFooter || (
+        let footer = this.props.customFooter === null ? null : (
             <Footer>
                 <XHorizontal>
                     <XFormSubmit style={'primary'} text={'Save'} {...submitProps} keyDownSubmit={true} />
