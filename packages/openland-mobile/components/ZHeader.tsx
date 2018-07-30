@@ -50,19 +50,19 @@ let styles = StyleSheet.create({
     titleContainer: {
         position: 'absolute',
         width: '100%',
-        height: 44
+        height: 44,
     } as ViewStyle,
     titleLargContainer: {
         position: 'absolute',
         width: '100%',
-        height: 140
+        height: 140,
     } as ViewStyle
 });
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
-const NAVIGATION_BAR_SIZE = 88;
-const NAVIGATION_BAR_SIZE_LARGE = 146;
+const NAVIGATION_BAR_SIZE = 44;
+const NAVIGATION_BAR_SIZE_LARGE = 102;
 const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGROUND_SIZE);
 const defaultLargeTitleOpacity = new Animated.Value(0);
 
@@ -219,7 +219,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         }}
                         key={'scene-large-' + titles.length}
                     >
-                        <View style={styles.titleLargContainer}>
+                        <View style={styles.titleLargContainer} pointerEvents="none">
                             {titleLarge}
                         </View>
                     </Animated.View>
@@ -243,8 +243,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         return (
             <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
-                <Animated.View style={{ position: 'absolute', left: 0, right: 0, top: 0, transform: [{ translateY: backgroundOffset }], backgroundColor: AppStyles.primaryColor, height: BACKGROUND_SIZE }} />
-                <View flexDirection="row" height={44}>
+                <View flexDirection="row" height={NAVIGATION_BAR_SIZE}>
+                    <Animated.View style={{ position: 'absolute', left: 0, right: 0, top: 0, transform: [{ translateY: backgroundOffset }], backgroundColor: AppStyles.primaryColor, height: BACKGROUND_SIZE }} />
                     <Animated.View style={{ opacity: backButtonOpacity, zIndex: 10 }}>
                         <TouchableOpacity onPress={this.handleBack}>
                             <Image
