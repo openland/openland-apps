@@ -14,7 +14,8 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap) {
             //     color: '#fff',
             //     fontWeight: 'bold',
             // },
-            header: ZHeader
+            header: ZHeader,
+            gesturesEnabled: true
         },
         headerMode: 'float',
         transitionConfig: () => {
