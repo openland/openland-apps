@@ -123,13 +123,12 @@ const Switcher = Glamorous(XSwitcher.Item)({
     display: 'flex',
     alignItems: 'center',
     padding: 0,
-    color: '#334562 !important',
-    opacity: 0.5,
+    color: '#99A2B0 !important',
     borderBottom: '3px solid transparent !important',
 
     '&.is-active': {
-        opacity: 1,
-        borderBottom: '3px solid #654bfa !important'
+        borderBottom: '3px solid #654bfa !important',
+        color: '#334562 !important',
     }
 });
 
@@ -216,17 +215,27 @@ const SocialLinkImg = Glamorous(XLink)({
     backgroundPosition: 'center',
     '&.fb': {
         backgroundSize: 7,
-        backgroundImage: 'url(\'/static/img/icons/organization/ic-fb.svg\')',
+        backgroundImage: 'url(\'/static/img/icons/organization/ic-fb.svg\')'
     },
     '&.tw': {
-        backgroundImage: 'url(\'/static/img/icons/organization/ic-twitter.svg\')',
+        backgroundImage: 'url(\'/static/img/icons/organization/ic-twitter.svg\')'
     },
     '&.li': {
         padding: 3,
         backgroundImage: 'url(\'/static/img/icons/organization/ic-linkedin.svg\')',
+        backgroundPosition: 'center 7px'
     },
     '&:hover': {
-        backgroundColor: '#5640d6'
+        backgroundColor: '#5640d6',
+        '&.tw': {
+            backgroundColor: '#1AA1F3'
+        },
+        '&.fb': {
+            backgroundColor: '#4267B2'
+        },
+        '&.li': {
+            backgroundColor: '#0374B3'
+        }
     }
 });
 

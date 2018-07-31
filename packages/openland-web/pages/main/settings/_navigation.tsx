@@ -22,7 +22,7 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <Sidebar.Item path="/settings/invites">Invites</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
-            <Scaffold.Content padding={false} >
+            <Scaffold.Content padding={false}>
                 {props.children}
             </Scaffold.Content>
         </Scaffold>

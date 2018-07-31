@@ -66,7 +66,7 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     </XHorizontal>
                                 </XVertical>
                             </XFormLoadingContent>
-                            <XFormSubmit text="Save" style="primary" alignSelf="flex-start" size="medium" />
+                            <XFormSubmit text="Save" style="primary" alignSelf="flex-start" />
                         </XVertical>
                     </XForm>
                 </XVertical>

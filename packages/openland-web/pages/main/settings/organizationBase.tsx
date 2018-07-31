@@ -42,15 +42,15 @@ let shiftArray = (array: any[]) => {
 };
 
 const SACreatedBlock = Glamorous.div({
-    padding: 18,
+    padding: 16,
     borderRadius: 5,
     border: 'solid 1px rgba(220, 222, 228, 0.45)',
     alignSelf: 'flex-start'
 });
 
 const SACreatedText = Glamorous.div({
-    fontSize: 15,
-    lineHeight: 1.27,
+    fontSize: 14,
+    lineHeight: 1.43,
     letterSpacing: -0.2,
     color: '#334562',
     '& .bold': {
@@ -108,7 +108,7 @@ const AdminTools = withSuperAccountActions(props => {
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
                         <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
+                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!"/>
                 </XVertical>
             </XForm>
         </XVertical>
@@ -119,16 +119,16 @@ const Separator = Glamorous.div({
     width: '100%',
     height: 1,
     backgroundColor: 'rgba(220, 222, 228, 0.45)',
-    marginTop: '30px !important',
-    marginBottom: '30px !important',
+    marginTop: '22px !important',
+    marginBottom: '26px !important',
 });
 
 export const OrganizationSettigs = ((props: any) => {
     return (
         <Navigation title="Organization profile">
             <Content>
-                <XVertical alignSelf="stretch" separator={36}>
-                    <XVertical separator={15}>
+                <XVertical alignSelf="stretch" separator={21}>
+                    <XVertical separator={18}>
                         <CategoryTitle id="general">General</CategoryTitle>
                         <XForm
                             defaultData={{
@@ -163,13 +163,13 @@ export const OrganizationSettigs = ((props: any) => {
                             }}
                             defaultLayout={false}
                         >
-                            <XVertical separator={24}>
+                            <XVertical separator={12}>
                                 <XFormLoadingContent>
                                     <XHorizontal separator={12}>
                                         <XVertical flexGrow={1} maxWidth={480}>
 
                                             <XFormField title="Organization name" field="input.name">
-                                                <XInput field="input.name" size="medium" />
+                                                <XInput field="input.name" />
                                             </XFormField>
 
                                             <Separator />
@@ -194,12 +194,12 @@ export const OrganizationSettigs = ((props: any) => {
                                         </XFormField>
                                     </XHorizontal>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!"/>
                             </XVertical>
                         </XForm>
                     </XVertical>
 
-                    <XVertical separator={15}>
+                    <XVertical separator={18}>
                         <CategoryTitle id="links">Links</CategoryTitle>
                         <XForm
                             defaultData={{
@@ -224,28 +224,28 @@ export const OrganizationSettigs = ((props: any) => {
                             }}
                             defaultLayout={false}
                         >
-                            <XVertical separator={24}>
+                            <XVertical separator={12}>
                                 <XFormLoadingContent>
                                     <XVertical flexGrow={1} maxWidth={480}>
                                         <XFormField title="Website" field="input.website" optional={true}>
                                             <XHorizontal separator={7}>
-                                                <XInput size="medium" flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
-                                                <XInput size="medium" flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
+                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
+                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
                                             </XHorizontal>
                                         </XFormField>
 
                                         <XFormField title="Twitter" field="input.twitter" optional={true}>
-                                            <XInput size="medium" field="input.twitter" />
+                                            <XInput field="input.twitter" />
                                         </XFormField>
                                         <XFormField title="Facebook" field="input.facebook" optional={true}>
-                                            <XInput size="medium" field="input.facebook" />
+                                            <XInput field="input.facebook" />
                                         </XFormField>
                                         <XFormField title="LinkedIn" field="input.linkedin" optional={true}>
-                                            <XInput size="medium" field="input.linkedin" />
+                                            <XInput field="input.linkedin" />
                                         </XFormField>
                                     </XVertical>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!"/>
                             </XVertical>
                         </XForm>
                     </XVertical>
@@ -253,7 +253,7 @@ export const OrganizationSettigs = ((props: any) => {
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>
                         <XVertical separator={36}>
-                            <XVertical separator={15}>
+                            <XVertical separator={18}>
                                 <CategoryTitle id="super-admin">Super admin</CategoryTitle>
                                 <AdminTools
                                     variables={{ accountId: props.data.organizationProfile!!.id, viaOrgId: true }}

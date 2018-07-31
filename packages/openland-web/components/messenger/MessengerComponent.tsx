@@ -7,6 +7,7 @@ import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../Incubator/XOverflow';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -69,13 +70,25 @@ const SubTitle = Glamorous.div({
     marginTop: 6
 });
 
+const NavChatLeftContent = makeNavigable(ChatLeftContent);
+
+const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftContent)(props => ({
+    cursor: props.path ? 'pointer' : undefined
+}));
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <ChatRoot flexGrow={1} separator={'none'}>
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
-                    <ChatLeftContent separator={10} alignItems="center" flexGrow={1}>
+                    <NavChatLeftContentStyled
+                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
+                        separator={10}
+                        alignItems="center"
+                        flexGrow={1}
+                    >
                         <ChatLogo
+                            path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
                             size="medium"
                             style={props.data.chat.__typename === 'SharedConversation' ? 'organization' : 'person'}
                             cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : undefined}
@@ -84,7 +97,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             <Title>{props.data.chat.title}</Title>
                             <SubTitle>{props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person'}</SubTitle>
                         </ChatTitleContent>
-                    </ChatLeftContent>
+                    </NavChatLeftContentStyled>
                     <XOverflow
                         placement="bottom-end"
                         content={(

@@ -85,7 +85,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
 
     return (
         <CardWrapper>
-            <XVerticalStyled separator={3} padding={24}>
+            <XVerticalStyled separator={4} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Development opportunity" date={item.updatedAt}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
@@ -122,7 +122,7 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                     {!item.location && (
                         <PlaceholderDO style={{ width: 133, height: 100 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 180px)'} separator={5} paddingTop={8}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 180px)'} separator={4} paddingTop={8}>
                         <CardTitle maxWidth={300}>{item.name}</CardTitle>
                         {item.locationTitle && <Text>{item.locationTitle}</Text>}
                         {!item.location && <Text><Lock icon="locked" />{TextOrganizationProfile.listingDoLocked}</Text>}
@@ -290,7 +290,7 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
 
     return (
         <CardWrapper>
-            <XVerticalStyled separator={3} padding={24}>
+            <XVerticalStyled separator={4} padding={24}>
                 <XHorizontal justifyContent="space-between" alignItems="center">
                     <ListingPath type="Acquisition criteria" date={item.updatedAt}/>
                     <XWithRole role={['org-' + props.orgId + '-admin']}>
@@ -323,10 +323,10 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                     {!item.photo && (
                         <PlaceholderAR style={{ width: 133, height: 100 }} />
                     )}
-                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 155px)'} separator={5} paddingTop={8}>
+                    <XVerticalStyled flexGrow={1} maxWidth={'calc(100% - 155px)'} separator={4} paddingTop={8}>
                         <CardTitle maxWidth={300}>{item.name}</CardTitle>
                         {item.shortDescription && <Text>{item.shortDescription}</Text>}
-                        <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto">
+                        <XHorizontalStyled justifyContent="flex-end" separator={5} alignItems="center" marginTop="auto !important">
                             <XButton text="View details" anchor={'/o/' + props.orgId + '/listings#' + item.id} />
                             <XButton style="primary" text="Message" path={'/mail/' + props.orgId} />
                         </XHorizontalStyled>

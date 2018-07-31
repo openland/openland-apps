@@ -52,6 +52,11 @@ export const ChatInfoQuery = gql`
             flexibleId
             title
             photos
+            ... on SharedConversation {
+                organization {
+                    id
+                }
+            }
         }
     }
 `;
