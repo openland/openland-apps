@@ -751,6 +751,10 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      organization:  {
+        __typename: "Organization",
+        id: string,
+      } | null,
     } | {
       __typename: "PrivateConversation",
       id: string,
