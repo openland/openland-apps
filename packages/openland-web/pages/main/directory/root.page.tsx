@@ -696,13 +696,7 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
 
 const SearchRoot = Glamorous(XCard)({
     borderRadius: 5,
-    overflow: 'hidden',
-    '& > .search-pickers-wrapper': {
-        height: 0
-    },
-    '&:focus-within > .search-pickers-wrapper': {
-        height: 53
-    }
+    overflow: 'hidden'
 });
 
 const SearchFormWrapper = Glamorous(XHorizontal)({
@@ -728,17 +722,19 @@ const SearchInput = Glamorous.input({
     lineHeight: 1.43,
     flexGrow: 1,
     '::placeholder': {
-        fontWeight: 500
+        fontWeight: 500,
+        color: '#99A2B0'
     }
 });
 
-const SearchPickersWrapper = Glamorous(XHorizontal)({
-    transition: 'all .2s'
-});
+const SearchPickersWrapper = Glamorous(XHorizontal)<{hiden: boolean}>(props => ({
+    transition: 'all .2s',
+    height: props.hiden === true ? 53 : 0
+}));
 
 const SearchPickers = Glamorous(XHorizontal)({
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#FAFBFC',
     padding: '10px 0px 10px 10px',
 });
 
@@ -775,6 +771,7 @@ interface RootComponentState {
     conditions: SearchCondition[];
     sort: { orderBy: string, featured: boolean };
     orgCount: number;
+    showFilters: boolean;
 }
 
 const ResetButton = Glamorous(XButton)({
@@ -791,7 +788,8 @@ class RootComponent extends React.Component<{}, RootComponentState> {
             searchText: '',
             conditions: [],
             sort: { orderBy: 'createdAt', featured: true },
-            orgCount: 0
+            orgCount: 0,
+            showFilters: false
         };
     }
 
@@ -866,6 +864,9 @@ class RootComponent extends React.Component<{}, RootComponentState> {
 
     onSearchFocus = (e: any) => {
         this.input = e.target;
+        this.setState({
+            showFilters: true
+        });
     }
 
     tagsCount = (n: number) => {
@@ -914,7 +915,7 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                                         />
                                     </XHorizontal>
                                 </SearchFormWrapper>
-                                <SearchPickersWrapper separator={0} className="search-pickers-wrapper">
+                                <SearchPickersWrapper separator={0} hiden={this.state.showFilters}>
                                     <SearchPickers separator="none" flexGrow={1}>
                                         <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }} fetchPolicy="network-only">
                                             {data => {
