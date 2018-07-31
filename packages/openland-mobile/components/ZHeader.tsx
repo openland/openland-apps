@@ -4,6 +4,7 @@ import { AppStyles } from '../styles/AppStyles';
 import { SafeAreaView, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
+const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
 interface Descriptor {
     progress: Animated.Value;
@@ -244,7 +245,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         return (
             <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
                 <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', heifht: NAVIGATION_BAR_SIZE }}>
-                    <Animated.View
+                    <ViewOverflowAnimated
                         style={{
                             position: 'absolute',
                             left: 0,
@@ -256,7 +257,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         }}
                     />
 
-                    <Animated.View style={{ opacity: backButtonOpacity, zIndex: 10 }}>
+                    <ViewOverflowAnimated style={{ opacity: backButtonOpacity, zIndex: 10 }}>
                         <TouchableOpacity onPress={this.handleBack}>
                             <Image
                                 source={require('assets/back-icon.png')}
@@ -271,7 +272,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                                 }}
                             />
                         </TouchableOpacity>
-                    </Animated.View>
+                    </ViewOverflowAnimated>
                     <View flexGrow={1} flexBasis={0}>
                         {titles}
                     </View>
