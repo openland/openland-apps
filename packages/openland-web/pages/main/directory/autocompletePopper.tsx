@@ -6,6 +6,7 @@ import { XTag } from 'openland-x/XTag';
 import { SearchCondition } from './root.page';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import DirecoryIcon from './icons/directory.1.svg';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
     padding: 0
@@ -140,7 +141,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         if (sugestedLocation) {
             newentries.push({
                 selected: false,
-                entry: {type: 'location', value: sugestedLocation, label: sugestedLocation},
+                entry: { type: 'location', value: sugestedLocation, label: sugestedLocation },
                 sugestion: true,
                 onPick: nextProps.onPick
             });
@@ -148,7 +149,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         if (sugestedCategory) {
             newentries.push({
                 selected: false,
-                entry: {type: 'organizationType', value: sugestedCategory.value, label: sugestedCategory.label},
+                entry: { type: 'organizationType', value: sugestedCategory.value, label: sugestedCategory.label },
                 sugestion: true,
                 onPick: nextProps.onPick
             });
@@ -156,7 +157,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         if (sugestedInterest) {
             newentries.push({
                 selected: false,
-                entry: {type: 'interest', value: sugestedInterest.value, label: sugestedInterest.label},
+                entry: { type: 'interest', value: sugestedInterest.value, label: sugestedInterest.label },
                 sugestion: true,
                 onPick: nextProps.onPick
             });
@@ -190,7 +191,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         if (e.code === 'Enter') {
             e.preventDefault();
             if (this.state.select === -1) {
-                this.props.onPick({type: 'name', value: this.props.query, label: this.props.query});
+                this.props.onPick({ type: 'name', value: this.props.query, label: this.props.query });
             } else {
                 this.props.onPick(this.state.entries[this.state.select].entry);
             }
@@ -200,7 +201,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
 
         y = Math.min(this.state.entries.length - 1, Math.max(-1, y));
 
-        this.setState({select: y});
+        this.setState({ select: y });
     }
 
     handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -213,22 +214,24 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         let content = (
             <ContentValue>
                 <InputWrap>
-                    <XIcon icon="search"/>
-                    <input value={inputValue} onChange={this.handleSearchChange}/>
+                    <XIcon icon="search" />
+                    <input value={inputValue} onChange={this.handleSearchChange} />
                 </InputWrap>
                 {this.state.entries.map((e, i) => (
                     <EntryComponent
                         i={i}
-                        onHover={ii => this.setState({select: ii})}
+                        onHover={ii => this.setState({ select: ii })}
                         key={e.entry.type + e.entry.label + i}
                         {...e}
                         selected={i === this.state.select}
                     />
                 ))}
-                <OrgWrap selected={false} onPick={() => null}>
-                    <DirecoryIcon/>
-                    <OrgTitle>Sancon Company</OrgTitle>
-                </OrgWrap>
+                <XWithRole role="software-developer">
+                    <OrgWrap selected={false} onPick={() => null}>
+                        <DirecoryIcon />
+                        <OrgTitle>Sancon Company</OrgTitle>
+                    </OrgWrap>
+                </XWithRole>
             </ContentValue>
         );
         return (
@@ -237,7 +240,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
                 show={!!(this.props.query.trim())}
                 arrow={null}
                 content={content}
-                contentContainer={<ContentWrapper/>}
+                contentContainer={<ContentWrapper />}
             >
                 {this.props.target}
             </XPopper>
