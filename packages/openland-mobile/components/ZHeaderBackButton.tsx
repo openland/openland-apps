@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZTouchable } from './ZTouchable';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
 
@@ -11,9 +11,10 @@ let image = isAndroid ?
             style={{
                 height: 24,
                 width: 24,
-                marginLeft: 16,
-                marginRight: 16,
-                marginVertical: 16,
+                margin: 3,
+                // marginLeft: 16,
+                // marginRight: 16,
+                // marginVertical: 16,
                 resizeMode: 'center',
                 tintColor: '#fff'
             }}
@@ -36,11 +37,11 @@ let image = isAndroid ?
 export class ZHeaderBackButton extends React.PureComponent<{ onPress: () => void }> {
     render() {
         return (
-            <ViewOverflow>
-                <ZTouchable onPress={this.props.onPress}>
+            <ZTouchable onPress={this.props.onPress} style={{ margin: isAndroid ? 13 : 0, backgroundColor: 'transparent' }}>
+                <View style={{ backgroundColor: 'transparent' }}>
                     {image}
-                </ZTouchable>
-            </ViewOverflow>
+                </View>
+            </ZTouchable>
         );
     }
 }

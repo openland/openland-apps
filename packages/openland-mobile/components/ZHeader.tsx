@@ -77,6 +77,7 @@ const NAVIGATION_BAR_SIZE = Platform.OS === 'ios' ? 44 : 56;
 const NAVIGATION_BAR_SIZE_LARGE = 102;
 const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGROUND_SIZE);
 const zeroValue = new Animated.Value(0);
+const BACK_WIDTH = Platform.OS === 'ios' ? 44 : 56;
 
 class ZHeaderComponent extends React.PureComponent<Props> {
 
@@ -253,6 +254,24 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         let content = (
             <>
+                {/* Left */}
+                <Animated.View style={{ height: '100%', width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: AppStyles.primaryColor }}>
+                    <ZHeaderBackButton onPress={this.handleBack} />
+                </Animated.View>
+
+                {/* Center*/}
+                <View flexGrow={1} flexBasis={0} zIndex={2}>
+                    {titles}
+                </View>
+
+                {/* Right */}
+                {right.length > 0 && (
+                    <View paddingRight={15} paddingLeft={10} zIndex={3}>
+                        {right}
+                    </View>
+                )}
+                {right.length === 0 && (<View width={44} zIndex={3} />)}
+
                 <ViewOverflowAnimated
                     style={{
                         position: 'absolute',
@@ -265,25 +284,12 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         zIndex: 1
                     }}
                 />
-
-                <ViewOverflowAnimated style={{ opacity: backButtonOpacity, zIndex: 2 }}>
-                    <ZHeaderBackButton onPress={this.handleBack} />
-                </ViewOverflowAnimated>
-                <View flexGrow={1} flexBasis={0} zIndex={3}>
-                    {titles}
-                </View>
-                {right.length > 0 && (
-                    <View paddingRight={15} paddingLeft={10} zIndex={3}>
-                        {right}
-                    </View>
-                )}
-                {right.length === 0 && (<View width={44} zIndex={3} />)}
             </>
         );
 
         if (isAndroid) {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE }}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE, backgroundColor: AppStyles.primaryColor }}>
                     {content}
                 </ViewOverflow>
             );
