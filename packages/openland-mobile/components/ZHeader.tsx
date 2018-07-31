@@ -33,6 +33,14 @@ interface Props {
 
 const ACCENT_COLOR = '#000';
 const BACKGROUND_COLOR = '#fff';
+const SCREEN_WIDTH = Dimensions.get('screen').width;
+const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
+const NAVIGATION_BAR_SIZE = Platform.OS === 'ios' ? 44 : 56;
+const NAVIGATION_BAR_SIZE_LARGE = 102;
+const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGROUND_SIZE);
+const zeroValue = new Animated.Value(0);
+const oneValue = new Animated.Value(1);
+const BACK_WIDTH = Platform.OS === 'ios' ? 44 : 56;
 
 let styles = StyleSheet.create({
 
@@ -59,7 +67,7 @@ let styles = StyleSheet.create({
         height: '100%',
         textAlign: 'left',
         textAlignVertical: 'bottom',
-        fontSize: 28,
+        fontSize: isAndroid ? 28 : 32,
         fontWeight: 'bold',
         lineHeight: 140,
     } as TextStyle,
@@ -67,21 +75,15 @@ let styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: 44,
+        paddingLeft: BACK_WIDTH
     } as ViewStyle,
     titleLargContainer: {
         position: 'absolute',
         width: '100%',
         height: 140,
+        paddingLeft: isAndroid ? BACK_WIDTH : 15
     } as ViewStyle
 });
-
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
-const NAVIGATION_BAR_SIZE = Platform.OS === 'ios' ? 44 : 56;
-const NAVIGATION_BAR_SIZE_LARGE = 102;
-const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGROUND_SIZE);
-const zeroValue = new Animated.Value(0);
-const BACK_WIDTH = Platform.OS === 'ios' ? 44 : 56;
 
 export interface ZHeaderConfig {
     title?: string;
@@ -140,6 +142,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             let titleOpacity: Animated.AnimatedInterpolation = interpolated;
             let largeTitleOpacity: Animated.AnimatedInterpolation = zeroValue;
             let largeTitleOffset: Animated.AnimatedInterpolation = zeroValue;
+            let largeTitleOverscrol: Animated.AnimatedInterpolation = oneValue;
 
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
@@ -153,6 +156,14 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                     extrapolate: 'clamp'
                 });
                 computedOffset = clampedOffset;
+
+                if (!isAndroid) {
+                    largeTitleOverscrol = invertedOffset.interpolate({
+                        inputRange: [0, 100],
+                        outputRange: [1, 1.1],
+                        extrapolate: 'clamp'
+                    });
+                }
 
                 // Update title opacity for hiding when bar is expanded
                 titleOpacity = Animated.multiply(interpolated, contentOffset.interpolate({
@@ -178,6 +189,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 titleOpacity: titleOpacity,
                 largeTitleOpacity: largeTitleOpacity,
                 largeTitleOffset: largeTitleOffset,
+                largeTitleFontSize: largeTitleOverscrol,
                 scene: v
             };
         });
@@ -243,26 +255,61 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             }
 
             if (titleLarge) {
-                titles.push(
-                    <Animated.View
-                        style={{
-                            ...(styles.titleLargContainer as any),
-                            opacity: s.largeTitleOpacity,
-                            transform: [
-                                {
-                                    translateX: s.titlePosition
-                                },
-                                {
-                                    translateY: s.largeTitleOffset
-                                }
-                            ]
-                        }}
-                        key={'scene-large-' + titles.length}
-                        pointerEvents="none"
-                    >
-                        {titleLarge}
-                    </Animated.View>
-                );
+                if (isAndroid) {
+                    titles.push(
+                        <Animated.View
+                            style={{
+                                ...(styles.titleLargContainer as any),
+                                opacity: s.largeTitleOpacity,
+                                transform: [
+                                    {
+                                        translateX: s.titlePosition
+                                    }
+                                ]
+                            }}
+                            key={'scene-large-' + titles.length}
+                            pointerEvents="none"
+                        >
+                            {titleLarge}
+                        </Animated.View>
+                    );
+                } else {
+                    titles.push(
+                        <Animated.View
+                            style={{
+                                ...(styles.titleLargContainer as any),
+                                opacity: s.largeTitleOpacity,
+                                transform: [
+                                    {
+                                        translateX: s.titlePosition
+                                    },
+                                    {
+                                        translateY: s.largeTitleOffset
+                                    },
+                                    {
+                                        translateX: -SCREEN_WIDTH / 2 + 15
+                                    },
+                                    {
+                                        translateY: 20
+                                    },
+                                    {
+                                        scale: s.largeTitleFontSize
+                                    },
+                                    {
+                                        translateY: -20
+                                    },
+                                    {
+                                        translateX: SCREEN_WIDTH / 2 - 15
+                                    },
+                                ]
+                            }}
+                            key={'scene-large-' + titles.length}
+                            pointerEvents="none"
+                        >
+                            {titleLarge}
+                        </Animated.View>
+                    );
+                }
             }
         }
 
@@ -283,7 +330,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Left */}
-                <Animated.View style={{ height: '100%', width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: BACKGROUND_COLOR }}>
+                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: 0, width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: BACKGROUND_COLOR }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 

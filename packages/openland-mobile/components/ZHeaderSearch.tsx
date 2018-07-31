@@ -10,7 +10,7 @@ export class ZHeaderSearch extends React.Component<{ useParent?: boolean, naviga
         [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
         { useNativeDriver: true }
     );
-    // Work-around for freezing navive animation driver
+    
     private scrollViewStyle = {
         opacity: Animated.add(1, Animated.multiply(0, this.contentOffset))
     } as any;
@@ -32,7 +32,10 @@ export class ZHeaderSearch extends React.Component<{ useParent?: boolean, naviga
         return (
             <ZKeyboardAvoidingView>
                 <Animated.ScrollView
-                    style={this.scrollViewStyle}
+                    style={{
+                        // Work-around for freezing navive animation driver
+                        opacity: Animated.add(1, Animated.multiply(0, this.contentOffset))
+                    }}
                     onScroll={this.contentOffsetEvent}
                     scrollEventThrottle={1}
                     contentInsetAdjustmentBehavior="automatic"

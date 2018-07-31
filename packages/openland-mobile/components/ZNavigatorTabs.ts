@@ -15,8 +15,18 @@ export function createZTabNavigator(routes: NavigationRouteConfigMap, config?: T
     return createBottomTabNavigator(routes, {
         ...config,
         tabBarOptions: {
-            activeTintColor: AppStyles.primaryColor,
-            inactiveTintColor: '#99a2b0'
+            activeTintColor: '#fff',
+            inactiveTintColor: '#99a2b0',
+            style: {
+                backgroundColor: AppStyles.primaryColor,
+                borderTopLeftRadius: 16,
+                borderTopRightRadius: 16,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: -1 },
+                shadowRadius: 5,
+                shadowOpacity: 0.3,
+                paddingTop: 10
+            }
         },
     });
 }

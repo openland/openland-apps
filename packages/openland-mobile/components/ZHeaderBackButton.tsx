@@ -3,6 +3,7 @@ import { ZTouchable } from './ZTouchable';
 import { Image, View } from 'react-native';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
+import { AppStyles } from '../styles/AppStyles';
 
 let image = isAndroid ?
     (
@@ -16,7 +17,7 @@ let image = isAndroid ?
                 // marginRight: 16,
                 // marginVertical: 16,
                 resizeMode: 'center',
-                tintColor: '#000'
+                tintColor: AppStyles.primaryColor
             }}
         />
     ) : (
@@ -29,7 +30,7 @@ let image = isAndroid ?
                 marginRight: 22,
                 marginVertical: 12,
                 resizeMode: 'contain',
-                tintColor: '#000'
+                tintColor: AppStyles.primaryColor
             }}
         />
     );

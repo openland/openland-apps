@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>20</string>
+	<string>21</string>
 	<key>CodePushDeploymentKey</key>
 	<string>TNsklumnHNeMxRjz3VClHfhoIdqZH1kRWpV47</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -96,7 +96,7 @@
 		<string>armv7</string>
 	</array>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
