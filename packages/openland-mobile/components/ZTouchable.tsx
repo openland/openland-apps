@@ -15,7 +15,7 @@ export class ZTouchable extends React.PureComponent<{ onPress: () => void, style
             );
         } else {
             return (
-                <TouchableOpacity onPress={this.props.onPress} style={this.props.style} hitSlop={this.props.hitSlop}>
+                <TouchableOpacity onPress={this.props.onPress} style={this.props.style} hitSlop={this.props.hitSlop} delayPressIn={0}>
                     {this.props.children}
                 </TouchableOpacity>
             );
