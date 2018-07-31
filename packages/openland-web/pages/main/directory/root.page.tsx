@@ -454,13 +454,7 @@ const PaginationButton = Glamorous(XLink)<{ current?: boolean, disable?: boolean
     },
     '&.arrow': {
         width: 24,
-        maxWidth: 24,
-        '&.left': {
-            paddingLeft: 6
-        },
-        '&.right': {
-            paddingRight: 6
-        }
+        maxWidth: 24
     }
 }));
 
