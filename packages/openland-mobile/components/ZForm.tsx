@@ -4,6 +4,7 @@ import { ScrollView, Alert } from 'react-native';
 import { YForm } from 'openland-y-forms/YForm';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
+import { ZScrollView } from './ZScrollView';
 
 export interface ZFormProps {
     action: (src: any) => any;
@@ -43,9 +44,9 @@ export class ZForm extends React.PureComponent<ZFormProps> {
     render() {
         return (
             <YForm defaultAction={this.handleAction} defaultData={this.props.defaultData} staticData={this.props.staticData} ref={this.ref}>
-                <ScrollView backgroundColor={AppStyles.backyardColor}>
+                <ZScrollView backgroundColor={AppStyles.backyardColor}>
                     {this.props.children}
-                </ScrollView>
+                </ZScrollView>
             </YForm>
         );
     }

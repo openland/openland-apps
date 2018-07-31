@@ -13,6 +13,7 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZAvatar } from '../../components/ZAvatar';
+import { ZScrollView } from '../../components/ZScrollView';
 
 class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
@@ -30,7 +31,7 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                         throw Error('');
                     }
                     return (
-                        <ScrollView>
+                        <ZScrollView>
                             <ZListItemGroup>
                                 <ZListItemHeader
                                     title={resp.data.chat.title}
@@ -65,7 +66,7 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                                 {resp.data.user.website && <ZListItem text={resp.data.user.website} />}
                                 {resp.data.user.location && <ZListItem text={resp.data.user.location} />}
                             </ZListItemGroup> */}
-                        </ScrollView>
+                        </ZScrollView>
                     );
                 }}
             </ZQuery>

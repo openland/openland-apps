@@ -6,6 +6,7 @@ import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
 import { ZHeaderBackButton } from './ZHeaderBackButton';
+import { VibrancyView } from 'react-native-blur';
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
 interface Descriptor {
@@ -330,7 +331,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Left */}
-                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: 0, width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: BACKGROUND_COLOR }}>
+                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: 0, width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? BACKGROUND_COLOR : undefined }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
@@ -347,18 +348,49 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 )}
                 {right.length === 0 && (<View width={44} zIndex={3} />)}
 
-                <ViewOverflowAnimated
-                    style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        transform: [{ translateY: backgroundOffset }],
-                        backgroundColor: BACKGROUND_COLOR,
-                        height: BACKGROUND_SIZE,
-                        zIndex: 1
-                    }}
-                />
+                {isAndroid &&
+                    <ViewOverflowAnimated
+                        style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            transform: [{ translateY: backgroundOffset }],
+                            height: BACKGROUND_SIZE,
+                            zIndex: 1,
+                            backgroundColor: BACKGROUND_COLOR
+                        }}
+                    />
+                }
+                {!isAndroid &&
+                    <ViewOverflowAnimated
+                        style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            transform: [{ translateY: backgroundOffset }],
+                            height: BACKGROUND_SIZE,
+                            zIndex: 1
+                        }}
+                    >
+                        {/* <View
+                        style={{
+                            backgroundColor: BACKGROUND_COLOR,
+                            width: '100%',
+                            height: BACKGROUND_SIZE,
+                        }}
+                    /> */}
+                        <VibrancyView
+                            blurType="light"
+                            blurAmount={10}
+                            style={{
+                                position: 'absolute',
+                                top: 0, left: 0, bottom: 0, right: 0,
+                            }}
+                        />
+                    </ViewOverflowAnimated>
+                }
             </>
         );
 
@@ -370,7 +402,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             );
         } else {
             return (
-                <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
+                <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }} style={{ position: 'absolute', left: 0, right: 0, top: 0 }}>
                     <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE }}>
                         {content}
                     </ViewOverflow>

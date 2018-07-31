@@ -105,11 +105,13 @@ android {
         applicationId "com.korshakov.testing.openland"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "1.0.14"
+        versionCode 15
+        versionName "1.0.15"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -144,6 +146,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-blur')
     compile project(':react-native-view-overflow')
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-fast-image')

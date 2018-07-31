@@ -8,8 +8,8 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { AccountQuery } from 'openland-api/AccountQuery';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZQuery } from '../../components/ZQuery';
-import { AppStyles } from '../../styles/AppStyles';
-import { ZHeaderSearch } from '../../components/ZHeaderSearch';
+import { ZAppContent } from '../../components/ZAppContent';
+import { ZScrollView } from '../../components/ZScrollView';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -61,7 +61,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
 
     render() {
         return (
-            <ZHeaderSearch useParent={true} navigation={this.props.navigation}>
+            <ZScrollView>
                 <ZQuery query={AccountQuery}>
                     {resp => {
                         return (
@@ -91,9 +91,9 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                         );
                     }}
                 </ZQuery>
-            </ZHeaderSearch>
+            </ZScrollView>
         );
     }
 }
 
-export const Settings = withApp(SettingsComponent, { noSafeWrapper: true });
+export const Settings = withApp(SettingsComponent, { noSafeWrapper: true, isInTab: true });

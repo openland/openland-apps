@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
+import { ZScrollView } from '../../components/ZScrollView';
 
 class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
@@ -21,7 +22,7 @@ class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
             <ZQuery query={UserQuery} variables={{ userId: this.props.navigation.getParam('id') }}>
                 {(resp) => {
                     return (
-                        <ScrollView>
+                        <ZScrollView>
                             <ZListItemGroup>
                                 <ZListItemHeader
                                     photo={resp.data.user.photo}
@@ -39,7 +40,7 @@ class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
                                 {resp.data.user.website && <ZListItem text={resp.data.user.website} />}
                                 {resp.data.user.location && <ZListItem text={resp.data.user.location} />}
                             </ZListItemGroup>
-                        </ScrollView>
+                        </ZScrollView>
                     );
                 }}
             </ZQuery>

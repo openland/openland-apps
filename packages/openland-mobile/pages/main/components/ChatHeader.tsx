@@ -14,6 +14,10 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
             <YApolloProvider client={getClient()}>
                 <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                     {res => {
+                        if (res.loading) {
+                            return null;
+                        }
+                        console.warn(res);
                         if (isAndroid) {
                             return (
                                 <TouchableHighlight onPress={() => this.props.navigation.navigate('ConversationInfo', { id: this.props.conversationId })}>

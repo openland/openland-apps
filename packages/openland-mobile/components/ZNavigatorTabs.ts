@@ -25,7 +25,9 @@ export function createZTabNavigator(routes: NavigationRouteConfigMap, config?: T
                 shadowOffset: { width: 0, height: -1 },
                 shadowRadius: 5,
                 shadowOpacity: 0.3,
-                paddingTop: 10
+                paddingTop: 10,
+                marginTop: -10,
+                height: 66
             }
         },
     });

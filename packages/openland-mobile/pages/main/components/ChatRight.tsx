@@ -14,6 +14,10 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
             <YApolloProvider client={getClient()}>
                 <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                     {res => {
+                        if (res.loading) {
+                            return;
+                        }
+                        
                         if (isAndroid) {
                             return null;
                         }
