@@ -4,6 +4,7 @@ import { AppStyles } from '../styles/AppStyles';
 import { SafeAreaView, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
+import { isAndroid } from '../utils/isAndroid';
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
 interface Descriptor {
@@ -242,49 +243,63 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         // Complete Render
         //
 
-        return (
-            <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', heifht: NAVIGATION_BAR_SIZE }}>
-                    <ViewOverflowAnimated
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            transform: [{ translateY: backgroundOffset }],
-                            backgroundColor: AppStyles.primaryColor,
-                            height: BACKGROUND_SIZE
-                        }}
-                    />
+        let content = (
+            <>
+                <ViewOverflowAnimated
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        transform: [{ translateY: backgroundOffset }],
+                        backgroundColor: AppStyles.primaryColor,
+                        height: BACKGROUND_SIZE
+                    }}
+                />
 
-                    <ViewOverflowAnimated style={{ opacity: backButtonOpacity, zIndex: 10 }}>
-                        <TouchableOpacity onPress={this.handleBack}>
-                            <Image
-                                source={require('assets/back-icon.png')}
-                                style={{
-                                    height: 21,
-                                    width: 13,
-                                    marginLeft: 9,
-                                    marginRight: 22,
-                                    marginVertical: 12,
-                                    resizeMode: 'contain',
-                                    tintColor: '#fff'
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </ViewOverflowAnimated>
-                    <View flexGrow={1} flexBasis={0}>
-                        {titles}
+                <ViewOverflowAnimated style={{ opacity: backButtonOpacity, zIndex: 10 }}>
+                    <TouchableOpacity onPress={this.handleBack}>
+                        <Image
+                            source={require('assets/back-icon.png')}
+                            style={{
+                                height: 21,
+                                width: 13,
+                                marginLeft: 9,
+                                marginRight: 22,
+                                marginVertical: 12,
+                                resizeMode: 'contain',
+                                tintColor: '#fff'
+                            }}
+                        />
+                    </TouchableOpacity>
+                </ViewOverflowAnimated>
+                <View flexGrow={1} flexBasis={0}>
+                    {titles}
+                </View>
+                {right.length > 0 && (
+                    <View paddingRight={15} paddingLeft={10}>
+                        {right}
                     </View>
-                    {right.length > 0 && (
-                        <View paddingRight={15} paddingLeft={10}>
-                            {right}
-                        </View>
-                    )}
-                    {right.length === 0 && (<View width={44} />)}
-                </ViewOverflow>
-            </SafeAreaView>
+                )}
+                {right.length === 0 && (<View width={44} />)}
+            </>
         );
+
+        if (isAndroid) {
+            return (
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE }}>
+                    {content}
+                </ViewOverflow>
+            );
+        } else {
+            return (
+                <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
+                    <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE }}>
+                        {content}
+                    </ViewOverflow>
+                </SafeAreaView>
+            );
+        }
     }
 }
 

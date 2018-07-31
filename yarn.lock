@@ -10799,7 +10799,7 @@ react-navigation-drawer@0.4.3:
   dependencies:
     react-native-drawer-layout-polyfill "^1.3.2"
 
-react-navigation-material-bottom-tabs@^0.3.0:
+react-navigation-material-bottom-tabs@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/react-navigation-material-bottom-tabs/-/react-navigation-material-bottom-tabs-0.3.0.tgz#7fae682a41c1c290f2584fe50879e36b41da5394"
   dependencies:
@@ -10828,7 +10828,7 @@ react-navigation-tabs@^0.4.0:
     react-native-safe-area-view "^0.7.0"
     react-native-tab-view "^1.0.0"
 
-react-navigation@^2.9.2:
+react-navigation@2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.9.2.tgz#507d485ecd51cf584750e7dda3fe9772ab68c388"
   dependencies:

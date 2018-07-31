@@ -6,14 +6,6 @@ import { ZHeader } from './ZHeader';
 export function createZStackNavigator(routes: NavigationRouteConfigMap) {
     return createStackNavigator(routes, {
         navigationOptions: {
-            // headerStyle: {
-            //     backgroundColor: AppStyles.primaryColor,
-            // },
-            // headerTintColor: '#fff',
-            // headerTitleStyle: {
-            //     color: '#fff',
-            //     fontWeight: 'bold',
-            // },
             header: ZHeader,
             gesturesEnabled: true
         },
@@ -23,7 +15,7 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap) {
                 return {
                     screenInterpolator: sceneProps => {
                         return require('react-navigation/src/views/StackView/StackViewStyleInterpolator').default.forHorizontal(sceneProps);
-                    }
+                    },
                 };
             }
             return {};
