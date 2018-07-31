@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, TouchableOpacity, Image, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { SafeAreaView, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
+import { ZHeaderBackButton } from './ZHeaderBackButton';
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
 interface Descriptor {
@@ -30,15 +31,23 @@ interface Props {
 }
 
 let styles = StyleSheet.create({
+
     title: {
         color: '#fff',
         width: '100%',
         height: '100%',
-        textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: 17,
-        fontWeight: '600',
-        lineHeight: 44
+        ...isAndroid ? {
+            textAlign: 'left',
+            fontSize: 20,
+            fontWeight: '500',
+            lineHeight: 56
+        } : {
+                textAlign: 'center',
+                fontSize: 17,
+                fontWeight: '600',
+                lineHeight: 44
+            }
     } as TextStyle,
     titleLarge: {
         color: '#fff',
@@ -64,10 +73,10 @@ let styles = StyleSheet.create({
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
-const NAVIGATION_BAR_SIZE = 44;
+const NAVIGATION_BAR_SIZE = Platform.OS === 'ios' ? 44 : 56;
 const NAVIGATION_BAR_SIZE_LARGE = 102;
 const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGROUND_SIZE);
-const defaultLargeTitleOpacity = new Animated.Value(0);
+const zeroValue = new Animated.Value(0);
 
 class ZHeaderComponent extends React.PureComponent<Props> {
 
@@ -100,8 +109,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             // Small title opacity
             let titleOpacity: Animated.AnimatedInterpolation = interpolated;
-            let largeTitleOpacity: Animated.AnimatedInterpolation = defaultLargeTitleOpacity;
-            let largeTitleOffset: Animated.AnimatedInterpolation = defaultLargeTitleOpacity;
+            let largeTitleOpacity: Animated.AnimatedInterpolation = zeroValue;
+            let largeTitleOffset: Animated.AnimatedInterpolation = zeroValue;
 
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
@@ -136,7 +145,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             return {
                 backgroundOffset: Animated.multiply(computedOffset, interpolated),
                 position: interpolated,
-                titlePosition: offsetInterporated,
+                titlePosition: isAndroid ? zeroValue : offsetInterporated,
                 titleOpacity: titleOpacity,
                 largeTitleOpacity: largeTitleOpacity,
                 largeTitleOffset: largeTitleOffset,
@@ -171,7 +180,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let titles = [];
         let w = Dimensions.get('window').width;
         for (let s of offsets) {
-
             let titleRender: any = undefined;
             let titleLarge: any = undefined;
             if (s.scene.descriptor.options.headerTitle) {
@@ -253,35 +261,23 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         top: 0,
                         transform: [{ translateY: backgroundOffset }],
                         backgroundColor: AppStyles.primaryColor,
-                        height: BACKGROUND_SIZE
+                        height: BACKGROUND_SIZE,
+                        zIndex: 1
                     }}
                 />
 
-                <ViewOverflowAnimated style={{ opacity: backButtonOpacity, zIndex: 10 }}>
-                    <TouchableOpacity onPress={this.handleBack}>
-                        <Image
-                            source={require('assets/back-icon.png')}
-                            style={{
-                                height: 21,
-                                width: 13,
-                                marginLeft: 9,
-                                marginRight: 22,
-                                marginVertical: 12,
-                                resizeMode: 'contain',
-                                tintColor: '#fff'
-                            }}
-                        />
-                    </TouchableOpacity>
+                <ViewOverflowAnimated style={{ opacity: backButtonOpacity, zIndex: 2 }}>
+                    <ZHeaderBackButton onPress={this.handleBack} />
                 </ViewOverflowAnimated>
-                <View flexGrow={1} flexBasis={0}>
+                <View flexGrow={1} flexBasis={0} zIndex={3}>
                     {titles}
                 </View>
                 {right.length > 0 && (
-                    <View paddingRight={15} paddingLeft={10}>
+                    <View paddingRight={15} paddingLeft={10} zIndex={3}>
                         {right}
                     </View>
                 )}
-                {right.length === 0 && (<View width={44} />)}
+                {right.length === 0 && (<View width={44} zIndex={3} />)}
             </>
         );
 

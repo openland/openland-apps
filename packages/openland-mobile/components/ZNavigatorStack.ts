@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 import { createStackNavigator, NavigationRouteConfigMap } from 'react-navigation';
-import { AppStyles } from '../styles/AppStyles';
 import { ZHeader } from './ZHeader';
 
 export function createZStackNavigator(routes: NavigationRouteConfigMap) {
