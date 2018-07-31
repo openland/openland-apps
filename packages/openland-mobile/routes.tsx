@@ -52,19 +52,19 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
   let { routeName } = args.navigation.state.routes[args.navigation.state.index];
   if (routeName === 'Dialogs') {
     return {
-      headerTitle: 'Messages',
-      // header: ZHeader
+      title: 'Messages',
+      isTab: true
     };
   }
   if (routeName === 'Directory') {
     return {
-      headerTitle: 'Directory',
-      // header: ZHeader
+      title: 'Directory',
+      isTab: true
     };
   }
   return {
-    headerTitle: 'Settings',
-    // header: ZHeader,
+    title: 'Settings',
+    isTab: true,
     headerRight: (
       <View style={{ marginRight: 10 }}>
         <Button

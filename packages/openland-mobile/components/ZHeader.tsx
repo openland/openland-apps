@@ -14,6 +14,7 @@ interface Descriptor {
     options: {
         title?: string;
         headerTitle?: any;
+        isTab?: boolean;
     };
     navigation: NavigationScreenProp<NavigationParams>;
 }
@@ -30,10 +31,13 @@ interface Props {
     position: Animated.Value;
 }
 
+const ACCENT_COLOR = '#000';
+const BACKGROUND_COLOR = '#fff';
+
 let styles = StyleSheet.create({
 
     title: {
-        color: '#fff',
+        color: ACCENT_COLOR,
         width: '100%',
         height: '100%',
         textAlignVertical: 'center',
@@ -50,7 +54,7 @@ let styles = StyleSheet.create({
             }
     } as TextStyle,
     titleLarge: {
-        color: '#fff',
+        color: ACCENT_COLOR,
         width: '100%',
         height: '100%',
         textAlign: 'left',
@@ -79,6 +83,11 @@ const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGRO
 const zeroValue = new Animated.Value(0);
 const BACK_WIDTH = Platform.OS === 'ios' ? 44 : 56;
 
+export interface ZHeaderConfig {
+    title?: string;
+    offset?: Animated.Value | undefined | null;
+}
+
 class ZHeaderComponent extends React.PureComponent<Props> {
 
     handleBack = () => {
@@ -87,8 +96,27 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
     render() {
 
+        // console.log(this.props);
+
         // Build Offsets
         let offsets = this.props.scenes.map((v) => {
+
+            // Resolve param name
+            let paramName = '__z_header_actions_search_offset';
+            if (v.descriptor.options.isTab) {
+                // console.log(v.descriptor);
+                let r = (v.descriptor as any).state.routes[(v.descriptor as any).state.index].routeName;
+                paramName = '__z_header_' + r + 'actions_search_offset';
+                console.log(r);
+            }
+
+            // let config: ZHeaderConfig | undefined = v.descriptor.navigation.getParam('__z_header_config');
+            // if (!config) {
+            //     let parent = (v.descriptor.navigation as any).dangerouslyGetParent();
+            //     if (parent) {
+            //         //
+            //     }
+            // }
 
             // Calculate position offset
             let interpolated = this.props.position.interpolate({
@@ -115,7 +143,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
-            let contentOffset = v.descriptor.navigation.getParam('__z_header_actions_search_offset') as Animated.Value | undefined | null;
+            let contentOffset = v.descriptor.navigation.getParam(paramName) as Animated.Value | undefined | null;
             if (contentOffset) {
                 let invertedOffset = Animated.multiply(contentOffset, -1);
                 let shiftedOffset = Animated.add(invertedOffset, NAVIGATION_BAR_SIZE_LARGE - BACKGROUND_SIZE);
@@ -255,7 +283,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Left */}
-                <Animated.View style={{ height: '100%', width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: AppStyles.primaryColor }}>
+                <Animated.View style={{ height: '100%', width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: BACKGROUND_COLOR }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
@@ -279,7 +307,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         right: 0,
                         top: 0,
                         transform: [{ translateY: backgroundOffset }],
-                        backgroundColor: AppStyles.primaryColor,
+                        backgroundColor: BACKGROUND_COLOR,
                         height: BACKGROUND_SIZE,
                         zIndex: 1
                     }}

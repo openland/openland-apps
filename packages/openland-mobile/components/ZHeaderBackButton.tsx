@@ -16,7 +16,7 @@ let image = isAndroid ?
                 // marginRight: 16,
                 // marginVertical: 16,
                 resizeMode: 'center',
-                tintColor: '#fff'
+                tintColor: '#000'
             }}
         />
     ) : (
@@ -29,7 +29,7 @@ let image = isAndroid ?
                 marginRight: 22,
                 marginVertical: 12,
                 resizeMode: 'contain',
-                tintColor: '#fff'
+                tintColor: '#000'
             }}
         />
     );

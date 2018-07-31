@@ -34,7 +34,7 @@ export class Navigation extends React.PureComponent<NavigationInjectedProps, { h
     render() {
         return (
             <View width="100%" height="100%" backgroundColor={AppStyles.backyardColor}>
-                <ZHeaderSearch show={true} navigation={this.props.navigation}>
+                <ZHeaderSearch navigation={this.props.navigation}>
                     <ZListItemGroup>
                         <ZListItem text="Item" />
                         <ZListItem text="Item" />
