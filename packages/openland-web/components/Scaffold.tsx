@@ -36,6 +36,17 @@ import AddIcon from './icons/add-1.svg';
 import HomeIcon from './icons/home-1.svg';
 import MessagesIcon from './icons/messages-1.svg';
 import DevToolsIcon from './icons/devtools_1.svg';
+import { XButton } from 'openland-x/XButton';
+import { XInput } from 'openland-x/XInput';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { switchOrganization } from '../utils/switchOrganization';
+import { withCreateOrganization } from '../api/withCreateOrganization';
+import { delayForewer } from 'openland-y-utils/timer';
+import { XFormError } from 'openland-x-forms/XFormError';
+import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { InitTexts } from '../pages/init/_text';
 
 //
 // Root
@@ -693,7 +704,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                     </XWithRole>
                     <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
                     <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
-                    <MenuItem path="/createOrganization">{TextGlobal.addOrganization}</MenuItem>
+                    <MenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</MenuItem>
                 </>
             );
         });
@@ -781,6 +792,59 @@ export const MessengerButton = withNotificationCounter((props) => {
     );
 });
 
+const CreateOrgInput = Glamorous(XInput)({
+    height: 40,
+    marginTop: 16,
+});
+
+const CreateOrganization = withCreateOrganization((props) => {
+    return (
+        <XModalForm
+            targetQuery="createOrganization"
+            useTopCloser={true}
+            title={InitTexts.create_organization_popper.title}
+            defaultAction={async (data) => {
+                let res = await props.createOrganization({
+                    variables:
+                    {
+                        input: {
+                            personal: false,
+                            name: data.input.name,
+                        }
+                    }
+                });
+                switchOrganization(res.data.createOrganization.id);
+                await delayForewer();
+            }}
+            defaultData={{
+                input: {
+                    name: '',
+                    website: '',
+                    photoRef: null
+                }
+            }}
+            defaultLayout={false}
+            customFooter={null}
+        >
+
+            <XVertical separator="large">
+                <XFormLoadingContent>
+                    <XHorizontal>
+                        <CreateOrgInput
+                            flexGrow={1}
+                            field="input.name"
+                            size="medium"
+                            placeholder={InitTexts.create_organization_popper.namePlaceholder}
+                        // tooltipContent={<InputTooltip />}
+                        />
+                        <XFormSubmit style="primary" text={InitTexts.create_organization_popper.submit} size="medium" alignSelf="flex-end" />
+                    </XHorizontal>
+                </XFormLoadingContent>
+
+            </XVertical>
+        </XModalForm>
+    );
+});
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
@@ -1088,6 +1152,8 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 >
                     {content}
                 </ContentView>
+
+                <CreateOrganization />
             </RootContainer>
         );
     }

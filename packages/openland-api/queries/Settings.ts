@@ -53,6 +53,14 @@ export const ProfileUpdateMutation = gql`
             website
             about
             location
+            role: alphaRole
+            locations: alphaLocations
+            linkedin: alphaLinkedin
+            primaryOrganizationId: alphaPrimaryOrganizationId
+            joinedAt: alphaJoinedAt
+            invitedBy: alphaInvitedBy{
+                name
+            }
         }
     }
 `;

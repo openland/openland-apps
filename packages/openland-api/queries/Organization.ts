@@ -184,6 +184,7 @@ export const OrganizationMembersQuery = gql`
                     ...UserShort
                 }
                 joinedAt
+                showInContacts
             }
             ... on  OrganizationIvitedMember{
                 firstName
@@ -300,5 +301,11 @@ export const HitsPopularQuery = gql`
 export const HitsAddMutation = gql`
     mutation HitsAdd($hits: [HitInput!]!){
         hitsAdd: alphaHitsAdd(hits: $hits)
+    }
+`;
+
+export const AlterMemberAsContactMutation = gql`
+    mutation AlterMemberAsContact($orgId: ID!, $memberId: ID!, $showInContacts: Boolean!){
+        alphaAlterMemberAsContact(orgId: $orgId, memberId: $memberId,  showInContacts: $showInContacts)
     }
 `;

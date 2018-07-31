@@ -81,6 +81,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                             <ZListItemGroup header="Dev Tools">
                                 <ZListItem text="Typography" path="DevTypography" />
                                 <ZListItem text="Components" path="DevComponents" />
+                                <ZListItem text="Navigation" path="DevNavigation" />
                                 <ZListItem text="Log out" onPress={this.handleLogout} />
                             </ZListItemGroup>
                         </ScrollView>

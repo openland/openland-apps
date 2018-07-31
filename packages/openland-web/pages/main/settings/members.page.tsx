@@ -26,6 +26,9 @@ import { DateFormater } from 'openland-x-format/XDateLegacy';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { InvitesToOrganizationMoadal } from './invites';
 import { TextInvites } from 'openland-text/TextInvites';
+import { XCheckbox } from 'openland-x/XCheckbox';
+import { withAlterFolderMutation } from '../../../api/withAlterFolderMutation';
+import { withAlterMemberIsContact } from '../../../api/withAlterMemberShowInContacts';
 
 const TableTag = Glamorous.div<{ green?: boolean, purple?: boolean }>((props) => ({
     height: 32,
@@ -278,6 +281,25 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
     );
 })) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string } }>;
 
+const SwitchMemberIsContact = withAlterMemberIsContact((props) => {
+    console.warn(props);
+    return (
+        <XOverflow.Item>
+            <XHorizontal alignItems="center" height="100%">
+                <XCheckbox
+                    marginBottom={0}
+                    value={(props as any).showInContacts ? 'non_hidden' : 'hidden'}
+                    onChange={() => {
+                        props.alterIsContact({ variables: { orgId: (props as any).orgId, memberId: (props as any).memberId, showInContacts: !(props as any).showInContacts } });
+                    }}
+                    trueValue="hidden"
+                    label="Hide from contacts"
+                />
+            </XHorizontal>
+        </XOverflow.Item>
+    );
+}) as React.ComponentType<{ showInContacts: boolean, orgId: string, memberId: string, refetchVars: { orgId: string } }>;
+
 const OrgMembers = withOrganizationMembers((props) => {
     let members = [...props.data.alphaOrganizationMembers || []].sort((a: any, b: any) => {
         var nameA = String(a.user ? (a.user.name || '') : (a.firstName || '') + ' ' + (a.lastname || '')).toLowerCase();
@@ -322,7 +344,7 @@ const OrgMembers = withOrganizationMembers((props) => {
 
                             </XTable.Cell>
                             <XTable.Cell>
-                                {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{TextInvites.membersMgmt.statusJoined +  DateFormater(m.joinedAt)}</TableTag>}
+                                {(m.__typename === 'OrganizationJoinedMember' && m.joinedAt) && <TableTag green={true}>{TextInvites.membersMgmt.statusJoined + DateFormater(m.joinedAt)}</TableTag>}
                                 {(m.__typename === 'OrganizationJoinedMember' && !m.joinedAt) && <TableTag purple={true}>{TextInvites.membersMgmt.statusJoinedFix}</TableTag>}
                                 {(m.__typename !== 'OrganizationJoinedMember') && <TableTag>{TextInvites.membersMgmt.statusNotJoined}</TableTag>}
                                 {/* <TableTag
@@ -340,6 +362,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                                 <>
                                                     <XOverflow.Item query={{ field: 'changeRole', value: m.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XOverflow.Item>
                                                     <XOverflow.Item query={{ field: 'remove', value: m.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XOverflow.Item>
+                                                    <SwitchMemberIsContact showInContacts={m.showInContacts} orgId={(props.variables as any).orgId} memberId={m.user.id} refetchVars={{orgId: (props.variables as any).orgId}} />
                                                 </>
                                             ) : (
                                                     <XOverflow.Item query={{ field: 'remove', value: m.inviteId }} style="danger" >{TextInvites.membersMgmt.menuCancelInvite}</XOverflow.Item>
@@ -352,13 +375,15 @@ const OrgMembers = withOrganizationMembers((props) => {
                     ))}
                 </XTable.Body>
             </Table>
-            {props.data.alphaOrganizationMembers && (
-                <>
-                    <PermissionsModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                    <RemoveJoinedModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                    <RemoveInviteddModal members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                </>
-            )}
+            {
+                props.data.alphaOrganizationMembers && (
+                    <>
+                        <PermissionsModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                        <RemoveJoinedModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                        <RemoveInviteddModal members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                    </>
+                )
+            }
 
         </>
 

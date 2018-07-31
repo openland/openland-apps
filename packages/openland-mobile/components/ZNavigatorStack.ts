@@ -1,19 +1,23 @@
 import { Platform } from 'react-native';
 import { createStackNavigator, NavigationRouteConfigMap } from 'react-navigation';
 import { AppStyles } from '../styles/AppStyles';
+import { ZHeader } from './ZHeader';
 
 export function createZStackNavigator(routes: NavigationRouteConfigMap) {
     return createStackNavigator(routes, {
         navigationOptions: {
-            headerStyle: {
-                backgroundColor: AppStyles.primaryColor,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                color: '#fff',
-                fontWeight: 'bold',
-            },
+            // headerStyle: {
+            //     backgroundColor: AppStyles.primaryColor,
+            // },
+            // headerTintColor: '#fff',
+            // headerTitleStyle: {
+            //     color: '#fff',
+            //     fontWeight: 'bold',
+            // },
+            header: ZHeader,
+            gesturesEnabled: true
         },
+        headerMode: 'float',
         transitionConfig: () => {
             if (Platform.OS === 'android') {
                 return {

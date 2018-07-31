@@ -74,6 +74,12 @@ export const InitTexts = {
         continue: 'Continue'
     },
 
+    create_organization_popper: {
+        title: 'Create new organization',
+        namePlaceholder: 'Organization name',
+        submit: 'Create'
+    },
+
     pick_organization: {
         pageTitle: 'Select your organization',
         title: 'Please, select your organization'

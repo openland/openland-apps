@@ -4,7 +4,7 @@ import { Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 let keyboardVerticalOffset = 0;
 const isIPhoneX = Dimensions.get('window').height === 812;
 if (isIPhoneX) {
-    keyboardVerticalOffset = 55;
+    keyboardVerticalOffset = 85;
 } else if (Platform.OS === 'ios') {
     keyboardVerticalOffset = 65;
 }

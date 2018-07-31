@@ -11,6 +11,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
+import { XIcon } from 'openland-x/XIcon';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LocationPicker } from './locationPicker';
@@ -24,10 +25,10 @@ import { TextDirectory } from 'openland-text/TextDirectory';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 import { AutocompletePopper } from './autocompletePopper';
 import { SortPicker } from './sortPicker';
-import { Query, Mutation } from '../../../../../node_modules/react-apollo';
+import { Query } from '../../../../../node_modules/react-apollo';
 import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
-import { HitsAddMutation } from 'openland-api/HitsAddMutation';
-import { XIcon } from '../../../../openland-x/XIcon';
+import { withHitsAdd } from '../../../api/withHItsAdd';
+import { doSimpleHash } from 'openland-y-utils/hash';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -154,10 +155,7 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
                 <TopTagsScrollable>
                     <TopTagsWrapper separator={12} flexShrink={0}>
                         <TopTagsTitle>Top searches</TopTagsTitle>
-                        <Query
-                            query={HitsPopularQuery.document}
-                            variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }}
-                        >
+                        <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }} >
                             {data =>
                                 ((data.data && data.data.hitsPopular) || []).map((val: { category: string, tags: string[] }, i: number) => (
                                     <XVertical separator={9} key={i + '_container_' + val.category}>
@@ -165,7 +163,7 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
                                             {CategoriesTitleMap[val.category] || val.category}
                                         </TopSearchCategory>
                                         <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
-                                            {val.tags.map((tag, iter) => (
+                                            {val.tags.filter((tag, iter) => iter < 5).map((tag, iter) => (
                                                 <XTag
                                                     key={'top_search_' + iter + val}
                                                     color="primary"
@@ -589,8 +587,24 @@ interface OrganizationsProps {
     tagsCount: (n: number) => void;
 }
 
-class Organizations extends React.PureComponent<OrganizationsProps> {
+let queryhash: number | undefined;
+const HitAdd = withHitsAdd((props) => {
+    console.warn(props);
 
+    let newQueryHash = doSimpleHash(JSON.stringify((props as any).hits));
+    let changed = queryhash !== newQueryHash;
+
+    console.warn(queryhash, newQueryHash);
+
+    queryhash = newQueryHash;
+    if (changed) {
+        props.addHit({ variables: { hits: (props as any).hits } });
+    }
+    return null;
+}) as React.ComponentType<{ hits: any }>;
+
+class Organizations extends React.PureComponent<OrganizationsProps> {
+    queryhash?: number;
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
             return undefined;
@@ -683,12 +697,7 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
                         sort: JSON.stringify(sort),
                     }}
                 />
-                <Mutation mutation={HitsAddMutation.document} variables={{ hits: hits }}>
-                    {data => {
-                        data();
-                        return null;
-                    }}
-                </Mutation>
+                <HitAdd hits={hits} />
             </XVertical>
         );
     }
@@ -917,9 +926,18 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                                 </SearchFormWrapper>
                                 <SearchPickersWrapper separator={0} className="search-pickers-wrapper">
                                     <SearchPickers separator="none" flexGrow={1}>
-                                        <LocationPicker onPick={this.addCondition} />
-                                        <CategoryPicker onPick={this.addCondition} />
-                                        <InterestPicker onPick={this.addCondition} />
+                                        <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }} fetchPolicy="network-only">
+                                            {data => {
+                                                return (
+                                                    <>
+                                                        <LocationPicker onPick={this.addCondition} />
+                                                        <CategoryPicker onPick={this.addCondition} />
+                                                        <InterestPicker onPick={this.addCondition} top={((data.data && data.data.hitsPopular) || []).filter((c: { category: string, tags: string[] }) => c.category === 'directory_interest')[0]} />
+                                                    </>
+                                                );
+                                            }}
+                                        </Query>
+
                                     </SearchPickers>
                                     <SortContainer>
                                         <SortPicker sort={this.state.sort} onPick={this.changeSort} />
@@ -940,7 +958,7 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                         </XVertical>
                     </MainContent>
                 </ContentWrapper>
-            </Root>
+            </Root >
         );
     }
 }
