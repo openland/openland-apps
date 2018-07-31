@@ -108,7 +108,7 @@ const AdminTools = withSuperAccountActions(props => {
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
                         <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
                 </XVertical>
             </XForm>
         </XVertical>
@@ -194,7 +194,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         </XFormField>
                                     </XHorizontal>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
                             </XVertical>
                         </XForm>
                     </XVertical>
@@ -245,7 +245,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         </XFormField>
                                     </XVertical>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
                             </XVertical>
                         </XForm>
                     </XVertical>

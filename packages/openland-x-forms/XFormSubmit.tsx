@@ -50,7 +50,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
                 enabled={this.state.loading || formEnabled}
                 loading={this.state.loading}
                 style={this.state.success ? 'success' : other.style}
-                iconRight={this.state.success ? 'check' : other.iconRight}
+                icon={this.state.success ? 'check' : other.icon}
             />
         );
     }

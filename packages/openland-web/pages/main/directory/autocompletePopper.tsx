@@ -61,7 +61,7 @@ const EntriesWrap = Glamorous.div({
     marginBottom: 9,
 });
 
-const OrgWrap = makeNavigable(Glamorous.div<{ selected: boolean }>(props => ({
+const OrgWrap = makeNavigable(Glamorous.div(props => ({
     height: 40,
     display: 'flex',
     alignItems: 'center',
@@ -70,7 +70,6 @@ const OrgWrap = makeNavigable(Glamorous.div<{ selected: boolean }>(props => ({
     paddingTop: 4,
     borderTop: '1px solid #f1f2f5',
     cursor: 'pointer',
-    backgroundColor: props.selected ? '#f8f8fb' : undefined,
     '& > svg': {
         width: 15,
         height: 15,
