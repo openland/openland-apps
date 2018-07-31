@@ -309,3 +309,12 @@ export const AlterMemberAsContactMutation = gql`
         alphaAlterMemberAsContact(orgId: $orgId, memberId: $memberId,  showInContacts: $showInContacts)
     }
 `;
+
+export const OrganizationByPrefixQuery = gql`
+    query OrganizationByPrefix($query: String!){
+        organizationByPrefix: alphaOrganizationByPrefix(query: $query){
+            ...OrganizationSearch
+        }
+    }
+    ${OrganizationSearch}
+`;

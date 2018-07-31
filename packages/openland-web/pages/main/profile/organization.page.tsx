@@ -771,7 +771,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 {organization.interests && (
                                                     <XCardStyled padding={18}>
                                                         <XVertical separator={3}>
-                                                            <Title>Intrerests</Title>
+                                                            <Title>Channels</Title>
                                                             <TagWrapper>
                                                                 {organization.interests.map((val, i) => (
                                                                     <Tag key={i + val}>{val}</Tag>

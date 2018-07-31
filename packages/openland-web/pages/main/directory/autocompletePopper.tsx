@@ -1,24 +1,95 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper } from 'openland-x/XPopper';
+import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
 import { SearchCondition } from './root.page';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
+import DirecoryIcon from './icons/directory.1.svg';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { withOrganizationByPrefix } from '../../../api/withOrganizationByPrefix';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
     padding: 0
 });
 
-const ContentValue = Glamorous.div<{ empty?: boolean }>((props) => ({
-    padding: props.empty ? 0 : '8px 16px',
-    width: props.empty ? 0 : 240
-}));
+const ContentValue = Glamorous.div({
+    paddingTop: 8,
+    paddingBottom: 8,
+    width: 240
+});
 
-const TagWrap = Glamorous.div({
+const TagWrap = Glamorous.div<{ selected: boolean }>(props => ({
+    paddingLeft: 16,
+    paddingRight: 16,
     height: 40,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    backgroundColor: props.selected ? '#f8f8fb' : undefined
+}));
+
+const InputWrap = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 4,
+    '& > i': {
+        fontSize: 21,
+        color: 'rgba(51, 69, 98, 0.3)',
+        width: 24,
+        height: 24,
+        overflow: 'hidden',
+        marginTop: 6
+    },
+    '& > input': {
+        height: 40,
+        paddingLeft: 8,
+        fontSize: 14,
+        fontWeight: 500,
+        lineHeight: 1.43,
+        letterSpacing: -0.2,
+        color: '#334562'
+    }
+});
+
+const EntriesWrap = Glamorous.div({
+    paddingTop: 9,
+    borderTop: '1px solid #f1f2f5',
+    marginBottom: 9,
+});
+
+const OrgWrap = makeNavigable(Glamorous.div(props => ({
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 4,
+    borderTop: '1px solid #f1f2f5',
+    cursor: 'pointer',
+    '& > svg': {
+        width: 15,
+        height: 15,
+        '> g': {
+            fill: '#BEC3CA'
+        }
+    },
+    ':hover': {
+        color: '#6b50ff',
+        backgroundColor: '#f8f8fb'
+    }
+})));
+
+const OrgTitle = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 1.43,
+    letterSpacing: -0.2,
+    marginLeft: 10,
+    color: '#5c6a81'
 });
 
 interface EntryProps {
@@ -31,11 +102,11 @@ interface EntryProps {
 }
 
 const EntryComponent = (props: EntryProps) => (
-    <TagWrap onMouseEnter={() => props.onHover ? props.onHover(props.i!!) : false}>
+    <TagWrap onMouseEnter={() => props.onHover ? props.onHover(props.i!!) : false} selected={props.selected}>
         <XTag
             text={props.entry.label + ' ' + (props.sugestion ? '' : props.entry.type === 'organizationType' ? 'category' : props.entry.type === 'interest' ? 'intereset' : props.entry.type === 'location' ? 'location' : '')}
             size="large"
-            color={props.selected ? 'primary' : 'green'}
+            color="primary"
             onClick={() => props.onPick(props.entry)}
         />
     </TagWrap>
@@ -45,6 +116,8 @@ interface AutocompleteProps {
     onPick: (q: SearchCondition) => void;
     query: string;
     target: any;
+    value: string;
+    onInputChange: (e: React.SyntheticEvent<HTMLInputElement>) => void;
 }
 
 interface AutocompletePopperState {
@@ -52,11 +125,27 @@ interface AutocompletePopperState {
     entries: EntryProps[];
 }
 
+const OrgByPrefix = withOrganizationByPrefix((props) => {
+    console.warn(props);
+    if (!props.data || !props.data.organizationByPrefix) {
+        return null;
+    }
+    return (
+        <OrgWrap path={'/o/' + props.data.organizationByPrefix.id}>
+            <DirecoryIcon />
+            <OrgTitle>{props.data.organizationByPrefix.name}</OrgTitle>
+        </OrgWrap>
+    );
+});
+
 export class AutocompletePopper extends React.Component<AutocompleteProps, AutocompletePopperState> {
 
     constructor(props: AutocompleteProps) {
         super(props);
-        this.state = { select: -1, entries: [] };
+        this.state = {
+            select: -1,
+            entries: []
+        };
     }
 
     componentWillReceiveProps(nextProps: AutocompleteProps) {
@@ -64,22 +153,40 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
 
         //  TODO search in top tags
         let sugestedLocation = [...TextDirectoryData.locationPicker.Cities, ...TextDirectoryData.locationPicker.MetropolitanAreas, ...TextDirectoryData.locationPicker.States, ...TextDirectoryData.locationPicker.MultiStateRegions].filter(e => ([...e.split(' '), e]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0)[0];
-        let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0).map(v => ({ ...v, label: v.label.replace('• ', '') }))[0];
+        let sugestedCategory = [...TextDirectoryData.categoryPicker.categories].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0).map(v => ({
+            ...v,
+            label: v.label.replace('• ', '')
+        }))[0];
         let sugestedInterest = [...TextDirectoryData.interestPicker].filter(e => ([...e.value.split(' '), e.value]).filter(s => nextProps.query.length === 0 || s.toLowerCase().startsWith(nextProps.query.toLowerCase())).length > 0)[0];
 
         if (sugestedLocation) {
-            newentries.push({ selected: false, entry: { type: 'location', value: sugestedLocation, label: sugestedLocation }, sugestion: true, onPick: nextProps.onPick });
+            newentries.push({
+                selected: false,
+                entry: { type: 'location', value: sugestedLocation, label: sugestedLocation },
+                sugestion: true,
+                onPick: nextProps.onPick
+            });
         }
         if (sugestedCategory) {
-            newentries.push({ selected: false, entry: { type: 'organizationType', value: sugestedCategory.value, label: sugestedCategory.label }, sugestion: true, onPick: nextProps.onPick });
+            newentries.push({
+                selected: false,
+                entry: { type: 'organizationType', value: sugestedCategory.value, label: sugestedCategory.label },
+                sugestion: true,
+                onPick: nextProps.onPick
+            });
         }
         if (sugestedInterest) {
-            newentries.push({ selected: false, entry: { type: 'interest', value: sugestedInterest.value, label: sugestedInterest.label }, sugestion: true, onPick: nextProps.onPick });
+            newentries.push({
+                selected: false,
+                entry: { type: 'interest', value: sugestedInterest.value, label: sugestedInterest.label },
+                sugestion: true,
+                onPick: nextProps.onPick
+            });
         }
 
         this.setState({
             select: -1,
-            entries: newentries,
+            entries: newentries
         });
     }
 
@@ -118,18 +225,38 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         this.setState({ select: y });
     }
 
+    handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.props.onInputChange(e);
+    }
+
     render() {
+        let inputValue = this.props.value;
+
         let content = (
-            <ContentValue empty={this.state.entries.length === 0}>
-                {this.state.entries.map((e, i) => (
-                    <EntryComponent
-                        i={i}
-                        onHover={ii => this.setState({ select: ii })}
-                        key={e.entry.type + e.entry.label + i}
-                        {...e}
-                        selected={i === this.state.select}
-                    />
-                ))}
+            <ContentValue>
+                <InputWrap>
+                    <XIcon icon="search" />
+                    <input value={inputValue} onChange={this.handleSearchChange} />
+                </InputWrap>
+                {this.state.entries && this.state.entries.length > 0 && (
+                    <EntriesWrap>
+                        {
+                            this.state.entries.map((e, i) => (
+                                <EntryComponent
+                                    i={i}
+                                    onHover={ii => this.setState({ select: ii })}
+                                    key={e.entry.type + e.entry.label + i}
+                                    {...e}
+                                    selected={i === this.state.select}
+                                />
+                            ))
+                        }
+                    </EntriesWrap>
+                )}
+
+                <XWithRole role="software-developer">
+                    <OrgByPrefix variables={{ query: this.props.query ? this.props.query.toLowerCase() : '' }} />
+                </XWithRole>
             </ContentValue>
         );
         return (

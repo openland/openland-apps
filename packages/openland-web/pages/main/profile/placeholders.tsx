@@ -573,7 +573,7 @@ export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             clearContentPadding={true}
-            title="Add intrerests"
+            title="Add channel"
             defaultData={{
                 input: {
                     interests: props.data.organizationProfile!!.interests,
@@ -592,7 +592,7 @@ export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
                 <div style={{ cursor: 'pointer' }}>
                     <XCardStyled padding={18}>
                         <XHorizontal alignItems="center">
-                            <PlaceholderInterests /><Text marginWidth={18}>Add intrerests</Text>
+                            <PlaceholderInterests /><Text marginWidth={18}>Add channel</Text>
                         </XHorizontal>
                     </XCardStyled>
                 </div>
@@ -600,7 +600,7 @@ export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
         >
             <ModalFormContentWrapper>
                 <XFormLoadingContent>
-                    <XFormField field="input.interests" title="Intrerests">
+                    <XFormField field="input.interests" title="Channels">
                         <XSelect creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
                     </XFormField>
                 </XFormLoadingContent>

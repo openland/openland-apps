@@ -116,7 +116,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     </XFormField>
                                                 </XHorizontal>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" size="medium" />
+                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" size="medium" succesText="Changes saved!"/>
                                         </XVertical>
                                     </XVertical>
                                 </XForm>
@@ -169,7 +169,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     </XFormField>
                                                 </XVertical>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" size="medium" />
+                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" size="medium" succesText="Changes saved!"/>
                                         </XVertical>
                                     </XVertical>
                                 </XForm>

@@ -3,38 +3,26 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { ContactPerson } from '../../../utils/OrganizationProfileFields';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
+import { XFormField } from 'openland-x-forms/XFormField';
 import { Navigation } from './_navigation';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
-import { XPhotoRef } from 'openland-x/XCloudImage';
 import { DateFormater } from 'openland-x-format/XDate';
-import { XLink } from 'openland-x/XLink';
-import { XIcon } from 'openland-x/XIcon';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
-
-import ContactEmailIc from '../profile/icons/contacts/ic-email.svg';
-import ContactLinkedInIc from '../profile/icons/contacts/ic-linkedin.svg';
-import ContactPhoneIc from '../profile/icons/contacts/ic-phone.svg';
 
 const Content = Glamorous(XContent)({
     paddingTop: 30
@@ -47,220 +35,11 @@ const CategoryTitle = Glamorous.div({
     color: '#1f3449'
 });
 
-const AddContactButton = Glamorous(XLink)({
-    alignSelf: 'flex-start',
-    fontSize: 15,
-    letterSpacing: -0.2,
-    paddingLeft: 17,
-    color: 'rgba(51, 69, 98, 0.4)',
-    backgroundImage: 'url(\'/static/X/ic-add-small.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'left center',
-});
-
-const CenteredButton = Glamorous(XButton)({
-    alignSelf: 'center'
-});
-
-const ContactField = Glamorous.div({
-    alignSelf: 'center',
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.27,
-    letterSpacing: -0.1,
-    textAlign: 'center',
-    marginLeft: 0,
-});
-
-const ContactWrapper = Glamorous.div({
-    borderRadius: 5,
-    border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    paddingTop: 14,
-    paddingBottom: 14,
-    paddingLeft: 14,
-    paddingRight: 20,
-    maxWidth: 480
-});
-
-const ContactTitle = Glamorous.div<{ opacity?: number }>((props) => ({
-    opacity: props.opacity,
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.33,
-    color: '#334562',
-    letterSpacing: -0.2
-}));
-
-const ContactLink = Glamorous.a({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '&:hover > svg > g > path:last-child': {
-        fill: '#5640d6'
-    }
-});
-
-const ContactButton = Glamorous(XLink)({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    width: 32,
-    height: 32,
-    borderRadius: 4,
-    backgroundColor: 'rgba(243, 243, 245, 0.7)',
-    '&:hover': {
-        backgroundColor: 'rgba(243, 243, 245)',
-        '& > i': {
-            color: '#6B50FF'
-        }
-    },
-    '& > i': {
-        fontSize: 13,
-        color: '#bcc3cc'
-    }
-});
-
-const ContactPersonItem = (props: { contact: ContactPerson, index: number }) => (
-    <ContactWrapper>
-        <XHorizontal alignItems="center" justifyContent="space-between">
-            <XHorizontal separator={10} alignItems="center">
-                <XAvatar photoRef={props.contact.photoRef || undefined} size="medium" />
-                <XVertical separator={1}>
-                    <XHorizontal separator={5} alignItems="center">
-                        <ContactTitle>{props.contact.name}</ContactTitle>
-                        {props.contact.phone && <ContactLink href={'tel:' + props.contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
-                        {props.contact.email && <ContactLink href={'mailto:' + props.contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
-                        {props.contact.link && <ContactLink href={props.contact.link.startsWith('http') ? props.contact.link : 'https://' + props.contact.link} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
-                    </XHorizontal>
-                    <ContactTitle opacity={0.8}>{props.contact.position}</ContactTitle>
-                </XVertical>
-            </XHorizontal>
-            <XHorizontal separator={4} alignItems="center">
-                <ContactButton query={{ field: 'deleteContact', value: String(props.index) }}><XIcon icon="clear" /></ContactButton>
-                <ContactButton query={{ field: 'editContact', value: String(props.index) }}><XIcon icon="edit" /></ContactButton>
-            </XHorizontal>
-        </XHorizontal>
-    </ContactWrapper>
-);
-
-const clearContact = (c: ContactPerson): ContactPerson => {
-
-    return {
-        name: c.name,
-        email: c.email,
-        link: c.link,
-        phone: c.phone,
-        position: c.position,
-        photoRef: c.photoRef ? {
-            uuid: c.photoRef.uuid,
-            crop: c.photoRef.crop ? {
-                x: c.photoRef.crop.x,
-                y: c.photoRef.crop.y,
-                w: c.photoRef.crop.w,
-                h: c.photoRef.crop.h
-            } : null
-        } : null
-    };
-};
-
-interface DummyPost {
-    text: string;
-    type: string;
-    description?: string | null;
-    date: string;
-    image?: XPhotoRef | null;
-    activity?: string[] | null;
-    links?: { text: string, url: string }[] | null;
-    pinned?: boolean | null;
-}
-
-const clearPost = (c: DummyPost): DummyPost => {
-    return {
-        text: c.text,
-        type: c.type,
-        description: c.description,
-        date: c.date,
-        activity: c.activity,
-        image: c.image ? {
-            uuid: c.image.uuid,
-            crop: c.image.crop ? {
-                x: c.image.crop.x,
-                y: c.image.crop.y,
-                w: c.image.crop.w,
-                h: c.image.crop.h
-            } : null
-        } : null,
-        pinned: c.pinned,
-        links: c.links ? c.links.map(l => ({ text: l.text, url: l.url })) : null,
-    };
-};
-
-class PostItem extends React.Component<{ post: DummyPost, index: number }> {
-    render() {
-        return (
-            <XHorizontal>
-                <XAvatar size="x-large" style="organization" photoRef={this.props.post.image || undefined} />
-
-                <XVertical>
-                    {this.props.post.pinned && <ContactField>pinned</ContactField>}
-                    <ContactField>{this.props.post.text}</ContactField>
-                    <ContactField>{this.props.post.description}</ContactField>
-                    <ContactField>{this.props.post.date}</ContactField>
-                    <ContactField>{(this.props.post.activity || []).join(' ')}</ContactField>
-                    <ContactField>{(this.props.post.links || []).map((l, i) => <XLink key={i} href={l.url}>{l.text}</XLink>)}</ContactField>
-                    <CenteredButton text="delete" style="danger" query={{ field: 'deletePost', value: String(this.props.index) }} />
-                </XVertical>
-            </XHorizontal>
-        );
-    }
-}
-
-const Field = Glamorous(XFormField)({
-    flex: 1
-});
-
-const FormFieldTitle = Glamorous(XFormFieldTitle)({
-    flexGrow: 1
-});
-
-const DelLinkBtn = Glamorous(XButton)({
-    marginRight: -24,
-});
-
-const AddLinkBtn = Glamorous(XButton)({
-    marginLeft: -14,
-    marginTop: -8,
-});
-
 let shiftArray = (array: any[]) => {
     let res = [...array];
     res.shift();
     return res;
 };
-
-const activities = [
-    { label: 'Bankruptcy', value: 'Bankruptcy' },
-    { label: 'Financial distress', value: 'Financial distress' },
-    { label: 'Budget cut', value: 'Budget cut' },
-    { label: 'Layoffs', value: 'Layoffs' },
-    { label: 'Dispositions', value: 'Dispositions' },
-    { label: 'Closures', value: 'Closures' },
-    { label: 'Store closures', value: 'Store closures' },
-    { label: 'Hospital closures', value: 'Hospital closures' },
-    { label: 'Demolition', value: 'Demolition' },
-    { label: 'Redevelopment', value: 'Redevelopment' },
-    { label: 'Renovation', value: 'Renovation' },
-    { label: 'Expired permit', value: 'Expired permit' },
-    { label: 'Upzoning / Rezoning', value: 'Upzoning / Rezoning' },
-    { label: 'Expansion', value: 'Expansion' },
-    { label: 'Mergers and acquisitions', value: 'Mergers and acquisitions' },
-    { label: 'Acquisition criteria', value: 'Acquisition criteria' },
-    { label: 'RFP', value: 'RFP' },
-    { label: 'RFQ', value: 'RFQ' },
-    { label: 'Development opportunity', value: 'Development opportunity' },
-    { label: 'Strategic assessment', value: 'Strategic assessment' },
-];
 
 const SACreatedBlock = Glamorous.div({
     padding: 18,
@@ -329,7 +108,7 @@ const AdminTools = withSuperAccountActions(props => {
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
                         <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
                 </XVertical>
             </XForm>
         </XVertical>
@@ -415,19 +194,9 @@ export const OrganizationSettigs = ((props: any) => {
                                         </XFormField>
                                     </XHorizontal>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
                             </XVertical>
                         </XForm>
-                    </XVertical>
-
-                    <XVertical separator={15}>
-                        <CategoryTitle id="contacts">Contacts</CategoryTitle>
-                        <XVertical separator={9}>
-                            {props.data.organizationProfile!!.contacts.filter((c: any) => c !== null).map((c: any, i: any) => (
-                                <ContactPersonItem key={i} contact={c!!} index={i} />
-                            ))}
-                            <AddContactButton query={{ field: 'addContact', value: 'true' }}>Add another</AddContactButton>
-                        </XVertical>
                     </XVertical>
 
                     <XVertical separator={15}>
@@ -476,7 +245,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         </XFormField>
                                     </XVertical>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" />
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" size="medium" succesText="Changes saved!"/>
                             </XVertical>
                         </XForm>
                     </XVertical>
@@ -496,111 +265,6 @@ export const OrganizationSettigs = ((props: any) => {
                             </XVertical>
                         </XVertical>
                     </XWithRole>
-
-                    {/* MODALS */}
-                    {props.data.organizationProfile!!.contacts[props.router.query.deleteContact] && (
-                        <XModalForm
-                            title="Delete?"
-                            submitProps={{ text: 'Delete' }}
-                            defaultData={{
-                                contacts: props.data.organizationProfile!!.contacts,
-                            }}
-                            defaultAction={async (data) => {
-                                data.contacts.splice(Number(props.router.query.deleteContact), 1);
-                                await props.updateOrganizaton({
-                                    variables: {
-                                        input: {
-                                            contacts: data.contacts.map(clearContact)
-                                        }
-                                    }
-                                });
-                            }}
-                            targetQuery="deleteContact"
-                        />
-                    )}
-                    {props.data.organizationProfile!!.contacts[props.router.query.editContact] && (
-                        <XModalForm
-                            title="Edit contact"
-                            defaultData={{
-                                contacts: props.data.organizationProfile!!.contacts,
-                                name: props.data!!.organizationProfile!!.contacts!![props.router.query.editContact]!!.name,
-                                phone: props.data.organizationProfile!!.contacts!![props.router.query.editContact]!!.phone,
-                                email: props.data.organizationProfile!!.contacts!![props.router.query.editContact]!!.email,
-                                link: props.data.organizationProfile!!.contacts!![props.router.query.editContact]!!.link,
-                                position: props.data.organizationProfile!!.contacts!![props.router.query.editContact]!!.position,
-                                photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.contacts!![props.router.query.editContact]!!.photoRef),
-                            }}
-                            defaultAction={async (data) => {
-                                data.contacts[Number(props.router.query.editContact)] = {
-                                    name: data.name,
-                                    phone: data.phone,
-                                    photoRef: data.photoRef,
-                                    email: data.email || null,
-                                    position: data.position,
-                                    link: data.link,
-                                };
-
-                                await props.updateOrganizaton({
-                                    variables: {
-                                        input: {
-                                            contacts: data.contacts.map(clearContact)
-                                        }
-                                    }
-                                });
-                            }}
-                            targetQuery="editContact"
-                        >
-                            <XFormLoadingContent>
-                                <XVertical>
-                                    <XInput field="name" placeholder="Name" />
-                                    <XInput field="phone" placeholder="Phone" />
-                                    <XInput field="email" placeholder="Email" />
-                                    <XInput field="link" placeholder="LinkedIn" />
-                                    <XInput field="position" placeholder="Position" />
-                                    <XAvatarUpload field="photoRef" />
-                                </XVertical>
-                            </XFormLoadingContent>
-                        </XModalForm>
-
-                    )}
-
-                    <XModalForm
-                        title="Add contact"
-                        defaultData={{
-                            contacts: props.data.organizationProfile!!.contacts,
-                        }}
-                        defaultAction={async (data) => {
-                            data.contacts.push({
-                                name: data.name,
-                                phone: data.phone,
-                                photoRef: data.avatar,
-                                email: data.email || null,
-                                link: data.link,
-                                position: data.position,
-                            });
-                            await props.updateOrganizaton({
-                                variables: {
-                                    input: {
-                                        contacts: data.contacts.map(clearContact)
-                                    }
-                                }
-                            });
-                        }}
-                        targetQuery="addContact"
-                    >
-                        <XFormLoadingContent>
-                            <XVertical>
-                                <XInput field="name" required={true} placeholder="Name" />
-                                {/* <XInput field="phone" placeholder="Phone" />
-                                <XInput field="email" placeholder="Email" /> */}
-                                <XInput field="position" placeholder="Position" />
-                                <XInput field="link" placeholder="LinkedIn" />
-                                <XInput field="twitter" placeholder="Twitter" />
-                                <XAvatarUpload field="photoRef" placeholder={{ add: 'Add photo', change: 'Change photo' }} />
-                            </XVertical>
-                        </XFormLoadingContent>
-                    </XModalForm>
-
                 </XVertical>
             </Content>
         </Navigation >

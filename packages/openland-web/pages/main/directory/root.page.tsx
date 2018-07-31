@@ -10,6 +10,8 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
 import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
+import { XIcon } from 'openland-x/XIcon';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LocationPicker } from './locationPicker';
@@ -20,13 +22,11 @@ import { InterestPicker } from './interestPicker';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
 import { TextDirectory } from 'openland-text/TextDirectory';
-import { XLink } from 'openland-x/XLink';
 import { withOrganizationPublishedAlter } from '../../../api/withOrganizationPublishedAlter';
 import { AutocompletePopper } from './autocompletePopper';
 import { SortPicker } from './sortPicker';
-import { Query, Mutation } from '../../../../../node_modules/react-apollo';
+import { Query } from '../../../../../node_modules/react-apollo';
 import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
-import { HitsAddMutation } from 'openland-api/HitsAddMutation';
 import { withHitsAdd } from '../../../api/withHItsAdd';
 import { doSimpleHash } from 'openland-y-utils/hash';
 
@@ -84,7 +84,8 @@ const Header = (props: { orgCount: number, tagsCount: number }) => (
                 <HeaderCounter separator={4}>
                     <img src="/static/X/ic-arrow-rignt.svg" />
                     {props.tagsCount !== 0
-                        ? <OrganizationCounter>{TextDirectory.counterOrganizations(props.orgCount)}</OrganizationCounter>
+                        ?
+                        <OrganizationCounter>{TextDirectory.counterOrganizations(props.orgCount)}</OrganizationCounter>
                         : <OrganizationCounter>All organizations</OrganizationCounter>
                     }
                 </HeaderCounter>
@@ -104,6 +105,7 @@ const TopTagsWrapper = Glamorous(XVertical)({
 const TopTagsScrollable = Glamorous(XVertical)({
     maxHeight: 'calc(100vh - 20px)',
     overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch',
     position: 'sticky',
     top: 10,
 });
@@ -136,6 +138,7 @@ const CategoriesTitleMap = {
     directory_organizationType: 'Organization category',
     directory_interest: 'Channels',
 };
+
 class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> {
 
     onPick = (q: SearchCondition) => {
@@ -156,7 +159,9 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
                             {data =>
                                 ((data.data && data.data.hitsPopular) || []).map((val: { category: string, tags: string[] }, i: number) => (
                                     <XVertical separator={9} key={i + '_container_' + val.category}>
-                                        <TopSearchCategory key={i + '_title_' + val.category}>{CategoriesTitleMap[val.category] || val.category}</TopSearchCategory>
+                                        <TopSearchCategory key={i + '_title_' + val.category}>
+                                            {CategoriesTitleMap[val.category] || val.category}
+                                        </TopSearchCategory>
                                         <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
                                             {val.tags.filter((tag, iter) => iter < 5).map((tag, iter) => (
                                                 <XTag
@@ -164,7 +169,11 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
                                                     color="primary"
                                                     text={tag}
                                                     size="large"
-                                                    onClick={() => this.onClick({ type: 'interest', value: tag, label: tag })}
+                                                    onClick={() => this.onClick({
+                                                        type: 'interest',
+                                                        value: tag,
+                                                        label: tag
+                                                    })}
                                                 />
                                             ))}
                                         </TopSearchTags>
@@ -250,7 +259,10 @@ export interface SearchCondition {
 }
 
 const OrganizationFollowBtn = withOrganizationFollow((props) => (
-    <XMutation mutation={props.followOrganization} variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}>
+    <XMutation
+        mutation={props.followOrganization}
+        variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}
+    >
         <XButton
             iconOpacity={0.4}
             style={(props as any).followed ? 'ghost' : 'default'}
@@ -261,7 +273,16 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => (
 )) as React.ComponentType<{ organizationId: string, followed: boolean }>;
 
 const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
-    <XButton text={(props as any).published ? 'Hide from search' : 'Publish'} style="flat" action={async () => props.alterPublished({ variables: { organizationId: (props as any).orgId, published: !(props as any).published } })} />
+    <XButton
+        text={(props as any).published ? 'Hide from search' : 'Publish'}
+        style="flat"
+        action={async () => props.alterPublished({
+            variables: {
+                organizationId: (props as any).orgId,
+                published: !(props as any).published
+            }
+        })}
+    />
 )) as React.ComponentType<{ orgId: string, published: boolean }>;
 
 interface OrganizationCardProps {
@@ -304,19 +325,27 @@ const OrganizationCard = (props: OrganizationCardProps) => (
                         <OrganizationLocation>{(props.item.locations || [])[0]}</OrganizationLocation>
                     </OrganizationTitleWrapper>
 
-                    {props.item.interests && (<OrganizationInterests>{[...(props.item.interests || []).filter((e, i) => i <= 2), ...(props.item.interests.length > 3 ? ['+ ' + String(props.item.interests.length - 3) + (props.item.interests.length === 4 ? ' channel' : ' channels')] : [])].join(' • ')}</OrganizationInterests>)}
+                    {props.item.interests && (
+                        <OrganizationInterests>{[...(props.item.interests || []).filter((e, i) => i <= 2), ...(props.item.interests.length > 3 ? ['+ ' + String(props.item.interests.length - 3) + (props.item.interests.length === 4 ? ' channel' : ' channels')] : [])].join(' • ')}</OrganizationInterests>)}
                     {props.item.organizationType && (
                         <OrganizationCardTypeWrapper separator={0}>
                             {props.item.organizationType.map((tag) => (
-                                <XTag key={props.item.id + tag} text={tag} onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })} />
+                                <XTag
+                                    key={props.item.id + tag}
+                                    text={tag}
+                                    onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })}
+                                />
                             ))}
                         </OrganizationCardTypeWrapper>
                     )}
                 </OrganizationInfoWrapper>
                 <OrganizationToolsWrapper>
-                    {props.item.isMine && <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
-                    {!props.item.isMine && <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
-                    {!props.item.isMine && !props.item.editorial && <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
+                    {props.item.isMine &&
+                        <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
+                    {!props.item.isMine &&
+                        <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
+                    {!props.item.isMine && !props.item.editorial &&
+                        <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
 
                     <XOverflow
                         placement="bottom-end"
@@ -391,6 +420,136 @@ interface OrganizationCardsProps {
     tagsCount: (n: number) => void;
 }
 
+const PaginationWrapper = Glamorous(XHorizontal)({
+    paddingTop: 16,
+    paddingBottom: 16
+});
+
+const PaginationButton = Glamorous(XLink)<{ current?: boolean, disable?: boolean, }>(props => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    minWidth: 24,
+    height: 24,
+    paddingLeft: 8,
+    paddingRight: 8,
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: 600,
+    lineHeight: '20px',
+    letterSpacing: -0.2,
+    textAlign: 'center',
+    color: props.current ? '#fff' : '#5c6a81',
+    backgroundColor: props.current ? '#5c6a81' : '#f3f3f5',
+    cursor: (props.disable || props.current) ? 'default' : undefined,
+    pointerEvents: (props.disable || props.current) ? 'none' : undefined,
+    '&:hover': {
+        backgroundColor: '#654bfa',
+        color: '#fff'
+    },
+    '& > i': {
+        fontSize: 20,
+        color: props.disable ? '#c1c7cf' : undefined
+    },
+    '&.arrow': {
+        width: 24,
+        maxWidth: 24
+    }
+}));
+
+const PaginationDotted = Glamorous.div({
+    width: 18,
+    height: 24,
+    color: '#c1c7cf',
+    textAlign: 'center',
+    lineHeight: '25px',
+    fontSize: 25,
+    fontWeight: 500,
+    letterSpacing: -0.1
+});
+
+interface PagePaginationProps {
+    pageInfo: {
+        hasNextPage: boolean;
+        itemsCount: number;
+        pagesCount: number;
+        currentPage: number;
+        openEnded: boolean;
+    };
+}
+
+class PagePagination extends React.Component<PagePaginationProps> {
+    constructor(props: PagePaginationProps) {
+        super(props);
+    }
+    PaginationFunc = (pagesCount: number, currentPage: number) => {
+        let delta = 2;
+        let left = currentPage - delta;
+        let right = currentPage + delta + 1;
+        let range = [];
+        let rangeWithDots = [];
+        let l;
+
+        for (let i = 1; i <= pagesCount; i++) {
+            if (i === 1 || i === pagesCount || i >= left && i < right) {
+                range.push(i);
+            }
+        }
+
+        for (let i of range) {
+            if (l) {
+                if (i - l === 2) {
+                    rangeWithDots.push(
+                        <PaginationButton key={'pag_' + i} current={(i + 1) === currentPage} path={'/directory?page=' + (i + 1).toString() + '#'}>
+                            {i + 1}
+                        </PaginationButton>
+                    );
+                } else if (i - l !== 1) {
+                    rangeWithDots.push(<PaginationDotted>...</PaginationDotted>);
+                }
+            }
+            rangeWithDots.push(
+                <PaginationButton key={'pag_' + i} current={i === currentPage} path={'/directory?page=' + i.toString() + '#'}>
+                    {i}
+                </PaginationButton>
+            );
+            l = i;
+        }
+
+        return rangeWithDots;
+    }
+
+    render() {
+
+        const {
+            hasNextPage,
+            pagesCount,
+            currentPage,
+        } = this.props.pageInfo;
+
+        return (
+            <PaginationWrapper justifyContent="flex-end" alignSelf="center" separator={4}>
+                <PaginationButton
+                    className="arrow left"
+                    path={'/directory?page=' + (currentPage - 1).toString() + '#'}
+                    disable={currentPage === 1}
+                >
+                    <XIcon icon="keyboard_arrow_left" />
+                </PaginationButton>
+                {this.PaginationFunc(pagesCount + 1, currentPage)}
+                <PaginationButton
+                    className="arrow right"
+                    path={'/directory?page=' + (currentPage + 1).toString() + '#'}
+                    disable={hasNextPage === false}
+                >
+                    <XIcon icon="keyboard_arrow_right" />
+                </PaginationButton>
+            </PaginationWrapper>
+        );
+    }
+}
+
 const OrganizationCards = withExploreOrganizations((props) => {
     if (!(props.data && props.data.items)) {
         return null;
@@ -403,21 +562,12 @@ const OrganizationCards = withExploreOrganizations((props) => {
                     {props.data.items.edges.map((i, j) => (
                         <OrganizationCard key={i.node.id + j} item={i.node} onPick={(props as any).onPick} />))
                     }
+                    <PagePagination pageInfo={props.data.items.pageInfo} />
                 </XCardStyled>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
                 <EmptySearchBlock onPick={(props as any).onPick} onSearchReset={(props as any).onSearchReset} />
             )}
-
-            <XHorizontal justifyContent="flex-end">
-                {props.data.items.pageInfo.currentPage > 1 && (
-                    <XButton path={'/directory?page=' + (props.data.items.pageInfo.currentPage - 1).toString() + '#'} text="Prev" />
-                )}
-                {props.data.items.pageInfo.hasNextPage && (
-                    <XButton path={'/directory?page=' + (props.data.items.pageInfo.currentPage + 1).toString() + '#'} text="Next" />
-                )}
-            </XHorizontal>
-
         </XVertical>
     );
 }) as React.ComponentType<OrganizationCardsProps>;
@@ -433,12 +583,9 @@ interface OrganizationsProps {
 
 let queryhash: number | undefined;
 const HitAdd = withHitsAdd((props) => {
-    console.warn(props);
 
     let newQueryHash = doSimpleHash(JSON.stringify((props as any).hits));
     let changed = queryhash !== newQueryHash;
-
-    console.warn(queryhash, newQueryHash);
 
     queryhash = newQueryHash;
     if (changed) {
@@ -616,7 +763,8 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
                         onIconClick={() => this.props.removeCallback(condition)}
                     />
                 ))}
-                {this.props.conditions.length === 0 && <XTag text={TextDirectory.searchConditionAll} size="large" color="primary" />}
+                {this.props.conditions.length === 0 &&
+                    <XTag text={TextDirectory.searchConditionAll} size="large" color="primary" />}
             </>
         );
     }
@@ -625,7 +773,7 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
 interface RootComponentState {
     searchText: string;
     conditions: SearchCondition[];
-    sort: { orederBy: string, featured: boolean };
+    sort: { orderBy: string, featured: boolean };
     orgCount: number;
 }
 
@@ -635,13 +783,14 @@ const ResetButton = Glamorous(XButton)({
 
 class RootComponent extends React.Component<{}, RootComponentState> {
     input?: any;
+
     constructor(props: any) {
         super(props);
 
         this.state = {
             searchText: '',
             conditions: [],
-            sort: { orederBy: 'createdAt', featured: true },
+            sort: { orderBy: 'createdAt', featured: true },
             orgCount: 0
         };
     }
@@ -653,7 +802,7 @@ class RootComponent extends React.Component<{}, RootComponentState> {
         });
     }
 
-    changeSort = (sort: { orederBy: string, featured: boolean }) => {
+    changeSort = (sort: { orderBy: string, featured: boolean }) => {
         this.setState({ sort: sort });
     }
 
@@ -697,7 +846,6 @@ class RootComponent extends React.Component<{}, RootComponentState> {
             this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
         }
         if (e.code === 'Backspace' && this.state.searchText === '') {
-            console.warn('Backspace');
             e.preventDefault();
             this.removeCondition(this.state.conditions[this.state.conditions.length - 1]);
         }
@@ -750,12 +898,20 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                                             }
                                             onPick={this.addCondition}
                                             query={searchText}
+                                            value={searchText}
+                                            onInputChange={this.handleSearchChange}
                                         />
                                     </SearchFormContent>
 
                                     <XHorizontal separator={5}>
-                                        {this.state.conditions.length > 0 && <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
-                                        <XButton text={TextDirectory.buttonSearch} style="primary" enabled={!!(this.state.searchText) || this.state.conditions.length > 0} onClick={this.searchButtonHandler} />
+                                        {this.state.conditions.length > 0 &&
+                                            <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
+                                        <XButton
+                                            text={TextDirectory.buttonSearch}
+                                            style="primary"
+                                            enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
+                                            onClick={this.searchButtonHandler}
+                                        />
                                     </XHorizontal>
                                 </SearchFormWrapper>
                                 <SearchPickersWrapper separator={0} className="search-pickers-wrapper">
@@ -781,7 +937,7 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                             <XHorizontal>
                                 <Organizations
                                     featuredFirst={this.state.sort.featured}
-                                    orderBy={this.state.sort.orederBy}
+                                    orderBy={this.state.sort.orderBy}
                                     conditions={conditions}
                                     onPick={this.replaceConditions}
                                     onSearchReset={this.reset}

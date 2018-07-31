@@ -40,7 +40,7 @@ const CheckboxWrap = Glamorous.div({
     borderTop: '1px solid #f1f2f5',
 });
 
-export class SortPicker extends React.Component<{ sort: { orederBy: string, featured: boolean }, onPick: (sort: { orederBy: string, featured: boolean }) => void }, { popper: boolean, featured: boolean }> {
+export class SortPicker extends React.Component<{ sort: { orderBy: string, featured: boolean }, onPick: (sort: { orderBy: string, featured: boolean }) => void }, { popper: boolean, featured: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { popper: false, featured: props.sort.featured };
@@ -48,13 +48,13 @@ export class SortPicker extends React.Component<{ sort: { orederBy: string, feat
 
     onPick = (q: { label: string, value: string }) => {
         this.close();
-        this.props.onPick({ featured: this.props.sort.featured, orederBy: q.value });
+        this.props.onPick({ featured: this.props.sort.featured, orderBy: q.value });
     }
 
     onFeturedChange = (checked: { label: string, checked: boolean }) => {
         this.setState({ featured: checked.checked });
         delay(0).then(() => {
-            this.props.onPick({ featured: checked.checked, orederBy: this.props.sort.orederBy });
+            this.props.onPick({ featured: checked.checked, orderBy: this.props.sort.orderBy });
         });
     }
 
@@ -88,7 +88,7 @@ export class SortPicker extends React.Component<{ sort: { orederBy: string, feat
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={this.props.sort.orederBy === 'createdAt' ? 'Join date' : 'Last updated'} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={this.props.sort.orderBy === 'createdAt' ? 'Join date' : 'Last updated'} style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }
