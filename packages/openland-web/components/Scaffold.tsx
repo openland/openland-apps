@@ -559,7 +559,7 @@ let SearchResults = withSearch((props) => {
 //
 
 const MenuView = Glamorous(XScrollView)({
-    width: '208px',
+    width: 278,
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#FAFAFC',
@@ -1147,7 +1147,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 </NavigationWrapper>
                 <ContentView
                     noBoxShadow={this.props.noBoxShadow}
-                    marginLeft={menu !== undefined ? 280 : 72}
+                    marginLeft={menu !== undefined ? 350 : 72}
                     innerRef={this.handleContentRef}
                 >
                     {content}

@@ -51,17 +51,17 @@ const Content = Glamorous(XVertical)({
 });
 
 const Title = Glamorous.div({
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 500,
-    lineHeight: 1.33,
+    lineHeight: 1.43,
     letterSpacing: -0.4,
     color: '#334562'
 });
 
 const Text = Glamorous.div({
     opacity: 0.8,
-    fontSize: 15,
-    lineHeight: 1.33,
+    fontSize: 14,
+    lineHeight: 1.43,
     letterSpacing: -0.2,
     color: '#334562'
 });
@@ -93,6 +93,7 @@ const Table = Glamorous(XTable)({
             },
             '&:nth-child(2)': {
                 maxWidth: 130,
+                minWidth: 110,
                 '& > div': {
                     paddingLeft: 20,
                     paddingRight: 20

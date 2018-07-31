@@ -41,10 +41,10 @@ const CardText = Glamorous.div({
     alignSelf: 'flex-start',
     borderRadius: 5,
     border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    padding: 18,
+    padding: 16,
 
-    fontSize: 15,
-    lineHeight: 1.27,
+    fontSize: 14,
+    lineHeight: 1.43,
     letterSpacing: -0.2,
     color: '#334562',
     '& .bold': {
@@ -59,10 +59,10 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
     return (
         <Navigation title="Your profile">
             <Content>
-                <XVertical separator={36}>
+                <XVertical separator={21}>
                     <Query query={MyOrganizationsQuery.document}>
                         {(orgsData) => (
-                            <XVertical separator={36}>
+                            <XVertical separator={22}>
                                 <XForm
                                     defaultData={{
                                         input: {
@@ -91,24 +91,24 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     }}
                                     defaultLayout={false}
                                 >
-                                    <XVertical separator={12}>
+                                    <XVertical separator={18}>
                                         <HeadTitle>User</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
-                                        <XVertical separator={21}>
+                                        <XVertical separator={12}>
                                             <XFormLoadingContent>
                                                 <XHorizontal separator={12}>
                                                     <XVertical flexGrow={1} maxWidth={480}>
                                                         <XFormField field="input.firstName" title="First name">
-                                                            <XInput field="input.firstName" size="medium" />
+                                                            <XInput field="input.firstName" />
                                                         </XFormField>
                                                         <XFormField field="input.lastName" title="Last name">
-                                                            <XInput field="input.lastName" size="medium" />
+                                                            <XInput field="input.lastName" />
                                                         </XFormField>
                                                         <XFormField field="input.primaryOrganizationId" title="Primary organization">
-                                                            <XSelect large={true} field="input.primaryOrganizationId" searchable={false} clearable={false} options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))} />
+                                                            <XSelect field="input.primaryOrganizationId" searchable={false} clearable={false} options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))} />
                                                         </XFormField>
                                                         <XFormField field="input.role" title="Role">
-                                                            <XInput field="input.role" size="medium" />
+                                                            <XInput field="input.role" />
                                                         </XFormField>
                                                     </XVertical>
                                                     <XFormField field="input.photoRef" title="Photo">
@@ -116,7 +116,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     </XFormField>
                                                 </XHorizontal>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" size="medium" succesText="Changes saved!"/>
+                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" succesText="Changes saved!"/>
                                         </XVertical>
                                     </XVertical>
                                 </XForm>
@@ -146,40 +146,40 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     }}
                                     defaultLayout={false}
                                 >
-                                    <XVertical separator={12}>
+                                    <XVertical separator={18}>
                                         <HeadTitle>Contacts</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
-                                        <XVertical maxWidth={480} separator={21}>
+                                        <XVertical maxWidth={480} separator={12}>
                                             <XFormLoadingContent>
                                                 <XVertical>
                                                     <XFormField field="input.phone" title="Phone number" >
-                                                        <XInput field="input.phone" size="medium" />
+                                                        <XInput field="input.phone" />
                                                     </XFormField>
                                                     <XFormField field="input.email" title="Email" >
-                                                        <XInput field="input.email" size="medium" />
+                                                        <XInput field="input.email" />
                                                     </XFormField>
                                                     <XFormField field="input.website" title="Website" >
-                                                        <XInput field="input.website" size="medium" />
+                                                        <XInput field="input.website" />
                                                     </XFormField>
                                                     <XFormField field="input.linkedin" title="LinkedIn" >
-                                                        <XInput field="input.linkedin" size="medium" />
+                                                        <XInput field="input.linkedin" />
                                                     </XFormField>
                                                     <XFormField field="input.location" title="Location" >
-                                                        <XSelect large={true} field="input.location" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                                        <XSelect field="input.location" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                                     </XFormField>
                                                 </XVertical>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" size="medium" succesText="Changes saved!"/>
+                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" succesText="Changes saved!"/>
                                         </XVertical>
                                     </XVertical>
                                 </XForm>
                             </XVertical>
                         )}
                     </Query>
-                    <XVertical separator={15}>
+                    <XVertical separator={18}>
                         <HeadTitle>Super admin</HeadTitle>
                         <XWithRole role="super-admin">
-                            <XVertical separator={9}>
+                            <XHorizontal separator={8}>
                                 {props.data.profile && props.data.profile.joinedAt && (
                                     <CardText>
                                         <span>Joined <span className="bold">{DateFormater(props.data.profile.joinedAt)}</span></span>
@@ -192,7 +192,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
 
                                     </CardText>
                                 )}
-                            </XVertical>
+                            </XHorizontal>
                         </XWithRole>
                     </XVertical>
                 </XVertical>

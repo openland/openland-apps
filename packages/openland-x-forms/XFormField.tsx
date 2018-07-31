@@ -6,11 +6,10 @@ import { XFlexStyles } from 'openland-x/basics/Flex';
 
 export const XFormFieldTitle = Glamorous.div<{ invalid?: boolean }>((props) => ({
     color: props.invalid ? '#e25950' : '#334562',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 500,
-    lineHeight: '24px',
+    lineHeight: 1.36,
     letterSpacing: -0.4,
-    height: 32,
     marginTop: 18,
     marginLeft: 0,
 }));
@@ -70,7 +69,7 @@ export function XFormField(props: XFormFieldProps) {
                     let errors = store.readValue('errors.' + field);
                     let invalided = errors && errors.length !== 0;
                     return (
-                        <XVertical className={(props as any).className} {...other} separator={separator !== undefined ? separator : 0}>
+                        <XVertical className={(props as any).className} {...other} separator={separator !== undefined ? separator : 4}>
                             <XFormFieldTitle invalid={invalided}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
                             <XFormFieldChildren>
                                 <XVertical>
@@ -86,7 +85,7 @@ export function XFormField(props: XFormFieldProps) {
         );
     }
     return (
-        <XVertical className={(props as any).className} {...other} separator={separator !== undefined ? separator : 0}>
+        <XVertical className={(props as any).className} {...other} separator={separator !== undefined ? separator : 4}>
             <XFormFieldTitle invalid={invalid}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
             <XFormFieldChildren>
                 <XVertical>

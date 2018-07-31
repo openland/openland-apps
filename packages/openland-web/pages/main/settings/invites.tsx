@@ -252,10 +252,10 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     <RenewInviteLinkButton />
                 )}
                 {this.state.showLink && (
-                    <XFormSubmit key="link" style={'primary'} succesText={TextInvites.copied} {...submitProps} text={'Copy'} />
+                    <XFormSubmit key="link" style="primary" succesText={TextInvites.copied} {...submitProps} text={'Copy'} />
                 )}
                 {!this.state.showLink && (
-                    <XFormSubmit key="invites" succesText={TextInvites.sent} style={'primary'} keyDownSubmit={true} {...submitProps} />
+                    <XFormSubmit key="invites" succesText={TextInvites.sent} style="primary" keyDownSubmit={true} {...submitProps} />
                 )}
             </FooterWrap>
         );
