@@ -2905,6 +2905,27 @@ export interface AlterMemberAsContactMutation {
   alphaAlterMemberAsContact: string,
 };
 
+export interface OrganizationByPrefixQueryVariables {
+  query: string,
+};
+
+export interface OrganizationByPrefixQuery {
+  organizationByPrefix:  {
+    __typename: "Organization",
+    id: string,
+    name: string,
+    photo: string | null,
+    locations: Array< string > | null,
+    isMine: boolean,
+    organizationType: Array< string > | null,
+    interests: Array< string > | null,
+    followed: boolean,
+    published: boolean,
+    editorial: boolean,
+    featured: boolean,
+  } | null,
+};
+
 export interface BlocksConnectionQueryVariables {
   cursor?: string | null,
   page?: number | null,
@@ -3914,6 +3935,15 @@ export interface ProfileUpdateMutation {
     website: string | null,
     about: string | null,
     location: string | null,
+    role: string | null,
+    locations: Array< string > | null,
+    linkedin: string | null,
+    primaryOrganizationId: string | null,
+    joinedAt: string | null,
+    invitedBy:  {
+      __typename: "User",
+      name: string,
+    } | null,
   },
 };
 

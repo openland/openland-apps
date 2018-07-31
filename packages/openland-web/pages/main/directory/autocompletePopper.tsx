@@ -7,6 +7,8 @@ import { SearchCondition } from './root.page';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import DirecoryIcon from './icons/directory.1.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { withOrganizationByPrefix } from '../../../api/withOrganizationByPrefix';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
     padding: 0
@@ -34,8 +36,6 @@ const InputWrap = Glamorous.div({
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 4,
-    marginBottom: 9,
-    borderBottom: '1px solid #f1f2f5',
     '& > i': {
         fontSize: 21,
         color: 'rgba(51, 69, 98, 0.3)',
@@ -55,7 +55,13 @@ const InputWrap = Glamorous.div({
     }
 });
 
-const OrgWrap = Glamorous.div<{ selected: boolean, onPick: (entry: SearchCondition) => void }>(props => ({
+const EntriesWrap = Glamorous.div({
+    paddingTop: 9,
+    borderTop: '1px solid #f1f2f5',
+    marginBottom: 9,
+});
+
+const OrgWrap = makeNavigable(Glamorous.div<{ selected: boolean }>(props => ({
     height: 40,
     display: 'flex',
     alignItems: 'center',
@@ -63,7 +69,6 @@ const OrgWrap = Glamorous.div<{ selected: boolean, onPick: (entry: SearchConditi
     paddingRight: 16,
     paddingTop: 4,
     borderTop: '1px solid #f1f2f5',
-    marginTop: 9,
     cursor: 'pointer',
     backgroundColor: props.selected ? '#f8f8fb' : undefined,
     '& > svg': {
@@ -72,8 +77,12 @@ const OrgWrap = Glamorous.div<{ selected: boolean, onPick: (entry: SearchConditi
         '> g': {
             fill: '#BEC3CA'
         }
+    },
+    ':hover': {
+        color: '#6b50ff',
+        backgroundColor: '#f8f8fb'
     }
-}));
+})));
 
 const OrgTitle = Glamorous.div({
     fontSize: 14,
@@ -116,6 +125,19 @@ interface AutocompletePopperState {
     select: number;
     entries: EntryProps[];
 }
+
+const OrgByPrefix = withOrganizationByPrefix((props) => {
+    console.warn(props);
+    if (!props.data || !props.data.organizationByPrefix) {
+        return null;
+    }
+    return (
+        <OrgWrap path={'/o/' + props.data.organizationByPrefix.id}>
+            <DirecoryIcon />
+            <OrgTitle>{props.data.organizationByPrefix.name}</OrgTitle>
+        </OrgWrap>
+    );
+});
 
 export class AutocompletePopper extends React.Component<AutocompleteProps, AutocompletePopperState> {
 
@@ -217,20 +239,24 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
                     <XIcon icon="search" />
                     <input value={inputValue} onChange={this.handleSearchChange} />
                 </InputWrap>
-                {this.state.entries.map((e, i) => (
-                    <EntryComponent
-                        i={i}
-                        onHover={ii => this.setState({ select: ii })}
-                        key={e.entry.type + e.entry.label + i}
-                        {...e}
-                        selected={i === this.state.select}
-                    />
-                ))}
+                {this.state.entries && this.state.entries.length > 0 && (
+                    <EntriesWrap>
+                        {
+                            this.state.entries.map((e, i) => (
+                                <EntryComponent
+                                    i={i}
+                                    onHover={ii => this.setState({ select: ii })}
+                                    key={e.entry.type + e.entry.label + i}
+                                    {...e}
+                                    selected={i === this.state.select}
+                                />
+                            ))
+                        }
+                    </EntriesWrap>
+                )}
+
                 <XWithRole role="software-developer">
-                    <OrgWrap selected={false} onPick={() => null}>
-                        <DirecoryIcon />
-                        <OrgTitle>Sancon Company</OrgTitle>
-                    </OrgWrap>
+                    <OrgByPrefix variables={{ query: this.props.query ? this.props.query.toLowerCase() : '' }} />
                 </XWithRole>
             </ContentValue>
         );

@@ -583,12 +583,9 @@ interface OrganizationsProps {
 
 let queryhash: number | undefined;
 const HitAdd = withHitsAdd((props) => {
-    console.warn(props);
 
     let newQueryHash = doSimpleHash(JSON.stringify((props as any).hits));
     let changed = queryhash !== newQueryHash;
-
-    console.warn(queryhash, newQueryHash);
 
     queryhash = newQueryHash;
     if (changed) {
@@ -849,7 +846,6 @@ class RootComponent extends React.Component<{}, RootComponentState> {
             this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
         }
         if (e.code === 'Backspace' && this.state.searchText === '') {
-            console.warn('Backspace');
             e.preventDefault();
             this.removeCondition(this.state.conditions[this.state.conditions.length - 1]);
         }
