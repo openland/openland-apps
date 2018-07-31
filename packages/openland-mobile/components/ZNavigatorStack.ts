@@ -16,6 +16,7 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap) {
             // },
             header: ZHeader
         },
+        headerMode: 'float',
         transitionConfig: () => {
             if (Platform.OS === 'android') {
                 return {

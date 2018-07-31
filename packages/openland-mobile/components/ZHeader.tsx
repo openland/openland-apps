@@ -3,6 +3,7 @@ import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Tou
 import { AppStyles } from '../styles/AppStyles';
 import { SafeAreaView, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
+import ViewOverflow from 'react-native-view-overflow';
 
 interface Descriptor {
     progress: Animated.Value;
@@ -189,6 +190,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 titles.push(
                     <Animated.View
                         style={{
+                            ...(styles.titleContainer as any),
                             opacity: s.titleOpacity,
                             transform: [
                                 { translateX: s.titlePosition }
@@ -196,9 +198,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         }}
                         key={'scene-' + titles.length}
                     >
-                        <View style={styles.titleContainer}>
-                            {titleRender}
-                        </View>
+                        {titleRender}
                     </Animated.View>
                 );
             }
@@ -207,6 +207,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 titles.push(
                     <Animated.View
                         style={{
+                            ...(styles.titleLargContainer as any),
                             opacity: s.largeTitleOpacity,
                             transform: [
                                 {
@@ -218,10 +219,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                             ]
                         }}
                         key={'scene-large-' + titles.length}
+                        pointerEvents="none"
                     >
-                        <View style={styles.titleLargContainer} pointerEvents="none">
-                            {titleLarge}
-                        </View>
+                        {titleLarge}
                     </Animated.View>
                 );
             }
@@ -243,8 +243,19 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         return (
             <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }}>
-                <View flexDirection="row" height={NAVIGATION_BAR_SIZE}>
-                    <Animated.View style={{ position: 'absolute', left: 0, right: 0, top: 0, transform: [{ translateY: backgroundOffset }], backgroundColor: AppStyles.primaryColor, height: BACKGROUND_SIZE }} />
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', heifht: NAVIGATION_BAR_SIZE }}>
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            transform: [{ translateY: backgroundOffset }],
+                            backgroundColor: AppStyles.primaryColor,
+                            height: BACKGROUND_SIZE
+                        }}
+                    />
+
                     <Animated.View style={{ opacity: backButtonOpacity, zIndex: 10 }}>
                         <TouchableOpacity onPress={this.handleBack}>
                             <Image
@@ -270,7 +281,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         </View>
                     )}
                     {right.length === 0 && (<View width={44} />)}
-                </View>
+                </ViewOverflow>
             </SafeAreaView>
         );
     }
