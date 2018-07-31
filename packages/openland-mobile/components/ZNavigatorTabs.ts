@@ -17,6 +17,7 @@ export function createZTabNavigator(routes: NavigationRouteConfigMap, config?: T
         tabBarOptions: {
             activeTintColor: '#fff',
             inactiveTintColor: '#99a2b0',
+            showLabel: false,
             style: {
                 backgroundColor: AppStyles.primaryColor,
                 borderTopLeftRadius: 16,
@@ -27,7 +28,8 @@ export function createZTabNavigator(routes: NavigationRouteConfigMap, config?: T
                 shadowOpacity: 0.3,
                 paddingTop: 10,
                 marginTop: -10,
-                height: 66
+                // height: 66,
+                marginHorizontal: 10
             }
         },
     });
