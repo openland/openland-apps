@@ -12,10 +12,10 @@
         padding-bottom="0" />
 
     <mj-text
-        font-family="SFProDisplay" />
+        font-family="SFProDisplay, Arial" />
 
     <mj-button
-        font-family="SFProDisplay" />
+        font-family="SFProDisplay, Arial" />
     
     <!-- Custom styles -->
 
@@ -23,8 +23,8 @@
         name="logo"
 
         align="left"
-        width="195px"
-        height="44px" />
+        width="114px"
+        height="19px" />
 
     <mj-class
         name="title"
