@@ -1,0 +1,21 @@
+<mjml>
+    <mj-head>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    Hello, Gleb!
+                </mj-text>
+                <mj-text mj-class="text">
+                    An ambitious mobile tech lead looking to join a position in startup. Designs mobile product architecture, coordinates backend development, leads iOS team. Manages project tasks - from product description to implementation.
+                </mj-text>
+                <mj-button mj-class="button" href="#">Сall-to-action button</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer.mjml" />
+        <mj-include path="./footer-registered.mjml" />
+    </mj-body>
+</mjml>
