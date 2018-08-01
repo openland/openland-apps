@@ -5,7 +5,7 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
+import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
@@ -92,7 +92,8 @@ const Header = (props: { orgCount: number, tagsCount: number, reset: () => void 
                     }
                 </HeaderCounter>
             </XHorizontal>
-            <XButton style="ghost" path="/createOrganization" text={TextDirectory.headerButtonAddOrganization} />
+            <XButton style="ghost" query={{ field: 'createOrganization', value: 'true' }} text={TextDirectory.headerButtonAddOrganization} />
+            <CreateOrganization />
         </HeaderContent>
     </HeaderWrapper>
 );
