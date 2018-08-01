@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>{{ firstName }} {{ lastName }} has accepted your invitation</mj-title>
+        <mj-title>{{firstName}} {{lastName}} has accepted your invitation</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -11,9 +11,9 @@
                     Thanks for expanding our community!
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{ firstName }} {{ lastName }}</strong> has accepted your invitation to join <strong>{{ channelName }}</strong> channel. Now you can use instant messaging to exchange ideas, share opportunities, and collaborate on transactions.
+                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to join <strong>{{channelName}}</strong> channel. Now you can use instant messaging to exchange ideas, share opportunities, and collaborate on transactions.
                 </mj-text>
-                <mj-button mj-class="button" href="{{ link }}">Message them</mj-button>
+                <mj-button mj-class="button" href="{{link}}">Message them</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />
