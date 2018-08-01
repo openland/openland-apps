@@ -15037,6 +15037,37 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaSetTyping",
+              "description": "",
+              "args": [
+                {
+                  "name": "conversationId",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "superAccountAdd",
               "description": "",
               "args": [
@@ -20863,6 +20894,22 @@
               "deprecationReason": null
             },
             {
+              "name": "alphaSubscribeTypings",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "TypingEvent",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "watchSettings",
               "description": "",
               "args": [],
@@ -20926,6 +20973,49 @@
               "ofType": null
             }
           ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TypingEvent",
+          "description": "",
+          "fields": [
+            {
+              "name": "conversation",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INTERFACE",
+                  "name": "Conversation",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "user",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
         },
         {
           "kind": "OBJECT",

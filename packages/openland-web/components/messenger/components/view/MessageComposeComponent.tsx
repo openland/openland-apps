@@ -58,6 +58,7 @@ export interface MessageComposeComponentProps {
     enabled?: boolean;
     onSend?: (text: string) => void;
     onSendFile?: (file: UploadCare.File) => void;
+    onChange?: (text: string) => void;
 }
 
 export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps> {
@@ -101,6 +102,9 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
 
     private handleChange = (src: string) => {
         this.message = src;
+        if (src.length > 0 && this.props.onChange) {
+            this.props.onChange(src);
+        }
     }
 
     private focusIfNeeded = () => {
