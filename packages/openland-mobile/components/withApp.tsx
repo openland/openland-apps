@@ -9,15 +9,13 @@ import { PushManager } from './PushManager';
 import { ZSafeAreaView } from './ZSaveAreaView';
 import { ZAppContent } from './ZAppContent';
 
-export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, args?: { noSafeWrapper?: boolean, isInTab?: boolean }) => {
+export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, args?: { noSafeWrapper?: boolean, isInTab?: boolean, navigationStyle?: 'large' | 'small' }) => {
     let res = (props: NavigationInjectedProps) => {
         return (
             <YApolloProvider client={getClient()}>
                 <MessengerContext.Provider value={getMessenger()}>
                     <PushManager client={getClient()} />
                     <ZAppContent navigation={props.navigation} useParent={args && args.isInTab}>
-                        {/* {args && args.noSafeWrapper && <Wrapped {...props} />}
-                        {!(args && args.noSafeWrapper) && <ZSafeAreaView><Wrapped {...props} /></ZSafeAreaView>} */}
                         <Wrapped {...props} />
                     </ZAppContent>
                 </MessengerContext.Provider>

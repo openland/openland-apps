@@ -8,12 +8,11 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogListComponent } from './components/DialogListComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ZHeader } from '../../components/ZHeader';
 
 class DialogsComponent extends React.Component<NavigationInjectedProps> {
+    
     static navigationOptions = {
-        title: 'Messages',
-        header: ZHeader
+        title: 'Messages'
     };
 
     handleItemClick = (item: ConversationShortFragment) => {

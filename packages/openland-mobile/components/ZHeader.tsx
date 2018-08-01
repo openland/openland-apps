@@ -7,6 +7,7 @@ import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
 import { ZHeaderBackButton } from './ZHeaderBackButton';
 import { VibrancyView } from 'react-native-blur';
+import { ZAppConfig } from './ZAppConfig';
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
 interface Descriptor {
@@ -15,6 +16,7 @@ interface Descriptor {
     options: {
         title?: string;
         headerTitle?: any;
+        headeAppearance?: 'small';
         isTab?: boolean;
     };
     navigation: NavigationScreenProp<NavigationParams>;
@@ -32,21 +34,16 @@ interface Props {
     position: Animated.Value;
 }
 
-const ACCENT_COLOR = '#000';
-const BACKGROUND_COLOR = '#fff';
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
-const NAVIGATION_BAR_SIZE = Platform.OS === 'ios' ? 44 : 56;
-const NAVIGATION_BAR_SIZE_LARGE = 102;
-const defaultBackgroundOffset = new Animated.Value(NAVIGATION_BAR_SIZE - BACKGROUND_SIZE);
+const defaultBackgroundOffset = new Animated.Value(ZAppConfig.navigationBarHeight - BACKGROUND_SIZE);
 const zeroValue = new Animated.Value(0);
 const oneValue = new Animated.Value(1);
-const BACK_WIDTH = Platform.OS === 'ios' ? 44 : 56;
 
 let styles = StyleSheet.create({
 
     title: {
-        color: ACCENT_COLOR,
+        color: ZAppConfig.titleColor,
         width: '100%',
         height: '100%',
         textAlignVertical: 'center',
@@ -63,7 +60,7 @@ let styles = StyleSheet.create({
             }
     } as TextStyle,
     titleLarge: {
-        color: ACCENT_COLOR,
+        color: ZAppConfig.titleColor,
         width: '100%',
         height: '100%',
         textAlign: 'left',
@@ -76,13 +73,13 @@ let styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: 44,
-        paddingLeft: BACK_WIDTH
+        paddingLeft: ZAppConfig.navigationBarBackWidth
     } as ViewStyle,
     titleLargContainer: {
         position: 'absolute',
         width: '100%',
         height: 140,
-        paddingLeft: isAndroid ? BACK_WIDTH : 15
+        paddingLeft: isAndroid ? ZAppConfig.navigationBarBackWidth : 15
     } as ViewStyle
 });
 
@@ -148,12 +145,13 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
             let contentOffset = v.descriptor.navigation.getParam(paramName) as Animated.Value | undefined | null;
-            if (contentOffset) {
-                let invertedOffset = Animated.multiply(contentOffset, -1);
-                let shiftedOffset = Animated.add(invertedOffset, NAVIGATION_BAR_SIZE_LARGE - BACKGROUND_SIZE);
+            if (contentOffset || v.descriptor.options.headeAppearance !== 'small') {
+                let inputOffset = contentOffset ? contentOffset : zeroValue;
+                let invertedOffset = Animated.multiply(inputOffset, -1);
+                let shiftedOffset = Animated.add(invertedOffset, ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight - BACKGROUND_SIZE);
                 let clampedOffset = shiftedOffset.interpolate({
-                    inputRange: [-BACKGROUND_SIZE + NAVIGATION_BAR_SIZE, 0],
-                    outputRange: [-BACKGROUND_SIZE + NAVIGATION_BAR_SIZE, 0],
+                    inputRange: [-BACKGROUND_SIZE + ZAppConfig.navigationBarHeight, 0],
+                    outputRange: [-BACKGROUND_SIZE + ZAppConfig.navigationBarHeight, 0],
                     extrapolate: 'clamp'
                 });
                 computedOffset = clampedOffset;
@@ -167,7 +165,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 }
 
                 // Update title opacity for hiding when bar is expanded
-                titleOpacity = Animated.multiply(interpolated, contentOffset.interpolate({
+                titleOpacity = Animated.multiply(interpolated, inputOffset.interpolate({
                     inputRange: [0, 10],
                     outputRange: [0, 1],
                     extrapolate: 'clamp'
@@ -331,7 +329,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Left */}
-                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: 0, width: BACK_WIDTH, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? BACKGROUND_COLOR : undefined }}>
+                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: 0, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
@@ -348,65 +346,37 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 )}
                 {right.length === 0 && (<View width={44} zIndex={3} />)}
 
-                {isAndroid &&
-                    <ViewOverflowAnimated
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            transform: [{ translateY: backgroundOffset }],
-                            height: BACKGROUND_SIZE,
-                            zIndex: 1,
-                            backgroundColor: BACKGROUND_COLOR
-                        }}
-                    />
-                }
-                {!isAndroid &&
-                    <ViewOverflowAnimated
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            transform: [{ translateY: backgroundOffset }],
-                            height: BACKGROUND_SIZE,
-                            zIndex: 1
-                        }}
-                    >
-                        {/* <View
-                        style={{
-                            backgroundColor: BACKGROUND_COLOR,
-                            width: '100%',
-                            height: BACKGROUND_SIZE,
-                        }}
-                    /> */}
-                        <VibrancyView
-                            blurType="light"
-                            blurAmount={10}
-                            style={{
-                                position: 'absolute',
-                                top: 0, left: 0, bottom: 0, right: 0,
-                            }}
-                        />
-                    </ViewOverflowAnimated>
-                }
+                {/* Debug Statusbar */}
+                <View style={{ position: 'absolute', left: 0, top: 0, right: 0, height: ZAppConfig.statusBarHeight, backgroundColor: '#ff0', zIndex: 3 }}>
+                    {}
+                </View>
+
+                <ViewOverflowAnimated
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        transform: [{ translateY: backgroundOffset }],
+                        height: BACKGROUND_SIZE,
+                        zIndex: 1,
+                        backgroundColor: ZAppConfig.navigationBarBackgroundColor
+                    }}
+                />
             </>
         );
 
         if (isAndroid) {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE, backgroundColor: AppStyles.primaryColor }}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight, backgroundColor: ZAppConfig.navigationBarBackgroundColor }}>
                     {content}
                 </ViewOverflow>
             );
         } else {
             return (
-                <SafeAreaView zIndex={10} forceInset={{ top: 'always', bottom: 'never' }} style={{ position: 'absolute', left: 0, right: 0, top: 0 }}>
-                    <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: NAVIGATION_BAR_SIZE }}>
-                        {content}
-                    </ViewOverflow>
-                </SafeAreaView>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight, position: 'absolute', left: 0, right: 0, top: 0 }}>
+                    {content}
+                </ViewOverflow>
             );
         }
     }

@@ -13,7 +13,6 @@ import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
 import { Button, View, Text } from 'react-native';
 import { SettingsNotifications } from './pages/main/SettingsNotifications';
-import { ConversationInfo } from './pages/main/ConversationInfo';
 import { ProfileUser } from './pages/main/ProfileUser';
 import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
