@@ -36,9 +36,9 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
                 }]}
                 contentContainerStyle={this.props.inverted ?
                     {
-                        paddingTop: ZAppConfig.navigationBarContentInset
+                        paddingTop: provider.topContentInset
                     } : {
-                        paddingTop: ZAppConfig.navigationBarContentInset
+                        paddingTop: provider.topContentInset
                     }}
                 onScroll={this.contentOffsetEvent}
                 scrollEventThrottle={1}

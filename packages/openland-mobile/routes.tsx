@@ -19,6 +19,7 @@ import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Directory } from './pages/main/Directory';
 import { Navigation } from './pages/dev/Navigation';
 import { ZHeader } from './components/ZHeader';
+import { isAndroid } from './utils/isAndroid';
 
 //
 // Home Routes
@@ -57,27 +58,27 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
     return {
       title: 'Messages',
       isTab: true,
-      androidHeaderAppearance: 'initial'
+      headerHeight: isAndroid ? 72 : undefined
     };
   }
   if (routeName === 'Directory') {
     return {
       title: 'Today',
       isTab: true,
-      androidHeaderAppearance: 'initial'
+      headerHeight: isAndroid ? 72 : undefined,
     };
   }
   if (routeName === 'Explore') {
     return {
       title: 'Search',
       isTab: true,
-      androidHeaderAppearance: 'initial'
+      headerHeight: isAndroid ? 72 : undefined
     };
   }
   return {
     title: 'Settings',
     isTab: true,
-    androidHeaderAppearance: 'initial',
+    headerHeight: isAndroid ? 72 : undefined,
     headerRight: (
       <View style={{ marginRight: 10 }}>
         <Button

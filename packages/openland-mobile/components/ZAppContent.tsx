@@ -2,11 +2,11 @@ import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { View, Animated, ViewStyle } from 'react-native';
 import { ZKeyboardAvoidingView } from './ZKeyboardAvoidingView';
+import { ZAppConfig } from './ZAppConfig';
+import { isAndroid } from '../utils/isAndroid';
 
 export interface ZAppContentProvider {
-    topOffset: number;
-    topLargeOffset: number;
-    bottomOffset: number;
+    topContentInset: number;
     registerScroller(value: Animated.AnimatedInterpolation): void;
 }
 
@@ -25,9 +25,7 @@ export class ZAppContent extends React.Component<ZAppContentProps> {
     constructor(props: ZAppContentProps) {
         super(props);
         this.provider = {
-            topOffset: 44 + 22,
-            topLargeOffset: 56 + 22,
-            bottomOffset: this.props.useParent ? 44 : 0,
+            topContentInset: (this.props.useParent && isAndroid) ? 16 : ZAppConfig.navigationBarContentInset,
             registerScroller: this.registerScroller
         };
     }

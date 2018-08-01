@@ -36,7 +36,7 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                 scrollEventThrottle={1}
             >
                 {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
-                    <View height={ZAppConfig.navigationBarContentInset} />
+                    <View height={provider.topContentInset} />
                 }
 
                 {this.props.children}

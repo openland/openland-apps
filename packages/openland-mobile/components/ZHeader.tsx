@@ -15,7 +15,9 @@ interface Descriptor {
     options: {
         title?: string;
         headerTitle?: any;
+        headerTitleOffset?: number;
         headerAppearance?: 'small';
+        headerHeight?: number;
         androidHeaderAppearance?: 'initial';
         isTab?: boolean;
     };
@@ -40,8 +42,7 @@ const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
 const defaultHairlineOffset = new Animated.Value(ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight);
 const defaultBackgroundOffset = new Animated.Value(ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight - BACKGROUND_SIZE);
 
-const NAVIGATOR_MIN_HEIGHT = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
-const NAVIGATOR_EXPANDED_HEIGHT = ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight;
+// const NAVIGATOR_MIN_HEIGHT = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
 const zeroValue = new Animated.Value(0);
 const oneValue = new Animated.Value(1);
 
@@ -78,13 +79,14 @@ let styles = StyleSheet.create({
     titleContainer: {
         position: 'absolute',
         width: '100%',
-        height: 44,
+        height: isAndroid ? 56 : 44,
         paddingLeft: ZAppConfig.navigationBarBackWidth
     } as ViewStyle,
     titleLargeContainer: {
         position: 'absolute',
         width: '100%',
-        height: isAndroid ? 100 : 140,
+        justifyContent: 'flex-end',
+        // height: isAndroid ? 100 : 140,
         paddingLeft: isAndroid ? 16 : 15
     } as ViewStyle
 });
@@ -116,9 +118,13 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 console.log(r);
             }
 
-            if (v.descriptor.options.androidHeaderAppearance === 'initial' && isAndroid) {
-                // 
-            }
+            //
+            // Resolving Settings
+            //
+
+            let resolvedTitleSwitchTreshold = ZAppConfig.navigationBarHeightLarge - ZAppConfig.navigationBarHeight;
+            let resolvedNavigationBarHeight = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
+            let resolvedNavigationBarHeightLarge = (v.descriptor.options.headerHeight ? v.descriptor.options.headerHeight : ZAppConfig.navigationBarHeightLarge) + ZAppConfig.statusBarHeight;
 
             // let config: ZHeaderConfig | undefined = v.descriptor.navigation.getParam('__z_header_config');
             // if (!config) {
@@ -171,10 +177,10 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 // 2) Clamp between min height and min height + background size (our scroll background)
                 //
                 let computedHairlineOffset = Animated
-                    .add(invertedOffset, NAVIGATOR_EXPANDED_HEIGHT)
+                    .add(invertedOffset, resolvedNavigationBarHeightLarge)
                     .interpolate({
-                        inputRange: [NAVIGATOR_MIN_HEIGHT, NAVIGATOR_MIN_HEIGHT + BACKGROUND_SIZE],
-                        outputRange: [NAVIGATOR_MIN_HEIGHT, NAVIGATOR_MIN_HEIGHT + BACKGROUND_SIZE],
+                        inputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeight + BACKGROUND_SIZE],
+                        outputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeight + BACKGROUND_SIZE],
                         extrapolate: 'clamp'
                     });
                 hairlineOffset = computedHairlineOffset;
@@ -197,14 +203,14 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
                 // Update title opacity for hiding when bar is expanded
                 titleOpacity = Animated.multiply(interpolated, inputOffset.interpolate({
-                    inputRange: [0, 10],
+                    inputRange: [0, resolvedTitleSwitchTreshold],
                     outputRange: [0, 1],
                     extrapolate: 'clamp'
                 }));
 
                 // Calculate title offset
                 largeTitleOpacity = Animated.multiply(interpolated, invertedOffset.interpolate({
-                    inputRange: [-10, 0],
+                    inputRange: [-resolvedTitleSwitchTreshold, 0],
                     outputRange: [0, 1],
                     extrapolate: 'clamp'
                 }));
@@ -221,6 +227,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 largeTitleOffset: largeTitleOffset,
                 largeTitleFontSize: largeTitleOverscrol,
                 hairlineOffset: hairlineOffset,
+                resolvedNavigationBarHeight,
+                resolvedNavigationBarHeightLarge,
                 scene: v
             };
         });
@@ -294,6 +302,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 if (isAndroid) {
                     titles.push(
                         <Animated.View
+                            height={s.resolvedNavigationBarHeightLarge}
                             style={{
                                 ...(styles.titleLargeContainer as any),
                                 opacity: s.largeTitleOpacity,
@@ -312,6 +321,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 } else {
                     titles.push(
                         <Animated.View
+                            height={s.resolvedNavigationBarHeightLarge}
                             style={{
                                 ...(styles.titleLargeContainer as any),
                                 opacity: s.largeTitleOpacity,
