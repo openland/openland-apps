@@ -42,6 +42,7 @@ export const ChatReadMutation = typedMutation<Types.ChatReadMutation, Types.Chat
 export const ChatSearchForComposeQuery = typedQuery<Types.ChatSearchForComposeQuery, Types.ChatSearchForComposeQueryVariables>(Chats.ChatSearchForComposeQuery);
 export const ChatSearchGroupQuery = typedQuery<Types.ChatSearchGroupQuery, Types.ChatSearchGroupQueryVariables>(Chats.ChatSearchGroupQuery);
 export const ChatCreateGroupMutation = typedMutation<Types.ChatCreateGroupMutation, Types.ChatCreateGroupMutationVariables>(Chats.ChatCreateGroupMutation);
+export const SetTypingMutation = typedMutation<Types.SetTypingMutation, Types.SetTypingMutationVariables>(Chats.SetTypingMutation);
 export const AllDealsQuery = typedQuery<Types.AllDealsQuery, {}>(Deals.AllDealsQuery);
 export const AllDealsMapQuery = typedQuery<Types.AllDealsMapQuery, {}>(Deals.AllDealsMapQuery);
 export const DealQuery = typedQuery<Types.DealQuery, Types.DealQueryVariables>(Deals.DealQuery);

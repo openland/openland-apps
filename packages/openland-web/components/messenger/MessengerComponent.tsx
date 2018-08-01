@@ -8,6 +8,7 @@ import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../Incubator/XOverflow';
 import { makeNavigable } from 'openland-x/Navigable';
+import { TypingsContext } from 'openland-engines/MessengerEngine';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -95,7 +96,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         />
                         <ChatTitleContent separator={2}>
                             <Title>{props.data.chat.title}</Title>
-                            <SubTitle>{props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person'}</SubTitle>
+                            <TypingsContext.Consumer>
+                                {val =>
+                                    <SubTitle>{(val && val[props.data.chat.id]) || (props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person')}</SubTitle>
+                                }
+                            </TypingsContext.Consumer>
+
                         </ChatTitleContent>
                     </NavChatLeftContentStyled>
                     <XOverflow

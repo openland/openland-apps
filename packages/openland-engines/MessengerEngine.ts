@@ -23,7 +23,7 @@ export class MessengerEngine {
         this.user = user;
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
-        
+
         // Visibility
         AppVisibility.watch(this.handleVisibleChanged);
         this.handleVisibleChanged(AppVisibility.isVisible);
@@ -107,3 +107,4 @@ export class MessengerEngine {
 }
 
 export const MessengerContext = React.createContext<MessengerEngine>(undefined as any);
+export const TypingsContext = React.createContext<{ [conversationId: string]: string | undefined }>(undefined as any);
