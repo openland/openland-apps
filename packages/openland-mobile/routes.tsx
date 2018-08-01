@@ -29,15 +29,19 @@ const HomeTabs = createZTabNavigator(
   {
     Directory: Directory,
     Dialogs: Dialogs,
+    Explore: Directory,
     Settings: Settings
   },
   {
+    initialRouteName: 'Dialogs',
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName: string;
         if (routeName === 'Directory') {
-          iconName = `ios-home`;
+          iconName = `ios-albums`;
+        } else if (routeName === 'Explore') {
+          iconName = `ios-search`;
         } else if (routeName === 'Dialogs') {
           iconName = `ios-chatbubbles`;
         } else {
@@ -58,7 +62,13 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
   }
   if (routeName === 'Directory') {
     return {
-      title: 'Directory',
+      title: 'Today',
+      isTab: true
+    };
+  }
+  if (routeName === 'Explore') {
+    return {
+      title: 'Search',
       isTab: true
     };
   }
