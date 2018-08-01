@@ -7,8 +7,9 @@ export function createZTabNavigator(routes: NavigationRouteConfigMap, config?: T
     if (Platform.OS === 'android') {
         return createMaterialBottomTabNavigator(routes, {
             ...config,
+            activeTintColor: AppStyles.primaryColor,
             barStyle: {
-                backgroundColor: AppStyles.primaryColor
+                backgroundColor: '#fff'
             }
         });
     }

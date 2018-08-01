@@ -56,24 +56,28 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
   if (routeName === 'Dialogs') {
     return {
       title: 'Messages',
-      isTab: true
+      isTab: true,
+      androidHeaderAppearance: 'initial'
     };
   }
   if (routeName === 'Directory') {
     return {
       title: 'Today',
-      isTab: true
+      isTab: true,
+      androidHeaderAppearance: 'initial'
     };
   }
   if (routeName === 'Explore') {
     return {
       title: 'Search',
-      isTab: true
+      isTab: true,
+      androidHeaderAppearance: 'initial'
     };
   }
   return {
     title: 'Settings',
     isTab: true,
+    androidHeaderAppearance: 'initial',
     headerRight: (
       <View style={{ marginRight: 10 }}>
         <Button

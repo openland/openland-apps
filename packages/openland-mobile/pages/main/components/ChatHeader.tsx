@@ -7,6 +7,7 @@ import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { getClient } from '../../../utils/apolloClient';
 import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { ZAppConfig } from '../../../components/ZAppConfig';
 
 export class ChatHeader extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }> {
     render() {
@@ -21,7 +22,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                         if (isAndroid) {
                             return (
                                 <TouchableHighlight onPress={() => this.props.navigation.navigate('ConversationInfo', { id: this.props.conversationId })}>
-                                    <View flexDirection="row">
+                                    <View flexDirection="row" alignSelf="center">
                                         <View paddingRight={12} paddingLeft={8}>
                                             <ZAvatar
                                                 src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
@@ -31,8 +32,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                                             />
                                         </View>
                                         <View flexDirection="column" marginTop={-2}>
-                                            <Text style={{ fontWeight: '500', fontSize: 18, height: 21, color: '#fff', letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
-                                            <Text style={{ fontSize: 14, height: 16, color: '#fff', opacity: 0.6, marginTop: 1 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>
+                                            <Text style={{ fontWeight: '500', fontSize: 18, height: 21, color: ZAppConfig.titleColor, letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
+                                            <Text style={{ fontSize: 14, height: 16, color: ZAppConfig.subtitleColor, opacity: 0.6, marginTop: 1 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>
                                         </View>
                                     </View>
                                 </TouchableHighlight>
@@ -40,9 +41,9 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                         }
 
                         return (
-                            <View flexDirection="column" alignItems="center">
-                                <Text style={{ fontSize: 15, height: 18, color: '#fff', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
-                                <Text style={{ fontSize: 12, height: 14, color: '#fff', opacity: 0.6 }}>Online</Text>
+                            <View flexDirection="column" alignItems="center" alignSelf="center">
+                                <Text style={{ fontSize: 15, height: 18, color: ZAppConfig.titleColor, fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
+                                <Text style={{ fontSize: 12, height: 14, color: ZAppConfig.subtitleColor, opacity: 0.6 }}>Online</Text>
                             </View>
                         );
                     }}

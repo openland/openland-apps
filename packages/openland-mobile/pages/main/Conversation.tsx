@@ -118,7 +118,7 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
         return {
             headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
             headerRight: <ChatRight conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
-            headeAppearance: 'small'
+            headerAppearance: 'small'
         };
     }
 
