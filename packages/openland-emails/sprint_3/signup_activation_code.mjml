@@ -10,10 +10,23 @@
                 <mj-text mj-class="title">
                     Almost there
                 </mj-text>
-                <mj-text mj-class="text">
-                    Your activation code for Openland is <strong>{{code}}</strong>
-                </mj-text>
-                <mj-button mj-class="button" href="{{link}}">Enter the app</mj-button>
+
+                <mj-raw>
+                    {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        To get in your Openland account, simply click the button below. Alternatively, you can manually paste the activation code <strong>{{code}}</strong> into the signin form. To keep your account safe, don’t share this email with anyone. If you didn't request this code, simply ignore this message.
+                    </mj-text>
+                    <mj-button mj-class="button" href="{{link}}">Enter the app</mj-button>
+                <mj-raw>
+                    {% elsif send == 'code' %}
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        To get in your Openland account, paste the activation code <strong>{{code}}</strong> into the signin form. To keep your account safe, don’t share this email with anyone. If you didn't request this code, simply ignore this message.
+                    </mj-text>
+                <mj-raw>
+                    {% endif %}
+                </mj-raw>
             </mj-column>
         </mj-section>
         <mj-include path="./footer.mjml" />
