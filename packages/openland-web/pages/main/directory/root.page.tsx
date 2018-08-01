@@ -939,9 +939,9 @@ class RootComponent extends React.Component<{}, RootComponentState> {
                                             {data => {
                                                 return (
                                                     <>
+                                                        <InterestPicker onPick={this.addCondition} top={((data.data && data.data.hitsPopular) || []).filter((c: { category: string, tags: string[] }) => c.category === 'directory_interest')[0]} />
                                                         <LocationPicker onPick={this.addCondition} />
                                                         <CategoryPicker onPick={this.addCondition} />
-                                                        <InterestPicker onPick={this.addCondition} top={((data.data && data.data.hitsPopular) || []).filter((c: { category: string, tags: string[] }) => c.category === 'directory_interest')[0]} />
                                                     </>
                                                 );
                                             }}
