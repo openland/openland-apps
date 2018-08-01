@@ -5,8 +5,9 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
 import { XMenuItem } from '../../../components/Incubator/XOverflow';
 import Glamorous from 'glamorous';
-import { XIcon } from 'openland-x/XIcon';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
+import ArrowDownIcon from './icons/ic-arrow-down.svg';
+import ArrowRightIcon from './icons/ic-arrow-rignt.svg';
 
 export const OrgCategoties = TextDirectoryData.categoryPicker.categories;
 
@@ -30,10 +31,10 @@ const PickerItem = Glamorous(XMenuItem)({
     paddingRight: 30,
 });
 
-const PickerItemIcon = Glamorous(XIcon)({
+const PickerItemIcon = Glamorous(ArrowRightIcon)({
     position: 'absolute',
-    top: 0,
-    right: 9,
+    top: 'calc(50% - 4px)',
+    right: 20,
     fontSize: 20,
     lineHeight: '42px',
     color: '#c1c7cf',
@@ -43,6 +44,10 @@ const PickerGroupAll = Glamorous.div({
     borderBottom: '1px solid #f1f2f5',
     paddingBottom: 4,
     marginBottom: 4,
+});
+
+const ArrowIcon = Glamorous(ArrowDownIcon)({
+    marginLeft: 7
 });
 
 export class CategoryPicker extends React.Component<{ onPick: (q: SearchCondition) => void }, { popper: boolean }> {
@@ -112,7 +117,7 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                     >
                         <PickerItem>
                             {group.label}
-                            <PickerItemIcon icon="chevron_right" />
+                            <PickerItemIcon />
                         </PickerItem>
                     </XPopper>
                 ))}
@@ -126,7 +131,13 @@ export class CategoryPicker extends React.Component<{ onPick: (q: SearchConditio
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={TextDirectory.categoryPicker} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton
+                    activated={this.state.popper}
+                    text={TextDirectory.categoryPicker}
+                    style="flat"
+                    iconRight={<ArrowIcon />}
+                    onClick={this.switch}
+                />
             </XPopper>
         );
     }

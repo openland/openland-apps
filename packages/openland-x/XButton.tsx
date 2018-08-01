@@ -13,8 +13,8 @@ export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electri
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
     text?: string;
-    icon?: string;
-    iconRight?: string;
+    icon?: string | any;
+    iconRight?: string | any;
     iconOpacity?: number;
     size?: XButtonSize;
     style?: XButtonStyle;
@@ -531,9 +531,17 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
-                    {props.icon && <StyledIcon text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />}
+                    {props.icon && (
+                        typeof(props.icon) === 'string'
+                        ? <StyledIcon text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
+                        : props.icon
+                    )}
                     <ButtomText>{props.text}</ButtomText>
-                    {props.iconRight && <StyledIconRight text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />}
+                    {props.iconRight && (
+                        typeof(props.iconRight) === 'string'
+                        ? <StyledIconRight text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />
+                        : props.iconRight
+                    )}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
             </StyledButtonContentWrapper>
