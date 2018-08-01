@@ -1,0 +1,21 @@
+<mjml>
+    <mj-head>
+        <mj-title>Activation code for Openland: {{ code }}</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    Almost there
+                </mj-text>
+                <mj-text mj-class="text">
+                    Your activation code for Openland is <strong>{{ code }}</strong>
+                </mj-text>
+                <mj-button mj-class="button" href="{{ link }}">Enter the app</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer.mjml" />
+    </mj-body>
+</mjml>

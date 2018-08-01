@@ -10,6 +10,7 @@ import { ConversationContainer } from './view/ConversationContainer';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { UplaodCareUploading } from '../UploadCareUploading';
+import { SetTypingMutation } from 'openland-api';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -46,6 +47,15 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.setState({ mounted: true });
     }
 
+    handleChange = async (text: string) => {
+        let res = await this.props .messenger.client.client.mutate({
+            mutation: SetTypingMutation.document,
+            variables: {
+                conversationId: this.props.conversationId
+            }
+        });
+    }
+
     handleSend = (text: string) => {
         this.conversation.sendMessage(text);
     }
@@ -62,7 +72,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         return (
             <ConversationContainer>
                 <ConversationMessagesComponent conversation={this.conversation} />
-                <MessageComposeComponent onSend={this.handleSend} onSendFile={this.handleSendFile} enabled={this.state.mounted} />
+                <MessageComposeComponent onChange={this.handleChange} onSend={this.handleSend} onSendFile={this.handleSendFile} enabled={this.state.mounted} />
             </ConversationContainer>
         );
     }

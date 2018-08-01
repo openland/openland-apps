@@ -1,0 +1,112 @@
+<mj-font name="SFProDisplay" href="https://openland.com/fonts/sfprodisplay/style.css" />
+
+<mj-attributes>
+    <!-- Default styles -->
+
+    <mj-section
+        padding-top="0"
+        padding-bottom="0" />
+
+    <mj-image
+        padding-top="0"
+        padding-bottom="0" />
+
+    <mj-text
+        font-family="SFProDisplay, Arial" />
+
+    <mj-button
+        font-family="SFProDisplay, Arial" />
+    
+    <!-- Custom styles -->
+
+    <mj-class
+        name="logo"
+
+        align="left"
+        width="114px"
+        height="19px" />
+
+    <mj-class
+        name="title"
+
+        font-size="29px"
+        padding-top="0"
+        padding-bottom="0"
+        line-height="32px"
+        letter-spacing="0.9px"
+        font-weight="700"
+        color="#334562" />
+
+    <mj-class
+        name="text"
+
+        padding-top="20px"
+        padding-bottom="0"
+        font-size="16px"
+        line-height="26px"
+        letter-spacing="0.6px"
+        color="#1f3449" />
+
+    <mj-class
+        name="button"
+
+        background-color="#654bfa"
+        align="left"
+        font-size="16px"
+        line-height="20px"
+        font-weight="500"
+        inner-padding="10px 18px"
+        padding-top="50px"
+        padding-bottom="0" />
+
+    <mj-class
+        name="footer"
+
+        padding-top="0"
+        padding-bottom="66px" />
+
+    <mj-class
+        name="divider"
+
+        border-width="1px"
+        border-color="#d8d8d8"
+        padding-top="41px"
+        padding-bottom="24px" />
+
+    <mj-class
+        name="footer-text"
+
+        padding-top="0"
+        padding-bottom="0"
+        font-size="14px"
+        line-height="27px"
+        letter-spacing="0.5px"
+        color="#99a2b0" />
+
+    <mj-class
+        name="footer-buttons"
+
+        padding-top="0"
+        padding-bottom="4px" />
+</mj-attributes>
+
+<mj-style>
+    .footer-button {
+        background-color: rgba(232, 233, 236, 0.45);
+        font-size: 14px;
+        line-height: 28px;
+        letter-spacing: 0.5px;
+        padding: 0 8px 2px;
+        color: #99a2b0;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-right: 4px;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .footer-button:hover {
+        background-color: rgba(232, 233, 236, 0.75);
+        color: #99a2b0;
+    }
+</mj-style>

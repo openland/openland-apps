@@ -7,7 +7,7 @@ import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { withData } from '../../components/withData';
 import { ErrorPage } from '../../components/ErrorPage';
 import { trackError } from 'openland-x-analytics';
-import { createAuth0AsyncClient } from 'openland-x-graphql/Auth0AsyncClient';
+import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 interface AuthResult {
     expiresIn: number;
     accessToken: string;
@@ -75,7 +75,7 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
 
     private async retreiveAuthentication() {
         return new Promise<AuthResult>(async (resolve, reject) => {
-            (await createAuth0AsyncClient()).parseHash((err, authResult: AuthResult) => {
+            createAuth0Client().parseHash((err, authResult: AuthResult) => {
                 if (err != null) {
                     reject(err);
                 } else {

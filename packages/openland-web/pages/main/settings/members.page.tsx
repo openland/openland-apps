@@ -74,13 +74,13 @@ const Table = Glamorous(XTable)({
     maxWidth: 722,
 
     '& tr': {
-        height: 82,
+        height: 68,
 
         '& td': {
             borderTop: 'solid 1px #eff0f3',
             borderLeft: 'solid 1px #eff0f3',
-            paddingTop: 18,
-            paddingBottom: 18,
+            paddingTop: 16,
+            paddingBottom: 16,
 
             '& > div': {
                 padding: 0
@@ -88,21 +88,21 @@ const Table = Glamorous(XTable)({
             '&:first-child': {
                 maxWidth: 280,
                 '& > div': {
-                    paddingLeft: 18
+                    paddingLeft: 16
                 }
             },
             '&:nth-child(2)': {
                 maxWidth: 130,
                 minWidth: 110,
                 '& > div': {
-                    paddingLeft: 20,
-                    paddingRight: 20
+                    paddingLeft: 16,
+                    paddingRight: 16
                 }
             },
             '&:nth-child(3)': {
                 maxWidth: 225,
-                paddingLeft: 26,
-                paddingRight: 26
+                paddingLeft: 16,
+                paddingRight: 16
             },
             '&:nth-child(4)': {
                 maxWidth: 80,
@@ -315,8 +315,8 @@ const OrgMembers = withOrganizationMembers((props) => {
                     {members.map((m) => (
                         <Row>
                             <XTable.Cell>
-                                <XHorizontal>
-                                    <XAvatar size="medium" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
+                                <XHorizontal separator={7} alignItems="center">
+                                    <XAvatar size="small" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
                                     <XVertical separator={1} justifyContent="center">
                                         <Title>{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</Title>
                                         {m.email && <Text>{m.email}</Text>}

@@ -1,0 +1,21 @@
+<mjml>
+    <mj-head>
+        <mj-title>{{ firstName }} {{ lastName }} has accepted your invitation</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    Thanks for expanding our community!
+                </mj-text>
+                <mj-text mj-class="text">
+                    <strong>{{ firstName }} {{ lastName }}</strong> has accepted your invitation to join Openland. Now you can use instant messaging to exchange ideas, share opportunities, and collaborate on transactions.
+                </mj-text>
+                <mj-button mj-class="button" href="{{ link }}">Message them</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer-registered.mjml" />
+    </mj-body>
+</mjml>

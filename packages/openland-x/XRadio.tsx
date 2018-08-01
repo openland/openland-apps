@@ -73,7 +73,15 @@ export class XRadioItem extends React.Component<{ label: string, value?: string,
     }
 }
 
-class XRadioProps { elements?: string[] | { value: string, label: string }[]; selected?: string; onChange?: (value?: string) => void; useAnyOption?: boolean;  anyOptionOrder?: 'before' | 'after'; anyOptionName?: string; }
+class XRadioProps { 
+    elements?: string[] | { value: string, label: string }[]; 
+    selected?: string; 
+    onChange?: (value?: string) => void; 
+    useAnyOption?: boolean;  
+    anyOptionOrder?: 'before' | 'after'; 
+    anyOptionName?: string; 
+}
+
 export class XRadioGroup extends React.Component<XRadioProps, { selected?: string }> {
     static defaultProps = {
         _isRadioGroup: true

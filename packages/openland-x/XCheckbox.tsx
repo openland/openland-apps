@@ -39,10 +39,10 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, marginBottom?: number 
     }
 }));
 
-const CheckIcon = Glamorous.div<{ active?: boolean }>((props) => ({
+const CheckIcon = Glamorous.div<{ active?: boolean, square?: boolean }>((props) => ({
     width: 18,
     height: 18,
-    borderRadius: 3.5,
+    borderRadius: props.square ? 50 : 3.5,
     color: '#fff',
     backgroundColor: props.active ? '#4428e0' : '#fff',
     backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
@@ -66,7 +66,18 @@ const Divided = Glamorous.div({
     }
 });
 
-interface XCheckboxBasicProps { label: string; trueValue?: string; marginBottom?: number; falseValue?: string; value?: string; onChange?: (checked: { label: string, checked: boolean }) => void; checked?: boolean; hint?: string; }
+interface XCheckboxBasicProps { 
+    label: string; 
+    trueValue?: string; 
+    marginBottom?: number; 
+    falseValue?: string; 
+    value?: string; 
+    onChange?: (checked: { 
+        label: string, checked: boolean 
+    }) => void; 
+    checked?: boolean; hint?: string;
+    square?: boolean;
+}
 
 export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChecked: boolean }> {
     static defaultProps = {
@@ -104,7 +115,7 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
                 <label htmlFor={id}>
                     <div className="top-content">
-                        <CheckIcon active={this.state.isChecked} />
+                        <CheckIcon active={this.state.isChecked} square={this.props.square} />
                         <span>{this.props.label}</span>
                     </div>
                     {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}

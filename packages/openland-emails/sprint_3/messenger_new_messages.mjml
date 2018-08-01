@@ -1,0 +1,35 @@
+<mjml>
+    <mj-head>
+        <mj-title>You’ve got new messages @ Openland</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    You’ve got new messages
+                </mj-text>
+
+                <mj-raw>
+                    {% if messageCount == 1 %}
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        There are {{ messageCount }} new message in your inbox. Go to Openland app to see them now.
+                    </mj-text>
+                <mj-raw>
+                    {% else %}
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        There are {{ messageCount }} new messages in your inbox. Go to Openland app to see them now.
+                    </mj-text>
+                <mj-raw>
+                    {% endif %}
+                </mj-raw>
+
+                <mj-button mj-class="button" href="{{ link }}">View messages</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer-registered.mjml" />
+    </mj-body>
+</mjml>

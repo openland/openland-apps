@@ -9,6 +9,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 import { MultiplePicker } from './multiplePicker';
+import ArrowDownIcon from './icons/ic-arrow-down.svg';
 
 const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
     backgroundColor: (props.activated) ? 'white' : 'none',
@@ -35,6 +36,10 @@ const PickerSearchIcon = Glamorous(XIcon)({
 
 const PickerEntries = Glamorous(XHorizontal)({
     margin: 0
+});
+
+const ArrowIcon = Glamorous(ArrowDownIcon)({
+    marginLeft: 7
 });
 
 class InterestsControlledPicker extends React.Component<{ query?: string, top?: { tags: string[] }, onPick: (location: { label: string, value: string }) => void }> {
@@ -88,7 +93,14 @@ export class InterestPicker extends React.PureComponent<{ onPick: (q: SearchCond
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={TextDirectory.interestPicker} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton
+                    iconOpacity={0.4}
+                    activated={this.state.popper}
+                    text={TextDirectory.interestPicker}
+                    style="flat"
+                    iconRight={<ArrowIcon />}
+                    onClick={this.switch}
+                />
             </XPopper>
         );
     }

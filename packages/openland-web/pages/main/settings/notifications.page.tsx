@@ -1,28 +1,78 @@
 import '../../init';
 import '../../../globals';
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
+import { withSettings } from '../../../api/withSettings';
+import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XContent } from 'openland-x-layout/XContent';
 import { Navigation } from './_navigation';
-import { XHeader } from 'openland-x/XHeader';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { withQueryLoader } from '../../../components/withQueryLoader';
-import { XSelect } from 'openland-x/XSelect';
-import { XTitle } from 'openland-x/XTitle';
+import { XCheckbox } from 'openland-x/XCheckbox';
+import { XPopper } from 'openland-x/XPopper';
 import { XText } from 'openland-x/XText';
-import { withSettings } from '../../../api/withSettings';
+import TooltipIcon from './icons/ic-info.svg';
+
+const Content = Glamorous(XContent)({
+    paddingTop: 30
+});
+
+const MainTitle = Glamorous.div({
+    fontSize: 24,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    color: '#1f3449'
+});
+
+const SettingCard = Glamorous(XVertical)({
+    padding: 16,
+    borderRadius: 5,
+    border: 'solid 1px rgba(220, 222, 228, 0.45)'
+});
+
+const CardTitle = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 'bold',
+    lineHeight: 1.25,
+    letterSpacing: -0.1,
+    color: '#1f3449'
+});
+
+const TooltipWrapper = Glamorous(XPopper.Content)({
+    padding: 0,
+    width: 390
+});
+
+const TooltipTarget = Glamorous.div({
+    marginBottom: -7,
+    cursor: 'pointer',
+    '&:hover > svg > g > path:last-child': {
+        fill: '#654bfa'
+    }
+});
+
+const TooltipContentRow = Glamorous.div({
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 24,
+    paddingRight: 24,
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    '&:last-child': {
+        borderBottom: 'none'
+    }
+});
 
 export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((props) => {
     return (
         <Navigation title="Notifications">
-            <XHeader text="Notifications" />
-            <XContent>
-                <XVertical alignSelf="stretch">
+            <Content>
+                <XVertical alignSelf="stretch" separator={20}>
+                    <MainTitle>Notifications</MainTitle>
                     <XForm
                         defaultData={{
                             input: {
@@ -35,42 +85,54 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                         }}
                         defaultLayout={false}
                     >
-                        <XVertical>
+                        <XVertical separator={18}>
                             <XFormError onlyGeneralErrors={true} />
                             <XFormLoadingContent>
-                                <XVertical>
-                                    <XHorizontal>
-                                        <XVertical flexGrow={1} maxWidth={500}>
-                                            <XTitle>Desktop Notifications</XTitle>
-                                            <XText>Notify me about...</XText>
-                                            <XSelect
-                                                field="input.desktopNotifications"
-                                                options={[
-                                                    { value: 'ALL', label: 'All new messages' },
-                                                    { value: 'DIRECT', label: 'Direct messages' },
-                                                    { value: 'NONE', label: 'Nothing' }
-                                                ]}
-                                            />
-                                            <XTitle>Email Notifications</XTitle>
-                                            <XText>When you’re busy or not online, Openland can send you email notifications for new messages.</XText>
-                                            <XSelect
-                                                field="input.emailFrequency"
-                                                options={[
-                                                    { value: 'MIN_15', label: 'Once every 15 minutes' },
-                                                    { value: 'HOUR_1', label: 'Once an hour at most' },
-                                                    { value: 'NEVER', label: 'Never' }
-                                                ]}
-                                            />
-                                            <XText>We will use <strong>{props.data.settings.primaryEmail}</strong> for notifications.</XText>
-                                        </XVertical>
-                                    </XHorizontal>
+                                <XVertical flexGrow={1} maxWidth={300} separator={13}>
+                                    <XVertical separator={6}>
+                                        <CardTitle>Desktop notifications</CardTitle>
+                                        <SettingCard separator={9}>
+                                            <XCheckbox square={true} label="Notify me about all new messages" trueValue="ALL" field="input.desktopNotifications" />
+                                            <XCheckbox square={true} label="Notify me about direct messages" trueValue="DIRECT" field="input.desktopNotifications" />
+                                            <XCheckbox square={true} label="Never notify me" trueValue="NONE" field="input.desktopNotifications" />
+                                        </SettingCard>
+                                    </XVertical>
+                                    <XVertical separator={6}>
+                                        <XHorizontal alignItems="center" separator={5}>
+                                            <CardTitle>Email notifications</CardTitle>
+                                            <XPopper
+                                                placement="bottom"
+                                                showOnHover={true}
+                                                content={(
+                                                    <div>
+                                                        <TooltipContentRow>
+                                                            <XText>When you’re busy or not online, Openland can send you email notifications about new messages.</XText>
+                                                        </TooltipContentRow>
+                                                        <TooltipContentRow>
+                                                            <XText>We will use <strong>{props.data.settings.primaryEmail}</strong> for notifications.</XText>
+                                                        </TooltipContentRow>
+                                                    </div>
+                                                )}
+                                                contentContainer={<TooltipWrapper />}
+                                            >
+                                                <TooltipTarget>
+                                                    <TooltipIcon />
+                                                </TooltipTarget>
+                                            </XPopper>
+                                        </XHorizontal>
+                                        <SettingCard separator={9}>
+                                            <XCheckbox square={true} label="Notify every 15 minutes" trueValue="MIN_15" field="input.emailFrequency" />
+                                            <XCheckbox square={true} label="Notify maximum once per hour" trueValue="HOUR_1" field="input.emailFrequency" />
+                                            <XCheckbox square={true} label="Never notify me" trueValue="NEVER" field="input.emailFrequency" />
+                                        </SettingCard>
+                                    </XVertical>
                                 </XVertical>
                             </XFormLoadingContent>
-                            <XFormSubmit text="Save" style="primary" alignSelf="flex-start" />
+                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" />
                         </XVertical>
                     </XForm>
                 </XVertical>
-            </XContent>
+            </Content>
         </Navigation>
     );
 })));

@@ -8,6 +8,7 @@ import Glamorous from 'glamorous';
 import { SearchCondition } from './root.page';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 import { MultiplePicker } from './multiplePicker';
+import ArrowDownIcon from './icons/ic-arrow-down.svg';
 
 export const MultiStateRegions = TextDirectoryData.locationPicker.MultiStateRegions;
 export const States = TextDirectoryData.locationPicker.States;
@@ -34,6 +35,10 @@ const PickerSearchIcon = Glamorous(XIcon)({
     right: 27,
     fontSize: 20,
     lineHeight: '40px'
+});
+
+const ArrowIcon = Glamorous(ArrowDownIcon)({
+    marginLeft: 7
 });
 
 export class LocationControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void }> {
@@ -96,7 +101,13 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={TextDirectory.locationPicker} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton
+                    activated={this.state.popper}
+                    text={TextDirectory.locationPicker}
+                    style="flat"
+                    iconRight={(<ArrowIcon />)}
+                    onClick={this.switch}
+                />
             </XPopper>
         );
     }

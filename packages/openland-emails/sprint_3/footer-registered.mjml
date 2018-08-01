@@ -1,0 +1,13 @@
+<mj-section mj-class="footer">
+    <mj-column>
+        <mj-divider mj-class="divider"></mj-divider>
+                
+        <mj-text mj-class="footer-buttons">
+            <a href="#" class="footer-button">Message support</a>
+            <a href="#" class="footer-button">Email settings</a>
+        </mj-text>
+        <mj-text mj-class="footer-text">
+            © 2018 Openland — A new messenger for real estate industry
+        </mj-text>
+    </mj-column>
+</mj-section>

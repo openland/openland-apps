@@ -23,7 +23,7 @@ import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import * as Cookie from 'js-cookie';
-import { createAuth0AsyncClient } from 'openland-x-graphql/Auth0AsyncClient';
+import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -49,7 +49,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
 }> {
     fireGoogle = async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
-        (await createAuth0AsyncClient()).authorize({
+        createAuth0Client().authorize({
             connection: 'google-oauth2',
             state: this.props.redirect ? this.props.redirect : 'none'
         });
@@ -60,7 +60,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
         if (this.props.redirect) {
             Cookie.set('sign-redirect', this.props.redirect, { path: '/' });
         }
-        (await createAuth0AsyncClient()).passwordlessStart({ connection: 'email', send: 'link', email: this.state.emailValue }, (error, v) => {
+        createAuth0Client().passwordlessStart({ connection: 'email', send: 'link', email: this.state.emailValue }, (error, v) => {
             if (error) {
                 this.setState({ emailSending: false, emailError: error.description!! });
             } else {
@@ -176,7 +176,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null } & XWi
             e.preventDefault();
         }
         this.setState({ codeSending: true });
-        (await createAuth0AsyncClient()).passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
+        createAuth0Client().passwordlessVerify({ connection: 'email', email: this.state.emailValue, verificationCode: this.state.codeValue }, (error, v) => {
             console.warn(error);
             if (error) {
                 this.setState({ codeSending: false, codeError: error.description!! });

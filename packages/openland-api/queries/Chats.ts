@@ -150,3 +150,9 @@ export const ChatCreateGroupMutation = gql`
         }
     }
 `;
+
+export const SetTypingMutation = gql`
+    mutation SetTyping($conversationId: ID!) {
+        setTyping: alphaSetTyping(conversationId: $conversationId)
+    }
+`;

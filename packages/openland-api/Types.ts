@@ -969,6 +969,14 @@ export interface ChatCreateGroupMutation {
   ),
 };
 
+export interface SetTypingMutationVariables {
+  conversationId: string,
+};
+
+export interface SetTypingMutation {
+  setTyping: string,
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",
