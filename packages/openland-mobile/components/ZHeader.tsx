@@ -143,6 +143,14 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 outputRange: [0, 1, 0],
                 extrapolate: 'clamp'
             });
+            let interpolatedInveted = this.props.position.interpolate({
+                inputRange: [
+                    v.index - 1,
+                    v.index,
+                    v.index + 1],
+                outputRange: [1, 0, 1],
+                extrapolate: 'clamp'
+            });
             let offsetInterporated = this.props.position.interpolate({
                 inputRange: [
                     v.index - 1,
@@ -215,6 +223,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                     extrapolate: 'clamp'
                 }));
 
+                // largeTitleOffset = Animated.add(Animated.multiply(interpolatedInveted, -40), invertedOffset);
                 largeTitleOffset = invertedOffset;
             }
 
@@ -319,6 +328,18 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         </Animated.View>
                     );
                 } else {
+                    let titleOffset = Animated.add(
+                        s.largeTitleOffset,
+                        Animated.multiply(
+                            Animated.add(
+                                Animated.multiply(
+                                    hairlineOffset2,
+                                    -1
+                                ),
+                                s.hairlineOffset
+                            ),
+                            -1)
+                    );
                     titles.push(
                         <Animated.View
                             height={s.resolvedNavigationBarHeightLarge}
@@ -330,7 +351,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                                         translateX: s.titlePosition
                                     },
                                     {
-                                        translateY: s.largeTitleOffset
+                                        translateY: titleOffset // s.largeTitleOffset
                                     },
                                     {
                                         translateX: -SCREEN_WIDTH / 2 + 15
