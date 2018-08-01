@@ -1,0 +1,21 @@
+<mjml>
+    <mj-head>
+        <mj-title>Join {{ channelName }} channel at Openland</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    Join the insider community
+                </mj-text>
+                <mj-text mj-class="text">
+                    <strong>{{ firstName }} {{ lastName }}</strong> is inviting you to join <strong>{{ channelName }}</strong> discussion channel at Openland. Join the conversation to connect with industry insiders, exchange market data, and discover new opportunities.
+                </mj-text>
+                <mj-button mj-class="button" href="{{ link }}">Accept invitation</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer.mjml" />
+    </mj-body>
+</mjml>
