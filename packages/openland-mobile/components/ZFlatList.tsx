@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FlatList, FlatListProps, Animated } from 'react-native';
 import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
+import { ZAppConfig } from './ZAppConfig';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -32,8 +33,13 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
                 style={[other.style, {
                     // Work-around for freezing navive animation driver
                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
-                    paddingTop: provider.topLargeOffset + provider.topOffset
                 }]}
+                contentContainerStyle={this.props.inverted ?
+                    {
+                        paddingTop: ZAppConfig.navigationBarContentInset
+                    } : {
+                        paddingTop: ZAppConfig.navigationBarContentInset
+                    }}
                 onScroll={this.contentOffsetEvent}
                 scrollEventThrottle={1}
             />

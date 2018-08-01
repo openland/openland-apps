@@ -36,7 +36,12 @@ interface Props {
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
-const defaultBackgroundOffset = new Animated.Value(ZAppConfig.navigationBarHeight - BACKGROUND_SIZE);
+
+const defaultHairlineOffset = new Animated.Value(ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight);
+const defaultBackgroundOffset = new Animated.Value(ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight - BACKGROUND_SIZE);
+
+const NAVIGATOR_MIN_HEIGHT = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
+const NAVIGATOR_EXPANDED_HEIGHT = ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight;
 const zeroValue = new Animated.Value(0);
 const oneValue = new Animated.Value(1);
 
@@ -144,18 +149,39 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
+            let hairlineOffset: Animated.AnimatedInterpolation = defaultHairlineOffset;
             let contentOffset = v.descriptor.navigation.getParam(paramName) as Animated.Value | undefined | null;
             if (contentOffset || v.descriptor.options.headeAppearance !== 'small') {
                 let inputOffset = contentOffset ? contentOffset : zeroValue;
-                let invertedOffset = Animated.multiply(inputOffset, -1);
-                let shiftedOffset = Animated.add(invertedOffset, ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight - BACKGROUND_SIZE);
-                let clampedOffset = shiftedOffset.interpolate({
-                    inputRange: [-BACKGROUND_SIZE + ZAppConfig.navigationBarHeight, 0],
-                    outputRange: [-BACKGROUND_SIZE + ZAppConfig.navigationBarHeight, 0],
-                    extrapolate: 'clamp'
-                });
-                computedOffset = clampedOffset;
 
+                //
+                // Invert offset since negative offset in scroll views (when we overscroll) is when it scrolled down
+                //
+                let invertedOffset = Animated.multiply(inputOffset, -1);
+
+                //
+                // Calculate hairline offset:
+                // 1) Add expaned height because when offset in scroll view is zero then we have fully 
+                //    expanded navigator
+                // 2) Clamp between min height and min height + background size (our scroll background)
+                //
+                let computedHairlineOffset = Animated
+                    .add(invertedOffset, NAVIGATOR_EXPANDED_HEIGHT)
+                    .interpolate({
+                        inputRange: [NAVIGATOR_MIN_HEIGHT, NAVIGATOR_MIN_HEIGHT + BACKGROUND_SIZE],
+                        outputRange: [NAVIGATOR_MIN_HEIGHT, NAVIGATOR_MIN_HEIGHT + BACKGROUND_SIZE],
+                        extrapolate: 'clamp'
+                    });
+                hairlineOffset = computedHairlineOffset;
+
+                //
+                // Background offset: Just subsctract BACKGROUND_SIZE from hairline offset
+                //
+                computedOffset = Animated.add(hairlineOffset, -BACKGROUND_SIZE);
+
+                //
+                // Scale title for overscroll on iOS
+                //
                 if (!isAndroid) {
                     largeTitleOverscrol = invertedOffset.interpolate({
                         inputRange: [0, 100],
@@ -189,6 +215,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 largeTitleOpacity: largeTitleOpacity,
                 largeTitleOffset: largeTitleOffset,
                 largeTitleFontSize: largeTitleOverscrol,
+                hairlineOffset: hairlineOffset,
                 scene: v
             };
         });
@@ -200,6 +227,11 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let backgroundOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
         for (let f of offsets) {
             backgroundOffset = Animated.add(f.backgroundOffset, backgroundOffset);
+        }
+
+        let hairlineOffset2: Animated.AnimatedInterpolation = new Animated.Value(0);
+        for (let f of offsets) {
+            hairlineOffset2 = Animated.add(Animated.multiply(f.position, f.hairlineOffset), hairlineOffset2);
         }
 
         //
@@ -329,7 +361,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Left */}
-                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: 0, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
+                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: ZAppConfig.statusBarHeight, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
@@ -351,6 +383,21 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                     {}
                 </View>
 
+                {/* Debug Hairline */}
+                <Animated.View
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        height: 1,
+                        transform: [{ translateY: hairlineOffset2 }],
+                        backgroundColor: '#0f0',
+                        zIndex: 3
+                    }}
+                />
+
+                {/* Background */}
                 <ViewOverflowAnimated
                     style={{
                         position: 'absolute',
@@ -366,15 +413,15 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             </>
         );
 
-        if (isAndroid) {
+        if (ZAppConfig.navigationBarTransparent) {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight, backgroundColor: ZAppConfig.navigationBarBackgroundColor }}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, position: 'absolute', left: 0, right: 0, top: 0, paddingTop: ZAppConfig.statusBarHeight }}>
                     {content}
                 </ViewOverflow>
             );
         } else {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight, position: 'absolute', left: 0, right: 0, top: 0 }}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, backgroundColor: ZAppConfig.navigationBarBackgroundColor, paddingTop: ZAppConfig.statusBarHeight }}>
                     {content}
                 </ViewOverflow>
             );

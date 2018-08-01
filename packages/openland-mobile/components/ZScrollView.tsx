@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ScrollViewProps, Animated, View } from 'react-native';
 import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
+import { ZAppConfig } from './ZAppConfig';
 
 export interface ZScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
@@ -16,6 +17,7 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
     );
 
     componentDidMount() {
+        this.contentOffset.addListener((v) => console.log(v));
         if (this.props.syncWithBar !== false) {
             this.props.provider.registerScroller(this.contentOffset);
         }
@@ -34,7 +36,7 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                 scrollEventThrottle={1}
             >
                 {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
-                    <View height={provider.topLargeOffset + provider.topOffset} />
+                    <View height={ZAppConfig.navigationBarContentInset} />
                 }
 
                 {this.props.children}

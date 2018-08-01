@@ -6,16 +6,21 @@ const X_WIDTH = 375;
 const X_HEIGHT = 812;
 const isIphoneX = Platform.OS === 'ios' && D_WIDTH === X_WIDTH && D_HEIGHT === X_HEIGHT;
 
+const statusBarHeight = Platform.OS === 'ios' ? (isIphoneX ? 44 : 22) : 0;
+const navigationBarBackWidth = Platform.OS === 'ios' ? 44 : 56;
+const navigationBarHeight = Platform.OS === 'ios' ? 44 : 56;
+const navigationBarHeightLarge = Platform.OS === 'ios' ? 88 : 120;
+const navigationBarTransparent = Platform.OS === 'ios';
+const navigationBarContentInset = navigationBarTransparent ? navigationBarHeightLarge + statusBarHeight : navigationBarHeightLarge - navigationBarHeight;
+
 export const ZAppConfig = {
     accentColor: '#000',
     titleColor: '#000',
-    
-    statusBarHeight: Platform.OS === 'ios' ? (isIphoneX ? 44 : 22) : 0,
-    
-    navigationBarBackWidth: Platform.OS === 'ios' ? 44 : 56,
+    statusBarHeight,
+    navigationBarBackWidth,
     navigationBarBackgroundColor: '#ff00ff',
-    navigationBarHeight: Platform.OS === 'ios' ? 44 : 56,
-    navigationBarHeightLarge: Platform.OS === 'ios' ? 44 : 56,
-
-    navigationBarTransparent: Platform.OS === 'ios'
+    navigationBarHeight,
+    navigationBarHeightLarge,
+    navigationBarContentInset,
+    navigationBarTransparent
 };
