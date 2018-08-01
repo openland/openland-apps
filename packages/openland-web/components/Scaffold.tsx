@@ -797,7 +797,7 @@ const CreateOrgInput = Glamorous(XInput)({
     marginTop: 16,
 });
 
-const CreateOrganization = withCreateOrganization((props) => {
+export const CreateOrganization = withCreateOrganization((props) => {
     return (
         <XModalForm
             targetQuery="createOrganization"

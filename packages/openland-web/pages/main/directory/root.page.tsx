@@ -5,7 +5,7 @@ import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
+import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCard } from 'openland-x/XCard';
@@ -29,6 +29,7 @@ import { Query } from '../../../../../node_modules/react-apollo';
 import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
 import { withHitsAdd } from '../../../api/withHItsAdd';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { makeActionable } from 'openland-x/Actionable';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -63,7 +64,8 @@ const HeaderTitle = Glamorous.div({
     fontSize: 24,
     fontWeight: 700,
     letterSpacing: 0.4,
-    color: '#1f3449'
+    color: '#1f3449',
+    cursor: 'pointer'
 });
 
 const HeaderCounter = Glamorous(XHorizontal)({
@@ -76,11 +78,11 @@ const OrganizationCounter = Glamorous.div({
     color: '#99a2b0',
 });
 
-const Header = (props: { orgCount: number, tagsCount: number }) => (
+const Header = (props: { orgCount: number, tagsCount: number, reset: () => void }) => (
     <HeaderWrapper>
         <HeaderContent>
             <XHorizontal alignItems="center" separator={6}>
-                <HeaderTitle>{TextDirectory.headerTitle}</HeaderTitle>
+                <HeaderTitle onClick={props.reset}>{TextDirectory.headerTitle}</HeaderTitle>
                 <HeaderCounter separator={4}>
                     <img src="/static/X/ic-arrow-rignt.svg" />
                     {props.tagsCount !== 0
@@ -90,7 +92,8 @@ const Header = (props: { orgCount: number, tagsCount: number }) => (
                     }
                 </HeaderCounter>
             </XHorizontal>
-            <XButton style="ghost" path="/createOrganization" text={TextDirectory.headerButtonAddOrganization} />
+            <XButton style="ghost" query={{ field: 'createOrganization', value: 'true' }} text={TextDirectory.headerButtonAddOrganization} />
+            <CreateOrganization />
         </HeaderContent>
     </HeaderWrapper>
 );
@@ -139,6 +142,12 @@ const CategoriesTitleMap = {
     directory_interest: 'Channels',
 };
 
+const CategoriesTypeMap = {
+    directory_location: 'location',
+    directory_organizationType: 'organizationType',
+    directory_interest: 'interest',
+};
+
 class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> {
 
     onPick = (q: SearchCondition) => {
@@ -170,7 +179,7 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
                                                     text={tag}
                                                     size="large"
                                                     onClick={() => this.onClick({
-                                                        type: 'interest',
+                                                        type: CategoriesTypeMap[val.category],
                                                         value: tag,
                                                         label: tag
                                                     })}
@@ -232,6 +241,7 @@ const OrganizationLocation = Glamorous.div({
     color: '#1f3449',
     opacity: 0.5,
     margin: '2px 0 -2px 20px',
+    cursor: 'pointer'
 });
 
 const OrganizationTitleWrapper = Glamorous.div({
@@ -239,14 +249,15 @@ const OrganizationTitleWrapper = Glamorous.div({
     padding: '6px 0',
 });
 
-const OrganizationInterests = Glamorous.div({
+const OrganizationTypesText = Glamorous.div(props => ({
     fontSize: 14,
     fontWeight: 500,
     letterSpacing: -0.2,
     color: '#1f3449',
     opacity: 0.5,
-    marginBottom: 6
-});
+    marginBottom: 6,
+    cursor: 'pointer'
+}));
 
 const OrganizationToolsWrapper = Glamorous(XHorizontal)({
     paddingTop: 4
@@ -256,6 +267,28 @@ export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
     value: string | string[];
     label: string;
+}
+
+class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q: SearchCondition) => void }> {
+    render() {
+        [...this.props.orgTypes.filter((e, i) => i <= 2),
+        ...(this.props.orgTypes.length > 3
+            ? ['+ ' + String(this.props.orgTypes.length - 3) + ' more']
+            : [])].join(' • ');
+        let elements = [];
+        for (let orgType of this.props.orgTypes.filter((e, i) => i <= 2)) {
+            elements.push(<OrganizationTypesText onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}>{orgType}</OrganizationTypesText>);
+            elements.push(<OrganizationTypesText>{'•'}</OrganizationTypesText>);
+        }
+        elements.pop();
+        if (this.props.orgTypes.length > 3) {
+            elements.push(<OrganizationTypesText>{'•'}</OrganizationTypesText>);
+            elements.push(<OrganizationTypesText>{'+ ' + String(this.props.orgTypes.length - 3) + ' more'}</OrganizationTypesText>);
+        }
+        return (
+            <XHorizontal separator={2}>{elements}</XHorizontal>
+        );
+    }
 }
 
 const OrganizationFollowBtn = withOrganizationFollow((props) => (
@@ -313,10 +346,10 @@ const OrganizationCard = (props: OrganizationCardProps) => {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
             if (i === 2) {
-                arr.push({label: `+ ${data.length - 2} more`, value: undefined});
+                arr.push({ label: `+ ${data.length - 2} more`, value: undefined });
                 break;
             }
-            arr.push({label: data[i], value: data[i]});
+            arr.push({ label: data[i], value: data[i] });
         }
         return arr;
     };
@@ -334,15 +367,10 @@ const OrganizationCard = (props: OrganizationCardProps) => {
                     <OrganizationInfoWrapper>
                         <OrganizationTitleWrapper>
                             <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
-                            <OrganizationLocation>{(props.item.locations || [])[0]}</OrganizationLocation>
+                            <OrganizationLocation onClick={() => props.onPick({ type: 'location', value: (props.item.locations || [])[0], label: (props.item.locations || [])[0] })}>{(props.item.locations || [])[0]}</OrganizationLocation>
                         </OrganizationTitleWrapper>
                         {props.item.organizationType && (
-                            <OrganizationInterests>
-                                {[...(props.item.organizationType || []).filter((e, i) => i <= 2),
-                                ...(props.item.organizationType.length > 3
-                                    ? ['+ ' + String(props.item.organizationType.length - 3) + (props.item.organizationType.length === 4 ? ' channel' : ' channels')]
-                                    : [])].join(' • ')}
-                            </OrganizationInterests>
+                            <OrganizationTypes orgTypes={props.item.organizationType} onPick={props.onPick} />
                         )}
                         {props.item.interests && (
                             <OrganizationCardTypeWrapper separator={0}>
@@ -350,7 +378,7 @@ const OrganizationCard = (props: OrganizationCardProps) => {
                                     <XTag
                                         key={props.item.id + tag}
                                         text={tag.label}
-                                        onClick={tag.value ? () => props.onPick({ type: 'organizationType', value: tag.value!!, label: tag.label }) : undefined}
+                                        onClick={tag.value ? () => props.onPick({ type: 'interest', value: tag.value!!, label: tag.label }) : undefined}
                                     />
                                 ))}
                             </OrganizationCardTypeWrapper>
@@ -545,7 +573,9 @@ class PagePagination extends React.Component<PagePaginationProps> {
             pagesCount,
             currentPage,
         } = this.props.pageInfo;
-
+        if (pagesCount < 2) {
+            return null;
+        }
         return (
             <PaginationWrapper justifyContent="flex-end" alignSelf="center" separator={4}>
                 <PaginationButton
@@ -898,7 +928,7 @@ class RootComponent extends React.Component<{}, RootComponentState> {
         const { searchText, conditions, orgCount } = this.state;
         return (
             <Root separator={14}>
-                <Header orgCount={orgCount} tagsCount={this.state.conditions.length} />
+                <Header orgCount={orgCount} tagsCount={this.state.conditions.length} reset={this.reset} />
                 <ContentWrapper>
                     <MainContent>
                         <XVertical>
