@@ -313,10 +313,10 @@ const OrganizationCard = (props: OrganizationCardProps) => {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
             if (i === 2) {
-                arr.push(`+ ${data.length - 2} more`);
+                arr.push({label: `+ ${data.length - 2} more`, value: undefined});
                 break;
             }
-            arr.push(data[i]);
+            arr.push({label: data[i], value: data[i]});
         }
         return arr;
     };
@@ -349,8 +349,8 @@ const OrganizationCard = (props: OrganizationCardProps) => {
                                 {tagsCounter(props.item.interests).map((tag) => (
                                     <XTag
                                         key={props.item.id + tag}
-                                        text={tag}
-                                        onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })}
+                                        text={tag.label}
+                                        onClick={tag.value ? () => props.onPick({ type: 'organizationType', value: tag.value!!, label: tag.label }) : undefined}
                                     />
                                 ))}
                             </OrganizationCardTypeWrapper>
