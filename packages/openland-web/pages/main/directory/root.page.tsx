@@ -308,74 +308,92 @@ const OrganizationCardTypeWrapper = Glamorous(XHorizontal)({
     }
 });
 
-const OrganizationCard = (props: OrganizationCardProps) => (
-    <OrganizationCardWrapper>
-        <XHorizontal justifyContent="space-between" separator={12}>
-            <XLink path={'/o/' + props.item.id}>
-                <OrganizationAvatar
-                    cloudImageUuid={props.item.photo!!}
-                    size="s-large"
-                    style="organization"
-                />
-            </XLink>
-            <OrganizationContentWrapper>
-                <OrganizationInfoWrapper>
-                    <OrganizationTitleWrapper>
-                        <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
-                        <OrganizationLocation>{(props.item.locations || [])[0]}</OrganizationLocation>
-                    </OrganizationTitleWrapper>
-
-                    {props.item.interests && (
-                        <OrganizationInterests>{[...(props.item.interests || []).filter((e, i) => i <= 2), ...(props.item.interests.length > 3 ? ['+ ' + String(props.item.interests.length - 3) + (props.item.interests.length === 4 ? ' channel' : ' channels')] : [])].join(' • ')}</OrganizationInterests>)}
-                    {props.item.organizationType && (
-                        <OrganizationCardTypeWrapper separator={0}>
-                            {props.item.organizationType.map((tag) => (
-                                <XTag
-                                    key={props.item.id + tag}
-                                    text={tag}
-                                    onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })}
-                                />
-                            ))}
-                        </OrganizationCardTypeWrapper>
-                    )}
-                </OrganizationInfoWrapper>
-                <OrganizationToolsWrapper>
-                    {props.item.isMine &&
-                        <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
-                    {!props.item.isMine &&
-                        <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
-                    {!props.item.isMine && !props.item.editorial &&
-                        <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
-
-                    <XOverflow
-                        placement="bottom-end"
-                        content={(
-                            <>
-                                <XOverflow.Item href={'/o/' + props.item.id}>{TextDirectory.buttonViewProfile}</XOverflow.Item>
-
-                                {props.item.isMine && (
-                                    <XWithRole role="admin" orgPermission={true}>
-                                        <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
-                                    </XWithRole>
-                                )}
-
-                                {!props.item.isMine && (
-                                    <XWithRole role={['super-admin', 'editor']}>
-                                        <XOverflow.Item href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XOverflow.Item>
-                                    </XWithRole>
-                                )}
-
-                                <XWithRole role={['super-admin', 'editor']}>
-                                    <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published} />
-                                </XWithRole>
-                            </>
-                        )}
+const OrganizationCard = (props: OrganizationCardProps) => {
+    const tagsCounter = (data: string[]) => {
+        let arr = [];
+        for (let i = 0; i < data.length; i++) {
+            if (i === 2) {
+                arr.push(`+ ${data.length - 2} more`);
+                break;
+            }
+            arr.push(data[i]);
+        }
+        return arr;
+    };
+    return (
+        <OrganizationCardWrapper>
+            <XHorizontal justifyContent="space-between" separator={12}>
+                <XLink path={'/o/' + props.item.id}>
+                    <OrganizationAvatar
+                        cloudImageUuid={props.item.photo!!}
+                        size="s-large"
+                        style="organization"
                     />
-                </OrganizationToolsWrapper>
-            </OrganizationContentWrapper>
-        </XHorizontal>
-    </OrganizationCardWrapper>
-);
+                </XLink>
+                <OrganizationContentWrapper>
+                    <OrganizationInfoWrapper>
+                        <OrganizationTitleWrapper>
+                            <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
+                            <OrganizationLocation>{(props.item.locations || [])[0]}</OrganizationLocation>
+                        </OrganizationTitleWrapper>
+                        {props.item.organizationType && (
+                            <OrganizationInterests>
+                                {[...(props.item.organizationType || []).filter((e, i) => i <= 2),
+                                ...(props.item.organizationType.length > 3
+                                    ? ['+ ' + String(props.item.organizationType.length - 3) + (props.item.organizationType.length === 4 ? ' channel' : ' channels')]
+                                    : [])].join(' • ')}
+                            </OrganizationInterests>
+                        )}
+                        {props.item.interests && (
+                            <OrganizationCardTypeWrapper separator={0}>
+                                {tagsCounter(props.item.interests).map((tag) => (
+                                    <XTag
+                                        key={props.item.id + tag}
+                                        text={tag}
+                                        onClick={() => props.onPick({ type: 'organizationType', value: tag, label: tag })}
+                                    />
+                                ))}
+                            </OrganizationCardTypeWrapper>
+                        )}
+                    </OrganizationInfoWrapper>
+                    <OrganizationToolsWrapper>
+                        {props.item.isMine &&
+                            <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
+                        {!props.item.isMine &&
+                            <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
+                        {!props.item.isMine && !props.item.editorial &&
+                            <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
+
+                        <XOverflow
+                            placement="bottom-end"
+                            content={(
+                                <>
+                                    <XOverflow.Item href={'/o/' + props.item.id}>{TextDirectory.buttonViewProfile}</XOverflow.Item>
+
+                                    {props.item.isMine && (
+                                        <XWithRole role="admin" orgPermission={true}>
+                                            <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
+                                        </XWithRole>
+                                    )}
+
+                                    {!props.item.isMine && (
+                                        <XWithRole role={['super-admin', 'editor']}>
+                                            <XOverflow.Item href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XOverflow.Item>
+                                        </XWithRole>
+                                    )}
+
+                                    <XWithRole role={['super-admin', 'editor']}>
+                                        <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published} />
+                                    </XWithRole>
+                                </>
+                            )}
+                        />
+                    </OrganizationToolsWrapper>
+                </OrganizationContentWrapper>
+            </XHorizontal>
+        </OrganizationCardWrapper>
+    );
+};
 
 const EmptySearchWrapper = Glamorous(XVertical)({
     paddingTop: 85,
@@ -727,7 +745,7 @@ const SearchInput = Glamorous.input({
     }
 });
 
-const SearchPickersWrapper = Glamorous(XHorizontal)<{hiden: boolean}>(props => ({
+const SearchPickersWrapper = Glamorous(XHorizontal)<{ hiden: boolean }>(props => ({
     transition: 'all .2s',
     height: props.hiden === true ? 53 : 0
 }));
