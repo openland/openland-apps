@@ -82,12 +82,12 @@ class MessageTextContent extends React.PureComponent<{ text: string, sender?: Us
         let sender: any = undefined;
         if (this.props.sender) {
             let placeholderIndex = doSimpleHash(this.props.sender.id) % senderColors.length;
-            sender = <Text style={[styles.sender, { color: senderColors[placeholderIndex] }]}>{this.props.sender.name}</Text>;
+            sender = <Text key="sender-name" style={[styles.sender, { color: senderColors[placeholderIndex] }]}>{this.props.sender.name}</Text>;
         }
         return (
             <BubbleView appearance="text" isOut={this.props.isOut} attach={this.props.attach}>
                 {sender}
-                <Text style={[styles.message, this.props.isOut && styles.messageOut]}>
+                <Text key="message" style={[styles.message, this.props.isOut && styles.messageOut]}>
                     {parts}
                 </Text>
             </BubbleView>
@@ -172,6 +172,7 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
         let content: any[] = [];
         let i = 0;
         for (let m of this.props.message.messages) {
+            let key = isServerMessage(m) ? m.id : m.key;
             let attach: 'bottom' | 'top' | 'both' | undefined;
             if (i === 0 && this.props.message.messages.length > 1) {
                 attach = 'bottom';
@@ -185,7 +186,7 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
             let sender = (i === 0 && !isOut) ? this.props.message.sender : undefined;
             // let content = <MessageTextContent text="" />;
             if (m.message) {
-                content.push(<MessageTextContent sender={sender} text={m.message} isOut={isOut} attach={attach} />);
+                content.push(<MessageTextContent key={'msg-text-' + key} sender={sender} text={m.message} isOut={isOut} attach={attach} />);
             }
             if (isServerMessage(m)) {
                 if (m.file) {
@@ -194,16 +195,16 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
                     let name = m.fileMetadata!!.name ? m.fileMetadata!!.name!! : undefined;
                     let size = m.fileMetadata!!.size ? m.fileMetadata!!.size!! : undefined;
                     if (m.fileMetadata!!.isImage && !!w && !!h) {
-                        content.push(<MessageImageContent attach={attach} file={m.file} width={w} height={h} isGif={m.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
+                        content.push(<MessageImageContent key={'msg-file-' + key} attach={attach} file={m.file} width={w} height={h} isGif={m.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
                     } else {
-                        content.push(<MessageFileContent file={m.file} fileName={name} size={size} isOut={isOut} />);
+                        content.push(<MessageFileContent key={'msg-file-' + key} file={m.file} fileName={name} size={size} isOut={isOut} />);
                     }
                 }
             }
             i++;
         }
         if (content.length === 0) {
-            content.push(<MessageTextContent sender={this.props.message.sender} text="" isOut={isOut} />);
+            content.push(<MessageTextContent key={'msg-empty'} sender={this.props.message.sender} text="" isOut={isOut} />);
         }
         return (
             <View style={styles.container}>
