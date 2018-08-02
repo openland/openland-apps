@@ -14,6 +14,7 @@ export const ZAppContentContext = React.createContext<ZAppContentProvider | unde
 
 export interface ZAppContentProps {
     useParent?: boolean;
+    navigationStyle: 'large' | 'small';
     navigation: NavigationScreenProp<NavigationParams>;
 }
 
@@ -24,8 +25,9 @@ export class ZAppContent extends React.Component<ZAppContentProps> {
 
     constructor(props: ZAppContentProps) {
         super(props);
+        console.warn(props.navigation);
         this.provider = {
-            topContentInset: (this.props.useParent && isAndroid) ? 16 : ZAppConfig.navigationBarContentInset,
+            topContentInset: (this.props.useParent && isAndroid) ? 16 : (props.navigationStyle === 'large' ? ZAppConfig.navigationBarContentInset : ZAppConfig.navigationBarContentInsetSmall),
             registerScroller: this.registerScroller
         };
     }

@@ -16,7 +16,7 @@ interface Descriptor {
         title?: string;
         headerTitle?: any;
         headerTitleOffset?: number;
-        headerAppearance?: 'small';
+        headerAppearance?: 'small' | 'small-hidden';
         headerHeight?: number;
         androidHeaderAppearance?: 'initial';
         isTab?: boolean;
@@ -170,13 +170,18 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
             let hairlineOffset: Animated.AnimatedInterpolation = defaultHairlineOffset;
             let contentOffset = v.descriptor.navigation.getParam(paramName) as Animated.Value | undefined | null;
-            if (contentOffset || v.descriptor.options.headerAppearance !== 'small') {
-                let inputOffset = contentOffset ? contentOffset : zeroValue;
 
-                //
-                // Invert offset since negative offset in scroll views (when we overscroll) is when it scrolled down
-                //
-                let invertedOffset = Animated.multiply(inputOffset, -1);
+            //
+            // Content Offset with fallback to zero
+            //
+            let inputOffset = contentOffset ? contentOffset : zeroValue;
+
+            //
+            // Invert offset since negative offset in scroll views (when we overscroll) is when it scrolled down
+            //
+            let invertedOffset = Animated.multiply(inputOffset, -1);
+
+            if ((v.descriptor.options.headerAppearance !== 'small' && v.descriptor.options.headerAppearance !== 'small-hidden')) {
 
                 //
                 // Calculate hairline offset:
@@ -209,13 +214,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                     });
                 }
 
-                // Update title opacity for hiding when bar is expanded
-                titleOpacity = Animated.multiply(interpolated, inputOffset.interpolate({
-                    inputRange: [0, resolvedTitleSwitchTreshold],
-                    outputRange: [0, 1],
-                    extrapolate: 'clamp'
-                }));
-
                 // Calculate title offset
                 largeTitleOpacity = Animated.multiply(interpolated, invertedOffset.interpolate({
                     inputRange: [-resolvedTitleSwitchTreshold, 0],
@@ -225,6 +223,15 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
                 // largeTitleOffset = Animated.add(Animated.multiply(interpolatedInveted, -40), invertedOffset);
                 largeTitleOffset = invertedOffset;
+            }
+
+            if (contentOffset || (v.descriptor.options.headerAppearance !== 'small')) {
+                // Update title opacity for hiding when bar is expanded
+                titleOpacity = Animated.multiply(interpolated, inputOffset.interpolate({
+                    inputRange: [0, resolvedTitleSwitchTreshold],
+                    outputRange: [0, 1],
+                    extrapolate: 'clamp'
+                }));
             }
 
             return {

@@ -10,6 +10,7 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZQuery } from '../../components/ZQuery';
 import { ZAppContent } from '../../components/ZAppContent';
 import { ZScrollView } from '../../components/ZScrollView';
+import { AppStyles } from '../../styles/AppStyles';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -61,7 +62,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
 
     render() {
         return (
-            <ZScrollView>
+            <ZScrollView backgroundColor={AppStyles.backgroundColor}>
                 <ZQuery query={AccountQuery}>
                     {resp => {
                         return (
@@ -72,6 +73,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                                     title={resp.data!!.me!!.name}
                                     subtitle={resp.data!!.organization!!.name}
                                     path="SettingsProfile"
+                                    action="Edit profile"
                                 />
                                 <ZListItemGroup header="Settings">
                                     <ZListItem text="Notifications" path="SettingsNotifications" />
@@ -96,4 +98,4 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
     }
 }
 
-export const Settings = withApp(SettingsComponent, { noSafeWrapper: true, isInTab: true });
+export const Settings = withApp(SettingsComponent, { noSafeWrapper: true, isInTab: true, navigationStyle: 'small' });

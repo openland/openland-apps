@@ -239,6 +239,7 @@
 		"native:bundle": "./scripts/native_bundle.sh",
 		"native:ios:logs": "node node_modules/react-native/local-cli/cli.js log-ios",
 		"native:android": "node node_modules/react-native/local-cli/cli.js run-android",
+		"native:ngrok": "ngrok http 8081 -subdomain=openland --region=eu",
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo-codegen introspect-schema https://api.statecrafthq.com/api --output schema.json",

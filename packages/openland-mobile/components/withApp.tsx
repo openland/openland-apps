@@ -15,7 +15,7 @@ export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, a
             <YApolloProvider client={getClient()}>
                 <MessengerContext.Provider value={getMessenger()}>
                     <PushManager client={getClient()} />
-                    <ZAppContent navigation={props.navigation} useParent={args && args.isInTab}>
+                    <ZAppContent navigation={props.navigation} useParent={args && args.isInTab} navigationStyle={(args && args.navigationStyle) || 'large'}>
                         <Wrapped {...props} />
                     </ZAppContent>
                 </MessengerContext.Provider>

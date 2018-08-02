@@ -65,7 +65,7 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
     return {
       title: 'Today',
       isTab: true,
-      headerHeight: isAndroid ? 72 : undefined,
+      headerHeight: isAndroid ? 72 : undefined
     };
   }
   if (routeName === 'Explore') {
@@ -79,6 +79,7 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
     title: 'Settings',
     isTab: true,
     headerHeight: isAndroid ? 72 : undefined,
+    headerAppearance: 'small-hidden',
     headerRight: (
       <View style={{ marginRight: 10 }}>
         <Button
