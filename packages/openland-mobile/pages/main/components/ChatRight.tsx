@@ -6,8 +6,22 @@ import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
-export class ChatRight extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }> {
+export class ChatRight extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }, { loading: boolean }> {
+
+    state = {
+        loading: false
+    };
+
+    componentDidMount() {
+        window.setTimeout(() => {
+            this.setState({ loading: true });
+        });
+    }
+
     render() {
+        if (!this.state.loading) {
+            return null;
+        }
         return (
             <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                 {res => {
