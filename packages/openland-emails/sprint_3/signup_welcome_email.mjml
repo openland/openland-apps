@@ -11,9 +11,9 @@
                     Now, you can do everything faster
                 </mj-text>
                 <mj-text mj-class="text">
-                    {{firstName}} — it’s great to have you joining. At Openland you can participate in insider discussions, source and qualify opportunities, and collaborate on deals with other organizations. To get started, visit our organizations directory, discover potential partners, and send your first message.
+                    {{userFirstName}} — it’s great to have you joining. At Openland you can participate in insider discussions, source and qualify opportunities, and collaborate on deals with other organizations. To get started, visit our organizations directory, discover potential partners, and send your first message.
                 </mj-text>
-                <mj-button mj-class="button" href="{{link}}">Start exploring</mj-button>
+                <mj-button mj-class="button" href="http://app.openland.com">Start exploring</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />
