@@ -15,6 +15,7 @@ const navigationBarContentInset = navigationBarTransparent ? navigationBarHeight
 const navigationBarContentInsetSmall = navigationBarTransparent ? navigationBarHeight + statusBarHeight : 0;
 
 const bottomNavigationBarInset = Platform.OS === 'ios' ? (isIphoneX ? 34 : 0) : 0;
+const enableBlur = Platform.OS === 'ios';
 
 export const ZAppConfig = {
     accentColor: '#000',
@@ -28,5 +29,6 @@ export const ZAppConfig = {
     navigationBarContentInset,
     navigationBarContentInsetSmall,
     navigationBarTransparent,
-    bottomNavigationBarInset
+    bottomNavigationBarInset,
+    enableBlur
 };

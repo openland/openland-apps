@@ -42,6 +42,10 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
                         paddingTop: provider.topContentInset,
                         paddingBottom: provider.bottomContentInset
                     }}
+                scrollIndicatorInsets={{
+                    bottom: provider.bottomContentInset,
+                    top: provider.topContentInset
+                }}
                 onScroll={this.contentOffsetEvent}
                 scrollEventThrottle={1}
             />

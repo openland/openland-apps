@@ -18,6 +18,8 @@ import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
 import { ZSafeAreaView } from '../../components/ZSaveAreaView';
+import { ZAppConfig } from '../../components/ZAppConfig';
+import { ZBlurredView } from '../../components/ZBlurredView';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -88,27 +90,30 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
         return (
             <View style={{ height: '100%' }} flexDirection="column">
                 <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
-                <View alignSelf="stretch" alignItems="stretch" style={{ paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
-                    <TouchableOpacity onPress={this.handleAttach}>
-                        <View width={52} height={33} alignItems="center" justifyContent="center">
-                            <Image source={iconAttach} style={{ width: 22, height: 21 }} />
-                        </View>
-                    </TouchableOpacity>
-                    <TextInput
-                        flexGrow={1}
-                        flexBasis={0}
-                        placeholder="Message"
-                        placeholderTextColor="#aaaaaa"
-                        onChangeText={this.handleTextChange}
-                        value={this.state.text}
-                        onSubmitEditing={this.handleSubmit}
-                        style={styles.textInput}
-                    />
-                    <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
-                        <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                            <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
-                        </View>
-                    </TouchableOpacity>
+                <View flexDirection="column" alignItems="stretch" style={{ position: 'absolute', bottom: 0, right: 0, left: 0 }}>
+                    <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
+                    <ZBlurredView intensity="high" alignItems="stretch" flexDirection="row" style={{ paddingBottom: ZAppConfig.bottomNavigationBarInset + 10, paddingTop: 10 }}>
+                        <TouchableOpacity onPress={this.handleAttach}>
+                            <View width={52} height={33} alignItems="center" justifyContent="center">
+                                <Image source={iconAttach} style={{ width: 22, height: 21 }} />
+                            </View>
+                        </TouchableOpacity>
+                        <TextInput
+                            flexGrow={1}
+                            flexBasis={0}
+                            placeholder="Message"
+                            placeholderTextColor="#aaaaaa"
+                            onChangeText={this.handleTextChange}
+                            value={this.state.text}
+                            onSubmitEditing={this.handleSubmit}
+                            style={styles.textInput}
+                        />
+                        <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
+                            <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
+                                <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
+                            </View>
+                        </TouchableOpacity>
+                    </ZBlurredView>
                 </View>
             </View>
         );
@@ -121,22 +126,25 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
         return {
             headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
             headerRight: <ChatRight conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
-            headerAppearance: 'small'
+            headerAppearance: 'small',
+            headerHairline: true
         };
     }
 
     render() {
         return (
-            <ZSafeAreaView backgroundColor="#fff">
-                <MessengerContext.Consumer>
-                    {messenger => {
-                        return (
-                            <ConversationRoot navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
-                        );
-                    }}
-                </MessengerContext.Consumer>
-                <KeyboardHider navigation={this.props.navigation} />
-            </ZSafeAreaView>
+            <>
+                <View backgroundColor="#fff" flexDirection={'column'} height="100%" width="100%">
+                    <MessengerContext.Consumer>
+                        {messenger => {
+                            return (
+                                <ConversationRoot navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
+                            );
+                        }}
+                    </MessengerContext.Consumer>
+                    <KeyboardHider navigation={this.props.navigation} />
+                </View>
+            </>
         );
     }
 }

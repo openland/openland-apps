@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, TouchableOpacity, Image, Platform } from 'react-native';
-import { AppStyles } from '../styles/AppStyles';
-import { SafeAreaView, NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
 import { ZHeaderBackButton } from './ZHeaderBackButton';
 import { ZAppConfig } from './ZAppConfig';
+import { VibrancyView, BlurView } from 'react-native-blur';
+import { ZBlurredView } from './ZBlurredView';
+
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
 interface Descriptor {
@@ -18,6 +20,7 @@ interface Descriptor {
         headerTitleOffset?: number;
         headerAppearance?: 'small' | 'small-hidden';
         headerHeight?: number;
+        headerHairline?: boolean;
         androidHeaderAppearance?: 'initial';
         isTab?: boolean;
     };
@@ -168,7 +171,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
-            let hairlineOffset: Animated.AnimatedInterpolation = defaultHairlineOffset;
+            let screenHairlineOffset: Animated.AnimatedInterpolation = defaultHairlineOffset;
             let contentOffset = v.descriptor.navigation.getParam(paramName) as Animated.Value | undefined | null;
 
             //
@@ -196,12 +199,12 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         outputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeight + BACKGROUND_SIZE],
                         extrapolate: 'clamp'
                     });
-                hairlineOffset = computedHairlineOffset;
+                screenHairlineOffset = computedHairlineOffset;
 
                 //
                 // Background offset: Just subsctract BACKGROUND_SIZE from hairline offset
                 //
-                computedOffset = Animated.add(hairlineOffset, -BACKGROUND_SIZE);
+                computedOffset = Animated.add(screenHairlineOffset, -BACKGROUND_SIZE);
 
                 //
                 // Scale title for overscroll on iOS
@@ -234,6 +237,11 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 }));
             }
 
+            let screenHailineOpacity: Animated.AnimatedInterpolation = ZAppConfig.enableBlur ? titleOpacity : zeroValue;
+            if (v.descriptor.options.headerHairline) {
+                screenHailineOpacity = oneValue;
+            }
+
             return {
                 backgroundOffset: Animated.multiply(computedOffset, interpolated),
                 position: interpolated,
@@ -242,7 +250,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 largeTitleOpacity: largeTitleOpacity,
                 largeTitleOffset: largeTitleOffset,
                 largeTitleFontSize: largeTitleOverscrol,
-                hairlineOffset: hairlineOffset,
+                hairlineOffset: screenHairlineOffset,
+                hairlineOpacity: screenHailineOpacity,
                 resolvedNavigationBarHeight,
                 resolvedNavigationBarHeightLarge,
                 scene: v
@@ -250,7 +259,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         });
 
         //
-        // Background Offset
+        // Interpolated values
         //
 
         let backgroundOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
@@ -258,9 +267,14 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             backgroundOffset = Animated.add(f.backgroundOffset, backgroundOffset);
         }
 
-        let hairlineOffset2: Animated.AnimatedInterpolation = new Animated.Value(0);
+        let hairlineOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
         for (let f of offsets) {
-            hairlineOffset2 = Animated.add(Animated.multiply(f.position, f.hairlineOffset), hairlineOffset2);
+            hairlineOffset = Animated.add(Animated.multiply(f.position, f.hairlineOffset), hairlineOffset);
+        }
+
+        let hairlineOpacity: Animated.AnimatedInterpolation = new Animated.Value(0);
+        for (let f of offsets) {
+            hairlineOpacity = Animated.add(Animated.multiply(f.position, f.hairlineOpacity), hairlineOpacity);
         }
 
         //
@@ -340,7 +354,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         Animated.multiply(
                             Animated.add(
                                 Animated.multiply(
-                                    hairlineOffset2,
+                                    hairlineOffset,
                                     -1
                                 ),
                                 s.hairlineOffset
@@ -447,8 +461,29 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         top: 0,
                         transform: [{ translateY: backgroundOffset }],
                         height: BACKGROUND_SIZE,
-                        zIndex: 1,
-                        backgroundColor: ZAppConfig.navigationBarBackgroundColor
+                        zIndex: 1
+                    }}
+                >
+                    <ZBlurredView
+                        style={{
+                            height: BACKGROUND_SIZE,
+                            width: '100%',
+                        }}
+                    />
+                </ViewOverflowAnimated>
+
+                {/* Hairline */}
+                <ViewOverflowAnimated
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        height: 0.5,
+                        transform: [{ translateY: hairlineOffset }],
+                        opacity: Animated.multiply(hairlineOpacity, 0.3),
+                        backgroundColor: '#b7bdc6',
+                        zIndex: 3
                     }}
                 />
             </>

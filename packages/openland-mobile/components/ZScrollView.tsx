@@ -34,6 +34,10 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                 }]}
                 onScroll={this.contentOffsetEvent}
                 scrollEventThrottle={1}
+                scrollIndicatorInsets={{
+                    bottom: provider.bottomContentInset,
+                    top: provider.topContentInset
+                }}
             >
                 {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
                     <View height={provider.topContentInset} />

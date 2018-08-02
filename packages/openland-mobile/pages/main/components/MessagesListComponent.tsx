@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { View, Image, SectionList, Text } from 'react-native';
+import { View, Image, SectionList, Text, Dimensions } from 'react-native';
 import { MessageComponent } from './MessageComponent';
 import { ZLoader } from '../../../components/ZLoader';
+import { ZAppConfig } from '../../../components/ZAppConfig';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -63,7 +64,7 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
             <View flexDirection={'row'}>
                 <View height={1} flexGrow={1} backgroundColor="#b9c1cd" opacity={0.6} marginRight={8} marginTop={10} />
                 <Text style={{ fontSize: 12, height: 19, lineHeight: 19, textAlignVertical: 'center', color: '#99a2b0' }}>{dateFormat(this.props.day)}</Text>
-                <View height={1} flexGrow={1} backgroundColor="#b9c1cd" opacity={0.6} marginLeft={8} marginTop={10}/>
+                <View height={1} flexGrow={1} backgroundColor="#b9c1cd" opacity={0.6} marginLeft={8} marginTop={10} />
             </View>
         );
     }
@@ -109,12 +110,8 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
 
     render() {
         return (
-            <View
-                style={{ backgroundColor: '#fff', width: '100%' }}
-                flexBasis={0}
-                flexGrow={1}
-            >
-                <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
+            <View flexBasis={0} flexGrow={1}>
+                <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
                 <SectionList
                     sections={this.state.messages}
                     renderSectionFooter={(section) => (<DateSeparator day={section.section.day} key={section.section.key} />)}
@@ -125,6 +122,14 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
                     flexGrow={1}
                     ref={this.listRef}
                     initialNumToRender={0}
+                    contentContainerStyle={{
+                        paddingBottom: ZAppConfig.navigationBarContentInsetSmall,
+                        paddingTop: ZAppConfig.bottomNavigationBarInset + 62
+                    }}
+                    scrollIndicatorInsets={{
+                        bottom: ZAppConfig.navigationBarContentInsetSmall,
+                        top: ZAppConfig.bottomNavigationBarInset + 54
+                    }}
                 />
                 {this.state.loading && <ZLoader />}
             </View>
