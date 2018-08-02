@@ -30,6 +30,7 @@ import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
 import { withHitsAdd } from '../../../api/withHItsAdd';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { makeActionable } from 'openland-x/Actionable';
+import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -826,7 +827,7 @@ const ResetButton = Glamorous(XButton)({
     color: '#99a2b0'
 });
 
-class RootComponent extends React.Component<{}, RootComponentState> {
+class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     input?: any;
 
     constructor(props: any) {
@@ -843,6 +844,7 @@ class RootComponent extends React.Component<{}, RootComponentState> {
 
     handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         let val = (e.target as any).value as string;
+        this.resetPage();
         this.setState({
             searchText: val
         });
@@ -862,23 +864,31 @@ class RootComponent extends React.Component<{}, RootComponentState> {
         if (!same) {
             res.push(condition);
         }
+        this.resetPage();
         this.setState({ conditions: res, searchText: '' });
     }
 
     replaceConditions = (condition: SearchCondition) => {
         let res: any[] = [];
         res.push(condition);
+        this.resetPage();
         this.setState({ conditions: res, searchText: '' });
     }
 
     removeCondition = (condition: SearchCondition) => {
         let res = [...this.state.conditions.filter(c => (c.type !== condition.type) || (condition.value !== undefined && c.value !== condition.value))];
+        this.resetPage();
         this.setState({
             conditions: res
         });
     }
 
+    resetPage = () => {
+        this.props.router.replaceQueryParams({page: undefined});
+    }
+
     reset = () => {
+        this.resetPage();
         this.setState({ conditions: [] });
     }
 
@@ -1002,15 +1012,15 @@ class RootComponent extends React.Component<{}, RootComponentState> {
     }
 }
 
-export default withApp('Directory', 'viewer', (props) => {
+export default withApp('Directory', 'viewer', withRouter((props) => {
     return (
         <>
             <XDocumentHead title="Organization directory" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
-                    <RootComponent />
+                    <RootComponent router={props.router} />
                 </Scaffold.Content>
             </Scaffold>
         </>
     );
-});
+}));
