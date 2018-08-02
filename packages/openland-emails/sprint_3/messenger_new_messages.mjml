@@ -12,19 +12,11 @@
                 </mj-text>
 
                 <mj-raw>
-                    {% if messageCount == 1 %}
                 </mj-raw>
                     <mj-text mj-class="text">
                         There are {{messageCount}} new message in your inbox. Go to Openland app to see them now.
                     </mj-text>
                 <mj-raw>
-                    {% else %}
-                </mj-raw>
-                    <mj-text mj-class="text">
-                        There are {{messageCount}} new messages in your inbox. Go to Openland app to see them now.
-                    </mj-text>
-                <mj-raw>
-                    {% endif %}
                 </mj-raw>
 
                 <mj-button mj-class="button" href="https://app.openland.com/mail">View messages</mj-button>
