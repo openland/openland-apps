@@ -8,6 +8,7 @@ import { buildMessenger, setMessenger } from '../../utils/messenger';
 import { ZLoader } from '../../components/ZLoader';
 import { AppStyles } from '../../styles/AppStyles';
 import { isAndroid } from '../../utils/isAndroid';
+import { AppUpdateTracker } from '../../utils/UpdateTracker';
 
 const styles = StyleSheet.create({
     container: {
@@ -93,17 +94,18 @@ export class Login extends React.Component<NavigationInjectedProps, { initing: b
                 let body = await uploaded.json();
                 if (body.ok) {
                     await AsyncStorage.setItem('openland-token', body.token);
-                    let client = buildNativeClient(body.token);
-                    let meq = await client.client.query<any>({
-                        query: AccountQuery.document
-                    });
-                    if (!meq.data.me) {
-                        throw Error('Unknown error');
-                    }
-                    let messenger = buildMessenger(client, meq.data.me);
-                    setMessenger(messenger);
-                    saveClient(client);
-                    this.props.navigation.navigate('App');
+                    AppUpdateTracker.restartApp();
+                    // let client = buildNativeClient(body.token);
+                    // let meq = await client.client.query<any>({
+                    //     query: AccountQuery.document
+                    // });
+                    // if (!meq.data.me) {
+                    //     throw Error('Unknown error');
+                    // }
+                    // let messenger = buildMessenger(client, meq.data.me);
+                    // setMessenger(messenger);
+                    // saveClient(client);
+                    // this.props.navigation.navigate('App');
                     return;
                 }
             }

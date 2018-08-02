@@ -17,6 +17,7 @@ export class MessengerEngine {
 
     private isVisible = true;
     private close: any = null;
+    private loadingPromise: Promise<void>;
 
     constructor(client: OpenApolloClient, user: UserShortFragment) {
         this.client = client;
@@ -32,8 +33,12 @@ export class MessengerEngine {
         this.notifications = new NotificationsEngine(this);
 
         // Starting
-        this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
+        this.loadingPromise = this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
         console.info('MessengerEngine started');
+    }
+
+    awaitLoading() {
+        return this.loadingPromise;
     }
 
     destroy() {

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { createSwitchNavigator } from 'react-navigation';
-import { LoginLoader } from './pages/auth/LoginLoader';
+import { createStackNavigator } from 'react-navigation';
 import { Login } from './pages/auth/Login';
 import { Dialogs } from './pages/main/Dialogs';
 import { Settings } from './pages/main/Settings';
@@ -18,7 +17,6 @@ import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Directory } from './pages/main/Directory';
 import { Navigation } from './pages/dev/Navigation';
-import { ZHeader } from './components/ZHeader';
 import { isAndroid } from './utils/isAndroid';
 
 //
@@ -98,7 +96,7 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
 // App Routes
 //
 
-const AppStack = createZStackNavigator({
+export const AppStack = createZStackNavigator({
   Home: {
     screen: HomeTabs,
     navigationOptions: {
@@ -120,25 +118,25 @@ const AppStack = createZStackNavigator({
 // Authentication Routes
 //
 
-// const LoginStack = createStackNavigator({
-//   Home: Login
-// });
+export const LoginStack = createStackNavigator({
+  Home: Login
+});
 
 //
 // Root Routes
 //
 
-export default createSwitchNavigator(
-  {
-    Root: {
-      screen: LoginLoader,
-      portraitOnlyMode: true
-    },
-    App: AppStack,
-    Login: {
-      screen: Login,
-      portraitOnlyMode: true
-    }
-  },
-  { initialRouteName: 'Root' }
-);
+// export default createSwitchNavigator(
+//   {
+//     Root: {
+//       screen: LoginLoader,
+//       portraitOnlyMode: true
+//     },
+//     App: AppStack,
+//     Login: {
+//       screen: Login,
+//       portraitOnlyMode: true
+//     }
+//   },
+//   { initialRouteName: 'Root' }
+// );
