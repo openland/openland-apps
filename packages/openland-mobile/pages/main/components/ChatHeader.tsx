@@ -9,15 +9,27 @@ import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { ZAppConfig } from '../../../components/ZAppConfig';
 
-export class ChatHeader extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }> {
+export class ChatHeader extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }, { loading: boolean }> {
+    state = {
+        loading: false
+    };
+
+    componentDidMount() {
+        window.setTimeout(() => {
+            this.setState({ loading: true });
+        });
+    }
+
     render() {
+        if (!this.state.loading) {
+            return null;
+        }
         return (
             <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                 {res => {
                     if (res.loading) {
                         return null;
                     }
-                    console.warn(res);
                     if (isAndroid) {
                         return (
                             <TouchableHighlight onPress={() => this.props.navigation.navigate('ConversationInfo', { id: this.props.conversationId })}>

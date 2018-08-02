@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
 import { ChatListQuery } from 'openland-api/ChatListQuery';
