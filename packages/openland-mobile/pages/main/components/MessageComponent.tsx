@@ -194,7 +194,7 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
                     let name = m.fileMetadata!!.name ? m.fileMetadata!!.name!! : undefined;
                     let size = m.fileMetadata!!.size ? m.fileMetadata!!.size!! : undefined;
                     if (m.fileMetadata!!.isImage && !!w && !!h) {
-                        content.push(<MessageImageContent file={m.file} width={w} height={h} isGif={m.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
+                        content.push(<MessageImageContent attach={attach} file={m.file} width={w} height={h} isGif={m.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
                     } else {
                         content.push(<MessageFileContent file={m.file} fileName={name} size={size} isOut={isOut} />);
                     }
