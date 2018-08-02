@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
+import { ModelMessage, isServerMessage, isPendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking, Image, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
@@ -10,20 +10,25 @@ import { formatBytes } from '../../../utils/formatBytes';
 import { preprocessText } from '../../../utils/TextProcessor';
 import { isAndroid } from '../../../utils/isAndroid';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { ZLoader } from '../../../components/ZLoader';
 
 let styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         paddingHorizontal: 12,
-        paddingVertical: 8,
-        width: '100%'
+        paddingVertical: 5,
+        width: '100%',
+        alignItems: 'flex-end'
     } as ViewStyle,
     messageContainer: {
         flexDirection: 'column',
-        paddingLeft: 12,
+        paddingLeft: 7,
         flexGrow: 1,
-        flexBasis: 0
+        flexBasis: 0,
+        alignItems: 'flex-start'
+    } as ViewStyle,
+    messageContainerOut: {
+        alignItems: 'flex-end',
+        paddingLeft: 0,
     } as ViewStyle,
     header: {
         flexDirection: 'row',
@@ -31,15 +36,16 @@ let styles = StyleSheet.create({
         marginBottom: 1
     } as ViewStyle,
     sender: {
-        height: 16,
-        lineHeight: 16,
-        fontSize: 15,
-        fontWeight: isAndroid ? '500' : '600',
-        marginBottom: 3,
+        height: 14,
+        lineHeight: 14,
+        fontSize: 12,
+        // fontWeight: isAndroid ? '500' : 'normal',
+        marginBottom: 4,
+        marginLeft: 16,
         // flexBasis: 0,
-        flexShrink: 1,
-        color: '#181818',
-        letterSpacing: 0.3
+        // flexShrink: 1,
+        color: '#b9c1cd',
+        letterSpacing: 0.2
     } as TextStyle,
     date: {
         height: 16,
@@ -50,32 +56,47 @@ let styles = StyleSheet.create({
         fontWeight: 'normal'
     } as TextStyle,
     message: {
-        marginTop: 1,
-        lineHeight: 18,
-        fontSize: 14,
+        lineHeight: 22,
+        fontSize: 16,
         fontWeight: 'normal',
-        color: '#5b5b5b',
-        letterSpacing: 0.3
-    } as TextStyle
+        color: '#000',
+        letterSpacing: 0.1
+    } as TextStyle,
+    messageOut: {
+        color: '#fff',
+    } as TextStyle,
+    textBubble: {
+        backgroundColor: '#eff2f5',
+        borderRadius: 18,
+        borderBottomLeftRadius: 4,
+        paddingHorizontal: 13,
+        paddingTop: 7,
+        paddingBottom: 8
+    } as ViewStyle,
+    textBubbleOut: {
+        borderBottomLeftRadius: 18,
+        borderBottomRightRadius: 4,
+        backgroundColor: '#4747ec',
+    } as ViewStyle
 });
 
-class MessageTextContent extends React.PureComponent<{ text: string }> {
+class MessageTextContent extends React.PureComponent<{ text: string, isOut: boolean }> {
     render() {
         let preprocessed = preprocessText(this.props.text);
         let parts = preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
-                return <Text key={'br-' + i}>{'\n'}</Text>;
+                return <Text key={'br-' + i} >{'\n'}</Text>;
             } else if (v.type === 'link') {
                 return <Text key={'link-' + i} style={{ color: '#654bfa' }} onPress={() => Linking.openURL(v.link!!)}>{v.text}</Text>;
             } else {
                 return <Text key={'text-' + i}>{v.text}</Text>;
             }
         });
-        return (<Text style={styles.message}>{parts}</Text>);
+        return (<View style={[styles.textBubble, this.props.isOut && styles.textBubbleOut]}><Text style={[styles.message, this.props.isOut && styles.messageOut]}>{parts}</Text></View>);
     }
 }
 
-class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean }, { modal: boolean }> {
+class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean }, { modal: boolean }> {
     state = {
         modal: false
     };
@@ -116,7 +137,7 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
     }
 }
 
-class MessageFileContent extends React.PureComponent<{ file: string, fileName?: string, size?: number }> {
+class MessageFileContent extends React.PureComponent<{ file: string, fileName?: string, size?: number, isOut: boolean }> {
     render() {
         return (
             <View style={{ height: 56, borderRadius: 5, borderColor: '#e7e7ea', borderWidth: 1, width: 250, marginTop: 3, marginBottom: 3, flexDirection: 'row' }}>
@@ -139,11 +160,13 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
     }
 
     render() {
+        let isOut = isPendingMessage(this.props.message) || this.props.message.sender.id === this.props.engine.engine.user.id;
+
         let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
         let content: any[] = [];
         // let content = <MessageTextContent text="" />;
         if (this.props.message.message) {
-            content.push(<MessageTextContent text={this.props.message.message} />);
+            content.push(<MessageTextContent text={this.props.message.message} isOut={isOut} />);
         }
         if (isServerMessage(this.props.message)) {
             if (this.props.message.file) {
@@ -152,25 +175,29 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
                 let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
                 let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
                 if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
-                    content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} isGif={this.props.message.fileMetadata!!.imageFormat === 'GIF'} />);
+                    content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} isGif={this.props.message.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
                 } else {
-                    content.push(<MessageFileContent file={this.props.message.file} fileName={name} size={size} />);
+                    content.push(<MessageFileContent file={this.props.message.file} fileName={name} size={size} isOut={isOut} />);
                 }
             }
         }
         if (content.length === 0) {
-            content.push(<MessageTextContent text="" />);
+            content.push(<MessageTextContent text="" isOut={isOut} />);
         }
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={this.handlePress}>
-                    <ZAvatar src={sender.picture} size={32} placeholderKey={sender.id} placeholderTitle={sender.name} />
-                </TouchableOpacity>
-                <View style={styles.messageContainer}>
-                    <View style={styles.header}>
-                        <Text style={styles.sender}>{sender.name}</Text>
-                        <Text style={styles.date}>{formatTime(parseInt(this.props.message.date, 10))}</Text>
-                    </View>
+                {!isOut && (
+                    <TouchableOpacity onPress={this.handlePress}>
+                        <ZAvatar src={sender.picture} size={36} placeholderKey={sender.id} placeholderTitle={sender.name} />
+                    </TouchableOpacity>
+                )}
+                <View style={[styles.messageContainer, isOut && styles.messageContainerOut]}>
+                    {!isOut && (
+                        <View style={styles.header}>
+                            <Text style={styles.sender}>{sender.name}</Text>
+                            {/* <Text style={styles.date}>{formatTime(parseInt(this.props.message.date, 10))}</Text> */}
+                        </View>)
+                    }
                     {content}
                 </View>
             </View>

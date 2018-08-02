@@ -52,7 +52,7 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
-    constructor(props: {navigator: any,  engine: MessengerEngine, conversationId: string }) {
+    constructor(props: { navigator: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
         this.state = { text: '' };
@@ -72,6 +72,9 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
 
     handleAttach = () => {
         Picker.showImagePicker({ title: 'Send file' }, (response) => {
+            if (response.didCancel) {
+                return;
+            }
             this.engine.sendFile(new UploadCareDirectUploading(response.fileName || 'image.jpg', response.uri));
         });
     }
@@ -87,8 +90,8 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
                 <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
                 <View alignSelf="stretch" alignItems="stretch" style={{ paddingTop: 10, paddingBottom: 10 }} flexDirection="row">
                     <TouchableOpacity onPress={this.handleAttach}>
-                        <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                            <Image source={iconAttach} style={{ width: 24, height: 24 }} />
+                        <View width={52} height={33} alignItems="center" justifyContent="center">
+                            <Image source={iconAttach} style={{ width: 22, height: 21 }} />
                         </View>
                     </TouchableOpacity>
                     <TextInput
