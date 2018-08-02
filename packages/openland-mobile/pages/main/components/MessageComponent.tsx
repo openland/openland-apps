@@ -120,7 +120,7 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
                             resize={!this.props.isGif}
                             width={layout.width}
                             height={layout.height}
-                            isOut={this.props.isGif}
+                            isOut={this.props.isOut}
                             attach={this.props.attach}
                         />
                         <Modal visible={this.state.modal} transparent={true}>
