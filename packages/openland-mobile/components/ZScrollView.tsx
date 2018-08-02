@@ -40,6 +40,9 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                 }
 
                 {this.props.children}
+                {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'bottom') &&
+                    <View height={provider.bottomContentInset} />
+                }
             </Animated.ScrollView>
         );
     }

@@ -14,6 +14,8 @@ const navigationBarTransparent = Platform.OS === 'ios';
 const navigationBarContentInset = navigationBarTransparent ? navigationBarHeightLarge + statusBarHeight : navigationBarHeightLarge - navigationBarHeight;
 const navigationBarContentInsetSmall = navigationBarTransparent ? navigationBarHeight + statusBarHeight : 0;
 
+const bottomNavigationBarInset = Platform.OS === 'ios' ? (isIphoneX ? 34 : 0) : 0;
+
 export const ZAppConfig = {
     accentColor: '#000',
     titleColor: '#000',
@@ -25,5 +27,6 @@ export const ZAppConfig = {
     navigationBarHeightLarge,
     navigationBarContentInset,
     navigationBarContentInsetSmall,
-    navigationBarTransparent
+    navigationBarTransparent,
+    bottomNavigationBarInset
 };
