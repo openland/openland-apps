@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Image } from 'react-native';
 import { MessageComponent } from './MessageComponent';
 import { ZLoader } from '../../../components/ZLoader';
 
@@ -59,6 +59,7 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
                 flexBasis={0}
                 flexGrow={1}
             >
+                <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
                 <FlatList
                     data={this.state.messages}
                     renderItem={(itm) => <MessageComponent onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />}
