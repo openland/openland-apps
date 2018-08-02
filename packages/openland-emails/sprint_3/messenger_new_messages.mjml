@@ -27,7 +27,7 @@
                     {% endif %}
                 </mj-raw>
 
-                <mj-button mj-class="button" href="{{link}}">View messages</mj-button>
+                <mj-button mj-class="button" href="https://app.openland.com/mail">View messages</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />
