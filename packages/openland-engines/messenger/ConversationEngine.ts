@@ -5,10 +5,11 @@ import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFullFragment } from 'openland-api/Types';
-import { ConversationState } from './ConversationState';
-import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile } from './types';
+import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
+import { ConversationState, Day, MessageGroup } from './ConversationState';
+import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
+import { func } from '../../../node_modules/@types/prop-types';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
@@ -45,7 +46,7 @@ export class ConversationEngine implements MessageSendHandler {
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
         this.conversationId = conversationId;
-        this.state = new ConversationState(true, []);
+        this.state = new ConversationState(true, [], []);
     }
 
     start = async () => {
@@ -72,7 +73,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
         this.messages = [...(initialChat.data as any).messages.messages];
         this.messages.reverse();
-        this.state = new ConversationState(false, this.messages);
+        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
         let seq = (initialChat.data as any).messages.seq as number;
         console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
         this.watcher = new SequenceWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, seq, { conversationId: this.conversationId }, this.updateHandler, this.engine.client);
@@ -100,7 +101,7 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendMessage(this.conversationId, message, this);
             this.messages = [...this.messages, { date, key, message, progress: 0, file: null, failed: false } as PendingMessage];
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
             for (let l of this.listeners) {
                 l.onMessageSend();
@@ -115,7 +116,7 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendFile(this.conversationId, file, this);
             this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
             for (let l of this.listeners) {
                 l.onMessageSend();
@@ -136,7 +137,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
             this.engine.sender.retryMessage(key, this);
         }
@@ -146,7 +147,7 @@ export class ConversationEngine implements MessageSendHandler {
         let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
         if (ex) {
             this.messages = this.messages.filter((v) => isServerMessage(v) || v.key !== key);
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
         }
     }
@@ -165,7 +166,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
         }
     }
@@ -188,7 +189,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
         }
     }
@@ -279,7 +280,7 @@ export class ConversationEngine implements MessageSendHandler {
             } else {
                 this.messages = [...this.messages, event.message];
             }
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.onMessagesUpdated();
         } else {
 
@@ -298,9 +299,74 @@ export class ConversationEngine implements MessageSendHandler {
             // Reload messages
             // TODO: Preserve pending messages
             this.messages = [...(loaded.data as any).messages.messages];
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
 
             return (loaded.data as any).messages.seq;
         }
+    }
+
+    private groupMessages = (src: ModelMessage[]) => {
+        let res: Day[] = [];
+        let currentDay: Day | undefined;
+        let currentGroup: MessageGroup | undefined;
+
+        let prevDate: string | undefined;
+        let prevMessageDate: number | undefined = undefined;
+        let prevMessageSender: string | undefined = undefined;
+        let currentCollapsed = 0;
+
+        //
+        // Start a new day
+        //
+        let prepareDateIfNeeded = (date: number) => {
+            let dt = new Date(date);
+            let dstr = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+            if (dstr !== prevDate) {
+                currentDay = { day: dt.getDate(), month: dt.getMonth(), year: dt.getFullYear(), key: 'date-' + dstr, messages: [] };
+                res.push(currentDay);
+                prevMessageDate = undefined;
+                prevMessageSender = undefined;
+                currentCollapsed = 0;
+            }
+            prevDate = dstr;
+            return currentDay!!;
+        };
+
+        //
+        // Start a new sender group
+        //
+        let prepareSenderIfNeeded = (sender: UserShortFragment, message: ModelMessage, date: number) => {
+            let day = prepareDateIfNeeded(date);
+            if (prevMessageSender === sender.id && prevMessageDate !== undefined) {
+                // 10 sec
+                if (prevMessageDate - date < 10000 && currentCollapsed < 10) {
+                    prevMessageDate = date;
+                    currentCollapsed++;
+                    return currentGroup!!;
+                }
+            }
+
+            prevMessageDate = date;
+            prevMessageSender = sender.id;
+            currentCollapsed = 0;
+            currentGroup = {
+                key: isServerMessage(message) ? 'msg-' + message.id : 'msg-pending-' + message.key,
+                sender,
+                messages: []
+            };
+            day.messages.push(currentGroup);
+            return currentGroup!!;
+        };
+
+        //
+        // Process All messages
+        //
+        for (let m of src) {
+            let sender = isServerMessage(m) ? m.sender : this.engine.user;
+            let group = prepareSenderIfNeeded(sender, m, parseInt(m.date, 10));
+            group.messages.push(m);
+        }
+
+        return res;
     }
 }

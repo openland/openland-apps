@@ -10,12 +10,17 @@ import { formatBytes } from '../../../utils/formatBytes';
 import { preprocessText } from '../../../utils/TextProcessor';
 import { isAndroid } from '../../../utils/isAndroid';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { MessageGroup } from 'openland-engines/messenger/ConversationState';
+import { ZRoundedMask } from '../../../components/ZRoundedMask';
+import { BubbleView, BubbleImage } from './chat/BubbleView';
+import { UserShortFragment } from 'openland-api/Types';
+import { doSimpleHash } from 'openland-y-utils/hash';
 
 let styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 12,
-        paddingVertical: 5,
+        paddingHorizontal: 8,
+        // paddingVertical: 5,
         width: '100%',
         alignItems: 'flex-end'
     } as ViewStyle,
@@ -28,7 +33,7 @@ let styles = StyleSheet.create({
     } as ViewStyle,
     messageContainerOut: {
         alignItems: 'flex-end',
-        paddingLeft: 0,
+        paddingLeft: 51,
     } as ViewStyle,
     header: {
         flexDirection: 'row',
@@ -39,21 +44,7 @@ let styles = StyleSheet.create({
         height: 14,
         lineHeight: 14,
         fontSize: 12,
-        // fontWeight: isAndroid ? '500' : 'normal',
-        marginBottom: 4,
-        marginLeft: 16,
-        // flexBasis: 0,
-        // flexShrink: 1,
-        color: '#b9c1cd',
         letterSpacing: 0.2
-    } as TextStyle,
-    date: {
-        height: 16,
-        lineHeight: 16,
-        fontSize: 12,
-        color: '#aaaaaa',
-        marginLeft: 5,
-        fontWeight: 'normal'
     } as TextStyle,
     message: {
         lineHeight: 22,
@@ -64,23 +55,19 @@ let styles = StyleSheet.create({
     } as TextStyle,
     messageOut: {
         color: '#fff',
-    } as TextStyle,
-    textBubble: {
-        backgroundColor: '#eff2f5',
-        borderRadius: 18,
-        borderBottomLeftRadius: 4,
-        paddingHorizontal: 13,
-        paddingTop: 7,
-        paddingBottom: 8
-    } as ViewStyle,
-    textBubbleOut: {
-        borderBottomLeftRadius: 18,
-        borderBottomRightRadius: 4,
-        backgroundColor: '#4747ec',
-    } as ViewStyle
+    } as TextStyle
 });
 
-class MessageTextContent extends React.PureComponent<{ text: string, isOut: boolean }> {
+const senderColors = [
+    '#FF8D00',
+    '#FF655D',
+    '#20A700',
+    '#1970FF',
+    '#00C6C8',
+    '#8E00E6'
+];
+
+class MessageTextContent extends React.PureComponent<{ text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
     render() {
         let preprocessed = preprocessText(this.props.text);
         let parts = preprocessed.map((v, i) => {
@@ -92,11 +79,23 @@ class MessageTextContent extends React.PureComponent<{ text: string, isOut: bool
                 return <Text key={'text-' + i}>{v.text}</Text>;
             }
         });
-        return (<View style={[styles.textBubble, this.props.isOut && styles.textBubbleOut]}><Text style={[styles.message, this.props.isOut && styles.messageOut]}>{parts}</Text></View>);
+        let sender: any = undefined;
+        if (this.props.sender) {
+            let placeholderIndex = doSimpleHash(this.props.sender.id) % senderColors.length;
+            sender = <Text style={[styles.sender, { color: senderColors[placeholderIndex] }]}>{this.props.sender.name}</Text>;
+        }
+        return (
+            <BubbleView appearance="text" isOut={this.props.isOut} attach={this.props.attach}>
+                {sender}
+                <Text style={[styles.message, this.props.isOut && styles.messageOut]}>
+                    {parts}
+                </Text>
+            </BubbleView>
+        );
     }
 }
 
-class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean }, { modal: boolean }> {
+class MessageImageContent extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }, { modal: boolean }> {
     state = {
         modal: false
     };
@@ -113,31 +112,40 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
         let maxSize = Math.min(Dimensions.get('window').width - 70, 400);
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
         return (
-            <TouchableOpacity onPress={this.handleTouch}>
-                <View width={layout.width} height={layout.height} style={{ marginTop: 4, marginBottom: 4 }}>
-                    <ZImage source={{ uuid: this.props.file }} resize={!this.props.isGif} width={layout.width} height={layout.height} style={{ borderRadius: 6 }} />
-                    <Modal visible={this.state.modal} transparent={true}>
-                        <ImageViewer
-                            imageUrls={[{ url: 'https://ucarecdn.com/' + this.props.file + '/' }]}
-                            onSwipeDown={this.handleClose}
-                            loadingRender={() => <ActivityIndicator
-                                color="#fff"
-                                style={{
-                                    height: Dimensions.get('window').height,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            />}
-                            enableSwipeDown={true}
+            <BubbleView isOut={this.props.isOut} attach={this.props.attach} appearance="media">
+                <TouchableOpacity onPress={this.handleTouch}>
+                    <View width={layout.width} height={layout.height}>
+                        <BubbleImage
+                            uuid={this.props.file}
+                            resize={!this.props.isGif}
+                            width={layout.width}
+                            height={layout.height}
+                            isOut={this.props.isGif}
+                            attach={this.props.attach}
                         />
-                    </Modal>
-                </View>
-            </TouchableOpacity>
+                        <Modal visible={this.state.modal} transparent={true}>
+                            <ImageViewer
+                                imageUrls={[{ url: 'https://ucarecdn.com/' + this.props.file + '/' }]}
+                                onSwipeDown={this.handleClose}
+                                loadingRender={() => <ActivityIndicator
+                                    color="#fff"
+                                    style={{
+                                        height: Dimensions.get('window').height,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                />}
+                                enableSwipeDown={true}
+                            />
+                        </Modal>
+                    </View>
+                </TouchableOpacity>
+            </BubbleView>
         );
     }
 }
 
-class MessageFileContent extends React.PureComponent<{ file: string, fileName?: string, size?: number, isOut: boolean }> {
+class MessageFileContent extends React.PureComponent<{ file: string, fileName?: string, size?: number, isOut: boolean, attach?: 'bottom' | 'top' }> {
     render() {
         return (
             <View style={{ height: 56, borderRadius: 5, borderColor: '#e7e7ea', borderWidth: 1, width: 250, marginTop: 3, marginBottom: 3, flexDirection: 'row' }}>
@@ -153,51 +161,65 @@ class MessageFileContent extends React.PureComponent<{ file: string, fileName?: 
     }
 }
 
-export class MessageComponent extends React.PureComponent<{ onAvatarPress: (userId: string) => void, message: ModelMessage, engine: ConversationEngine }> {
+export class MessageComponent extends React.PureComponent<{ onAvatarPress: (userId: string) => void, message: MessageGroup, engine: ConversationEngine }> {
     handlePress = () => {
-        let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
-        this.props.onAvatarPress(sender.id);
+        this.props.onAvatarPress(this.props.message.sender.id);
     }
 
     render() {
-        let isOut = isPendingMessage(this.props.message) || this.props.message.sender.id === this.props.engine.engine.user.id;
+        let isOut = this.props.message.sender.id === this.props.engine.engine.user.id;
 
-        let sender = isServerMessage(this.props.message) ? this.props.message.sender : this.props.engine.engine.user;
         let content: any[] = [];
-        // let content = <MessageTextContent text="" />;
-        if (this.props.message.message) {
-            content.push(<MessageTextContent text={this.props.message.message} isOut={isOut} />);
-        }
-        if (isServerMessage(this.props.message)) {
-            if (this.props.message.file) {
-                let w = this.props.message.fileMetadata!!.imageWidth ? this.props.message.fileMetadata!!.imageWidth!! : undefined;
-                let h = this.props.message.fileMetadata!!.imageHeight ? this.props.message.fileMetadata!!.imageHeight!! : undefined;
-                let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
-                let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
-                if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
-                    content.push(<MessageImageContent file={this.props.message.file} width={w} height={h} isGif={this.props.message.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
+        let i = 0;
+        for (let m of this.props.message.messages) {
+            let attach: 'bottom' | 'top' | 'both' | undefined;
+            if (i === 0 && this.props.message.messages.length > 1) {
+                attach = 'bottom';
+            } else if (i !== 0) {
+                if (i === this.props.message.messages.length - 1) {
+                    attach = 'top';
                 } else {
-                    content.push(<MessageFileContent file={this.props.message.file} fileName={name} size={size} isOut={isOut} />);
+                    attach = 'both';
                 }
             }
+            let sender = (i === 0 && !isOut) ? this.props.message.sender : undefined;
+            // let content = <MessageTextContent text="" />;
+            if (m.message) {
+                content.push(<MessageTextContent sender={sender} text={m.message} isOut={isOut} attach={attach} />);
+            }
+            if (isServerMessage(m)) {
+                if (m.file) {
+                    let w = m.fileMetadata!!.imageWidth ? m.fileMetadata!!.imageWidth!! : undefined;
+                    let h = m.fileMetadata!!.imageHeight ? m.fileMetadata!!.imageHeight!! : undefined;
+                    let name = m.fileMetadata!!.name ? m.fileMetadata!!.name!! : undefined;
+                    let size = m.fileMetadata!!.size ? m.fileMetadata!!.size!! : undefined;
+                    if (m.fileMetadata!!.isImage && !!w && !!h) {
+                        content.push(<MessageImageContent file={m.file} width={w} height={h} isGif={m.fileMetadata!!.imageFormat === 'GIF'} isOut={isOut} />);
+                    } else {
+                        content.push(<MessageFileContent file={m.file} fileName={name} size={size} isOut={isOut} />);
+                    }
+                }
+            }
+            i++;
         }
         if (content.length === 0) {
-            content.push(<MessageTextContent text="" isOut={isOut} />);
+            content.push(<MessageTextContent sender={this.props.message.sender} text="" isOut={isOut} />);
         }
         return (
             <View style={styles.container}>
                 {!isOut && (
-                    <TouchableOpacity onPress={this.handlePress}>
-                        <ZAvatar src={sender.picture} size={36} placeholderKey={sender.id} placeholderTitle={sender.name} />
-                    </TouchableOpacity>
+                    <View paddingBottom={7}>
+                        <TouchableOpacity onPress={this.handlePress}>
+                            <ZAvatar
+                                src={this.props.message.sender.picture}
+                                size={36}
+                                placeholderKey={this.props.message.sender.id}
+                                placeholderTitle={this.props.message.sender.name}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 )}
                 <View style={[styles.messageContainer, isOut && styles.messageContainerOut]}>
-                    {!isOut && (
-                        <View style={styles.header}>
-                            <Text style={styles.sender}>{sender.name}</Text>
-                            {/* <Text style={styles.date}>{formatTime(parseInt(this.props.message.date, 10))}</Text> */}
-                        </View>)
-                    }
                     {content}
                 </View>
             </View>

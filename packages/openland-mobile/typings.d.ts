@@ -12,3 +12,8 @@ declare module 'react-native-view-overflow' {
     class ViewOverflow extends React.Component<any> {}
     export default ViewOverflow;
 }
+
+declare module 'react-native-super-ellipse-mask' {
+    class Mask extends React.Component<any> {}
+    export default Mask;
+}
