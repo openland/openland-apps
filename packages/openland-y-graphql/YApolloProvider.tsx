@@ -5,11 +5,14 @@ import { ApolloProvider } from 'react-apollo';
 export const YApolloContext = React.createContext<OpenApolloClient | undefined>(undefined);
 
 export const YApolloProvider = (props: { client: OpenApolloClient, children?: any }) => {
+    console.log(props.children);
+    console.log(YApolloContext);
+    console.log(YApolloContext.Provider);
     return (
-        <ApolloProvider client={props.client.client}>
-            <YApolloContext.Provider value={props.client}>
+        <YApolloContext.Provider value={props.client}>
+            <ApolloProvider client={props.client.client}>
                 {props.children}
-            </YApolloContext.Provider>
-        </ApolloProvider>
+            </ApolloProvider>
+        </YApolloContext.Provider>
     );
 };

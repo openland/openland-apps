@@ -1,4 +1,2 @@
-import { AppRegistry } from 'react-native';
-import App from './App';
-
-AppRegistry.registerComponent('OpenlandMac', () => App);
+import * as App from './build/native/openland-mac/src';
+export default App;

@@ -256,7 +256,7 @@
 		"mac:assets":"./node_modules/.bin/cpx \"./packages/openland-mobile/assets/**/*\" ./packages/openland-mac/build/assets",
 		"mac:build": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./packages/openland-mac/build/native",
 		"mac:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --preserveWatchOutput --outDir ./packages/openland-mac/build/native",
-		"mac:bundler": "cd ./packages/openland-mac && node node_modules/react-native-macos/local-cli/cli.js start --reset-cache",
+		"mac:bundler": "./scripts/mac_bundler.sh",
 		"mac:prepare":"cd ./packages/openland-mac && yarn"
 	}
 }
