@@ -250,6 +250,13 @@
 		"schema:generate:2": "./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' ./packages/openland-y-graphql-gen/generator.ts",
 		"schema:generate:3": "node ./fetch-fragments.js",
 		"favicon-gen": "convert ./packages/openland-web/static/favicon-16.png ./packages/openland-web/static/favicon-32.png ./packages/openland-web/static/favicon-48.png ./packages/openland-web/static/favicon.ico",
-		"postinstall": "patch-package"
+		"postinstall": "patch-package",
+		"mac": "./node_modules/.bin/concurrently \"yarn mac:assets\" \"yarn mac:build:watch\" \"yarn mac:bundler\"",
+		"mac:start": "cd ./packages/openland-mac && node node_modules/react-native-macos/local-cli/cli.js run-macos",
+		"mac:assets":"./node_modules/.bin/cpx \"./packages/openland-mobile/assets/**/*\" ./packages/openland-mac/build/assets",
+		"mac:build": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./packages/openland-mac/build/native",
+		"mac:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --preserveWatchOutput --outDir ./packages/openland-mac/build/native",
+		"mac:bundler": "cd ./packages/openland-mac && node node_modules/react-native-macos/local-cli/cli.js start --reset-cache",
+		"mac:prepare":"cd ./packages/openland-mac && yarn"
 	}
 }
