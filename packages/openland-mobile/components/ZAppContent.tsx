@@ -7,6 +7,7 @@ import { isAndroid } from '../utils/isAndroid';
 export interface ZAppContentProvider {
     topContentInset: number;
     bottomContentInset: number;
+    bottomScrollInset: number;
     registerScroller(value: Animated.AnimatedInterpolation): void;
 }
 
@@ -27,7 +28,8 @@ export class ZAppContent extends React.Component<ZAppContentProps> {
         super(props);
         this.provider = {
             topContentInset: (this.props.useParent && isAndroid) ? 16 : (props.navigationStyle === 'large' ? ZAppConfig.navigationBarContentInset : ZAppConfig.navigationBarContentInsetSmall),
-            bottomContentInset: ((this.props.useParent && !isAndroid) ? 44 : 0) + ZAppConfig.bottomNavigationBarInset,
+            bottomContentInset: ((this.props.useParent && !isAndroid) ? 66 : 0) + ZAppConfig.bottomNavigationBarInset,
+            bottomScrollInset: ((this.props.useParent && !isAndroid) ? 44 : 0) + ZAppConfig.bottomNavigationBarInset,
             registerScroller: this.registerScroller
         };
     }

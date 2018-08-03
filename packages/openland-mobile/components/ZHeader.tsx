@@ -109,8 +109,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
     componentWillMount() {
 
         // Auto hide keyboard
-        this.props.progress.addListener((c) => {
-            if (c.value !== 0 && c.value !== 1) {
+        this.props.position.addListener((c) => {
+            if (c.value !== parseInt(c.value + '', 10)) {
                 if (this.wasAnimaged) {
                     Keyboard.dismiss();
                     this.wasAnimaged = false;
@@ -123,8 +123,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
     render() {
 
-        // console.log(this.props);
-
         // Build Offsets
         let offsets = this.props.scenes.map((v) => {
 
@@ -134,7 +132,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 // console.log(v.descriptor);
                 let r = (v.descriptor as any).state.routes[(v.descriptor as any).state.index].routeName;
                 paramName = '__z_header_' + r + 'actions_search_offset';
-                console.log(r);
             }
 
             //

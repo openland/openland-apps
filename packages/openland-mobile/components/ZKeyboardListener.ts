@@ -44,6 +44,7 @@ export class ZKeyboardListener extends React.PureComponent<{ children: (height: 
                 },
             });
         }
+        console.log(height);
         this.setState({ height: height });
     }
 
@@ -58,7 +59,6 @@ export class ZKeyboardListener extends React.PureComponent<{ children: (height: 
         }
     }
     render() {
-        console.log(this.state.height);
         return this.props.children(this.state.height);
     }
 }

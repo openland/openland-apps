@@ -37,7 +37,7 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                         onScroll={this.contentOffsetEvent}
                         scrollEventThrottle={1}
                         scrollIndicatorInsets={{
-                            bottom: provider.bottomContentInset + height,
+                            bottom: provider.bottomScrollInset + height,
                             top: provider.topContentInset
                         }}
                         keyboardDismissMode="interactive"

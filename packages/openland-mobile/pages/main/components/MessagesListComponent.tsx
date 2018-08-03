@@ -5,6 +5,7 @@ import { View, Image, SectionList, Text, Dimensions } from 'react-native';
 import { MessageComponent } from './MessageComponent';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
+import { ZKeyboardListener } from '../../../components/ZKeyboardListener';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -112,26 +113,30 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
         return (
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
-                <SectionList
-                    sections={this.state.messages}
-                    renderSectionFooter={(section) => (<DateSeparator day={section.section.day} key={section.section.key} />)}
-                    // stickySectionHeadersEnabled={true}
-                    renderItem={(itm) => <MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />}
-                    inverted={true}
-                    flexBasis={0}
-                    flexGrow={1}
-                    ref={this.listRef}
-                    initialNumToRender={0}
-                    contentContainerStyle={{
-                        paddingBottom: ZAppConfig.navigationBarContentInsetSmall,
-                        paddingTop: ZAppConfig.bottomNavigationBarInset + 62
-                    }}
-                    scrollIndicatorInsets={{
-                        bottom: ZAppConfig.navigationBarContentInsetSmall,
-                        top: ZAppConfig.bottomNavigationBarInset + 54
-                    }}
-                    keyboardDismissMode="interactive"
-                />
+                <ZKeyboardListener>
+                    {height => (
+                        <SectionList
+                            sections={this.state.messages}
+                            renderSectionFooter={(section) => (<DateSeparator day={section.section.day} key={section.section.key} />)}
+                            // stickySectionHeadersEnabled={true}
+                            renderItem={(itm) => <MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />}
+                            inverted={true}
+                            flexBasis={0}
+                            flexGrow={1}
+                            ref={this.listRef}
+                            initialNumToRender={0}
+                            contentContainerStyle={{
+                                paddingBottom: ZAppConfig.navigationBarContentInsetSmall,
+                                paddingTop: ZAppConfig.bottomNavigationBarInset + 62 + height
+                            }}
+                            scrollIndicatorInsets={{
+                                bottom: ZAppConfig.navigationBarContentInsetSmall,
+                                top: ZAppConfig.bottomNavigationBarInset + 54 + height
+                            }}
+                            keyboardDismissMode="interactive"
+                        />
+                    )}
+                </ZKeyboardListener>
                 {this.state.loading && <ZLoader />}
             </View>
         );
