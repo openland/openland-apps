@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ScrollViewProps, Animated, View } from 'react-native';
 import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
 import { ZAppConfig } from './ZAppConfig';
+import { ZKeyboardAvoidingView } from './ZKeyboardAvoidingView';
+import { ZKeyboardListener } from './ZKeyboardListener';
 
 export interface ZScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
@@ -26,28 +28,33 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
     render() {
         let { syncWithBar, provider, adjustPaddings, ...other } = this.props;
         return (
-            <Animated.ScrollView
-                {...other}
-                style={[other.style, {
-                    // Work-around for freezing navive animation driver
-                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
-                }]}
-                onScroll={this.contentOffsetEvent}
-                scrollEventThrottle={1}
-                scrollIndicatorInsets={{
-                    bottom: provider.bottomContentInset,
-                    top: provider.topContentInset
-                }}
-            >
-                {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
-                    <View height={provider.topContentInset} />
-                }
+            <ZKeyboardListener>
+                {(height) => (
+                    <Animated.ScrollView
+                        {...other}
+                        style={[other.style, {
+                            // Work-around for freezing navive animation driver
+                            opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                        }]}
+                        onScroll={this.contentOffsetEvent}
+                        scrollEventThrottle={1}
+                        scrollIndicatorInsets={{
+                            bottom: provider.bottomContentInset + height,
+                            top: provider.topContentInset
+                        }}
+                        keyboardDismissMode="interactive"
+                    >
+                        {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
+                            <View height={provider.topContentInset} />
+                        }
 
-                {this.props.children}
-                {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'bottom') &&
-                    <View height={provider.bottomContentInset} />
-                }
-            </Animated.ScrollView>
+                        {this.props.children}
+                        {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'bottom') &&
+                            <View height={provider.bottomContentInset + height} />
+                        }
+                    </Animated.ScrollView>
+                )}
+            </ZKeyboardListener>
         );
     }
 }

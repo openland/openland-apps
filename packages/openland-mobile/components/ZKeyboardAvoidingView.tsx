@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
+import { Platform, KeyboardAvoidingView } from 'react-native';
+import { ZAppConfig } from './ZAppConfig';
 
 export class ZKeyboardAvoidingView extends React.Component {
+
     render() {
         return (
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={-ZAppConfig.bottomNavigationBarInset} >
                 {this.props.children}
             </KeyboardAvoidingView>
         );

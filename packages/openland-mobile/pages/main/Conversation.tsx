@@ -17,7 +17,6 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
-import { ZSafeAreaView } from '../../components/ZSaveAreaView';
 import { ZAppConfig } from '../../components/ZAppConfig';
 import { ZBlurredView } from '../../components/ZBlurredView';
 

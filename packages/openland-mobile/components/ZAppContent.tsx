@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { View, Animated, ViewStyle } from 'react-native';
-import { ZKeyboardAvoidingView } from './ZKeyboardAvoidingView';
 import { ZAppConfig } from './ZAppConfig';
 import { isAndroid } from '../utils/isAndroid';
 
