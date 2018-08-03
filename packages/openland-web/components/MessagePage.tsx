@@ -7,12 +7,14 @@ const ErrorDiv = Glamorous.div({
     backgroundColor: '#fff',
 
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
 
     width: '100vw',
-    height: '100vh'
+    minHeight: '100vh',
+    paddingTop: 30,
+    paddingBottom: 30
 });
 
 const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
@@ -27,15 +29,21 @@ const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
 }));
 
 const Container = Glamorous.div({
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center'
     // width: 400
 });
 
 const Footer = Glamorous.div({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 16,
-    margin: 'auto'
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // bottom: 16,
+    // margin: 'auto',
+    marginTop: 30
 });
 
 const FooterText = Glamorous.div({
