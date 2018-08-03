@@ -1,7 +1,11 @@
-<mj-section>
-  <mj-column>
-    <mj-text color="#9b9b9b" align="left" font-size="14px" line-height="26px" padding-bottom="0px">
-      © 2018 Data Makes Perfect Inc. <br/> 100 Van Ness #2305, San Francisco, CA 90104
-    </mj-text>
-  </mj-column>
+<mj-section mj-class="footer">
+    <mj-column>
+        <mj-divider mj-class="divider"></mj-divider>
+        <mj-text mj-class="footer-text">
+            Questions or feedback? Just reply.
+        </mj-text>
+        <mj-text mj-class="footer-text">
+            © 2018 Openland — A new messenger for real estate industry
+        </mj-text>
+    </mj-column>
 </mj-section>

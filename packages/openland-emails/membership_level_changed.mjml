@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Account reactivated</mj-title>
+        <mj-title>Membership level changed</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -11,7 +11,7 @@
                     {{userWelcome}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    Organization <strong>{{organizationName}}</strong> was <strong>activated</strong> by Openland staff! If you have any questions, please, feel free to reply to this email.
+                    Your level in organization <strong>{{organizationName}}</strong> changed to {{levelName}}
                 </mj-text>
             </mj-column>
         </mj-section>

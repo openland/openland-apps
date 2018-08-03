@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Account reactivated</mj-title>
+        <mj-title>Organization member removed</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -11,7 +11,7 @@
                     {{userWelcome}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    Organization <strong>{{organizationName}}</strong> was <strong>activated</strong> by Openland staff! If you have any questions, please, feel free to reply to this email.
+                    You were excluded from organization <strong>{{organizationName}}</strong>
                 </mj-text>
             </mj-column>
         </mj-section>
