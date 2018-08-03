@@ -98,7 +98,7 @@ export class ConversationEngine implements MessageSendHandler {
     // 
 
     loadBefore = async (id: string) => {
-        if (id !== this.loadingHistory) {
+        if (this.loadingHistory === undefined) {
             this.loadingHistory = id;
             let loaded = await backoff(() => this.engine.client.client.query({
                 query: ChatHistoryQuery.document,

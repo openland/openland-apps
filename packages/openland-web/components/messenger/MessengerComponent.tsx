@@ -10,7 +10,7 @@ import { XOverflow } from '../Incubator/XOverflow';
 import { makeNavigable } from 'openland-x/Navigable';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TextComponent } from '../../../../node_modules/@types/react-native';
-import { TypingContext, TypignsComponent } from 'openland-engines/messenger/Typings';
+import { TypignsComponent, TypingContext } from './components/TypingsComponent';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',

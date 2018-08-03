@@ -132,6 +132,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     renderItem = (itm: any) => {
+        // console.warn(itm.item);
         return (<MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
 
