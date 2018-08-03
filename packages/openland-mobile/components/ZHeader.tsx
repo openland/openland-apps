@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, TouchableOpacity, Image, Platform } from 'react-native';
+import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Keyboard } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
 import { ZHeaderBackButton } from './ZHeaderBackButton';
 import { ZAppConfig } from './ZAppConfig';
-import { VibrancyView, BlurView } from 'react-native-blur';
 import { ZBlurredView } from './ZBlurredView';
 
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
@@ -101,8 +100,25 @@ export interface ZHeaderConfig {
 
 class ZHeaderComponent extends React.PureComponent<Props> {
 
+    wasAnimaged = false;
+
     handleBack = () => {
         this.props.scene.descriptor.navigation.goBack();
+    }
+
+    componentWillMount() {
+
+        // Auto hide keyboard
+        this.props.progress.addListener((c) => {
+            if (c.value !== 0 && c.value !== 1) {
+                if (this.wasAnimaged) {
+                    Keyboard.dismiss();
+                    this.wasAnimaged = false;
+                }
+            } else {
+                this.wasAnimaged = true;
+            }
+        });
     }
 
     render() {
