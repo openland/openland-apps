@@ -3,8 +3,8 @@
         <mj-divider mj-class="divider"></mj-divider>
                 
         <mj-text mj-class="footer-buttons">
-            <a href="#" class="footer-button">Message support</a>
-            <a href="#" class="footer-button">Email settings</a>
+            <a href="https://app.openland.com/mail/61gk9KRrl9ComJkvYnvdcddr4o" class="footer-button">Message support</a>
+            <a href="https://app.openland.com/settings/notifications" class="footer-button">Email settings</a>
         </mj-text>
         <mj-text mj-class="footer-text">
             © 2018 Openland — A new messenger for real estate industry
