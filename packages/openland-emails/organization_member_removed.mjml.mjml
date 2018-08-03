@@ -1,22 +1,20 @@
 <mjml>
-  <mj-head>
-    <mj-attributes>
-      <mj-text font-size="18px" line-height="30px" align="left" color="#151515" />
-    </mj-attributes>
-  </mj-head>
-  <mj-body background-color="#ffffff">
-    <mj-spacer/>
-    <mj-include path="./header.mjml" />
-    <mj-section>
-      <mj-column>
-        <mj-text>
-          {{userWelcome}} <br/> <br/> 
-          You were excluded from organization <strong>{{organizationName}}</strong><br/> <br/> 
-          Good luck! <br/>
-          -- Openland Team
-        </mj-text>
-      </mj-column>
-    </mj-section>
-    <mj-include path="./footer.mjml" />
-  </mj-body>
+    <mj-head>
+        <mj-title>Organization member removed</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    {{userWelcome}}
+                </mj-text>
+                <mj-text mj-class="text">
+                    You were excluded from organization <strong>{{organizationName}}</strong>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer-registered.mjml" />
+    </mj-body>
 </mjml>
