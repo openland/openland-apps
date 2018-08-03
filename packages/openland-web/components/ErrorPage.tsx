@@ -9,7 +9,6 @@ const ErrorImg = Glamorous.img({
     width: 600,
     display: 'block',
     objectFit: 'contain',
-    margin: 'auto',
     marginBottom: 53,
     '@media (max-height: 700px)': {
         width: 500,

@@ -8,7 +8,9 @@ import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../Incubator/XOverflow';
 import { makeNavigable } from 'openland-x/Navigable';
-import { TypingsContext } from 'openland-engines/MessengerEngine';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { TextComponent } from '../../../../node_modules/@types/react-native';
+import { TypignsComponent, TypingContext } from './components/TypingsComponent';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -96,11 +98,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         />
                         <ChatTitleContent separator={2}>
                             <Title>{props.data.chat.title}</Title>
-                            <TypingsContext.Consumer>
-                                {val =>
-                                    <SubTitle>{(val && val[props.data.chat.id]) || (props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person')}</SubTitle>
-                                }
-                            </TypingsContext.Consumer>
+
+                            <TypignsComponent conversatonId={props.data.chat.id}>
+                                <TypingContext.Consumer>
+                                    {typing => <SubTitle>{typing.typing || (props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person')}</SubTitle>}
+                                </TypingContext.Consumer>
+                            </TypignsComponent>
 
                         </ChatTitleContent>
                     </NavChatLeftContentStyled>

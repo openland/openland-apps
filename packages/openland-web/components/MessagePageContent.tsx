@@ -16,7 +16,8 @@ let Title = Glamorous.div({
 
 let Message = Glamorous(XContent)({
     alignContent: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    width: '100%'
 });
 
 export function MessagePageContent(props: { title: string, children?: any }) {

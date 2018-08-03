@@ -6,6 +6,7 @@ import { UserShortFragment } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
+import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 export class MessengerEngine {
     readonly client: OpenApolloClient;
     readonly sender: MessageSender;
@@ -14,11 +15,12 @@ export class MessengerEngine {
     readonly notifications: NotificationsEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
+    private readonly activeTypings = new Map<string, TypingEngine>();
 
     private isVisible = true;
     private close: any = null;
     private loadingPromise: Promise<void>;
-
+    private typingsWatcher?: TypingsWatcher;
     constructor(client: OpenApolloClient, user: UserShortFragment) {
         this.client = client;
         this.user = user;
@@ -32,9 +34,17 @@ export class MessengerEngine {
         // Notifications
         this.notifications = new NotificationsEngine(this);
 
+        // Typings
+        this.typingsWatcher = new TypingsWatcher(this.client, this.handleTyping, this.user.id);
+
         // Starting
         this.loadingPromise = this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
+
         console.info('MessengerEngine started');
+    }
+
+    handleTyping = (conversationId: string, typing?: string) => {
+        this.getTypings(conversationId).onTyping(typing);
     }
 
     awaitLoading() {
@@ -53,6 +63,14 @@ export class MessengerEngine {
             engine.start();
         }
         return this.activeConversations.get(conversationId)!!;
+    }
+
+    getTypings(conversationId: string) {
+        if (!this.activeTypings.has(conversationId)) {
+            let engine = new TypingEngine();
+            this.activeTypings.set(conversationId, engine);
+        }
+        return this.activeTypings.get(conversationId)!!;
     }
 
     mountConversation(conversationId: string): () => void {
@@ -112,4 +130,3 @@ export class MessengerEngine {
 }
 
 export const MessengerContext = React.createContext<MessengerEngine>(undefined as any);
-export const TypingsContext = React.createContext<{ [conversationId: string]: string | undefined }>(undefined as any);

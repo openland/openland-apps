@@ -91,6 +91,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     constructor(props: MessagesListProps & { keyboardHeight: number }) {
         super(props);
         let initialState = props.engine.getState();
+        let res = convertMessages(initialState.messagesPrepprocessed);
         this.state = { loading: initialState.loading, messages: convertMessages(initialState.messagesPrepprocessed) };
     }
 
@@ -132,7 +133,12 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     renderItem = (itm: any) => {
+        // console.warn(itm.item);
         return (<MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
+    }
+
+    onEndReached = (info: { distanceFromEnd: number }) => {
+        this.props.engine.loadBefore();
     }
 
     render() {
@@ -147,6 +153,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
                     inverted={true}
                     flexBasis={0}
                     flexGrow={1}
+                    onEndReached={this.onEndReached}
                     ref={this.listRef}
                     // initialNumToRender={0}
                     scrollIndicatorInsets={{
