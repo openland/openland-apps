@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import gql from '../../../node_modules/graphql-tag';
+import gql from 'graphql-tag';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
@@ -19,13 +19,11 @@ const SUBSCRIBE_TYPINGS = gql`
 `;
 
 export class TypingsWatcher {
-    private client: OpenApolloClient;
     private typings: { [conversationId: string]: { [userId: string]: string | undefined } } = {};
     private timeouts: { [conversationId: string]: { [userId: string]: number } } = {};
     private sub?: ZenObservable.Subscription = undefined;
     private onChange: (conversationId: string, typing?: string) => void;
     constructor(client: OpenApolloClient, onChange: (conversationId: string, typing?: string) => void, currentUserId: string) {
-        this.client = client;
         this.onChange = onChange;
         let typingSubscription = client.client.subscribe({
             query: SUBSCRIBE_TYPINGS
