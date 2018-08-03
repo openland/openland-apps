@@ -48,10 +48,15 @@ export class ConversationMessagesComponent extends React.PureComponent<{ convers
         }
     }
 
+    loadBefore = (id: string) => {
+        this.props.conversation.loadBefore(id);
+    }
+
     render() {
         return (
             <MessagesContainer>
                 <MessageListComponent
+                    loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
                     messages={this.state.messages}
                     ref={this.messagesList}

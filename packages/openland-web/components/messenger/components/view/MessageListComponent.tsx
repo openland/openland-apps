@@ -1,13 +1,17 @@
+import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
+import { XButton } from 'openland-x/XButton';
+import { MessageFullFragment } from 'openland-api/Types';
 
 interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
+    loadBefore: (id: string) => void;
 }
 
 let months = [
@@ -76,11 +80,25 @@ const MessagesWrapper = Glamorous.div({
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
-
     private scroller = React.createRef<XScrollViewReversed>();
+    unshifted = false;
 
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
+    }
+
+    componentWillUpdate(newprops: MessageListProps) {
+        if (newprops.messages[0] !== this.props.messages[0]) {
+            this.scroller.current!!.updateDimensions();
+            this.unshifted = true;
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.unshifted) {
+            this.scroller.current!!.restorePreviousScroll();
+            this.unshifted = false;
+        }
     }
 
     render() {
@@ -137,6 +155,14 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     />
                 );
             }
+        }
+
+        let serverMessages = this.props.messages.filter(m => isServerMessage(m));
+        let lastMessage = serverMessages[0];
+
+        if (!this.props.conversation.historyFullyLoaded && lastMessage) {
+            let id = (lastMessage as MessageFullFragment).id;
+            messages.unshift(<XButton alignSelf="center" style="flat" key={'load_more_' + id} text="Load more" onClick={() => this.props.loadBefore(id)} />);
         }
 
         return (

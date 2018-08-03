@@ -33,8 +33,8 @@ export const GlobalCounterQuery = gql`
 `;
 
 export const ChatHistoryQuery = gql`
-    query ChatHistory($conversationId: ID!) {
-        messages: alphaLoadMessages(conversationId: $conversationId) {
+    query ChatHistory($conversationId: ID!, $before: ID) {
+        messages: alphaLoadMessages(conversationId: $conversationId, first: 30, before: $before) {
             seq
             messages {
                 ...MessageFull
