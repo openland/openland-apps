@@ -32,6 +32,7 @@ import { BubbleView } from './BubbleView';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { buildApolloClient } from './utils/apolloClient';
+import { AppStyles } from 'openland-mobile/styles/AppStyles';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -83,27 +84,19 @@ class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dia
     let res: MessageGroup[] = [];
     for (let d of conv.messagesPrepprocessed) {
       let msgs = [...d.messages];
-      msgs.reverse();
-      // res.push({
-      //     day: d,
-      //     key: d.key,
-      //     data: msgs
-      // });
-
       for (let g of msgs) {
         res.push(g);
       }
     }
     res.reverse();
-    // return res;
     this.setState({ state: res });
   }
   renderItem = (src: MessageGroup) => {
     let isOut = src.sender.id === this.props.messenger.user.id;
     return (
       <View>
-        <View flexDirection="column" alignItems="flex-start">
-          <Text>{src.sender.name}</Text>
+        <View flexDirection="column" alignItems={isOut ? 'flex-end' : 'flex-start'} paddingLeft={30} paddingRight={30}>
+          {!isOut && <Text>{src.sender.name}</Text>}
           {src.messages.map((v) => (<BubbleView key={isServerMessage(v) ? v.id : v.key} appearance="text" isOut={isOut}><Text style={{ color: isOut ? '#fff' : '#000' }}>{v.message}</Text></BubbleView>))}
         </View>
       </View>
@@ -120,6 +113,10 @@ class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dia
         // backgroundColor="#ff0"
         >
           <FlatList
+            contentContainerStyle={{
+              paddingBottom: 10,
+              paddingTop: 20
+            }}
             style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
             data={this.state.state}
             renderItem={(item: any) => this.renderItem(item.item)}
@@ -127,13 +124,9 @@ class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dia
             // getItemLayout={(itm, ind) => ({ length: 130, offset: ind * 130, index: ind })}
             removeClippedSubviews={true}
             legacyImplementation={true}
-
             // disableVirtualization={true}
             // maxToRenderPerBatch={1}
             windowSize={1}
-            contentContainerStyle={{
-              transform: [{ scaleY: -1 }]
-            }}
             {...({ flipped: true } as any)}
           />
         </View>
@@ -181,6 +174,23 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                     let conv = res.data.chats.conversations;
                     return (
                       <View flexGrow={1} flexBasis={0}>
+                        <View
+                          style={{
+                            // height: 56,
+                            paddingLeft: 15,
+                            paddingTop: 44,
+                            paddingBottom: 22
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 28,
+                              fontWeight: '600'
+                            }}
+                          >
+                            Messages
+                          </Text>
+                        </View>
                         <FlatList
                           data={conv}
                           renderItem={(v) => (<DialogComponent key={v.item.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v.item} selected={this.state.dialog && (v.item.id === this.state.dialog.id)} />)}
@@ -192,22 +202,59 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                   }}
                 </YQuery>
               </View>
+              <View width={1} backgroundColor={AppStyles.separatorColor} />
               <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
                 {this.state.dialog && (
                   <>
-                    <View><Text>{this.state.dialog.title}</Text></View>
+                    <View
+                      style={{
+                        paddingLeft: 15,
+                        paddingTop: 22,
+                        paddingBottom: 22,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: '500'
+                          }}
+                        >
+                          {this.state.dialog.title}
+                        </Text>
+                      </View>
+                    </View>
+                    <View backgroundColor="#b7bdc6" opacity={0.3} width={'100%'} height={1} />
                     <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
                       <MessagesList key={this.state.dialog!!.id} dialog={this.state.dialog!!} messenger={this.state.messenger!!} />
                     </View>
-                    <View>
-                      <TextInput
-                        onChangeText={(v) => this.setState({ text: v })}
-                        value={this.state.text}
-                      />
+                    <View width={1} backgroundColor={AppStyles.separatorColor} />
+                    <View paddingTop={3} paddingBottom={5} flexDirection="row" height={56} paddingLeft={30} paddingRight={30}>
+                      <View
+                        borderRadius={17}
+                        borderWidth={1}
+                        borderColor={'#f00'}
+                        flex={1}
+                        flexGrow={1}
+                        flexBasis={0}
+                      >
+                        <TextInput
+                          ref={(k) => console.log(k)}
+                          onChange={(v) => console.log(v)}
+                          onChangeText={(v) => this.setState({ text: v })}
+                          value={this.state.text}
+                          multiline={true}
+                          {...{ bezeled: false }}
+                        />
+                      </View>
                       <Button
                         title="send"
                         onPress={() => {
+                          console.log('Send: ' + this.state.text);
                           this.state.messenger!!.getConversation(this.state.dialog!!.id).sendMessage(this.state.text);
+                          this.setState({ text: '' });
                         }}
                       />
                     </View>
