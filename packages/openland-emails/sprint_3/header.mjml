@@ -1,7 +1,7 @@
 <mj-section>
-  <mj-column>
-    <mj-spacer height="66px" />
-    <mj-image mj-class="logo" src="https://cdn.openland.com/shared/email/email_transactions_logo@2x.png" />
-    <mj-spacer height="62px" />
-  </mj-column>
+    <mj-column>
+        <mj-spacer height="66px" />
+        <mj-image mj-class="logo" src="https://cdn.openland.com/shared/email/email_transactions_logo@2x.png" />
+        <mj-spacer height="62px" />
+    </mj-column>
 </mj-section>
