@@ -110,7 +110,7 @@ export class ConversationEngine implements MessageSendHandler {
             history.reverse();
 
             this.messages = [...history, ...this.messages];
-            this.state = new ConversationState(false, this.messages);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
             this.historyFullyLoaded = history.length === 0;
             this.onMessagesUpdated();
             this.loadingHistory = undefined;
