@@ -130,6 +130,7 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
                         bottom: ZAppConfig.navigationBarContentInsetSmall,
                         top: ZAppConfig.bottomNavigationBarInset + 54
                     }}
+                    keyboardDismissMode="interactive"
                 />
                 {this.state.loading && <ZLoader />}
             </View>

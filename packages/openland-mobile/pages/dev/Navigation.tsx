@@ -3,9 +3,9 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../components/ZListItemEdit';
-import { ZAppContent } from '../../components/ZAppContent';
 import { ZScrollView } from '../../components/ZScrollView';
 import { withApp } from '../../components/withApp';
+import { View } from 'react-native';
 
 export class NavigationComponent extends React.PureComponent<NavigationInjectedProps, { hide: boolean }> {
 
@@ -30,44 +30,46 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
 
     render() {
         return (
-            <ZScrollView>
-                <ZListItemGroup>
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItemEdit title="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                    <ZListItem text="Item" />
-                </ZListItemGroup>
-            </ZScrollView>
+            <View backgroundColor="#fff" flexDirection={'column'} height="100%" width="100%">
+                <ZScrollView>
+                    <ZListItemGroup>
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItemEdit title="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                        <ZListItem text="Item" />
+                    </ZListItemGroup>
+                </ZScrollView>
+            </View>
         );
     }
 }

@@ -97,6 +97,7 @@
 		"react-native-image-crop-picker": "^0.20.3",
 		"react-native-image-picker": "^0.26.10",
 		"react-native-image-zoom-viewer": "^2.2.13",
+		"react-native-keyboard-tracking-view": "^5.4.4",
 		"react-native-push-notification": "^3.0.2",
 		"react-native-search-bar": "^3.4.2",
 		"react-native-splash-screen": "^3.1.0",

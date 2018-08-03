@@ -17,8 +17,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
-import { ZAppConfig } from '../../components/ZAppConfig';
-import { ZBlurredView } from '../../components/ZBlurredView';
+import { ZKeyboardAwareBar } from '../../components/ZKeybardAwareBar';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -89,9 +88,8 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
         return (
             <View style={{ height: '100%' }} flexDirection="column">
                 <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
-                <View flexDirection="column" alignItems="stretch" style={{ position: 'absolute', bottom: 0, right: 0, left: 0 }}>
-                    <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
-                    <ZBlurredView intensity="high" alignItems="stretch" flexDirection="row" style={{ paddingBottom: ZAppConfig.bottomNavigationBarInset + 10, paddingTop: 10 }}>
+                <ZKeyboardAwareBar>
+                    <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
                         <TouchableOpacity onPress={this.handleAttach}>
                             <View width={52} height={33} alignItems="center" justifyContent="center">
                                 <Image source={iconAttach} style={{ width: 22, height: 21 }} />
@@ -112,8 +110,8 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
                                 <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
                             </View>
                         </TouchableOpacity>
-                    </ZBlurredView>
-                </View>
+                    </View>
+                </ZKeyboardAwareBar>
             </View>
         );
     }

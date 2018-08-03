@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { ScrollViewProps, Animated, View } from 'react-native';
+import { ScrollViewProps, Animated, PanResponder, View } from 'react-native';
 import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
-import { ZAppConfig } from './ZAppConfig';
-import { ZKeyboardAvoidingView } from './ZKeyboardAvoidingView';
 import { ZKeyboardListener } from './ZKeyboardListener';
 
 export interface ZScrollViewProps extends ScrollViewProps {
