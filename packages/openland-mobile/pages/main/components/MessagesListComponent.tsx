@@ -148,7 +148,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
                     flexBasis={0}
                     flexGrow={1}
                     ref={this.listRef}
-                    initialNumToRender={0}
+                    // initialNumToRender={0}
                     scrollIndicatorInsets={{
                         bottom: ZAppConfig.navigationBarContentInsetSmall,
                         top: ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight
