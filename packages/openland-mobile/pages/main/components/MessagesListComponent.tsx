@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { View, Image, SectionList, Text, Dimensions } from 'react-native';
+import { View, Image, SectionList, Text, Dimensions, FlatList } from 'react-native';
 import { MessageComponent } from './MessageComponent';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
@@ -13,13 +13,24 @@ export interface MessagesListProps {
 }
 
 interface MessagesSection {
-    day: Day;
+    day?: Day;
     key: string;
     data: MessageGroup[];
 }
 
-function convertMessages(days: Day[]): MessagesSection[] {
+function convertMessages(days: Day[]) {
+    // let res: MessageGroup[] = [];
+    // for (let d of days) {
+    //     let msgs = [...d.messages];
+    //     msgs.reverse();
+    //     for (let g of d.messages) {
+    //         res.push(g);
+    //     }
+    // }
+    // res.reverse();
+    // return res;
     let res: MessagesSection[] = [];
+    res.push({ key: 'footer', data: [] });
     for (let d of days) {
         let msgs = [...d.messages];
         msgs.reverse();
@@ -29,6 +40,7 @@ function convertMessages(days: Day[]): MessagesSection[] {
             data: msgs
         });
     }
+    res.push({ key: 'header', data: [] });
     res.reverse();
     return res;
 }
@@ -71,12 +83,12 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
     }
 }
 
-export class MessagesListComponent extends React.PureComponent<MessagesListProps, { loading: boolean, messages: MessagesSection[] }> implements ConversationStateHandler {
+export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[] }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<any>();
 
-    constructor(props: MessagesListProps) {
+    constructor(props: MessagesListProps & { keyboardHeight: number }) {
         super(props);
         let initialState = props.engine.getState();
         this.state = { loading: initialState.loading, messages: convertMessages(initialState.messagesPrepprocessed) };
@@ -109,36 +121,53 @@ export class MessagesListComponent extends React.PureComponent<MessagesListProps
         }
     }
 
+    renderHeader = (section: any) => {
+        if (section.section.key === 'footer') {
+            return (<View height={ZAppConfig.navigationBarContentInsetSmall} />);
+        }
+        if (section.section.key === 'header') {
+            return (<View height={ZAppConfig.bottomNavigationBarInset + 62 + this.props.keyboardHeight} />);
+        }
+        return (<DateSeparator day={section.section.day} key={section.section.key} />);
+    }
+
+    renderItem = (itm: any) => {
+        return (<MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
+    }
+
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
-                <ZKeyboardListener>
-                    {height => (
-                        <SectionList
-                            sections={this.state.messages}
-                            renderSectionFooter={(section) => (<DateSeparator day={section.section.day} key={section.section.key} />)}
-                            // stickySectionHeadersEnabled={true}
-                            renderItem={(itm) => <MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />}
-                            inverted={true}
-                            flexBasis={0}
-                            flexGrow={1}
-                            ref={this.listRef}
-                            initialNumToRender={0}
-                            contentContainerStyle={{
-                                paddingBottom: ZAppConfig.navigationBarContentInsetSmall,
-                                paddingTop: ZAppConfig.bottomNavigationBarInset + 62 + height
-                            }}
-                            scrollIndicatorInsets={{
-                                bottom: ZAppConfig.navigationBarContentInsetSmall,
-                                top: ZAppConfig.bottomNavigationBarInset + 54 + height
-                            }}
-                            keyboardDismissMode="interactive"
-                        />
-                    )}
-                </ZKeyboardListener>
-                {this.state.loading && <ZLoader />}
+
+                <SectionList
+                    sections={this.state.messages}
+                    renderSectionFooter={this.renderHeader}
+                    renderItem={this.renderItem}
+                    inverted={true}
+                    flexBasis={0}
+                    flexGrow={1}
+                    ref={this.listRef}
+                    initialNumToRender={0}
+                    scrollIndicatorInsets={{
+                        bottom: ZAppConfig.navigationBarContentInsetSmall,
+                        top: ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight
+                    }}
+                    keyboardDismissMode="interactive"
+                    removeClippedSubviews={true}
+                    keyExtractor={(item) => item.key}
+                    extraData={this.props.keyboardHeight}
+                />
+                {this.state.loading && <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight} top={ZAppConfig.navigationBarContentInsetSmall}><ZLoader /></View>}
             </View>
         );
     }
 }
+
+export const MessagesListComponent = (props: MessagesListProps) => {
+    return (
+        <ZKeyboardListener>
+            {height => (<MessagesList {...props} keyboardHeight={height} />)}
+        </ZKeyboardListener>
+    );
+};

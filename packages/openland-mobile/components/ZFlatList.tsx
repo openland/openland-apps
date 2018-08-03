@@ -9,7 +9,7 @@ export interface ZFlatListProps<T> extends FlatListProps<T> {
     syncWithBar?: boolean;
 }
 
-export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T> & { provider: ZAppContentProvider }> {
+export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T> & { provider: ZAppContentProvider, fixedHeight?: number }> {
 
     private contentOffset = new Animated.Value(0);
     private contentOffsetEvent = Animated.event(
@@ -25,7 +25,7 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
 
     render() {
 
-        let { syncWithBar, provider, ...other } = this.props;
+        let { syncWithBar, provider, fixedHeight, ...other } = this.props;
 
         return (
             <AnimatedFlatList
@@ -48,12 +48,15 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
                 }}
                 onScroll={this.contentOffsetEvent}
                 scrollEventThrottle={1}
+                {...fixedHeight ? {
+                    getItemLayout: (item: any, index: number) => ({ offset: index * fixedHeight!!, length: fixedHeight, index })
+                } : {}}
             />
         );
     }
 }
 
-export const ZFlatList = function <T>(props: FlatListProps<T>) {
+export const ZFlatList = function <T>(props: FlatListProps<T> & { fixedHeight?: number }) {
     return (
         <ZAppContentContext.Consumer>
             {(context) => <ZFlatListComponent {...props} provider={context!!} />}

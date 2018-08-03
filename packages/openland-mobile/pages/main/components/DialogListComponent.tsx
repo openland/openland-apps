@@ -4,6 +4,7 @@ import { ConversationShortFragment } from 'openland-api/Types';
 import { ListRenderItemInfo, FlatList, View } from 'react-native';
 import { DialogComponent } from './DialogComponent';
 import { ZFlatList } from '../../../components/ZFlatList';
+import { isAndroid } from '../../../utils/isAndroid';
 
 export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], onPress?: (id: ConversationShortFragment) => void }> {
 
@@ -34,6 +35,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 data={this.props.dialogs}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
+                fixedHeight={80}
             />
         );
     }
