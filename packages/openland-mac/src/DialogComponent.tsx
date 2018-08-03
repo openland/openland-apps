@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TextStyle, TouchableHighlight, TouchableOpacity
 import { ConversationShortFragment } from 'openland-api/Types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ZAvatar } from './ZAvatar';
+import { AppStyles } from 'openland-mobile/styles/AppStyles';
+import { ZListItem } from './ZListItem';
 
 const styles = StyleSheet.create({
     title: {
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
 interface DialogComponentProps {
     engine: MessengerEngine;
     item: ConversationShortFragment;
+    selected?: boolean;
     onPress: (id: ConversationShortFragment) => void;
 }
 export class DialogComponent extends React.PureComponent<DialogComponentProps> {
@@ -72,59 +75,42 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
             }
         }
         return (
-            <TouchableOpacity onPress={this.handlePress}>
-                <View style={{ height: 80 }} flexDirection="row">
-                    <View style={{ width: 80, height: 80 }} backgroundColor="#fff" alignItems="center" justifyContent="center" shouldRasterizeIOS={true}>
-                        {/* <View position="absolute"  style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" transform={[{ rotate: '10deg' }]}>
-                            <ZAvatar
-                                src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
-                                size={60}
-                                placeholderKey={this.props.item.flexibleId}
-                                placeholderTitle={this.props.item.title}
-                            />
-                        </View> */}
-                        <View position="absolute" opacity={0.3} style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" transform={[{ rotate: '10deg' }]} shouldRasterizeIOS={true} >
-                            <ZAvatar
-                                size={60}
-                                placeholderKey={this.props.item.flexibleId}
-                                placeholderTitle={this.props.item.title}
-                            />
-                        </View>
-                        <View position="absolute" opacity={0.3} style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" transform={[{ rotate: '50deg' }]}>
-                            <ZAvatar
-                                src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
-                                size={60}
-                                placeholderKey={this.props.item.flexibleId}
-                                placeholderTitle={this.props.item.title}
-                            />
-                        </View>
-                    </View>
-                    <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
-                        <View flexDirection="row" height={18}>
-                            <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</Text>
-                            <Text style={styles.date}>{messageDate}</Text>
-                        </View>
-                        <View flexDirection="row" height={36} marginTop={3}>
-                            <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
-                                {this.props.item.topMessage && this.props.item.topMessage.sender.id === this.props.engine.user.id && (
-                                    <Text style={styles.message} numberOfLines={2}>{messageText}</Text>
-                                )}
-                                {this.props.item.topMessage && this.props.item.topMessage.sender.id !== this.props.engine.user.id && (
-                                    <>
-                                        <Text style={styles.sender} numberOfLines={1}>{this.props.item.topMessage!!.sender.name}</Text>
-                                        <Text style={styles.messageSingle} numberOfLines={1}>{messageText}</Text>
-                                    </>
-                                )}
-                            </View>
-                            {this.props.item.unreadCount > 0 && (
-                                <View alignSelf="flex-end" marginBottom={2}>
-                                    {/* <ZCounter value={this.props.item.unreadCount} /> */}
-                                </View>
-                            )}
-                        </View>
+            <ZListItem style={{ height: 80, flexDirection: 'row' }} onPress={this.handlePress} selected={this.props.selected}>
+                <View style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" shouldRasterizeIOS={true}>
+                    <View position="absolute" style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center">
+                        <ZAvatar
+                            src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                            size={60}
+                            placeholderKey={this.props.item.flexibleId}
+                            placeholderTitle={this.props.item.title}
+                        />
                     </View>
                 </View>
-            </TouchableOpacity>
+                <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
+                    <View flexDirection="row" height={18}>
+                        <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</Text>
+                        <Text style={styles.date}>{messageDate}</Text>
+                    </View>
+                    <View flexDirection="row" height={36} marginTop={3}>
+                        <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
+                            {this.props.item.topMessage && this.props.item.topMessage.sender.id === this.props.engine.user.id && (
+                                <Text style={styles.message} numberOfLines={2}>{messageText}</Text>
+                            )}
+                            {this.props.item.topMessage && this.props.item.topMessage.sender.id !== this.props.engine.user.id && (
+                                <>
+                                    <Text style={styles.sender} numberOfLines={1}>{this.props.item.topMessage!!.sender.name}</Text>
+                                    <Text style={styles.messageSingle} numberOfLines={1}>{messageText}</Text>
+                                </>
+                            )}
+                        </View>
+                        {this.props.item.unreadCount > 0 && (
+                            <View alignSelf="flex-end" marginBottom={2}>
+                                {/* <ZCounter value={this.props.item.unreadCount} /> */}
+                            </View>
+                        )}
+                    </View>
+                </View>
+            </ZListItem>
         );
     }
 }

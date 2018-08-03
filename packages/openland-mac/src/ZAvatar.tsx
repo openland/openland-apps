@@ -54,8 +54,8 @@ export class ZAvatar extends React.PureComponent<{ size: 96 | 60 | 56 | 40 | 36 
                 textSize = 14;
             }
             return (
-                <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % colors.length] }} alignContent="center" justifyContent="center">
-                    <Text style={{ fontSize: textSize, width: '100%', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }}>{placeholderText}</Text>
+                <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % colors.length] }} alignItems="center" justifyContent="center">
+                    <Text style={{ fontSize: textSize, textAlignVertical: 'center', color: '#fff' }}>{placeholderText}</Text>
                 </View>
             );
         }

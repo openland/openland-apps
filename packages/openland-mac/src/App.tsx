@@ -31,6 +31,7 @@ import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger
 import { BubbleView } from './BubbleView';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
+import { buildApolloClient } from './utils/apolloClient';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -151,13 +152,7 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
 
   componentDidMount() {
     (async () => {
-      let client = buildClient({
-        // Put your token here
-        // token: '<token>',
-        organization: '61gk9KRrl9ComJkvYnvdcddr4o',
-        endpoint: 'https://api.openland.com/api',
-        wsEndpoint: 'wss://api.openland.com/api'
-      });
+      let client = buildApolloClient();
       let meq = await client.client.query<any>({
         query: AccountQuery.document
       });
@@ -172,7 +167,7 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
 
   render() {
     return (
-      <View width="100%" height="100%">
+      <View width="100%" height="100%" backgroundColor="#fff">
         {!this.state.messenger && <ActivityIndicator />}
         {this.state.client && (
           <ApolloProvider client={this.state.client.client}>
@@ -185,23 +180,15 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                     }
                     let conv = res.data.chats.conversations;
                     return (
-                      // <View flexGrow={1} flexBasis={0} flexDirection="column">
-                      <View flexGrow={1} flexBasis={0} backgroundColor={'#ff0'}>
-                        <ListView
-                          dataSource={new ListView.DataSource({ rowHasChanged: () => false }).cloneWithRows(conv)}
-                          renderRow={(v) => (<DialogComponent key={v.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v} />)}
+                      <View flexGrow={1} flexBasis={0}>
+                        <FlatList
+                          data={conv}
+                          renderItem={(v) => (<DialogComponent key={v.item.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v.item} selected={this.state.dialog && (v.item.id === this.state.dialog.id)} />)}
+                          keyExtractor={(k) => k.id}
+                          extraData={this.state.dialog && this.state.dialog.id}
                         />
-                        {/* <ScrollView style={{ transform: [{ scaleY: -1 }] }}>
-                          {conv.map((v) => (<DialogComponent key={v.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v} />))}
-                        </ScrollView> */}
                       </View>
-                      // </View>
                     );
-                    // return (
-                    //   <MessengerContext.Consumer>
-                    //     {(messenger) => (<DialogListComponent engine={messenger!!} dialogs={conv} onPress={this.handleItemClick} />)}
-                    //   </MessengerContext.Consumer>
-                    // );
                   }}
                 </YQuery>
               </View>
