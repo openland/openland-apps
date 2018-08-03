@@ -97,7 +97,15 @@ export class ConversationEngine implements MessageSendHandler {
 
     // 
 
-    loadBefore = async (id: string) => {
+    loadBefore = async (id?: string) => {
+        if (id === undefined) {
+            let serverMessages = this.messages.filter(m => isServerMessage(m));
+            let first = serverMessages[0];
+            if (!first) {
+                return;
+            }
+            id = (first as MessageFullFragment).id;
+        }
         if (this.loadingHistory === undefined) {
             this.loadingHistory = id;
             let loaded = await backoff(() => this.engine.client.client.query({

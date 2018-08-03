@@ -20,7 +20,7 @@ export class MessengerEngine {
     private isVisible = true;
     private close: any = null;
     private loadingPromise: Promise<void>;
-    private typingsWatcher: TypingsWatcher;
+    private typingsWatcher?: TypingsWatcher;
     constructor(client: OpenApolloClient, user: UserShortFragment) {
         this.client = client;
         this.user = user;

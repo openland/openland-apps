@@ -36,6 +36,7 @@ export class LoginLoader extends React.Component<NavigationInjectedProps, { stat
                     setMessenger(messenger);
                     saveClient(client);
                     await messenger.awaitLoading();
+
                 }
             }
 
