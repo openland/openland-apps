@@ -697,6 +697,7 @@ export interface GlobalCounterQuery {
 
 export interface ChatHistoryQueryVariables {
   conversationId: string,
+  before?: string | null,
 };
 
 export interface ChatHistoryQuery {

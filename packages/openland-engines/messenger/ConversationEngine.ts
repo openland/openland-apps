@@ -34,6 +34,7 @@ export interface ConversationStateHandler {
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
+    historyFullyLoaded?: boolean;
 
     private isStarted = false;
     private watcher: SequenceWatcher | null = null;
@@ -42,6 +43,7 @@ export class ConversationEngine implements MessageSendHandler {
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
     private listeners: ConversationStateHandler[] = [];
+    private loadingHistory?: string = undefined;
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -94,6 +96,27 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     // 
+
+    loadBefore = async (id: string) => {
+        if (id !== this.loadingHistory) {
+            this.loadingHistory = id;
+            let loaded = await backoff(() => this.engine.client.client.query({
+                query: ChatHistoryQuery.document,
+                variables: { conversationId: this.conversationId, before: id },
+                fetchPolicy: 'network-only'
+            }));
+
+            let history = [...(loaded.data as any).messages.messages].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+            history.reverse();
+
+            this.messages = [...history, ...this.messages];
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.historyFullyLoaded = history.length === 0;
+            this.onMessagesUpdated();
+            this.loadingHistory = undefined;
+        }
+
+    }
 
     sendMessage = (text: string) => {
         if (text.trim().length > 0) {
