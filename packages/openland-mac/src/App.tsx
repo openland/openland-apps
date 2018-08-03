@@ -14,7 +14,8 @@ import {
   ScrollView,
   FlatList,
   TextInput,
-  Button
+  Button,
+  ListView
 } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { buildClient, OpenApolloClient } from 'openland-y-graphql/apolloClient';
@@ -99,9 +100,11 @@ class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dia
   renderItem = (src: MessageGroup) => {
     let isOut = src.sender.id === this.props.messenger.user.id;
     return (
-      <View flexDirection="column" alignItems="flex-start">
-        <Text>{src.sender.name}</Text>
-        {src.messages.map((v) => (<BubbleView key={isServerMessage(v) ? v.id : v.key} appearance="text" isOut={isOut}><Text style={{ color: isOut ? '#fff' : '#000' }}>{v.message}</Text></BubbleView>))}
+      <View>
+        <View flexDirection="column" alignItems="flex-start">
+          <Text>{src.sender.name}</Text>
+          {src.messages.map((v) => (<BubbleView key={isServerMessage(v) ? v.id : v.key} appearance="text" isOut={isOut}><Text style={{ color: isOut ? '#fff' : '#000' }}>{v.message}</Text></BubbleView>))}
+        </View>
       </View>
     );
     //
@@ -118,15 +121,19 @@ class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dia
           <FlatList
             style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
             data={this.state.state}
-            renderItem={(item) => this.renderItem(item.item)}
-            keyExtractor={(item) => item.key}
+            renderItem={(item: any) => this.renderItem(item.item)}
+            keyExtractor={(item: any) => item.key}
             // getItemLayout={(itm, ind) => ({ length: 130, offset: ind * 130, index: ind })}
             removeClippedSubviews={true}
             legacyImplementation={true}
+
             // disableVirtualization={true}
             // maxToRenderPerBatch={1}
             windowSize={1}
-          // inverted={true}
+            contentContainerStyle={{
+              transform: [{ scaleY: -1 }]
+            }}
+            {...({ flipped: true } as any)}
           />
         </View>
       </View>
@@ -165,11 +172,11 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
 
   render() {
     return (
-      <View>
+      <View width="100%" height="100%">
         {!this.state.messenger && <ActivityIndicator />}
         {this.state.client && (
           <ApolloProvider client={this.state.client.client}>
-            <View flexDirection="row" alignItems="stretch">
+            <View flexDirection="row" alignItems="stretch" width="100%" height="100%">
               <View flexDirection="column" width={350}>
                 <YQuery query={ChatListQuery}>
                   {(res) => {
@@ -178,9 +185,17 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                     }
                     let conv = res.data.chats.conversations;
                     return (
-                      <ScrollView>
-                        {conv.map((v) => (<DialogComponent key={v.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v} />))}
-                      </ScrollView>
+                      // <View flexGrow={1} flexBasis={0} flexDirection="column">
+                      <View flexGrow={1} flexBasis={0} backgroundColor={'#ff0'}>
+                        <ListView
+                          dataSource={new ListView.DataSource({ rowHasChanged: () => false }).cloneWithRows(conv)}
+                          renderRow={(v) => (<DialogComponent key={v.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v} />)}
+                        />
+                        {/* <ScrollView style={{ transform: [{ scaleY: -1 }] }}>
+                          {conv.map((v) => (<DialogComponent key={v.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v} />))}
+                        </ScrollView> */}
+                      </View>
+                      // </View>
                     );
                     // return (
                     //   <MessengerContext.Consumer>

@@ -76,7 +76,7 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
         }
         return (
             <ZListItemBase onPress={this.handlePress} height={80} separatorPaddingStart={80}>
-                <View width={80} height={80} alignItems="center" justifyContent="center">
+                <View width={80} height={80} alignItems="center" justifyContent="center" transform={[{ rotate: '20deg' }]}>
                     <ZAvatar
                         src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
                         size={isAndroid ? 56 : 60}

@@ -66,7 +66,7 @@ export class OpenApolloClient {
     }
 }
 
-export function buildClient(config: { endpoint: string, wsEndpoint?: string, token?: string, organization?: string, initialState?: any, ssrMode?: boolean }) {
+export function buildClient(config: { endpoint: string, wsEndpoint?: string, token?: string, organization?: string, initialState?: any, ssrMode?: boolean, fetch?: any }) {
 
     //
     // Status
@@ -106,7 +106,7 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         link = new HttpLink({
             uri: config.endpoint,
             headers: headers,
-            // fetch: config.ssrMode ? require('node-fetch') : undefined
+            fetch: config.fetch
         });
     } else {
 

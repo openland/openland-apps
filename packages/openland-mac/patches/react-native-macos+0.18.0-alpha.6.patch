@@ -1,4 +1,23 @@
 patch-package
+--- a/node_modules/react-native-macos/Libraries/Components/ScrollView/ScrollView.js
++++ b/node_modules/react-native-macos/Libraries/Components/ScrollView/ScrollView.js
+@@ -679,7 +679,7 @@ const ScrollView = createReactClass({
+       ScrollContentContainerViewClass = View;
+     } else if (Platform.OS === 'macos') {
+       ScrollViewClass = RCTScrollView;
+-      ScrollContentContainerViewClass = View;
++      ScrollContentContainerViewClass = this.props.flipped ? RCTScrollContentView : View;
+     }
+ 
+     invariant(
+@@ -911,6 +911,7 @@ if (Platform.OS === 'android') {
+     {
+     },
+   );
++  RCTScrollContentView = requireNativeComponent('RCTScrollContentView', View);
+ }
+ 
+ module.exports = ScrollView;
 --- a/node_modules/react-native-macos/React/Modules/RCTAppearance.m
 +++ b/node_modules/react-native-macos/React/Modules/RCTAppearance.m
 @@ -20,7 +20,7 @@ RCT_EXPORT_MODULE()
@@ -9,4 +28,30 @@ patch-package
 +  [NSAppearance setCurrentAppearance:[NSApp mainWindow].effectiveAppearance];
    [self sendEventWithName:@"onAppearanceChange" body:[self resolveConstants]];
  }
+ 
+--- a/node_modules/react-native-macos/React/Views/ScrollView/RCTScrollContentView.m
++++ b/node_modules/react-native-macos/React/Views/ScrollView/RCTScrollContentView.m
+@@ -16,20 +16,9 @@
+ 
+ @implementation RCTScrollContentView
+ 
+-- (void)reactSetFrame:(CGRect)frame
++- (BOOL)isFlipped
+ {
+-  [super reactSetFrame:frame];
+-
+-  RCTNativeScrollView *scrollView = (RCTNativeScrollView *)self.superview.superview;
+-
+-  if (!scrollView) {
+-    return;
+-  }
+-
+-  RCTAssert([scrollView isKindOfClass:[RCTNativeScrollView class]],
+-            @"Unexpected view hierarchy of RCTScrollView component.");
+-
+-  // [scrollView updateContentOffsetIfNeeded];
++  return NO;
+ }
+ 
+ @end
  

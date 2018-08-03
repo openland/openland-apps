@@ -74,13 +74,30 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
         return (
             <TouchableOpacity onPress={this.handlePress}>
                 <View style={{ height: 80 }} flexDirection="row">
-                    <View style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center">
-                        <ZAvatar
-                            src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
-                            size={60}
-                            placeholderKey={this.props.item.flexibleId}
-                            placeholderTitle={this.props.item.title}
-                        />
+                    <View style={{ width: 80, height: 80 }} backgroundColor="#fff" alignItems="center" justifyContent="center" shouldRasterizeIOS={true}>
+                        {/* <View position="absolute"  style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" transform={[{ rotate: '10deg' }]}>
+                            <ZAvatar
+                                src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                                size={60}
+                                placeholderKey={this.props.item.flexibleId}
+                                placeholderTitle={this.props.item.title}
+                            />
+                        </View> */}
+                        <View position="absolute" opacity={0.3} style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" transform={[{ rotate: '10deg' }]} shouldRasterizeIOS={true} >
+                            <ZAvatar
+                                size={60}
+                                placeholderKey={this.props.item.flexibleId}
+                                placeholderTitle={this.props.item.title}
+                            />
+                        </View>
+                        <View position="absolute" opacity={0.3} style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" transform={[{ rotate: '50deg' }]}>
+                            <ZAvatar
+                                src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                                size={60}
+                                placeholderKey={this.props.item.flexibleId}
+                                placeholderTitle={this.props.item.title}
+                            />
+                        </View>
                     </View>
                     <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
                         <View flexDirection="row" height={18}>
