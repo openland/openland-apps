@@ -31,6 +31,7 @@
 		"auth0-js": "9.4.1",
 		"babel-plugin-inline-import": "^3.0.0",
 		"babel-plugin-module-resolver": "^3.1.1",
+		"babel-plugin-react-native-web": "^0.8.9",
 		"chart.js": "^2.7.1",
 		"classnames": "^2.2.5",
 		"compression": "^1.7.1",
@@ -253,10 +254,10 @@
 		"postinstall": "patch-package",
 		"mac": "./node_modules/.bin/concurrently \"yarn mac:assets\" \"yarn mac:build:watch\" \"yarn mac:bundler\"",
 		"mac:start": "cd ./packages/openland-mac && node node_modules/react-native-macos/local-cli/cli.js run-macos",
-		"mac:assets":"./node_modules/.bin/cpx \"./packages/openland-mobile/assets/**/*\" ./packages/openland-mac/build/assets",
+		"mac:assets": "./node_modules/.bin/cpx \"./packages/openland-mobile/assets/**/*\" ./packages/openland-mac/build/assets",
 		"mac:build": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./packages/openland-mac/build/native",
 		"mac:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --preserveWatchOutput --outDir ./packages/openland-mac/build/native",
 		"mac:bundler": "./scripts/mac_bundler.sh",
-		"mac:prepare":"cd ./packages/openland-mac && yarn"
+		"mac:prepare": "cd ./packages/openland-mac && yarn"
 	}
 }
