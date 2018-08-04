@@ -155,7 +155,7 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
   }
 
   selectDialog = (dialog: ConversationShortFragment) => {
-    this.setState({ dialog });
+    this.setState({ dialog, text: '' });
   }
 
   render() {
@@ -231,32 +231,42 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                       <MessagesList key={this.state.dialog!!.id} dialog={this.state.dialog!!} messenger={this.state.messenger!!} />
                     </View>
                     <View width={1} backgroundColor={AppStyles.separatorColor} />
-                    <View paddingTop={3} paddingBottom={5} flexDirection="row" height={56} paddingLeft={30} paddingRight={30}>
+                    <View paddingTop={3} paddingBottom={5} flexDirection="row" paddingLeft={30} paddingRight={30} key={this.state.dialog!!.id + 'panel'}>
                       <View
-                        borderRadius={17}
+                        marginBottom={12}
+                        marginTop={12}
+                        marginRight={8}
+                        borderRadius={15}
                         borderWidth={1}
-                        borderColor={'#f00'}
+                        borderColor={AppStyles.separatorColor}
                         flex={1}
                         flexGrow={1}
                         flexBasis={0}
+                        paddingTop={8}
+                        paddingBottom={8}
+                        paddingLeft={8}
+                        paddingRight={8}
                       >
                         <TextInput
+                          placeholder="Message..."
+                          placeholderTextColor="grey"
+                          style={{ fontSize: 16 }}
                           ref={(k) => console.log(k)}
                           onChange={(v) => console.log(v)}
                           onChangeText={(v) => this.setState({ text: v })}
                           value={this.state.text}
-                          multiline={true}
-                          {...{ bezeled: false }}
+                          multiline={false}
                         />
                       </View>
-                      <Button
-                        title="send"
-                        onPress={() => {
-                          console.log('Send: ' + this.state.text);
-                          this.state.messenger!!.getConversation(this.state.dialog!!.id).sendMessage(this.state.text);
-                          this.setState({ text: '' });
-                        }}
-                      />
+                      <View alignSelf="center">
+                        <Button
+                          title="send"
+                          onPress={() => {
+                            this.state.messenger!!.getConversation(this.state.dialog!!.id).sendMessage(this.state.text);
+                            this.setState({ text: '' });
+                          }}
+                        />
+                      </View>
                     </View>
                   </>
                 )}

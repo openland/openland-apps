@@ -18,6 +18,38 @@ patch-package
  }
  
  module.exports = ScrollView;
+--- a/node_modules/react-native-macos/Libraries/Components/Touchable/TouchableOpacity.js
++++ b/node_modules/react-native-macos/Libraries/Components/Touchable/TouchableOpacity.js
+@@ -179,6 +179,8 @@ var TouchableOpacity = createReactClass({
+    * defined on your component.
+    */
+   touchableHandleActivePressIn: function(e: Event) {
++    console.log('touchableHandleActivePressIn');
++    console.log(e);
+     if (e.dispatchConfig.registrationName === 'onResponderGrant') {
+       this._opacityActive(0);
+     } else {
+@@ -188,6 +190,8 @@ var TouchableOpacity = createReactClass({
+   },
+ 
+   touchableHandleActivePressOut: function(e: Event) {
++    console.log('touchableHandleActivePressOut');
++    console.log(e);
+     this._opacityInactive(250);
+     this.props.onPressOut && this.props.onPressOut(e);
+   },
+--- a/node_modules/react-native-macos/Libraries/Text/TextInputLegacy/RCTTextField.m
++++ b/node_modules/react-native-macos/Libraries/Text/TextInputLegacy/RCTTextField.m
+@@ -35,7 +35,8 @@
+     self.delegate = self;
+     self.drawsBackground = NO;
+     self.bordered = NO;
+-    self.bezeled = YES;
++    self.bezeled = NO;
++    self.focusRingType = NSFocusRingTypeNone;
+     // self.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+ 
+     _eventDispatcher = eventDispatcher;
 --- a/node_modules/react-native-macos/React/Modules/RCTAppearance.m
 +++ b/node_modules/react-native-macos/React/Modules/RCTAppearance.m
 @@ -20,7 +20,7 @@ RCT_EXPORT_MODULE()
@@ -54,4 +86,3 @@ patch-package
  }
  
  @end
- 
