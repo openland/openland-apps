@@ -58,7 +58,7 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
                 width={this.props.size}
                 height={this.props.size}
                 borderRadius={this.props.size / 2}
-                fallbackColor={placeholderStyle.placeholderTitle}
+                fallbackColor={placeholderStyle.placeholderColor}
                 colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}

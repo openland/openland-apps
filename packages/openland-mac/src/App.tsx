@@ -33,6 +33,7 @@ import { isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { buildApolloClient } from './utils/apolloClient';
 import { AppStyles } from 'openland-mobile/styles/AppStyles';
+import { DialogItemView } from 'openland-shared/DialogItemView';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -193,7 +194,7 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                         </View>
                         <FlatList
                           data={conv}
-                          renderItem={(v) => (<DialogComponent key={v.item.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v.item} selected={this.state.dialog && (v.item.id === this.state.dialog.id)} />)}
+                          renderItem={(v) => (<DialogItemView key={v.item.id} onPress={this.selectDialog} engine={this.state.messenger!!} item={v.item} selected={this.state.dialog && (v.item.id === this.state.dialog.id)} />)}
                           keyExtractor={(k) => k.id}
                           extraData={this.state.dialog && this.state.dialog.id}
                         />
@@ -251,8 +252,6 @@ export default class App extends Component<{}, { messenger?: MessengerEngine, cl
                           placeholder="Message..."
                           placeholderTextColor="grey"
                           style={{ fontSize: 16 }}
-                          ref={(k) => console.log(k)}
-                          onChange={(v) => console.log(v)}
                           onChangeText={(v) => this.setState({ text: v })}
                           value={this.state.text}
                           multiline={false}

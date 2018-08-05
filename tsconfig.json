@@ -115,6 +115,9 @@
       ],
       "openland-xp": [
         "openland-xp"
+      ],
+      "openland-shared": [
+        "openland-shared"
       ]
     },
     "importHelpers": true
@@ -164,6 +167,7 @@
     "./packages/openland-mobile",
     "./packages/openland-y-runtime-native",
     "./packages/openland-y-runtime-mac",
-    "./packages/openland-mac/src"
+    "./packages/openland-mac/src",
+    "./packages/openland-shared"
   ]
 }

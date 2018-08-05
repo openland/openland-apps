@@ -5,6 +5,8 @@ import { ListRenderItemInfo, FlatList, View } from 'react-native';
 import { DialogComponent } from './DialogComponent';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { isAndroid } from '../../../utils/isAndroid';
+import { DialogItemView } from 'openland-shared/DialogItemView';
+import { AppStyles } from '../../../styles/AppStyles';
 
 export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], onPress?: (id: ConversationShortFragment) => void }> {
 
@@ -15,7 +17,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
     }
 
     renderItem = (item: ListRenderItemInfo<ConversationShortFragment>) => {
-        return (<DialogComponent item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
+        return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
     }
 
     keyExtractor = (item: ConversationShortFragment) => {
@@ -24,7 +26,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
 
     renderHeader = () => {
         return (
-            <View height={4}/>
+            <View height={4} />
         );
     }
 
@@ -35,6 +37,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 data={this.props.dialogs}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
+                ItemSeparatorComponent={() => <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />}
                 fixedHeight={80}
             />
         );

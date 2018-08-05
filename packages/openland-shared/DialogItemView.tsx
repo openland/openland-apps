@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { ZListItemBase } from '../../../components/ZListItemBase';
-import { View, Text, StyleSheet, TextStyle } from 'react-native';
-import { ZCounter } from '../../../components/ZCounter';
+import { View, StyleSheet, TextStyle } from 'react-native';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { formatDate } from '../../../utils/formatDate';
-import { isAndroid } from '../../../utils/isAndroid';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { XPListItem } from 'openland-xp/XPListItem';
+import { XPCounter } from 'openland-xp/XPCounter';
+import { formatDate } from './utils/formatDate';
+import { XPText } from 'openland-xp/XPText';
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: isAndroid ? 16 : 15,
-        fontWeight: isAndroid ? '400' : '600',
+        fontSize: 15,
+        fontWeight: '600',
         lineHeight: 18,
         height: 18,
         flexGrow: 1,
@@ -52,11 +52,12 @@ const styles = StyleSheet.create({
 });
 
 interface DialogComponentProps {
+    selected?: boolean;
     engine: MessengerEngine;
     item: ConversationShortFragment;
     onPress: (id: ConversationShortFragment) => void;
 }
-export class DialogComponent extends React.PureComponent<DialogComponentProps> {
+export class DialogItemView extends React.PureComponent<DialogComponentProps> {
 
     handlePress = () => {
         this.props.onPress(this.props.item);
@@ -75,40 +76,40 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
             }
         }
         return (
-            <ZListItemBase onPress={this.handlePress} height={80} separatorPaddingStart={80}>
+            <XPListItem onPress={this.handlePress} style={{ height: 80 }} selected={this.props.selected}>
                 <View width={80} height={80} alignItems="center" justifyContent="center">
                     <XPAvatar
                         src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
-                        size={isAndroid ? 56 : 60}
+                        size={60}
                         placeholderKey={this.props.item.flexibleId}
                         placeholderTitle={this.props.item.title}
                     />
                 </View>
                 <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
                     <View flexDirection="row" height={18}>
-                        <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</Text>
-                        <Text style={styles.date}>{messageDate}</Text>
+                        <XPText style={styles.title} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</XPText>
+                        <XPText style={styles.date}>{messageDate}</XPText>
                     </View>
                     <View flexDirection="row" height={36} marginTop={3}>
                         <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
                             {this.props.item.topMessage && this.props.item.topMessage.sender.id === this.props.engine.user.id && (
-                                <Text style={styles.message} numberOfLines={2}>{messageText}</Text>
+                                <XPText style={styles.message} numberOfLines={2}>{messageText}</XPText>
                             )}
                             {this.props.item.topMessage && this.props.item.topMessage.sender.id !== this.props.engine.user.id && (
                                 <>
-                                    <Text style={styles.sender} numberOfLines={1}>{this.props.item.topMessage!!.sender.name}</Text>
-                                    <Text style={styles.messageSingle} numberOfLines={1}>{messageText}</Text>
+                                    <XPText style={styles.sender} numberOfLines={1}>{this.props.item.topMessage!!.sender.name}</XPText>
+                                    <XPText style={styles.messageSingle} numberOfLines={1}>{messageText}</XPText>
                                 </>
                             )}
                         </View>
                         {this.props.item.unreadCount > 0 && (
                             <View alignSelf="flex-end" marginBottom={2}>
-                                <ZCounter value={this.props.item.unreadCount} />
+                                <XPCounter value={this.props.item.unreadCount} />
                             </View>
                         )}
                     </View>
                 </View>
-            </ZListItemBase>
+            </XPListItem>
         );
     }
 }

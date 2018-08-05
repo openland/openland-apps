@@ -21,6 +21,7 @@
                         "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
                         "openland-y-forms": "./build/native/openland-y-forms",
                         "openland-xp": "./build/native/openland-xp",
+                        "openland-shared": "./build/native/openland-shared",
                         "assets": "./packages/openland-mobile/assets"
                     }
                 }]
@@ -42,6 +43,7 @@
                         "openland-y-forms": "./build/native/openland-y-forms",
                         "openland-y-store": "./build/native/openland-y-store",
                         "openland-xp": "./build/native/openland-xp",
+                        "openland-shared": "./build/native/openland-shared",
                         "assets": "./packages/openland-mobile/assets"
                     }
                 }]
