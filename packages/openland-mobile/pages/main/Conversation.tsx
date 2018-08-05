@@ -19,6 +19,7 @@ import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
 import { ZKeyboardAwareBar } from '../../components/ZKeybardAwareBar';
 import { ZHeaderButton } from '../../components/ZHeaderButton';
+import { MessageFullFragment } from 'openland-api/Types';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -84,6 +85,10 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
         this.props.navigator.navigate('ProfileUser', { 'id': userId });
     }
 
+    handlePhotoPress = (message: MessageFullFragment) => {
+        this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
+    }
+
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
@@ -94,7 +99,7 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
                     </ZHeaderButton>
                 )}
                 <View style={{ height: '100%' }} flexDirection="column">
-                    <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
+                    <MessagesListComponent onPhotoPress={this.handlePhotoPress} onAvatarPress={this.handleAvatarPress} engine={this.engine} />
                     <ZKeyboardAwareBar>
                         <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
                             <TouchableOpacity onPress={this.handleAttach}>

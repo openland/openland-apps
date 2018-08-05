@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XPBubbleView, resolveCorners } from 'openland-xp/XPBubbleView';
-import { TouchableOpacity, View, Platform, Dimensions } from 'react-native';
+import { TouchableOpacity, View, Platform, Dimensions, TouchableHighlight } from 'react-native';
 import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
@@ -23,8 +23,24 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
         let corners = resolveCorners(this.props.isOut, this.props.attach);
         return (
             <XPBubbleView isOut={this.props.isOut} attach={this.props.attach} appearance="media">
-                <TouchableOpacity onPress={this.handleTouch} disabled={!this.props.onPress}>
-                    <View width={layout.width} height={layout.height}>
+
+                <View
+                    width={layout.width}
+                    height={layout.height}
+                >
+                    <TouchableHighlight
+                        onPress={this.handleTouch}
+                        disabled={!this.props.onPress}
+                        underlayColor="#000"
+                        activeOpacity={0.8}
+                        style={{
+                            borderRadius: 18, // Hack for MAC OS
+                            borderTopLeftRadius: corners.topLeft,
+                            borderTopRightRadius: corners.topRight,
+                            borderBottomLeftRadius: corners.bottomLeft,
+                            borderBottomRightRadius: corners.bottomRight,
+                        }}
+                    >
                         <XPImage
                             source={{ uuid: this.props.file }}
                             borderRadius={18} // Hack for MAC OS
@@ -36,8 +52,8 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                             width={layout.width}
                             height={layout.height}
                         />
-                    </View>
-                </TouchableOpacity>
+                    </TouchableHighlight>
+                </View>
             </XPBubbleView>
         );
     }

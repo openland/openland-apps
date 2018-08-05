@@ -6,9 +6,11 @@ import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
 import { ZKeyboardListener } from '../../../components/ZKeyboardListener';
 import { MessageView } from 'openland-shared/MessageView';
+import { MessageFullFragment } from 'openland-api/Types';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
+    onPhotoPress: (message: MessageFullFragment) => void;
     engine: ConversationEngine;
 }
 
@@ -134,7 +136,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
 
     renderItem = (itm: any) => {
         // console.warn(itm.item);
-        return (<MessageView key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
+        return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
 
     onEndReached = (info: { distanceFromEnd: number }) => {
