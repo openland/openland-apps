@@ -104,12 +104,12 @@ export class DialogItemView extends React.PureComponent<DialogComponentProps> {
                     </View>
                     <View flexDirection="row" height={36} marginTop={3}>
                         <View flexGrow={1} flexBasis={0} flexDirection="column" alignItems="stretch">
-                            {this.props.item.topMessage && this.props.item.topMessage.sender.id === this.props.engine.user.id && (
+                            {this.props.item.topMessage && this.props.item.topMessage.sender.id === this.props.engine.user.id && this.props.item.__typename === 'PrivateConversation' && (
                                 <XPText style={styles.message} numberOfLines={2}>{messageText}</XPText>
                             )}
-                            {this.props.item.topMessage && this.props.item.topMessage.sender.id !== this.props.engine.user.id && (
+                            {this.props.item.topMessage && this.props.item.__typename !== 'PrivateConversation' && (
                                 <>
-                                    <XPText style={styles.sender} numberOfLines={1}>{this.props.item.topMessage!!.sender.name}</XPText>
+                                    <XPText style={styles.sender} numberOfLines={1}>{this.props.item.topMessage!!.sender.id === this.props.engine.user.id ? 'You' : this.props.item.topMessage!!.sender.name}</XPText>
                                     <XPText style={styles.messageSingle} numberOfLines={1}>{messageText}</XPText>
                                 </>
                             )}
