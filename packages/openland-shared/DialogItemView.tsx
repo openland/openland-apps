@@ -72,7 +72,19 @@ export class DialogItemView extends React.PureComponent<DialogComponentProps> {
             if (this.props.item.topMessage.message) {
                 messageText = this.props.item.topMessage.message;
             } else if (this.props.item.topMessage.file) {
-                messageText = 'Sent file';
+                if (this.props.item.topMessage.fileMetadata) {
+                    if (this.props.item.topMessage.fileMetadata.isImage) {
+                        if (this.props.item.topMessage.fileMetadata.imageFormat === 'GIF') {
+                            messageText = 'GIF';
+                        } else {
+                            messageText = 'Photo';
+                        }
+                    } else {
+                        messageText = this.props.item.topMessage.fileMetadata!!.name;
+                    }
+                } else {
+                    messageText = 'Document';
+                }
             }
         }
         return (

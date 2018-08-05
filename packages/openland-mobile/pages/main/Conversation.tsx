@@ -12,7 +12,6 @@ import {
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessagesListComponent } from './components/MessagesListComponent';
-import { KeyboardHider } from './components/KeyboardHider';
 import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
@@ -139,7 +138,6 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
                             );
                         }}
                     </MessengerContext.Consumer>
-                    <KeyboardHider navigation={this.props.navigation} />
                 </View>
             </>
         );

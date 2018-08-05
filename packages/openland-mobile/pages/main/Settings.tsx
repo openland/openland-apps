@@ -8,7 +8,6 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { AccountQuery } from 'openland-api/AccountQuery';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZQuery } from '../../components/ZQuery';
-import { ZAppContent } from '../../components/ZAppContent';
 import { ZScrollView } from '../../components/ZScrollView';
 import { AppStyles } from '../../styles/AppStyles';
 

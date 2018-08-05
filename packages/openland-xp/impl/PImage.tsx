@@ -23,7 +23,7 @@ export class PImage extends React.Component<PImageProps> {
             }
         }
 
-        if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/')) {
+        if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
             // Optimize image for CDN-based images
             let ops: string = '';
             let opsRetina: string = '';

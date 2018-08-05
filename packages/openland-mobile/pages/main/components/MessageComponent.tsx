@@ -1,20 +1,17 @@
 import * as React from 'react';
-import { ModelMessage, isServerMessage, isPendingMessage } from 'openland-engines/messenger/types';
+import { isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Dimensions, Linking, Image, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { ZAvatar } from '../../../components/ZAvatar';
-import { formatTime } from '../../../utils/formatTime';
 import { layoutMedia } from './MediaLayout';
-import { ZImage } from '../../../components/ZImage';
 import { formatBytes } from '../../../utils/formatBytes';
 import { preprocessText } from '../../../utils/TextProcessor';
-import { isAndroid } from '../../../utils/isAndroid';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { ZRoundedMask } from '../../../components/ZRoundedMask';
-import { BubbleView, BubbleImage } from './chat/BubbleView';
+import { BubbleImage } from './chat/BubbleView';
 import { UserShortFragment } from 'openland-api/Types';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { XPAvatar } from 'openland-xp/XPAvatar';
+import { XPBubbleView } from 'openland-xp/XPBubbleView';
 
 let styles = StyleSheet.create({
     container: {
@@ -85,12 +82,12 @@ class MessageTextContent extends React.PureComponent<{ text: string, sender?: Us
             sender = <Text key="sender-name" style={[styles.sender, { color: senderColors[placeholderIndex] }]}>{this.props.sender.name}</Text>;
         }
         return (
-            <BubbleView appearance="text" isOut={this.props.isOut} attach={this.props.attach}>
+            <XPBubbleView appearance="text" isOut={this.props.isOut} attach={this.props.attach}>
                 {sender}
                 <Text key="message" style={[styles.message, this.props.isOut && styles.messageOut]}>
                     {parts}
                 </Text>
-            </BubbleView>
+            </XPBubbleView>
         );
     }
 }
@@ -112,7 +109,7 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
         let maxSize = Math.min(Dimensions.get('window').width - 70, 400);
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
         return (
-            <BubbleView isOut={this.props.isOut} attach={this.props.attach} appearance="media">
+            <XPBubbleView isOut={this.props.isOut} attach={this.props.attach} appearance="media">
                 <TouchableOpacity onPress={this.handleTouch}>
                     <View width={layout.width} height={layout.height}>
                         <BubbleImage
@@ -140,7 +137,7 @@ class MessageImageContent extends React.PureComponent<{ file: string, width: num
                         </Modal>
                     </View>
                 </TouchableOpacity>
-            </BubbleView>
+            </XPBubbleView>
         );
     }
 }
@@ -211,7 +208,7 @@ export class MessageComponent extends React.PureComponent<{ onAvatarPress: (user
                 {!isOut && (
                     <View paddingBottom={7}>
                         <TouchableOpacity onPress={this.handlePress}>
-                            <ZAvatar
+                            <XPAvatar
                                 src={this.props.message.sender.picture}
                                 size={36}
                                 placeholderKey={this.props.message.sender.id}

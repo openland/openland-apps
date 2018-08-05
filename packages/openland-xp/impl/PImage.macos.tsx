@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PImageProps } from './PImageProps';
-import { PixelRatio, Image } from 'react-native';
+import { PixelRatio, Image, View } from 'react-native';
 
 export function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null }) {
     if (!source) {
@@ -25,7 +25,7 @@ export class PImage extends React.Component<PImageProps> {
         }
 
         let url = baseUrl;
-        if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/')) {
+        if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
             let w = PixelRatio.getPixelSizeForLayoutSize(this.props.width);
             let h = PixelRatio.getPixelSizeForLayoutSize(this.props.height);
             url += '-/scale_crop/' + w + 'x' + h + '/';

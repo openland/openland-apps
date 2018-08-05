@@ -2,9 +2,7 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { ListRenderItemInfo, FlatList, View } from 'react-native';
-import { DialogComponent } from './DialogComponent';
 import { ZFlatList } from '../../../components/ZFlatList';
-import { isAndroid } from '../../../utils/isAndroid';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
 

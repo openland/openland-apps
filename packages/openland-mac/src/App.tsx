@@ -7,46 +7,26 @@
 import React, { Component } from 'react';
 import {
   Platform,
-  StyleSheet,
   Text,
   View,
   ActivityIndicator,
-  ScrollView,
   FlatList,
   TextInput,
-  Button,
-  ListView
+  Button
 } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { buildClient, OpenApolloClient } from 'openland-y-graphql/apolloClient';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatListQuery } from 'openland-api/ChatListQuery';
-import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
-import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
-import { DialogComponent } from './DialogComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { BubbleView } from './BubbleView';
-import { isServerMessage } from 'openland-engines/messenger/types';
 import { ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { buildApolloClient } from './utils/apolloClient';
 import { AppStyles } from 'openland-mobile/styles/AppStyles';
 import { DialogItemView } from 'openland-shared/DialogItemView';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-interface MessagesSection {
-  day?: Day;
-  key: string;
-  data: MessageGroup[];
-}
+import { MessageView } from 'openland-shared/MessageView';
 
 class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dialog: ConversationShortFragment }, { state: MessageGroup[] }> implements ConversationStateHandler {
 
@@ -92,17 +72,15 @@ class MessagesList extends React.PureComponent<{ messenger: MessengerEngine, dia
     res.reverse();
     this.setState({ state: res });
   }
-  renderItem = (src: MessageGroup) => {
-    let isOut = src.sender.id === this.props.messenger.user.id;
-    return (
-      <View>
-        <View flexDirection="column" alignItems={isOut ? 'flex-end' : 'flex-start'} paddingLeft={30} paddingRight={30}>
-          {!isOut && <Text>{src.sender.name}</Text>}
-          {src.messages.map((v) => (<BubbleView key={isServerMessage(v) ? v.id : v.key} appearance="text" isOut={isOut}><Text style={{ color: isOut ? '#fff' : '#000' }}>{v.message}</Text></BubbleView>))}
-        </View>
-      </View>
-    );
+
+  handleAvatarPress = () => {
     //
+  }
+
+  renderItem = (src: MessageGroup) => {
+    return (
+      <MessageView onAvatarPress={this.handleAvatarPress} message={src} engine={this.props.messenger.getConversation(this.props.dialog.id)} />
+    );
   }
 
   render() {

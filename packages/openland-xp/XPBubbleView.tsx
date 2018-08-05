@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { ZRoundedMask } from './ZRoundedMask';
-import { ZImage } from './ZImage';
+import { View, Platform } from 'react-native';
+import { XPRoundedMask } from './XPRoundedMask';
 
-function resolveCorners(isOut: boolean, attach?: 'bottom' | 'top' | 'both') {
+export function resolveCorners(isOut: boolean, attach?: 'bottom' | 'top' | 'both') {
     let topRightRadius = 18;
     let topLeftRadius = 18;
     let bottomRightRadius = 18;
@@ -31,27 +30,7 @@ function resolveCorners(isOut: boolean, attach?: 'bottom' | 'top' | 'both') {
     };
 }
 
-export class BubbleImage extends React.PureComponent<{ uuid: string, width: number, height: number, resize: boolean, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
-    render() {
-        let radius = resolveCorners(this.props.isOut, this.props.attach);
-        return (
-            <ZImage
-                source={{ uuid: this.props.uuid }}
-                resize={this.props.resize}
-                width={this.props.width}
-                height={this.props.height}
-                style={{
-                    borderTopLeftRadius: radius.topLeft,
-                    borderTopRightRadius: radius.topRight,
-                    borderBottomLeftRadius: radius.bottomLeft,
-                    borderBottomRightRadius: radius.bottomRight
-                }}
-            />
-        );
-    }
-}
-
-export class BubbleView extends React.PureComponent<{ appearance?: 'text' | 'media', isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
+export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'media', isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
     render() {
         let radius = resolveCorners(this.props.isOut, this.props.attach);
         let topPadding = 8;
@@ -70,19 +49,25 @@ export class BubbleView extends React.PureComponent<{ appearance?: 'text' | 'med
         if (this.props.attach === 'bottom' || this.props.attach === 'both') {
             bottomPadding = 1;
         }
+        let backgroundColor = this.props.isOut && (this.props.appearance !== 'media') ? '#4747ec' : '#eff2f5';
+        if (Platform.OS === 'macos') {
+            radius.bottomLeft = 18;
+            radius.topLeft = 18;
+            radius.topRight = 18;
+            radius.bottomRight = 18;
+        }
         return (
             <View paddingTop={topPadding} paddingBottom={bottomPadding}>
-                <ZRoundedMask
+                <XPRoundedMask
                     radius={radius}
-                    backgroundColor={this.props.isOut && (this.props.appearance !== 'media') ? '#4747ec' : '#eff2f5'}
+                    backgroundColor={backgroundColor}
                     borderColor={(!this.props.isOut || this.props.appearance === 'media') ? 'rgba(220, 224, 231, 0.45)' : undefined}
-                    
                 >
-                    <View style={{ paddingBottom: innerPaddingBottom, paddingTop: innerPaddingTop, paddingHorizontal: innerPaddingHorizontal }}>
+                    <View style={{ marginBottom: innerPaddingBottom, marginTop: innerPaddingTop, marginHorizontal: innerPaddingHorizontal, backgroundColor: this.props.appearance !== 'media' ? backgroundColor : undefined }}>
                         {this.props.children}
-                        <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, borderColor: 'rgba(220, 224, 231, 0.45)' }} />
+                        <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, borderColor: 'rgba(220, 224, 231, 0.45)' }} pointerEvents="none" />
                     </View>
-                </ZRoundedMask>
+                </XPRoundedMask>
             </View>
         );
     }

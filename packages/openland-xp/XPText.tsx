@@ -7,7 +7,6 @@ export class XPText extends React.Component<TextProps> {
         __enforce_white_text: PropTypes.bool
     };
     render() {
-        console.log(this.context.__enforce_white_text);
         return (<Text {...this.props} style={[this.props.style, this.context.__enforce_white_text && { color: '#fff' }]}>{this.props.children}</Text>);
     }
 }

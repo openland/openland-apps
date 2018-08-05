@@ -6,6 +6,7 @@ import { MessageComponent } from './MessageComponent';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
 import { ZKeyboardListener } from '../../../components/ZKeyboardListener';
+import { MessageView } from 'openland-shared/MessageView';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -134,7 +135,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
 
     renderItem = (itm: any) => {
         // console.warn(itm.item);
-        return (<MessageComponent key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
+        return (<MessageView key={itm.item.key} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
 
     onEndReached = (info: { distanceFromEnd: number }) => {

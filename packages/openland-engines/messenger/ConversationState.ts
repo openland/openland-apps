@@ -1,5 +1,5 @@
-import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
-import { PendingMessage, ModelMessage } from './types';
+import { UserShortFragment } from 'openland-api/Types';
+import { ModelMessage } from './types';
 
 export interface Day {
     key: string;
