@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
+import { View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
@@ -30,7 +30,6 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
     private handlePicker = async () => {
         let res: PickerImage | null = null;
         try {
-            StatusBar.setBarStyle('dark-content');
             let r = await ImagePicker.openPicker({
                 width: 1024,
                 height: 1024,
@@ -41,8 +40,6 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             }
         } catch (e) {
             // Ignore
-        } finally {
-            StatusBar.setBarStyle('light-content');
         }
         if (res) {
             let source = (res as any).sourceURL as string;

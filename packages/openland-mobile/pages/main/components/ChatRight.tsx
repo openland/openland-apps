@@ -5,6 +5,7 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { XPAvatar } from 'openland-xp/XPAvatar';
 
 export class ChatRight extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }, { loading: boolean }> {
 
@@ -20,13 +21,13 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
 
     render() {
         if (!this.state.loading) {
-            return null;
+            return <View width={30} />;
         }
         return (
             <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                 {res => {
                     if (res.loading) {
-                        return;
+                        return null;
                     }
 
                     if (isAndroid) {
@@ -48,8 +49,8 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
 
                     return (
                         <TouchableOpacity disabled={!destPath} onPress={() => this.props.navigation.navigate(destPath!!, destPathArgs)}>
-                            <View paddingRight={15} paddingLeft={15}>
-                                <ZAvatar
+                            <View>
+                                <XPAvatar
                                     src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
                                     size={30}
                                     placeholderKey={res.data!!.chat.flexibleId}

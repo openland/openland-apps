@@ -8,6 +8,7 @@ import {
     ViewStyle,
     Image,
     TouchableOpacity,
+    Platform,
 } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
@@ -17,6 +18,7 @@ import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
 import { ZKeyboardAwareBar } from '../../components/ZKeybardAwareBar';
+import { ZHeaderButton } from '../../components/ZHeaderButton';
 
 let styles = StyleSheet.create({
     textContainer: {
@@ -85,33 +87,40 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
     render() {
         let hasText = this.state.text.trim().length > 0;
         return (
-            <View style={{ height: '100%' }} flexDirection="column">
-                <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
-                <ZKeyboardAwareBar>
-                    <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
-                        <TouchableOpacity onPress={this.handleAttach}>
-                            <View width={52} height={33} alignItems="center" justifyContent="center">
-                                <Image source={iconAttach} style={{ width: 22, height: 21 }} />
-                            </View>
-                        </TouchableOpacity>
-                        <TextInput
-                            flexGrow={1}
-                            flexBasis={0}
-                            placeholder="Message"
-                            placeholderTextColor="#aaaaaa"
-                            onChangeText={this.handleTextChange}
-                            value={this.state.text}
-                            onSubmitEditing={this.handleSubmit}
-                            style={styles.textInput}
-                        />
-                        <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
-                            <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                                <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </ZKeyboardAwareBar>
-            </View>
+            <>
+                {Platform.OS === 'ios' && (
+                    <ZHeaderButton navigation={this.props.navigator}>
+                        <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
+                    </ZHeaderButton>
+                )}
+                <View style={{ height: '100%' }} flexDirection="column">
+                    <MessagesListComponent onAvatarPress={this.handleAvatarPress} engine={this.engine} />
+                    <ZKeyboardAwareBar>
+                        <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
+                            <TouchableOpacity onPress={this.handleAttach}>
+                                <View width={52} height={33} alignItems="center" justifyContent="center">
+                                    <Image source={iconAttach} style={{ width: 22, height: 21 }} />
+                                </View>
+                            </TouchableOpacity>
+                            <TextInput
+                                flexGrow={1}
+                                flexBasis={0}
+                                placeholder="Message"
+                                placeholderTextColor="#aaaaaa"
+                                onChangeText={this.handleTextChange}
+                                value={this.state.text}
+                                onSubmitEditing={this.handleSubmit}
+                                style={styles.textInput}
+                            />
+                            <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
+                                <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
+                                    <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </ZKeyboardAwareBar>
+                </View>
+            </>
         );
     }
 }
@@ -121,7 +130,6 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = (args: NavigationInjectedProps) => {
         return {
             headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
-            headerRight: <ChatRight conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
             headerAppearance: 'small',
             headerHairline: true
         };

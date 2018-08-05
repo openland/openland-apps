@@ -2,8 +2,7 @@ import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { UserQuery, OrganizationQuery } from 'openland-api';
-import { ScrollView } from 'react-native';
+import { OrganizationQuery } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -11,6 +10,7 @@ import { ZScrollView } from '../../components/ZScrollView';
 
 class ProfileOrganizationComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
+        headerAppearance: 'small-hidden',
         title: 'Info'
     };
 
@@ -20,23 +20,23 @@ class ProfileOrganizationComponent extends React.Component<NavigationInjectedPro
 
     render() {
         return (
-            <ZScrollView>
+            <ZScrollView backgroundColor={'#fff'}>
                 <ZQuery query={OrganizationQuery} variables={{ organizationId: this.props.navigation.getParam('id') }}>
                     {(resp) => (
                         <>
-                            <ZListItemGroup>
-                                <ZListItemHeader
-                                    photo={resp.data.organization.photo}
-                                    id={resp.data.organization.id}
-                                    title={resp.data.organization.name}
-                                    subtitle={resp.data.organization.website}
-                                />
-                                <ZListItem text="Send message" appearance="action" onPress={this.handleSend} />
-                                {resp.data.organization.about && <ZListItem text={resp.data.organization.about} />}
-                            </ZListItemGroup>
-                            <ZListItemGroup header="Contacts">
-                                {resp.data.organization.facebook && <ZListItem text={resp.data.organization.facebook} />}
-                                {resp.data.organization.twitter && <ZListItem text={resp.data.organization.twitter} />}
+                            <ZListItemHeader
+                                photo={resp.data.organization.photo}
+                                id={resp.data.organization.id}
+                                title={resp.data.organization.name}
+                                subtitle="Organization"
+                                action="Send message"
+                                onPress={this.handleSend}
+                            />
+                            <ZListItemGroup header="Information">
+                                {resp.data.organization.about && <ZListItem multiline={true} title="about" text={resp.data.organization.about} />}
+                                {resp.data.organization.website && <ZListItem title="website" text={resp.data.organization.website} />}
+                                {resp.data.organization.facebook && <ZListItem title="facebook" text={resp.data.organization.facebook} />}
+                                {resp.data.organization.twitter && <ZListItem title="twitter" text={resp.data.organization.twitter} />}
                             </ZListItemGroup>
                         </>
                     )}
@@ -46,4 +46,4 @@ class ProfileOrganizationComponent extends React.Component<NavigationInjectedPro
     }
 }
 
-export const ProfileOrganization = withApp(ProfileOrganizationComponent);
+export const ProfileOrganization = withApp(ProfileOrganizationComponent, { navigationStyle: 'small' });

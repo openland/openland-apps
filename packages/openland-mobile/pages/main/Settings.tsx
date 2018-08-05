@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, ScrollView } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
 import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
@@ -61,7 +61,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
 
     render() {
         return (
-            <ZScrollView backgroundColor={AppStyles.backgroundColor}>
+            <ZScrollView>
                 <ZQuery query={AccountQuery}>
                     {resp => {
                         return (

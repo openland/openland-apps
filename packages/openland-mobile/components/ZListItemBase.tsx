@@ -7,7 +7,7 @@ import { isAndroid } from '../utils/isAndroid';
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
     separator?: boolean;
-    height?: number;
+    height?: number | null;
     onPress?: () => void;
     path?: string;
     navigationIcon?: boolean;
@@ -26,10 +26,10 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
     }
 
     render() {
-        let height = this.props.height ? this.props.height : 44;
+        let height = this.props.height === null ? undefined : (this.props.height ? this.props.height : 44);
         return (
             <TouchableHighlight onPress={this.handlePress} underlayColor="#f8f8fb" style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress && !this.props.path} delayPressIn={0}>
-                <View style={{ height: height + (this.props.separator !== false ? 1 : 0), flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+                <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
                     <View style={{ height: height, flexDirection: 'row' }}>
                         <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
                         {!isAndroid && this.props.path && (

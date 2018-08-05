@@ -59,12 +59,14 @@ export class LoginLoader extends React.Component<NavigationInjectedProps, { stat
             return <ZLoader />;
         } else if (this.state.state === 'app') {
             return (
-                <YApolloProvider client={getClient()}>
-                    <MessengerContext.Provider value={getMessenger()}>
-                        <PushManager client={getClient()} />
-                        <AppStack />
-                    </MessengerContext.Provider>
-                </YApolloProvider>
+                <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
+                    <YApolloProvider client={getClient()}>
+                        <MessengerContext.Provider value={getMessenger()}>
+                            <PushManager client={getClient()} />
+                            <AppStack />
+                        </MessengerContext.Provider>
+                    </YApolloProvider>
+                </View>
             );
         } else if (this.state.state === 'auth') {
             return <LoginStack />;

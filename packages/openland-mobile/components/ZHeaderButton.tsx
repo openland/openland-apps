@@ -2,13 +2,14 @@ import * as React from 'react';
 import { NavigationInjectedProps, NavigationScreenProp, NavigationParams } from 'react-navigation';
 // import NanoId from 'nanoid';
 import { Button, TouchableOpacity } from 'react-native';
+import { AppStyles } from '../styles/AppStyles';
 
 export interface ZHeaderButtonDescription {
     id: string;
     render: () => React.ReactElement<{}>;
 }
 
-export class ZHeaderButton extends React.PureComponent<{ title: string, onPress: () => void, navigation: NavigationScreenProp<NavigationParams> }> {
+export class ZHeaderButton extends React.PureComponent<{ title?: string, onPress?: () => void, navigation: NavigationScreenProp<NavigationParams> }> {
 
     private id = Math.random() + '-';
 
@@ -24,16 +25,20 @@ export class ZHeaderButton extends React.PureComponent<{ title: string, onPress:
     }
 
     private handlePress = () => {
-        this.props.onPress();
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
     }
 
     private renderButton = () => {
         if (this.props.title) {
-            return (<Button onPress={this.handlePress} color="#fff" title={this.props.title} />);
+            return (<Button color={AppStyles.primaryColor} onPress={this.handlePress} title={this.props.title} />);
         } else {
             return (
                 <TouchableOpacity onPress={this.handlePress}>
-                    {this.props.children}
+                    <>
+                        {this.props.children}
+                    </>
                 </TouchableOpacity>
             );
         }

@@ -17,7 +17,8 @@ import { ZScrollView } from '../../components/ZScrollView';
 
 class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
-        title: 'Info'
+        title: 'Info',
+        headerAppearance: 'small-hidden'
     };
     handleSend = () => {
         this.props.navigation.navigate('Conversation', { 'id': this.props.navigation.getParam('id') });
@@ -32,22 +33,22 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                     }
                     return (
                         <ZScrollView>
-                            <ZListItemGroup>
-                                <ZListItemHeader
-                                    title={resp.data.chat.title}
-                                    photo={resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined}
-                                    id={resp.data.chat.id}
-                                    subtitle="Group"
-                                />
-                                {/* <ZListItem text="Send message" appearance="action" onPress={this.handleSend} />
-                                {resp.data.user.about && <ZListItem text={resp.data.user.about} />} */}
-                            </ZListItemGroup>
+
+                            <ZListItemHeader
+                                title={resp.data.chat.title}
+                                subtitle={resp.data.chat.members.length + ' members'}
+                                photo={resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined}
+                                id={resp.data.chat.id}
+                            />
 
                             <ZListItemGroup header={null}>
+                                <ZListItem appearance="action" text="Set group photo" />
+                                <ZListItem appearance="action" text="Change name" />
                                 <ZListItem text="Notifications" toggle={true} />
                             </ZListItemGroup>
 
                             <ZListItemGroup header="Members">
+                                <ZListItem appearance="action" text="Add members" />
                                 {resp.data.chat.members.map((v) => (
                                     <ZListItemBase key={v.id} separator={false} height={56} onPress={() => this.props.navigation.navigate('ProfileUser', { 'id': v.id })}>
                                         <View paddingTop={12} paddingLeft={15} paddingRight={15}>
@@ -59,13 +60,6 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                                     </ZListItemBase>
                                 ))}
                             </ZListItemGroup>
-
-                            {/* <ZListItemGroup header="Contacts">
-                                {resp.data.user.email && <ZListItem text={resp.data.user.email} />}
-                                {resp.data.user.phone && <ZListItem text={resp.data.user.phone} />}
-                                {resp.data.user.website && <ZListItem text={resp.data.user.website} />}
-                                {resp.data.user.location && <ZListItem text={resp.data.user.location} />}
-                            </ZListItemGroup> */}
                         </ZScrollView>
                     );
                 }}
@@ -74,4 +68,4 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const ProfileGroup = withApp(ProfileGroupComponent);
+export const ProfileGroup = withApp(ProfileGroupComponent, { navigationStyle: 'small' });

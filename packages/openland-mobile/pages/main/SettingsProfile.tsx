@@ -16,7 +16,7 @@ import { AppStyles } from '../../styles/AppStyles';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { ZHeaderButton } from '../../components/ZHeaderButton';
 
-class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { firstName: string, lastName: string, loaded: boolean }> {
+class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { loaded: boolean }> {
 
     static navigationOptions = {
         title: 'Edit profile',
@@ -27,9 +27,7 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
     constructor(props: NavigationInjectedProps) {
         super(props);
         this.state = {
-            loaded: false,
-            firstName: '',
-            lastName: ''
+            loaded: false
         };
     }
 
