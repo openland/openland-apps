@@ -13,10 +13,12 @@ export interface XPLinearGradientProps extends XPFlexStyle {
     borderBottomRightRadius?: number;
     borderTopLeftRadius?: number;
     borderTopRightRadius?: number;
+    width?: number;
+    height?: number;
 }
 
-export class XPLinearGradient extends React.Component<{}> {
+export class XPLinearGradient extends React.Component<XPLinearGradientProps> {
     render() {
-        return <Text>{PLinearGradient}</Text>;
+        return <PLinearGradient {...this.props}>{this.props.children}</PLinearGradient>;
     }
 }

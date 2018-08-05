@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
-import { View, Platform, Text } from 'react-native';
+import { View, Platform, Text, StyleSheet, TextStyle } from 'react-native';
 import { XPImage } from './XPImage';
+import { XPLinearGradient } from './XPLinearGradient';
+import { XPStyles } from './XPStyles';
 
-let colors = [
-    '#ffab00',
-    '#654bfa',
-    '#d75454',
-    '#4285f4',
-    '#00c851',
-    '#717fa1',
-    '#334562',
-    '#c72ce1'
-];
+const styles = StyleSheet.create({
+    placeholderText: {
+        maxWidth: '100%',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        color: '#fff'
+    } as TextStyle
+});
 
 export class XPAvatar extends React.PureComponent<{ size: number, src?: string | null, placeholderKey?: string | null, placeholderTitle?: string | null }> {
     render() {
@@ -29,6 +29,7 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
         if (this.props.placeholderKey) {
             placeholderIndex = doSimpleHash(this.props.placeholderKey);
         }
+        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
         let placeholderText = '?';
         if (this.props.placeholderTitle) {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
@@ -53,9 +54,19 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
             textSize = 14;
         }
         return (
-            <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: colors[placeholderIndex % colors.length] }} alignItems="center" justifyContent="center">
-                <Text style={{ fontSize: textSize, maxWidth: '100%', textAlign: 'center', textAlignVertical: 'center', color: '#fff' }}>{placeholderText}</Text>
-            </View>
+            <XPLinearGradient
+                width={this.props.size}
+                height={this.props.size}
+                borderRadius={this.props.size / 2}
+                fallbackColor={placeholderStyle.placeholderTitle}
+                colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+            >
+                <View alignItems="center" justifyContent="center" width={this.props.size} height={this.props.size}>
+                    <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
+                </View>
+            </XPLinearGradient>
         );
     }
 }

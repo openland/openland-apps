@@ -105,8 +105,8 @@ android {
         applicationId "com.korshakov.testing.openland"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 15
-        versionName "1.0.15"
+        versionCode 16
+        versionName "1.0.16"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -146,6 +146,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-linear-gradient')
     compile project(':react-native-blur')
     compile project(':react-native-view-overflow')
     compile project(':react-native-image-crop-picker')

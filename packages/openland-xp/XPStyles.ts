@@ -16,7 +16,7 @@ export const XPStyles = {
     avatars: [{
         nameColor: '#FF8D00',
         placeholderTitle: 'white',
-        placeholderColorStart: '#ff8d00',
+        placeholderColorStart: '#ffb600',
         placeholderColorEnd: '#ff8d00',
     }, {
         nameColor: '#FF655D',
@@ -37,11 +37,11 @@ export const XPStyles = {
         nameColor: '#00C6C8',
         placeholderTitle: 'white',
         placeholderColorStart: '#00d1d4',
-        placeholderColorEng: '#00afc8'
+        placeholderColorEnd: '#00afc8'
     }, {
         nameColor: '##8E00E6',
         placeholderTitle: 'white',
         placeholderColorStart: '#aa22ff',
-        placeholderColorEng: '#8e00e6'
+        placeholderColorEnd: '#8e00e6'
     }]
 };

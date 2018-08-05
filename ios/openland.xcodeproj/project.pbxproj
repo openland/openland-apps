@@ -40,6 +40,7 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* openlandTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* openlandTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		2E34A29453EA4DDA94378D2D /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DAD0C618B9F41E699CF1155 /* libBVLinearGradient.a */; };
 		3321E60F012744228466D240 /* libA0Auth0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4573FACD57B4A1D997D0A9F /* libA0Auth0.a */; };
 		34A1076DCB0340E5AA164B54 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9261232309A543F49CE4D850 /* libRNFetchBlob.a */; };
 		49D1D62EDD0547A9AB3383E4 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC04373DF80411497509133 /* libFastImage.a */; };
@@ -400,6 +401,20 @@
 			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
 			remoteInfo = "RCTPushNotification-tvOS";
 		};
+		AA5BFB0F21175A3800E498FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = BVLinearGradient;
+		};
+		AA5BFB1121175A3800E498FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
+		};
 		AA805F3F2106686B00149D4D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2241441EECE248DFAA97616D /* A0Auth0.xcodeproj */;
@@ -517,6 +532,7 @@
 		5229163553424098AECAE454 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		5AAE8C1B1E9248819BA237DF /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSearchBar.xcodeproj; path = "../node_modules/react-native-search-bar/ios/RNSearchBar.xcodeproj"; sourceTree = "<group>"; };
 		5C57002564F147139C1710F1 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		5DAD0C618B9F41E699CF1155 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6926AC6E1CC341D39C4DE079 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		7575E5B9294149ECB950973F /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
@@ -527,6 +543,7 @@
 		9261232309A543F49CE4D850 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		95A2DA4661304DEE850FB986 /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
 		987D34C1686E4412AC78C0F0 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		AA904699210F2EDB00F989BC /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -591,6 +608,7 @@
 				E4A436BC73984B43B9A547F2 /* libRNSearchBar.a in Frameworks */,
 				549581E2E64549E4915281B0 /* libRNViewOverflow.a in Frameworks */,
 				02136319CF55454E90C40A2F /* libRNBlur.a in Frameworks */,
+				2E34A29453EA4DDA94378D2D /* libBVLinearGradient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -795,6 +813,7 @@
 				5AAE8C1B1E9248819BA237DF /* RNSearchBar.xcodeproj */,
 				245A71A53F3B43C4993FE8A2 /* RNViewOverflow.xcodeproj */,
 				3001BC1F2F3743CDBB094195 /* RNBlur.xcodeproj */,
+				9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -893,6 +912,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AA5BFB0B21175A3800E498FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA5BFB1021175A3800E498FC /* libBVLinearGradient.a */,
+				AA5BFB1221175A3800E498FC /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		AA805F162106686600149D4D /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -908,6 +936,7 @@
 				D42AFEFF61464D6C82A4A5F5 /* libRNSearchBar.a */,
 				B8E68240253A49F7AD8DDC9B /* libRNViewOverflow.a */,
 				95A2DA4661304DEE850FB986 /* libRNBlur.a */,
+				5DAD0C618B9F41E699CF1155 /* libBVLinearGradient.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1115,6 +1144,10 @@
 				{
 					ProductGroup = AA805F3C2106686A00149D4D /* Products */;
 					ProjectRef = 2241441EECE248DFAA97616D /* A0Auth0.xcodeproj */;
+				},
+				{
+					ProductGroup = AA5BFB0B21175A3800E498FC /* Products */;
+					ProjectRef = 9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */;
 				},
 				{
 					ProductGroup = AACFC5F52107D00A00225C86 /* Products */;
@@ -1539,6 +1572,20 @@
 			remoteRef = AA5ACBC621076417004798B4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		AA5BFB1021175A3800E498FC /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = AA5BFB0F21175A3800E498FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AA5BFB1221175A3800E498FC /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = AA5BFB1121175A3800E498FC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		AA805F402106686B00149D4D /* libA0Auth0.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1764,12 +1811,14 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1810,12 +1859,14 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1859,6 +1910,7 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = openland/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1893,6 +1945,7 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = openland/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1932,11 +1985,13 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = "openland-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1987,11 +2042,13 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = "openland-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2041,11 +2098,13 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = "openland-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2095,11 +2154,13 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-view-overflow/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 				);
 				INFOPLIST_FILE = "openland-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

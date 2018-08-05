@@ -93,7 +93,6 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
                         </View>
                         <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
                             <View flexDirection="row" height={18}>
-                                <XPLinearGradient />
                                 <Text style={[styles.title, highlight && styles.title_highlight]} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</Text>
                                 <Text style={[styles.date, highlight && styles.title_highlight]}>{messageDate}</Text>
                             </View>
