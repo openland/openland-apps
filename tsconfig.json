@@ -101,6 +101,9 @@
       "openland-y-runtime-native": [
         "openland-y-runtime-native"
       ],
+      "openland-y-runtime-mac": [
+        "openland-y-runtime-mac"
+      ],
       "openland-mobile": [
         "openland-mobile"
       ],
@@ -109,6 +112,9 @@
       ],
       "openland-mac": [
         "openland-mac/src"
+      ],
+      "openland-xp": [
+        "openland-xp"
       ]
     },
     "importHelpers": true
@@ -133,6 +139,7 @@
     "./packages/openland-web",
     "./packages/openland-api",
     "./packages/openland-text",
+    "./packages/openland-xp",
     "./packages/openland-x",
     "./packages/openland-x-routing",
     "./packages/openland-x-utils",
@@ -156,6 +163,7 @@
     "./packages/openland-y-runtime-api",
     "./packages/openland-mobile",
     "./packages/openland-y-runtime-native",
+    "./packages/openland-y-runtime-mac",
     "./packages/openland-mac/src"
   ]
 }

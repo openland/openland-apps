@@ -2,10 +2,10 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { ZAvatar } from './ZAvatar';
-import { AppStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItem } from './ZListItem';
 import { formatDate } from 'openland-mobile/utils/formatDate';
+import { XPAvatar } from 'openland-xp/XPAvatar';
+import { XPLinearGradient } from 'openland-xp/XPLinearGradient';
 
 const styles = StyleSheet.create({
     title: {
@@ -83,7 +83,7 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
                     <>
                         <View style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center" shouldRasterizeIOS={true}>
                             <View position="absolute" style={{ width: 80, height: 80 }} alignItems="center" justifyContent="center">
-                                <ZAvatar
+                                <XPAvatar
                                     src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
                                     size={60}
                                     placeholderKey={this.props.item.flexibleId}
@@ -93,6 +93,7 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
                         </View>
                         <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">
                             <View flexDirection="row" height={18}>
+                                <XPLinearGradient />
                                 <Text style={[styles.title, highlight && styles.title_highlight]} ellipsizeMode="tail" numberOfLines={1}>{this.props.item.title}</Text>
                                 <Text style={[styles.date, highlight && styles.title_highlight]}>{messageDate}</Text>
                             </View>

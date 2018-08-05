@@ -7,6 +7,7 @@ import { ConversationShortFragment } from 'openland-api/Types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { formatDate } from '../../../utils/formatDate';
 import { isAndroid } from '../../../utils/isAndroid';
+import { XPAvatar } from 'openland-xp/XPAvatar';
 
 const styles = StyleSheet.create({
     title: {
@@ -76,8 +77,8 @@ export class DialogComponent extends React.PureComponent<DialogComponentProps> {
         }
         return (
             <ZListItemBase onPress={this.handlePress} height={80} separatorPaddingStart={80}>
-                <View width={80} height={80} alignItems="center" justifyContent="center" transform={[{ rotate: '20deg' }]}>
-                    <ZAvatar
+                <View width={80} height={80} alignItems="center" justifyContent="center">
+                    <XPAvatar
                         src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
                         size={isAndroid ? 56 : 60}
                         placeholderKey={this.props.item.flexibleId}

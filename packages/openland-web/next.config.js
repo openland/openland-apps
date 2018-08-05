@@ -12,10 +12,12 @@ const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
 
+        console.log(config);
+
         const cacheDir = path.resolve(__dirname + '/../../node_modules/.cache');
 
         // wat?
-        config.resolve.extensions.push('.ts', '.tsx')
+        config.resolve.extensions.push('.ts', '.tsx', '.js', '.jsx')
 
         // Merge paths from typescript config
         const tsConfig = require("../../tsconfig.json");
@@ -53,10 +55,20 @@ const config = {
         }
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
-            include: [path.resolve(dir + '/../')],
+            include: [
+                path.resolve(dir + '/../')
+            ],
             exclude: /node_modules/,
             use: tsLoader,
         })
+        // config.module.rules.unshift({
+        //     test: /\.(js|jsx)$/,
+        //     include: [
+        //         path.resolve(dir + '/../../node_modules/react-native-web/')
+        //     ],
+        //     // exclude: /node_modules/,
+        //     use: defaultLoaders.babel,
+        // });
 
         if (dev && !isServer) {
             config.module.rules.push({

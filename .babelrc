@@ -1,13 +1,15 @@
 {
-    "env":{
+    "env": {
         "default": {
             "presets": ["next/babel", "@zeit/next-typescript/babel"],
-            "plugins": ["transform-react-stateless-component-name", "inline-react-svg", "react-native-web"]
+            "plugins": ["transform-react-stateless-component-name", "inline-react-svg", ["react-native-web", {
+                "commonjs": true
+            }]]
         },
         "production": {
             "presets": ["react-native"],
             "plugins": [
-                ["module-resolver",{
+                ["module-resolver", {
                     "root": ["./build/native"],
                     "alias": {
                         "openland-api": "./build/native/openland-api",
@@ -18,31 +20,31 @@
                         "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
                         "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
                         "openland-y-forms": "./build/native/openland-y-forms",
+                        "openland-xp": "./build/native/openland-xp",
                         "assets": "./packages/openland-mobile/assets"
-                      }
-                  }
-                ]
+                    }
+                }]
             ]
         },
         "development": {
             "presets": ["react-native"],
             "plugins": [
-                ["module-resolver",{
+                ["module-resolver", {
                     "root": ["."],
                     "alias": {
-                      "openland-api": "./build/native/openland-api",
-                      "openland-y-graphql": "./build/native/openland-y-graphql",
-                      "openland-engines": "./build/native/openland-engines",
-                      "openland-y-utils": "./build/native/openland-y-utils",
-                      "openland-y-runtime": "./build/native/openland-y-runtime-native",
-                      "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
-                      "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
-                      "openland-y-forms": "./build/native/openland-y-forms",
-                      "openland-y-store": "./build/native/openland-y-store",
-                      "assets": "./packages/openland-mobile/assets"
+                        "openland-api": "./build/native/openland-api",
+                        "openland-y-graphql": "./build/native/openland-y-graphql",
+                        "openland-engines": "./build/native/openland-engines",
+                        "openland-y-utils": "./build/native/openland-y-utils",
+                        "openland-y-runtime": "./build/native/openland-y-runtime-native",
+                        "openland-y-runtime-native": "./build/native/openland-y-runtime-native",
+                        "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
+                        "openland-y-forms": "./build/native/openland-y-forms",
+                        "openland-y-store": "./build/native/openland-y-store",
+                        "openland-xp": "./build/native/openland-xp",
+                        "assets": "./packages/openland-mobile/assets"
                     }
-                  }
-                ]
+                }]
             ]
         }
     }

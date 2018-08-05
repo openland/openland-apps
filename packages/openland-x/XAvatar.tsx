@@ -9,6 +9,7 @@ import PlaceholderOrg from './icons/avatar_org_large.svg';
 import PlaceholderOrgSmall from './icons/avatar_org_small.svg';
 import PlaceholderUser from './icons/avatar_user_large.svg';
 import PlaceholderUserSmall from './icons/avatar_user_small.svg';
+import { XPImage } from 'openland-xp/XPImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'medium' | 'default' | 'small';
 export type XAvatarStyle = 'organization' | 'person';
@@ -113,10 +114,10 @@ const AvatarBehaviour = [
 ];
 const StyledAvatarSrc = Glamorous.img<StyledAvatarProps>(AvatarBehaviour);
 const StyledAvatar = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
-    (props: any) => ({
-        overflow: 'hidden'
-    })]);
-    
+(props: any) => ({
+    overflow: 'hidden'
+})]);
+
 const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
 (props: any) => ({
     display: 'flex',
@@ -161,7 +162,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {(props.photoRef || props.cloudImageUuid) && (
                 <StyledAvatar {...avatarProps}>
-                    <XCloudImage srcCloud={props.cloudImageUuid} photoRef={props.photoRef} maxWidth={imageWidth} maxHeight={imageHeight} />
+                    <XPImage source={props.cloudImageUuid ? props.cloudImageUuid : props.photoRef!!} width={imageWidth} height={imageHeight} />
                 </StyledAvatar>
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (

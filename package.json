@@ -104,6 +104,7 @@
 		"react-native-splash-screen": "^3.1.0",
 		"react-native-vector-icons": "^4.6.0",
 		"react-native-view-overflow": "^0.0.3",
+		"react-native-web": "^0.8.9",
 		"react-navigation": "2.9.2",
 		"react-navigation-material-bottom-tabs": "0.3.0",
 		"react-router": "^4.2.0",

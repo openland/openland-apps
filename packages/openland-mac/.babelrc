@@ -9,7 +9,7 @@
                 "openland-y-graphql": "./build/native/openland-y-graphql",
                 "openland-engines": "./build/native/openland-engines",
                 "openland-y-utils": "./build/native/openland-y-utils",
-                "openland-y-runtime": "./build/native/openland-y-runtime",
+                "openland-y-runtime": "./build/native/openland-y-runtime-mac",
                 "openland-y-runtime-api": "./build/native/openland-y-runtime-api",
                 "openland-y-forms": "./build/native/openland-y-forms",
                 "assets": "./build/assets"

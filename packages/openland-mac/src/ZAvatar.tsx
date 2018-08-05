@@ -4,6 +4,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 // import { isAndroid } from '../utils/isAndroid';
 import { ZImage } from './ZImage';
+import { XPImage } from 'openland-xp/XPImage';
 
 let colors = [
     '#ffab00',
@@ -21,7 +22,7 @@ export class ZAvatar extends React.PureComponent<{ size: 96 | 60 | 56 | 40 | 36 
         if (this.props.src) {
             return (
                 <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
-                    <ZImage width={this.props.size} height={this.props.size} source={{ uri: this.props.src }} style={{ borderRadius: this.props.size / 2 }} />
+                    <XPImage width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
                     {/* {!isAndroid && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />} */}
                 </View>
             );
