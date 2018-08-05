@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
-import { View } from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import { View, Dimensions } from 'react-native';
+import ImageZoom from 'react-native-image-pan-zoom';
+import { XPImage } from 'openland-xp/XPImage';
 
 class PicturePreviewComponent extends React.PureComponent<NavigationInjectedProps> {
     static navigationOptions = {
@@ -12,7 +13,14 @@ class PicturePreviewComponent extends React.PureComponent<NavigationInjectedProp
     render() {
         return (
             <View width="100%" height="100%" backgroundColor="#fff">
-                <ImageViewer imageUrls={[{ url: 'https://ucarecdn.com/' + this.props.navigation.getParam('uuid') + '/' }]} />
+                <ImageZoom
+                    cropWidth={Dimensions.get('window').width}
+                    cropHeight={Dimensions.get('window').height}
+                    imageWidth={300}
+                    imageHeight={300}
+                >
+                    <XPImage source={{ uuid: this.props.navigation.getParam('uuid') }} width={300} height={300} />
+                </ImageZoom>
             </View>
         );
     }
