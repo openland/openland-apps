@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { View, Image, SectionList, Text, Dimensions, FlatList } from 'react-native';
-import { MessageComponent } from './MessageComponent';
+import { View, Image, SectionList, Text, Dimensions } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
 import { ZKeyboardListener } from '../../../components/ZKeyboardListener';
