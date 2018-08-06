@@ -11,6 +11,7 @@ const SUBSCRIBE_TYPINGS = gql`
                 id
                 name
             }
+            cancel
         }
     }
 `;
@@ -32,12 +33,15 @@ export class TypingsWatcher {
                     return;
                 }
                 let cId: string = event.data.alphaSubscribeTypings.conversation.id;
-                console.warn(event.data.alphaSubscribeTypings.user.name, 'typing in ', cId);
+                // console.warn(event.data.alphaSubscribeTypings.user.name, 'typing in ', cId);
                 // add new typings
                 let existing = this.typings[cId] || {};
-                existing[event.data.alphaSubscribeTypings.user.id] = event.data.alphaSubscribeTypings.user.name;
-                this.typings[cId] = existing;
-                this.onChange(cId, this.renderString(cId));
+                if (!event.data.alphaSubscribeTypings.cancel) {
+                    existing[event.data.alphaSubscribeTypings.user.id] = event.data.alphaSubscribeTypings.user.name;
+                    this.typings[cId] = existing;
+                    this.onChange(cId, this.renderString(cId));
+                }
+
                 // clear scehduled typing clear
                 let existingTimeouts = this.timeouts[cId] || {};
                 clearTimeout(existingTimeouts[event.data.alphaSubscribeTypings.user.id]);
@@ -47,7 +51,7 @@ export class TypingsWatcher {
                         existing[event.data.alphaSubscribeTypings.user.id] = undefined;
                         onChange(cId, this.renderString(cId));
                     },
-                    2000);
+                    event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
                 this.timeouts[cId] = existingTimeouts;
             }
         });
