@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InputAccessoryView, View, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import { ZBlurredView } from './ZBlurredView';
 import { ZAppConfig } from './ZAppConfig';
 import { KeyboardTrackingView } from 'react-native-keyboard-tracking-view';
@@ -15,7 +15,7 @@ export class ZKeyboardAwareBar extends React.PureComponent {
                                 style={{
                                     flexDirection: 'column',
                                     alignItems: 'stretch',
-                                    position: 'absolute', 
+                                    position: 'absolute',
                                     left: 0, right: 0, bottom: 0,
                                     marginBottom: -ZAppConfig.bottomNavigationBarInset,
                                 }}
@@ -32,14 +32,12 @@ export class ZKeyboardAwareBar extends React.PureComponent {
         }
         return (
             <View position="absolute" left={0} bottom={0} right={0}>
-                <InputAccessoryView>
-                    <View flexDirection="column" alignItems="stretch">
-                        <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
-                        <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: ZAppConfig.bottomNavigationBarInset }}>
-                            {this.props.children}
-                        </ZBlurredView>
-                    </View>
-                </InputAccessoryView>
+                <View flexDirection="column" alignItems="stretch">
+                    <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
+                    <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: ZAppConfig.bottomNavigationBarInset }}>
+                        {this.props.children}
+                    </ZBlurredView>
+                </View>
             </View>
         );
     }

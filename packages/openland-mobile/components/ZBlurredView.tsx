@@ -36,7 +36,7 @@ export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 
             );
         } else {
             return (
-                <View {...this.props}>
+                <View {...this.props} backgroundColor="#fff">
                     {this.props.children}
                 </View>
             );
