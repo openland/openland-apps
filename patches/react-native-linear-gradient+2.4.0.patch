@@ -1,27 +1,4 @@
 patch-package
-new file mode 100644
---- /dev/null
-+++ b/node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj/xcuserdata/steve.xcuserdatad/xcschemes/xcschememanagement.plist
-@@ -0,0 +1,19 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-+<plist version="1.0">
-+<dict>
-+	<key>SchemeUserState</key>
-+	<dict>
-+		<key>BVLinearGradient-tvOS.xcscheme</key>
-+		<dict>
-+			<key>orderHint</key>
-+			<integer>66</integer>
-+		</dict>
-+		<key>BVLinearGradient.xcscheme</key>
-+		<dict>
-+			<key>orderHint</key>
-+			<integer>65</integer>
-+		</dict>
-+	</dict>
-+</dict>
-+</plist>
 --- a/node_modules/react-native-linear-gradient/index.d.ts
 +++ b/node_modules/react-native-linear-gradient/index.d.ts
 @@ -1,9 +1,9 @@
