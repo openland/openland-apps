@@ -207,7 +207,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
                     extraData={this.props.keyboardHeight}
                     maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
                 />
-                {this.state.loading && <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight} top={ZAppConfig.navigationBarContentInsetSmall}><ZLoader /></View>}
+                {this.state.loading && <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight} top={ZAppConfig.navigationBarContentInsetSmall}><ZLoader transparent={true} /></View>}
             </View>
         );
     }

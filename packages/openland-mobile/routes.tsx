@@ -19,6 +19,7 @@ import { Directory } from './pages/main/Directory';
 import { Navigation } from './pages/dev/Navigation';
 import { isAndroid } from './utils/isAndroid';
 import { PicturePreview } from './pages/main/PicturePreview';
+import { Loader } from './pages/dev/Loader';
 
 //
 // Home Routes
@@ -111,9 +112,11 @@ export const AppStack = createZStackNavigator({
   SettingsProfile: SettingsProfile,
   SettingsNotifications: SettingsNotifications,
   PicturePreview: PicturePreview,
+  
   DevTypography: Typography,
   DevComponents: Components,
-  DevNavigation: Navigation
+  DevNavigation: Navigation,
+  DevLoader: Loader,
 });
 
 //

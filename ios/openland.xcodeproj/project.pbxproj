@@ -59,7 +59,6 @@
 		8310E3E5526E402699A09B2F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9B41ACA907A43C6B225DDDC /* MaterialCommunityIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A0C52DC8CE88418DB6A5F0E4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDCBF4B960B9464F89A8B561 /* Foundation.ttf */; };
-		AA006CCF211A581D0093F7EF /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA006C95211A58070093F7EF /* Lottie.framework */; };
 		AA006CD0211A581D0093F7EF /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA006C95211A58070093F7EF /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA5ACBC82107642B004798B4 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5ACBC521076417004798B4 /* libRCTPushNotification.a */; };
 		AA90469D210F2F0600F989BC /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; };
@@ -643,7 +642,6 @@
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
-				AA006CCF211A581D0093F7EF /* Lottie.framework in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,

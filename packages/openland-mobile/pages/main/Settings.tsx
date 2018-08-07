@@ -90,6 +90,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                                     <ZListItem text="Typography" path="DevTypography" />
                                     <ZListItem text="Components" path="DevComponents" />
                                     <ZListItem text="Navigation" path="DevNavigation" />
+                                    <ZListItem text="Loader" path="DevLoader" />
                                     <ZListItem text="Reboot" onPress={this.handleReboot} />
                                     <ZListItem text="Log out" onPress={this.handleLogout} />
                                 </ZListItemGroup>
