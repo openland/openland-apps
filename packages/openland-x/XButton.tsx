@@ -7,8 +7,8 @@ import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 
-export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small';
-export type XButtonStyle = 'primary' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
+export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | 'r-large' | 'r-default' | 'r-small' | 'r-tiny';
+export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
 
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
@@ -39,6 +39,23 @@ let iconsIndentation = styleResolver({
     },
     'small': {
         marginRight: 5
+    },
+
+    'r-large': {
+        marginLeft: -4,
+        marginRight: 4
+    },
+    'r-default': {
+        marginLeft: -2,
+        marginRight: 4
+    },
+    'r-small': {
+        marginLeft: -2,
+        marginRight: 4
+    },
+    'r-tiny': {
+        marginLeft: -2,
+        marginRight: 2
     }
 });
 
@@ -58,6 +75,23 @@ let iconsIndentationRight = styleResolver({
     },
     'small': {
         marginLeft: 5
+    },
+
+    'r-large': {
+        marginRight: -4,
+        marginLeft: 4
+    },
+    'r-default': {
+        marginRight: -2,
+        marginLeft: 4
+    },
+    'r-small': {
+        marginRight: -2,
+        marginLeft: 4
+    },
+    'r-tiny': {
+        marginRight: -2,
+        marginLeft: 2
     }
 });
 
@@ -91,6 +125,31 @@ let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'rig
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+    },
+
+    'r-large': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
+    },
+    'r-default': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+    },
+    'r-small': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+    },
+    'r-tiny': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
     }
 }));
 
@@ -201,6 +260,91 @@ let sizeStyles = styleResolver({
             top: 'calc(50% - 12px)',
             left: 'calc(50% - 12px)'
         }
+    },
+
+    'r-large': {
+        height: 40,
+        lineHeight: '38px',
+        fontSize: 20,
+        letterSpacing: 0.5,
+        fontWeight: 500,
+        '& .button-content': {
+            paddingLeft: 20,
+            paddingRight: 20
+        },
+        '& .icon': {
+            fontSize: 24
+        },
+        '& .loading-icon': {
+            width: 40,
+            height: 40,
+            lineHeight: 'normal',
+            top: 'calc(50% - 20px)',
+            left: 'calc(50% - 20px)'
+        }
+    },
+    'r-default': {
+        height: 32,
+        lineHeight: '30px',
+        fontSize: 14,
+        letterSpacing: 0.4,
+        fontWeight: 500,
+        '& .button-content': {
+            paddingLeft: 16,
+            paddingRight: 16
+        },
+        '& .icon': {
+            fontSize: 20
+        },
+        '& .loading-icon': {
+            width: 32,
+            height: 32,
+            lineHeight: 'normal',
+            top: 'calc(50% - 16px)',
+            left: 'calc(50% - 16px)'
+        }
+    },
+    'r-small': {
+        height: 28,
+        lineHeight: '26px',
+        fontSize: 14,
+        letterSpacing: 0.4,
+        fontWeight: 500,
+        '& .button-content': {
+            paddingLeft: 12,
+            paddingRight: 12
+        },
+        '& .icon': {
+            fontSize: 16
+        },
+        '& .loading-icon': {
+            width: 28,
+            height: 28,
+            lineHeight: 'normal',
+            top: 'calc(50% - 14px)',
+            left: 'calc(50% - 14px)'
+        }
+    },
+    'r-tiny': {
+        height: 18,
+        lineHeight: '16px',
+        fontSize: 12,
+        letterSpacing: 0.3,
+        fontWeight: 600,
+        '& .button-content': {
+            paddingLeft: 8,
+            paddingRight: 8
+        },
+        '& .icon': {
+            fontSize: 12
+        },
+        '& .loading-icon': {
+            width: 18,
+            height: 18,
+            lineHeight: 'normal',
+            top: 'calc(50% - 9px)',
+            left: 'calc(50% - 9px)'
+        }
     }
 });
 
@@ -238,15 +382,16 @@ let colorStyles = styleResolver({
         }
     },
     'success': {
-        backgroundColor: '#3cca66',
+        backgroundColor: '#69d06d',
         color: '#ffffff',
         border: 'solid 1px transparent',
+        cursor: 'default',
         '&:hover': {
-            backgroundColor: '#3cca66',
+            backgroundColor: '#69d06d',
             color: '#ffffff'
         },
         '&:active': {
-            backgroundColor: '#3cca66',
+            backgroundColor: '#69d06d',
             color: '#ffffff'
         }
     },
@@ -336,7 +481,24 @@ let colorStyles = styleResolver({
         '&:focus': {
             textDecoration: 'underline'
         }
-    }
+    },
+
+    'primary-sky-blue': {
+        backgroundColor: '#1790ff',
+        color: '#ffffff',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            backgroundColor: '#45a6ff',
+            color: '#ffffff'
+        },
+        '&:active': {
+            backgroundColor: '#117fe4',
+            color: '#ffffff'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        }
+    },
 });
 
 let colorDisabledStyles = styleResolver({
@@ -375,7 +537,14 @@ let colorDisabledStyles = styleResolver({
     },
     'link_danger': {
         color: '#e28787 !important',
-    }
+    },
+    'primary-sky-blue': {
+        backgroundColor: '#45a6ff !important',
+        border: 'solid 1px transparent !important',
+        color: '#c7e4ff !important'
+    },
+    'success': {
+    },
 });
 
 let colorPressedStyles = styleResolver({
@@ -412,7 +581,14 @@ let colorPressedStyles = styleResolver({
     'link': {
     },
     'link_danger': {
-    }
+    },
+    'primary-sky-blue': {
+        backgroundColor: '#117fe4 !important',
+        border: 'solid 1px transparent !important',
+        color: '#ffffff !important'
+    },
+    'success': {
+    },
 });
 
 let loaderStyles = styleResolver({
@@ -436,6 +612,12 @@ let loaderStyles = styleResolver({
     },
     'link': {
         color: '#5640d6'
+    },
+    'primary-sky-blue': {
+        color: '#ffffff'
+    },
+    'success': {
+        color: '#ffffff'
     }
 });
 
@@ -533,13 +715,13 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                 <MainContent className="main-content">
                     {props.icon && (
                         typeof(props.icon) === 'string'
-                        ? <StyledIcon text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
+                        ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
                         : props.icon
                     )}
                     <ButtomText>{props.text}</ButtomText>
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
-                        ? <StyledIconRight text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />
+                        ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />
                         : props.iconRight
                     )}
                 </MainContent>

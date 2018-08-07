@@ -21,6 +21,12 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton text="default" />
                         <XButton size="small" text="small" />
                     </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-large" text="r-large" />
+                        <XButton size="r-default" text="r-default" />
+                        <XButton size="r-small" text="r-small" />
+                        <XButton size="r-tiny" text="r-tiny" />
+                    </XHorizontal>
                     <XTitle>Styles</XTitle>
                     <XHorizontal>
                         <XButton style="primary" text="primary" />
@@ -30,6 +36,10 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="electric" text="electric" />
                         <XButton style="flat" text="flat" />
                     </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-default" style="primary-sky-blue" text="primary-sky-blue" />
+                        <XButton size="r-default" style="success" text="success" />
+                    </XHorizontal>
                     <XTitle>Icons</XTitle>
                     <XHorizontal>
                         <XButton size="x-large" text="x-large" icon="star" />
@@ -37,6 +47,12 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton size="medium" text="medium" icon="star" />
                         <XButton text="default" icon="star" />
                         <XButton size="small" text="small" icon="star" />
+                    </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-large" text="r-large" icon="star" />
+                        <XButton size="r-default" text="r-default" icon="star" />
+                        <XButton size="r-small" text="r-small" icon="star" />
+                        <XButton size="r-tiny" text="r-tiny" icon="star" />
                     </XHorizontal>
                     <XTitle>Loading</XTitle>
                     <XHorizontal>
@@ -46,6 +62,10 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="ghost" loading={true} text="ghost" />
                         <XButton style="electric" loading={true} text="electric" />
                         <XButton style="flat" loading={true} text="flat" />
+                    </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-default" style="primary-sky-blue" loading={true} text="primary-sky-blue" />
+                        <XButton size="r-default" style="success" loading={true} text="success" />
                     </XHorizontal>
                     <XTitle>Loading</XTitle>
                     <XHorizontal>
@@ -64,6 +84,9 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="electric" text="electric" enabled={false} />
                         <XButton style="flat" text="flat" enabled={false} />
                     </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-default" style="primary-sky-blue" text="primary-sky-blue" enabled={false} />
+                    </XHorizontal>
                     <XTitle>Pressed</XTitle>
                     <XHorizontal>
                         <XButton style="primary" text="primary" pressed={true} />
@@ -73,6 +96,9 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="electric" text="electric" pressed={true} />
                         <XButton style="flat" text="flat" pressed={true} />
                     </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-default" style="primary-sky-blue" text="primary-sky-blue" pressed={true} />
+                    </XHorizontal>
                     <XTitle>Reverse icon</XTitle>
                     <XHorizontal>
                         <XButton style="danger" size="x-large" text="x-large" iconRight="star" />
@@ -81,6 +107,13 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton style="electric" text="electric" icon="star" iconRight="star" />
                         <XButton text="default" pressed={true} icon="star" iconRight="star" />
                         <XButton style="ghost" text="ghost" icon="star" iconRight="star" />
+                    </XHorizontal>
+                    <XHorizontal>
+                        <XButton size="r-large" text="r-large" style="primary-sky-blue" iconRight="star" />
+                        <XButton size="r-default" text="r-default" style="primary-sky-blue" iconRight="star" />
+                        <XButton size="r-default" text="r-default" style="success" icon="star" iconRight="star" />
+                        <XButton size="r-small" text="r-small" style="primary-sky-blue" iconRight="star" />
+                        <XButton size="r-tiny" text="r-tiny" style="primary-sky-blue" iconRight="star" />
                     </XHorizontal>
                 </XVertical>
             </XContent>
