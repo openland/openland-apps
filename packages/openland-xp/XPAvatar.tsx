@@ -28,7 +28,7 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
                 >
                     <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
                         <XPImage width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
-                        <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />
+                        {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                     </View>
                 </AndroidAliaser>
             );
@@ -79,7 +79,6 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
                 >
                     <View alignItems="center" justifyContent="center" width={this.props.size} height={this.props.size}>
                         <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
-                        <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />
                     </View>
                 </XPLinearGradient>
             </AndroidAliaser>
