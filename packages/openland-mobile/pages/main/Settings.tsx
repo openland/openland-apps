@@ -47,6 +47,10 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
         }
     }
 
+    handleReboot = () => {
+        AppUpdateTracker.restartApp();
+    }
+
     handleStatus = (status: UpdateStatus) => {
         this.setState({ status });
     }
@@ -86,6 +90,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                                     <ZListItem text="Typography" path="DevTypography" />
                                     <ZListItem text="Components" path="DevComponents" />
                                     <ZListItem text="Navigation" path="DevNavigation" />
+                                    <ZListItem text="Reboot" onPress={this.handleReboot} />
                                     <ZListItem text="Log out" onPress={this.handleLogout} />
                                 </ZListItemGroup>
                             </>

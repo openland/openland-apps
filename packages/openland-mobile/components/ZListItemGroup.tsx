@@ -19,20 +19,20 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
             return null;
         }
 
-        if (isAndroid) {
-            return (
-                <View backgroundColor={AppStyles.backyardColor}>
-                    {this.props.header !== null && this.props.header !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.header}</Text>}
-                    {this.props.header === null && <View height={30} />}
-                    <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-                    <View backgroundColor="#fff">
-                        {components}
-                    </View>
-                    {this.props.footer !== null && this.props.footer !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.footer}</Text>}
-                    <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-                </View>
-            );
-        }
+        // if (isAndroid) {
+        //     return (
+        //         <View backgroundColor={AppStyles.backyardColor}>
+        //             {this.props.header !== null && this.props.header !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.header}</Text>}
+        //             {this.props.header === null && <View height={30} />}
+        //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
+        //             <View backgroundColor="#fff">
+        //                 {components}
+        //             </View>
+        //             {this.props.footer !== null && this.props.footer !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.footer}</Text>}
+        //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
+        //         </View>
+        //     );
+        // }
 
         return (
             <View>

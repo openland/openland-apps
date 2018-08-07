@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { TouchableHighlight, View, Platform, TouchableWithoutFeedback, StyleProp, ViewStyle } from 'react-native';
+import { TouchableHighlight, View, Platform, TouchableWithoutFeedback, StyleProp, ViewStyle, TouchableNativeFeedback } from 'react-native';
 import { XPStyles } from './XPStyles';
 
 export interface XPListItemProps {
@@ -32,7 +32,12 @@ export class XPListItem extends React.Component<XPListItemProps, { pressed: bool
 
     private handlePress = () => {
         if (this.props.onPress) {
-            this.props.onPress();
+            let p = this.props.onPress;
+            if (Platform.OS === 'android') {
+                window.setTimeout(() => {  p(); });
+            } else {
+                p();
+            }
         }
     }
 
@@ -61,6 +66,15 @@ export class XPListItem extends React.Component<XPListItemProps, { pressed: bool
                         {this.props.children}
                     </View>
                 </TouchableWithoutFeedback>
+            );
+        }
+        if (Platform.OS === 'android') {
+            return (
+                <TouchableNativeFeedback useForeground={true} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress} delayPressIn={0}>
+                    <View style={[{ flexDirection: 'row' }, this.props.style]}>
+                        {this.props.children}
+                    </View>
+                </TouchableNativeFeedback>
             );
         }
         return (

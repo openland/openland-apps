@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Keyboard } from 'react-native';
+import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Keyboard, Image, Platform } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
@@ -498,7 +498,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         transform: [{ translateY: hairlineOffset }],
                         opacity: Animated.multiply(hairlineOpacity, 0.3),
                         backgroundColor: '#b7bdc6',
-                        zIndex: 3
+                        zIndex: 3,
                     }}
                 />
 
@@ -531,14 +531,24 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         if (ZAppConfig.navigationBarTransparent) {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, position: 'absolute', left: 0, right: 0, top: 0, paddingTop: ZAppConfig.statusBarHeight }} elevation={2}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, position: 'absolute', left: 0, right: 0, top: 0, paddingTop: ZAppConfig.statusBarHeight }}>
                     {content}
                 </ViewOverflow>
             );
         } else {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, backgroundColor: ZAppConfig.navigationBarBackgroundColor, paddingTop: ZAppConfig.statusBarHeight }} elevation={2}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, backgroundColor: ZAppConfig.navigationBarBackgroundColor, paddingTop: ZAppConfig.statusBarHeight }}>
                     {content}
+                    {Platform.OS === 'android' && (
+                        <View style={{ position: 'absolute', top: 0, left: 0, zIndex: 1000 }}>
+                            <Image source={require('assets/corner_left.png')} />
+                        </View>
+                    )}
+                    {Platform.OS === 'android' && (
+                        <View style={{ position: 'absolute', top: 0, right: 0, zIndex: 1000 }}>
+                            <Image source={require('assets/corner_right.png')} />
+                        </View>
+                    )}
                 </ViewOverflow>
             );
         }

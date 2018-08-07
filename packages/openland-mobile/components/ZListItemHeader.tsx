@@ -54,21 +54,21 @@ export class ZListItemHeader extends React.PureComponent<{
     action?: string
 }> {
     render() {
-        if (isAndroid) {
-            return (
-                <>
-                    <ZListItemBase path={this.props.path} height={80} backgroundColor="#fff" separator={false}>
-                        <View width={80} height={80} alignItems="center" justifyContent="center">
-                            <XPAvatar src={this.props.photo} placeholderTitle={this.props.title} placeholderKey={this.props.id} size={60} />
-                        </View>
-                        <View flexGrow={1} flexBasis={0} justifyContent="center" marginLeft={5} paddingRight={10}>
-                            <Text style={{ lineHeight: 19, marginBottom: 5, fontWeight: '500', fontSize: 16, color: '#181818' }} numberOfLines={this.props.action ? 1 : 2}>{this.props.title}</Text>
-                            <Text style={{ color: '#aaaaaa', fontSize: 14, lineHeight: 18, height: 18 }} numberOfLines={1}>{this.props.subtitle}</Text>
-                        </View>
-                    </ZListItemBase>
-                </>
-            );
-        }
+        // if (isAndroid) {
+        //     return (
+        //         <>
+        //             <ZListItemBase path={this.props.path} height={80} backgroundColor="#fff" separator={false}>
+        //                 <View width={80} height={80} alignItems="center" justifyContent="center">
+        //                     <XPAvatar src={this.props.photo} placeholderTitle={this.props.title} placeholderKey={this.props.id} size={60} />
+        //                 </View>
+        //                 <View flexGrow={1} flexBasis={0} justifyContent="center" marginLeft={5} paddingRight={10}>
+        //                     <Text style={{ lineHeight: 19, marginBottom: 5, fontWeight: '500', fontSize: 16, color: '#181818' }} numberOfLines={this.props.action ? 1 : 2}>{this.props.title}</Text>
+        //                     <Text style={{ color: '#aaaaaa', fontSize: 14, lineHeight: 18, height: 18 }} numberOfLines={1}>{this.props.subtitle}</Text>
+        //                 </View>
+        //             </ZListItemBase>
+        //         </>
+        //     );
+        // }
         return (
             <View style={styles.container}>
                 <XPAvatar size={96} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} />
