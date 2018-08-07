@@ -31,14 +31,6 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                         return (
                             <TouchableHighlight onPress={() => this.props.navigation.navigate('ConversationInfo', { id: this.props.conversationId })}>
                                 <View flexDirection="row" alignSelf="flex-start" height={56} alignItems="center">
-                                    {/* <View paddingRight={12} paddingLeft={8}>
-                                        <XPAvatar
-                                            src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
-                                            size={40}
-                                            placeholderKey={res.data!!.chat.flexibleId}
-                                            placeholderTitle={res.data!!.chat.title}
-                                        />
-                                    </View> */}
                                     <View flexDirection="column" marginTop={-6}>
                                         <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: ZAppConfig.titleColor, letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
                                         <Text style={{ fontSize: 14, height: 16, color: ZAppConfig.subtitleColor, opacity: 0.6, marginTop: 1 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>

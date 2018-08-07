@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { View, Image, SectionList, Text, Dimensions } from 'react-native';
+import { View, Image, SectionList, Text, Dimensions, Platform, FlatList } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
 import { ZKeyboardListener } from '../../../components/ZKeyboardListener';
@@ -18,6 +18,21 @@ interface MessagesSection {
     day?: Day;
     key: string;
     data: MessageGroup[];
+}
+
+function convertMessagesFlat(days: Day[]) {
+    let res = [];
+    res.push({ key: 'footer' });
+    for (let d of days) {
+        let msgs = [...d.messages];
+        msgs.reverse();
+        for (let g of d.messages) {
+            res.push(g);
+        }
+    }
+    res.push({ key: 'header' });
+    res.reverse();
+    return res;
 }
 
 function convertMessages(days: Day[]) {
@@ -85,7 +100,7 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
     }
 }
 
-export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], loadingHistoty?: boolean }> implements ConversationStateHandler {
+export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<any>();
@@ -93,8 +108,11 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     constructor(props: MessagesListProps & { keyboardHeight: number }) {
         super(props);
         let initialState = props.engine.getState();
-        let res = convertMessages(initialState.messagesPrepprocessed);
-        this.state = { loading: initialState.loading, messages: convertMessages(initialState.messagesPrepprocessed) };
+        this.state = {
+            loading: initialState.loading,
+            messages: convertMessages(initialState.messagesPrepprocessed),
+            messages2: convertMessagesFlat(initialState.messagesPrepprocessed)
+        };
     }
 
     componentDidMount() {
@@ -103,7 +121,12 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     onConversationUpdated(state: ConversationState) {
-        this.setState({ loading: state.loading, messages: convertMessages(state.messagesPrepprocessed), loadingHistoty: state.loadingHistory });
+        this.setState({
+            loading: state.loading,
+            messages: convertMessages(state.messagesPrepprocessed),
+            messages2: convertMessagesFlat(state.messagesPrepprocessed),
+            loadingHistoty: state.loadingHistory
+        });
     }
 
     onMessageSend() {
@@ -135,6 +158,12 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     renderItem = (itm: any) => {
+        if (itm.item.key === 'footer') {
+            return (<View height={ZAppConfig.navigationBarContentInsetSmall} />);
+        }
+        if (itm.item.key === 'header') {
+            return (<View height={ZAppConfig.bottomNavigationBarInset + 62 + this.props.keyboardHeight} />);
+        }
         // console.warn(itm.item);
         return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
@@ -159,18 +188,15 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
         return (
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
-
-                <SectionList
-                    ListFooterComponent={this.renderFooter}
-                    sections={this.state.messages}
-                    renderSectionFooter={this.renderHeader}
+                <FlatList
+                    data={this.state.messages2}
                     renderItem={this.renderItem}
                     inverted={true}
                     flexBasis={0}
                     flexGrow={1}
                     onEndReached={this.onEndReached}
                     ref={this.listRef}
-                    // initialNumToRender={0}
+                    initialNumToRender={Platform.OS === 'android' ? 0 : undefined}
                     scrollIndicatorInsets={{
                         bottom: ZAppConfig.navigationBarContentInsetSmall,
                         top: ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight
@@ -179,6 +205,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
                     removeClippedSubviews={true}
                     keyExtractor={(item) => item.key}
                     extraData={this.props.keyboardHeight}
+                    maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
                 />
                 {this.state.loading && <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight} top={ZAppConfig.navigationBarContentInsetSmall}><ZLoader /></View>}
             </View>
