@@ -3,6 +3,7 @@ package com.korshakov.testing.openland;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import com.entria.views.RNViewOverflowPackage;
@@ -44,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new LottiePackage(),
             new LinearGradientPackage(),
             new BlurViewPackage(),
             new RNViewOverflowPackage(),

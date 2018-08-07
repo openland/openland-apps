@@ -105,8 +105,8 @@ android {
         applicationId "com.korshakov.testing.openland"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
-        versionName "1.0.17"
+        versionCode 19
+        versionName "1.0.18"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -146,6 +146,7 @@ android {
 }
 
 dependencies {
+    compile project(':lottie-react-native')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-blur')
     compile project(':react-native-view-overflow')
