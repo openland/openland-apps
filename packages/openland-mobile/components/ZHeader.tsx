@@ -58,7 +58,8 @@ let styles = StyleSheet.create({
         ...isAndroid ? {
             textAlign: 'left',
             fontSize: 28,
-            fontWeight: '400',
+            fontFamily: 'Montserrat-Medium',
+            fontWeight: undefined,
             lineHeight: 56
         } : {
                 textAlign: 'center',
@@ -75,8 +76,9 @@ let styles = StyleSheet.create({
         textAlignVertical: 'bottom',
         fontSize: isAndroid ? 28 : 34,
         // letterSpacing: isAndroid ? undefined : 0.5,
-        fontWeight: isAndroid ? '600' : 'bold',
+        fontWeight: isAndroid ? undefined : 'bold',
         lineHeight: isAndroid ? 34 : 135,
+        fontFamily: isAndroid ? 'Montserrat-Medium' : undefined,
     } as TextStyle,
     titleContainer: {
         position: 'absolute',
@@ -499,6 +501,31 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         zIndex: 3
                     }}
                 />
+
+                {/* <View
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        // height: 16,
+                        // width: 16,
+                        zIndex: 100,
+                        overflow: 'hidden',
+                        backgroundColor: '#fff'
+                    }}
+                >
+                    <View
+                        style={{
+                            // marginLeft: -8,
+                            // marginTop: -8,
+                            width: 48,
+                            height: 48,
+                            borderTopLeftRadius: 16,
+                            borderColor: '#000',
+                            borderWidth: 16
+                        }}
+                    />
+                </View> */}
             </>
         );
 

@@ -6,7 +6,7 @@
         <!--<item name="android:statusBarColor">#3d3dcc</item>-->
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
         <item name="android:navigationBarColor">#1e000000</item>
-        <item name="android:statusBarColor">#B2B2B2</item>
+        <item name="android:statusBarColor">#000</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
         <item name="android:windowBackground">@color/primary</item>
     </style>
