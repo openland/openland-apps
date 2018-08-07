@@ -10,7 +10,7 @@ import { DialogListComponent } from './components/DialogListComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { ConversationsEngine } from 'openland-engines/messenger/ConversationsEngine';
 
-class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }, { conversations?: ConversationShortFragment[] }> {
+class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }, { conversations?: ConversationShortFragment[], loadingMore?: boolean }> {
     private destructor?: () => void;
     constructor(props: { engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }) {
         super(props);
@@ -21,8 +21,8 @@ class ConversationsListener extends React.PureComponent<{ engine: MessengerEngin
         this.destructor = this.props.engine.conversations.subcribe(this.handleConversations);
     }
 
-    handleConversations = (conversations: ConversationShortFragment[]) => {
-        this.setState({ conversations: conversations });
+    handleConversations = (data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => {
+        this.setState({ conversations: data.conversations, loadingMore: data.loadingMore });
     }
 
     componentWillUnmount() {
@@ -33,7 +33,7 @@ class ConversationsListener extends React.PureComponent<{ engine: MessengerEngin
 
     render() {
         return (
-            this.state.conversations ? <DialogListComponent engine={this.props.engine} dialogs={this.state.conversations || []} onPress={this.props.onItemClick} /> : <ZLoader />
+            this.state.conversations ? <DialogListComponent engine={this.props.engine} dialogs={this.state.conversations || []} loadingMore={this.state.loadingMore} onPress={this.props.onItemClick} /> : <ZLoader />
         );
     }
 }

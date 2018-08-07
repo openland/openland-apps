@@ -17,14 +17,16 @@ export interface MessageGroup {
 
 export class ConversationState {
     readonly loading: boolean;
+    readonly loadingHistory?: boolean;
     readonly messages: ModelMessage[];
     readonly messagesPrepprocessed: Day[];
     readonly typing?: string;
 
-    constructor(loading: boolean, messages: ModelMessage[], messagesPrepprocessed: Day[], typing?: string) {
+    constructor(loading: boolean, messages: ModelMessage[], messagesPrepprocessed: Day[], typing?: string, loadingHistory?: boolean) {
         this.loading = loading;
         this.messages = messages;
         this.messagesPrepprocessed = messagesPrepprocessed;
         this.typing = typing;
+        this.loadingHistory = loadingHistory;
     }
 }

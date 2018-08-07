@@ -108,6 +108,8 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (this.loadingHistory === undefined) {
             this.loadingHistory = id;
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true);
+            this.onMessagesUpdated();
             let loaded = await backoff(() => this.engine.client.client.query({
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId, before: id },
@@ -118,7 +120,7 @@ export class ConversationEngine implements MessageSendHandler {
             history.reverse();
 
             this.messages = [...history, ...this.messages];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false);
             this.historyFullyLoaded = history.length === 0;
             this.onMessagesUpdated();
             this.loadingHistory = undefined;
