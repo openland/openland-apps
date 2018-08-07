@@ -532,6 +532,10 @@ export interface CountyQuery {
   } >,
 };
 
+export interface ChatListQueryVariables {
+  after?: string | null,
+};
+
 export interface ChatListQuery {
   chats:  {
     __typename: "ConversationConnection",

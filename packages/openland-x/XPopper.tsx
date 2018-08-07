@@ -6,6 +6,8 @@ import { XPopperRender, PopperRendererProps } from './popper/XPopperRender';
 import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';
 
+export type XPopperStyleType = 'default' | 'dark';
+
 export type Placement = 'auto-start'
     | 'auto'
     | 'auto-end'
@@ -51,6 +53,8 @@ interface XPopperProps {
     animationOut?: 'fade' | 'pop' | null;
     animationDurationIn?: number;
     animationDurationOut?: number;
+
+    style?: XPopperStyleType;
 
     arrow?: any | null;
     contentContainer?: any;
@@ -434,6 +438,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             animationOut: this.props.animationOut,
             animationDurationIn: this.props.animationDurationIn,
             animationDurationOut: this.props.animationDurationOut,
+            style: this.props.style,
 
             willHide: this.state.willHide,
 
@@ -445,7 +450,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             onMouseOverContent: this.onMouseOverContent,
             onMouseOutContent: this.onMouseOutContent,
             onMounted: this.captureMounted,
-            onUnmounted: this.captureUnmounted
+            onUnmounted: this.captureUnmounted,
+
+            orientation: (isVertical) ? 'vertical' : 'horizontal'
         };
 
         return (

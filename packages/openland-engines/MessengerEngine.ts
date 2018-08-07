@@ -7,9 +7,11 @@ import { NotificationsEngine } from './NotificationsEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
+import { ConversationsEngine } from './messenger/ConversationsEngine';
 export class MessengerEngine {
     readonly client: OpenApolloClient;
     readonly sender: MessageSender;
+    readonly conversations: ConversationsEngine;
     readonly global: GlobalStateEngine;
     readonly user: UserShortFragment;
     readonly notifications: NotificationsEngine;
@@ -24,6 +26,7 @@ export class MessengerEngine {
     constructor(client: OpenApolloClient, user: UserShortFragment) {
         this.client = client;
         this.user = user;
+        this.conversations = new ConversationsEngine(this);
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
 
@@ -38,7 +41,7 @@ export class MessengerEngine {
         this.typingsWatcher = new TypingsWatcher(this.client, this.handleTyping, this.user.id);
 
         // Starting
-        this.loadingPromise = this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage);
+        this.loadingPromise = this.conversations.start().then(() => this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage));
 
         console.info('MessengerEngine started');
     }

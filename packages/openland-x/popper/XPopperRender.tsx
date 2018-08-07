@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import * as classnames from 'classnames';
+import { XPopperStyleType } from '../XPopper';
 
 export interface PopperRendererProps {
     content: any;
@@ -31,7 +32,11 @@ export interface PopperRendererProps {
     arrow?: any | null;
     contentContainer?: any;
 
+    style?: XPopperStyleType;
+
     willHide: boolean;
+
+    orientation?: string;
 
     animationClass?: 'static' | 'hide' | 'show';
     caputurePopperArrowNode: (node: any) => void;
@@ -276,13 +281,19 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                             minWidth: this.props.minWidth,
                             minHeight: this.props.minHeight,
 
+                            colorStyle: this.props.style,
+
                             children: this.props.content,
 
                             captureContent: this.props.caputurePopperContentNode
                         })}
 
                         {this.prepareRef(this.props.arrow, {
-                            captureArrow: this.props.caputurePopperArrowNode
+                            captureArrow: this.props.caputurePopperArrowNode,
+
+                            colorStyle: this.props.style,
+
+                            orientation: this.props.orientation
                         })}
                     </PopperRoot>
                 ) : null

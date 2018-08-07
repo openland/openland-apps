@@ -223,40 +223,49 @@ export class GlobalStateEngine {
             if (!visible && !event.isOut) {
                 this.messageHandler!!(event);
             }
-            let data = this.engine.client.client.readQuery({
+            let data = this.engine.conversations;
+            data.seq = event.seq;
+            let exIndex = data.conversations.findIndex((v: any) => v.id === event.conversationId);
+            if (exIndex >= 0) {
+                let ids = data.conversations.map((v: any) => v[ID_KEY]);
+                let c = data.conversations[exIndex];
+                if (!visible || c.unreadCount > event.unread) {
+                    c.unreadCount = event.unread;
+                }
+                c.topMessage = event.message;
+                data.conversations.splice(exIndex, 1);
+                data.conversations.unshift(c);
+                data.conversations = data.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
+            } else {
+                let chat: any = {
+                    __typename: event.conversation.__typename,
+                    id: event.conversation.id,
+                    title: event.conversation.title,
+                    unreadCount: event.unread,
+                    topMessage: event.message,
+                    photos: event.conversation.photos,
+                    [ID_KEY]: defaultDataIdFromObject(event.conversation)
+                };
+                data.conversations.unshift(chat);
+                this.handleChatAdded(chat);
+            }
+
+            // TODO: remove; keeping this for web - remove after migrate to flat list
+            let oldData = this.engine.client.client.readQuery({
                 query: ChatListQuery.document
             }) as any;
-            if (data) {
-                data.chats.seq = event.seq;
-                let exIndex = data.chats.conversations.findIndex((v: any) => v.id === event.conversationId);
-                if (exIndex >= 0) {
-                    let ids = data.chats.conversations.map((v: any) => v[ID_KEY]);
-                    let c = data.chats.conversations[exIndex];
-                    if (!visible || c.unreadCount > event.unread) {
-                        c.unreadCount = event.unread;
+            this.engine.client.client.writeQuery({
+                query: ChatListQuery.document,
+                data: {
+                    ...oldData,
+                    chats: {
+                        ...oldData.chats,
+                        seq: data.seq,
+                        conversations: data.conversations
                     }
-                    c.topMessage = event.message;
-                    data.chats.conversations.splice(exIndex, 1);
-                    data.chats.conversations.unshift(c);
-                    data.chats.conversations = data.chats.conversations.map((v: any, i: number) => ({ ...v, [ID_KEY]: ids[i] }));
-                } else {
-                    let chat = {
-                        __typename: event.conversation.__typename,
-                        id: event.conversation.id,
-                        title: event.conversation.title,
-                        unreadCount: event.unread,
-                        topMessage: event.message,
-                        photos: event.conversation.photos,
-                        [ID_KEY]: defaultDataIdFromObject(event.conversation)
-                    };
-                    data.chats.conversations.unshift(chat);
-                    this.handleChatAdded(chat);
                 }
-                this.engine.client.client.writeQuery({
-                    query: ChatListQuery.document,
-                    data: data
-                });
-            }
+            });
+            this.engine.conversations.onUpdate();
         } else if (event.__typename === 'UserEventRead') {
             let visible = this.visibleConversations.has(event.conversationId);
             this.writeGlobalCounter(event.globalUnread, visible);

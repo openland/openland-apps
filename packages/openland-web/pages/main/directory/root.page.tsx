@@ -175,7 +175,7 @@ class TopTags extends React.Component<{ onPick: (q: SearchCondition) => void }> 
                                         <TopSearchTags separator={0} key={i + '_tags_' + val.category}>
                                             {val.tags.filter((tag, iter) => iter < 5).map((tag, iter) => (
                                                 <XTag
-                                                    key={'top_search_' + iter + val}
+                                                    key={'_top_search_block_' + iter}
                                                     color="primary"
                                                     text={tag}
                                                     size="large"
@@ -277,14 +277,17 @@ class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q
             ? ['+ ' + String(this.props.orgTypes.length - 3) + ' more']
             : [])].join(' • ');
         let elements = [];
+        let key = 0;
         for (let orgType of this.props.orgTypes.filter((e, i) => i <= 2)) {
-            elements.push(<OrganizationTypesText onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}>{orgType}</OrganizationTypesText>);
-            elements.push(<OrganizationTypesText>{'•'}</OrganizationTypesText>);
+            key++;
+            elements.push(<OrganizationTypesText key={'_org_type_text_' + key} onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}>{orgType}</OrganizationTypesText>);
+            elements.push(<OrganizationTypesText key={'_org_type_text_' + key + 1}>{'•'}</OrganizationTypesText>);
         }
         elements.pop();
         if (this.props.orgTypes.length > 3) {
-            elements.push(<OrganizationTypesText>{'•'}</OrganizationTypesText>);
-            elements.push(<OrganizationTypesText>{'+ ' + String(this.props.orgTypes.length - 3) + ' more'}</OrganizationTypesText>);
+            key++;
+            elements.push(<OrganizationTypesText key={'_org_type_text_' + key}>{'•'}</OrganizationTypesText>);
+            elements.push(<OrganizationTypesText key={'_org_type_text_' + key + 1}>{'+ ' + String(this.props.orgTypes.length - 3) + ' more'}</OrganizationTypesText>);
         }
         return (
             <XHorizontal separator={2}>{elements}</XHorizontal>
@@ -375,9 +378,9 @@ const OrganizationCard = (props: OrganizationCardProps) => {
                         )}
                         {props.item.interests && (
                             <OrganizationCardTypeWrapper separator={0}>
-                                {tagsCounter(props.item.interests).map((tag) => (
+                                {tagsCounter(props.item.interests).map((tag, i) => (
                                     <XTag
-                                        key={props.item.id + tag}
+                                        key={'_org_tag_' + props.item.id + i}
                                         text={tag.label}
                                         onClick={tag.value ? () => props.onPick({ type: 'interest', value: tag.value!!, label: tag.label }) : undefined}
                                     />
@@ -548,16 +551,16 @@ class PagePagination extends React.Component<PagePaginationProps> {
             if (l) {
                 if (i - l === 2) {
                     rangeWithDots.push(
-                        <PaginationButton key={'pag_' + i} current={(i + 1) === currentPage} path={'/directory?page=' + (i + 1).toString() + '#'}>
+                        <PaginationButton key={'pag1_' + i + left} current={(i + 1) === currentPage} path={'/directory?page=' + (i + 1).toString() + '#'}>
                             {i + 1}
                         </PaginationButton>
                     );
                 } else if (i - l !== 1) {
-                    rangeWithDots.push(<PaginationDotted>...</PaginationDotted>);
+                    rangeWithDots.push(<PaginationDotted key={'_dotted_' + i / 0.33}>...</PaginationDotted>);
                 }
             }
             rangeWithDots.push(
-                <PaginationButton key={'pag_' + i} current={i === currentPage} path={'/directory?page=' + i.toString() + '#'}>
+                <PaginationButton key={'pag2_' + i + right} current={i === currentPage} path={'/directory?page=' + i.toString() + '#'}>
                     {i}
                 </PaginationButton>
             );
@@ -609,7 +612,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
                 <XCardStyled>
                     {props.data.items.edges.map((i, j) => (
-                        <OrganizationCard key={i.node.id + j} item={i.node} onPick={(props as any).onPick} />))
+                        <OrganizationCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} />
                 </XCardStyled>
@@ -798,9 +801,9 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
     render() {
         return (
             <>
-                {this.props.conditions.map((condition) => (
+                {this.props.conditions.map((condition, i) => (
                     <XTag
-                        key={condition.type + '_' + condition.value}
+                        key={condition.type + '_' + condition.value + i}
                         text={condition.label}
                         size="large"
                         color={condition.type === 'name' ? 'gray' : 'primary'}
@@ -866,6 +869,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         }
         this.resetPage();
         this.setState({ conditions: res, searchText: '' });
+        // this.props.router.pushQuery('area', JSON.stringify(res));
     }
 
     replaceConditions = (condition: SearchCondition) => {
@@ -905,7 +909,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             e.preventDefault();
             this.removeCondition(this.state.conditions[this.state.conditions.length - 1]);
         }
-
     }
 
     searchButtonHandler = (e: any) => {
@@ -940,6 +943,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             <Root separator={14}>
                 <Header orgCount={orgCount} tagsCount={this.state.conditions.length} reset={this.reset} />
                 <ContentWrapper>
+                    {/* {console.log(this.props.router)} */}
                     <MainContent>
                         <XVertical>
                             <SearchRoot>
