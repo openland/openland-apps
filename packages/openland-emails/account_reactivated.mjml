@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Account reactivated</mj-title>
+        <mj-title>Organization account activated</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -8,11 +8,13 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    {{userWelcome}}
+                    Organization activated
                 </mj-text>
                 <mj-text mj-class="text">
-                    Organization <strong>{{organizationName}}</strong> was <strong>activated</strong> by Openland staff! If you have any questions, please, feel free to reply to this email.
+                    Good news! The account of <strong>{{organizationName}}</strong> was activated by Openland staff.
                 </mj-text>
+
+                <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />

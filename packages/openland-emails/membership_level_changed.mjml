@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Membership level changed</mj-title>
+        <mj-title>Your role at {{organizationName}} was updated</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -8,11 +8,13 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    {{userWelcome}}
+                    Role updated
                 </mj-text>
                 <mj-text mj-class="text">
-                    Your level in organization <strong>{{organizationName}}</strong> changed to {{levelName}}
+                    Your role at <strong>{{organizationName}}</strong> was updated to <strong>{{levelName}}</strong>
                 </mj-text>
+
+                <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />
