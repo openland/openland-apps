@@ -9,16 +9,20 @@ import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | 'r-large' | 'r-default' | 'r-small' | 'r-tiny';
 export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
+export type XButtonTooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface XButtonStyleProps extends XFlexStyles {
     className?: string;
     text?: string;
     icon?: string | any;
     iconRight?: string | any;
+    iconResponsive?: string | any;
     iconOpacity?: number;
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';
+    breakpoint?: number;
+    tooltipPlacement?: XButtonTooltipPlacement;
 }
 
 export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; }>>;
@@ -651,12 +655,105 @@ const MainContent = Glamorous.div({
     alignItems: 'center'
 });
 
-const ButtomText = Glamorous.span({
-    maxWidth: '100%',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden'
-});
+interface StyledButtonTextProps {
+    breakpoint?: number;
+    tooltipPlacement?: XButtonTooltipPlacement;
+}
+
+let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProps) => ({
+    'top': {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+            bottom: 'calc(100% + 0px)',
+            left: '50%',
+            transform: 'translate(-50%, 0)',
+
+            '&:before': {
+                bottom: -2,
+                left: '50%',
+                transform: 'translate(-50%, 0) rotate(45deg)',
+            }
+        }
+    },
+    'right': {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+            left: 'calc(100% - 10px)',
+            top: '50%',
+            transform: 'translate(0, -50%)',
+
+            '&:before': {
+                left: -2,
+                top: '50%',
+                transform: 'translate(0, -50%) rotate(45deg)',
+            }
+        }
+    },
+    'bottom': {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+            top: 'calc(100% + 0px)',
+            left: '50%',
+            transform: 'translate(-50%, 0)',
+
+            '&:before': {
+                top: -2,
+                left: '50%',
+                transform: 'translate(-50%, 0) rotate(45deg)',
+            }
+        }
+    },
+    'left': {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+            right: 'calc(100% - 10px)',
+            top: '50%',
+            transform: 'translate(0, -50%)',
+
+            '&:before': {
+                right: -2,
+                top: '50%',
+                transform: 'translate(0, -50%) rotate(45deg)',
+            }
+        }
+    },
+}));
+
+const ButtonText = Glamorous.span<StyledButtonTextProps>([
+    (props) => ({
+        maxWidth: '100%',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden'
+    }),
+    (props) => (props.breakpoint && {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+            maxWidth: 'initial',
+            position: 'absolute',
+            whiteSpace: 'initial',
+            textOverflow: 'initial',
+            overflow: 'initial',
+            background: '#6E7588',
+            color: '#ffffff',
+            borderRadius: 30,
+            padding: '6px 12px 8px',
+            lineHeight: '16px',
+            boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
+            fontSize: 14,
+            fontWeight: 400,
+            opacity: 0,
+            visibility: 'hidden',
+            transition: '300ms opacity ease',
+
+            '&:before': {
+                display: 'block',
+                position: 'absolute',
+                height: 10,
+                width: 10,
+                background: '#6E7588',
+                borderRadius: 2,
+                content: ' ',
+            }
+        }
+    } || {}),
+    (props) => (props.breakpoint && tooltipPlacementStyles(props, props.tooltipPlacement) || {})
+]);
 
 interface StyledButtonProps extends XFlexStyles {
     buttonSize?: string;
@@ -665,6 +762,8 @@ interface StyledButtonProps extends XFlexStyles {
     enabled?: boolean;
     pressed?: boolean;
     attach?: 'left' | 'right' | 'both';
+    breakpoint?: number;
+    tooltipPlacement?: XButtonTooltipPlacement;
 }
 
 const StyledButton = Glamorous.a<StyledButtonProps>([
@@ -674,7 +773,8 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
             position: 'absolute',
             // left: 'calc(50% - 10px)',
             // top: 'calc(50% - 10px)',
-        }
+        },
+        '& .icon-responsive': { display: 'none' }
     }),
     (props) => ({
         pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
@@ -689,7 +789,29 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => colorDisabledStyles(props.buttonStyle, props.enabled === false),
     (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
     (props) => sizeStyles(props.buttonSize),
-    (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize)
+    (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
+    (props) => (props.breakpoint && {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+            background: 'none!important',
+            color: '#939ca8!important',
+            '&:hover': {
+                color: '#85c4ff!important'
+            },
+            '&:active': {
+                color: '#1790ff!important'
+            },
+            '&:hover span': {
+                visibility: 'visible',
+                opacity: 1,
+            },
+            '& .icon': {
+                margin: 0
+            },
+            '& .icon-responsive': {
+                display: 'block'
+            }
+        }
+    } || {}),
 ]);
 
 const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
@@ -710,15 +832,21 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             onClick={props.onClick}
             className={props.className}
             zIndex={props.zIndex}
+            breakpoint={props.breakpoint}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
+                    {props.iconResponsive && (
+                        typeof(props.iconResponsive) === 'string'
+                        ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive" />
+                        : props.iconResponsive
+                    )}
                     {props.icon && (
                         typeof(props.icon) === 'string'
                         ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
                         : props.icon
                     )}
-                    <ButtomText>{props.text}</ButtomText>
+                    <ButtonText breakpoint={props.breakpoint} tooltipPlacement={props.tooltipPlacement}>{props.text}</ButtonText>
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
                         ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />

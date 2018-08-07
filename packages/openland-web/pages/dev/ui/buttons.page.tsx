@@ -115,6 +115,13 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                         <XButton size="r-small" text="r-small" style="primary-sky-blue" iconRight="star" />
                         <XButton size="r-tiny" text="r-tiny" style="primary-sky-blue" iconRight="star" />
                     </XHorizontal>
+                    <XTitle>Responsive button</XTitle>
+                    <XHorizontal>
+                        <XButton size="r-default" text="left" breakpoint={1000} tooltipPlacement="left" iconResponsive="star" />
+                        <XButton size="r-default" text="top" breakpoint={1000} tooltipPlacement="top" iconResponsive="star" />
+                        <XButton size="r-default" text="bottom" breakpoint={1000} tooltipPlacement="bottom" icon="star" />
+                        <XButton size="r-default" text="right" breakpoint={1000} tooltipPlacement="right" icon="star" />
+                    </XHorizontal>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>
