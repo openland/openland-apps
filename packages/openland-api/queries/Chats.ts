@@ -5,8 +5,8 @@ import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 
 export const ChatListQuery = gql`
-    query ChatList {
-        chats: alphaChats(first: 20) {
+    query ChatList($after: String) {
+        chats: alphaChats(first: 20, after: $after) {
             conversations {
                 ...ConversationShort
             }
