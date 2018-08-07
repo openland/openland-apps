@@ -9,8 +9,7 @@ export class AndroidAliaser extends React.PureComponent<{ width: number, height:
                 <View
                     style={{
                         width: this.props.width,
-                        height: this.props.height,
-                        borderRadius: this.props.borderRadius
+                        height: this.props.height
                     }}
                 >
                     {this.props.children}
@@ -19,6 +18,8 @@ export class AndroidAliaser extends React.PureComponent<{ width: number, height:
                         height={this.props.height}
                         style={{
                             position: 'absolute',
+                            top: 0,
+                            left: 0,
                             width: this.props.width,
                             height: this.props.height,
                             zIndex: 100

@@ -8,6 +8,7 @@ import { getClient } from '../../../utils/apolloClient';
 import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { ZAppConfig } from '../../../components/ZAppConfig';
+import { XPAvatar } from 'openland-xp/XPAvatar';
 
 export class ChatHeader extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }, { loading: boolean }> {
     state = {
@@ -35,7 +36,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                             <TouchableHighlight onPress={() => this.props.navigation.navigate('ConversationInfo', { id: this.props.conversationId })}>
                                 <View flexDirection="row" alignSelf="center">
                                     <View paddingRight={12} paddingLeft={8}>
-                                        <ZAvatar
+                                        <XPAvatar
                                             src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
                                             size={40}
                                             placeholderKey={res.data!!.chat.flexibleId}
