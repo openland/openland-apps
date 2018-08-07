@@ -5,12 +5,12 @@ import { backoff } from 'openland-y-utils/timer';
 import { ChatListQuery } from 'openland-api';
 
 export class ConversationsEngine {
-    listeners: ((conversations: ConversationShortFragment[]) => void)[] = [];
+    listeners: ((data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => void)[] = [];
     conversations: ConversationShortFragment[] = [];
     readonly engine: MessengerEngine;
     seq?: number;
     private next?: string;
-    private loading?: boolean;
+    loading?: boolean;
     constructor(engine: MessengerEngine) {
         this.engine = engine;
     }
@@ -20,8 +20,9 @@ export class ConversationsEngine {
     }
 
     loadNext = async () => {
-        if (!this.loading) {
+        if (!this.loading && this.next !== null) {
             this.loading = true;
+            this.onUpdate();
             let initialDialogs: any = await backoff(async () => {
                 try {
                     return await this.engine.client.client.query({
@@ -37,24 +38,27 @@ export class ConversationsEngine {
             });
 
             this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShortFragment) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
-            this.seq = initialDialogs.data.seq;
-            this.next = initialDialogs.data.next;
 
-            this.onUpdate();
+            this.conversations.map(c => console.warn('ConversationsEngine', c.title));
+
+            this.seq = initialDialogs.data.chats.seq;
+            this.next = initialDialogs.data.chats.next;
             this.loading = false;
+            this.onUpdate();
+
         }
 
     }
 
     onUpdate = () => {
         for (let l of this.listeners) {
-            l(this.conversations);
+            l({ conversations: this.conversations, loadingMore: this.loading });
         }
     }
 
-    subcribe = (listener: (conversations: ConversationShortFragment[]) => void) => {
+    subcribe = (listener: (data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => void) => {
         this.listeners.push(listener);
-        listener(this.conversations);
+        listener({ conversations: this.conversations, loadingMore: this.loading });
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {

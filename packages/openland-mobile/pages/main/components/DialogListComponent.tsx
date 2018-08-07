@@ -5,8 +5,9 @@ import { ListRenderItemInfo, FlatList, View } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
+import { ZLoader } from '../../../components/ZLoader';
 
-export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], onPress?: (id: ConversationShortFragment) => void }> {
+export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], loadingMore?: boolean, onPress?: (id: ConversationShortFragment) => void }> {
 
     handleItemClick = (id: ConversationShortFragment) => {
         if (this.props.onPress) {
@@ -28,13 +29,31 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
         );
     }
 
+    renderFooter = () => {
+        return (
+            this.props.loadingMore ?
+                (
+                    <View height={40} >
+                        <ZLoader />
+                    </View>
+                )
+                : <View height={0} />
+        );
+    }
+
+    loadMore = () => {
+        this.props.engine.conversations.loadNext();
+    }
+
     render() {
         return (
             <ZFlatList
                 ListHeaderComponent={this.renderHeader}
+                ListFooterComponent={this.renderFooter}
                 data={this.props.dialogs}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
+                onEndReached={this.loadMore}
                 ItemSeparatorComponent={() => <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />}
                 fixedHeight={80}
             />

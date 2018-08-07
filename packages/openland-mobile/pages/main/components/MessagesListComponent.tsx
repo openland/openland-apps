@@ -85,7 +85,7 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
     }
 }
 
-export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[] }> implements ConversationStateHandler {
+export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], loadingHistoty?: boolean }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<any>();
@@ -103,7 +103,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     onConversationUpdated(state: ConversationState) {
-        this.setState({ loading: state.loading, messages: convertMessages(state.messagesPrepprocessed) });
+        this.setState({ loading: state.loading, messages: convertMessages(state.messagesPrepprocessed), loadingHistoty: state.loadingHistory });
     }
 
     onMessageSend() {
@@ -143,12 +143,25 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
         this.props.engine.loadBefore();
     }
 
+    renderFooter = () => {
+        return (
+            this.state.loadingHistoty ?
+                (
+                    <View height={40} >
+                        <ZLoader />
+                    </View>
+                )
+                : <View height={0} />
+        );
+    }
+
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
 
                 <SectionList
+                    ListFooterComponent={this.renderFooter}
                     sections={this.state.messages}
                     renderSectionFooter={this.renderHeader}
                     renderItem={this.renderItem}

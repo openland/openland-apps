@@ -42,7 +42,6 @@ export class MessengerEngine {
 
         // Starting
         this.loadingPromise = this.conversations.start().then(() => this.global.start(this.notifications.handleGlobalCounterChanged, this.notifications.handleIncomingMessage));
-
         console.info('MessengerEngine started');
     }
 
