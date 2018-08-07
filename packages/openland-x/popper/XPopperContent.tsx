@@ -29,6 +29,7 @@ let colorStyles = styleResolver({
         background: '#ffffff',
         color: '#525f7f',
         padding: 10,
+        lineHeight: 'normal',
         boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
     }
 });
@@ -43,7 +44,6 @@ export const ContentDiv = Glamorous.div<ContentDivProps>(
         width: props.width,
         height: props.height,
         fontSize: 14,
-        lineHeight: 'normal',
         fontWeight: 400,
         display: 'flex',
         flexDirection: 'column'

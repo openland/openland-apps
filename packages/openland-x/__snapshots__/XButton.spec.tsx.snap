@@ -38,6 +38,11 @@ exports[`XButton should render correctly 1`] = `
   left: calc(50% - 16px);
 }
 
+.css-0 .icon-responsive,
+[data-css-0] .icon-responsive {
+  display: none;
+}
+
 .css-0:hover,
 [data-css-0]:hover {
   background-color: #ecedf0;
