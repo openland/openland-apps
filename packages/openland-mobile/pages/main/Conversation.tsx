@@ -93,11 +93,14 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
         let hasText = this.state.text.trim().length > 0;
         return (
             <>
-                {Platform.OS === 'ios' && (
+                {/* {Platform.OS === 'ios' && (
                     <ZHeaderButton navigation={this.props.navigator}>
                         <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
                     </ZHeaderButton>
-                )}
+                )} */}
+                <ZHeaderButton navigation={this.props.navigator}>
+                    <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
+                </ZHeaderButton>
                 <View style={{ height: '100%' }} flexDirection="column">
                     <MessagesListComponent onPhotoPress={this.handlePhotoPress} onAvatarPress={this.handleAvatarPress} engine={this.engine} />
                     <ZKeyboardAwareBar>

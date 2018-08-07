@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Platform } from 'react-native';
 import { ZAvatar } from '../../../components/ZAvatar';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
@@ -30,9 +30,9 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
                         return null;
                     }
 
-                    if (isAndroid) {
-                        return null;
-                    }
+                    // if (isAndroid) {
+                    //     return null;
+                    // }
 
                     let destPath: string | undefined = undefined;
                     let destPathArgs: any = {};
@@ -49,10 +49,10 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
 
                     return (
                         <TouchableOpacity disabled={!destPath} onPress={() => this.props.navigation.navigate(destPath!!, destPathArgs)}>
-                            <View>
+                            <View height={56} alignItems="center" justifyContent="center">
                                 <XPAvatar
                                     src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
-                                    size={30}
+                                    size={Platform.OS === 'android' ? 40 : 30}
                                     placeholderKey={res.data!!.chat.flexibleId}
                                     placeholderTitle={res.data!!.chat.title}
                                 />
