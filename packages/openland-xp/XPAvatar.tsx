@@ -5,6 +5,8 @@ import { View, Platform, Text, StyleSheet, TextStyle } from 'react-native';
 import { XPImage } from './XPImage';
 import { XPLinearGradient } from './XPLinearGradient';
 import { XPStyles } from './XPStyles';
+import { XPRoundedMask } from './XPRoundedMask';
+import { AndroidAliaser } from './AndroidAliaser';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -19,10 +21,16 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
     render() {
         if (this.props.src) {
             return (
-                <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
-                    <XPImage width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
-                    {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
-                </View>
+                <AndroidAliaser
+                    width={this.props.size}
+                    height={this.props.size}
+                    borderRadius={this.props.size / 2}
+                >
+                    <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
+                        <XPImage width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
+                        <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />
+                    </View>
+                </AndroidAliaser>
             );
         }
         let placeholderIndex = 0;
@@ -53,20 +61,28 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
         if (this.props.size === 36) {
             textSize = 14;
         }
+
         return (
-            <XPLinearGradient
+            <AndroidAliaser
                 width={this.props.size}
                 height={this.props.size}
                 borderRadius={this.props.size / 2}
-                fallbackColor={placeholderStyle.placeholderColor}
-                colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
             >
-                <View alignItems="center" justifyContent="center" width={this.props.size} height={this.props.size}>
-                    <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
-                </View>
-            </XPLinearGradient>
+                <XPLinearGradient
+                    width={this.props.size}
+                    height={this.props.size}
+                    borderRadius={this.props.size / 2}
+                    fallbackColor={placeholderStyle.placeholderColor}
+                    colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                >
+                    <View alignItems="center" justifyContent="center" width={this.props.size} height={this.props.size}>
+                        <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
+                        <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />
+                    </View>
+                </XPLinearGradient>
+            </AndroidAliaser>
         );
     }
 }
