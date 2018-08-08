@@ -100,7 +100,7 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
     }
 }
 
-export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean }> implements ConversationStateHandler {
+export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean, historyFullyLoaded?: boolean }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<any>();
@@ -125,7 +125,8 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
             loading: state.loading,
             messages: convertMessages(state.messagesPrepprocessed),
             messages2: convertMessagesFlat(state.messagesPrepprocessed),
-            loadingHistoty: state.loadingHistory
+            loadingHistoty: state.loadingHistory,
+            historyFullyLoaded: state.historyFullyLoaded
         });
     }
 
@@ -158,30 +159,28 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     renderItem = (itm: any) => {
+        console.warn('renderItem', itm.item.key);
         if (itm.item.key === 'footer') {
-            return (<View height={ZAppConfig.navigationBarContentInsetSmall} />);
+            return (
+                this.state.loadingHistoty && !this.state.historyFullyLoaded ?
+                    (
+                        <View height={48} >
+
+                            <ZLoader />
+                        </View>
+                    )
+                    : <View height={48} />
+            );
         }
         if (itm.item.key === 'header') {
             return (<View height={ZAppConfig.bottomNavigationBarInset + 62 + this.props.keyboardHeight} />);
         }
-        // console.warn(itm.item);
+        console.warn(itm.item.key);
         return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
 
     onEndReached = (info: { distanceFromEnd: number }) => {
         this.props.engine.loadBefore();
-    }
-
-    renderFooter = () => {
-        return (
-            this.state.loadingHistoty ?
-                (
-                    <View height={40} >
-                        <ZLoader />
-                    </View>
-                )
-                : <View height={0} />
-        );
     }
 
     render() {
@@ -194,6 +193,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
                     inverted={true}
                     flexBasis={0}
                     flexGrow={1}
+                    onEndReachedThreshold={1}
                     onEndReached={this.onEndReached}
                     ref={this.listRef}
                     initialNumToRender={Platform.OS === 'android' ? 0 : undefined}
