@@ -655,7 +655,7 @@ const MainContent = Glamorous.div({
     alignItems: 'center'
 });
 
-const RESPONSIVE_BREAKPOINT = 1200;
+const defaultResponsiveBreakpoint = 1200;
 
 interface StyledButtonTextProps {
     responsive?: boolean;
@@ -664,7 +664,7 @@ interface StyledButtonTextProps {
 
 let tooltipPlacementStyles = styleResolver({
     'top': {
-        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
+        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
             bottom: 'calc(100% + 0px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
@@ -677,7 +677,7 @@ let tooltipPlacementStyles = styleResolver({
         }
     },
     'right': {
-        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
+        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
             left: 'calc(100% - 10px)',
             top: '50%',
             transform: 'translate(0, -50%)',
@@ -690,7 +690,7 @@ let tooltipPlacementStyles = styleResolver({
         }
     },
     'bottom': {
-        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
+        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
             top: 'calc(100% + 0px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
@@ -703,7 +703,7 @@ let tooltipPlacementStyles = styleResolver({
         }
     },
     'left': {
-        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
+        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
             right: 'calc(100% - 10px)',
             top: '50%',
             transform: 'translate(0, -50%)',
@@ -725,7 +725,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
         overflow: 'hidden'
     }),
     (props) => (props.responsive && {
-        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
+        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
             maxWidth: 'initial',
             position: 'absolute',
             whiteSpace: 'initial',
@@ -793,7 +793,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => sizeStyles(props.buttonSize),
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
     (props) => (props.responsive && {
-        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
+        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
             background: 'none!important',
             color: '#939ca8!important',
             '&:hover': {
