@@ -16,6 +16,7 @@ export interface XInputBasicProps extends XFlexStyles {
     placeholder?: string;
     value?: string;
     icon?: string;
+    iconRight?: string;
     required?: boolean;
     invalid?: boolean;
     disabled?: boolean;
@@ -39,6 +40,10 @@ let sizeStyles = styleResolver({
             left: 12,
             top: 'calc(50% - 14px)'
         },
+        '> .icon-right': {
+            left: 'auto',
+            right: 12,
+        },
         '> span': {
             right: 22
         }
@@ -51,6 +56,10 @@ let sizeStyles = styleResolver({
             fontSize: 24,
             left: 12,
             top: 'calc(50% - 12px)'
+        },
+        '> .icon-right': {
+            left: 'auto',
+            right: 12,
         },
         '> span': {
             right: 19
@@ -65,6 +74,10 @@ let sizeStyles = styleResolver({
             left: 10,
             top: 'calc(50% - 8px)'
         },
+        '> .icon-right': {
+            left: 'auto',
+            right: 10,
+        },
         '> span': {
             right: 15
         }
@@ -77,6 +90,10 @@ let sizeStyles = styleResolver({
             fontSize: 14,
             left: 8,
             top: 'calc(50% - 7px)'
+        },
+        '> .icon-right': {
+            left: 'auto',
+            right: 8,
         },
         '> span': {
             right: 11
@@ -94,6 +111,10 @@ let sizeStyles = styleResolver({
             left: 16,
             top: 'calc(50% - 10px)'
         },
+        '> .icon-right': {
+            left: 'auto',
+            right: 16,
+        },
         '> span': {
             right: 16
         }
@@ -107,6 +128,10 @@ let sizeStyles = styleResolver({
             left: 12,
             top: 'calc(50% - 8px)'
         },
+        '> .icon-right': {
+            left: 'auto',
+            right: 12,
+        },
         '> span': {
             right: 12
         }
@@ -119,6 +144,10 @@ let sizeStyles = styleResolver({
             fontSize: 14,
             left: 8,
             top: 'calc(50% - 7px)'
+        },
+        '> .icon-right': {
+            left: 'auto',
+            right: 8,
         },
         '> span': {
             right: 8
@@ -171,6 +200,54 @@ let NonIconPaddingStyles = styleResolver({
     },
     'r-tiny': {
         paddingLeft: 12
+    }
+});
+
+let IconRightPaddingStyles = styleResolver({
+    'large': {
+        paddingRight: 50
+    },
+    'medium': {
+        paddingRight: 46
+    },
+    'default': {
+        paddingRight: 36
+    },
+    'small': {
+        paddingRight: 28
+    },
+    'r-default': {
+        paddingRight: 40
+    },
+    'r-small': {
+        paddingRight: 32
+    },
+    'r-tiny': {
+        paddingRight: 28
+    }
+});
+
+let NonIconRightPaddingStyles = styleResolver({
+    'large': {
+        paddingRight: 16
+    },
+    'medium': {
+        paddingRight: 12
+    },
+    'default': {
+        paddingRight: 10
+    },
+    'small': {
+        paddingRight: 8
+    },
+    'r-default': {
+        paddingRight: 20
+    },
+    'r-small': {
+        paddingRight: 16
+    },
+    'r-tiny': {
+        paddingRight: 12
     }
 });
 
@@ -234,6 +311,9 @@ let borderRadiusStyles = styleResolverWithProps((props: { attach?: XInputAttach 
 let colorStyles = styleResolver({
     'default': {
         borderColor: '#d4dae7',
+        '> .icon': {
+            color: '#d4dae7',
+        },
         '&:focus-within': {
             boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
             borderColor: '#986AFE',
@@ -244,6 +324,9 @@ let colorStyles = styleResolver({
     },
     'primary-sky-blue': {
         borderColor: 'rgba(220, 222, 228, 0.6)',
+        '> .icon': {
+            color: '#d4dae7',
+        },
         '&:focus-within': {
             boxShadow: '0 0 0 2px rgba(23, 144, 255, 0.2)',
             borderColor: '#74bcff',
@@ -264,7 +347,6 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
         color: '#334562',
         '> .icon': {
             position: 'absolute',
-            color: props.invalid ? '#e26363' : '#d4dae7'
         },
         '& .popper': {
             color: '#d4dae7'
@@ -278,7 +360,9 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
     (props) => colorStyles(props.inputStyle),
     (props) => (props.invalid && {
         borderColor: '#e26363',
-
+        '> .icon': {
+            color: '#e26363'
+        },
         '&:focus-within': {
             boxShadow: '0 0 0 2px rgba(226, 99, 99, 0.2)',
             borderColor: '#e26363',
@@ -306,7 +390,9 @@ const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
     (props) => IconPaddingStyles(props.format, !!props.icon),
     (props) => NonIconPaddingStyles(props.format, !props.icon),
     (props) => RequiredPaddingStyles(props.format, !!props.required),
-    (props) => NonRequiredPaddingStyles(props.format, !props.required)
+    (props) => NonRequiredPaddingStyles(props.format, !props.required),
+    (props) => IconRightPaddingStyles(props.format, !!props.iconRight),
+    (props) => NonIconRightPaddingStyles(props.format, !props.iconRight),
 ]);
 
 const RequireElement = Glamorous.span({
@@ -375,6 +461,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
             placeholder,
             size,
             icon,
+            iconRight,
             required,
             invalid,
             value,
@@ -400,6 +487,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                 disabled={disabled}
             >
                 {icon && <XIcon icon={icon} className="icon" />}
+                {iconRight && <XIcon icon={iconRight} className="icon icon-right" />}
                 <Input
                     disabled={disabled}
                     icon={icon}

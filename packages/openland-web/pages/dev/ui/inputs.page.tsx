@@ -43,6 +43,20 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                             <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" icon="star" alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
+                    <XTitle>Icon Right</XTitle>
+                    <XHorizontal>
+                        <XVertical>
+                            <XInput size="large" placeholder="large" iconRight="star" alignSelf="flex-start" />
+                            <XInput size="medium" placeholder="medium" value="medium" iconRight="star" alignSelf="flex-start" />
+                            <XInput size="default" placeholder="default" iconRight="star" alignSelf="flex-start" />
+                            <XInput size="small" placeholder="small" iconRight="star" alignSelf="flex-start" />
+                        </XVertical>
+                        <XVertical>
+                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" iconRight="star" alignSelf="flex-start" />
+                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" iconRight="star" alignSelf="flex-start" />
+                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" iconRight="star" alignSelf="flex-start" />
+                        </XVertical>
+                    </XHorizontal>
                     <XTitle>Icon & Required</XTitle>
                     <XHorizontal>
                         <XVertical>
