@@ -25,14 +25,13 @@ patch-package
        </Animated.View>
      );
    }
-@@ -29,6 +30,11 @@ const styles = StyleSheet.create({
+@@ -29,6 +30,10 @@ const styles = StyleSheet.create({
      shadowOpacity: 0.2,
      shadowRadius: 5,
    },
 +  overlay: {
 +    ...StyleSheet.absoluteFillObject,
-+    backgroundColor: '#000',
-+    opacity: 0.6,
++    backgroundColor: '#000'
 +  }
  });
  
