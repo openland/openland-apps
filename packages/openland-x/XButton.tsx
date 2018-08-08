@@ -21,7 +21,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';
-    breakpoint?: number;
+    responsive?: boolean;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
 
@@ -655,14 +655,16 @@ const MainContent = Glamorous.div({
     alignItems: 'center'
 });
 
+const RESPONSIVE_BREAKPOINT = 1200;
+
 interface StyledButtonTextProps {
-    breakpoint?: number;
+    responsive?: boolean;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
 
-let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProps) => ({
+let tooltipPlacementStyles = styleResolver({
     'top': {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
             bottom: 'calc(100% + 0px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
@@ -675,7 +677,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
         }
     },
     'right': {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
             left: 'calc(100% - 10px)',
             top: '50%',
             transform: 'translate(0, -50%)',
@@ -688,7 +690,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
         }
     },
     'bottom': {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
             top: 'calc(100% + 0px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
@@ -701,7 +703,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
         }
     },
     'left': {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
             right: 'calc(100% - 10px)',
             top: '50%',
             transform: 'translate(0, -50%)',
@@ -713,7 +715,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
             }
         }
     },
-}));
+});
 
 const ButtonText = Glamorous.span<StyledButtonTextProps>([
     (props) => ({
@@ -722,8 +724,8 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
         textOverflow: 'ellipsis',
         overflow: 'hidden'
     }),
-    (props) => (props.breakpoint && {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+    (props) => (props.responsive && {
+        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
             maxWidth: 'initial',
             position: 'absolute',
             whiteSpace: 'initial',
@@ -752,7 +754,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
             }
         }
     } || {}),
-    (props) => (props.breakpoint && tooltipPlacementStyles(props, props.tooltipPlacement) || {})
+    (props) => (props.responsive && tooltipPlacementStyles(props.tooltipPlacement) || {})
 ]);
 
 interface StyledButtonProps extends XFlexStyles {
@@ -762,7 +764,7 @@ interface StyledButtonProps extends XFlexStyles {
     enabled?: boolean;
     pressed?: boolean;
     attach?: 'left' | 'right' | 'both';
-    breakpoint?: number;
+    responsive?: boolean;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
 
@@ -790,8 +792,8 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
     (props) => sizeStyles(props.buttonSize),
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
-    (props) => (props.breakpoint && {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
+    (props) => (props.responsive && {
+        ['@media (max-width: ' + RESPONSIVE_BREAKPOINT + 'px)']: {
             background: 'none!important',
             color: '#939ca8!important',
             '&:hover': {
@@ -832,7 +834,7 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             onClick={props.onClick}
             className={props.className}
             zIndex={props.zIndex}
-            breakpoint={props.breakpoint}
+            responsive={props.responsive}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
@@ -846,7 +848,7 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                         ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
                         : props.icon
                     )}
-                    <ButtonText breakpoint={props.breakpoint} tooltipPlacement={props.tooltipPlacement}>{props.text}</ButtonText>
+                    <ButtonText responsive={props.responsive} tooltipPlacement={props.tooltipPlacement}>{props.text}</ButtonText>
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
                         ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />
