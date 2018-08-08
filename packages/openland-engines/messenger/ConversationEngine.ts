@@ -48,7 +48,7 @@ export class ConversationEngine implements MessageSendHandler {
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
         this.conversationId = conversationId;
-        this.state = new ConversationState(true, [], []);
+        this.state = new ConversationState(true, [], [], undefined, false, false);
     }
 
     start = async () => {
@@ -75,7 +75,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
         this.messages = [...(initialChat.data as any).messages.messages];
         this.messages.reverse();
-        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         let seq = (initialChat.data as any).messages.seq as number;
         console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
         this.watcher = new SequenceWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, seq, { conversationId: this.conversationId }, this.updateHandler, this.engine.client);
@@ -108,7 +108,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (this.loadingHistory === undefined) {
             this.loadingHistory = id;
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true);
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
             let loaded = await backoff(() => this.engine.client.client.query({
                 query: ChatHistoryQuery.document,
@@ -120,8 +120,8 @@ export class ConversationEngine implements MessageSendHandler {
             history.reverse();
 
             this.messages = [...history, ...this.messages];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false);
             this.historyFullyLoaded = history.length === 0;
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
             this.onMessagesUpdated();
             this.loadingHistory = undefined;
         }
@@ -134,7 +134,7 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendMessage(this.conversationId, message, this);
             this.messages = [...this.messages, { date, key, message, progress: 0, file: null, failed: false } as PendingMessage];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
             for (let l of this.listeners) {
                 l.onMessageSend();
@@ -149,7 +149,7 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendFile(this.conversationId, file, this);
             this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
             for (let l of this.listeners) {
                 l.onMessageSend();
@@ -170,7 +170,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
             this.engine.sender.retryMessage(key, this);
         }
@@ -180,7 +180,7 @@ export class ConversationEngine implements MessageSendHandler {
         let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
         if (ex) {
             this.messages = this.messages.filter((v) => isServerMessage(v) || v.key !== key);
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
         }
     }
@@ -199,7 +199,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
         }
     }
@@ -222,7 +222,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
         }
     }
@@ -313,7 +313,7 @@ export class ConversationEngine implements MessageSendHandler {
             } else {
                 this.messages = [...this.messages, event.message];
             }
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
         } else {
 
@@ -332,7 +332,7 @@ export class ConversationEngine implements MessageSendHandler {
             // Reload messages
             // TODO: Preserve pending messages
             this.messages = [...(loaded.data as any).messages.messages];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages));
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
 
             return (loaded.data as any).messages.seq;
         }

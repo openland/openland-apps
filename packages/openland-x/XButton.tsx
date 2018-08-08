@@ -595,6 +595,38 @@ let colorPressedStyles = styleResolver({
     },
 });
 
+let colorResponsiveStyles = styleResolver({
+    'default': {
+        background: 'none!important',
+        color: '#939ca8!important',
+        
+        '&:hover': {
+            color: '#85c4ff!important'
+        },
+        '&:active': {
+            color: '#1790ff!important'
+        },
+    },
+    'primary': {
+    },
+    'danger': {
+    },
+    'ghost': {
+    },
+    'electric': {
+    },
+    'flat': {
+    },
+    'link': {
+    },
+    'link_danger': {
+    },
+    'primary-sky-blue': {
+    },
+    'success': {
+    },
+});
+
 let loaderStyles = styleResolver({
     'default': {
         color: '#334562'
@@ -655,7 +687,10 @@ const MainContent = Glamorous.div({
     alignItems: 'center'
 });
 
+const defaultResponsiveBreakpoint = 1200;
+
 interface StyledButtonTextProps {
+    responsive?: boolean;
     breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
@@ -722,16 +757,16 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
         textOverflow: 'ellipsis',
         overflow: 'hidden'
     }),
-    (props) => (props.breakpoint && {
+    (props) => (props.responsive && {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
             maxWidth: 'initial',
             position: 'absolute',
-            whiteSpace: 'initial',
+            whiteSpace: 'nowrap',
             textOverflow: 'initial',
             overflow: 'initial',
             background: '#6E7588',
             color: '#ffffff',
-            borderRadius: 30,
+            borderRadius: 15,
             padding: '6px 12px 8px',
             lineHeight: '16px',
             boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
@@ -740,6 +775,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
             opacity: 0,
             visibility: 'hidden',
             transition: '300ms opacity ease',
+            textAlign: 'center',
 
             '&:before': {
                 display: 'block',
@@ -752,7 +788,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
             }
         }
     } || {}),
-    (props) => (props.breakpoint && tooltipPlacementStyles(props, props.tooltipPlacement) || {})
+    (props) => (props.responsive && tooltipPlacementStyles(props, props.tooltipPlacement) || {})
 ]);
 
 interface StyledButtonProps extends XFlexStyles {
@@ -762,6 +798,7 @@ interface StyledButtonProps extends XFlexStyles {
     enabled?: boolean;
     pressed?: boolean;
     attach?: 'left' | 'right' | 'both';
+    responsive?: boolean;
     breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
@@ -790,22 +827,16 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
     (props) => sizeStyles(props.buttonSize),
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
-    (props) => (props.breakpoint && {
+    (props) => (props.responsive && {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            background: 'none!important',
-            color: '#939ca8!important',
-            '&:hover': {
-                color: '#85c4ff!important'
-            },
-            '&:active': {
-                color: '#1790ff!important'
-            },
+            '&': colorResponsiveStyles(props.buttonStyle),
             '&:hover span': {
                 visibility: 'visible',
                 opacity: 1,
             },
             '& .icon': {
-                margin: 0
+                margin: 0,
+                display: 'none'
             },
             '& .icon-responsive': {
                 display: 'block'
@@ -832,7 +863,8 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             onClick={props.onClick}
             className={props.className}
             zIndex={props.zIndex}
-            breakpoint={props.breakpoint}
+            breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+            responsive={props.iconResponsive ? true : false}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
@@ -846,7 +878,13 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                         ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
                         : props.icon
                     )}
-                    <ButtonText breakpoint={props.breakpoint} tooltipPlacement={props.tooltipPlacement}>{props.text}</ButtonText>
+                    <ButtonText
+                        responsive={props.iconResponsive ? true : false}
+                        breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+                        tooltipPlacement={props.tooltipPlacement}
+                    >
+                        {props.text}
+                    </ButtonText>
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
                         ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />

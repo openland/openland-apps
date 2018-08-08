@@ -33,11 +33,11 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
         return (
             this.props.loadingMore ?
                 (
-                    <View height={40} >
+                    <View height={48} >
                         <ZLoader />
                     </View>
                 )
-                : <View height={0} />
+                : <View height={48} />
         );
     }
 
@@ -54,6 +54,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
                 onEndReached={this.loadMore}
+                onEndReachedThreshold={1}
                 ItemSeparatorComponent={() => <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />}
                 fixedHeight={80}
             />
