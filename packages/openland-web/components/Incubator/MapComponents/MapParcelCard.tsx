@@ -26,6 +26,7 @@ import { XLink } from 'openland-x/XLink';
 import { XTooltipHint } from 'openland-x/XTooltipHint';
 import { XIcon } from 'openland-x/XIcon';
 import { XOverflow } from '../XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 
 const panelWidth = 335;
 
@@ -299,8 +300,8 @@ export const ParcelCard = withParcelDirect((props) => {
                                     width={110}
                                     content={(
                                         <>
-                                            <XOverflow.Item path={'/parcels/' + props.data.item!!.id}>Details</XOverflow.Item>
-                                            <XOverflow.Item query={{ field: 'selectedParcel' }}>Close</XOverflow.Item>
+                                            <XMenuItem path={'/parcels/' + props.data.item!!.id}>Details</XMenuItem>
+                                            <XMenuItem query={{ field: 'selectedParcel' }}>Close</XMenuItem>
                                         </>
                                     )}
                                 />

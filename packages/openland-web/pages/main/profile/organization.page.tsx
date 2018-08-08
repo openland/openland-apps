@@ -26,6 +26,7 @@ import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XTitle } from 'openland-x/XTitle';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XIcon } from 'openland-x/XIcon';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
@@ -665,12 +666,12 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                 <>
                                                     {(false) && (
                                                         <>
-                                                            <XOverflow.Item autoClose={true}>{TextOrganizationProfile.headerButtonAddUpdate}</XOverflow.Item>
+                                                            <XMenuItem autoClose={true}>{TextOrganizationProfile.headerButtonAddUpdate}</XMenuItem>
                                                             <AddSeporator />
                                                         </>
                                                     )}
-                                                    <XOverflow.Item query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XOverflow.Item>
-                                                    <XOverflow.Item query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XOverflow.Item>
+                                                    <XMenuItem query={{ field: 'addListing', value: 'DO' }}>{TextOrganizationProfile.headerButtonAddListingDO}</XMenuItem>
+                                                    <XMenuItem query={{ field: 'addListing', value: 'AR' }}>{TextOrganizationProfile.headerButtonAddListingAR}</XMenuItem>
                                                 </>
                                             }
                                         />

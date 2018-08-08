@@ -68,7 +68,7 @@ const CheckSwitcher = Glamorous.div<{ active?: boolean }>((props) => ({
     width: 28,
     height: 14,
     borderRadius: 14,
-    background: props.active ? '#eff4fa' : 'rgba(193, 199, 207, 0.32)',
+    background: 'rgba(193, 199, 207, 0.32)',
     marginRight: 14,
     transition: '.15s all ease',
     position: 'relative',

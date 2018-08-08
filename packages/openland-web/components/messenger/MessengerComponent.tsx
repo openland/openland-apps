@@ -8,6 +8,7 @@ import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../Incubator/XOverflow';
 import { makeNavigable } from 'openland-x/Navigable';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TextComponent } from '../../../../node_modules/@types/react-native';
 import { TypignsComponent, TypingContext } from './components/TypingsComponent';
@@ -111,7 +112,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         placement="bottom-end"
                         content={(
                             <>
-                                <XOverflow.Item path="/mail">exit</XOverflow.Item>
+                                <XMenuItem path="/mail">exit</XMenuItem>
                             </>
                         )}
                     />

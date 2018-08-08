@@ -21,7 +21,7 @@ import { XCounter } from 'openland-x/XCounter';
 import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
-import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
+import { XMenuItem, XMenuVertical } from 'openland-x/XMenuItem';
 import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
