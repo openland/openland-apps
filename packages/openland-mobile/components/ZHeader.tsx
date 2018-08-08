@@ -4,7 +4,7 @@ import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
 import { isAndroid } from '../utils/isAndroid';
-import { ZHeaderBackButton } from './ZHeaderBackButton';
+import { ZHeaderBackButton } from './navigation/ZHeaderBackButton';
 import { ZAppConfig } from './ZAppConfig';
 import { ZBlurredView } from './ZBlurredView';
 

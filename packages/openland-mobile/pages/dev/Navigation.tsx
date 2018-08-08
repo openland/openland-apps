@@ -2,8 +2,9 @@ import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { View, Slider, Animated } from 'react-native';
-import { ZHeaderTitle } from '../../components/ZHeaderTitle';
+import { ZHeaderTitle } from '../../components/navigation/ZHeaderTitle';
 import { ZScrollView } from '../../components/ZScrollView';
+import { ZListItemGroup } from '../../components/ZListItemGroup';
 
 export class NavigationComponent extends React.PureComponent<NavigationInjectedProps, { offset: number, size: number, size2: number }> {
 
@@ -13,6 +14,8 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
 
     offsetVal = new Animated.Value(0);
 
+    size = new Animated.Value(56);
+
     constructor(props: NavigationInjectedProps) {
         super(props);
         this.state = {
@@ -20,6 +23,19 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
             size: 10,
             size2: 10
         };
+
+        Animated.loop(Animated.sequence([
+            Animated.timing(this.size, {
+                toValue: 106,
+                duration: 3000,
+                useNativeDriver: true
+            }),
+            Animated.timing(this.size, {
+                toValue: 56,
+                duration: 3000,
+                useNativeDriver: true
+            })]
+        )).start();
     }
 
     handleChange = (value: number) => {
@@ -39,9 +55,13 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
         return (
             <ZScrollView>
                 <View style={{ flexDirection: 'column' }}>
-                    <View style={{ width: '100%', backgroundColor: '#f00', height: 56 }}>
-                        <ZHeaderTitle appearance="android" rightTitle={'a'.repeat(this.state.size2)} titleText={'!'.repeat(this.state.size)} progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
-                    </View>
+                    <ZListItemGroup header="Android">
+                        <ZHeaderTitle first={true} appearance="android" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
+                        <ZHeaderTitle first={false} appearance="android" titleText="Justin Bieber" subtitleText="Person" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
+                        <View height={106}>
+                            <ZHeaderTitle first={false} appearance="android" titleText="Justin Bieber" subtitleText="Person" progress={this.offsetVal} hairlineOffset={this.size} />
+                        </View>
+                    </ZListItemGroup>
                     <Slider value={this.state.offset} maximumValue={1} minimumValue={-1} step={0.1} onValueChange={this.handleChange} />
                     <Slider value={this.state.size} maximumValue={80} minimumValue={1} onValueChange={this.handleSizeChange} />
                     <Slider value={this.state.size2} maximumValue={80} minimumValue={1} onValueChange={this.handleSize2Change} />

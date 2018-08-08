@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { ZTouchable } from './ZTouchable';
+import { ZTouchable } from '../ZTouchable';
 import { Image, View } from 'react-native';
-import ViewOverflow from 'react-native-view-overflow';
-import { isAndroid } from '../utils/isAndroid';
-import { AppStyles } from '../styles/AppStyles';
+import { isAndroid } from '../../utils/isAndroid';
+import { AppStyles } from '../../styles/AppStyles';
 
 let image = isAndroid ?
     (
