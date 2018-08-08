@@ -9,6 +9,7 @@ interface XTagProps extends XFlexStyles {
     icon?: string;
     size?: 'large' | 'default';
     color?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
+    rounded?: boolean;
     onIconClick?: () => void;
     onClick?: React.MouseEventHandler<any>;
 }
@@ -17,18 +18,21 @@ interface StyledXTagProps extends XFlexStyles {
     tagSize?: 'large' | 'default';
     tagColor?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
     pointer?: boolean;
+    rounded?: boolean;
 }
 
 let iconsIndentation = styleResolver({
     'large': {
         fontSize: 16,
         lineHeight: '32px',
-        marginLeft: 4,
+        marginLeft: 2,
+        marginRight: -2,
     },
     'default': {
-        fontSize: 14,
-        lineHeight: '24px',
+        fontSize: 16,
+        lineHeight: '26px',
         marginLeft: 2,
+        marginRight: -2,
     },
 });
 
@@ -37,17 +41,17 @@ let sizeStyles = styleResolver({
         height: 32,
         fontSize: 14,
         fontWeight: 500,
-        lineHeight: '32px',
+        lineHeight: '30px',
         letterSpacing: 0.1,
-        padding: '0 10px',
+        padding: '0 12px',
     },
     'default': {
-        height: 25,
+        height: 26,
         fontSize: 13,
         fontWeight: 500,
         lineHeight: '24px',
         letterSpacing: 0.2,
-        padding: '0 8px 1px',
+        padding: '0 12px',
     },
 });
 
@@ -114,7 +118,10 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
         cursor: props.pointer ? 'pointer' : undefined,
     }),
     (props) => sizeStyles(props.tagSize),
-    (props) => colorStyles(props.tagColor)
+    (props) => colorStyles(props.tagColor),
+    (props) => (props.rounded && {
+        borderRadius: 16
+    } || {}),
 ]);
 
 const XTagDeleteWrapper = Glamorous.div<StyledXTagProps>([
@@ -146,6 +153,7 @@ export class XTag extends React.Component<XTagProps> {
                 tagColor={this.props.color}
                 onClick={this.props.onClick}
                 pointer={this.props.onClick !== undefined}
+                rounded={this.props.rounded}
             >
                 {this.props.text}
                 {this.props.icon && (
