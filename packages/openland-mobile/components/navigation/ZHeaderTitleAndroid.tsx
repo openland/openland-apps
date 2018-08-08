@@ -6,8 +6,7 @@ import { ZAppConfig } from '../ZAppConfig';
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingLeft: ZAppConfig.navigationBarBackWidth,
-
+        paddingLeft: ZAppConfig.navigationBarBackWidth
     } as ViewStyle,
     containerFirst: {
         paddingLeft: 16
@@ -37,10 +36,11 @@ const styles = StyleSheet.create({
 });
 
 export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> {
-    handleTitleLayout = (event: LayoutChangeEvent) => {
-        console.log(event.nativeEvent.layout.width);
-    }
     render() {
+        let opacity = this.props.progress.interpolate({
+            inputRange: [-1, 0, 1],
+            outputRange: [0, 1, 0],
+        });
         let progress = Animated.multiply(Animated.add(this.props.hairlineOffset, -56), 1 / 50);
         return (
             <View style={[styles.container, this.props.first && styles.containerFirst]}>
@@ -54,6 +54,7 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
                         style={[
                             styles.titleContainer,
                             {
+                                opacity: opacity,
                                 transform: [{
                                     translateY: Animated.multiply(progress, 50)
                                 }, {
@@ -62,7 +63,7 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
                             }]
                         }
                     >
-                        {!this.props.titleView && <Animated.Text onLayout={this.handleTitleLayout} style={[styles.title, { transform: [{ translateX: -52 }, { scale: Animated.add(1, progress) }, { translateX: 52 }] }]}>{this.props.titleText}</Animated.Text>}
+                        {!this.props.titleView && <Animated.Text style={[styles.title, { transform: [{ translateX: -52 }, { scale: Animated.add(1, progress) }, { translateX: 52 }] }]}>{this.props.titleText}</Animated.Text>}
                         {!this.props.titleView && this.props.subtitleText && <Text style={styles.subtitle}>{this.props.subtitleText}</Text>}
                     </Animated.View>
                 )}

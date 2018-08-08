@@ -7,6 +7,7 @@ import { isAndroid } from '../utils/isAndroid';
 import { ZHeaderBackButton } from './navigation/ZHeaderBackButton';
 import { ZAppConfig } from './ZAppConfig';
 import { ZBlurredView } from './ZBlurredView';
+import { ZHeaderTitle } from './navigation/ZHeaderTitle';
 
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
@@ -162,6 +163,14 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 outputRange: [0, 1, 0],
                 extrapolate: 'clamp'
             });
+            let position = this.props.position.interpolate({
+                inputRange: [
+                    v.index - 1,
+                    v.index,
+                    v.index + 1],
+                outputRange: [-1, 0, 1],
+                extrapolate: 'clamp'
+            });
             let interpolatedInveted = this.props.position.interpolate({
                 inputRange: [
                     v.index - 1,
@@ -261,6 +270,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             return {
                 backgroundOffset: Animated.multiply(computedOffset, interpolated),
                 position: interpolated,
+                position2: position,
                 titlePosition: isAndroid ? zeroValue : offsetInterporated,
                 titleOpacity: titleOpacity,
                 largeTitleOpacity: largeTitleOpacity,
@@ -312,110 +322,133 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let titles = [];
         let w = Dimensions.get('window').width;
         for (let s of offsets) {
-            let titleRender: any = undefined;
-            let titleLarge: any = undefined;
+
+            let headerText = undefined;
             if (s.scene.descriptor.options.headerTitle) {
                 if (typeof s.scene.descriptor.options.headerTitle === 'string') {
-                    titleRender = <Text style={styles.title}>{s.scene.descriptor.options.headerTitle}</Text>;
-                    titleLarge = <Text style={styles.titleLarge}>{s.scene.descriptor.options.headerTitle}</Text>;
-                } else {
-                    titleRender = <View>{s.scene.descriptor.options.headerTitle}</View>;
+                    headerText = s.scene.descriptor.options.headerTitle;
                 }
             } else if (s.scene.descriptor.options.title) {
-                titleRender = <Text style={styles.title}>{s.scene.descriptor.options.title}</Text>;
-                titleLarge = <Text style={styles.titleLarge}>{s.scene.descriptor.options.title}</Text>;
+                headerText = s.scene.descriptor.options.title;
             }
+            let header = (
+                <View position="absolute" top={0} left={0} right={0}>
+                    <ZHeaderTitle
+                        first={s.scene.index === 0}
+                        progress={s.position2}
+                        appearance="android"
+                        titleText={headerText}
+                        hairlineOffset={hairlineOffset}
+                    />
+                </View>
+            );
 
-            // console.log(s.descriptor.options.title);
+            titles.push(header);
 
-            if (titleRender) {
-                titles.push(
-                    <Animated.View
-                        style={{
-                            ...(styles.titleContainer as any),
-                            opacity: s.titleOpacity,
-                            transform: [
-                                { translateX: s.titlePosition }
-                            ]
-                        }}
-                        key={'scene-' + titles.length}
-                    >
-                        {titleRender}
-                    </Animated.View>
-                );
-            }
+            // let titleRender: any = undefined;
+            // let titleLarge: any = undefined;
+            // if (s.scene.descriptor.options.headerTitle) {
+            //     if (typeof s.scene.descriptor.options.headerTitle === 'string') {
+            //         titleRender = <Text style={styles.title}>{s.scene.descriptor.options.headerTitle}</Text>;
+            //         titleLarge = <Text style={styles.titleLarge}>{s.scene.descriptor.options.headerTitle}</Text>;
+            //     } else {
+            //         titleRender = <View>{s.scene.descriptor.options.headerTitle}</View>;
+            //     }
+            // } else if (s.scene.descriptor.options.title) {
+            //     titleRender = <Text style={styles.title}>{s.scene.descriptor.options.title}</Text>;
+            //     titleLarge = <Text style={styles.titleLarge}>{s.scene.descriptor.options.title}</Text>;
+            // }
 
-            if (titleLarge) {
-                if (isAndroid) {
-                    titles.push(
-                        <Animated.View
-                            height={s.resolvedNavigationBarHeightLarge}
-                            style={{
-                                ...(styles.titleLargeContainer as any),
-                                opacity: s.largeTitleOpacity,
-                                transform: [
-                                    {
-                                        translateX: s.titlePosition
-                                    }
-                                ]
-                            }}
-                            key={'scene-large-' + titles.length}
-                            pointerEvents="none"
-                        >
-                            {titleLarge}
-                        </Animated.View>
-                    );
-                } else {
-                    let titleOffset = Animated.add(
-                        s.largeTitleOffset,
-                        Animated.multiply(
-                            Animated.add(
-                                Animated.multiply(
-                                    hairlineOffset,
-                                    -1
-                                ),
-                                s.hairlineOffset
-                            ),
-                            -1)
-                    );
-                    titles.push(
-                        <Animated.View
-                            height={s.resolvedNavigationBarHeightLarge}
-                            style={{
-                                ...(styles.titleLargeContainer as any),
-                                opacity: s.largeTitleOpacity,
-                                transform: [
-                                    {
-                                        translateX: s.titlePosition
-                                    },
-                                    {
-                                        translateY: titleOffset // s.largeTitleOffset
-                                    },
-                                    {
-                                        translateX: -SCREEN_WIDTH / 2 + 15
-                                    },
-                                    {
-                                        translateY: 20
-                                    },
-                                    {
-                                        scale: s.largeTitleFontSize
-                                    },
-                                    {
-                                        translateY: -20
-                                    },
-                                    {
-                                        translateX: SCREEN_WIDTH / 2 - 15
-                                    },
-                                ]
-                            }}
-                            key={'scene-large-' + titles.length}
-                            pointerEvents="none"
-                        >
-                            {titleLarge}
-                        </Animated.View>
-                    );
-                }
-            }
+            // // console.log(s.descriptor.options.title);
+
+            // if (titleRender) {
+            //     titles.push(
+            //         <Animated.View
+            //             style={{
+            //                 ...(styles.titleContainer as any),
+            //                 opacity: s.titleOpacity,
+            //                 transform: [
+            //                     { translateX: s.titlePosition }
+            //                 ]
+            //             }}
+            //             key={'scene-' + titles.length}
+            //         >
+            //             {titleRender}
+            //         </Animated.View>
+            //     );
+            // }
+
+            // if (titleLarge) {
+            //     if (isAndroid) {
+            //         titles.push(
+            //             <Animated.View
+            //                 height={s.resolvedNavigationBarHeightLarge}
+            //                 style={{
+            //                     ...(styles.titleLargeContainer as any),
+            //                     opacity: s.largeTitleOpacity,
+            //                     transform: [
+            //                         {
+            //                             translateX: s.titlePosition
+            //                         }
+            //                     ]
+            //                 }}
+            //                 key={'scene-large-' + titles.length}
+            //                 pointerEvents="none"
+            //             >
+            //                 {titleLarge}
+            //             </Animated.View>
+            //         );
+            //     } else {
+            //         let titleOffset = Animated.add(
+            //             s.largeTitleOffset,
+            //             Animated.multiply(
+            //                 Animated.add(
+            //                     Animated.multiply(
+            //                         hairlineOffset,
+            //                         -1
+            //                     ),
+            //                     s.hairlineOffset
+            //                 ),
+            //                 -1)
+            //         );
+            //         titles.push(
+            //             <Animated.View
+            //                 height={s.resolvedNavigationBarHeightLarge}
+            //                 style={{
+            //                     ...(styles.titleLargeContainer as any),
+            //                     opacity: s.largeTitleOpacity,
+            //                     transform: [
+            //                         {
+            //                             translateX: s.titlePosition
+            //                         },
+            //                         {
+            //                             translateY: titleOffset // s.largeTitleOffset
+            //                         },
+            //                         {
+            //                             translateX: -SCREEN_WIDTH / 2 + 15
+            //                         },
+            //                         {
+            //                             translateY: 20
+            //                         },
+            //                         {
+            //                             scale: s.largeTitleFontSize
+            //                         },
+            //                         {
+            //                             translateY: -20
+            //                         },
+            //                         {
+            //                             translateX: SCREEN_WIDTH / 2 - 15
+            //                         },
+            //                     ]
+            //                 }}
+            //                 key={'scene-large-' + titles.length}
+            //                 pointerEvents="none"
+            //             >
+            //                 {titleLarge}
+            //             </Animated.View>
+            //         );
+            //     }
+            // }
         }
 
         //
@@ -440,17 +473,17 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 </Animated.View>
 
                 {/* Content */}
-                <View flexGrow={1} flexBasis={0} zIndex={2}>
+                <View flexGrow={1} flexBasis={0} zIndex={4}>
                     {titles}
                 </View>
 
                 {/* Right */}
-                {right.length > 0 && (
+                {/* {right.length > 0 && (
                     <View paddingRight={15} paddingLeft={10} zIndex={3}>
                         {right}
                     </View>
                 )}
-                {right.length === 0 && (<View width={44} zIndex={3} />)}
+                {right.length === 0 && (<View width={44} zIndex={3} />)} */}
 
                 {/* Debug Statusbar */}
                 {/* <View style={{ position: 'absolute', left: 0, top: 0, right: 0, height: ZAppConfig.statusBarHeight, backgroundColor: '#ff0', zIndex: 3 }}/> */}
