@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { View, Animated, ViewStyle } from 'react-native';
+import { Animated } from 'react-native';
 import { ZAppConfig } from './ZAppConfig';
 import { isAndroid } from '../utils/isAndroid';
 
@@ -27,7 +27,7 @@ export class ZAppContent extends React.Component<ZAppContentProps> {
     constructor(props: ZAppContentProps) {
         super(props);
         this.provider = {
-            topContentInset: (this.props.useParent && isAndroid) ? 16 : (props.navigationStyle === 'large' ? ZAppConfig.navigationBarContentInset : ZAppConfig.navigationBarContentInsetSmall),
+            topContentInset: (props.navigationStyle === 'large' ? ZAppConfig.navigationBarContentInset : ZAppConfig.navigationBarContentInsetSmall), // (this.props.useParent && isAndroid) ? 0 : (props.navigationStyle === 'large' ? ZAppConfig.navigationBarContentInset : ZAppConfig.navigationBarContentInsetSmall),
             bottomContentInset: ((this.props.useParent && !isAndroid) ? 66 : 0) + ZAppConfig.bottomNavigationBarInset,
             bottomScrollInset: ((this.props.useParent && !isAndroid) ? 44 : 0) + ZAppConfig.bottomNavigationBarInset,
             registerScroller: this.registerScroller

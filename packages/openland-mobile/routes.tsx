@@ -58,27 +58,23 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
     return {
       title: 'Messages',
       isTab: true,
-      headerHeight: isAndroid ? 72 : undefined
     };
   }
   if (routeName === 'Directory') {
     return {
       title: 'Today',
       isTab: true,
-      headerHeight: isAndroid ? 72 : undefined
     };
   }
   if (routeName === 'Explore') {
     return {
       title: 'Search',
       isTab: true,
-      headerHeight: isAndroid ? 72 : undefined
     };
   }
   return {
     title: 'Settings',
     isTab: true,
-    headerHeight: isAndroid ? 72 : undefined,
     headerAppearance: 'small-hidden',
     headerRight: (
       <View style={{ marginRight: 10 }}>

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FlatList, FlatListProps, Animated } from 'react-native';
 import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
-import { ZAppConfig } from './ZAppConfig';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 

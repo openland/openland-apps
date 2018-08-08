@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Keyboard, Image, Platform } from 'react-native';
+import { View, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Keyboard, Image, Platform } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderButtonDescription } from './ZHeaderButton';
 import ViewOverflow from 'react-native-view-overflow';
@@ -144,7 +144,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             let resolvedTitleSwitchTreshold = ZAppConfig.navigationBarHeightLarge - ZAppConfig.navigationBarHeight;
             let resolvedNavigationBarHeight = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
+            console.log('nav:' + resolvedNavigationBarHeight);
             let resolvedNavigationBarHeightLarge = (v.descriptor.options.headerHeight ? v.descriptor.options.headerHeight : ZAppConfig.navigationBarHeightLarge) + ZAppConfig.statusBarHeight;
+            console.log('nav l :' + resolvedNavigationBarHeightLarge);
 
             // let config: ZHeaderConfig | undefined = v.descriptor.navigation.getParam('__z_header_config');
             // if (!config) {
@@ -463,16 +465,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         }
 
         //
-        // Action Buttons
-        //
-
-        let right: any[] = [];
-        let rightButtons = this.props.scene.descriptor.navigation.getParam('__z_header_actions', []) as ZHeaderButtonDescription[];
-        for (let r of rightButtons) {
-            right.push(r.render());
-        }
-
-        //
         // Complete Render
         //
 
@@ -487,14 +479,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 <View flexGrow={1} flexBasis={0} zIndex={4} pointerEvents="box-none">
                     {titles}
                 </View>
-
-                {/* Right */}
-                {/* {right.length > 0 && (
-                    <View paddingRight={15} paddingLeft={10} zIndex={3}>
-                        {right}
-                    </View>
-                )}
-                {right.length === 0 && (<View width={44} zIndex={3} />)} */}
 
                 {/* Debug Statusbar */}
                 {/* <View style={{ position: 'absolute', left: 0, top: 0, right: 0, height: ZAppConfig.statusBarHeight, backgroundColor: '#ff0', zIndex: 3 }}/> */}

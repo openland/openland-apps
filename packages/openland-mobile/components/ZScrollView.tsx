@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollViewProps, Animated, PanResponder, View } from 'react-native';
+import { ScrollViewProps, Animated } from 'react-native';
 import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
 import { ZKeyboardListener } from './ZKeyboardListener';
 
@@ -17,7 +17,6 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
     );
 
     componentDidMount() {
-        this.contentOffset.addListener((v) => console.log(v));
         if (this.props.syncWithBar !== false) {
             this.props.provider.registerScroller(this.contentOffset);
         }
@@ -41,16 +40,20 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                             bottom: provider.bottomScrollInset + height,
                             top: provider.topContentInset
                         }}
+                        contentContainerStyle={{
+                            paddingTop: provider.topContentInset,
+                            paddingBottom: provider.bottomContentInset
+                        }}
                         keyboardDismissMode="interactive"
                     >
-                        {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
+                        {/* {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
                             <View height={provider.topContentInset} />
-                        }
+                        } */}
 
                         {this.props.children}
-                        {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'bottom') &&
+                        {/* {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'bottom') &&
                             <View height={provider.bottomContentInset + height} />
-                        }
+                        } */}
                     </Animated.ScrollView>
                 )}
             </ZKeyboardListener>

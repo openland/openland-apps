@@ -9,7 +9,7 @@ const isIphoneX = Platform.OS === 'ios' && D_WIDTH === X_WIDTH && D_HEIGHT === X
 const statusBarHeight = Platform.OS === 'ios' ? (isIphoneX ? 44 : 22) : 0;
 const navigationBarBackWidth = Platform.OS === 'ios' ? 44 : 56;
 const navigationBarHeight = Platform.OS === 'ios' ? 44 : 56;
-const navigationBarHeightLarge = Platform.OS === 'ios' ? 96 : 120;
+const navigationBarHeightLarge = Platform.OS === 'ios' ? 96 : 96;
 const navigationBarTransparent = Platform.OS === 'ios';
 const navigationBarContentInset = navigationBarTransparent ? navigationBarHeightLarge + statusBarHeight : navigationBarHeightLarge - navigationBarHeight;
 const navigationBarContentInsetSmall = navigationBarTransparent ? navigationBarHeight + statusBarHeight : 0;

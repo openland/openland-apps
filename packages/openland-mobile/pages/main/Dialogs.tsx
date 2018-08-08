@@ -55,4 +55,4 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const Dialogs = withApp(DialogsComponent, { noSafeWrapper: true, isInTab: true });
+export const Dialogs = withApp(DialogsComponent, { noSafeWrapper: true, isInTab: true, navigationStyle: 'large' });
