@@ -29,7 +29,6 @@ import { Query } from '../../../../../node_modules/react-apollo';
 import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
 import { withHitsAdd } from '../../../api/withHItsAdd';
 import { doSimpleHash } from 'openland-y-utils/hash';
-import { makeActionable } from 'openland-x/Actionable';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 
 const Root = Glamorous(XVertical)({
@@ -720,7 +719,6 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
                     []
                 )
             });
-
         }
 
         let q = this.buildQuery(clauses, '$and');
@@ -857,7 +855,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         this.setState({ sort: sort });
     }
 
-    addCondition = (condition: SearchCondition) => {
+    addCondition = (condition: SearchCondition, reload?: boolean) => {
         // prevent empty search
         if (condition.value !== undefined && condition.value.length === 0) {
             return;
@@ -869,7 +867,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         }
         this.resetPage();
         this.setState({ conditions: res, searchText: '' });
-        // this.props.router.pushQuery('area', JSON.stringify(res));
+
+        this.props.router.replaceQueryParams({ clauses: JSON.stringify(res) });
     }
 
     replaceConditions = (condition: SearchCondition) => {
@@ -888,7 +887,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     }
 
     resetPage = () => {
-        this.props.router.replaceQueryParams({page: undefined});
+        this.props.router.replaceQueryParams({ page: undefined });
+        this.props.router.replaceQueryParams({ clauses: undefined });
     }
 
     reset = () => {
@@ -917,6 +917,9 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
+        if (this.props.router.query.clauses !== undefined) {
+            this.routerParser();
+        }
     }
 
     componentWillUnmount() {
@@ -936,6 +939,12 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         });
     }
 
+    routerParser = () => {
+        let clauses: SearchCondition[] = JSON.parse(this.props.router.query.clauses);
+
+        this.setState({ conditions: clauses, searchText: '' });
+    }
+
     render() {
 
         const { searchText, conditions, orgCount } = this.state;
@@ -943,7 +952,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             <Root separator={14}>
                 <Header orgCount={orgCount} tagsCount={this.state.conditions.length} reset={this.reset} />
                 <ContentWrapper>
-                    {/* {console.log(this.props.router)} */}
                     <MainContent>
                         <XVertical>
                             <SearchRoot>
