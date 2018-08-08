@@ -595,6 +595,38 @@ let colorPressedStyles = styleResolver({
     },
 });
 
+let colorResponsiveStyles = styleResolver({
+    'default': {
+        background: 'none!important',
+        color: '#939ca8!important',
+        
+        '&:hover': {
+            color: '#85c4ff!important'
+        },
+        '&:active': {
+            color: '#1790ff!important'
+        },
+    },
+    'primary': {
+    },
+    'danger': {
+    },
+    'ghost': {
+    },
+    'electric': {
+    },
+    'flat': {
+    },
+    'link': {
+    },
+    'link_danger': {
+    },
+    'primary-sky-blue': {
+    },
+    'success': {
+    },
+});
+
 let loaderStyles = styleResolver({
     'default': {
         color: '#334562'
@@ -797,14 +829,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
     (props) => (props.responsive && {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            background: 'none!important',
-            color: '#939ca8!important',
-            '&:hover': {
-                color: '#85c4ff!important'
-            },
-            '&:active': {
-                color: '#1790ff!important'
-            },
+            '&': colorResponsiveStyles(props.buttonStyle),
             '&:hover span': {
                 visibility: 'visible',
                 opacity: 1,
