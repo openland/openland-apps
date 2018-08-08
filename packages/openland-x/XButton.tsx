@@ -21,7 +21,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';
-    responsive?: boolean;
+    breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
 
@@ -659,12 +659,13 @@ const defaultResponsiveBreakpoint = 1200;
 
 interface StyledButtonTextProps {
     responsive?: boolean;
+    breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
 
-let tooltipPlacementStyles = styleResolver({
+let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProps) => ({
     'top': {
-        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
             bottom: 'calc(100% + 0px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
@@ -677,7 +678,7 @@ let tooltipPlacementStyles = styleResolver({
         }
     },
     'right': {
-        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
             left: 'calc(100% - 10px)',
             top: '50%',
             transform: 'translate(0, -50%)',
@@ -690,7 +691,7 @@ let tooltipPlacementStyles = styleResolver({
         }
     },
     'bottom': {
-        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
             top: 'calc(100% + 0px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
@@ -703,7 +704,7 @@ let tooltipPlacementStyles = styleResolver({
         }
     },
     'left': {
-        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
             right: 'calc(100% - 10px)',
             top: '50%',
             transform: 'translate(0, -50%)',
@@ -715,7 +716,7 @@ let tooltipPlacementStyles = styleResolver({
             }
         }
     },
-});
+}));
 
 const ButtonText = Glamorous.span<StyledButtonTextProps>([
     (props) => ({
@@ -725,15 +726,15 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
         overflow: 'hidden'
     }),
     (props) => (props.responsive && {
-        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
             maxWidth: 'initial',
             position: 'absolute',
-            whiteSpace: 'initial',
+            whiteSpace: 'nowrap',
             textOverflow: 'initial',
             overflow: 'initial',
             background: '#6E7588',
             color: '#ffffff',
-            borderRadius: 30,
+            borderRadius: 15,
             padding: '6px 12px 8px',
             lineHeight: '16px',
             boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
@@ -742,6 +743,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
             opacity: 0,
             visibility: 'hidden',
             transition: '300ms opacity ease',
+            textAlign: 'center',
 
             '&:before': {
                 display: 'block',
@@ -754,7 +756,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
             }
         }
     } || {}),
-    (props) => (props.responsive && tooltipPlacementStyles(props.tooltipPlacement) || {})
+    (props) => (props.responsive && tooltipPlacementStyles(props, props.tooltipPlacement) || {})
 ]);
 
 interface StyledButtonProps extends XFlexStyles {
@@ -765,6 +767,7 @@ interface StyledButtonProps extends XFlexStyles {
     pressed?: boolean;
     attach?: 'left' | 'right' | 'both';
     responsive?: boolean;
+    breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
 }
 
@@ -793,7 +796,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     (props) => sizeStyles(props.buttonSize),
     (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
     (props) => (props.responsive && {
-        ['@media (max-width: ' + defaultResponsiveBreakpoint + 'px)']: {
+        ['@media (max-width: ' + props.breakpoint + 'px)']: {
             background: 'none!important',
             color: '#939ca8!important',
             '&:hover': {
@@ -807,7 +810,8 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
                 opacity: 1,
             },
             '& .icon': {
-                margin: 0
+                margin: 0,
+                display: 'none'
             },
             '& .icon-responsive': {
                 display: 'block'
@@ -834,7 +838,8 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             onClick={props.onClick}
             className={props.className}
             zIndex={props.zIndex}
-            responsive={props.responsive}
+            breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+            responsive={props.iconResponsive ? true : false}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
@@ -848,7 +853,13 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                         ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
                         : props.icon
                     )}
-                    <ButtonText responsive={props.responsive} tooltipPlacement={props.tooltipPlacement}>{props.text}</ButtonText>
+                    <ButtonText
+                        responsive={props.iconResponsive ? true : false}
+                        breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+                        tooltipPlacement={props.tooltipPlacement}
+                    >
+                        {props.text}
+                    </ButtonText>
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
                         ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />
