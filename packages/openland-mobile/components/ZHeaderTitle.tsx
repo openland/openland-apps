@@ -10,70 +10,86 @@ export interface ZHeaderTitleProps {
     hairlineOffset: Animated.AnimatedInterpolation;
 }
 
-export class ZHeaderTitle extends React.PureComponent<ZHeaderTitleProps, {
-    containerWidth: number,
-    contentWidth: number,
-    leftWidth: number,
-    rightWidth: number
-}> {
+export class ZHeaderTitle extends React.PureComponent<ZHeaderTitleProps, { leftSize?: number, rightSize?: number }> {
+
+    containerWidth = new Animated.Value(0);
+    opacity = this.props.progress.interpolate({
+        inputRange: [-1, 0, 1],
+        outputRange: [0, 1, 0],
+        extrapolate: 'clamp'
+    });
+    translate = Animated.multiply(Animated.multiply(this.props.progress, this.containerWidth), 0.5);
+
     constructor(props: ZHeaderTitleProps) {
         super(props);
-        this.state = {
-            containerWidth: -1,
-            contentWidth: -1,
-            leftWidth: -1,
-            rightWidth: -1,
-        };
+        this.state = {};
     }
+
     private handleLayout = (event: LayoutChangeEvent) => {
-        this.setState({ contentWidth: event.nativeEvent.layout.width });
+        // this.setState({ contentWidth: event.nativeEvent.layout.width });
     }
     private handleGlobalLayout = (event: LayoutChangeEvent) => {
-        this.setState({ containerWidth: event.nativeEvent.layout.width });
+        this.containerWidth.setValue(event.nativeEvent.layout.width);
+        // this.setState({ containerWidth: event.nativeEvent.layout.width });
     }
-    private handleLeftlLayout = (event: LayoutChangeEvent) => {
-        this.setState({ leftWidth: event.nativeEvent.layout.width });
+
+    private handleLeftLayout = (event: LayoutChangeEvent) => {
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.setState({ leftSize: event.nativeEvent.layout.width });
+        // this.setState({ contentWidth: event.nativeEvent.layout.width });
     }
-    private handleRightlLayout = (event: LayoutChangeEvent) => {
-        this.setState({ rightWidth: event.nativeEvent.layout.width });
+
+    private handleRightLayout = (event: LayoutChangeEvent) => {
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.setState({ rightSize: event.nativeEvent.layout.width });
+        // this.setState({ contentWidth: event.nativeEvent.layout.width });
     }
-    componentWillReceiveProps() {
+
+    // componentWillReceiveProps() {
+    //     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    // }
+
+    componentWillUpdate() {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     }
+
     render() {
-        let opacity: Animated.AnimatedInterpolation = new Animated.Value(0);
-        let translate: Animated.AnimatedInterpolation = new Animated.Value(0);
-        if (this.state.containerWidth !== -1 && this.state.contentWidth !== -1 && this.state.leftWidth !== -1 && this.state.rightWidth !== -1) {
-            let padding = Math.max(this.state.leftWidth, this.state.rightWidth);
-            opacity = this.props.progress.interpolate({
-                inputRange: [-1, 0, 1],
-                outputRange: [0, 1, 0],
-                extrapolate: 'clamp'
-            });
-            translate = this.props.progress.interpolate({
-                inputRange: [-1, 0, 1],
-                outputRange: [-this.state.contentWidth / 2, this.state.containerWidth / 2 - this.state.contentWidth / 2, this.state.containerWidth - this.state.contentWidth + padding],
-                extrapolate: 'clamp'
-            });
-        }
+        let left = <Text>Left</Text>;
+        let right = <Text>{this.props.rightTitle}</Text>;
+        console.log(this.state.leftSize);
+        console.log(this.state.rightSize);
         // let offset = this.props.pr
         return (
-            <View style={{ position: 'absolute', top: 0, left: 0, right: 1, flexDirection: 'row' }} onLayout={this.handleGlobalLayout}>
-                <View onLayout={this.handleLeftlLayout}>
-                    <Text>Left</Text>
-                </View>
-                <View flexGrow={1} />
-                <View onLayout={this.handleRightlLayout}>
-                    <Text>{this.props.rightTitle}</Text>
-                </View>
-                {this.state.leftWidth !== -1 && this.state.rightWidth !== -1 && (
-                    <Animated.View style={{ flexGrow: 1, position: 'absolute', width: '100%', flexBasis: 0, flexDirection: 'row', opacity: opacity, transform: [{ translateX: translate }] }}>
-                        <View onLayout={this.handleLayout} style={{ paddingHorizontal: Math.max(this.state.leftWidth, this.state.rightWidth) }}>
-                            <Text style={{ textAlign: 'center' }}>{this.props.titleText}</Text>
-                        </View>
-                    </Animated.View>
+            <View style={{ position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row' }} onLayout={this.handleGlobalLayout}>
+
+                {this.state.leftSize !== undefined && this.state.rightSize !== undefined && (
+                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row' }}>
+                        <View style={{ flexGrow: this.state.leftSize, flexBasis: this.state.leftSize, backgroundColor: '#0ff' }} />
+                        {this.state.rightSize - this.state.leftSize > 0 && <View style={{ flexGrow: this.state.rightSize - this.state.leftSize, flexBasis: this.state.rightSize, flexShrink: 100000, backgroundColor: '#0f0' }} />}
+                        <Animated.View style={{ flexShrink: 1, flexDirection: 'row', opacity: this.opacity }}>
+                            <View onLayout={this.handleLayout}>
+                                <Text style={{ textAlign: 'center' }}>{this.props.titleText}</Text>
+                            </View>
+                        </Animated.View>
+                        {this.state.rightSize - this.state.leftSize < 0 && <View style={{ flexGrow: -(this.state.rightSize - this.state.leftSize), flexBasis: this.state.leftSize, flexShrink: 100000, backgroundColor: '#0f0' }} />}
+                        <View style={{ flexGrow: this.state.rightSize, flexBasis: this.state.rightSize, backgroundColor: '#0ff' }} />
+                    </View>
                 )}
 
+                <View style={{ flexGrow: 0, flexDirection: 'row' }} onLayout={this.handleLeftLayout}>
+                    {left}
+                </View>
+                <View style={{ flexGrow: 1, flexBasis: 0 }} />
+                {/* <View style={{ flexGrow: 1, flexShrink: 10000000, flexDirection: 'row', opacity: 0 }}>
+                    <View style={{ opacity: 0, height: 0 }}>{right}</View>
+                </View> */}
+
+                {/* <View style={{ flexGrow: 1, flexShrink: 10000000, flexDirection: 'row', backgroundColor: '#00f' }}>
+                    <View style={{ opacity: 0, height: 0, flexShrink: 1 }}>{left}</View>
+                </View> */}
+                <View style={{ flexGrow: 0, flexDirection: 'row' }} onLayout={this.handleRightLayout}>
+                    {right}
+                </View>
             </View>
         );
     }

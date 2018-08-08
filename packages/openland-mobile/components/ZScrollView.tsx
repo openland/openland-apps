@@ -33,8 +33,8 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
                         style={[other.style, {
                             // Work-around for freezing navive animation driver
                             opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                            backgroundColor: '#fff'
                         }]}
-                        backgroundColor="#fff"
                         onScroll={this.contentOffsetEvent}
                         scrollEventThrottle={1}
                         scrollIndicatorInsets={{
