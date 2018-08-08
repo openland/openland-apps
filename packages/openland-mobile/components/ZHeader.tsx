@@ -324,20 +324,31 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         for (let s of offsets) {
 
             let headerText = undefined;
+            let headerView = undefined;
             if (s.scene.descriptor.options.headerTitle) {
                 if (typeof s.scene.descriptor.options.headerTitle === 'string') {
                     headerText = s.scene.descriptor.options.headerTitle;
+                } else {
+                    headerView = s.scene.descriptor.options.headerTitle;
                 }
             } else if (s.scene.descriptor.options.title) {
                 headerText = s.scene.descriptor.options.title;
             }
+
+            let rightView = undefined;
+            if (s.actions.length > 0) {
+                rightView = <View>{s.actions.map((v) => v.render())}</View>;
+            }
+
             let header = (
-                <View position="absolute" top={0} left={0} right={0}>
+                <View position="absolute" top={0} left={0} right={0} pointerEvents="box-none">
                     <ZHeaderTitle
                         first={s.scene.index === 0}
                         progress={s.position2}
                         appearance="android"
                         titleText={headerText}
+                        titleView={headerView}
+                        rightView={rightView}
                         hairlineOffset={hairlineOffset}
                     />
                 </View>
@@ -468,12 +479,12 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Back button */}
-                <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: ZAppConfig.statusBarHeight, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
+                <Animated.View style={{ height: ZAppConfig.navigationBarHeight, position: 'absolute', left: 0, top: ZAppConfig.statusBarHeight, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
                 {/* Content */}
-                <View flexGrow={1} flexBasis={0} zIndex={4}>
+                <View flexGrow={1} flexBasis={0} zIndex={4} pointerEvents="box-none">
                     {titles}
                 </View>
 

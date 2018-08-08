@@ -9,7 +9,7 @@ export interface ZHeaderTitleProps {
     titleText?: string;
     subtitleText?: string;
     titleView?: any;
-    rightTitle?: string;
+    rightView?: any;
     progress: Animated.AnimatedInterpolation;
     hairlineOffset: Animated.AnimatedInterpolation;
 }

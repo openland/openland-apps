@@ -66,7 +66,7 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
                     <ZListItemGroup header="iOS">
                         <ZHeaderTitle first={true} appearance="ios" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
                         <ZHeaderTitle first={false} appearance="ios" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
-                        <ZHeaderTitle first={true} appearance="ios" titleText={'!'.repeat(this.state.size)} rightTitle={'a'.repeat(this.state.size2)} progress={new Animated.Value(0)} hairlineOffset={new Animated.Value(56)} />
+                        <ZHeaderTitle first={true} appearance="ios" titleText={'!'.repeat(this.state.size)} progress={new Animated.Value(0)} hairlineOffset={new Animated.Value(56)} />
                     </ZListItemGroup>
                     <Slider value={this.state.offset} maximumValue={1} minimumValue={-1} step={0.1} onValueChange={this.handleChange} />
                     <Slider value={this.state.size} maximumValue={80} minimumValue={1} onValueChange={this.handleSizeChange} />
