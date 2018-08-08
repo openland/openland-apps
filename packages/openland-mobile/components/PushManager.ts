@@ -29,7 +29,7 @@ class PushRegistrator {
 
     handleRegistration = async (token: string) => {
         log.log('Token received');
-        if (Platform.OS === 'ios') {
+        if (Platform.OS === 'ios' || Platform.OS === 'android') {
             let bundleId = DeviceInfo.getBundleId();
             let sandbox = __DEV__;
             let endpoint = {
@@ -43,7 +43,7 @@ class PushRegistrator {
                 mutation: RegisterPush,
                 variables: {
                     endpoint: JSON.stringify(endpoint),
-                    type: 'IOS'
+                    type: Platform.OS === 'ios' ? 'IOS' : 'ANDROID'
                 }
             }));
             log.log('Token registered successfully');
