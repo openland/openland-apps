@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import { ZListItem } from '../../components/ZListItem';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemEdit } from '../../components/ZListItemEdit';
-import { ZScrollView } from '../../components/ZScrollView';
 import { withApp } from '../../components/withApp';
-import { View } from 'react-native';
+import { View, Slider, Animated } from 'react-native';
+import { ZHeaderTitle } from '../../components/ZHeaderTitle';
+import { ZScrollView } from '../../components/ZScrollView';
 
-export class NavigationComponent extends React.PureComponent<NavigationInjectedProps, { hide: boolean }> {
+export class NavigationComponent extends React.PureComponent<NavigationInjectedProps, { offset: number, size: number }> {
 
     static navigationOptions = {
         title: 'Navigation'
@@ -16,60 +14,30 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
     constructor(props: NavigationInjectedProps) {
         super(props);
         this.state = {
-            hide: false
+            offset: 0,
+            size: 10
         };
     }
 
-    handleNavigate = () => {
-        this.props.navigation.navigate('DevTypography');
+    handleChange = (value: number) => {
+        this.setState({ offset: value });
     }
 
-    updateParams = () => {
-        this.setState({ hide: !this.state.hide });
+    handleSizeChange = (value: number) => {
+        this.setState({ size: value });
     }
 
     render() {
         return (
-            <View backgroundColor="#fff" flexDirection={'column'} height="100%" width="100%">
-                <ZScrollView>
-                    <ZListItemGroup>
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItemEdit title="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                        <ZListItem text="Item" />
-                    </ZListItemGroup>
-                </ZScrollView>
-            </View>
+            <ZScrollView>
+                <View flexDirection="column">
+                    <View width="100%" backgroundColor="#f00" height={56}>
+                        <ZHeaderTitle appearance="android" rightTitle={'action'} titleText={'!'.repeat(this.state.size)} progress={new Animated.Value(this.state.offset)} hairlineOffset={new Animated.Value(56)} />
+                    </View>
+                    <Slider value={this.state.offset} maximumValue={1} minimumValue={-1} step={0.1} onValueChange={this.handleChange} />
+                    <Slider value={this.state.size} maximumValue={50} minimumValue={1} onValueChange={this.handleSizeChange} />
+                </View>
+            </ZScrollView>
         );
     }
 }

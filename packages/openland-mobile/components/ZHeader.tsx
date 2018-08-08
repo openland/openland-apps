@@ -130,10 +130,11 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             // Resolve param name
             let paramName = '__z_header_actions_search_offset';
+            let paramActionsName = '__z_header_actions';
             if (v.descriptor.options.isTab) {
-                // console.log(v.descriptor);
                 let r = (v.descriptor as any).state.routes[(v.descriptor as any).state.index].routeName;
                 paramName = '__z_header_' + r + 'actions_search_offset';
+                paramActionsName = '__z_header_' + r + 'actions';
             }
 
             //
@@ -269,7 +270,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 hairlineOpacity: screenHailineOpacity,
                 resolvedNavigationBarHeight,
                 resolvedNavigationBarHeightLarge,
-                scene: v
+                scene: v,
+                actions: v.descriptor.navigation.getParam(paramActionsName, []) as ZHeaderButtonDescription[]
             };
         });
 
@@ -432,12 +434,12 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         let content = (
             <>
-                {/* Left */}
+                {/* Back button */}
                 <Animated.View style={{ height: '100%', position: 'absolute', left: 0, top: ZAppConfig.statusBarHeight, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
-                {/* Center*/}
+                {/* Content */}
                 <View flexGrow={1} flexBasis={0} zIndex={2}>
                     {titles}
                 </View>
