@@ -41,6 +41,7 @@ export function DevDocsScaffold(props: { title?: string, children?: any, bottomO
                             <Sidebar.Item path="/ui/loaders">Loaders</Sidebar.Item>
                             <Sidebar.Item path="/ui/forms">Forms</Sidebar.Item>
                             <Sidebar.Item path="/ui/tags">Tags</Sidebar.Item>
+                            <Sidebar.Item path="/ui/menu-items">Menu items</Sidebar.Item>
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/links">Links</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
