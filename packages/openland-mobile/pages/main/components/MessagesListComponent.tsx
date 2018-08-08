@@ -103,7 +103,7 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
 export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean, historyFullyLoaded?: boolean }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
-    private listRef = React.createRef<any>();
+    private listRef = React.createRef<FlatList<any>>();
 
     constructor(props: MessagesListProps & { keyboardHeight: number }) {
         super(props);
@@ -132,8 +132,8 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
 
     onMessageSend() {
         if (this.listRef.current) {
-            this.listRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
-            // this.listRef.current.scrollToIndex({ index: 0, animated: false });
+            // this.listRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
+            this.listRef.current.scrollToIndex({ index: 0, animated: false });
         }
     }
 
@@ -159,7 +159,6 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
     }
 
     renderItem = (itm: any) => {
-        console.warn('renderItem', itm.item.key);
         if (itm.item.key === 'footer') {
             return (
                 this.state.loadingHistoty && !this.state.historyFullyLoaded ?
