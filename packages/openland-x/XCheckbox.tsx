@@ -4,40 +4,51 @@ import Glamorous from 'glamorous';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 
-const CheckboxInputDiv = Glamorous.div<{ active: boolean, marginBottom?: number }>((props) => ({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: props.marginBottom !== undefined ? props.marginBottom : 14,
-    '> input': {
-        display: 'none'
-    },
-    '> label': {
-        ...XStyles.text.h400,
+const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, marginBottom?: number }>([
+    (props) => ({
         display: 'flex',
-        flexDirection: 'column',
-        color: props.active ? '#4428e0' : '#525f7f',
-        cursor: 'pointer',
-        width: '100%',
-        '& .top-content': {
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            '> span': {
-                color: '#1f3449'
-            },
+        flexDirection: 'row',
+        alignItems: 'center',
+        userSelect: 'none',
+        marginBottom: props.marginBottom !== undefined ? props.marginBottom : 14,
+        '> input': {
+            display: 'none'
         },
-        '& .bottom-content': {
-            paddingLeft: 28,
-            width: 245,
-            opacity: 0.4,
-            fontSize: 13,
-            lineHeight: 1.23,
-            letterSpacing: - 0.1,
-            color: '#1f3449'
+        '> label': {
+            ...XStyles.text.h400,
+            display: 'flex',
+            flexDirection: 'column',
+            color: props.active ? '#4428e0' : '#525f7f',
+            cursor: 'pointer',
+            width: '100%',
+            '& .top-content': {
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                '> span': {
+                    color: '#1f3449'
+                },
+            },
+            '& .bottom-content': {
+                paddingLeft: 28,
+                width: 245,
+                opacity: 0.4,
+                fontSize: 13,
+                lineHeight: 1.23,
+                letterSpacing: - 0.1,
+                color: '#1f3449'
+            }
         }
-    }
-}));
+    }),
+    (props) => (props.disabled && {
+        opacity: 0.6,
+        cursor: 'default',
+
+        '& *': {
+            cursor: 'default'
+        }
+    } || {}),
+]);
 
 const CheckIcon = Glamorous.div<{ active?: boolean, square?: boolean }>((props) => ({
     width: 18,
@@ -51,6 +62,27 @@ const CheckIcon = Glamorous.div<{ active?: boolean, square?: boolean }>((props) 
     backgroundRepeat: 'no-repeat',
     border: '1px solid rgba(97, 126, 156, 0.2)',
     marginRight: 10,
+}));
+
+const CheckSwitcher = Glamorous.div<{ active?: boolean }>((props) => ({
+    width: 28,
+    height: 14,
+    borderRadius: 14,
+    background: props.active ? '#eff4fa' : 'rgba(193, 199, 207, 0.32)',
+    marginRight: 14,
+    transition: '.15s all ease',
+    position: 'relative',
+
+    '& div': {
+        width: 18,
+        height: 18,
+        borderRadius: 18,
+        background: props.active ? '#1790ff' : '#c1c7cf',
+        transition: '300ms all ease',
+        position: 'absolute',
+        top: -2,
+        left: props.active ? 'calc(100% - 18px)' : 0,
+    }
 }));
 
 const Divided = Glamorous.div({
@@ -71,11 +103,14 @@ interface XCheckboxBasicProps {
     trueValue?: string; 
     marginBottom?: number; 
     falseValue?: string; 
-    value?: string; 
+    value?: string;
+    switcher?: boolean;
     onChange?: (checked: { 
         label: string, checked: boolean 
     }) => void; 
-    checked?: boolean; hint?: string;
+    checked?: boolean;
+    disabled?: boolean;
+    hint?: string;
     square?: boolean;
 }
 
@@ -99,23 +134,30 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
     }
 
     handleChange = () => {
-        if (this.props.onChange) {
-            this.props.onChange({ label: this.props.value !== undefined ? this.props.value : this.props.label, checked: !this.state.isChecked });
+        if (!this.props.disabled) {
+            if (this.props.onChange) {
+                this.props.onChange({ label: this.props.value !== undefined ? this.props.value : this.props.label, checked: !this.state.isChecked });
+            }
+            this.setState({
+                isChecked: !this.state.isChecked
+            });
         }
-        this.setState({
-            isChecked: !this.state.isChecked
-        });
     }
 
     render() {
         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
         console.warn(this.state.isChecked);
         return (
-            <CheckboxInputDiv active={this.state.isChecked} marginBottom={this.props.marginBottom}>
+            <CheckboxInputDiv disabled={this.props.disabled} active={this.state.isChecked} marginBottom={this.props.marginBottom}>
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
                 <label htmlFor={id}>
                     <div className="top-content">
-                        <CheckIcon active={this.state.isChecked} square={this.props.square} />
+                        {this.props.switcher && (
+                            <CheckSwitcher active={this.state.isChecked}>
+                                <div />
+                            </CheckSwitcher>
+                        )}
+                        {!this.props.switcher && (<CheckIcon active={this.state.isChecked} square={this.props.square} />)}
                         <span>{this.props.label}</span>
                     </div>
                     {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}
