@@ -2,13 +2,10 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
-import { ChatListQuery } from 'openland-api/ChatListQuery';
 import { ZLoader } from '../../components/ZLoader';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogListComponent } from './components/DialogListComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ConversationsEngine } from 'openland-engines/messenger/ConversationsEngine';
 
 class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }, { conversations?: ConversationShortFragment[], loadingMore?: boolean }> {
     private destructor?: () => void;
