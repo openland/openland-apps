@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Animated } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Animated, LayoutChangeEvent } from 'react-native';
 import { ZHeaderTitleProps } from './ZHeaderTitle';
 import { ZAppConfig } from '../ZAppConfig';
 
@@ -23,17 +23,23 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontSize: 17,
         fontWeight: '600',
-        lineHeight: 20
+        lineHeight: 20,
+        color: '#000'
     } as TextStyle,
     subtitle: {
         textAlign: 'left',
         fontSize: 13,
         fontWeight: '300',
-        lineHeight: 20
+        lineHeight: 20,
+        color: '#000',
+        opacity: 0.4
     } as TextStyle
 });
 
 export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> {
+    handleTitleLayout = (event: LayoutChangeEvent) => {
+        console.log(event.nativeEvent.layout.width);
+    }
     render() {
         let progress = Animated.multiply(Animated.add(this.props.hairlineOffset, -56), 1 / 50);
         return (
@@ -56,7 +62,7 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
                             }]
                         }
                     >
-                        {!this.props.titleView && <Animated.Text style={[styles.title, { transform: [{ scale: 2 }] }]}>{this.props.titleText}</Animated.Text>}
+                        {!this.props.titleView && <Animated.Text onLayout={this.handleTitleLayout} style={[styles.title, { transform: [{ translateX: -52 }, { scale: Animated.add(1, progress) }, { translateX: 52 }] }]}>{this.props.titleText}</Animated.Text>}
                         {!this.props.titleView && this.props.subtitleText && <Text style={styles.subtitle}>{this.props.subtitleText}</Text>}
                     </Animated.View>
                 )}
