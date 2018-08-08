@@ -56,7 +56,7 @@ export class LoginLoader extends React.Component<NavigationInjectedProps, { stat
     }
     render() {
         if (this.state.state === 'loading') {
-            return <ZLoader />;
+            return <ZLoader appearance="large" />;
         } else if (this.state.state === 'app') {
             return (
                 <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>

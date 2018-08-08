@@ -1,14 +1,15 @@
 <resources>
     <color name="primary">#4747EC</color>
+    <color name="white">#fff</color>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <!--<item name="android:statusBarColor">#3d3dcc</item>-->
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
-        <item name="android:navigationBarColor">#1e000000</item>
+        <item name="android:navigationBarColor">@color/primary</item>
         <item name="android:statusBarColor">#000</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
-        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
 </resources>
