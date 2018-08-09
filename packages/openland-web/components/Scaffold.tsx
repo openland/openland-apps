@@ -21,7 +21,7 @@ import { XCounter } from 'openland-x/XCounter';
 import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
-import { XMenuVertical, XMenuItem } from './Incubator/XOverflow';
+import { XMenuItem, XMenuVertical } from 'openland-x/XMenuItem';
 import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -35,6 +35,7 @@ import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
 import HomeIcon from './icons/home-1.svg';
 import MessagesIcon from './icons/messages-1.svg';
+import ChannelIcon from './icons/channel-1.svg';
 import DevToolsIcon from './icons/devtools_1.svg';
 import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
@@ -773,6 +774,25 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
+export const ChannelButton = withNotificationCounter((props) => {
+    return (
+        <XPopper
+            placement="right"
+            showOnHoverContent={false}
+            showOnHover={true}
+            groupId="scaffold_tooltip"
+            content={(
+                <strong>{TextAppBar.items.channel}</strong>
+            )}
+        >
+            <NavigatorItem path="/channel" activateForSubpaths={true}>
+                <ChannelIcon />
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter count={props.data.counter.unreadCount} />}
+            </NavigatorItem>
+        </XPopper>
+    );
+});
+
 export const MessengerButton = withNotificationCounter((props) => {
     return (
         <XPopper
@@ -986,6 +1006,8 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     </NavigatorItem>
                                 </XPopper>
                             </XWithRole>
+
+                            <ChannelButton />
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />

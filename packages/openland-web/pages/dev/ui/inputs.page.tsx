@@ -5,7 +5,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
-import { XInput } from 'openland-x/XInput';
+import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
@@ -29,6 +29,27 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                             <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
+                    <XTitle>Group</XTitle>
+                    <XVertical>
+                        <XInputGroup>
+                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
+                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
+                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
+                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
+                        </XInputGroup>
+                        <XInputGroup>
+                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
+                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
+                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
+                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
+                        </XInputGroup>
+                        <XInputGroup>
+                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
+                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
+                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
+                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
+                        </XInputGroup>
+                    </XVertical>
                     <XTitle>Icon</XTitle>
                     <XHorizontal>
                         <XVertical>

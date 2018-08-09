@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper, Placement } from 'openland-x/XPopper';
-import { XLink } from 'openland-x/XLink';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XMenuVertical } from 'openland-x/XMenuItem';
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -47,30 +46,6 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, horizontal?: boo
     zIndex: props.active ? 11 : undefined
 }));
 
-export const XMenuVertical = Glamorous(XPopperContent)({
-    padding: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
-});
-
-export const XMenuItem = Glamorous(XLink)<{ style?: 'danger' | 'default' }>((props) => ({
-    height: 40,
-    flexShrink: 0,
-    paddingLeft: '18px',
-    paddingRight: '18px',
-    fontSize: '15px',
-    lineHeight: '40px',
-    color: props.style === 'danger' ? '#d75454' : '#334562',
-    fontWeight: 500,
-    display: 'block',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    ':hover': {
-        color: props.style === 'danger' ? '#ec6262' : '#6b50ff',
-        backgroundColor: props.style === 'danger' ? '#fbeded' : '#f8f8fb'
-    }
-}));
-
 interface XOverflowProps {
     placement?: Placement;
     show?: boolean;
@@ -82,8 +57,6 @@ interface XOverflowProps {
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
-
-    static Item = XMenuItem;
 
     refComp?: Element;
 

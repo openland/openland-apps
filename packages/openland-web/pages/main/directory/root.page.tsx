@@ -14,6 +14,7 @@ import { XLink } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { LocationPicker } from './locationPicker';
 import { CategoryPicker } from './categoryPicker';
 import { XTag } from 'openland-x/XTag';
@@ -399,17 +400,17 @@ const OrganizationCard = (props: OrganizationCardProps) => {
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item href={'/o/' + props.item.id}>{TextDirectory.buttonViewProfile}</XOverflow.Item>
+                                    <XMenuItem href={'/o/' + props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                     {props.item.isMine && (
                                         <XWithRole role="admin" orgPermission={true}>
-                                            <XOverflow.Item href="/settings/organization">{TextDirectory.buttonEdit}</XOverflow.Item>
+                                            <XMenuItem href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
                                         </XWithRole>
                                     )}
 
                                     {!props.item.isMine && (
                                         <XWithRole role={['super-admin', 'editor']}>
-                                            <XOverflow.Item href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XOverflow.Item>
+                                            <XMenuItem href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
                                         </XWithRole>
                                     )}
 

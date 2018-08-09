@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XInputBasicProps, XInputBasic } from './basics/XInputBasic';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
+import Glamorous from 'glamorous';
 
 export interface XInputProps extends XInputBasicProps {
     field?: string;
@@ -103,3 +104,31 @@ export class XInput extends React.PureComponent<XInputProps> {
         return (<XInputBasic {...other} ref={this.handler} />);
     }
 }
+
+export const XInputGroup = Glamorous.div({
+    display: 'flex',
+
+    '& > *': {
+        flex: 1,
+        zIndex: 1,
+        marginRight: -1,
+
+        '&:first-child': {
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+        },
+
+        '&:not(:first-child):not(:last-child)': {
+            borderRadius: 0
+        },
+
+        '&:last-child': {
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+        },
+
+        '&:focus-within': {
+            zIndex: 2
+        }
+    }
+});

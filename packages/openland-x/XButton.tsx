@@ -659,12 +659,12 @@ let loaderStyles = styleResolver({
 
 const StyledIcon = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
     (props) => iconsIndentation(props.size, !!props.text),
-    (props) => ({ opacity: props.opacity }),
+    (props) => ({ opacity: props.opacity || .5 }),
 ]);
 
 const StyledIconRight = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
     (props) => iconsIndentationRight(props.size, !!props.text),
-    (props) => ({ opacity: props.opacity }),
+    (props) => ({ opacity: props.opacity || .5 }),
 ]);
 
 const StyledButtonContentWrapper = Glamorous.div({
@@ -755,7 +755,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
         maxWidth: '100%',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-        overflow: 'hidden'
+        overflow: 'hidden',
     }),
     (props) => (props.responsive && {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {

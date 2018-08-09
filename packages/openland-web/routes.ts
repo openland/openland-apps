@@ -206,6 +206,15 @@ routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 
 //
+// Channel
+//
+
+routes.add('/channel', '/main/channel/root');
+routes.add('/channel/', '/main/channel/root');
+routes.add('/channel/:conversationId', '/main/channel/root');
+routes.add('/channel/:conversationId/', '/main/channel/root');
+
+//
 // UI
 //
 
@@ -267,6 +276,8 @@ routes.add('/ui/scroll', '/dev/ui/scroll');
 routes.add('/ui/scroll/', '/dev/ui/scroll');
 routes.add('/ui/subscriptions', '/dev/ui/subscriptions');
 routes.add('/ui/subscriptions/', '/dev/ui/subscriptions');
+routes.add('/ui/menu-items', '/dev/ui/menu-items');
+routes.add('/ui/menu-items/', '/dev/ui/menu-items');
 
 //
 // Dev Tools

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XOverflow } from '../../../../components/Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { ImageRefInput } from 'openland-api/Types';
@@ -128,14 +129,14 @@ export const PostCard = (props: { item: PostCardProps, orgId: string, pinned?: b
                             placement="bottom-end"
                             content={(
                                 <>
-                                    {/* <XOverflow.Item autoClose={true} query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item> */}
-                                    <XOverflow.Item
+                                    {/* <XMenuItem autoClose={true} query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XMenuItem> */}
+                                    <XMenuItem
                                         autoClose={true}
                                         style="danger"
                                     // query={{ field: 'deleteListing', value: item.id }}
                                     >
                                         {TextOrganizationProfile.listingArOwerflowDelete}
-                                    </XOverflow.Item>
+                                    </XMenuItem>
                                 </>
                             )}
                         />

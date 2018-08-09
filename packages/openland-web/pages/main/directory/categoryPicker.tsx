@@ -3,7 +3,7 @@ import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchCondition } from './root.page';
-import { XMenuItem } from '../../../components/Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import Glamorous from 'glamorous';
 import { TextDirectory, TextDirectoryData } from 'openland-text/TextDirectory';
 import ArrowDownIcon from './icons/ic-arrow-down.svg';

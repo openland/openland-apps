@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XOverflow } from '../../../../components/Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { ImageRefInput } from 'openland-api/Types';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -94,11 +95,11 @@ export const DevelopmentOportunityShort = (props: { item: DevelopmentOportunityS
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XOverflow.Item>
-                                    {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
-                                    {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
-                                    {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>{TextOrganizationProfile.listingDoOwerflowStreetView}</XOverflow.Item>}
-                                    <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XOverflow.Item>
+                                    <XMenuItem query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XMenuItem>
+                                    {item.locationTitle && < XMenuItem href={`https://www.google.com/maps/place/${item.locationTitle}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XMenuItem>}
+                                    {(!item.locationTitle && item.location) && < XMenuItem href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XMenuItem>}
+                                    {item.location && < XMenuItem href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>{TextOrganizationProfile.listingDoOwerflowStreetView}</XMenuItem>}
+                                    <XMenuItem style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XMenuItem>
                                 </>
                             )}
                         />
@@ -175,11 +176,11 @@ export const DevelopmentOportunityFull = (props: { item: DevelopmentOportunityPr
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XOverflow.Item>
-                                    {item.locationTitle && < XOverflow.Item href={`https://www.google.com/maps/place/${item.locationTitle}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
-                                    {(!item.locationTitle && item.location) && < XOverflow.Item href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XOverflow.Item>}
-                                    {item.location && < XOverflow.Item href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>{TextOrganizationProfile.listingDoOwerflowStreetView}</XOverflow.Item>}
-                                    <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XOverflow.Item>
+                                    <XMenuItem query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowEdit}</XMenuItem>
+                                    {item.locationTitle && < XMenuItem href={`https://www.google.com/maps/place/${item.locationTitle}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XMenuItem>}
+                                    {(!item.locationTitle && item.location) && < XMenuItem href={`https://www.google.com/maps/place/${item.location.lat},${item.location.lon}`}>{TextOrganizationProfile.listingDoOwerflowGoogleMaps}</XMenuItem>}
+                                    {item.location && < XMenuItem href={`https://www.google.com/maps?cbll=${item.location.lat},${item.location.lon}&cbp=12,90,0,0,5&layer=c`}>{TextOrganizationProfile.listingDoOwerflowStreetView}</XMenuItem>}
+                                    <XMenuItem style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingDoOwerflowDelete}</XMenuItem>
                                 </>
                             )}
                         />
@@ -299,8 +300,8 @@ export const AcquizitionRequestShort = (props: { item: AcquizitionRequestShortPr
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
-                                    <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
+                                    <XMenuItem query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XMenuItem>
+                                    <XMenuItem style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XMenuItem>
                                 </>
                             )}
                         />
@@ -369,8 +370,8 @@ export const AcquizitionRequestFull = (props: { item: AcquizitionRequestProps, o
                             placement="bottom-end"
                             content={(
                                 <>
-                                    <XOverflow.Item query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XOverflow.Item>
-                                    <XOverflow.Item style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XOverflow.Item>
+                                    <XMenuItem query={{ field: 'editListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowEdit}</XMenuItem>
+                                    <XMenuItem style="danger" query={{ field: 'deleteListing', value: item.id }}>{TextOrganizationProfile.listingArOwerflowDelete}</XMenuItem>
                                 </>
                             )}
                         />

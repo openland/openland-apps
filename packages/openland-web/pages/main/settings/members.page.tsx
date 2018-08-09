@@ -22,6 +22,7 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { DateFormater } from 'openland-x-format/XDateLegacy';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { InvitesToOrganizationMoadal } from './invites';
@@ -285,7 +286,7 @@ const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => 
 const SwitchMemberIsContact = withAlterMemberIsContact((props) => {
     console.warn(props);
     return (
-        <XOverflow.Item>
+        <XMenuItem>
             <XHorizontal alignItems="center" height="100%">
                 <XCheckbox
                     marginBottom={0}
@@ -297,7 +298,7 @@ const SwitchMemberIsContact = withAlterMemberIsContact((props) => {
                     label="Hide from contacts"
                 />
             </XHorizontal>
-        </XOverflow.Item>
+        </XMenuItem>
     );
 }) as React.ComponentType<{ showInContacts: boolean, orgId: string, memberId: string, refetchVars: { orgId: string } }>;
 
@@ -361,12 +362,12 @@ const OrgMembers = withOrganizationMembers((props) => {
                                         content={
                                             m.__typename === 'OrganizationJoinedMember' ? (
                                                 <>
-                                                    <XOverflow.Item query={{ field: 'changeRole', value: m.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XOverflow.Item>
-                                                    <XOverflow.Item query={{ field: 'remove', value: m.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XOverflow.Item>
+                                                    <XMenuItem query={{ field: 'changeRole', value: m.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
+                                                    <XMenuItem query={{ field: 'remove', value: m.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
                                                     <SwitchMemberIsContact showInContacts={m.showInContacts} orgId={(props.variables as any).orgId} memberId={m.user.id} refetchVars={{orgId: (props.variables as any).orgId}} />
                                                 </>
                                             ) : (
-                                                    <XOverflow.Item query={{ field: 'remove', value: m.inviteId }} style="danger" >{TextInvites.membersMgmt.menuCancelInvite}</XOverflow.Item>
+                                                    <XMenuItem query={{ field: 'remove', value: m.inviteId }} style="danger" >{TextInvites.membersMgmt.menuCancelInvite}</XMenuItem>
                                                 )
                                         }
                                     />
