@@ -11,7 +11,9 @@ export interface ZHeaderTitleProps {
     subtitleText?: string;
     titleView?: any;
     rightView?: any;
+
     progress: Animated.AnimatedInterpolation;
+    contentOffset: Animated.AnimatedValue;
     hairlineOffset: Animated.AnimatedInterpolation;
 }
 

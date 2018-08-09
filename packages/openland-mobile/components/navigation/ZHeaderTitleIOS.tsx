@@ -15,6 +15,10 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         extrapolate: 'clamp'
     });
     translate = Animated.multiply(Animated.multiply(this.props.progress, this.containerWidth), -0.5);
+    titleProgress = new Animated.Value(0);
+    showed = false;
+    subscribedValue: Animated.Value | null = null;
+    subscribed: string | null = null;
 
     constructor(props: ZHeaderTitleProps) {
         super(props);
@@ -41,6 +45,47 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         this.setState({ rightSize: val });
     }
 
+    private handleOffset = (state: { value: number }) => {
+        // console.log('Offset: ' + state.value);
+        if (state.value > 0) {
+            if (!this.showed) {
+                this.showed = true;
+                Animated.timing(this.titleProgress, {
+                    toValue: 1,
+                    duration: 150,
+                    useNativeDriver: true
+                }).start();
+            }
+        } else {
+            if (this.showed) {
+                this.showed = false;
+                Animated.timing(this.titleProgress, {
+                    toValue: 0,
+                    duration: 150,
+                    useNativeDriver: true
+                }).start();
+            }
+        }
+    }
+
+    // private handleOffsetUpdate = (src: number) => {
+    //     console.log('Offset update: ' + src);
+    // }
+
+    componentWillMount() {
+        this.subscribed = this.props.contentOffset.addListener(this.handleOffset);
+        this.subscribedValue = this.props.contentOffset;
+        // this.handleOffsetUpdate(this.props.contentOffset.)
+    }
+
+    componentWillUnmount() {
+        if (this.subscribed) {
+            this.subscribedValue!!.removeListener(this.subscribed);
+            this.subscribed = null;
+            this.subscribedValue = null;
+        }
+    }
+
     componentWillReceiveProps(nextProps: ZHeaderTitleProps) {
 
         // Animate title/subtitle changes
@@ -57,6 +102,17 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
             });
             this.translate = Animated.multiply(Animated.multiply(this.props.progress, this.containerWidth), -0.5);
         }
+
+        // Resubscribe
+        if (this.subscribedValue !== nextProps.contentOffset) {
+            if (this.subscribed) {
+                this.subscribedValue!!.removeListener(this.subscribed);
+                this.subscribed = null;
+                this.subscribedValue = null;
+            }
+            this.subscribed = nextProps.contentOffset.addListener(this.handleOffset);
+            this.subscribedValue = nextProps.contentOffset;
+        }
     }
 
     render() {
@@ -66,10 +122,17 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
             extrapolate: 'clamp'
         });
         let titleOpacity = opacity;
-        if (this.props.headerAppearance !== 'small') {
-            titleOpacity = Animated.multiply(opacity, this.props.hairlineOffset.interpolate({
-                inputRange: [ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight, ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeightLarge],
-                outputRange: [1, 0],
+        if (this.props.headerAppearance === 'large') {
+            titleOpacity = Animated.multiply(opacity, this.titleProgress);
+            // titleOpacity = Animated.multiply(opacity, this.props.hairlineOffset.interpolate({
+            //     inputRange: [ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight, ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeightLarge],
+            //     outputRange: [1, 0],
+            //     extrapolate: 'clamp'
+            // }));
+        } else if (this.props.headerAppearance === 'small-hidden') {
+            titleOpacity = Animated.multiply(opacity, this.props.contentOffset.interpolate({
+                inputRange: [0, ZAppConfig.navigationBarHeight],
+                outputRange: [0, 1],
                 extrapolate: 'clamp'
             }));
         }

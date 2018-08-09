@@ -8,7 +8,7 @@ export interface ZAppContentProvider {
     topContentInset: number;
     bottomContentInset: number;
     bottomScrollInset: number;
-    registerScroller(value: Animated.AnimatedInterpolation): void;
+    registerScroller(value: Animated.Value): void;
 }
 
 export const ZAppContentContext = React.createContext<ZAppContentProvider | undefined>(undefined);

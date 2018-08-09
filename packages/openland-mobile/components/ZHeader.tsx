@@ -281,6 +281,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 hairlineOpacity: screenHailineOpacity,
                 resolvedNavigationBarHeight,
                 resolvedNavigationBarHeightLarge,
+                contentOffset: inputOffset,
                 scene: v,
                 actions: v.descriptor.navigation.getParam(paramActionsName, []) as ZHeaderButtonDescription[]
             };
@@ -344,6 +345,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             let header = (
                 <View position="absolute" top={0} left={0} right={0} pointerEvents="box-none" key={s.scene.key}>
                     <ZHeaderTitle
+                        contentOffset={s.contentOffset}
                         index={s.scene.index}
                         progress={s.position2}
                         headerAppearance={s.scene.descriptor.options.headerAppearance || 'large'}

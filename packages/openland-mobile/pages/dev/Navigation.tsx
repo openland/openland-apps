@@ -57,16 +57,16 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
             <ZScrollView>
                 <View style={{ flexDirection: 'column' }}>
                     <ZListItemGroup header="Android">
-                        <ZHeaderTitle index={0} appearance="android" headerAppearance="large" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
-                        <ZHeaderTitle index={1} appearance="android" headerAppearance="large" titleText="Justin Bieber" subtitleText="Person" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
+                        <ZHeaderTitle index={0} appearance="android" headerAppearance="large" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} contentOffset={new Animated.Value(0)} />
+                        <ZHeaderTitle index={1} appearance="android" headerAppearance="large" titleText="Justin Bieber" subtitleText="Person" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} contentOffset={new Animated.Value(0)} />
                         <View height={106}>
-                            <ZHeaderTitle index={0} appearance="android" headerAppearance="large" titleText="Justin Bieber" subtitleText="Person" progress={this.offsetVal} hairlineOffset={this.size} />
+                            <ZHeaderTitle index={0} appearance="android" headerAppearance="large" titleText="Justin Bieber" subtitleText="Person" progress={this.offsetVal} hairlineOffset={this.size} contentOffset={new Animated.Value(0)} />
                         </View>
                     </ZListItemGroup>
                     <ZListItemGroup header="iOS">
-                        <ZHeaderTitle index={0} appearance="ios" headerAppearance="large" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
-                        <ZHeaderTitle index={1} appearance="ios" headerAppearance="large" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} />
-                        <ZHeaderTitle index={0} appearance="ios" headerAppearance="large" titleText={'!'.repeat(this.state.size)} progress={new Animated.Value(0)} hairlineOffset={new Animated.Value(56)} />
+                        <ZHeaderTitle index={0} appearance="ios" headerAppearance="large" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} contentOffset={new Animated.Value(0)} />
+                        <ZHeaderTitle index={1} appearance="ios" headerAppearance="large" titleText="Messages" progress={this.offsetVal} hairlineOffset={new Animated.Value(56)} contentOffset={new Animated.Value(0)} />
+                        <ZHeaderTitle index={0} appearance="ios" headerAppearance="large" titleText={'!'.repeat(this.state.size)} progress={new Animated.Value(0)} hairlineOffset={new Animated.Value(56)} contentOffset={new Animated.Value(0)} />
                     </ZListItemGroup>
                     <Slider value={this.state.offset} maximumValue={1} minimumValue={-1} step={0.1} onValueChange={this.handleChange} />
                     <Slider value={this.state.size} maximumValue={80} minimumValue={1} onValueChange={this.handleSizeChange} />
