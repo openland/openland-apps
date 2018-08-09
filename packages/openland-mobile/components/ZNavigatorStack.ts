@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import { createStackNavigator, NavigationRouteConfigMap, NavigationSceneRendererProps, NavigationTransitionProps } from 'react-navigation';
 import { ZHeader } from './ZHeader';
 
@@ -85,7 +85,10 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap) {
     return createStackNavigator(routes, {
         navigationOptions: {
             header: ZHeader,
-            gesturesEnabled: true
+            gesturesEnabled: true,
+            gestureResponseDistance: {
+                horizontal: Dimensions.get('window').width
+            }
         },
         headerMode: 'float',
         transitionConfig: (transitionProps: NavigationTransitionProps, prevTransitionProps: NavigationTransitionProps, isModal: boolean) => {
