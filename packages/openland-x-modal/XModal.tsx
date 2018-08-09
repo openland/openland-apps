@@ -139,12 +139,6 @@ export const XModalCloser = Glamorous(XLink)({
     }
 });
 
-export const XModalBodyContainer = Glamorous.div({
-    // paddingTop: 18,
-    paddingBottom: 24,
-    flexGrow: 1,
-});
-
 export const XModalBodyScrollableContent = Glamorous.div({
     maxHeight: '70vh',
     overflowY: 'scroll'
@@ -155,7 +149,6 @@ class ModalContentRender extends React.Component<{
     heading?: any;
     useTopCloser?: boolean;
     body?: any;
-    bodyNoPadding?: boolean;
     footer?: any;
     customContent?: boolean;
     scrollableContent?: boolean;
@@ -174,13 +167,6 @@ class ModalContentRender extends React.Component<{
                 {this.props.body !== undefined && this.props.body}
             </>
         );
-        if (!this.props.bodyNoPadding) {
-            body = (
-                <XModalBodyContainer>
-                    {body}
-                </XModalBodyContainer>
-            );
-        }
         if (this.props.scrollableContent) {
             body = (
                 <XModalBodyScrollableContent>
@@ -215,7 +201,6 @@ export interface XModalProps {
     title?: string;
     heading?: any;
     body?: any;
-    bodyNoPadding?: boolean;
     footer?: any;
     customContent?: boolean;
     useTopCloser?: boolean;
@@ -286,7 +271,6 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                             heading={this.props.heading}
                             footer={this.props.footer}
                             body={this.props.body}
-                            bodyNoPadding={this.props.bodyNoPadding}
                             customContent={this.props.customContent}
                         >
                             {this.props.children}
@@ -316,7 +300,6 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                                     heading={this.props.heading}
                                     footer={this.props.footer}
                                     body={this.props.body}
-                                    bodyNoPadding={this.props.bodyNoPadding}
                                     customContent={this.props.customContent}
                                 >
                                     {this.props.children}

@@ -31,6 +31,8 @@ export interface ConversationStateHandler {
     onMessageSend(): void;
 }
 
+const CONVERSATION_PAGE_SIZE = 30;
+
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
@@ -120,7 +122,7 @@ export class ConversationEngine implements MessageSendHandler {
             history.reverse();
 
             this.messages = [...history, ...this.messages];
-            this.historyFullyLoaded = history.length === 0;
+            this.historyFullyLoaded = history.length < CONVERSATION_PAGE_SIZE;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
             this.onMessagesUpdated();
             this.loadingHistory = undefined;
