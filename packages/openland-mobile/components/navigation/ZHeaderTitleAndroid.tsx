@@ -42,16 +42,12 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
     title2W = new Animated.Value(0);
     title2H = new Animated.Value(0);
     handleLayout = (event: LayoutChangeEvent) => {
-        console.log(event.nativeEvent.layout.width);
         this.titleW.setValue(event.nativeEvent.layout.width);
         this.titleH.setValue(event.nativeEvent.layout.height);
-        // this.titleSize.setValue({ x: event.nativeEvent.layout.width, y: event.nativeEvent.layout.height });
     }
     handleLayout2 = (event: LayoutChangeEvent) => {
-        console.log(event.nativeEvent.layout.width);
         this.title2W.setValue(event.nativeEvent.layout.width);
         this.title2H.setValue(event.nativeEvent.layout.height);
-        // this.titleSize.setValue({ x: event.nativeEvent.layout.width, y: event.nativeEvent.layout.height });
     }
     render() {
         let opacity = this.props.progress.interpolate({
@@ -65,8 +61,6 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
             extrapolate: 'clamp'
         });
         let progress = Animated.multiply(Animated.add(this.props.hairlineOffset, -56), 1 / 40);
-        let offset = -6;
-        /// { translateX: Animated.multiply(this.titleSize, -0.25) }, { scale: Animated.add(1, progress) },
         return (
             <View style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none" flexDirection="row">
                 <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0}>

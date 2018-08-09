@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation } from 'react-native';
+import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet } from 'react-native';
 import { ZHeaderTitleProps } from './ZHeaderTitle';
 import { ZAppConfig } from '../ZAppConfig';
+
+const style = StyleSheet.create({
+
+});
 
 export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { leftSize?: number, rightSize?: number }> {
     containerWidth = new Animated.Value(0);
@@ -31,18 +35,18 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
 
     private handleRightLayout = (event: LayoutChangeEvent) => {
         let val = Math.round(event.nativeEvent.layout.width);
-        if (this.state.leftSize !== undefined && this.state.rightSize !== undefined && this.state.rightSize !== val) {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        }
+        // if (this.state.leftSize !== undefined && this.state.rightSize !== undefined && this.state.rightSize !== val) {
+        //     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        // }
         this.setState({ rightSize: val });
     }
 
     componentWillReceiveProps(nextProps: ZHeaderTitleProps) {
 
         // Animate title/subtitle changes
-        if (this.props.titleText !== nextProps.titleText || this.props.subtitleText !== nextProps.subtitleText) {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        }
+        // if (this.props.titleText !== nextProps.titleText || this.props.subtitleText !== nextProps.subtitleText) {
+        //     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        // }
 
         // Recalculate animations
         if (this.props.progress !== nextProps.progress) {
@@ -56,15 +60,26 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
     }
 
     render() {
-        let left = <View width={this.props.index === 0 ? 0 : ZAppConfig.navigationBarBackWidth} />;
-        let right = <View width={15} />;
+        let opacity = this.props.progress.interpolate({
+            inputRange: [-0.98, 0, 0.98],
+            outputRange: [0, 1, 0],
+            extrapolate: 'clamp'
+        });
+        let titleOpacity = opacity;
+        if (this.props.headerAppearance !== 'small') {
+            titleOpacity = Animated.multiply(opacity, this.props.hairlineOffset.interpolate({
+                inputRange: [ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight, ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeightLarge],
+                outputRange: [1, 0],
+                extrapolate: 'clamp'
+            }));
+        }
         return (
             <View style={{ height: 44, flexDirection: 'row' }} onLayout={this.handleGlobalLayout}>
                 {this.state.leftSize !== undefined && this.state.rightSize !== undefined && (
                     <View style={{ position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap' }}>
                         <View style={{ flexGrow: this.state.leftSize, flexBasis: this.state.leftSize }} />
                         {this.state.rightSize - this.state.leftSize > 0 && <View style={{ flexGrow: this.state.rightSize - this.state.leftSize, flexBasis: this.state.rightSize - this.state.leftSize, flexShrink: 100000 }} />}
-                        <Animated.View style={{ flexShrink: 1, flexDirection: 'row', opacity: this.opacity, flexWrap: 'nowrap', transform: [{ translateX: this.translate }] }}>
+                        <Animated.View style={{ flexShrink: 1, flexDirection: 'row', opacity: titleOpacity, flexWrap: 'nowrap', transform: [{ translateX: this.translate }] }}>
                             <View style={{ flexDirection: 'column' }}>
                                 {!this.props.titleView && this.props.titleText && <Text style={{ textAlign: 'center' }}>{this.props.titleText}</Text>}
                                 {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
@@ -77,12 +92,12 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
                 )}
 
                 <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100 }} onLayout={this.handleLeftLayout}>
-                    {left}
+                    <View width={this.props.index === 0 ? 0 : ZAppConfig.navigationBarBackWidth} />
                 </View>
                 <View style={{ flexGrow: 1, flexBasis: 0 }} />
-                <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100 }} onLayout={this.handleRightLayout}>
-                    {right}
-                </View>
+                <Animated.View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: opacity, alignItems: 'center' }} onLayout={this.handleRightLayout}>
+                    {this.props.rightView}
+                </Animated.View>
             </View>
         );
     }

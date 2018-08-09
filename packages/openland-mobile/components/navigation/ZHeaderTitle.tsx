@@ -7,6 +7,7 @@ export interface ZHeaderTitleProps {
     index: number;
     appearance: 'ios' | 'android';
     titleText?: string;
+    headerAppearance: 'small' | 'small-hidden' | 'large';
     subtitleText?: string;
     titleView?: any;
     rightView?: any;

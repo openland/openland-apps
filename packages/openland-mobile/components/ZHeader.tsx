@@ -145,9 +145,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             let resolvedTitleSwitchTreshold = ZAppConfig.navigationBarHeightLarge - ZAppConfig.navigationBarHeight;
             let resolvedNavigationBarHeight = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
-            console.log('nav:' + resolvedNavigationBarHeight);
             let resolvedNavigationBarHeightLarge = (v.descriptor.options.headerHeight ? v.descriptor.options.headerHeight : ZAppConfig.navigationBarHeightLarge) + ZAppConfig.statusBarHeight;
-            console.log('nav l :' + resolvedNavigationBarHeightLarge);
 
             // let config: ZHeaderConfig | undefined = v.descriptor.navigation.getParam('__z_header_config');
             // if (!config) {
@@ -348,7 +346,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                     <ZHeaderTitle
                         index={s.scene.index}
                         progress={s.position2}
-                        appearance="android"
+                        headerAppearance={s.scene.descriptor.options.headerAppearance || 'large'}
+                        appearance={Platform.OS === 'android' ? 'android' : 'ios'}
                         titleText={headerText}
                         titleView={headerView}
                         rightView={rightView}
