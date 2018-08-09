@@ -35,6 +35,7 @@ import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
 import HomeIcon from './icons/home-1.svg';
 import MessagesIcon from './icons/messages-1.svg';
+import ChannelIcon from './icons/channel-1.svg';
 import DevToolsIcon from './icons/devtools_1.svg';
 import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
@@ -785,7 +786,7 @@ export const ChannelButton = withNotificationCounter((props) => {
             )}
         >
             <NavigatorItem path="/channel" activateForSubpaths={true}>
-                <MessagesIcon />
+                <ChannelIcon />
                 {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
