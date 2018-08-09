@@ -37,7 +37,7 @@ let image = isAndroid ?
 export class ZHeaderBackButton extends React.PureComponent<{ onPress: () => void }> {
     render() {
         return (
-            <ZTouchable onPress={this.props.onPress} style={{ margin: isAndroid ? 13 : 0, backgroundColor: 'transparent' }}>
+            <ZTouchable onPress={this.props.onPress} style={{ margin: isAndroid ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={isAndroid ? { top: 13, left: 13, bottom: 13, right: 13 } : undefined}>
                 <View style={{ backgroundColor: 'transparent' }}>
                     {image}
                 </View>

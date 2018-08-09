@@ -33,7 +33,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                                 <View flexDirection="row" alignSelf="flex-start" height={56} alignItems="center">
                                     <View flexDirection="column" marginTop={-6}>
                                         <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: ZAppConfig.titleColor, letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
-                                        <Text style={{ fontSize: 14, height: 16, color: ZAppConfig.subtitleColor, opacity: 0.6, marginTop: 1 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>
+                                        <Text style={{ fontSize: 14, height: 16, color: ZAppConfig.subtitleColor, opacity: 0.6, marginTop: -4 }} numberOfLines={1} ellipsizeMode="tail">Online</Text>
                                     </View>
                                 </View>
                             </TouchableHighlight>

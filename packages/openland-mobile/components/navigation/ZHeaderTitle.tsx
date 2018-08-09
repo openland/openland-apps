@@ -4,7 +4,7 @@ import { ZHeaderTitleAndroid } from './ZHeaderTitleAndroid';
 import { ZHeaderTitleIOS } from './ZHeaderTitleIOS';
 
 export interface ZHeaderTitleProps {
-    first: boolean;
+    index: number;
     appearance: 'ios' | 'android';
     titleText?: string;
     subtitleText?: string;

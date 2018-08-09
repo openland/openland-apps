@@ -56,7 +56,7 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
     }
 
     render() {
-        let left = <View width={this.props.first ? 0 : ZAppConfig.navigationBarBackWidth} />;
+        let left = <View width={this.props.index === 0 ? 0 : ZAppConfig.navigationBarBackWidth} />;
         let right = <View width={15} />;
         return (
             <View style={{ height: 44, flexDirection: 'row' }} onLayout={this.handleGlobalLayout}>

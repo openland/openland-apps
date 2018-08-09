@@ -20,10 +20,11 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     title: {
         textAlign: 'left',
-        fontSize: 17,
-        fontWeight: '600',
+        fontSize: 32,
+        fontWeight: '700',
         lineHeight: 56,
-        color: '#000'
+        height: 56,
+        color: '#040404'
     } as TextStyle,
     subtitle: {
         textAlign: 'left',
@@ -38,10 +39,18 @@ const styles = StyleSheet.create({
 export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> {
     titleW = new Animated.Value(0);
     titleH = new Animated.Value(0);
+    title2W = new Animated.Value(0);
+    title2H = new Animated.Value(0);
     handleLayout = (event: LayoutChangeEvent) => {
         console.log(event.nativeEvent.layout.width);
         this.titleW.setValue(event.nativeEvent.layout.width);
         this.titleH.setValue(event.nativeEvent.layout.height);
+        // this.titleSize.setValue({ x: event.nativeEvent.layout.width, y: event.nativeEvent.layout.height });
+    }
+    handleLayout2 = (event: LayoutChangeEvent) => {
+        console.log(event.nativeEvent.layout.width);
+        this.title2W.setValue(event.nativeEvent.layout.width);
+        this.title2H.setValue(event.nativeEvent.layout.height);
         // this.titleSize.setValue({ x: event.nativeEvent.layout.width, y: event.nativeEvent.layout.height });
     }
     render() {
@@ -56,9 +65,10 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
             extrapolate: 'clamp'
         });
         let progress = Animated.multiply(Animated.add(this.props.hairlineOffset, -56), 1 / 40);
+        let offset = -6;
         /// { translateX: Animated.multiply(this.titleSize, -0.25) }, { scale: Animated.add(1, progress) },
         return (
-            <View style={[styles.container, this.props.first && styles.containerFirst]} pointerEvents="box-none" flexDirection="row">
+            <View style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none" flexDirection="row">
                 <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0}>
                     {this.props.titleView && (
                         <Animated.View
@@ -69,7 +79,7 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
                                     transform: [{
                                         translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000))
                                     }, {
-                                        translateX: this.props.first ? 0 : Animated.multiply(progress, -ZAppConfig.navigationBarBackWidth + 16)
+                                        translateX: this.props.index === 0 ? 0 : Animated.multiply(progress, -ZAppConfig.navigationBarBackWidth + 16)
                                     }]
                                 }]
                             }
@@ -85,13 +95,9 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
                                 styles.titleContainer,
                                 {
                                     opacity: opacity,
-                                    // transform: [{
-                                    //     translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000))
-                                    // },
-                                    //     // {
-                                    //     //     translateX: this.props.first ? 0 : Animated.multiply(progress, -ZAppConfig.navigationBarBackWidth + 16)
-                                    //     // }
-                                    // ]
+                                    transform: [{
+                                        translateX: this.props.index === 0 ? 0 : Animated.multiply(progress, -ZAppConfig.navigationBarBackWidth + 16)
+                                    }]
                                 }]
                             }
 
@@ -101,25 +107,56 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
                                 <Animated.View
                                     style={[
                                         {
+                                            position: 'absolute',
+                                            left: 0,
+                                            top: 0,
+                                            right: 0,
+                                            opacity: progress,
                                             transform: [
-                                                { translateY: Animated.add(Animated.multiply(progress, 20), Animated.multiply(faraway, 1000)) },
+                                                { translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000)) },
                                                 { translateX: Animated.multiply(this.titleW, -0.5) },
-                                                { translateY: Animated.multiply(this.titleH, -0.5) },
-                                                { scale: Animated.add(progress, 1) },
-                                                { translateY: Animated.multiply(this.titleH, 0.5) },
+                                                // { translateY: -5 },
+                                                { translateY: 6 },
+                                                { scale: Animated.multiply(Animated.add(Animated.multiply(progress, 0.6), 1), 1 / 1.6) },
+                                                { translateY: -9 },
                                                 { translateX: Animated.multiply(this.titleW, 0.5) }]
                                         }
                                     ]}
                                     onLayout={this.handleLayout}
+                                    pointerEvents="none"
                                 >
                                     <Text style={[styles.title]}>{this.props.titleText}</Text>
                                 </Animated.View>
                             )}
-                            {!this.props.titleView && this.props.subtitleText && <Text style={styles.subtitle}>{this.props.subtitleText}</Text>}
+                            {!this.props.titleView && (
+                                <Animated.View
+                                    style={[
+                                        {
+                                            position: 'absolute',
+                                            left: 0,
+                                            top: 0,
+                                            right: 0,
+                                            opacity: Animated.add(Animated.multiply(progress, -1), 1),
+                                            // opacity: 0.7,
+                                            transform: [
+                                                { translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000)) },
+                                                { translateX: Animated.multiply(this.title2W, -0.5) },
+                                                { translateY: 6 },
+                                                { scale: Animated.add(Animated.multiply(progress, 0.6), 1) },
+                                                { translateY: -6 },
+                                                { translateX: Animated.multiply(this.title2W, 0.5) }]
+                                        }
+                                    ]}
+                                    onLayout={this.handleLayout2}
+                                    pointerEvents="none"
+                                >
+                                    <Text style={[styles.title, { fontSize: 20 }]}>{this.props.titleText}</Text>
+                                </Animated.View>
+                            )}
                         </Animated.View>
                     )}
                 </View>
-                <Animated.View paddingRight={15} style={{ opacity: opacity }}>
+                <Animated.View paddingRight={15} style={{ opacity: opacity }} pointerEvents="box-none">
                     {this.props.rightView}
                 </Animated.View>
             </View >

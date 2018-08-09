@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { NavigationInjectedProps, NavigationScreenProp, NavigationParams } from 'react-navigation';
-// import NanoId from 'nanoid';
-import { Button, TouchableOpacity } from 'react-native';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { Button, Platform, View, TouchableNativeFeedback, Text } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
+import { ZHeaderActionButtonAndroid } from './navigation/ZHeaderActionButtonAndroid';
 
 export interface ZHeaderButtonDescription {
     id: string;
@@ -32,14 +32,17 @@ export class ZHeaderButton extends React.PureComponent<{ title?: string, onPress
 
     private renderButton = () => {
         if (this.props.title) {
+            if (Platform.OS === 'android') {
+                return (
+                    <ZHeaderActionButtonAndroid title={this.props.title} onPress={this.handlePress} />
+                );
+            }
             return (<Button color={AppStyles.primaryColor} onPress={this.handlePress} title={this.props.title} />);
         } else {
             return (
-                <TouchableOpacity onPress={this.handlePress}>
-                    <>
-                        {this.props.children}
-                    </>
-                </TouchableOpacity>
+                <>
+                    {this.props.children}
+                </>
             );
         }
     }

@@ -28,6 +28,7 @@ interface Descriptor {
 }
 
 interface Scene {
+    key: string;
     index: number;
     descriptor: Descriptor;
 }
@@ -264,7 +265,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 }));
             }
 
-            let screenHailineOpacity: Animated.AnimatedInterpolation = ZAppConfig.enableBlur ? titleOpacity : zeroValue;
+            let screenHailineOpacity: Animated.AnimatedInterpolation = titleOpacity; // ZAppConfig.enableBlur ? titleOpacity : zeroValue;
             if (v.descriptor.options.headerHairline) {
                 screenHailineOpacity = oneValue;
             }
@@ -343,9 +344,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             }
 
             let header = (
-                <View position="absolute" top={0} left={0} right={0} pointerEvents="box-none">
+                <View position="absolute" top={0} left={0} right={0} pointerEvents="box-none" key={s.scene.key}>
                     <ZHeaderTitle
-                        first={s.scene.index === 0}
+                        index={s.scene.index}
                         progress={s.position2}
                         appearance="android"
                         titleText={headerText}
@@ -528,7 +529,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         transform: [{ translateY: hairlineOffset }],
                         opacity: Animated.multiply(hairlineOpacity, 0.3),
                         backgroundColor: '#b7bdc6',
-                        zIndex: 3,
+                        zIndex: 10,
                     }}
                 />
 
