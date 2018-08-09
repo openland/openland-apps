@@ -14,8 +14,9 @@ import { ComposeComponent } from '../../../components/messenger/ComposeComponent
 import { XLink } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XButton } from 'openland-x/XButton';
 
-let ChatContainer = Glamorous.div({
+let ChannelsContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
@@ -27,17 +28,17 @@ let ChatContainer = Glamorous.div({
     overflow: 'hidden'
 });
 
-let ChatListContainer = Glamorous.div({
+let ChannelsListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
     width: 300,
     flexShrink: 0,
-    borderRightColor: '#e2e3e8',
+    borderRightColor: 'rgba(216, 218, 229, 0.82)',
     borderRightWidth: '1px',
     borderRightStyle: 'solid',
-    '@media (max-width: 950px)': {
-        width: 200
+    '@media (max-width: 1200px)': {
+        width: 280
     }
 });
 
@@ -51,37 +52,47 @@ let ConversationContainer = Glamorous.div({
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     position: 'relative',
-    '@media (max-width: 950px)': {
-        width: 'calc(100% - 200px)',
+    '@media (max-width: 1200px)': {
+        width: 'calc(100% - 280px)',
     }
 });
 
-let Header = Glamorous.div({
+let ChannelsHeader = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 48,
+    height: 40,
     paddingLeft: 16,
-    paddingRight: 16,
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 8,
+    marginBottom: 8,
+});
+
+let ChannelsHeaderCaption = Glamorous.div({
+    flexGrow: 1,
     fontSize: 18,
-    fontWeight: 600,
-    lineHeight: 1.11,
-    letterSpacing: -0.3,
+    fontWeight: 500,
+    lineHeight: '40px',
+    letterSpacing: 0.6,
     color: '#334562',
-    '& > a': {
-        display: 'flex',
-        alignItems: 'center',
-        color: '#BEC3CA',
-        '&:hover': {
-            color: '#334562'
-        },
-        '& > i': {
-            fontSize: 30
-        }
+});
+
+let ChannelsHeaderIcon = Glamorous(XIcon)({
+    fontSize: 20,
+    lineHeight: '40px',
+    paddingLeft: 10,
+    paddingRight: 10,
+    cursor: 'pointer',
+    color: '#bcc3cc',
+    transition: '300ms all ease',
+    '&:hover': {
+        color: 'red',
+    },
+    '&:active': {
+        color: 'blue',
     }
+});
+
+let ChannelsBottomContainer = Glamorous.div({
+    padding: 16
 });
 
 const EmptyDiv = Glamorous.div({
@@ -109,13 +120,17 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
             <XDocumentHead title="Channel" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
-                    <ChatContainer>
-                        <ChatListContainer>
-                            <Header>
-                                <span>Channels</span>
-                            </Header>
+                    <ChannelsContainer>
+                        <ChannelsListContainer>
+                            <ChannelsHeader>
+                                <ChannelsHeaderCaption>Channels</ChannelsHeaderCaption>
+                                <ChannelsHeaderIcon icon="search" />
+                            </ChannelsHeader>
                             <ChatsComponent />
-                        </ChatListContainer>
+                            <ChannelsBottomContainer>
+                                <XButton size="r-default" text="Create channel" icon="add" />
+                            </ChannelsBottomContainer>
+                        </ChannelsListContainer>
                         <ConversationContainer>
                             {!props.router.routeQuery.conversationId && (
                                 <MessengerContainer>
@@ -129,7 +144,7 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
                             )}
                         </ConversationContainer>
-                    </ChatContainer>
+                    </ChannelsContainer>
                 </Scaffold.Content>
             </Scaffold>
         </>
