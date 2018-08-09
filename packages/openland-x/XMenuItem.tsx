@@ -143,7 +143,5 @@ export const XMenuItemSeporator = Glamorous.div({
 });
 
 export const XMenuVertical = Glamorous(XPopperContent)({
-    padding: 0,
-    paddingTop: 8,
-    paddingBottom: 8,
+    padding: '8px 0'
 });
