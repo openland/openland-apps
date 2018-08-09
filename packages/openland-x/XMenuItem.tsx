@@ -128,6 +128,10 @@ export const XMenuItemWrapper = Glamorous.div({
         minHeight: '100%'
     },
 
+    '& label': {
+        minHeight: 40,
+    },
+
     '&:hover': {
         backgroundColor: '#f3f9ff',
         '& span': {

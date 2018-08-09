@@ -18,6 +18,7 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
             ...XStyles.text.h400,
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'center',
             color: props.active ? '#4428e0' : '#525f7f',
             cursor: 'pointer',
             width: '100%',
