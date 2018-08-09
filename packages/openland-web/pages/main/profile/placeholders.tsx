@@ -444,7 +444,6 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             title={TextOrganizationProfile.placeholderSocialModalTitle}
-            clearContentPadding={true}
             defaultData={{
                 input: {
                     website: props.data.organizationProfile!!.website,
@@ -505,7 +504,6 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
-            clearContentPadding={true}
             title={TextOrganizationProfile.placeholderContactsModalTitle}
             defaultData={{
                 contacts: props.data.organizationProfile!!.contacts,
@@ -572,7 +570,6 @@ export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
-            clearContentPadding={true}
             title="Add channel"
             defaultData={{
                 input: {
@@ -673,7 +670,6 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
         <XModalForm
             title="Add locations"
             size="large"
-            clearContentPadding={true}
             defaultData={{
                 input: {
                     locations: props.data.organizationProfile!!.locations,
@@ -719,7 +715,6 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             title="Add categories"
-            clearContentPadding={true}
             defaultData={{
                 input: {
                     locations: props.data.organizationProfile!!.organizationType,
@@ -833,7 +828,6 @@ export const AvatartPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             title="Organization logo"
-            clearContentPadding={true}
             defaultData={{
                 input: {
                     photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),

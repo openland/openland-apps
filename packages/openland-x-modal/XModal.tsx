@@ -4,7 +4,10 @@ import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
 import { XModalContext } from './XModalContext';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import CloseIcon from './ic-close.svg';
 
 interface ModalRenderProps {
     size: 'x-large' | 'large' | 'default' | 'small';
@@ -19,7 +22,7 @@ class ModalRender extends React.PureComponent<ModalRenderProps> {
 
     render() {
 
-        let width = 560;
+        let width = 570;
         if (this.props.size === 'large') {
             width = 940;
         } else if (this.props.size === 'small') {
@@ -76,7 +79,7 @@ let Root = Glamorous.div({
     height: '100%'
 });
 
-export let XModalBody = Glamorous.div({
+export const XModalBody = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     paddingLeft: 24,
@@ -85,34 +88,28 @@ export let XModalBody = Glamorous.div({
     position: 'relative'
 });
 
-export let XModalHeader = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 24,
-    paddingRight: 24,
-    height: 68,
-    letterSpacing: '-0.4px',
-    lineHeight: '64px',
-    fontSize: '18px',
+export const XModalTitle = Glamorous.div({
+    fontSize: 18,
     fontWeight: 500,
-    color: '1f3449',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.6)'
+    letterSpacing: -0.4,
+    color: '#1f3449'
 });
 
-export let XModalHeaderEmpty = Glamorous.div({
+export const XModalHeader = Glamorous(XHorizontal)({
+    paddingLeft: 24,
+    paddingRight: 18,
+    height: 64
+});
+
+export const XModalHeaderEmpty = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     paddingLeft: 24,
     paddingRight: 24,
-    height: 24,
-    lineHeight: '64px',
-    fontSize: '18px',
-    fontWeight: 'bold'
+    height: 24
 });
 
-export let XModalFooter = Glamorous.div({
+export const XModalFooter = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     paddingLeft: 24,
@@ -120,28 +117,38 @@ export let XModalFooter = Glamorous.div({
     height: 64,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: '#f9fafb',
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
+    backgroundColor: '#fafbfc',
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
-export const XModalCloser = Glamorous(XButton)({
+export const XModalCloser = Glamorous(XLink)({
     width: 28,
     height: 28,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all .15s ease',
     borderRadius: 50,
-    color: '#334562',
-    opacity: 0.2,
-    '& i': {
-        marginLeft: -2
+    border: '1px solid transparent',
+    marginLeft: 'auto',
+    marginTop: -2,
+    '&:hover': {
+        border: 'solid 1px #dcdee4'
     }
 });
 
-export const XModalBodyContainer = Glamorous.div(props => ({
-    paddingTop: 18,
+export const XModalBodyContainer = Glamorous.div({
+    // paddingTop: 18,
     paddingBottom: 24,
     flexGrow: 1,
-}));
+});
+
+export const XModalBodyScrollableContent = Glamorous.div({
+    maxHeight: '70vh',
+    overflowY: 'scroll'
+});
 
 class ModalContentRender extends React.Component<{
     title?: string;
@@ -176,15 +183,22 @@ class ModalContentRender extends React.Component<{
         }
         if (this.props.scrollableContent) {
             body = (
-                <div style={{ maxHeight: '70vh', overflowY: 'scroll' }}>
+                <XModalBodyScrollableContent>
                     {body}
-                </div>
-
+                </XModalBodyScrollableContent>
             );
         }
         return (
             <Root>
-                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && <XModalHeader>{this.props.title}{this.props.useTopCloser && <XModalCloser style="flat" icon="close" autoClose={true} />}</XModalHeader>}
+                {(this.props.heading === undefined && (this.props.title || this.props.useTopCloser)) && (
+                    <XModalHeader
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <XModalTitle>{this.props.title}</XModalTitle>
+                        {this.props.useTopCloser && <XModalCloser autoClose={true}><CloseIcon/></XModalCloser>}
+                    </XModalHeader>
+                )}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}

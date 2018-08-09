@@ -8,7 +8,8 @@ import { XTitle } from 'openland-x/XTitle';
 import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
-import { XModalForm } from 'openland-x-modal/XModalForm';
+
+import { BrowseChannelsModal } from '../../main/channel/components/browseChannelsModal';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -32,6 +33,9 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
         <DevDocsScaffold title="Modals">
             <XContent>
                 <XVertical>
+                    
+                    <BrowseChannelsModal title="Browse channels" target={<XButton text="Channels modal" />} />
+
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />
@@ -64,10 +68,6 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={40} />
                     </XModal>
-                    <XTitle>Form</XTitle>
-                    <XModalForm target={<XButton text="Show Form" />}>
-                        {}
-                    </XModalForm>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>
