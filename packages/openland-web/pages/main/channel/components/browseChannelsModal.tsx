@@ -4,6 +4,17 @@ import { XModal, XModalProps } from 'openland-x-modal/XModal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
+import { XButton } from 'openland-x/XButton';
+
+interface ChannelsProps {
+    channels: {
+        name: string;
+        id: string;
+        members: number;
+        listings: number;
+        invited: boolean;
+    }[];
+}
 
 function dataReturner() {
     let dataArr: {
@@ -11,6 +22,7 @@ function dataReturner() {
         id: string;
         members: number;
         listings: number;
+        invited: boolean;
     }[] = [];
 
     for (let i = 0; i < 30; i++) {
@@ -18,55 +30,87 @@ function dataReturner() {
             id: Math.random().toString(35).substring(2),
             name: 'Channel ' + Math.random().toString(35).substring(2),
             members: Math.floor(Math.random() * 100),
-            listings: Math.floor(Math.random() * 100)
+            listings: Math.floor(Math.random() * 100),
+            invited: i % 2 === 0 ? true : false
         });
     }
 
     return dataArr;
 }
 
-interface ChannelsListProps {
-    channels: {
-        name: string;
-        id: string;
-        members: number;
-        listings: number;
-    }[];
-}
+const ChannelsWrapper = Glamorous.div({
+    maxHeight: '65vh',
+    overflowY: 'scroll',
+});
 
-const ChannelsList = (props: ChannelsListProps) => (
-    <XVertical>
+const ChannelRow = Glamorous(XHorizontal)({
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    '&:hover': {
+        backgroundColor: '#f9fafb',
+        '& > a': {
+            backgroundColor: 'rgb(23, 144, 255)',
+            color: 'rgb(255, 255, 255)',
+            '&:hover': {
+                backgroundColor: 'rgb(69, 166, 255)',
+                color: 'rgb(255, 255, 255)'
+            }
+        }
+    },
+    '& > a': {
+        backgroundColor: 'rgba(238, 240, 242, 0.5)',
+        color: '#334562'
+    }
+});
+
+const ChannelName = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: 1.25,
+    letterSpacing: -0.2,
+    color: '#1790ff'
+});
+
+const ChannelText = Glamorous.div({
+    fontSize: 14,
+    lineHeight: 1.29,
+    letterSpacing: -0.3,
+    color: '#99a2b0'
+});
+
+const ChannelsList = (props: ChannelsProps) => (
+    <ChannelsWrapper>
         {props.channels.map(i => (
-            <div key={i.id}>
-                <div>name - {i.name}</div>
-                <div>{i.members} - members</div>
-                <div>{i.listings} - listings</div>
-            </div>
+            <ChannelRow
+                key={i.id}
+                alignItems="center"
+                justifyContent="space-between"
+                flexGrow={1}
+            >
+                <XVertical separator={1}>
+                    <ChannelName>{i.name}</ChannelName>
+                    <ChannelText>{i.members} members • {i.listings} listings</ChannelText>
+                </XVertical>
+                <XButton text="Reques invite" style="primary-sky-blue" size="r-default"/>
+            </ChannelRow>
         ))}
-    </XVertical>
+    </ChannelsWrapper>
 );
 
-interface BrowseChannelsModalProps extends Partial<XModalProps> {
-    channels: {
-        name: string;
-        id: string;
-        members: number;
-        listings: number;
-    }[];
-}
+const InputWrapper = Glamorous.div({
+    paddingLeft: 24,
+    paddingRight: 24
+});
 
-interface BrowseChannelsModalState {
+interface BrowseChannelsModalState extends ChannelsProps {
     searchText: string;
-    channels: {
-        name: string;
-        id: string;
-        members: number;
-        listings: number;
-    }[];
 }
 
-class BrowseChannelsModalRaw extends React.Component<BrowseChannelsModalProps, BrowseChannelsModalState> {
-    constructor(props: BrowseChannelsModalProps) {
+class BrowseChannelsModalRaw extends React.Component<ChannelsProps & Partial<XModalProps>, BrowseChannelsModalState> {
+    constructor(props: ChannelsProps & Partial<XModalProps>) {
         super(props);
 
         this.state = {
@@ -97,23 +141,30 @@ class BrowseChannelsModalRaw extends React.Component<BrowseChannelsModalProps, B
                 title={this.props.title}
                 target={this.props.target}
                 useTopCloser={true}
-            >
-                <XInput
-                    value={this.state.searchText}
-                    onChange={() => this.handleSearchChange}
-                    placeholder="start typing..."
-                    size="r-default" 
-                    iconRight="search"
-                    color="primary-sky-blue"
-                />
-                <XVertical>
-                    <ChannelsList channels={this.state.channels} />
-                </XVertical>
-            </XModal>
+                // customContent={true}
+                body={(
+                    <XVertical separator={3}>
+                        <InputWrapper>
+                            <XInput
+                                value={this.state.searchText}
+                                onChange={() => this.handleSearchChange}
+                                placeholder="start typing..."
+                                size="r-default"
+                                iconRight="search"
+                                color="primary-sky-blue"
+                            />
+                        </InputWrapper>
+
+                        <XVertical>
+                            <ChannelsList channels={this.state.channels} />
+                        </XVertical>
+                    </XVertical>
+                )}
+            />
         );
     }
 }
 
 export const BrowseChannelsModal = (props: XModalProps) => (
-    <BrowseChannelsModalRaw {...props} channels={dataReturner()} />
+    <BrowseChannelsModalRaw {...props} channels={dataReturner()} scrollableContent={true} />
 );

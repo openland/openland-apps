@@ -69,7 +69,6 @@ export class XModalForm extends React.Component<XModalFormProps> {
         return (
             <XModal
                 {...other}
-                bodyNoPadding={true}
                 body={(
                     <XForm defaultData={defaultData} staticData={staticData} defaultAction={defaultAction} autoClose={this.props.autoClose || true}>
                         {body}
