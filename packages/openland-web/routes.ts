@@ -206,6 +206,15 @@ routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 
 //
+// Channel
+//
+
+routes.add('/channel', '/main/channel/root');
+routes.add('/channel/', '/main/channel/root');
+routes.add('/channel/:conversationId', '/main/channel/root');
+routes.add('/channel/:conversationId/', '/main/channel/root');
+
+//
 // UI
 //
 

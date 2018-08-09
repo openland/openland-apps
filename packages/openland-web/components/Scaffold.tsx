@@ -773,6 +773,25 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
+export const ChannelButton = withNotificationCounter((props) => {
+    return (
+        <XPopper
+            placement="right"
+            showOnHoverContent={false}
+            showOnHover={true}
+            groupId="scaffold_tooltip"
+            content={(
+                <strong>{TextAppBar.items.channel}</strong>
+            )}
+        >
+            <NavigatorItem path="/channel" activateForSubpaths={true}>
+                <MessagesIcon />
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter count={props.data.counter.unreadCount} />}
+            </NavigatorItem>
+        </XPopper>
+    );
+});
+
 export const MessengerButton = withNotificationCounter((props) => {
     return (
         <XPopper
@@ -986,6 +1005,8 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     </NavigatorItem>
                                 </XPopper>
                             </XWithRole>
+
+                            <ChannelButton />
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />
