@@ -78,7 +78,7 @@ export class XPListItem extends React.Component<XPListItemProps, { pressed: bool
             );
         }
         return (
-            <TouchableHighlight onPress={this.handlePress} underlayColor="#f8f8fb" style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress} delayPressIn={0}>
+            <TouchableHighlight onPress={this.handlePress} underlayColor={XPStyles.colors.selectedListItem} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress} delayPressIn={0}>
                 <View style={[{ flexDirection: 'row' }, this.props.style]}>
                     {this.props.children}
                 </View>

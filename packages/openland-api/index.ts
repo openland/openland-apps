@@ -37,6 +37,7 @@ export const GlobalCounterQuery = typedQuery<Types.GlobalCounterQuery, {}>(Chats
 export const ChatHistoryQuery = typedQuery<Types.ChatHistoryQuery, Types.ChatHistoryQueryVariables>(Chats.ChatHistoryQuery);
 export const ChatInfoQuery = typedQuery<Types.ChatInfoQuery, Types.ChatInfoQueryVariables>(Chats.ChatInfoQuery);
 export const ChatFullInfoQuery = typedQuery<Types.ChatFullInfoQuery, Types.ChatFullInfoQueryVariables>(Chats.ChatFullInfoQuery);
+export const GroupChatFullInfoQuery = typedQuery<Types.GroupChatFullInfoQuery, Types.GroupChatFullInfoQueryVariables>(Chats.GroupChatFullInfoQuery);
 export const SendMessageMutation = typedMutation<Types.SendMessageMutation, Types.SendMessageMutationVariables>(Chats.SendMessageMutation);
 export const ChatReadMutation = typedMutation<Types.ChatReadMutation, Types.ChatReadMutationVariables>(Chats.ChatReadMutation);
 export const ChatSearchForComposeQuery = typedQuery<Types.ChatSearchForComposeQuery, Types.ChatSearchForComposeQueryVariables>(Chats.ChatSearchForComposeQuery);

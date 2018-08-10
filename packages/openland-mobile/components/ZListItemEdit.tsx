@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
 import { ZTextInput } from './ZTextInput';
 
-export class ZListItemEdit extends React.PureComponent<{ title: string, value?: string, valueStoreKey?: string, field?: string, onChange?: (val: string) => void }> {
+export class ZListItemEdit extends React.PureComponent<{ autoFocus?: boolean, title: string, value?: string, valueStoreKey?: string, field?: string, onChange?: (val: string) => void }> {
     render() {
         return (
             <ZListItemBase separator={false}>
@@ -15,6 +15,7 @@ export class ZListItemEdit extends React.PureComponent<{ title: string, value?: 
                     flexBasis={0}
                     field={this.props.field}
                     valueStoreKey={this.props.valueStoreKey}
+                    autoFocus={this.props.autoFocus}
                 />
             </ZListItemBase>
         );

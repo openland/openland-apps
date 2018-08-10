@@ -89,6 +89,24 @@ export const ChatFullInfoQuery = gql`
     ${UserShort}
 `;
 
+export const GroupChatFullInfoQuery = gql`
+    query GroupChatFullInfo($conversationId: ID!) {
+        chat: alphaChat(conversationId: $conversationId) {
+            id
+            flexibleId
+            title
+            photos
+        }
+        members: alphaGroupConversationMembers(conversationId: $conversationId) {
+            user {
+                ...UserShort
+            }
+            role
+        }
+    }
+    ${UserShort}
+`;
+
 export const SendMessageMutation = gql`
     mutation SendMessage($conversationId: ID!, $message: String, $file: String, $repeatKey: String!) {
         sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message, file: $file, repeatKey: $repeatKey) {

@@ -833,6 +833,52 @@ export interface ChatFullInfoQuery {
   ),
 };
 
+export interface GroupChatFullInfoQueryVariables {
+  conversationId: string,
+};
+
+export interface GroupChatFullInfoQuery {
+  chat: ( {
+      __typename: "AnonymousConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
+      __typename: "GroupConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    }
+  ),
+  members:  Array< {
+    __typename: "GroupConversationMember",
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    },
+    role: string,
+  } >,
+};
+
 export interface SendMessageMutationVariables {
   conversationId: string,
   message?: string | null,

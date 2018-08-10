@@ -105,6 +105,7 @@ export interface ZHeaderConfig {
 class ZHeaderComponent extends React.PureComponent<Props> {
 
     wasAnimaged = false;
+    lastIndex = 0;
 
     handleBack = () => {
         this.props.scene.descriptor.navigation.goBack();
@@ -116,10 +117,14 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         this.props.position.addListener((c) => {
             if (c.value !== parseInt(c.value + '', 10)) {
                 if (this.wasAnimaged) {
-                    Keyboard.dismiss();
+                    // Only for back-swipe
+                    if (c.value < this.lastIndex) {
+                        Keyboard.dismiss();
+                    }
                     this.wasAnimaged = false;
                 }
             } else {
+                this.lastIndex = c.value;
                 this.wasAnimaged = true;
             }
         });

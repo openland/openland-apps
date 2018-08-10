@@ -17,9 +17,10 @@ import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Directory } from './pages/main/Directory';
 import { Navigation } from './pages/dev/Navigation';
-import { isAndroid } from './utils/isAndroid';
 import { PicturePreview } from './pages/main/PicturePreview';
 import { Loader } from './pages/dev/Loader';
+import { UserPicker } from './pages/main/modals/UserPicker';
+import { TextEditModal } from './pages/main/modals/TextEditModal';
 
 //
 // Home Routes
@@ -108,6 +109,11 @@ export const AppStack = createZStackNavigator({
   SettingsProfile: SettingsProfile,
   SettingsNotifications: SettingsNotifications,
   PicturePreview: PicturePreview,
+
+  // Modals
+
+  UserPicker: UserPicker,
+  TextEditModal: TextEditModal,
   
   DevTypography: Typography,
   DevComponents: Components,

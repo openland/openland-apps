@@ -3,6 +3,7 @@ import { TouchableHighlight, View, Image } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { isAndroid } from '../utils/isAndroid';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
@@ -28,7 +29,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
     render() {
         let height = this.props.height === null ? undefined : (this.props.height ? this.props.height : 44);
         return (
-            <TouchableHighlight onPress={this.handlePress} underlayColor="#f8f8fb" style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress && !this.props.path} delayPressIn={0}>
+            <TouchableHighlight onPress={this.handlePress} underlayColor={XPStyles.colors.selectedListItem} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress && !this.props.path} delayPressIn={0}>
                 <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
                     <View style={{ height: height, flexDirection: 'row' }}>
                         <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
