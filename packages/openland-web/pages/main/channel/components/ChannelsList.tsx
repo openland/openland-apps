@@ -9,12 +9,28 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
 
-const ChannelsItemWrapper = Glamorous.div<{ highlighted: boolean }>((props) => ({
-    display: 'flex',
-    height: 40,
-    flexDirection: 'row',
-    alignItems: 'center'
-}));
+const ChannelsItemWrapper = Glamorous.div<{ highlighted: boolean }>([
+    (props) => ({
+        display: 'flex',
+        height: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'relative'
+    }),
+    (props) => (props.highlighted ? {
+        '&:before': {
+            content: ' ',
+            display: 'block',
+            position: 'absolute',
+            top: 17,
+            left: 18,
+            width: 6,
+            height: 6,
+            borderRadius: 6,
+            background: '#1790ff',
+        }
+    } : {})
+]);
 
 let ChannelsListWrapper = Glamorous(XScrollView)({
     flex: 1,
@@ -43,24 +59,20 @@ const ChannelsItemBox = Glamorous(XLink)({
     fontWeight: 500,
     lineHeight: '20px',
     color: '#334562',
-    letterSpacing: 0.4,
     flex: 1,
     display: 'flex',
     padding: '10px 12px 10px 36px',
-    '&.is-active': {
-        backgroundColor: '#ebedf0',
-        '&:hover': {
-            backgroundColor: '#ebedf0',
-            color: '#334562'
-        }
-    },
-    '&:hover': {
-        backgroundColor: '#f2f4f5'
+    letterSpacing: 0.4,
+    '&.is-active, &:hover': {
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#1790ff'
     }
 });
 
 const ChannelsItemTools = Glamorous.div({
-    paddingRight: '12px'
+    position: 'absolute',
+    top: 12,
+    right: 12
 });
 
 let ChannelsItemTitle = Glamorous.div({
@@ -90,7 +102,7 @@ export const ChannelsList = withChatsAll((props) => {
     function randomInteger (min: number, max: number) {
         var rand = min - 0.5 + Math.random() * (max - min + 1);
         rand = Math.round(rand);
-        return rand;
+        return rand > 0 ? rand : undefined;
     }
 
     return (
@@ -103,7 +115,7 @@ export const ChannelsList = withChatsAll((props) => {
                             path={'/channel/' + v.flexibleId}
                             key={v.id}
                             title={v.title}
-                            unread={randomInteger(0, 30)}
+                            unread={randomInteger(-30, 30)}
                         >
                             {(v.title === 'Pdr.io') && (<XButton size="r-tiny" style="primary-sky-blue" text="Request invite" />)}
                         </ChannelsItem>
