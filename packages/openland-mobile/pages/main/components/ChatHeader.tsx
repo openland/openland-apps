@@ -41,7 +41,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
                     }
 
                     return (
-                        <View flexDirection="column" alignItems="center" alignSelf="center" pointerEvents="box-none">
+                        <View flexDirection="column" alignItems="center" justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
                             <Text style={{ fontSize: 15, height: 18, color: ZAppConfig.titleColor, fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{res.data!!.chat.title}</Text>
                             <Text style={{ fontSize: 12, height: 14, color: ZAppConfig.subtitleColor, opacity: 0.6 }}>Online</Text>
                         </View>
