@@ -8,7 +8,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
 import { withAllChats } from '../../../api/withAllChats';
-import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
+import { ChannelsList } from './components/ChannelsList';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
 import { XLink } from 'openland-x/XLink';
@@ -126,7 +126,7 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
                                 <ChannelsHeaderCaption>Channels</ChannelsHeaderCaption>
                                 <ChannelsHeaderIcon icon="search" />
                             </ChannelsHeader>
-                            <ChatsComponent />
+                            <ChannelsList />
                             <ChannelsBottomContainer>
                                 <XButton size="r-default" text="Create channel" icon="add" />
                             </ChannelsBottomContainer>
