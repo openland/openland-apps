@@ -13,6 +13,7 @@ interface ChannelsProps {
         members: number;
         listings: number;
         invited: boolean;
+        member?: boolean;
     }[];
 }
 
@@ -23,6 +24,7 @@ function dataReturner() {
         members: number;
         listings: number;
         invited: boolean;
+        member?: boolean;
     }[] = [];
 
     for (let i = 0; i < 30; i++) {
@@ -31,7 +33,8 @@ function dataReturner() {
             name: 'Channel ' + Math.random().toString(35).substring(2),
             members: Math.floor(Math.random() * 100),
             listings: Math.floor(Math.random() * 100),
-            invited: i % 2 === 0 ? true : false
+            invited: i % 4 === 0 ? true : false,
+            member: i % 5 === 0 ? true : undefined,
         });
     }
 
@@ -51,7 +54,7 @@ const ChannelRow = Glamorous(XHorizontal)({
     height: 64,
     '&:hover': {
         backgroundColor: '#f9fafb',
-        '& > a': {
+        '& > a.invite': {
             backgroundColor: 'rgb(23, 144, 255)',
             color: 'rgb(255, 255, 255)',
             '&:hover': {
@@ -60,7 +63,7 @@ const ChannelRow = Glamorous(XHorizontal)({
             }
         }
     },
-    '& > a': {
+    '& > a.invite': {
         backgroundColor: 'rgba(238, 240, 242, 0.5)',
         color: '#334562'
     }
@@ -94,7 +97,22 @@ const ChannelsList = (props: ChannelsProps) => (
                     <ChannelName>{i.name}</ChannelName>
                     <ChannelText>{i.members} members • {i.listings} listings</ChannelText>
                 </XVertical>
-                <XButton text="Reques invite" style="primary-sky-blue" size="r-default"/>
+                {i.member === true && (
+                    <XButton
+                        text="member"
+                        style="ghost"
+                        size="r-default"
+                        className="member"
+                    />
+                )}
+                {!i.member && (
+                    <XButton
+                        text={i.invited ? 'Pending' : 'Reques invite'}
+                        style={i.invited ? 'ghost' : 'primary-sky-blue'}
+                        size="r-default"
+                        className={i.invited ? undefined : 'invite'}
+                    />
+                )}
             </ChannelRow>
         ))}
     </ChannelsWrapper>
