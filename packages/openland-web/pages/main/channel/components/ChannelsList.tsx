@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { withChatsAll } from '../../../../api/withChatsAll';
-import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
-import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XDate } from 'openland-x-format/XDate';
+import { TextChannel } from 'openland-text/TextChannel';
 import { XButton } from 'openland-x/XButton';
 
 const ChannelsItemWrapper = Glamorous.div<{ highlighted: boolean }>([
@@ -108,7 +105,7 @@ export const ChannelsList = withChatsAll((props) => {
     return (
         <ChannelsListWrapper>
             <ChannelsListGroup>
-                <ChannelsListTitle>My channels</ChannelsListTitle>
+                <ChannelsListTitle>{TextChannel.myChannels}</ChannelsListTitle>
                 <ChannelsListItems>
                     {props.data && props.data.chats && props.data.chats.conversations.map((v) => (
                         <ChannelsItem
@@ -121,13 +118,13 @@ export const ChannelsList = withChatsAll((props) => {
                 </ChannelsListItems>
             </ChannelsListGroup>
             <ChannelsListGroup>
-                <ChannelsListTitle>Recommended</ChannelsListTitle>
+                <ChannelsListTitle>{TextChannel.recommended}</ChannelsListTitle>
                 <ChannelsListItems>
-                    <ChannelsItem path={'/channel/'} title="Foreign investment" />
-                    <ChannelsItem path={'/channel/'} title="Data and analytics" unread={10}>
-                        <XButton size="r-tiny" style="primary-sky-blue" text="Request invite" />
+                    <ChannelsItem path={'/channel/1'} title="Foreign investment" />
+                    <ChannelsItem path={'/channel/2'} title="Data and analytics" unread={10}>
+                        <XButton size="r-tiny" style="primary-sky-blue" text={TextChannel.buttonRequestInvite} />
                     </ChannelsItem>
-                    <ChannelsItem path={'/channel/'} title="Request an intro" />
+                    <ChannelsItem path={'/channel/3'} title="Request an intro" />
                 </ChannelsListItems>
             </ChannelsListGroup>
         </ChannelsListWrapper>

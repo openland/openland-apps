@@ -10,10 +10,8 @@ import { MessengerComponent } from '../../../components/messenger/MessengerCompo
 import { withAllChats } from '../../../api/withAllChats';
 import { ChannelsList } from './components/ChannelsList';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
-import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
-import { XLink } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { TextChannel } from 'openland-text/TextChannel';
 import { XButton } from 'openland-x/XButton';
 
 let ChannelsContainer = Glamorous.div({
@@ -123,12 +121,12 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
                     <ChannelsContainer>
                         <ChannelsListContainer>
                             <ChannelsHeader>
-                                <ChannelsHeaderCaption>Channels</ChannelsHeaderCaption>
+                                <ChannelsHeaderCaption>{TextChannel.headerTitle}</ChannelsHeaderCaption>
                                 <ChannelsHeaderIcon icon="search" />
                             </ChannelsHeader>
                             <ChannelsList />
                             <ChannelsBottomContainer>
-                                <XButton size="r-default" text="Create channel" icon="add" />
+                                <XButton size="r-default" text={TextChannel.buttonCreateChannel} icon="add" />
                             </ChannelsBottomContainer>
                         </ChannelsListContainer>
                         <ConversationContainer>
