@@ -766,6 +766,11 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      blocked: boolean,
+      user:  {
+        __typename: "User",
+        id: string,
+      },
     } | {
       __typename: "GroupConversation",
       id: string,
@@ -1059,6 +1064,51 @@ export interface ChatChangeGroupTitleMutation {
       }
     ),
   },
+};
+
+export interface BlockedListQueryVariables {
+  conversationId: string,
+};
+
+export interface BlockedListQuery {
+  blocked:  Array< {
+    __typename: "ConversationBlockedUser",
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    },
+    blockedBy:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    },
+  } >,
+};
+
+export interface BlockUserMutationVariables {
+  userId: string,
+};
+
+export interface BlockUserMutation {
+  blockUser: string,
+};
+
+export interface UnBlockUserMutationVariables {
+  userId: string,
+  conversationId?: string | null,
+};
+
+export interface UnBlockUserMutation {
+  blockUser: string,
 };
 
 export interface AllDealsQuery {

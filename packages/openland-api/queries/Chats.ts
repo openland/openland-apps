@@ -57,6 +57,12 @@ export const ChatInfoQuery = gql`
                     id
                 }
             }
+            ... on PrivateConversation {
+                blocked
+                user{
+                    id
+                }
+            }
         }
     }
 `;
@@ -184,5 +190,30 @@ export const ChatChangeGroupTitleMutation = gql`
                 title
             }
         }
+    }
+`;
+
+export const BlockedListQuery = gql`
+    query BlockedList($conversationId: ID!) {
+        blocked: alphaBlockedList(conversationId: $conversationId) {
+            user{
+                ...UserShort
+            }
+            blockedBy{
+                ...UserShort
+            }
+        }
+    }${UserShort}
+`;
+
+export const BlockUserMutation = gql`
+    mutation BlockUser($userId: ID!) {
+        blockUser: alphaBlockUser(userId: $userId)
+    }
+`;
+
+export const UnBlockUserMutation = gql`
+    mutation UnBlockUser($userId: ID!, $conversationId: ID) {
+        blockUser: alphaUnblockUser(userId: $userId, conversationId: $conversationId)
     }
 `;
