@@ -100,9 +100,9 @@ const config = {
         // )
 
         // Disable uglify
-        config.plugins = config.plugins.filter(
-            (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
-        )
+        // config.plugins = config.plugins.filter(
+        //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        // )
 
         // Enable uglify cache
         // let uglify = config.plugins.find((plugin) => (plugin.constructor.name === 'UglifyJsPlugin'))
@@ -111,23 +111,23 @@ const config = {
         // }
 
         // New Uglify
-        if (!isServer && !dev) {
-            config.plugins.push(new NewUglify({
-                cache: true,
-                parallel: true,
-                sourceMap: true,
-                uglifyOptions: {
-                    mangle: {
-                        safari10: true
-                    }
-                }
-            }));
-        }
+        // if (!isServer && !dev) {
+        //     config.plugins.push(new NewUglify({
+        //         cache: true,
+        //         parallel: true,
+        //         sourceMap: true,
+        //         uglifyOptions: {
+        //             mangle: {
+        //                 safari10: true
+        //             }
+        //         }
+        //     }));
+        // }
 
         // Disable sourcemaps for server
-        if (isServer && dev) {
-            config.devtool = false;
-        }
+        // if (isServer && !dev) {
+        //     config.devtool = false;
+        // }
 
         // Hard Source
         // Not working for client
