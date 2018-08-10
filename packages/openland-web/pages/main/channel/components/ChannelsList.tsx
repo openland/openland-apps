@@ -116,14 +116,19 @@ export const ChannelsList = withChatsAll((props) => {
                             key={v.id}
                             title={v.title}
                             unread={randomInteger(-30, 30)}
-                        >
-                            {(v.title === 'Pdr.io') && (<XButton size="r-tiny" style="primary-sky-blue" text="Request invite" />)}
-                        </ChannelsItem>
+                        />
                     ))}
                 </ChannelsListItems>
             </ChannelsListGroup>
             <ChannelsListGroup>
                 <ChannelsListTitle>Recommended</ChannelsListTitle>
+                <ChannelsListItems>
+                    <ChannelsItem path={'/channel/'} title="Foreign investment" />
+                    <ChannelsItem path={'/channel/'} title="Data and analytics" unread={10}>
+                        <XButton size="r-tiny" style="primary-sky-blue" text="Request invite" />
+                    </ChannelsItem>
+                    <ChannelsItem path={'/channel/'} title="Request an intro" />
+                </ChannelsListItems>
             </ChannelsListGroup>
         </ChannelsListWrapper>
     );
