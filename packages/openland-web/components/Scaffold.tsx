@@ -781,6 +781,8 @@ export const ChannelButton = withNotificationCounter((props) => {
             showOnHoverContent={false}
             showOnHover={true}
             groupId="scaffold_tooltip"
+            style="dark"
+            padding={-10}
             content={(
                 <strong>{TextAppBar.items.channel}</strong>
             )}
