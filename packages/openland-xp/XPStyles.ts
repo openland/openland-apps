@@ -51,7 +51,7 @@ export const XPStyles = {
         placeholderColorStart: '#00d1d4',
         placeholderColorEnd: '#00afc8'
     }, {
-        nameColor: '##8E00E6',
+        nameColor: '#8E00E6',
         placeholderTitle: 'white',
         placeholderColor: '#aa22ff',
         placeholderColorStart: '#aa22ff',

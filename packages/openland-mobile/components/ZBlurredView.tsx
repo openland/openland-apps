@@ -17,7 +17,7 @@ export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 
                             top: 0,
                             bottom: 0,
                             backgroundColor: ZAppConfig.navigationBarBackgroundColor,
-                            opacity: intensity === 'high' ? 0.9 : 0.6
+                            opacity: intensity === 'high' ? 0.9 : 0.8
                         }}
                     />
                     <BlurView
