@@ -1007,7 +1007,9 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </XPopper>
                             </XWithRole>
 
-                            <ChannelButton />
+                            <XWithRole role={['software-developer']}>
+                                <ChannelButton />
+                            </XWithRole>
 
                             <XWithRole role={['feature-marketplace']} negate={true}>
                                 <Home />
