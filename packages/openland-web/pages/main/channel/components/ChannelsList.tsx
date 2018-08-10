@@ -59,6 +59,7 @@ const ChannelsItemBox = Glamorous(XLink)({
     flex: 1,
     display: 'flex',
     padding: '10px 12px 10px 36px',
+    transition: '300ms all ease',
     letterSpacing: 0.4,
     '&.is-active, &:hover': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
