@@ -10,6 +10,9 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZAvatar } from '../../components/ZAvatar';
 import { ZScrollView } from '../../components/ZScrollView';
 import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
+import { Modals } from './modals/Modals';
+import { YMutation } from 'openland-y-graphql/YMutation';
+import { ChatChangeGroupTitleMutation } from 'openland-api';
 
 class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
@@ -40,7 +43,21 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
 
                             <ZListItemGroup header={null}>
                                 <ZListItem appearance="action" text="Set group photo" />
-                                <ZListItem appearance="action" text="Change name" onPress={() => this.props.navigation.navigate('TextEditModal', { 'title': 'Edit group name', 'value': resp.data.chat.title })} />
+                                <YMutation mutation={ChatChangeGroupTitleMutation}>
+                                    {(save) => (
+                                        <ZListItem
+                                            appearance="action"
+                                            text="Change name"
+                                            onPress={() =>
+                                                Modals.showTextEdit(
+                                                    this.props.navigation,
+                                                    resp.data.chat.title,
+                                                    async (src) => await save({ variables: { name: src, conversationId: resp.data.chat.id } })
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </YMutation>
                                 <ZListItem text="Notifications" toggle={true} />
                             </ZListItemGroup>
 

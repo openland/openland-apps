@@ -5,6 +5,7 @@ import { ZScrollView } from '../../../components/ZScrollView';
 import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { ZHeaderButton } from '../../../components/ZHeaderButton';
+import { stopLoader, startLoader } from '../../../components/ZGlobalLoader';
 
 class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps, { value: string }> {
     static navigationOptions = {
@@ -19,9 +20,17 @@ class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps
         };
     }
 
-    handleSave = () => {
+    handleSave = async () => {
         let action = this.props.navigation.getParam('action') as (value: string) => any;
-        // TODO: Handle
+        try {
+            startLoader();
+            let res = await action(this.state.value);
+            this.props.navigation.goBack();
+        } catch (e) {
+            // 
+        } finally {
+            stopLoader();
+        }
     }
 
     handleChange = (value: string) => {
@@ -31,7 +40,7 @@ class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps
     render() {
         return (
             <>
-                <ZHeaderButton navigation={this.props.navigation} title="Save" />
+                <ZHeaderButton navigation={this.props.navigation} title="Save" onPress={this.handleSave} />
                 <ZScrollView>
                     <ZListItemGroup header={null}>
                         <ZListItemEdit title="Group name" value={this.state.value} onChange={this.handleChange} autoFocus={true} />

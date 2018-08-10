@@ -318,26 +318,22 @@ export class ConversationEngine implements MessageSendHandler {
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
         } else {
-
-            //
-            // TODO: Implement correct full chat reload!
-            //
-
             console.warn('Received unknown message');
-            // Unknown message: Stop subscription and reload chat
-            let loaded = await backoff(() => this.engine.client.client.query({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId },
-                fetchPolicy: 'network-only'
-            }));
-
-            // Reload messages
-            // TODO: Preserve pending messages
-            this.messages = [...(loaded.data as any).messages.messages];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
-
-            return (loaded.data as any).messages.seq;
+            if (event.seq) {
+                // Write new seq to the store
+                let data = this.engine.client.client.readQuery({
+                    query: ChatHistoryQuery.document,
+                    variables: { conversationId: this.conversationId }
+                });
+                (data as any).messages.seq = event.seq;
+                this.engine.client.client.writeQuery({
+                    query: ChatHistoryQuery.document,
+                    variables: { conversationId: this.conversationId },
+                    data: data
+                });
+            }
         }
+        return undefined;
     }
 
     private groupMessages = (src: ModelMessage[]) => {

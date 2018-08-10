@@ -173,7 +173,6 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
         if (itm.item.key === 'header') {
             return (<View height={ZAppConfig.bottomNavigationBarInset + 62 + this.props.keyboardHeight} />);
         }
-        console.warn(itm.item.key);
         return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
 
