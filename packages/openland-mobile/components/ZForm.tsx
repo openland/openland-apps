@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppStyles } from '../styles/AppStyles';
-import { ScrollView, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { YForm } from 'openland-y-forms/YForm';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';

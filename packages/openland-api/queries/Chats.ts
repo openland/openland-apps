@@ -174,3 +174,15 @@ export const SetTypingMutation = gql`
         setTyping: alphaSetTyping(conversationId: $conversationId)
     }
 `;
+
+export const ChatChangeGroupTitleMutation = gql`
+    mutation ChatChangeGroupTitle($conversationId: ID!, $name: String!) {
+        alphaChatChangeGroupTitle(conversationId: $conversationId, title: $name) {
+            chat {
+                id
+                flexibleId
+                title
+            }
+        }
+    }
+`;

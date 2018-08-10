@@ -1028,6 +1028,39 @@ export interface SetTypingMutation {
   setTyping: string,
 };
 
+export interface ChatChangeGroupTitleMutationVariables {
+  conversationId: string,
+  name: string,
+};
+
+export interface ChatChangeGroupTitleMutation {
+  alphaChatChangeGroupTitle:  {
+    __typename: "GroupChatUpdateResponse",
+    chat: ( {
+        __typename: "AnonymousConversation",
+        id: string,
+        flexibleId: string,
+        title: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        flexibleId: string,
+        title: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        flexibleId: string,
+        title: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+        flexibleId: string,
+        title: string,
+      }
+    ),
+  },
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",
