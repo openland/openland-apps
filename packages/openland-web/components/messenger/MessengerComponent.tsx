@@ -82,6 +82,13 @@ const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftC
     cursor: props.path ? 'pointer' : undefined
 }));
 
+const XButtonMargin = Glamorous(XButton)({ margin: 4});
+const BlockButton = withBlockUser((props) => {
+    return (
+        <XButtonMargin text={(props as any).blocked ? 'Unblock' : 'Block'} style="flat" action={async () => await ((props as any).blocked ? props.unblock({ variables: { userId: (props as any).userId } }) : props.block({ variables: { userId: (props as any).userId } }))} />
+    );
+}) as React.ComponentType<{ blocked: boolean, userId: string }>;
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     console.warn(props.data.chat);
     return (
@@ -128,13 +135,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         </ChatRoot>
     );
 }));
-
-const XButtonMargin = Glamorous(XButton)({ margin: 4});
-const BlockButton = withBlockUser((props) => {
-    return (
-        <XButtonMargin text={(props as any).blocked ? 'Unblock' : 'Block'} style="flat" action={async () => await ((props as any).blocked ? props.unblock({ variables: { userId: (props as any).userId } }) : props.block({ variables: { userId: (props as any).userId } }))} />
-    );
-}) as React.ComponentType<{ blocked: boolean, userId: string }>;
 
 export const MessengerComponent = (props: { conversationId: string }) => {
     return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} />);
