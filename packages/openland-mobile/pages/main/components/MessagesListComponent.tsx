@@ -163,9 +163,8 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
             return (
                 this.state.loadingHistoty && !this.state.historyFullyLoaded ?
                     (
-                        <View height={48} >
-
-                            <ZLoader />
+                        <View height={48}>
+                            <ZLoader appearance="small" transparent={true} />
                         </View>
                     )
                     : <View height={48} />

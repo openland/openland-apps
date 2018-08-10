@@ -34,7 +34,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
             this.props.loadingMore ?
                 (
                     <View height={48} >
-                        <ZLoader />
+                        <ZLoader appearance="small" />
                     </View>
                 )
                 : <View height={48} />

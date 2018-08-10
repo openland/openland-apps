@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 export interface ZLoaderProps {
-    appearance?: 'normal' | 'large';
+    appearance?: 'normal' | 'large' | 'small';
     enabled?: boolean;
     transparent?: boolean;
 }
@@ -61,11 +61,12 @@ export class ZLoader extends React.PureComponent<ZLoaderProps> {
     }
 
     render() {
-        let size = this.props.appearance === 'large' ? 170 : 100;
+        let size = this.props.appearance === 'large' ? 170 : this.props.appearance === 'small' ? 48  : 100;
         return (
             <View style={[styles.container, (this.props.transparent !== true) && styles.containerFilled]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
                 <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
-                    <LottieView source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />
+                    {this.props.appearance === 'small' &&  <LottieView source={require('assets/loader_small.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
+                    {this.props.appearance !== 'small' &&  <LottieView source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
                 </Animated.View>
             </View>
         );
