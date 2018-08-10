@@ -140,6 +140,16 @@ export const XMenuItemWrapper = Glamorous.div({
     }
 });
 
+export const XMenuTitle = Glamorous.div({
+    height: 40,
+    color: '#99a2b0',
+    padding: '10px 16px',
+    fontSize: 14,
+    lineHeight: '20px',
+    letterSpacing: .4,
+    fontWeight: 700
+});
+
 export const XMenuItemSeporator = Glamorous.div({
     height: 1,
     background: '#f1f2f5',
