@@ -60,7 +60,7 @@ export class XModalForm extends React.Component<XModalFormProps> {
         let footer = this.props.customFooter === null ? null : this.props.customFooter || (
             <XModalFooter>
                 <XHorizontal>
-                    <XFormSubmit style={'primary'} text={'Save'} {...submitProps} keyDownSubmit={true} />
+                    <XFormSubmit style="primary-sky-blue" text="Save" size="r-default" {...submitProps} keyDownSubmit={true} />
                     {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} />}
                 </XHorizontal>
             </XModalFooter>

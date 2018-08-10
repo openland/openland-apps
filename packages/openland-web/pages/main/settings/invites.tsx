@@ -69,8 +69,8 @@ export const FooterWrap = Glamorous.div({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f9fafb',
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
     borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
@@ -101,7 +101,6 @@ const XInputNoTitle = Glamorous(XInput)({
             color: 'rgb(51, 69, 98)'
         }
     }
-
 });
 
 const InviteComponent = (props: InviteComponentProps) => (
@@ -126,7 +125,17 @@ const LinkHolder = Glamorous(XHorizontal)({
     }
 });
 
-class OwnerLinkComponent extends React.Component<{ invite: { id: string, key: string, ttl: string | null } | null, createMutation: any, deleteMutation: any } & XWithRouter> {
+interface OwnerLinkComponentProps { 
+    invite: { 
+        id: string, 
+        key: string, 
+        ttl: string | null 
+    } | null;
+    createMutation: any;
+    deleteMutation: any; 
+}
+
+class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWithRouter> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -317,15 +326,11 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                     <XFormField field="customText" title={TextInvites.customMessageTitle} flexGrow={1}>
                                         <XTextArea flexGrow={1} valueStoreKey="fields.customText" resize={false} />
                                     </XFormField>
-                                    <XFormField field="" title="">
-                                        <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
-                                    </XFormField>
+                                    <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
                                 </XHorizontal>
                             )}
-
                         </XVertical>
                     )}
-
                     {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
                     {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
                 </ModalContentWrapper>

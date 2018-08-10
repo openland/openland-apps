@@ -10,6 +10,7 @@ import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
 
 import { BrowseChannelsModal } from '../../main/channel/components/browseChannelsModal';
+import { InviteMembersModal } from '../../main/channel/components/inviteMembersModal';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -37,7 +38,8 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XTitle>browse channels</XTitle>
                     <BrowseChannelsModal title="Browse channels" target={<XButton text="Channels modal" />} />
 
-                    <XTitle>create channel</XTitle>
+                    <XTitle>invite members</XTitle>
+                    <InviteMembersModal defaultAction={() => null} title="Invite members" target={<XButton text="Channels modal" />} />
 
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
