@@ -82,10 +82,10 @@ let ChannelsHeaderIcon = Glamorous(XIcon)({
     color: '#bcc3cc',
     transition: '300ms all ease',
     '&:hover': {
-        color: 'red',
+        color: '#5c6a81',
     },
     '&:active': {
-        color: 'blue',
+        color: '#1790ff',
     }
 });
 
