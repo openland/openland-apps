@@ -20,35 +20,7 @@ import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading
 import { ZKeyboardAwareBar } from '../../components/ZKeybardAwareBar';
 import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { MessageFullFragment } from 'openland-api/Types';
-
-let styles = StyleSheet.create({
-    textContainer: {
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-        alignItems: 'stretch',
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 10,
-        paddingBottom: 10
-    } as ViewStyle,
-
-    textInput: {
-        backgroundColor: '#fff',
-        borderRadius: 16,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 2,
-        paddingBottom: 2,
-        height: 34,
-        fontSize: 14,
-        borderColor: '#e6e6e6',
-        borderWidth: 1
-    } as ViewStyle
-});
-
-const icon = require('assets/ic-send.png');
-const iconActive = require('assets/ic-send-active.png');
-const iconAttach = require('assets/ic-attachment.png');
+import { MessageInputBar } from './components/MessageInputBar';
 
 class ConversationRoot extends React.Component<{ navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
@@ -90,43 +62,23 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
     }
 
     render() {
-        let hasText = this.state.text.trim().length > 0;
         return (
             <>
-                {/* {Platform.OS === 'ios' && (
-                    <ZHeaderButton navigation={this.props.navigator}>
-                        <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
-                    </ZHeaderButton>
-                )} */}
                 <ZHeaderButton navigation={this.props.navigator}>
                     <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
                 </ZHeaderButton>
-                <View style={{ height: '100%' }} flexDirection="column">
-                    <MessagesListComponent onPhotoPress={this.handlePhotoPress} onAvatarPress={this.handleAvatarPress} engine={this.engine} />
-                    <ZKeyboardAwareBar>
-                        <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
-                            <TouchableOpacity onPress={this.handleAttach}>
-                                <View width={52} height={33} alignItems="center" justifyContent="center">
-                                    <Image source={iconAttach} style={{ width: 22, height: 21 }} />
-                                </View>
-                            </TouchableOpacity>
-                            <TextInput
-                                flexGrow={1}
-                                flexBasis={0}
-                                placeholder="Message"
-                                placeholderTextColor="#aaaaaa"
-                                onChangeText={this.handleTextChange}
-                                value={this.state.text}
-                                onSubmitEditing={this.handleSubmit}
-                                style={styles.textInput}
-                            />
-                            <TouchableOpacity disabled={!hasText} onPress={this.handleSubmit}>
-                                <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                                    <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </ZKeyboardAwareBar>
+                <View style={{ height: '100%', flexDirection: 'column' }}>
+                    <MessagesListComponent
+                        onPhotoPress={this.handlePhotoPress}
+                        onAvatarPress={this.handleAvatarPress}
+                        engine={this.engine}
+                    />
+                    <MessageInputBar
+                        onAttachPress={this.handleAttach}
+                        onSubmitPress={this.handleSubmit}
+                        onChangeText={this.handleTextChange}
+                        text={this.state.text}
+                    />
                 </View>
             </>
         );
