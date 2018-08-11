@@ -6,31 +6,23 @@ import { ZLoader } from '../../components/ZLoader';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogListComponent } from './components/DialogListComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
+import { ZQuery } from '../../components/ZQuery';
+import { ChatListQuery } from 'openland-api';
 
-class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }, { conversations?: ConversationShortFragment[], loadingMore?: boolean }> {
-    private destructor?: () => void;
-    constructor(props: { engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }) {
-        super(props);
-        this.state = {};
-    }
-
-    componentDidMount() {
-        this.destructor = this.props.engine.conversations.subcribe(this.handleConversations);
-    }
-
-    handleConversations = (data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => {
-        this.setState({ conversations: data.conversations, loadingMore: data.loadingMore });
-    }
-
-    componentWillUnmount() {
-        if (this.destructor) {
-            this.destructor();
-        }
-    }
+class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }> {
 
     render() {
         return (
-            this.state.conversations ? <DialogListComponent engine={this.props.engine} dialogs={this.state.conversations || []} loadingMore={this.state.loadingMore} onPress={this.props.onItemClick} /> : <ZLoader />
+            <ZQuery query={ChatListQuery}>
+                {r => (
+                    <DialogListComponent
+                        dialogs={r.data.chats.conversations}
+                        engine={this.props.engine}
+                        onPress={this.props.onItemClick}
+                        loadingMore={r.data.chats.next !== null}
+                    />
+                )}
+            </ZQuery>
         );
     }
 }

@@ -4,10 +4,10 @@ import gql from 'graphql-tag';
 const SUBSCRIBE_TYPINGS = gql`
     subscription SubscribeTypings {
         alphaSubscribeTypings {
-            conversation{
+            conversation {
                 id
             }
-            user{
+            user {
                 id
                 name
             }

@@ -42,7 +42,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
     }
 
     loadMore = () => {
-        this.props.engine.conversations.loadNext();
+        this.props.engine.dialogList.loadNext();
     }
 
     render() {

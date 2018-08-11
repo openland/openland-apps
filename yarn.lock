@@ -2383,6 +2383,10 @@ apollo-cache-inmemory@^1.1.4:
     apollo-utilities "^1.0.17"
     graphql-anywhere "^4.1.15"
 
+apollo-cache-logger@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/apollo-cache-logger/-/apollo-cache-logger-1.1.1.tgz#cbe8a45c735d5500274b6848eca2c0abfc35f80d"
+
 apollo-cache@^1.1.12, apollo-cache@^1.1.13:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.13.tgz#75c28091825992b2eec9fb63c9a367db3b4714a8"

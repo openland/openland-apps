@@ -1,22 +1,48 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { backoff } from 'openland-y-utils/timer';
 import { ChatListQuery } from 'openland-api';
+import { ConversationRepository } from './repositories/ConversationRepository';
 
-export class ConversationsEngine {
-    listeners: ((data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => void)[] = [];
-    conversations: ConversationShortFragment[] = [];
+export class DialogListEngine {
+
     readonly engine: MessengerEngine;
-    seq?: number;
+    private listeners: ((data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => void)[] = [];
+    private conversations: ConversationShortFragment[] = [];
     private next?: string;
-    loading?: boolean;
+    private loading: boolean = true;
     constructor(engine: MessengerEngine) {
         this.engine = engine;
     }
 
-    start = async () => {
-        await this.loadNext();
+    //
+    // Update Handlers
+    //
+
+    handleInitialConversations = (conversations: any[]) => {
+        // Improve conversation resolving
+        for (let c of conversations) {
+            ConversationRepository.improveConversationResolving(this.engine.client, c.id);
+        }
+
+        // Start engine
+        this.loading = false;
+    }
+
+    handleUserRead = (conversationId: string, unread: number, visible: boolean) => {
+        ConversationRepository.writeConversationCounter(this.engine.client, conversationId, unread, visible);
+    }
+
+    handleNewMessage = (event: any, visible: boolean) => {
+        const conversationId = event.conversationId as string;
+        const messageId = event.message.id as string;
+        const unreadCount = event.unread as number;
+
+        // Improve resolving for faster chat switch via flexibleId
+        ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
+
+        // Write Message to Repository
+        ConversationRepository.writeNewMessage(this.engine.client, conversationId, messageId, unreadCount, visible);
     }
 
     loadNext = async () => {
@@ -38,16 +64,10 @@ export class ConversationsEngine {
             });
 
             this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShortFragment) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
-
-            this.conversations.map(c => console.warn('ConversationsEngine', c.title));
-
-            this.seq = initialDialogs.data.chats.seq;
             this.next = initialDialogs.data.chats.next;
             this.loading = false;
             this.onUpdate();
-
         }
-
     }
 
     onUpdate = () => {

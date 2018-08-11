@@ -6,6 +6,8 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from 'openland-api/fragmentTypes.json';
+import { GraphqlTypedQuery } from './typed';
+// import LogCache from 'apollo-cache-logger';
 
 export class ApolloClientStatus {
     isConnected: boolean = false;
@@ -63,6 +65,10 @@ export class OpenApolloClient {
     constructor(client: ApolloClient<{}>, status: ApolloClientStatus) {
         this.client = client;
         this.status = status;
+    }
+
+    async query<TQuery, TVars>(query: GraphqlTypedQuery<TQuery, TVars>, vars?: TVars) {
+        return await this.client.query<TQuery>({ query: query.document, variables: vars });
     }
 }
 
@@ -145,7 +151,8 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
 
     let client = new ApolloClient({
         link: link,
-        cache: cache,
+        // cache: new LogCache(cache, { logger: msg => console.log(msg) }),
+        cache,
         ssrMode: config.ssrMode,
         connectToDevTools: false
     });

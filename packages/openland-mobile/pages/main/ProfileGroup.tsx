@@ -31,6 +31,9 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                     if (resp.data.chat.__typename !== 'GroupConversation') {
                         throw Error('');
                     }
+                    console.log('render');
+                    console.log(resp);
+                    console.log(resp.data.chat);
                     return (
                         <ZScrollView>
 
