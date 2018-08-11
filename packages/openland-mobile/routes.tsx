@@ -21,6 +21,7 @@ import { PicturePreview } from './pages/main/PicturePreview';
 import { Loader } from './pages/dev/Loader';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { TextEditModal } from './pages/main/modals/TextEditModal';
+import { ComposeModal } from './pages/main/modals/ComposeModal';
 
 //
 // Home Routes
@@ -114,6 +115,7 @@ export const AppStack = createZStackNavigator({
 
   UserPicker: UserPicker,
   TextEditModal: TextEditModal,
+  ComposeModal: ComposeModal,
   
   DevTypography: Typography,
   DevComponents: Components,

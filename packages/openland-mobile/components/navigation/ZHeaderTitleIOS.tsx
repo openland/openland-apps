@@ -35,6 +35,7 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         extrapolate: 'clamp'
     });
     translate = Animated.multiply(Animated.multiply(this.props.progress, this.containerWidth), -0.5);
+    translateLarge = Animated.multiply(Animated.multiply(this.props.progress, Dimensions.get('window').width), -1);
     titleProgress = new Animated.Value(0);
     showed = false;
     subscribedValue: Animated.Value | null = null;
@@ -194,7 +195,7 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
 
         const largeHeader = this.props.headerAppearance === 'large' && (
             <View key="large-header" style={{ overflow: 'hidden', position: 'absolute', top: ZAppConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
-                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', opacity: largeOpacity, transform: [{ translateX: this.translate }, { translateY: Animated.add(Animated.add(this.props.hairlineOffset, -(ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
+                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', opacity: largeOpacity, transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.hairlineOffset, -(ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
                     {!this.props.titleView && this.props.titleText && <Text style={styles.titleLarge}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
                 </Animated.View>

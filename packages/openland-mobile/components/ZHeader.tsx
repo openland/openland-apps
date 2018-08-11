@@ -141,7 +141,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             if (v.descriptor.options.isTab) {
                 let r = (v.descriptor as any).state.routes[(v.descriptor as any).state.index].routeName;
                 paramName = '__z_header_' + r + 'actions_search_offset';
-                paramActionsName = '__z_header_' + r + 'actions';
+                paramActionsName = '__z_header_' + r + '_actions';
             }
 
             //
@@ -343,6 +343,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             }
 
             let rightView = undefined;
+            
             if (s.actions.length > 0) {
                 rightView = <View>{s.actions.map((v) => v.render())}</View>;
             }

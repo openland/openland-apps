@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { Button, Platform, View, TouchableNativeFeedback, Text } from 'react-native';
+import { Button, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { ZHeaderActionButtonAndroid } from './navigation/ZHeaderActionButtonAndroid';
 
@@ -9,19 +9,21 @@ export interface ZHeaderButtonDescription {
     render: () => React.ReactElement<{}>;
 }
 
-export class ZHeaderButton extends React.PureComponent<{ title?: string, onPress?: () => void, navigation: NavigationScreenProp<NavigationParams> }> {
+export class ZHeaderButton extends React.PureComponent<{ route?: string, title?: string, onPress?: () => void, navigation: NavigationScreenProp<NavigationParams> }> {
 
     private id = Math.random() + '-';
+    private key = this.props.route ? '__z_header_' + this.props.route + '_actions' : '__z_header_actions';
+    private nav = this.props.route ? (this.props.navigation as any).dangerouslyGetParent() as NavigationScreenProp<NavigationParams> : this.props.navigation;
 
     componentDidMount() {
-        let existing = this.props.navigation.getParam('__z_header_actions', []) as ZHeaderButtonDescription[];
+        let existing = this.nav.getParam(this.key, []) as ZHeaderButtonDescription[];
         let actions = [...existing, { id: this.id, render: this.renderButton }];
-        this.props.navigation.setParams({ '__z_header_actions': actions });
+        this.nav.setParams({ [this.key]: actions });
     }
 
     componentWillUnmount() {
-        let existing = this.props.navigation.getParam('__z_header_actions', []) as ZHeaderButtonDescription[];
-        this.props.navigation.setParams({ '__z_header_actions': existing.filter((v) => v.id !== this.id) });
+        let existing = this.nav.getParam(this.key, []) as ZHeaderButtonDescription[];
+        this.nav.setParams({ [this.key]: existing.filter((v) => v.id !== this.id) });
     }
 
     private handlePress = () => {

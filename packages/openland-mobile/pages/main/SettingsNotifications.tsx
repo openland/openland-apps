@@ -30,8 +30,6 @@ class SettingsNotifciationsComponent extends React.Component<NavigationInjectedP
                     <ZListItemGroup header={null}>
                         <ZListItem text="Sounds" toggle={true} />
                         <ZListItem text="Vibrate" toggle={true} />
-                    </ZListItemGroup>
-                    <ZListItemGroup header={null}>
                         <ZListItem text="Include preview of messages" toggle={true} />
                     </ZListItemGroup>
                     <ZListItemGroup header="By email" footer="When you’re busy or not online, Openland can send you email notifications about new messages. We will use jstatham@gmail.com for notifications">
