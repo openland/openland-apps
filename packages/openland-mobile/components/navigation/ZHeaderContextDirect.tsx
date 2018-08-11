@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { ZHeaderContextProvider, ZHeaderContext } from './ZHeaderContext';
-import { ZHeaderConfig } from './ZHeaderConfig';
+import { ZHeaderConfig, mergeConfigs, isConfigEquals } from './ZHeaderConfig';
 import { randomKey } from '../../utils/randomKey';
 
 export class ZHeaderContextDirect extends React.PureComponent<{ navigation: NavigationScreenProp<NavigationParams> }> implements ZHeaderContextProvider {
@@ -39,22 +39,23 @@ export class ZHeaderContextDirect extends React.PureComponent<{ navigation: Navi
         }
 
         // Merge configs
-        let title: string | undefined;
+        let configs: ZHeaderConfig[] = [];
         for (let k of this.configs.keys()) {
-            let c = this.configs.get(k)!!;
-            if (c.title) {
-                title = c.title;
-            }
+            configs.push(this.configs.get(k)!!);
         }
+        let merged = mergeConfigs(configs);
 
         // Check if changed
-        if (this.lastConfig.title === title) {
+        console.log('supply');
+        console.log(merged);
+        console.log(this.lastConfig);
+        if (isConfigEquals(merged, this.lastConfig)) {
             return;
         }
-
-        this.lastConfig = new ZHeaderConfig({ title });
-
+        
         // Update config
+        this.lastConfig = merged;
+        console.log(this.lastConfig);
         this.props.navigation.setParams({ '_z_header_config': this.lastConfig });
     }
 

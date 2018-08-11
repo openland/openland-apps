@@ -9,7 +9,7 @@ import { AccountQuery } from 'openland-api/AccountQuery';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZQuery } from '../../components/ZQuery';
 import { ZScrollView } from '../../components/ZScrollView';
-import { AppStyles } from '../../styles/AppStyles';
+import { ZHeader } from '../../components/ZHeader';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -65,40 +65,43 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
 
     render() {
         return (
-            <ZScrollView>
-                <ZQuery query={AccountQuery}>
-                    {resp => {
-                        return (
-                            <>
-                                <ZListItemHeader
-                                    photo={resp.data!!.me!!.picture}
-                                    id={resp.data!!.me!!.id}
-                                    title={resp.data!!.me!!.name}
-                                    subtitle={resp.data!!.organization!!.name}
-                                    path="SettingsProfile"
-                                    action="Edit profile"
-                                />
-                                <ZListItemGroup header="Settings">
-                                    <ZListItem text="Notifications" path="SettingsNotifications" />
-                                </ZListItemGroup>
-                                <ZListItemGroup header="Application">
-                                    <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />
-                                    {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
-                                    {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
-                                </ZListItemGroup>
-                                <ZListItemGroup header="Dev Tools">
-                                    <ZListItem text="Typography" path="DevTypography" />
-                                    <ZListItem text="Components" path="DevComponents" />
-                                    <ZListItem text="Navigation" path="DevNavigation" />
-                                    <ZListItem text="Loader" path="DevLoader" />
-                                    <ZListItem text="Reboot" onPress={this.handleReboot} />
-                                    <ZListItem text="Log out" onPress={this.handleLogout} />
-                                </ZListItemGroup>
-                            </>
-                        );
-                    }}
-                </ZQuery>
-            </ZScrollView>
+            <>
+                <ZHeader title="Settings" />
+                <ZScrollView>
+                    <ZQuery query={AccountQuery}>
+                        {resp => {
+                            return (
+                                <>
+                                    <ZListItemHeader
+                                        photo={resp.data!!.me!!.picture}
+                                        id={resp.data!!.me!!.id}
+                                        title={resp.data!!.me!!.name}
+                                        subtitle={resp.data!!.organization!!.name}
+                                        path="SettingsProfile"
+                                        action="Edit profile"
+                                    />
+                                    <ZListItemGroup header="Settings">
+                                        <ZListItem text="Notifications" path="SettingsNotifications" />
+                                    </ZListItemGroup>
+                                    <ZListItemGroup header="Application">
+                                        <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />
+                                        {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
+                                        {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
+                                    </ZListItemGroup>
+                                    <ZListItemGroup header="Dev Tools">
+                                        <ZListItem text="Typography" path="DevTypography" />
+                                        <ZListItem text="Components" path="DevComponents" />
+                                        <ZListItem text="Navigation" path="DevNavigation" />
+                                        <ZListItem text="Loader" path="DevLoader" />
+                                        <ZListItem text="Reboot" onPress={this.handleReboot} />
+                                        <ZListItem text="Log out" onPress={this.handleLogout} />
+                                    </ZListItemGroup>
+                                </>
+                            );
+                        }}
+                    </ZQuery>
+                </ZScrollView>
+            </>
         );
     }
 }

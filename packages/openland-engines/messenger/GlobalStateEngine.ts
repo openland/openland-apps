@@ -7,6 +7,7 @@ import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery 
 import { SequenceWatcher } from '../core/SequenceWatcher';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
+import { Platform } from 'react-native';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -85,6 +86,7 @@ export class GlobalStateEngine {
             });
         })).data;
         let seq = (res as any).chats.seq;
+        this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
         this.engine.dialogList.handleInitialConversations((res as any).chats.conversations);
         console.info('[global] Initial state loaded with seq #' + seq);
 
@@ -195,6 +197,9 @@ export class GlobalStateEngine {
 
             // Global counter
             this.writeGlobalCounter(event.globalUnread, visible);
+
+            // Notifications
+            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
             // Dialogs List
             this.engine.dialogList.handleUserRead(event.conversationId, event.unread, visible);

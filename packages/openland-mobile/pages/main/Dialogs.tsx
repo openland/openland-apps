@@ -9,6 +9,7 @@ import { ConversationShortFragment } from 'openland-api/Types';
 import { ZQuery } from '../../components/ZQuery';
 import { ChatListQuery } from 'openland-api';
 import { ZHeaderButton } from '../../components/ZHeaderButton';
+import { ZHeader } from '../../components/ZHeader';
 
 class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }> {
 
@@ -39,12 +40,15 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
 
     render() {
         return (
-            <View style={{ height: '100%', backgroundColor: '#ffffff' }}>
-                {/* <ZHeaderButton route="Dialogs" navigation={this.props.navigation} title="New" onPress={() => this.props.navigation.navigate('ComposeModal')} /> */}
-                <MessengerContext.Consumer>
-                    {(messenger) => <ConversationsListener engine={messenger!!} onItemClick={this.handleItemClick} />}
-                </MessengerContext.Consumer>
-            </View>
+            <>
+                <ZHeader title="Messages" />
+                <View style={{ height: '100%', backgroundColor: '#ffffff' }}>
+                    {/* <ZHeaderButton route="Dialogs" navigation={this.props.navigation} title="New" onPress={() => this.props.navigation.navigate('ComposeModal')} /> */}
+                    <MessengerContext.Consumer>
+                        {(messenger) => <ConversationsListener engine={messenger!!} onItemClick={this.handleItemClick} />}
+                    </MessengerContext.Consumer>
+                </View>
+            </>
         );
     }
 }

@@ -29,7 +29,7 @@ class ZHeaderComponent extends React.PureComponent<ZHeaderComponentProps> {
     }
 }
 
-export const ZHeader = (props: { title: string }) => {
+export const ZHeader = (props: { title?: string }) => {
     return (
         <ZHeaderContext.Consumer>
             {ctx => (<ZHeaderComponent provider={ctx!!} {...props} />)}

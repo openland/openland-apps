@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
 const styles = StyleSheet.create({
@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     containerMuted: {
         backgroundColor: '#bcc3cc'
     } as ViewStyle,
+    containerContrast: {
+        backgroundColor: '#ff3b30'
+    } as ViewStyle,
     text: {
         color: '#fff',
         fontSize: 12,
@@ -25,12 +28,50 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class ZCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
+export interface ZCounterProps {
+    value: number;
+    appearance?: 'default' | 'muted' | 'contrast';
+}
+
+export class ZCounter extends React.PureComponent<ZCounterProps, { value: number }> {
+    private opacity = new Animated.Value(0);
+
+    constructor(props: ZCounterProps) {
+        super(props);
+        if (props.value > 0) {
+            this.opacity.setValue(1);
+        }
+        this.state = {
+            value: props.value
+        };
+    }
+
+    componentWillReceiveProps(nextProps: ZCounterProps) {
+        if ((nextProps.value > 0) !== (this.props.value > 0)) {
+            if (nextProps.value > 0) {
+                this.setState({ value: nextProps.value });
+                Animated.timing(this.opacity, {
+                    toValue: 1,
+                    duration: 150,
+                    useNativeDriver: true
+                }).start();
+            } else {
+                Animated.timing(this.opacity, {
+                    toValue: 0,
+                    duration: 150,
+                    useNativeDriver: true
+                }).start();
+            }
+        } else {
+            this.setState({ value: nextProps.value });
+        }
+    }
+
     render() {
         return (
-            <View style={[styles.container, this.props.muted && styles.containerMuted]}>
-                <Text style={styles.text}>{this.props.value}</Text>
-            </View>
+            <Animated.View style={[{ opacity: this.opacity }, styles.container, this.props.appearance === 'muted' && styles.containerMuted, , this.props.appearance === 'contrast' && styles.containerContrast]}>
+                <Text style={styles.text}>{this.state.value}</Text>
+            </Animated.View>
         );
     }
 }

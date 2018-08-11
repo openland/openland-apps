@@ -82,7 +82,7 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
                             <Slider value={this.state.size2} maximumValue={80} minimumValue={1} onValueChange={this.handleSize2Change} />
                         </View>
                     </ZScrollView>
-                    <ZBottomTabs selected={this.state.tab} onPress={this.handleTabChange} />
+                    <ZBottomTabs counter={0} selected={this.state.tab} onPress={this.handleTabChange} />
                 </View>
             </>
         );

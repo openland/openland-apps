@@ -8,9 +8,12 @@ export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, a
     let res = (props: NavigationInjectedProps) => {
         return (
             <ZAppContent navigation={props.navigation} useParent={args && args.isInTab} navigationStyle={(args && args.navigationStyle) || 'large'}>
-                <ZHeaderContextDirect navigation={props.navigation}>
-                    <Wrapped {...props} />
-                </ZHeaderContextDirect>
+                {args && args.isInTab && <Wrapped {...props} />}
+                {!(args && args.isInTab) && (
+                    <ZHeaderContextDirect navigation={props.navigation}>
+                        <Wrapped {...props} />
+                    </ZHeaderContextDirect>
+                )}
             </ZAppContent>
         );
     };

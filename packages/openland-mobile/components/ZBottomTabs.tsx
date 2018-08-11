@@ -3,8 +3,9 @@ import { View, TouchableWithoutFeedback, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SuperEllipseMask from 'react-native-super-ellipse-mask';
+import { ZCounter } from './ZCounter';
 
-export class ZBottomTabs extends React.PureComponent<{ selected: number, onPress: (tab: number) => void }> {
+export class ZBottomTabs extends React.PureComponent<{ selected: number, counter: number, onPress: (tab: number) => void }> {
     handlePress1 = () => {
         this.props.onPress(0);
     }
@@ -50,7 +51,18 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, onPress
                             justifyContent: 'center'
                         }}
                     >
-                        <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? '#fff' : '#C8C8F9'} />
+                        <View style={{ width: 48, height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                            <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? '#fff' : '#C8C8F9'} />
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    top: 4,
+                                    right: 2
+                                }}
+                            >
+                                <ZCounter value={this.props.counter} appearance="contrast" />
+                            </View>
+                        </View>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress3} delayPressIn={0}>

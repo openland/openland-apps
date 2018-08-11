@@ -13,3 +13,20 @@ export class ZHeaderConfig {
         this.titleView = args.titleView;
     }
 }
+
+export function mergeConfigs(configs: ZHeaderConfig[]) {
+    let title: string | undefined;
+    for (let c of configs) {
+        if (c.title) {
+            title = c.title;
+        }
+    }
+    return new ZHeaderConfig({ title });
+}
+
+export function isConfigEquals(a: ZHeaderConfig, b: ZHeaderConfig) {
+    if (a.title !== b.title) {
+        return false;
+    }
+    return true;
+}
