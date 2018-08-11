@@ -1066,6 +1066,15 @@ export interface ChatChangeGroupTitleMutation {
   },
 };
 
+export interface ChatAddMemberMutationVariables {
+  conversationId: string,
+  userId: string,
+};
+
+export interface ChatAddMemberMutation {
+  alphaChatInviteToGroup: string,
+};
+
 export interface BlockedListQueryVariables {
   conversationId: string,
 };

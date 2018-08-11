@@ -7,12 +7,14 @@ export interface XPImageProps extends XPFlexStyle {
     source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null } | string | null;
     width: number;
     height: number;
+    imageSize?: { width: number, height: number };
     resize?: 'fill' | 'fit' | 'none';
     borderRadius?: number;
     borderBottomLeftRadius?: number;
     borderBottomRightRadius?: number;
     borderTopLeftRadius?: number;
     borderTopRightRadius?: number;
+    highPriority?: boolean;
 }
 
 export class XPImage extends React.PureComponent<XPImageProps> {
@@ -22,6 +24,8 @@ export class XPImage extends React.PureComponent<XPImageProps> {
             <View {...flex}>
                 <PImage
                     source={this.props.source}
+                    imageSize={this.props.imageSize}
+                    highPriority={this.props.highPriority}
                     resize={this.props.resize}
                     width={this.props.width}
                     height={this.props.height}

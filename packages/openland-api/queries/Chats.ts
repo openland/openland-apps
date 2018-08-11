@@ -193,6 +193,12 @@ export const ChatChangeGroupTitleMutation = gql`
     }
 `;
 
+export const ChatAddMemberMutation = gql`
+    mutation ChatAddMember($conversationId: ID!, $userId: ID!) {
+        alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}])
+    }
+`;
+
 export const BlockedListQuery = gql`
     query BlockedList($conversationId: ID!) {
         blocked: alphaBlockedList(conversationId: $conversationId) {

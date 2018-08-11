@@ -27,7 +27,7 @@ export class XPAvatar extends React.PureComponent<{ size: number, src?: string |
                     borderRadius={this.props.size / 2}
                 >
                     <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
-                        <XPImage width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
+                        <XPImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
                         {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                     </View>
                 </AndroidAliaser>

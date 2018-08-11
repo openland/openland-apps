@@ -27,8 +27,8 @@ export class PImage extends React.Component<PImageProps> {
 
         let url = baseUrl;
         if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
-            let w = PixelRatio.getPixelSizeForLayoutSize(this.props.width);
-            let h = PixelRatio.getPixelSizeForLayoutSize(this.props.height);
+            let w = PixelRatio.getPixelSizeForLayoutSize(this.props.imageSize ? this.props.imageSize.width : this.props.width);
+            let h = PixelRatio.getPixelSizeForLayoutSize(this.props.imageSize ? this.props.imageSize.height : this.props.height);
             url += '-/scale_crop/' + w + 'x' + h + '/';
             if (PixelRatio.get() > 2) {
                 url += '-/quality/lighter/-/progressive/yes/';
@@ -36,7 +36,7 @@ export class PImage extends React.Component<PImageProps> {
         }
         return (
             <FastImage
-                source={{ uri: url }}
+                source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal' }}
                 style={{
                     width: this.props.width,
                     height: this.props.height,

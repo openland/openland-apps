@@ -45,6 +45,7 @@ export const ChatSearchGroupQuery = typedQuery<Types.ChatSearchGroupQuery, Types
 export const ChatCreateGroupMutation = typedMutation<Types.ChatCreateGroupMutation, Types.ChatCreateGroupMutationVariables>(Chats.ChatCreateGroupMutation);
 export const SetTypingMutation = typedMutation<Types.SetTypingMutation, Types.SetTypingMutationVariables>(Chats.SetTypingMutation);
 export const ChatChangeGroupTitleMutation = typedMutation<Types.ChatChangeGroupTitleMutation, Types.ChatChangeGroupTitleMutationVariables>(Chats.ChatChangeGroupTitleMutation);
+export const ChatAddMemberMutation = typedMutation<Types.ChatAddMemberMutation, Types.ChatAddMemberMutationVariables>(Chats.ChatAddMemberMutation);
 export const BlockedListQuery = typedQuery<Types.BlockedListQuery, Types.BlockedListQueryVariables>(Chats.BlockedListQuery);
 export const BlockUserMutation = typedMutation<Types.BlockUserMutation, Types.BlockUserMutationVariables>(Chats.BlockUserMutation);
 export const UnBlockUserMutation = typedMutation<Types.UnBlockUserMutation, Types.UnBlockUserMutationVariables>(Chats.UnBlockUserMutation);

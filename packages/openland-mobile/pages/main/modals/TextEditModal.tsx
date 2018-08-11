@@ -6,6 +6,7 @@ import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { ZHeaderButton } from '../../../components/ZHeaderButton';
 import { stopLoader, startLoader } from '../../../components/ZGlobalLoader';
+import { Keyboard } from 'react-native';
 
 class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps, { value: string }> {
     static navigationOptions = {
@@ -21,8 +22,13 @@ class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps
     }
 
     handleSave = async () => {
+        if (this.state.value === this.props.navigation.getParam('value', '')) {
+            this.props.navigation.goBack();
+            return;
+        }
         let action = this.props.navigation.getParam('action') as (value: string) => any;
         try {
+            Keyboard.dismiss();
             startLoader();
             let res = await action(this.state.value);
             this.props.navigation.goBack();

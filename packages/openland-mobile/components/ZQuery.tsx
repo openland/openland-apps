@@ -17,10 +17,11 @@ export class ZQuery<QUERY, VARIABLES> extends React.PureComponent<ZQueryProps<QU
         return (
             <Query query={this.props.query.document} variables={this.props.variables} fetchPolicy={this.props.fetchPolicy}>
                 {(resp) => {
+                    // console.log(resp);
                     if (resp.error) {
                         Alert.alert(resp.error!!.message);
                     }
-                    if (resp.loading || !resp.data) {
+                    if ((resp.loading || !resp.data) && (resp.networkStatus !== 2)) {
                         return <ZLoader />;
                     }
                     return this.props.children(resp);

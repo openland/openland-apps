@@ -13,6 +13,7 @@ import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChatChangeGroupTitleMutation } from 'openland-api';
+import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
 
 class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
@@ -31,9 +32,6 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                     if (resp.data.chat.__typename !== 'GroupConversation') {
                         throw Error('');
                     }
-                    console.log('render');
-                    console.log(resp);
-                    console.log(resp.data.chat);
                     return (
                         <ZScrollView>
 
@@ -65,7 +63,20 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                             </ZListItemGroup>
 
                             <ZListItemGroup header="Members">
-                                <ZListItem appearance="action" text="Add members" onPress={this.handleAddMember} />
+                                <YMutation mutation={ChatAddMemberMutation}>
+                                    {(add) => (
+                                        <ZListItem
+                                            appearance="action"
+                                            text="Add members"
+                                            onPress={() => {
+                                                Modals.showUserPicker(
+                                                    this.props.navigation,
+                                                    async (src) => await add({ variables: { userId: src, conversationId: resp.data.chat.id } })
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                </YMutation>
                                 {resp.data.members.map((v) => (
                                     <ZListItemBase key={v.user.id} separator={false} height={56} onPress={() => this.props.navigation.navigate('ProfileUser', { 'id': v.user.id })}>
                                         <View paddingTop={12} paddingLeft={15} paddingRight={15}>
