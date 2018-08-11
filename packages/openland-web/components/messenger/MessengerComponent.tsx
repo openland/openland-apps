@@ -12,6 +12,8 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TextComponent } from '../../../../node_modules/@types/react-native';
 import { TypignsComponent, TypingContext } from './components/TypingsComponent';
+import { XButton } from 'openland-x/XButton';
+import { withBlockUser } from '../../api/withBlockUser';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -80,7 +82,15 @@ const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftC
     cursor: props.path ? 'pointer' : undefined
 }));
 
+const XButtonMargin = Glamorous(XButton)({ margin: 4});
+const BlockButton = withBlockUser((props) => {
+    return (
+        <XButtonMargin text={(props as any).blocked ? 'Unblock' : 'Block'} style="flat" action={async () => await ((props as any).blocked ? props.unblock({ variables: { userId: (props as any).userId } }) : props.block({ variables: { userId: (props as any).userId } }))} />
+    );
+}) as React.ComponentType<{ blocked: boolean, userId: string }>;
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
+    console.warn(props.data.chat);
     return (
         <ChatRoot flexGrow={1} separator={'none'}>
             <ChatHeaderWrapper>
@@ -113,6 +123,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         content={(
                             <>
                                 <XMenuItem path="/mail">exit</XMenuItem>
+                                {props.data.chat.__typename === 'PrivateConversation' && <BlockButton blocked={(props.data.chat as any).blocked} userId={(props.data.chat as any).user.id}/>}
                             </>
                         )}
                     />

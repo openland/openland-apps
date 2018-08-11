@@ -1,5 +1,6 @@
 import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import Push from 'react-native-push-notification';
+import PushNotification from 'react-native-push-notification';
 
 var token: string | null = null;
 var tokenListeners: ((token: string) => void)[] = [];
@@ -13,7 +14,7 @@ Push.configure({
         tokenListeners = [];
     },
     senderID: '1095846783035',
-    requestPermissions: false
+    requestPermissions: false,
 });
 
 class AppNotiticationsIOS implements AppNotificationsApi {

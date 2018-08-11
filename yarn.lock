@@ -10746,9 +10746,9 @@ react-native-paper@2.0.0-alpha.4:
     hoist-non-react-statics "^2.5.0"
     react-lifecycles-compat "^3.0.4"
 
-react-native-push-notification@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.0.2.tgz#3fa7d654cfd915436597b0dd5ba8b0f898c4b0f5"
+react-native-push-notification@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.1.tgz#99ce426e78e95788c298f73750cc4e68db04d7ab"
 
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"

@@ -5,7 +5,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { XMenuItem, XMenuItemWrapper, XMenuItemSeporator, XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuTitle, XMenuItemWrapper, XMenuItemSeporator, XMenuVertical } from 'openland-x/XMenuItem';
 
 export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
     return (
@@ -14,6 +14,7 @@ export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
                 <XVertical>
                     <div style={{ width: 270 }}>
                         <XMenuVertical>
+                            <XMenuTitle>Notifications</XMenuTitle>
                             <XMenuItem>default</XMenuItem>
                             <XMenuItem style="primary-sky-blue">primary-sky-blue</XMenuItem>
                             <XMenuItem style="danger">danger</XMenuItem>
