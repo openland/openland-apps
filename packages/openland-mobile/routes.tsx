@@ -22,6 +22,7 @@ import { Loader } from './pages/dev/Loader';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { TextEditModal } from './pages/main/modals/TextEditModal';
 import { ComposeModal } from './pages/main/modals/ComposeModal';
+import { Home } from './pages/main/Home';
 
 //
 // Home Routes
@@ -97,12 +98,7 @@ HomeTabs.navigationOptions = (args: { navigation: any }) => {
 //
 
 export const AppStack = createZStackNavigator({
-  Home: {
-    screen: HomeTabs,
-    navigationOptions: {
-      headerBackTitle: '\u200B'
-    }
-  },
+  Home: Home,
   Conversation: Conversation,
   ProfileUser: ProfileUser,
   ProfileOrganization: ProfileOrganization,

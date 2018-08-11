@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { AppStyles } from '../../styles/AppStyles';
-import { ZHeader } from '../../components/ZHeader';
 import { ZLoader } from '../../components/ZLoader';
 
 export class Loader extends React.PureComponent {
     static navigationOptions = (args: any) => {
         return {
-            title: 'Components',
-            header: ZHeader
+            title: 'Components'
         };
     }
 

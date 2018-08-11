@@ -1,6 +1,6 @@
 import { Platform, Dimensions } from 'react-native';
 import { createStackNavigator, NavigationRouteConfigMap, NavigationSceneRendererProps, NavigationTransitionProps } from 'react-navigation';
-import { ZHeader } from './ZHeader';
+import { ZHeader } from './navigation/ZHeader';
 
 function getSceneIndicesForInterpolationInputRange(props: NavigationSceneRendererProps) {
     const { scene, scenes } = props;
@@ -94,18 +94,9 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap) {
         transitionConfig: (transitionProps: NavigationTransitionProps, prevTransitionProps: NavigationTransitionProps, isModal: boolean) => {
             if (Platform.OS === 'android') {
                 return {
-                    screenInterpolator: androidInterpolator,
-                    containerStyle: {
-                        backgroundColor: '#000',
-                    },
+                    screenInterpolator: androidInterpolator
                 };
             }
-            // return {
-            //     screenInterpolator: androidInterpolator,
-            //     containerStyle: {
-            //         backgroundColor: '#000',
-            //     },
-            // };
             return {};
         },
     });

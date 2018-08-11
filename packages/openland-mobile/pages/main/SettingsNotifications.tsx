@@ -5,11 +5,9 @@ import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { ZScrollView } from '../../components/ZScrollView';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
+import { ZHeader } from '../../components/ZHeader';
 
 class SettingsNotifciationsComponent extends React.Component<NavigationInjectedProps> {
-    static navigationOptions = {
-        title: 'Notifications',
-    };
 
     handleSave = () => {
         // if (this.ref.current) {
@@ -20,6 +18,7 @@ class SettingsNotifciationsComponent extends React.Component<NavigationInjectedP
     render() {
         return (
             <>
+                <ZHeader title="Notifications" />
                 <ZHeaderButton navigation={this.props.navigation} title="Save" onPress={this.handleSave} />
                 <ZScrollView>
                     <ZListItemGroup header="On mobile">

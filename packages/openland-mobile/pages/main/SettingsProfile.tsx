@@ -15,13 +15,10 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { ZHeaderButton } from '../../components/ZHeaderButton';
+import { ZHeader } from '../../components/ZHeader';
 
 class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { loaded: boolean }> {
-
-    static navigationOptions = {
-        title: 'Edit profile',
-    };
-
+    
     private ref = React.createRef<ZForm>();
 
     constructor(props: NavigationInjectedProps) {
@@ -40,6 +37,7 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
     render() {
         return (
             <>
+                <ZHeader title="Edit profile" />
                 <ZHeaderButton navigation={this.props.navigation} title="Save" onPress={this.handleSave} />
                 <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
                     {(save) => (

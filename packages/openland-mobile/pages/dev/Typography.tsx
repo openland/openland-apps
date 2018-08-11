@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { ZHeader } from '../../components/ZHeader';
+import { View, Text, StyleSheet } from 'react-native';
 import ViewOverflow from 'react-native-view-overflow';
 
 const styles = StyleSheet.create({
@@ -22,8 +21,7 @@ const styles = StyleSheet.create({
 export class Typography extends React.PureComponent {
     static navigationOptions = (args: any) => {
         return {
-            title: 'Typography',
-            header: ZHeader
+            title: 'Typography'
         };
     }
 
