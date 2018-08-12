@@ -100,71 +100,70 @@ export class ZImagePreview extends React.PureComponent<{ src: string, srcWidth: 
     render() {
         return (
             <View width="100%" height="100%" backgroundColor="#f00" alignItems="center" justifyContent="center">
-                <View width={200} height={200}>
-                    <PanGestureHandler
-                        onGestureEvent={this._panEvent}
-                        onHandlerStateChange={this._onPandHandlerStateChange}
-                        simultaneousHandlers={this._rotationRef as any}
-                        ref={this._panRef}
-                        minPointers={1}
-                        maxPointers={2}
-                        minDist={0}
-                        minDeltaX={0}
-                        avgTouches
+                <PanGestureHandler
+                    onGestureEvent={this._panEvent}
+                    onHandlerStateChange={this._onPandHandlerStateChange}
+                    simultaneousHandlers={this._rotationRef as any}
+                    ref={this._panRef}
+                    minPointers={1}
+                    maxPointers={2}
+                    minDist={0}
+                    minDeltaX={0}
+                    avgTouches
+                >
+                    <Animated.View
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
-                        <Animated.View
-                            style={{
-                                width: this.props.srcWidth,
-                                height: this.props.srcHeight
-                            }}
+                        <RotationGestureHandler
+                            ref={this._rotationRef}
+                            simultaneousHandlers={this._panRef as any}
+                            onGestureEvent={this._rotateEvent}
+                            onHandlerStateChange={this._onRotateHandlerStateChange}
                         >
-                            <RotationGestureHandler
-                                ref={this._rotationRef}
-                                simultaneousHandlers={this._panRef as any}
-                                onGestureEvent={this._rotateEvent}
-                                onHandlerStateChange={this._onRotateHandlerStateChange}
+                            <Animated.View
+                                style={{
+                                    width: this.props.srcWidth,
+                                    height: this.props.srcHeight,
+                                    transform: [
+                                        {
+                                            translateX: this._panX
+                                        },
+                                        {
+                                            translateY: this._panY
+                                        },
+                                        {
+                                            translateX: Animated.add(this._rotateX, -this.props.srcWidth / 2)
+                                        },
+                                        {
+                                            translateY: Animated.add(this._rotateY, -this.props.srcHeight / 2)
+                                        },
+                                        {
+                                            rotate: this._rotateInterpolated
+                                        },
+                                        {
+                                            translateX: Animated.multiply(Animated.add(this._rotateX, -this.props.srcWidth / 2), -1)
+                                        },
+                                        {
+                                            translateY: Animated.multiply(Animated.add(this._rotateY, -this.props.srcHeight / 2), -1)
+                                        },
+                                    ]
+                                }}
                             >
-                                <Animated.View
-                                    style={{
-                                        width: this.props.srcWidth,
-                                        height: this.props.srcHeight,
-                                        transform: [
-                                            {
-                                                translateX: this._panX
-                                            },
-                                            {
-                                                translateY: this._panY
-                                            },
-                                            {
-                                                translateX: Animated.add(this._rotateX, -this.props.srcWidth / 2)
-                                            },
-                                            {
-                                                translateY: Animated.add(this._rotateY, -this.props.srcHeight / 2)
-                                            },
-                                            {
-                                                rotate: this._rotateInterpolated
-                                            },
-                                            {
-                                                translateX: Animated.multiply(Animated.add(this._rotateX, -this.props.srcWidth / 2), -1)
-                                            },
-                                            {
-                                                translateY: Animated.multiply(Animated.add(this._rotateY, -this.props.srcHeight / 2), -1)
-                                            },
-                                        ]
-                                    }}
-                                >
-                                    <XPImage
-                                        source={{ uuid: this.props.src }}
-                                        width={this.props.srcWidth}
-                                        height={this.props.srcHeight}
-                                        imageSize={{ width: this.props.srcWidth, height: this.props.srcHeight }}
-                                    />
-                                </Animated.View>
-                            </RotationGestureHandler>
-                            {/* <Animated.View style={{ position: 'absolute', width: 5, height: 5, backgroundColor: '#0f0', transform: [{ translateX: this._rotateX }, { translateY: this._rotateY }] }} /> */}
-                        </Animated.View>
-                    </PanGestureHandler>
-                </View>
+                                <XPImage
+                                    source={{ uuid: this.props.src }}
+                                    width={this.props.srcWidth}
+                                    height={this.props.srcHeight}
+                                    imageSize={{ width: this.props.srcWidth, height: this.props.srcHeight }}
+                                />
+                            </Animated.View>
+                        </RotationGestureHandler>
+                    </Animated.View>
+                </PanGestureHandler>
             </View>
         );
     }
