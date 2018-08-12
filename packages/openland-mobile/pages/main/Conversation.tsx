@@ -21,6 +21,7 @@ import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ZHeaderView } from '../../components/ZHeaderView';
+import { Modals } from './modals/Modals';
 
 class ConversationRoot extends React.Component<{ navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
@@ -58,7 +59,7 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
     }
 
     handlePhotoPress = (message: MessageFullFragment) => {
-        this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
+        Modals.showPicturePreview(this.props.navigator, message.file!!, message.fileMetadata!!.imageWidth!!, message.fileMetadata!!.imageHeight!!);
     }
 
     render() {

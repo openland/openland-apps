@@ -20,6 +20,7 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
             android: Math.min(Dimensions.get('window').width - 70, 400)
         });
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
+        let optimalSize = layoutMedia(this.props.width, this.props.height, 1024, 1024);
         let corners = resolveCorners(this.props.isOut, this.props.attach);
         return (
             <XPBubbleView isOut={this.props.isOut} attach={this.props.attach} appearance="media">
@@ -43,6 +44,7 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                     >
                         <XPImage
                             source={{ uuid: this.props.file }}
+                            imageSize={{ width: optimalSize.width, height: optimalSize.height }}
                             borderRadius={18} // Hack for MAC OS
                             borderTopLeftRadius={corners.topLeft}
                             borderTopRightRadius={corners.topRight}

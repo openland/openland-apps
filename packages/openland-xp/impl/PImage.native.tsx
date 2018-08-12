@@ -27,8 +27,8 @@ export class PImage extends React.Component<PImageProps> {
 
         let url = baseUrl;
         if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
-            let w = PixelRatio.getPixelSizeForLayoutSize(this.props.imageSize ? this.props.imageSize.width : this.props.width);
-            let h = PixelRatio.getPixelSizeForLayoutSize(this.props.imageSize ? this.props.imageSize.height : this.props.height);
+            let w = this.props.imageSize ? this.props.imageSize.width : PixelRatio.getPixelSizeForLayoutSize(this.props.width);
+            let h = this.props.imageSize ? this.props.imageSize.height : PixelRatio.getPixelSizeForLayoutSize(this.props.height);
             url += '-/scale_crop/' + w + 'x' + h + '/';
             if (PixelRatio.get() > 2) {
                 url += '-/quality/lighter/-/progressive/yes/';
