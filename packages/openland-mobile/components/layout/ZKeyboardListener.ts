@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Platform, EmitterSubscription, Keyboard, LayoutAnimation, Dimensions } from 'react-native';
-import { ZAppConfig } from './ZAppConfig';
 
-export class ZKeyboardListener extends React.PureComponent<{ children: (height: number) => React.ReactNode }, { height: number }> {
+export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: number, children: (height: number) => React.ReactNode }, { height: number }> {
     private subscription: EmitterSubscription | null = null;
     private _frame: any = null;
 
@@ -21,7 +20,7 @@ export class ZKeyboardListener extends React.PureComponent<{ children: (height: 
         // Calculate the displacement needed for the view such that it
         // no longer overlaps with the keyboard
         // return Math.max(frame.y + frame.height - keyboardY, 0);
-        return Math.max(Dimensions.get('window').height - (keyboardY as number) - ZAppConfig.bottomNavigationBarInset, 0);
+        return Math.max(Dimensions.get('window').height - (keyboardY as number) - this.props.bottomOffset, 0);
     }
 
     keyboardChangeHandler = (src: any) => {

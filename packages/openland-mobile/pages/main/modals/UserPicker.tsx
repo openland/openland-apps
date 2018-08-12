@@ -8,13 +8,9 @@ import { ZListItem } from '../../../components/ZListItem';
 import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { Keyboard } from 'react-native';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
+import { ZHeader } from '../../../components/ZHeader';
 
 class UserPickerComponent extends React.PureComponent<NavigationInjectedProps, { query: string }> {
-
-    static navigationOptions = {
-        title: 'Add Member',
-        headerAppearance: 'small'
-    };
 
     state = {
         query: ''
@@ -37,6 +33,7 @@ class UserPickerComponent extends React.PureComponent<NavigationInjectedProps, {
     render() {
         return (
             <>
+                <ZHeader title="Add member" />
                 <ZQuery query={UsersQuery} variables={{ query: this.state.query }}>
                     {(reponse) => (
                         <ZScrollView>
@@ -52,4 +49,4 @@ class UserPickerComponent extends React.PureComponent<NavigationInjectedProps, {
     }
 }
 
-export const UserPicker = withApp(UserPickerComponent, { navigationStyle: 'small' });
+export const UserPicker = withApp(UserPickerComponent, { navigationAppearance: 'small' });

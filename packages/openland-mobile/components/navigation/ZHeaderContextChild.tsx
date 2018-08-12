@@ -59,23 +59,18 @@ class ZHeaderContextChildComponent extends React.Component<{ enabled: boolean, p
                 this.registrationId = this.props.provider.registerConfig(this.lastConfig);
             }
         }
-        // this.props.navigation.setParams({ '_z_header_config': this.lastConfig });
     }
 
     componentWillReceiveProps(nextProps: { enabled: boolean, provider: ZHeaderContextProvider }) {
-        // console.log(nextProps);
         if (nextProps.enabled !== this.props.enabled) {
             if (nextProps.enabled) {
                 if (this.registrationId) {
-                    console.log('updateConfig');
                     this.props.provider.updateConfig(this.registrationId, this.lastConfig);
                 } else {
-                    console.log('registerConfig');
                     this.registrationId = this.props.provider.registerConfig(this.lastConfig);
                 }
             } else {
                 if (this.registrationId) {
-                    console.log('removeConfig');
                     this.props.provider.removeConfig(this.registrationId);
                     this.registrationId = undefined;
                 }

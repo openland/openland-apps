@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Platform } from 'react-native';
-import { ZBlurredView } from './ZBlurredView';
-import { ZAppConfig } from './ZAppConfig';
+import { ZBlurredView } from '../ZBlurredView';
+import { ZAppConfig } from '../ZAppConfig';
 import { KeyboardTrackingView } from 'react-native-keyboard-tracking-view';
 
 export class ZKeyboardAwareBar extends React.PureComponent {

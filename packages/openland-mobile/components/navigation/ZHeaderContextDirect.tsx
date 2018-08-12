@@ -46,16 +46,12 @@ export class ZHeaderContextDirect extends React.PureComponent<{ navigation: Navi
         let merged = mergeConfigs(configs);
 
         // Check if changed
-        console.log('supply');
-        console.log(merged);
-        console.log(this.lastConfig);
         if (isConfigEquals(merged, this.lastConfig)) {
             return;
         }
-        
+
         // Update config
         this.lastConfig = merged;
-        console.log(this.lastConfig);
         this.props.navigation.setParams({ '_z_header_config': this.lastConfig });
     }
 
@@ -65,9 +61,23 @@ export class ZHeaderContextDirect extends React.PureComponent<{ navigation: Navi
 
     render() {
         return (
-            <ZHeaderContext.Provider value={this}>
-                {this.props.children}
-            </ZHeaderContext.Provider>
+            <ZHeaderContext.Consumer>
+                {ctx => {
+                    if (ctx) {
+                        return (
+                            <ZHeaderContext.Provider value={ctx}>
+                                {this.props.children}
+                            </ZHeaderContext.Provider>
+                        );
+                    } else {
+                        return (
+                            <ZHeaderContext.Provider value={this}>
+                                {this.props.children}
+                            </ZHeaderContext.Provider>
+                        );
+                    }
+                }}
+            </ZHeaderContext.Consumer>
         );
     }
 }

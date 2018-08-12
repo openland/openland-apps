@@ -7,12 +7,9 @@ import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { ZHeaderButton } from '../../../components/ZHeaderButton';
 import { stopLoader, startLoader } from '../../../components/ZGlobalLoader';
 import { Keyboard } from 'react-native';
+import { ZHeader } from '../../../components/ZHeader';
 
 class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps, { value: string }> {
-    static navigationOptions = {
-        title: 'Edit group name',
-        headerAppearance: 'small'
-    };
 
     constructor(props: NavigationInjectedProps) {
         super(props);
@@ -46,7 +43,8 @@ class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps
     render() {
         return (
             <>
-                <ZHeaderButton navigation={this.props.navigation} title="Save" onPress={this.handleSave} />
+                <ZHeader title="Edit group name" />
+                <ZHeaderButton title="Save" onPress={this.handleSave} />
                 <ZScrollView>
                     <ZListItemGroup header={null}>
                         <ZListItemEdit title="Group name" value={this.state.value} onChange={this.handleChange} autoFocus={true} />
@@ -57,4 +55,4 @@ class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps
     }
 }
 
-export const TextEditModal = withApp(TextEditModalComponent, { navigationStyle: 'small' });
+export const TextEditModal = withApp(TextEditModalComponent, { navigationAppearance: 'small' });

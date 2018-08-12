@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { ZHeaderConfig } from './ZHeader';
-import { NavigationParams, NavigationScreenProp } from 'react-navigation';
+import { ZHeaderConfig } from './ZHeaderConfig';
 
 export interface ZHeaderContextProvider {
     registerConfig: (config: ZHeaderConfig) => string;

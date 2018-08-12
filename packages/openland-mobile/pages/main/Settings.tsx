@@ -106,4 +106,4 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
     }
 }
 
-export const Settings = withApp(SettingsComponent, { noSafeWrapper: true, isInTab: true, navigationStyle: 'small' });
+export const Settings = withApp(SettingsComponent, { navigationAppearance: 'small-hidden' });

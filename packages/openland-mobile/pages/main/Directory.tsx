@@ -3,11 +3,10 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
 import { ExploreOrganizationsQuery } from 'openland-api';
-import { ScrollView, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZAvatar } from '../../components/ZAvatar';
-import { ZAppContent } from '../../components/ZAppContent';
 import { ZScrollView } from '../../components/ZScrollView';
 import { ZHeader } from '../../components/ZHeader';
 
@@ -39,4 +38,4 @@ class DirectoryComponent extends React.PureComponent<NavigationInjectedProps> {
     }
 }
 
-export const Directory = withApp(DirectoryComponent, { noSafeWrapper: true, isInTab: true });
+export const Directory = withApp(DirectoryComponent);

@@ -22,5 +22,5 @@ import { AppRegistry } from 'react-native';
 // import Routes from './routes';
 import { withUpdateTracker } from './utils/UpdateTracker';
 import { withGlobalLoader } from './components/ZGlobalLoader';
-import { LoginLoader } from './pages/auth/LoginLoader';
-AppRegistry.registerComponent('openland', () => withUpdateTracker(withGlobalLoader(LoginLoader)));
+import { Root } from './pages/Root';
+AppRegistry.registerComponent('openland', () => withUpdateTracker(withGlobalLoader(Root)));

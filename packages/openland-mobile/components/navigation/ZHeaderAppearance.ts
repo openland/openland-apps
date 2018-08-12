@@ -1,0 +1,1 @@
+export type ZHeaderAppearance = 'small' | 'large' | 'small-hidden';

@@ -8,6 +8,7 @@ import { ZHeaderBackButton } from './ZHeaderBackButton';
 import { ZAppConfig } from '../ZAppConfig';
 import { ZBlurredView } from '../ZBlurredView';
 import { ZHeaderTitle } from './ZHeaderTitle';
+import { ZHeaderConfig } from './ZHeaderConfig';
 
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
@@ -18,7 +19,7 @@ interface Descriptor {
         title?: string;
         headerTitle?: any;
         headerTitleOffset?: number;
-        headerAppearance?: 'small' | 'small-hidden';
+        // headerAppearance?: 'small' | 'small-hidden';
         headerHeight?: number;
         headerHairline?: boolean;
         androidHeaderAppearance?: 'initial';
@@ -97,11 +98,6 @@ let styles = StyleSheet.create({
     } as ViewStyle
 });
 
-export interface ZHeaderConfig {
-    title?: string;
-    offset?: Animated.Value | undefined | null;
-}
-
 class ZHeaderComponent extends React.PureComponent<Props> {
 
     wasAnimaged = false;
@@ -136,12 +132,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let offsets = this.props.scenes.map((v) => {
 
             // Resolve param name
-            let paramName = '__z_header_actions_search_offset';
-            let paramActionsName = '__z_header_actions';
-            if (v.descriptor.options.isTab) {
-                let r = (v.descriptor as any).state.routes[(v.descriptor as any).state.index].routeName;
-                paramName = '__z_header_' + r + 'actions_search_offset';
-                paramActionsName = '__z_header_' + r + '_actions';
+            let config = v.descriptor.navigation.getParam('_z_header_config') as ZHeaderConfig;
+            if (!config) {
+                config = new ZHeaderConfig({});
             }
 
             //
@@ -203,7 +196,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
             let screenHairlineOffset: Animated.AnimatedInterpolation = defaultHairlineOffset;
-            let contentOffset = v.descriptor.navigation.getParam(paramName) as Animated.Value | undefined | null;
+            let contentOffset = config.contentOffset;
 
             //
             // Content Offset with fallback to zero
@@ -215,7 +208,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             //
             let invertedOffset = Animated.multiply(inputOffset, -1);
 
-            if ((v.descriptor.options.headerAppearance !== 'small' && v.descriptor.options.headerAppearance !== 'small-hidden')) {
+            if ((config.appearance !== 'small' && config.appearance !== 'small-hidden')) {
 
                 //
                 // Calculate hairline offset:
@@ -259,7 +252,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 largeTitleOffset = invertedOffset;
             }
 
-            if (contentOffset || (v.descriptor.options.headerAppearance !== 'small')) {
+            if (contentOffset || (config.appearance !== 'small')) {
                 // Update title opacity for hiding when bar is expanded
                 titleOpacity = Animated.multiply(interpolated, inputOffset.interpolate({
                     inputRange: [0, resolvedTitleSwitchTreshold],
@@ -288,7 +281,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 resolvedNavigationBarHeightLarge,
                 contentOffset: inputOffset,
                 scene: v,
-                actions: v.descriptor.navigation.getParam(paramActionsName, []) as ZHeaderButtonDescription[]
+                config
             };
         });
 
@@ -329,11 +322,10 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let titles = [];
         let w = Dimensions.get('window').width;
         for (let s of offsets) {
-            let config = s.scene.descriptor.navigation.getParam('_z_header_config') as ZHeaderConfig | undefined;
             let headerText = undefined;
             let headerView = undefined;
-            if (config && config.title) {
-                headerText = config.title;
+            if (s.config.title) {
+                headerText = s.config.title;
             } else if (s.scene.descriptor.options.headerTitle) {
                 if (typeof s.scene.descriptor.options.headerTitle === 'string') {
                     headerText = s.scene.descriptor.options.headerTitle;
@@ -346,8 +338,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
             let rightView = undefined;
 
-            if (s.actions.length > 0) {
-                rightView = <View>{s.actions.map((v) => v.render())}</View>;
+            if (s.config.buttons.length > 0) {
+                rightView = <View>{s.config.buttons.map((v) => <View key={'button-' + v.id}>{v.render()}</View>)}</View>;
             }
 
             let header = (
@@ -356,7 +348,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         contentOffset={s.contentOffset}
                         index={s.scene.index}
                         progress={s.position2}
-                        headerAppearance={s.scene.descriptor.options.headerAppearance || 'large'}
+                        headerAppearance={s.config.appearance || 'large'}
                         appearance={Platform.OS === 'android' ? 'android' : 'ios'}
                         titleText={headerText}
                         titleView={headerView}

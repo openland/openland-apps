@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { View, Image, SectionList, Text, Dimensions, Platform, FlatList } from 'react-native';
+import { View, Image, Text, Dimensions, Platform, FlatList } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
-import { ZKeyboardListener } from '../../../components/ZKeyboardListener';
 import { MessageView } from 'openland-shared/MessageView';
 import { MessageFullFragment } from 'openland-api/Types';
+import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -100,12 +100,12 @@ class DateSeparator extends React.PureComponent<{ day: Day }> {
     }
 }
 
-export class MessagesList extends React.PureComponent<MessagesListProps & { keyboardHeight: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean, historyFullyLoaded?: boolean }> implements ConversationStateHandler {
+class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean, historyFullyLoaded?: boolean }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<FlatList<any>>();
 
-    constructor(props: MessagesListProps & { keyboardHeight: number }) {
+    constructor(props: MessagesListProps & { bottomInset: number, topInset: number }) {
         super(props);
         let initialState = props.engine.getState();
         this.state = {
@@ -150,10 +150,10 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
 
     renderHeader = (section: any) => {
         if (section.section.key === 'footer') {
-            return (<View height={ZAppConfig.navigationBarContentInsetSmall} />);
+            return (<View height={this.props.topInset} />);
         }
         if (section.section.key === 'header') {
-            return (<View height={ZAppConfig.bottomNavigationBarInset + 62 + this.props.keyboardHeight} />);
+            return (<View height={62 + this.props.bottomInset} />);
         }
         return (<DateSeparator day={section.section.day} key={section.section.key} />);
     }
@@ -163,15 +163,15 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
             return (
                 this.state.loadingHistoty && !this.state.historyFullyLoaded ?
                     (
-                        <View height={48}>
+                        <View height={this.props.topInset + 48}>
                             <ZLoader appearance="small" transparent={true} />
                         </View>
                     )
-                    : <View height={48} />
+                    : <View height={this.props.topInset + 48} />
             );
         }
         if (itm.item.key === 'header') {
-            return (<View height={ZAppConfig.bottomNavigationBarInset + 62 + this.props.keyboardHeight} />);
+            return (<View height={62 + this.props.bottomInset} />);
         }
         return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
@@ -184,6 +184,7 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
         return (
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
+
                 <FlatList
                     data={this.state.messages2}
                     renderItem={this.renderItem}
@@ -195,16 +196,16 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
                     ref={this.listRef}
                     initialNumToRender={Platform.OS === 'android' ? 0 : undefined}
                     scrollIndicatorInsets={{
-                        bottom: ZAppConfig.navigationBarContentInsetSmall,
-                        top: ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight
+                        bottom: this.props.topInset,
+                        top: 54 + this.props.bottomInset
                     }}
                     keyboardDismissMode="interactive"
                     removeClippedSubviews={true}
                     keyExtractor={(item) => item.key}
-                    extraData={this.props.keyboardHeight}
+                    extraData={this.props.bottomInset * 10000 + this.props.topInset}
                     maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
                 />
-                <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.keyboardHeight} top={ZAppConfig.navigationBarContentInsetSmall} pointerEvents="none">
+                <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.bottomInset} top={ZAppConfig.navigationBarContentInsetSmall} pointerEvents="none">
                     <ZLoader transparent={true} enabled={this.state.loading} />
                 </View>
             </View>
@@ -214,8 +215,8 @@ export class MessagesList extends React.PureComponent<MessagesListProps & { keyb
 
 export const MessagesListComponent = (props: MessagesListProps) => {
     return (
-        <ZKeyboardListener>
-            {height => (<MessagesList {...props} keyboardHeight={height} />)}
-        </ZKeyboardListener>
+        <ZSafeAreaContext.Consumer>
+            {area => (<MessagesList {...props} bottomInset={area.bottom} topInset={area.top} />)}
+        </ZSafeAreaContext.Consumer>
     );
 };

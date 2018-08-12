@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { ScrollViewProps, Animated } from 'react-native';
-import { ZAppContentContext, ZAppContentProvider } from './ZAppContent';
-import { ZKeyboardListener } from './ZKeyboardListener';
+import { ZHeaderConfigRegistrator } from './navigation/ZHeaderConfigRegistrator';
+import { ZHeaderConfig } from './navigation/ZHeaderConfig';
+import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
 
 export interface ZScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
     adjustPaddings?: 'all' | 'top' | 'bottom' | 'none';
 }
 
-class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider: ZAppContentProvider }> {
+export class ZScrollView extends React.Component<ZScrollViewProps> {
 
     private contentOffset = new Animated.Value(0);
     private contentOffsetEvent = Animated.event(
@@ -16,55 +17,37 @@ class ZScrollViewComponent extends React.Component<ZScrollViewProps & { provider
         { useNativeDriver: true }
     );
 
-    componentDidMount() {
-        if (this.props.syncWithBar !== false) {
-            this.props.provider.registerScroller(this.contentOffset);
-        }
-    }
-
     render() {
-        let { syncWithBar, provider, adjustPaddings, ...other } = this.props;
+        let { syncWithBar, adjustPaddings, ...other } = this.props;
         return (
-            <ZKeyboardListener>
-                {(height) => (
-                    <Animated.ScrollView
-                        {...other}
-                        style={[other.style, {
-                            // Work-around for freezing navive animation driver
-                            opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
-                            backgroundColor: '#fff'
-                        }]}
-                        onScroll={this.contentOffsetEvent}
-                        scrollEventThrottle={1}
-                        scrollIndicatorInsets={{
-                            bottom: provider.bottomScrollInset + height,
-                            top: provider.topContentInset
-                        }}
-                        contentContainerStyle={{
-                            paddingTop: provider.topContentInset,
-                            paddingBottom: provider.bottomContentInset
-                        }}
-                        keyboardDismissMode="interactive"
-                    >
-                        {/* {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'top') &&
-                            <View height={provider.topContentInset} />
-                        } */}
-
-                        {this.props.children}
-                        {/* {(!adjustPaddings || adjustPaddings === 'all' || adjustPaddings === 'bottom') &&
-                            <View height={provider.bottomContentInset + height} />
-                        } */}
-                    </Animated.ScrollView>
-                )}
-            </ZKeyboardListener>
+            <>
+                <ZHeaderConfigRegistrator config={new ZHeaderConfig({ contentOffset: this.contentOffset })} />
+                <ZSafeAreaContext.Consumer>
+                    {area => (
+                        <Animated.ScrollView
+                            {...other}
+                            style={[other.style, {
+                                // Work-around for freezing navive animation driver
+                                opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                                backgroundColor: '#fff'
+                            }]}
+                            onScroll={this.contentOffsetEvent}
+                            scrollEventThrottle={1}
+                            scrollIndicatorInsets={{
+                                bottom: area.bottom,
+                                top: area.top
+                            }}
+                            contentContainerStyle={{
+                                paddingTop: area.top,
+                                paddingBottom: area.bottom
+                            }}
+                            keyboardDismissMode="interactive"
+                        >
+                            {this.props.children}
+                        </Animated.ScrollView>
+                    )}
+                </ZSafeAreaContext.Consumer>
+            </>
         );
     }
 }
-
-export const ZScrollView = (props: ZScrollViewProps & { children?: any }) => {
-    return (
-        <ZAppContentContext.Consumer>
-            {(context) => <ZScrollViewComponent {...props} provider={context!!}>{props.children}</ZScrollViewComponent>}
-        </ZAppContentContext.Consumer>
-    );
-};

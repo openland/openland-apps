@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ZKeyboardAwareBar } from '../../../components/ZKeybardAwareBar';
+import { ZKeyboardAwareBar } from '../../../components/layout/ZKeybardAwareBar';
 import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
 
 let styles = StyleSheet.create({

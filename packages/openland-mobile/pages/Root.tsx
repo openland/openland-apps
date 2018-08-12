@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { AsyncStorage, View } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
-import { buildNativeClient, saveClient, getClient } from '../../utils/apolloClient';
+import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
-import { buildMessenger, setMessenger, getMessenger } from '../../utils/messenger';
-import { ZLoader } from '../../components/ZLoader';
+import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
+import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
-import { AppStyles } from '../../styles/AppStyles';
 import { backoff } from 'openland-y-utils/timer';
-import { AppStack, LoginStack } from '../../routes';
+import { AppStack, LoginStack } from '../routes';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { PushManager } from '../../components/PushManager';
+import { PushManager } from '../components/PushManager';
+import { ZSafeAreaProvider } from '../components/layout/ZSafeAreaContext';
+import { ZAppConfig } from '../components/ZAppConfig';
+import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
 
-export class LoginLoader extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
+export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
     constructor(props: NavigationInjectedProps) {
         super(props);
         this.state = {
@@ -59,14 +61,16 @@ export class LoginLoader extends React.Component<NavigationInjectedProps, { stat
             return <ZLoader appearance="large" />;
         } else if (this.state.state === 'app') {
             return (
-                <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
-                    <YApolloProvider client={getClient()}>
-                        <MessengerContext.Provider value={getMessenger()}>
-                            <PushManager client={getClient()} />
-                            <AppStack />
-                        </MessengerContext.Provider>
-                    </YApolloProvider>
-                </View>
+                <ZSafeAreaRoot>
+                    <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
+                        <YApolloProvider client={getClient()}>
+                            <MessengerContext.Provider value={getMessenger()}>
+                                <PushManager client={getClient()} />
+                                <AppStack />
+                            </MessengerContext.Provider>
+                        </YApolloProvider>
+                    </View>
+                </ZSafeAreaRoot>
             );
         } else if (this.state.state === 'auth') {
             return <LoginStack />;

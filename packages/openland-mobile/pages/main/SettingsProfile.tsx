@@ -18,7 +18,7 @@ import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { ZHeader } from '../../components/ZHeader';
 
 class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { loaded: boolean }> {
-    
+
     private ref = React.createRef<ZForm>();
 
     constructor(props: NavigationInjectedProps) {
@@ -38,7 +38,7 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
         return (
             <>
                 <ZHeader title="Edit profile" />
-                <ZHeaderButton navigation={this.props.navigation} title="Save" onPress={this.handleSave} />
+                <ZHeaderButton title="Save" onPress={this.handleSave} />
                 <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
                     {(save) => (
                         <ZQuery query={ProfileQuery} fetchPolicy="network-only">

@@ -14,12 +14,9 @@ import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChatChangeGroupTitleMutation } from 'openland-api';
 import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
+import { ZHeader } from '../../components/ZHeader';
 
 class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
-    static navigationOptions = {
-        title: 'Info',
-        headerAppearance: 'small-hidden'
-    };
 
     handleAddMember = () => {
         this.props.navigation.navigate('UserPicker');
@@ -27,74 +24,77 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
 
     render() {
         return (
-            <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.navigation.getParam('id') }}>
-                {(resp) => {
-                    if (resp.data.chat.__typename !== 'GroupConversation') {
-                        throw Error('');
-                    }
-                    return (
-                        <ZScrollView>
+            <>
+                <ZHeader title="Info" />
+                <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.navigation.getParam('id') }}>
+                    {(resp) => {
+                        if (resp.data.chat.__typename !== 'GroupConversation') {
+                            throw Error('');
+                        }
+                        return (
+                            <ZScrollView>
 
-                            <ZListItemHeader
-                                title={resp.data.chat.title}
-                                subtitle={resp.data.members.length + ' members'}
-                                photo={resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined}
-                                id={resp.data.chat.id}
-                            />
+                                <ZListItemHeader
+                                    title={resp.data.chat.title}
+                                    subtitle={resp.data.members.length + ' members'}
+                                    photo={resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined}
+                                    id={resp.data.chat.id}
+                                />
 
-                            <ZListItemGroup header={null}>
-                                <ZListItem appearance="action" text="Set group photo" />
-                                <YMutation mutation={ChatChangeGroupTitleMutation}>
-                                    {(save) => (
-                                        <ZListItem
-                                            appearance="action"
-                                            text="Change name"
-                                            onPress={() =>
-                                                Modals.showTextEdit(
-                                                    this.props.navigation,
-                                                    resp.data.chat.title,
-                                                    async (src) => await save({ variables: { name: src, conversationId: resp.data.chat.id } })
-                                                )
-                                            }
-                                        />
-                                    )}
-                                </YMutation>
-                                <ZListItem text="Notifications" toggle={true} />
-                            </ZListItemGroup>
+                                <ZListItemGroup header={null}>
+                                    <ZListItem appearance="action" text="Set group photo" />
+                                    <YMutation mutation={ChatChangeGroupTitleMutation}>
+                                        {(save) => (
+                                            <ZListItem
+                                                appearance="action"
+                                                text="Change name"
+                                                onPress={() =>
+                                                    Modals.showTextEdit(
+                                                        this.props.navigation,
+                                                        resp.data.chat.title,
+                                                        async (src) => await save({ variables: { name: src, conversationId: resp.data.chat.id } })
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </YMutation>
+                                    <ZListItem text="Notifications" toggle={true} />
+                                </ZListItemGroup>
 
-                            <ZListItemGroup header="Members">
-                                <YMutation mutation={ChatAddMemberMutation}>
-                                    {(add) => (
-                                        <ZListItem
-                                            appearance="action"
-                                            text="Add members"
-                                            onPress={() => {
-                                                Modals.showUserPicker(
-                                                    this.props.navigation,
-                                                    async (src) => await add({ variables: { userId: src, conversationId: resp.data.chat.id } })
-                                                );
-                                            }}
-                                        />
-                                    )}
-                                </YMutation>
-                                {resp.data.members.map((v) => (
-                                    <ZListItemBase key={v.user.id} separator={false} height={56} onPress={() => this.props.navigation.navigate('ProfileUser', { 'id': v.user.id })}>
-                                        <View paddingTop={12} paddingLeft={15} paddingRight={15}>
-                                            <ZAvatar size={32} src={v.user.picture} placeholderKey={v.user.id} placeholderTitle={v.user.name} />
-                                        </View>
-                                        <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
-                                            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.user.name}</Text>
-                                            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.role}</Text>
-                                        </View>
-                                    </ZListItemBase>
-                                ))}
-                            </ZListItemGroup>
-                        </ZScrollView>
-                    );
-                }}
-            </ZQuery>
+                                <ZListItemGroup header="Members">
+                                    <YMutation mutation={ChatAddMemberMutation}>
+                                        {(add) => (
+                                            <ZListItem
+                                                appearance="action"
+                                                text="Add members"
+                                                onPress={() => {
+                                                    Modals.showUserPicker(
+                                                        this.props.navigation,
+                                                        async (src) => await add({ variables: { userId: src, conversationId: resp.data.chat.id } })
+                                                    );
+                                                }}
+                                            />
+                                        )}
+                                    </YMutation>
+                                    {resp.data.members.map((v) => (
+                                        <ZListItemBase key={v.user.id} separator={false} height={56} onPress={() => this.props.navigation.navigate('ProfileUser', { 'id': v.user.id })}>
+                                            <View paddingTop={12} paddingLeft={15} paddingRight={15}>
+                                                <ZAvatar size={32} src={v.user.picture} placeholderKey={v.user.id} placeholderTitle={v.user.name} />
+                                            </View>
+                                            <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
+                                                <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.user.name}</Text>
+                                                <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.role}</Text>
+                                            </View>
+                                        </ZListItemBase>
+                                    ))}
+                                </ZListItemGroup>
+                            </ZScrollView>
+                        );
+                    }}
+                </ZQuery>
+            </>
         );
     }
 }
 
-export const ProfileGroup = withApp(ProfileGroupComponent, { navigationStyle: 'small' });
+export const ProfileGroup = withApp(ProfileGroupComponent, { navigationAppearance: 'small-hidden' });

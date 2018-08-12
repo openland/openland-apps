@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
-import { ZLoader } from '../../components/ZLoader';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogListComponent } from './components/DialogListComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
@@ -30,10 +29,6 @@ class ConversationsListener extends React.PureComponent<{ engine: MessengerEngin
 }
 class DialogsComponent extends React.Component<NavigationInjectedProps> {
 
-    static navigationOptions = {
-        title: 'Messages'
-    };
-
     handleItemClick = (item: ConversationShortFragment) => {
         this.props.navigation.navigate('Conversation', { id: item.id, title: item.title });
     }
@@ -42,8 +37,8 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
         return (
             <>
                 <ZHeader title="Messages" />
+                <ZHeaderButton title="New" onPress={() => this.props.navigation.navigate('ComposeModal')} />
                 <View style={{ height: '100%', backgroundColor: '#ffffff' }}>
-                    {/* <ZHeaderButton route="Dialogs" navigation={this.props.navigation} title="New" onPress={() => this.props.navigation.navigate('ComposeModal')} /> */}
                     <MessengerContext.Consumer>
                         {(messenger) => <ConversationsListener engine={messenger!!} onItemClick={this.handleItemClick} />}
                     </MessengerContext.Consumer>
@@ -53,4 +48,4 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const Dialogs = withApp(DialogsComponent, { noSafeWrapper: true, isInTab: true, navigationStyle: 'large' });
+export const Dialogs = withApp(DialogsComponent);

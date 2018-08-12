@@ -17,7 +17,6 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
-import { ZKeyboardAwareBar } from '../../components/ZKeybardAwareBar';
 import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -64,7 +63,7 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
     render() {
         return (
             <>
-                <ZHeaderButton navigation={this.props.navigator}>
+                <ZHeaderButton>
                     <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
                 </ZHeaderButton>
                 <View style={{ height: '100%', flexDirection: 'column' }}>
@@ -112,4 +111,4 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const Conversation = withApp(ConversationComponent, { noSafeWrapper: true });
+export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small' });

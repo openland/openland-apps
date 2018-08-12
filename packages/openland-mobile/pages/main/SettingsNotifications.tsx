@@ -19,7 +19,7 @@ class SettingsNotifciationsComponent extends React.Component<NavigationInjectedP
         return (
             <>
                 <ZHeader title="Notifications" />
-                <ZHeaderButton navigation={this.props.navigation} title="Save" onPress={this.handleSave} />
+                <ZHeaderButton title="Save" onPress={this.handleSave} />
                 <ZScrollView>
                     <ZListItemGroup header="On mobile">
                         <ZListItem text="All new messages" />
