@@ -37,6 +37,8 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             });
             if (!Array.isArray(r)) {
                 res = r;
+            } else {
+                res = r[0];
             }
         } catch (e) {
             // Ignore

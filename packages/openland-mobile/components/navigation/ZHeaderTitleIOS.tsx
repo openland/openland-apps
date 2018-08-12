@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, TextStyle, Dimensions } from 'react-native';
 import { ZHeaderTitleProps } from './ZHeaderTitle';
 import { ZAppConfig } from '../ZAppConfig';
+import { ZHeaderBackButton } from './ZHeaderBackButton';
 
 const styles = StyleSheet.create({
     title: {
@@ -184,7 +185,8 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
                 )}
 
                 <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100 }} onLayout={this.handleLeftLayout} pointerEvents="none">
-                    <View width={this.props.index === 0 ? 0 : ZAppConfig.navigationBarBackWidth} pointerEvents="none" />
+                    {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
+                    {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><ZHeaderBackButton /></View>}
                 </View>
                 <View key="button-padding" style={{ flexGrow: 1, flexBasis: 0 }} pointerEvents="box-none" />
                 <Animated.View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: opacity, alignItems: 'center', transform: [{ translateY: Animated.multiply(faraway, 10000) }] }} onLayout={this.handleRightLayout} pointerEvents="box-none">

@@ -49,7 +49,7 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
                     }
 
                     return (
-                        <TouchableOpacity disabled={!destPath} onPress={() => this.props.navigation.navigate(destPath!!, destPathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 0 }}>
+                        <TouchableOpacity disabled={!destPath} onPress={() => this.props.navigation.navigate(destPath!!, destPathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 0, marginLeft: 10 }}>
                             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                                 <XPAvatar
                                     src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}
