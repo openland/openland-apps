@@ -91,7 +91,7 @@ export class MessageView extends React.PureComponent<MessageViewProps> {
             let sender = (i === 0 && !isOut) ? this.props.message.sender : undefined;
             // let content = <MessageTextContent text="" />;
             if (m.message) {
-                content.push(<MessageTextView key={'msg-text-' + key} sender={sender} text={m.message} isOut={isOut} attach={attach} />);
+                content.push(<MessageTextView date={m.date} key={'msg-text-' + key} sender={sender} text={m.message} isOut={isOut} attach={attach} />);
             }
             if (isServerMessage(m)) {
                 if (m.file) {
@@ -109,7 +109,7 @@ export class MessageView extends React.PureComponent<MessageViewProps> {
             i++;
         }
         if (content.length === 0) {
-            content.push(<MessageTextView key={'msg-empty'} sender={!isOut ? this.props.message.sender : undefined} text="" isOut={isOut} />);
+            content.push(<MessageTextView date={this.props.message.messages[0].date} key={'msg-empty'} sender={!isOut ? this.props.message.sender : undefined} text="" isOut={isOut} />);
         }
         return (
             <View style={styles.container}>

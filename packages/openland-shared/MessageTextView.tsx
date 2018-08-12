@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { UserShortFragment } from 'openland-api/Types';
-import { Text, Linking, TextStyle, StyleSheet, Platform } from 'react-native';
+import { Text, Linking, TextStyle, StyleSheet, Platform, View } from 'react-native';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { XPBubbleView } from 'openland-xp/XPBubbleView';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
+import { formatTime } from './utils/formatTime';
 
 let styles = StyleSheet.create({
     sender: {
@@ -31,10 +32,19 @@ let styles = StyleSheet.create({
     } as TextStyle,
     messageOut: {
         color: '#fff',
+    } as TextStyle,
+    date: {
+        fontSize: 11,
+        color: '#8a8a8f',
+        opacity: 0.6
+    } as TextStyle,
+    dateOut: {
+        color: '#fff',
+        opacity: 0.7
     } as TextStyle
 });
 
-export class MessageTextView extends React.PureComponent<{ text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
+export class MessageTextView extends React.PureComponent<{ date: string, text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
     render() {
         let preprocessed = preprocessText(this.props.text);
         let parts = preprocessed.map((v, i) => {
@@ -56,7 +66,9 @@ export class MessageTextView extends React.PureComponent<{ text: string, sender?
                 {sender}
                 <Text key="message" style={[styles.message, this.props.isOut && styles.messageOut]}>
                     {parts}
+                    <Text>{' \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'}</Text>
                 </Text>
+                <View style={{ position: 'absolute', bottom: 0, right: -5 }}><Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text></View>
             </XPBubbleView>
         );
     }
