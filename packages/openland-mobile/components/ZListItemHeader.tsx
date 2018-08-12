@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { ZListItemBase } from './ZListItemBase';
-import { View, Text, StyleSheet, Platform, TextStyle, ViewStyle, TouchableHighlight } from 'react-native';
-import { ZAvatar } from './ZAvatar';
-import { isAndroid } from '../utils/isAndroid';
+import { View, Text, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
-import { ZListItem } from './ZListItem';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 
 const styles = StyleSheet.create({

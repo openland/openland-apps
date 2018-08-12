@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
-import { ZAvatar } from '../../../components/ZAvatar';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
-import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 

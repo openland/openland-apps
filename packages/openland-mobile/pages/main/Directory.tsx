@@ -6,9 +6,9 @@ import { ExploreOrganizationsQuery } from 'openland-api';
 import { View, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemBase } from '../../components/ZListItemBase';
-import { ZAvatar } from '../../components/ZAvatar';
 import { ZScrollView } from '../../components/ZScrollView';
 import { ZHeader } from '../../components/ZHeader';
+import { XPAvatar } from 'openland-xp/XPAvatar';
 
 class DirectoryComponent extends React.PureComponent<NavigationInjectedProps> {
     render() {
@@ -22,7 +22,7 @@ class DirectoryComponent extends React.PureComponent<NavigationInjectedProps> {
                                 {resp.data.items.edges.map((v) => (
                                     <ZListItemBase separator={false} height={56} key={v.node.id} onPress={() => this.props.navigation.navigate('ProfileOrganization', { id: v.node.id })}>
                                         <View paddingTop={12} paddingLeft={15} paddingRight={15}>
-                                            <ZAvatar size={32} src={v.node.photo} placeholderKey={v.node.id} placeholderTitle={v.node.name} />
+                                            <XPAvatar size={32} src={v.node.photo} placeholderKey={v.node.id} placeholderTitle={v.node.name} />
                                         </View>
                                         <View flexGrow={1} flexBasis={0} alignItems="center" flexDirection="row">
                                             <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.node.name}</Text>
