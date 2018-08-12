@@ -60,7 +60,7 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
             <>
                 <ZHeader title="Some title" />
                 <View style={{ width: '100%', height: '100%', flexDirection: 'column' }}>
-                    <ZImagePreview src="dc01c0c6-4b2a-4d84-88eb-9f5a1c0bc8da" srcWidth={200} srcHeight={200} />
+                    <ZImagePreview src="dc01c0c6-4b2a-4d84-88eb-9f5a1c0bc8da" srcWidth={1024} srcHeight={1024} />
                 </View>
             </>
         );

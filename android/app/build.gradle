@@ -105,8 +105,8 @@ android {
         applicationId "com.korshakov.testing.openland"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 21
-        versionName "1.0.19"
+        versionCode 22
+        versionName "1.0.20"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -146,6 +146,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-haptic-feedback')
     compile project(':react-native-gesture-handler')
     compile project(':lottie-react-native')
     compile project(':react-native-linear-gradient')
