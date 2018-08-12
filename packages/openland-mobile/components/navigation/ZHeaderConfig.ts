@@ -1,6 +1,6 @@
 import { Animated } from 'react-native';
 import { ZHeaderButtonDescription } from './ZHeaderButtonDescription';
-import { ZHeaderAppearance } from './ZHeaderAppearance';
+import { ZHeaderAppearance, ZHeaderHairline } from './ZHeaderAppearance';
 
 export class ZHeaderConfig {
 
@@ -10,14 +10,16 @@ export class ZHeaderConfig {
     readonly contentOffset?: Animated.Value;
     readonly buttons: ZHeaderButtonDescription[];
     readonly appearance?: ZHeaderAppearance;
+    readonly hairline?: ZHeaderHairline;
 
-    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: Animated.Value, buttons?: ZHeaderButtonDescription[], appearance?: ZHeaderAppearance }) {
+    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: Animated.Value, buttons?: ZHeaderButtonDescription[], appearance?: ZHeaderAppearance, hairline?: ZHeaderHairline }) {
         this.counter = args.counter || 0;
         this.buttons = args.buttons || [];
         this.title = args.title;
         this.titleView = args.titleView;
         this.contentOffset = args.contentOffset;
         this.appearance = args.appearance;
+        this.hairline = args.hairline;
     }
 }
 
@@ -26,9 +28,14 @@ export function mergeConfigs(configs: ZHeaderConfig[]) {
     let buttons: ZHeaderButtonDescription[] = [];
     let contentOffset: Animated.Value | undefined;
     let appearance: ZHeaderAppearance | undefined;
+    let titleView: any | undefined;
+    let hairline: ZHeaderHairline | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
+        }
+        if (c.titleView) {
+            titleView = c.titleView;
         }
         if (c.contentOffset) {
             contentOffset = c.contentOffset;
@@ -36,9 +43,12 @@ export function mergeConfigs(configs: ZHeaderConfig[]) {
         if (c.appearance) {
             appearance = c.appearance;
         }
+        if (c.hairline) {
+            hairline = c.hairline;
+        }
         buttons.push(...c.buttons);
     }
-    return new ZHeaderConfig({ title, buttons, contentOffset, appearance });
+    return new ZHeaderConfig({ title, buttons, contentOffset, appearance, titleView, hairline });
 }
 
 export function isConfigEquals(a: ZHeaderConfig, b: ZHeaderConfig) {
@@ -52,6 +62,12 @@ export function isConfigEquals(a: ZHeaderConfig, b: ZHeaderConfig) {
         return false;
     }
     if (a.appearance !== b.appearance) {
+        return false;
+    }
+    if (a.titleView !== b.titleView) {
+        return false;
+    }
+    if (a.hairline !== b.hairline) {
         return false;
     }
     if (a.buttons.length > 0) {

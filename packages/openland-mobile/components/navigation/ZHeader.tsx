@@ -16,14 +16,7 @@ interface Descriptor {
     progress: Animated.Value;
     position: Animated.Value;
     options: {
-        title?: string;
-        headerTitle?: any;
-        headerTitleOffset?: number;
-        // headerAppearance?: 'small' | 'small-hidden';
         headerHeight?: number;
-        headerHairline?: boolean;
-        androidHeaderAppearance?: 'initial';
-        isTab?: boolean;
     };
     navigation: NavigationScreenProp<NavigationParams>;
 }
@@ -262,8 +255,10 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             }
 
             let screenHailineOpacity: Animated.AnimatedInterpolation = titleOpacity; // ZAppConfig.enableBlur ? titleOpacity : zeroValue;
-            if (v.descriptor.options.headerHairline) {
+            if (config.hairline === 'always') {
                 screenHailineOpacity = oneValue;
+            } else if (config.hairline === 'hidden') {
+                screenHailineOpacity = zeroValue;
             }
 
             return {
@@ -322,22 +317,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let titles = [];
         let w = Dimensions.get('window').width;
         for (let s of offsets) {
-            let headerText = undefined;
-            let headerView = undefined;
-            if (s.config.title) {
-                headerText = s.config.title;
-            } else if (s.scene.descriptor.options.headerTitle) {
-                if (typeof s.scene.descriptor.options.headerTitle === 'string') {
-                    headerText = s.scene.descriptor.options.headerTitle;
-                } else {
-                    headerView = s.scene.descriptor.options.headerTitle;
-                }
-            } else if (s.scene.descriptor.options.title) {
-                headerText = s.scene.descriptor.options.title;
-            }
-
+            let headerText = s.config.title;
+            let headerView = s.config.titleView ? s.config.titleView() : undefined;
             let rightView = undefined;
-
             if (s.config.buttons.length > 0) {
                 rightView = <View>{s.config.buttons.map((v) => <View key={'button-' + v.id}>{v.render()}</View>)}</View>;
             }

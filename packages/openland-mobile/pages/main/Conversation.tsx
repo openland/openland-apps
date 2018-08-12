@@ -20,6 +20,7 @@ import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading
 import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { MessageInputBar } from './components/MessageInputBar';
+import { ZHeaderView } from '../../components/ZHeaderView';
 
 class ConversationRoot extends React.Component<{ navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
@@ -63,6 +64,9 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
     render() {
         return (
             <>
+                <ZHeaderView>
+                    <ChatHeader conversationId={this.engine.conversationId} navigation={this.props.navigator} />
+                </ZHeaderView>
                 <ZHeaderButton>
                     <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
                 </ZHeaderButton>
@@ -85,15 +89,6 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
 }
 
 class ConversationComponent extends React.Component<NavigationInjectedProps> {
-
-    static navigationOptions = (args: NavigationInjectedProps) => {
-        return {
-            headerTitle: <ChatHeader conversationId={args.navigation.getParam('id', 'Conversation')} navigation={args.navigation} />,
-            headerAppearance: 'small',
-            headerHairline: true
-        };
-    }
-
     render() {
         return (
             <>
