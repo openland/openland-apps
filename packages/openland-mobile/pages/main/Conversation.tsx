@@ -23,12 +23,13 @@ import { MessageFullFragment } from 'openland-api/Types';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ZHeaderView } from '../../components/ZHeaderView';
 import { Modals } from './modals/Modals';
+import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 
-class ConversationRoot extends React.Component<{ navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
+class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
-    constructor(props: { navigator: any, engine: MessengerEngine, conversationId: string }) {
+    constructor(props: { provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
         this.state = { text: '' };
@@ -61,14 +62,20 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
 
     handlePhotoPress = (message: MessageFullFragment, view?: View) => {
         view!!.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-            console.log({ x, y, width, height, pageX, pageY });
-            Modals.showPicturePreview(
-                this.props.navigator,
-                message.file!!,
-                message.fileMetadata!!.imageWidth!!,
-                message.fileMetadata!!.imageHeight!!,
-                { x: pageX, y: pageY, width, height }
-            );
+            this.props.provider.showModal({
+                uuid: message.file!!,
+                width: message.fileMetadata!!.imageWidth!!,
+                height: message.fileMetadata!!.imageHeight!!,
+                animate: { x: pageX, y: pageY, width, height, view: view!! }
+            });
+            // console.log({ x, y, width, height, pageX, pageY });
+            // Modals.showPicturePreview(
+            //     this.props.navigator,
+            //     message.file!!,
+            //     message.fileMetadata!!.imageWidth!!,
+            //     message.fileMetadata!!.imageHeight!!,
+            //     { x: pageX, y: pageY, width, height }
+            // );
         });
 
     }
@@ -105,13 +112,17 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
         return (
             <>
                 <View backgroundColor="#fff" flexDirection={'column'} height="100%" width="100%">
-                    <MessengerContext.Consumer>
-                        {messenger => {
-                            return (
-                                <ConversationRoot key={this.props.navigation.getParam('id')} navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
-                            );
-                        }}
-                    </MessengerContext.Consumer>
+                    <ZPictureModalContext.Consumer>
+                        {modal => (
+                            <MessengerContext.Consumer>
+                                {messenger => {
+                                    return (
+                                        <ConversationRoot provider={modal!!} key={this.props.navigation.getParam('id')} navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
+                                    );
+                                }}
+                            </MessengerContext.Consumer>
+                        )}
+                    </ZPictureModalContext.Consumer>
                 </View>
             </>
         );

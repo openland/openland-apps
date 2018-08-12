@@ -37,6 +37,7 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                         disabled={!this.props.onPress}
                         underlayColor="#000"
                         activeOpacity={0.8}
+                        delayPressIn={0}
                         style={{
                             borderRadius: 18, // Hack for MAC OS
                             borderTopLeftRadius: corners.topLeft,

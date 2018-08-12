@@ -18,7 +18,9 @@ export const Auth0Client = new Auth0({
 });
 
 // App Root
-import { AppRegistry } from 'react-native';
+import { AppRegistry, UIManager } from 'react-native';
+// Enable layout animations on Android
+if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
 // import Routes from './routes';
 import { withUpdateTracker } from './utils/UpdateTracker';
 import { withGlobalLoader } from './components/ZGlobalLoader';

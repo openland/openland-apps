@@ -14,6 +14,7 @@ import { PushManager } from '../components/PushManager';
 import { ZSafeAreaProvider } from '../components/layout/ZSafeAreaContext';
 import { ZAppConfig } from '../components/ZAppConfig';
 import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
+import { ZPictureModal } from '../components/modal/ZPictureModal';
 
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
     constructor(props: NavigationInjectedProps) {
@@ -64,10 +65,12 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                 <ZSafeAreaRoot>
                     <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
                         <YApolloProvider client={getClient()}>
-                            <MessengerContext.Provider value={getMessenger()}>
-                                <PushManager client={getClient()} />
-                                <AppStack />
-                            </MessengerContext.Provider>
+                            <ZPictureModal>
+                                <MessengerContext.Provider value={getMessenger()}>
+                                    <PushManager client={getClient()} />
+                                    <AppStack />
+                                </MessengerContext.Provider>
+                            </ZPictureModal>
                         </YApolloProvider>
                     </View>
                 </ZSafeAreaRoot>

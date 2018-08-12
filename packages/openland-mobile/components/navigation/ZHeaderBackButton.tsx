@@ -33,13 +33,13 @@ let image = isAndroid ?
         />
     );
 
-export class ZHeaderBackButton extends React.PureComponent<{ onPress?: () => void }> {
+export class ZHeaderBackButton extends React.PureComponent<{ inverted?: boolean, onPress?: () => void }> {
     render() {
         return (
             <ZTouchable onPress={this.props.onPress} style={{ margin: isAndroid ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={isAndroid ? { top: 13, left: 13, bottom: 13, right: 13 } : undefined}>
                 <View style={{ backgroundColor: 'transparent', flexDirection: 'row' }}>
                     {image}
-                    {Platform.OS === 'ios' && <Text style={{height: 44, lineHeight: 44, marginLeft: 3, fontSize: 16, paddingRight: 10, color: '#4747ec'}}>Back</Text>}
+                    {Platform.OS === 'ios' && <Text style={{ height: 44, lineHeight: 44, marginLeft: 3, fontSize: 16, paddingRight: 10, color: this.props.inverted ? '#fff' : '#4747ec' }}>Back</Text>}
                 </View>
             </ZTouchable>
         );
