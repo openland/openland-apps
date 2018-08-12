@@ -133,7 +133,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
     onMessageSend() {
         if (this.listRef.current) {
             // this.listRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
-            this.listRef.current.scrollToIndex({ index: 0, animated: false });
+            this.listRef.current.scrollToIndex({ index: 0, animated: true });
         }
     }
 
