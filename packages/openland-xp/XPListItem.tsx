@@ -33,12 +33,7 @@ export class XPListItem extends React.Component<XPListItemProps, { pressed: bool
 
     private handlePress = () => {
         if (this.props.onPress) {
-            let p = this.props.onPress;
-            if (Platform.OS === 'android') {
-                window.setTimeout(() => { p(); });
-            } else {
-                p();
-            }
+            this.props.onPress();
         }
     }
 
