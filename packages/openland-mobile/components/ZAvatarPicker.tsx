@@ -28,57 +28,62 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
 
     private currentIteration = 0;
     private handlePicker = async () => {
-        let res: PickerImage | null = null;
         try {
-            let r = await ImagePicker.openPicker({
-                width: 1024,
-                height: 1024,
-                cropping: true
-            });
-            if (!Array.isArray(r)) {
-                res = r;
-            } else {
-                res = r[0];
+            let res: PickerImage | null = null;
+            try {
+                let r = await ImagePicker.openPicker({
+                    width: 1024,
+                    height: 1024,
+                    cropping: true
+                });
+                if (!Array.isArray(r)) {
+                    res = r;
+                } else {
+                    res = r[0];
+                }
+                console.log(r);
+            } catch (e) {
+                console.log(e);
+                // Ignore
+            }
+            if (res) {
+                this.setState({ file: res.path, loading: true });
+                let up = ++this.currentIteration;
+                let uploading = new UploadCareDirectUploading('photo.jpg', res.path);
+                uploading.watch((v) => {
+                    if (up === this.currentIteration) {
+                        if (v.status === UploadStatus.COMPLETED) {
+                            if (this.props.onChanged) {
+                                this.props.onChanged({
+                                    uuid: v.uuid!!,
+                                    crop: {
+                                        x: 0,
+                                        y: 0,
+                                        w: res!!.width,
+                                        h: res!!.height
+                                    }
+                                });
+                            }
+                            if (this.props.valueStoreKey || this.props.field) {
+                                this.props.store!!.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), {
+                                    uuid: v.uuid!!,
+                                    crop: {
+                                        x: 0,
+                                        y: 0,
+                                        w: res!!.width,
+                                        h: res!!.height
+                                    }
+                                });
+                            }
+                            this.setState({ loading: false });
+                        } else if (v.status === UploadStatus.FAILED) {
+                            this.setState({ file: undefined, loading: false });
+                        }
+                    }
+                });
             }
         } catch (e) {
-            // Ignore
-        }
-        if (res) {
-            let source = (res as any).sourceURL as string;
-            this.setState({ file: res.path, loading: true });
-            let up = ++this.currentIteration;
-            let uploading = new UploadCareDirectUploading('photo.jpg', source);
-            uploading.watch((v) => {
-                if (up === this.currentIteration) {
-                    if (v.status === UploadStatus.COMPLETED) {
-                        if (this.props.onChanged) {
-                            this.props.onChanged({
-                                uuid: v.uuid!!,
-                                crop: {
-                                    x: res!!.cropRect!!.x,
-                                    y: res!!.cropRect!!.y,
-                                    w: res!!.cropRect!!.width,
-                                    h: res!!.cropRect!!.height
-                                }
-                            });
-                        }
-                        if (this.props.valueStoreKey || this.props.field) {
-                            this.props.store!!.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), {
-                                uuid: v.uuid!!,
-                                crop: {
-                                    x: res!!.cropRect!!.x,
-                                    y: res!!.cropRect!!.y,
-                                    w: res!!.cropRect!!.width,
-                                    h: res!!.cropRect!!.height
-                                }
-                            });
-                        }
-                        this.setState({ loading: false });
-                    } else if (v.status === UploadStatus.FAILED) {
-                        this.setState({ file: undefined, loading: false });
-                    }
-                }
-            });
+            console.log(e);
         }
     }
 
