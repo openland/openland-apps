@@ -120,9 +120,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
     }
 
     render() {
-
-        console.log(this.props);
-
         // Build Offsets
         let offsets = this.props.scenes.map((v) => {
 
