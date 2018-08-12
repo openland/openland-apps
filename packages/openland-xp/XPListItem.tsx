@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableHighlight, View, Platform, TouchableWithoutFeedback, StyleProp, ViewStyle, TouchableNativeFeedback } from 'react-native';
 import { XPStyles } from './XPStyles';
+import { RectButton } from 'react-native-gesture-handler';
 
 export interface XPListItemProps {
     selected?: boolean;
@@ -34,7 +35,7 @@ export class XPListItem extends React.Component<XPListItemProps, { pressed: bool
         if (this.props.onPress) {
             let p = this.props.onPress;
             if (Platform.OS === 'android') {
-                window.setTimeout(() => {  p(); });
+                window.setTimeout(() => { p(); });
             } else {
                 p();
             }
@@ -68,21 +69,30 @@ export class XPListItem extends React.Component<XPListItemProps, { pressed: bool
                 </TouchableWithoutFeedback>
             );
         }
-        if (Platform.OS === 'android') {
-            return (
-                <TouchableNativeFeedback useForeground={true} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress} delayPressIn={0}>
-                    <View style={[{ flexDirection: 'row' }, this.props.style]}>
-                        {this.props.children}
-                    </View>
-                </TouchableNativeFeedback>
-            );
-        }
+
+        // if (Platform.OS === 'android') {
+        //     return (
+        //         <RectButton onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+        //             <View style={[{ flexDirection: 'row' }, this.props.style]}>
+        //                 {this.props.children}
+        //             </View>
+        //         </RectButton>
+        //     );
+        // }
+        // return (
+        //     <TouchableHighlight onPress={this.handlePress} underlayColor={XPStyles.colors.selectedListItem} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress} delayPressIn={0}>
+        //         <View style={[{ flexDirection: 'row' }, this.props.style]}>
+        //             {this.props.children}
+        //         </View>
+        //     </TouchableHighlight>
+        // );
+
         return (
-            <TouchableHighlight onPress={this.handlePress} underlayColor={XPStyles.colors.selectedListItem} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress} delayPressIn={0}>
+            <RectButton onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} enabled={!!this.props.onPress}>
                 <View style={[{ flexDirection: 'row' }, this.props.style]}>
                     {this.props.children}
                 </View>
-            </TouchableHighlight>
+            </RectButton>
         );
     }
 }

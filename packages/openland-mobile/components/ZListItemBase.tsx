@@ -4,6 +4,7 @@ import { AppStyles } from '../styles/AppStyles';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { isAndroid } from '../utils/isAndroid';
 import { XPStyles } from 'openland-xp/XPStyles';
+import { RectButton } from 'react-native-gesture-handler';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
@@ -29,7 +30,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
     render() {
         let height = this.props.height === null ? undefined : (this.props.height ? this.props.height : 44);
         return (
-            <TouchableHighlight onPress={this.handlePress} underlayColor={XPStyles.colors.selectedListItem} style={{ backgroundColor: this.props.backgroundColor }} disabled={!this.props.onPress && !this.props.path} delayPressIn={0}>
+            <RectButton onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} enabled={!!this.props.onPress || !!this.props.path}>
                 <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
                     <View style={{ height: height, flexDirection: 'row' }}>
                         <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
@@ -39,7 +40,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
                     </View>
                     {this.props.separator !== false && <View style={{ backgroundColor: AppStyles.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
                 </View>
-            </TouchableHighlight>
+            </RectButton>
         );
     }
 }

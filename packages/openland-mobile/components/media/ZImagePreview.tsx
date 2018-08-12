@@ -161,6 +161,7 @@ export class ZImagePreview extends React.PureComponent<{ src: string, srcWidth: 
                                         onHandlerStateChange={this._onPinchHandlerStateChange}
                                     >
                                         <Animated.View
+                                            collapsable={false}
                                             style={{
                                                 width: '100%',
                                                 height: '100%',
