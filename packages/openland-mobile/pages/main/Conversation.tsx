@@ -9,6 +9,7 @@ import {
     Image,
     TouchableOpacity,
     Platform,
+    UIManager,
 } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
@@ -58,8 +59,18 @@ class ConversationRoot extends React.Component<{ navigator: any, engine: Messeng
         this.props.navigator.navigate('ProfileUser', { 'id': userId });
     }
 
-    handlePhotoPress = (message: MessageFullFragment) => {
-        Modals.showPicturePreview(this.props.navigator, message.file!!, message.fileMetadata!!.imageWidth!!, message.fileMetadata!!.imageHeight!!);
+    handlePhotoPress = (message: MessageFullFragment, view?: View) => {
+        view!!.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+            console.log({ x, y, width, height, pageX, pageY });
+            Modals.showPicturePreview(
+                this.props.navigator,
+                message.file!!,
+                message.fileMetadata!!.imageWidth!!,
+                message.fileMetadata!!.imageHeight!!,
+                { x: pageX, y: pageY, width, height }
+            );
+        });
+
     }
 
     render() {

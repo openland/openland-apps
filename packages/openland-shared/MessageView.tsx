@@ -53,7 +53,7 @@ let styles = StyleSheet.create({
 
 export interface MessageViewProps {
     onAvatarPress?: (userId: string) => void;
-    onPhotoPress?: (message: MessageFullFragment) => void;
+    onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
     message: MessageGroup;
     engine: ConversationEngine;
 }
@@ -65,9 +65,9 @@ export class MessageView extends React.PureComponent<MessageViewProps> {
         }
     }
 
-    hanlePhotoPress = (message: MessageFullFragment) => {
+    hanlePhotoPress = (message: MessageFullFragment, view?: View) => {
         if (this.props.onPhotoPress) {
-            this.props.onPhotoPress(message);
+            this.props.onPhotoPress(message, view);
         }
     }
 

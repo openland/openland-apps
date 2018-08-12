@@ -1,4 +1,4 @@
-import { Platform, Dimensions } from 'react-native';
+import { Platform, Dimensions, Animated, Easing } from 'react-native';
 import { createStackNavigator, NavigationRouteConfigMap, NavigationSceneRendererProps, NavigationTransitionProps } from 'react-navigation';
 import { ZHeader } from './navigation/ZHeader';
 
@@ -81,23 +81,46 @@ const androidInterpolator = (props: NavigationSceneRendererProps) => {
     };
 };
 
-export function createZStackNavigator(routes: NavigationRouteConfigMap) {
+export function createZStackNavigator(routes: NavigationRouteConfigMap, modal?: boolean) {
     return createStackNavigator(routes, {
         navigationOptions: {
             header: ZHeader,
             gesturesEnabled: true,
             gestureResponseDistance: {
                 horizontal: Dimensions.get('window').width
-            }
+            },
         },
         headerMode: 'float',
         transitionConfig: (transitionProps: NavigationTransitionProps, prevTransitionProps: NavigationTransitionProps, isModal: boolean) => {
+            if (modal) {
+                return ({
+                    cardStyle: {
+                        backgroundColor: '#000000',
+                    },
+                    containerStyle: {
+                        backgroundColor: '#000000'
+                    },
+                    transitionSpec: {
+                        duration: 0,
+                        timing: Animated.timing,
+                        easing: Easing.step0,
+                    }
+                });
+            }
             if (Platform.OS === 'android') {
                 return {
+
                     screenInterpolator: androidInterpolator
                 };
             }
-            return {};
+            return {
+                cardStyle: {
+                    backgroundColor: '#000000',
+                },
+                containerStyle: {
+                    backgroundColor: '#000000'
+                },
+            };
         },
     });
 }

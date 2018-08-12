@@ -16,12 +16,13 @@ import { UserPicker } from './pages/main/modals/UserPicker';
 import { TextEditModal } from './pages/main/modals/TextEditModal';
 import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
+import { Animated, Easing } from 'react-native';
 
 //
 // App Routes
 //
 
-export const AppStack = createZStackNavigator({
+export const MainStack = createZStackNavigator({
   Home: Home,
   Conversation: Conversation,
   ProfileUser: ProfileUser,
@@ -29,19 +30,49 @@ export const AppStack = createZStackNavigator({
   ProfileGroup: ProfileGroup,
   SettingsProfile: SettingsProfile,
   SettingsNotifications: SettingsNotifications,
-  PicturePreview: PicturePreview,
 
   // Modals
-
   UserPicker: UserPicker,
   TextEditModal: TextEditModal,
   ComposeModal: ComposeModal,
-  
+
   DevTypography: Typography,
   DevComponents: Components,
   DevNavigation: Navigation,
   DevLoader: Loader,
 });
+
+export const PreviewStack = createZStackNavigator(
+  {
+    PicturePreviewRoot: PicturePreview
+  },
+  true);
+
+export const AppStack = createStackNavigator(
+  {
+    Main: MainStack,
+    PicturePreview: PreviewStack,
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+    transitionConfig: () => {
+      return ({
+        cardStyle: {
+          backgroundColor: 'transparent',
+        },
+        containerStyle: {
+          backgroundColor: 'transparent'
+        },
+        transitionSpec: {
+          duration: 0,
+          timing: Animated.timing,
+          easing: Easing.step0,
+        }
+      });
+    }
+  }
+);
 
 //
 // Authentication Routes

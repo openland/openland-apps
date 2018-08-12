@@ -103,6 +103,7 @@
 		"react-native-keyboard-tracking-view": "^5.4.4",
 		"react-native-lightbox": "^0.7.0",
 		"react-native-linear-gradient": "2.4.0",
+		"react-native-modal": "^6.5.0",
 		"react-native-modalbox": "^1.6.0",
 		"react-native-push-notification": "3.1.1",
 		"react-native-search-bar": "^3.4.2",
@@ -124,7 +125,7 @@
 		"url": "^0.11.0",
 		"url-parse": "^1.4.1",
 		"uuid": "^3.3.2",
-		"yarn": "^1.7.0"
+		"yarn": "^1.9.4"
 	},
 	"devDependencies": {
 		"@babel/preset-typescript": "7.0.0-beta.42",

@@ -7,7 +7,7 @@ export const Modals = {
     showUserPicker(navigator: NavigationScreenProp<NavigationState, any>, action: (value: string) => any) {
         navigator.navigate('UserPicker', { 'action': action });
     },
-    showPicturePreview(navigator: NavigationScreenProp<NavigationState, any>, uuid: string, width: number, height: number) {
-        navigator.navigate('PicturePreview', { uuid, width, height });
+    showPicturePreview(navigator: NavigationScreenProp<NavigationState, any>, uuid: string, width: number, height: number, animate?: { x: number, y: number, width: number, height: number }) {
+        navigator.navigate('PicturePreview', { uuid, width, height, animate });
     }
 };

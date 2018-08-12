@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { XPBubbleView, resolveCorners } from 'openland-xp/XPBubbleView';
-import { TouchableOpacity, View, Platform, Dimensions, TouchableHighlight } from 'react-native';
+import { View, Platform, Dimensions, TouchableHighlight } from 'react-native';
 import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
 
-export class MessageImageView extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean, attach?: 'bottom' | 'top' | 'both', message: MessageFullFragment, onPress?: (message: MessageFullFragment) => void }> {
+export class MessageImageView extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean, attach?: 'bottom' | 'top' | 'both', message: MessageFullFragment, onPress?: (message: MessageFullFragment, view?: View) => void }> {
+
+    ref = React.createRef<View>();
 
     handleTouch = () => {
         if (this.props.onPress) {
-            this.props.onPress(this.props.message);
+            this.props.onPress(this.props.message, this.ref.current ? this.ref.current : undefined);
         }
     }
 
@@ -28,6 +30,7 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                 <View
                     width={layout.width}
                     height={layout.height}
+                    ref={this.ref}
                 >
                     <TouchableHighlight
                         onPress={this.handleTouch}

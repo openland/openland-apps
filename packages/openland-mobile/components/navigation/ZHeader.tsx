@@ -121,6 +121,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
     render() {
 
+        console.log(this.props);
+
         // Build Offsets
         let offsets = this.props.scenes.map((v) => {
 
@@ -482,24 +484,36 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 /> */}
 
                 {/* Background */}
-                <ViewOverflowAnimated
+                <ViewOverflow
                     style={{
                         position: 'absolute',
                         left: 0,
                         right: 0,
                         top: 0,
-                        transform: [{ translateY: backgroundOffset }],
-                        height: BACKGROUND_SIZE,
-                        zIndex: 1
+                        height: Dimensions.get('window').height,
+                        overflow: 'hidden'
                     }}
+                    pointerEvents="box-none"
                 >
-                    <ZBlurredView
+                    <ViewOverflowAnimated
                         style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            transform: [{ translateY: backgroundOffset }],
                             height: BACKGROUND_SIZE,
-                            width: '100%',
+                            zIndex: 1
                         }}
-                    />
-                </ViewOverflowAnimated>
+                    >
+                        <ZBlurredView
+                            style={{
+                                height: BACKGROUND_SIZE,
+                                width: '100%',
+                            }}
+                        />
+                    </ViewOverflowAnimated>
+                </ViewOverflow>
 
                 {/* Hairline */}
                 <ViewOverflowAnimated
