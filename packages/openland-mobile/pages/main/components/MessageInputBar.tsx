@@ -22,9 +22,11 @@ const icon = require('assets/ic-send.png');
 const iconActive = require('assets/ic-send-active.png');
 
 export interface MessageInputBarProps {
-    onAttachPress: () => void;
+    onAttachPress?: () => void;
     onSubmitPress: () => void;
     onChangeText: (value: string) => void;
+    enabled?: boolean;
+    attachesEnabled?: boolean;
     text: string;
 }
 
@@ -34,11 +36,16 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         return (
             <ZKeyboardAwareBar>
                 <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
-                    <TouchableOpacity onPress={this.props.onAttachPress}>
-                        <View width={52} height={33} alignItems="center" justifyContent="center">
-                            <Image source={iconAttach} style={{ width: 22, height: 21 }} />
-                        </View>
-                    </TouchableOpacity>
+                    {this.props.attachesEnabled !== false && (
+                        <TouchableOpacity onPress={this.props.onAttachPress}>
+                            <View width={52} height={33} alignItems="center" justifyContent="center">
+                                <Image source={iconAttach} style={{ width: 22, height: 21 }} />
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    {this.props.attachesEnabled === false && (
+                        <View width={15} />
+                    )}
                     <TextInput
                         flexGrow={1}
                         flexBasis={0}
@@ -48,6 +55,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         value={this.props.text}
                         onSubmitEditing={this.props.onSubmitPress}
                         style={styles.textInput}
+                        editable={this.props.enabled !== false}
                     />
                     <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
                         <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>

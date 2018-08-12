@@ -3,9 +3,11 @@ import { ScrollView, View, Text, TextInput, Dimensions, NativeSyntheticEvent, Te
 import { AppStyles } from '../styles/AppStyles';
 
 export interface ZTagViewProps {
+    title?: string;
     items: { id: string, text: string }[];
     onChange: (query: string) => void;
     onRemoved: (id: string) => void;
+    autoFocus?: boolean;
 }
 
 export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: string, query: string }> {
@@ -36,6 +38,7 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                     this.ref.current.setNativeProps({ text: '' });
                 }
             }
+            this.props.onChange('');
         }
     }
 
@@ -91,9 +94,12 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                 <View style={{ paddingHorizontal: 15, paddingVertical: 8 }}>
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
                         <View flexWrap="wrap" flexDirection="row">
-                            <View style={{ height: 28, paddingRight: 5 }}>
-                                <Text style={{ lineHeight: 28, fontSize: 13, color: '#000' }}>To:</Text>
-                            </View>
+                            {this.props.title && (
+                                <View style={{ height: 28, paddingRight: 5 }}>
+                                    <Text style={{ lineHeight: 28, fontSize: 13, color: '#000' }}>{this.props.title}</Text>
+                                </View>
+                            )}
+
                             {this.props.items.map((v) => (
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
                                     <View paddingLeft={1} paddingRight={1} paddingTop={2} paddingBottom={2}>
@@ -111,6 +117,7 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                 value={this.state.query}
                                 opacity={this.state.focused ? 0 : 1}
                                 spellCheck={false}
+                                autoFocus={this.props.autoFocus}
                             />
                         </View>
                     </TouchableWithoutFeedback>

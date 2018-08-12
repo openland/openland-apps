@@ -96,7 +96,7 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
                     <MessengerContext.Consumer>
                         {messenger => {
                             return (
-                                <ConversationRoot navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
+                                <ConversationRoot key={this.props.navigation.getParam('id')} navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
                             );
                         }}
                     </MessengerContext.Consumer>

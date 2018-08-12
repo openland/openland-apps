@@ -27,6 +27,9 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
                     if (res.loading) {
                         return null;
                     }
+                    if (!res.data) {
+                        return null;
+                    }
 
                     // if (isAndroid) {
                     //     return null;
