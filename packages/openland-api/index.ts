@@ -41,6 +41,7 @@ export const GroupChatFullInfoQuery = typedQuery<Types.GroupChatFullInfoQuery, T
 export const SendMessageMutation = typedMutation<Types.SendMessageMutation, Types.SendMessageMutationVariables>(Chats.SendMessageMutation);
 export const ChatReadMutation = typedMutation<Types.ChatReadMutation, Types.ChatReadMutationVariables>(Chats.ChatReadMutation);
 export const ChatSearchForComposeQuery = typedQuery<Types.ChatSearchForComposeQuery, Types.ChatSearchForComposeQueryVariables>(Chats.ChatSearchForComposeQuery);
+export const ChatSearchForComposeMobileQuery = typedQuery<Types.ChatSearchForComposeMobileQuery, Types.ChatSearchForComposeMobileQueryVariables>(Chats.ChatSearchForComposeMobileQuery);
 export const ChatSearchGroupQuery = typedQuery<Types.ChatSearchGroupQuery, Types.ChatSearchGroupQueryVariables>(Chats.ChatSearchGroupQuery);
 export const ChatCreateGroupMutation = typedMutation<Types.ChatCreateGroupMutation, Types.ChatCreateGroupMutationVariables>(Chats.ChatCreateGroupMutation);
 export const SetTypingMutation = typedMutation<Types.SetTypingMutation, Types.SetTypingMutationVariables>(Chats.SetTypingMutation);

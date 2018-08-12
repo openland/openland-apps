@@ -23,29 +23,31 @@ export class ZScrollView extends React.Component<ZScrollViewProps> {
             <>
                 <ZHeaderConfigRegistrator config={new ZHeaderConfig({ contentOffset: this.contentOffset })} />
                 <ZSafeAreaContext.Consumer>
-                    {area => (
-                        <Animated.ScrollView
-                            {...other}
-                            style={[other.style, {
-                                // Work-around for freezing navive animation driver
-                                opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
-                                backgroundColor: '#fff'
-                            }]}
-                            onScroll={this.contentOffsetEvent}
-                            scrollEventThrottle={1}
-                            scrollIndicatorInsets={{
-                                bottom: area.bottom,
-                                top: area.top
-                            }}
-                            contentContainerStyle={{
-                                paddingTop: area.top,
-                                paddingBottom: area.bottom
-                            }}
-                            keyboardDismissMode="interactive"
-                        >
-                            {this.props.children}
-                        </Animated.ScrollView>
-                    )}
+                    {area => {
+                        return (
+                            <Animated.ScrollView
+                                keyboardDismissMode="interactive"
+                                {...other}
+                                style={[other.style, {
+                                    // Work-around for freezing navive animation driver
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                                    backgroundColor: '#fff'
+                                }]}
+                                onScroll={this.contentOffsetEvent}
+                                scrollEventThrottle={1}
+                                scrollIndicatorInsets={{
+                                    bottom: area.bottom,
+                                    top: area.top
+                                }}
+                                contentContainerStyle={{
+                                    paddingTop: area.top,
+                                    paddingBottom: area.bottom
+                                }}
+                            >
+                                {this.props.children}
+                            </Animated.ScrollView>
+                        );
+                    }}
                 </ZSafeAreaContext.Consumer>
             </>
         );

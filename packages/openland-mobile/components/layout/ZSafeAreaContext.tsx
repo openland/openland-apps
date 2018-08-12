@@ -11,7 +11,7 @@ export const ZSafeAreaProvider = (props: { top?: number, bottom?: number, childr
     return (
         <ZSafeAreaContext.Consumer>
             {area => (
-                <ZSafeAreaContext.Provider value={{ top: (props.top ? props.top : 0) + area.top, bottom: (props.bottom ? props.bottom : 0) + area.bottom }}>
+                <ZSafeAreaContext.Provider value={{ top: (props.top !== undefined ? props.top : 0) + area.top, bottom: (props.bottom !== undefined ? props.bottom : 0) + area.bottom }}>
                     {props.children}
                 </ZSafeAreaContext.Provider>
             )}

@@ -158,6 +158,21 @@ export const ChatSearchForComposeQuery = gql`
     }
 `;
 
+export const ChatSearchForComposeMobileQuery = gql`
+    query ChatSearchForComposeMobile($query: String!, $organizations: Boolean!) {
+        items: alphaChatsSearchForCompose(query: $query, organizations: $organizations) {
+            ... on User {
+                ...UserShort
+            }
+            ... on Organization {
+                ...OrganizationShort
+            }
+        }
+    }
+    ${UserShort}
+    ${OrganizationShort}
+`;
+
 export const ChatSearchGroupQuery = gql`
     query ChatSearchGroup($members: [ID!]!) {
         group: alphaChatSearch(members: $members) {

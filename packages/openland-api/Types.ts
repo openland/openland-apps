@@ -978,6 +978,29 @@ export interface ChatSearchForComposeQuery {
   ) >,
 };
 
+export interface ChatSearchForComposeMobileQueryVariables {
+  query: string,
+  organizations: boolean,
+};
+
+export interface ChatSearchForComposeMobileQuery {
+  items:  Array<( {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+    } | {
+      __typename: "Organization",
+      id: string,
+      name: string,
+      photo: string | null,
+    }
+  ) >,
+};
+
 export interface ChatSearchGroupQueryVariables {
   members: Array< string >,
 };
