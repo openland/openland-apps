@@ -232,6 +232,7 @@ export const ConversationRepository = {
                 topMessage: {
                     __typename: 'ConversationMessage',
                     id: messageId,
+                    unreadCount: unreadCount,
                     [ID_KEY]: defaultDataIdFromObject({ __typename: 'ConversationMessage', id: messageId })!!
                 }
             });
