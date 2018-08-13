@@ -25,14 +25,18 @@ import { ZHeaderView } from '../../components/ZHeaderView';
 import { Modals } from './modals/Modals';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 
-class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string }> {
+class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
     constructor(props: { provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
-        this.state = { text: '' };
+        this.state = { text: '', render: false };
+    }
+
+    componentDidMount() {
+        setTimeout(() => { this.setState({ render: true }); }, 10);
     }
 
     handleTextChange = (src: string) => {
@@ -81,6 +85,9 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     render() {
+        if (!this.state.render) {
+            return <View />;
+        }
         return (
             <>
                 <ZHeaderView>

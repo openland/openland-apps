@@ -162,28 +162,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 outputRange: [-1, 0, 1],
                 extrapolate: 'clamp'
             });
-            let interpolatedInveted = this.props.position.interpolate({
-                inputRange: [
-                    v.index - 1,
-                    v.index,
-                    v.index + 1],
-                outputRange: [1, 0, 1],
-                extrapolate: 'clamp'
-            });
-            let offsetInterporated = this.props.position.interpolate({
-                inputRange: [
-                    v.index - 1,
-                    v.index,
-                    v.index + 1],
-                outputRange: [SCREEN_WIDTH / 2, 1, -SCREEN_WIDTH / 2],
-                extrapolate: 'clamp'
-            });
 
             // Small title opacity
             let titleOpacity: Animated.AnimatedInterpolation = interpolated;
-            let largeTitleOpacity: Animated.AnimatedInterpolation = zeroValue;
-            let largeTitleOffset: Animated.AnimatedInterpolation = zeroValue;
-            let largeTitleOverscrol: Animated.AnimatedInterpolation = oneValue;
 
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
@@ -221,27 +202,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 // Background offset: Just subsctract BACKGROUND_SIZE from hairline offset
                 //
                 computedOffset = Animated.add(screenHairlineOffset, -BACKGROUND_SIZE);
-
-                //
-                // Scale title for overscroll on iOS
-                //
-                if (!isAndroid) {
-                    largeTitleOverscrol = invertedOffset.interpolate({
-                        inputRange: [0, 100],
-                        outputRange: [1, 1.1],
-                        extrapolate: 'clamp'
-                    });
-                }
-
-                // Calculate title offset
-                largeTitleOpacity = Animated.multiply(interpolated, invertedOffset.interpolate({
-                    inputRange: [-resolvedTitleSwitchTreshold, 0],
-                    outputRange: [0, 1],
-                    extrapolate: 'clamp'
-                }));
-
-                // largeTitleOffset = Animated.add(Animated.multiply(interpolatedInveted, -40), invertedOffset);
-                largeTitleOffset = invertedOffset;
             }
 
             if (contentOffset || (config.appearance !== 'small')) {
@@ -264,15 +224,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 backgroundOffset: Animated.multiply(computedOffset, interpolated),
                 position: interpolated,
                 position2: position,
-                titlePosition: isAndroid ? zeroValue : offsetInterporated,
-                titleOpacity: titleOpacity,
-                largeTitleOpacity: largeTitleOpacity,
-                largeTitleOffset: largeTitleOffset,
-                largeTitleFontSize: largeTitleOverscrol,
                 hairlineOffset: screenHairlineOffset,
                 hairlineOpacity: screenHailineOpacity,
-                resolvedNavigationBarHeight,
-                resolvedNavigationBarHeightLarge,
                 contentOffset: inputOffset,
                 scene: v,
                 config
@@ -313,7 +266,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         // Rendering Titles
         //
 
-        let titles = [];
+        let titles: any[] = [];
         let w = Dimensions.get('window').width;
         for (let s of offsets) {
             let headerText = s.config.title;
@@ -340,111 +293,6 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             );
 
             titles.push(header);
-
-            // let titleRender: any = undefined;
-            // let titleLarge: any = undefined;
-            // if (s.scene.descriptor.options.headerTitle) {
-            //     if (typeof s.scene.descriptor.options.headerTitle === 'string') {
-            //         titleRender = <Text style={styles.title}>{s.scene.descriptor.options.headerTitle}</Text>;
-            //         titleLarge = <Text style={styles.titleLarge}>{s.scene.descriptor.options.headerTitle}</Text>;
-            //     } else {
-            //         titleRender = <View>{s.scene.descriptor.options.headerTitle}</View>;
-            //     }
-            // } else if (s.scene.descriptor.options.title) {
-            //     titleRender = <Text style={styles.title}>{s.scene.descriptor.options.title}</Text>;
-            //     titleLarge = <Text style={styles.titleLarge}>{s.scene.descriptor.options.title}</Text>;
-            // }
-
-            // // console.log(s.descriptor.options.title);
-
-            // if (titleRender) {
-            //     titles.push(
-            //         <Animated.View
-            //             style={{
-            //                 ...(styles.titleContainer as any),
-            //                 opacity: s.titleOpacity,
-            //                 transform: [
-            //                     { translateX: s.titlePosition }
-            //                 ]
-            //             }}
-            //             key={'scene-' + titles.length}
-            //         >
-            //             {titleRender}
-            //         </Animated.View>
-            //     );
-            // }
-
-            // if (titleLarge) {
-            //     if (isAndroid) {
-            //         titles.push(
-            //             <Animated.View
-            //                 height={s.resolvedNavigationBarHeightLarge}
-            //                 style={{
-            //                     ...(styles.titleLargeContainer as any),
-            //                     opacity: s.largeTitleOpacity,
-            //                     transform: [
-            //                         {
-            //                             translateX: s.titlePosition
-            //                         }
-            //                     ]
-            //                 }}
-            //                 key={'scene-large-' + titles.length}
-            //                 pointerEvents="none"
-            //             >
-            //                 {titleLarge}
-            //             </Animated.View>
-            //         );
-            //     } else {
-            //         let titleOffset = Animated.add(
-            //             s.largeTitleOffset,
-            //             Animated.multiply(
-            //                 Animated.add(
-            //                     Animated.multiply(
-            //                         hairlineOffset,
-            //                         -1
-            //                     ),
-            //                     s.hairlineOffset
-            //                 ),
-            //                 -1)
-            //         );
-            //         titles.push(
-            //             <Animated.View
-            //                 height={s.resolvedNavigationBarHeightLarge}
-            //                 style={{
-            //                     ...(styles.titleLargeContainer as any),
-            //                     opacity: s.largeTitleOpacity,
-            //                     transform: [
-            //                         {
-            //                             translateX: s.titlePosition
-            //                         },
-            //                         {
-            //                             translateY: titleOffset // s.largeTitleOffset
-            //                         },
-            //                         {
-            //                             translateX: -SCREEN_WIDTH / 2 + 15
-            //                         },
-            //                         {
-            //                             translateY: 20
-            //                         },
-            //                         {
-            //                             scale: s.largeTitleFontSize
-            //                         },
-            //                         {
-            //                             translateY: -20
-            //                         },
-            //                         {
-            //                             translateX: SCREEN_WIDTH / 2 - 15
-            //                         },
-            //                     ]
-            //                 }}
-            //                 key={'scene-large-' + titles.length}
-            //                 pointerEvents="none"
-            //             >
-            //                 {titleLarge}
-            //             </Animated.View>
-            //         );
-            //     }
-            // }
         }
 
         //
