@@ -4,6 +4,7 @@ import { withApp } from '../../components/withApp';
 import { View, Animated, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ZHeader } from '../../components/ZHeader';
 import { ZImagePreview } from '../../components/media/ZImagePreview';
+import { ZAppConfig } from '../../components/ZAppConfig';
 
 export class NavigationComponent extends React.PureComponent<NavigationInjectedProps, { layout?: { width: number, height: number } }> {
 
@@ -26,14 +27,20 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
         return (
             <>
                 <ZHeader title="Some title" />
-                <View style={{ width: '100%', height: '100%', flexDirection: 'column' }} onLayout={this.handleLayout}>
-                    {this.state.layout && <ZImagePreview
-                        src="dc01c0c6-4b2a-4d84-88eb-9f5a1c0bc8da"
-                        srcWidth={1024}
-                        srcHeight={1024}
-                        width={this.state.layout.width}
-                        height={this.state.layout.height}
-                    />}
+                <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: ZAppConfig.bottomNavigationBarInset, flexDirection: 'column' }} onLayout={this.handleLayout}>
+                    <View
+                        width={300}
+                        height={300}
+                        backgroundColor="pink"
+                    >
+                        <ZImagePreview
+                            src="dc01c0c6-4b2a-4d84-88eb-9f5a1c0bc8da"
+                            srcWidth={1024}
+                            srcHeight={1024}
+                            width={300}
+                            height={300}
+                        />
+                    </View>
                 </View>
             </>
         );
