@@ -34,7 +34,6 @@ const ModalBodyContainer = Glamorous.div({
 
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
-
         let { 
             defaultData, 
             staticData, 

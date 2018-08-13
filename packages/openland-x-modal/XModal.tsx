@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
-import { XLink } from 'openland-x/XLink';
+import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XModalContext } from './XModalContext';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import CloseIcon from './ic-close.svg';
@@ -24,7 +24,7 @@ class ModalRender extends React.PureComponent<ModalRenderProps> {
 
         let width = 570;
         if (this.props.size === 'large') {
-            width = 940;
+            width = 870;
         } else if (this.props.size === 'small') {
             width = 460;
         }
@@ -97,7 +97,7 @@ export const XModalTitle = Glamorous.div({
 
 export const XModalHeader = Glamorous(XHorizontal)({
     paddingLeft: 24,
-    paddingRight: 18,
+    paddingRight: 24,
     height: 64
 });
 
@@ -123,7 +123,7 @@ export const XModalFooter = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
-export const XModalCloser = Glamorous(XLink)({
+const XModalCloserStyles = Glamorous(XLink)({
     width: 28,
     height: 28,
     display: 'flex',
@@ -139,20 +139,29 @@ export const XModalCloser = Glamorous(XLink)({
     }
 });
 
+export const XModalCloser = (props: XLinkProps) => (
+    <XModalCloserStyles {...props}>
+        <CloseIcon />
+    </XModalCloserStyles>
+);
+
 export const XModalBodyScrollableContent = Glamorous.div({
     maxHeight: '70vh',
     overflowY: 'scroll'
 });
 
-class ModalContentRender extends React.Component<{
+interface ModalContentRenderProps {
     title?: string;
+    titleChildren?: any;
     heading?: any;
     useTopCloser?: boolean;
     body?: any;
     footer?: any;
     customContent?: boolean;
     scrollableContent?: boolean;
-}> {
+}
+
+class ModalContentRender extends React.Component<ModalContentRenderProps> {
     render() {
         if (this.props.customContent) {
             return (
@@ -181,8 +190,11 @@ class ModalContentRender extends React.Component<{
                         alignItems="center"
                         justifyContent="space-between"
                     >
-                        <XModalTitle>{this.props.title}</XModalTitle>
-                        {this.props.useTopCloser && <XModalCloser autoClose={true}><CloseIcon/></XModalCloser>}
+                        <XHorizontal alignItems="center" separator={4}>
+                            <XModalTitle>{this.props.title}</XModalTitle>
+                            {this.props.titleChildren !== undefined && this.props.titleChildren}
+                        </XHorizontal>
+                        {this.props.useTopCloser && <XModalCloser autoClose={true} />}
                     </XModalHeader>
                 )}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
@@ -195,16 +207,7 @@ class ModalContentRender extends React.Component<{
     }
 }
 
-export interface XModalProps {
-
-    // Content
-    title?: string;
-    heading?: any;
-    body?: any;
-    footer?: any;
-    customContent?: boolean;
-    useTopCloser?: boolean;
-    scrollableContent?: boolean;
+export interface XModalProps extends ModalContentRenderProps {
 
     // Style
     size?: 'x-large' | 'large' | 'default' | 'small';
@@ -267,6 +270,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                         <ModalContentRender
                             scrollableContent={this.props.scrollableContent}
                             title={this.props.title}
+                            titleChildren={this.props.titleChildren}
                             useTopCloser={this.props.useTopCloser}
                             heading={this.props.heading}
                             footer={this.props.footer}
@@ -296,6 +300,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                                 <ModalContentRender
                                     scrollableContent={this.props.scrollableContent}
                                     title={this.props.title}
+                                    titleChildren={this.props.titleChildren}
                                     useTopCloser={this.props.useTopCloser}
                                     heading={this.props.heading}
                                     footer={this.props.footer}
@@ -322,6 +327,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     <ModalContentRender
                         scrollableContent={this.props.scrollableContent}
                         title={this.props.title}
+                        titleChildren={this.props.titleChildren}
                         useTopCloser={this.props.useTopCloser}
                         heading={this.props.heading}
                         footer={this.props.footer}

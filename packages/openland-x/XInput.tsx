@@ -1,8 +1,9 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XInputBasicProps, XInputBasic } from './basics/XInputBasic';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import Glamorous from 'glamorous';
+import { XFlexStyles, applyFlex } from './basics/Flex';
 
 export interface XInputProps extends XInputBasicProps {
     field?: string;
@@ -105,30 +106,33 @@ export class XInput extends React.PureComponent<XInputProps> {
     }
 }
 
-export const XInputGroup = Glamorous.div({
-    display: 'flex',
+export const XInputGroup = Glamorous.div<XFlexStyles>([
+    ({
+        display: 'flex',
 
-    '& > *': {
-        flex: 1,
-        zIndex: 1,
-        marginRight: -1,
+        '& > *': {
+            flex: 1,
+            zIndex: 1,
+            marginRight: -1,
 
-        '&:first-child': {
-            borderTopRightRadius: 0,
-            borderBottomRightRadius: 0,
-        },
+            '&:first-child': {
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+            },
 
-        '&:not(:first-child):not(:last-child)': {
-            borderRadius: 0
-        },
+            '&:not(:first-child):not(:last-child)': {
+                borderRadius: 0
+            },
 
-        '&:last-child': {
-            borderTopLeftRadius: 0,
-            borderBottomLeftRadius: 0,
-        },
+            '&:last-child': {
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+            },
 
-        '&:focus-within': {
-            zIndex: 2
+            '&:focus-within': {
+                zIndex: 2
+            }
         }
-    }
-});
+    }),
+    (props) => applyFlex(props),
+]);
