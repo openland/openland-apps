@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withChatsAll } from '../../../../api/withChatsAll';
+import { withChatsAll } from '../../../api/withChatsAll';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -7,7 +7,7 @@ import { TextChannel } from 'openland-text/TextChannel';
 import { XButton } from 'openland-x/XButton';
 
 const ChannelsItemWrapper = Glamorous.div<{ highlighted: boolean }>([
-    (props) => ({
+    ({
         display: 'flex',
         height: 40,
         flexDirection: 'row',
@@ -48,7 +48,7 @@ let ChannelsListTitle = Glamorous.div({
 });
 
 let ChannelsListItems = Glamorous.div({
-    
+
 });
 
 const ChannelsItemBox = Glamorous(XLink)({
@@ -96,38 +96,36 @@ export class ChannelsItem extends React.Component<XLinkProps & { unread?: number
     }
 }
 
-export const ChannelsList = withChatsAll((props) => {
-    function randomInteger (min: number, max: number) {
-        var rand = min - 0.5 + Math.random() * (max - min + 1);
-        rand = Math.round(rand);
-        return rand > 0 ? rand : undefined;
-    }
+function randomInteger(min: number, max: number) {
+    var rand = min - 0.5 + Math.random() * (max - min + 1);
+    rand = Math.round(rand);
+    return rand > 0 ? rand : undefined;
+}
 
-    return (
-        <ChannelsListWrapper>
-            <ChannelsListGroup>
-                <ChannelsListTitle>{TextChannel.myChannels}</ChannelsListTitle>
-                <ChannelsListItems>
-                    {props.data && props.data.chats && props.data.chats.conversations.map((v) => (
-                        <ChannelsItem
-                            path={'/channel/' + v.flexibleId}
-                            key={v.id}
-                            title={v.title}
-                            unread={randomInteger(-30, 30)}
-                        />
-                    ))}
-                </ChannelsListItems>
-            </ChannelsListGroup>
-            <ChannelsListGroup>
-                <ChannelsListTitle>{TextChannel.recommended}</ChannelsListTitle>
-                <ChannelsListItems>
-                    <ChannelsItem path={'/channel/1'} title="Foreign investment" />
-                    <ChannelsItem path={'/channel/2'} title="Data and analytics" unread={10}>
-                        <XButton size="r-tiny" style="primary-sky-blue" text={TextChannel.buttonRequestInvite} />
-                    </ChannelsItem>
-                    <ChannelsItem path={'/channel/3'} title="Request an intro" />
-                </ChannelsListItems>
-            </ChannelsListGroup>
-        </ChannelsListWrapper>
-    );
-});
+export const ChannelsList = withChatsAll((props) => (
+    <ChannelsListWrapper>
+        <ChannelsListGroup>
+            <ChannelsListTitle>{TextChannel.myChannels}</ChannelsListTitle>
+            <ChannelsListItems>
+                {props.data && props.data.chats && props.data.chats.conversations.map((v) => (
+                    <ChannelsItem
+                        path={'/channel/' + v.flexibleId}
+                        key={v.id}
+                        title={v.title}
+                        unread={randomInteger(-30, 30)}
+                    />
+                ))}
+            </ChannelsListItems>
+        </ChannelsListGroup>
+        <ChannelsListGroup>
+            <ChannelsListTitle>{TextChannel.recommended}</ChannelsListTitle>
+            <ChannelsListItems>
+                <ChannelsItem path={'/channel/1'} title="Foreign investment" />
+                <ChannelsItem path={'/channel/2'} title="Data and analytics" unread={10}>
+                    <XButton size="r-tiny" style="primary-sky-blue" text={TextChannel.buttonRequestInvite} />
+                </ChannelsItem>
+                <ChannelsItem path={'/channel/3'} title="Request an intro" />
+            </ChannelsListItems>
+        </ChannelsListGroup>
+    </ChannelsListWrapper>
+));

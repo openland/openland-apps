@@ -13,6 +13,7 @@ import { XFormSubmit, XFormSubmitProps } from 'openland-x-forms/XFormSubmit';
 export interface XModalFormProps extends XFormProps, XModalProps {
     submitProps?: XFormSubmitProps;
     customFooter?: any;
+    submitBtnText?: string;
 }
 
 const BodyPadding = Glamorous.div({
@@ -34,14 +35,14 @@ const ModalBodyContainer = Glamorous.div({
 
 export class XModalForm extends React.Component<XModalFormProps> {
     render() {
-        let { 
-            defaultData, 
-            staticData, 
-            defaultAction, 
-            defaultLayout, 
-            submitProps, 
+        let {
+            defaultData,
+            staticData,
+            defaultAction,
+            defaultLayout,
+            submitProps,
             scrollableContent,
-            ...other 
+            ...other
         } = this.props;
 
         let body = (
@@ -59,7 +60,13 @@ export class XModalForm extends React.Component<XModalFormProps> {
         let footer = this.props.customFooter === null ? null : this.props.customFooter || (
             <XModalFooter>
                 <XHorizontal>
-                    <XFormSubmit style="primary-sky-blue" text="Save" size="r-default" {...submitProps} keyDownSubmit={true} />
+                    <XFormSubmit
+                        style="primary-sky-blue"
+                        text={this.props.submitBtnText !== undefined ? this.props.submitBtnText : 'Save'}
+                        size="r-default"
+                        {...submitProps}
+                        keyDownSubmit={true}
+                    />
                     {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} />}
                 </XHorizontal>
             </XModalFooter>

@@ -11,6 +11,7 @@ import Lorem from 'react-lorem-component';
 
 import { BrowseChannelsModal } from '../../main/channel/components/browseChannelsModal';
 import { InviteMembersModal } from '../../main/channel/components/inviteMembersModal';
+import { CreateChannelModal } from '../../main/channel/components/createChannelModal';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -40,6 +41,9 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
 
                     <XTitle>invite members</XTitle>
                     <InviteMembersModal defaultAction={() => null} title="Invite members" target={<XButton text="Channels modal" />} />
+
+                    <XTitle>create channel</XTitle>
+                    <CreateChannelModal defaultAction={() => null} title="Create channel" target={<XButton text="Create channel modal" />} />
 
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
