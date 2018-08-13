@@ -3,6 +3,7 @@ package com.korshakov.testing.openland;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.korshakov.testing.openland.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
@@ -47,14 +48,14 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNReactNativeHapticFeedbackPackage(),
-            new RNGestureHandlerPackage(),
-            new LottiePackage(),
-            new LinearGradientPackage(),
-            new BlurViewPackage(),
-            new RNViewOverflowPackage(),
-            new PickerPackage(),
-            new FastImageViewPackage(),
+                    new RNReactNativeHapticFeedbackPackage(),
+                    new RNGestureHandlerPackage(),
+                    new LottiePackage(),
+                    new LinearGradientPackage(),
+                    new BlurViewPackage(),
+                    new RNViewOverflowPackage(),
+                    new PickerPackage(),
+                    new FastImageViewPackage(),
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
                     new ExtraDimensionsPackage(),
@@ -62,7 +63,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
                     new VectorIconsPackage(),
-                    new A0Auth0Package()
+                    new A0Auth0Package(),
+                    new Hacks()
             );
         }
 

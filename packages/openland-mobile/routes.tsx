@@ -17,6 +17,7 @@ import { TextEditModal } from './pages/main/modals/TextEditModal';
 import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { Animated, Easing } from 'react-native';
+import { Test } from './pages/main/Test';
 
 //
 // App Routes
@@ -62,7 +63,7 @@ export const AppStack = createStackNavigator(
           backgroundColor: 'transparent',
         },
         containerStyle: {
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
         },
         transitionSpec: {
           duration: 0,

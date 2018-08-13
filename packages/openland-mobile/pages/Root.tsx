@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Platform } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
@@ -15,7 +15,8 @@ import { ZSafeAreaProvider } from '../components/layout/ZSafeAreaContext';
 import { ZAppConfig } from '../components/ZAppConfig';
 import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
-
+import { Test } from './main/Test';
+import { NativeModules } from 'react-native';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
     constructor(props: NavigationInjectedProps) {
         super(props);
@@ -24,6 +25,13 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
         };
     }
     componentDidMount() {
+        if (Platform.OS === 'android') {
+            try {
+                NativeModules.OPLBackgroundHack.removeBackground();
+            } catch (e) {
+                console.log(e);
+            }
+        }
         (async () => {
             let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
             if (userToken) {
@@ -63,7 +71,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
         } else if (this.state.state === 'app') {
             return (
                 <ZSafeAreaRoot>
-                    <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
+                    <View style={{ width: '100%', height: '100%' }}>
                         <YApolloProvider client={getClient()}>
                             <ZPictureModal>
                                 <MessengerContext.Provider value={getMessenger()}>

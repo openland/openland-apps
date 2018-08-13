@@ -9,15 +9,19 @@ declare module 'rn-fetch-blob' {
 }
 
 declare module 'react-native-view-overflow' {
-    class ViewOverflow extends React.Component<any> {}
+    class ViewOverflow extends React.Component<any> { }
     export default ViewOverflow;
 }
 
 declare module 'react-native-super-ellipse-mask' {
-    class Mask extends React.Component<any> {}
+    class Mask extends React.Component<any> { }
     export default Mask;
 }
 
 declare module 'react-native-keyboard-tracking-view' {
-    export class KeyboardTrackingView extends React.Component<any> {}
+    export class KeyboardTrackingView extends React.Component<any> { }
+}
+
+declare module 'react-native-root-view-background' {
+    export function setRootViewBackgroundColor(color: string): void
 }

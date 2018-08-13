@@ -53,12 +53,13 @@ const androidInterpolator = (props: NavigationSceneRendererProps) => {
         return {
             opacity: focused ? 1 : 0,
             transform: [{ translateX: translate }, { translateY: translate }],
+            backgroundColor: 'transparent'
         };
     }
     const interpolate = getSceneIndicesForInterpolationInputRange(props);
 
     if (!interpolate) {
-        return { opacity: 0 };
+        return { opacity: 0, backgroundColor: 'transparent' };
     }
 
     const { first, last } = interpolate;
@@ -78,6 +79,7 @@ const androidInterpolator = (props: NavigationSceneRendererProps) => {
     return {
         opacity,
         transform: [{ translateX }, { translateY }],
+        backgroundColor: 'transparent'
     };
 };
 
@@ -95,10 +97,10 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap, modal?: 
             if (modal) {
                 return ({
                     cardStyle: {
-                        backgroundColor: '#000000',
+                        backgroundColor: 'transparent',
                     },
                     containerStyle: {
-                        backgroundColor: '#000000'
+                        backgroundColor: 'transparent'
                     },
                     transitionSpec: {
                         duration: 0,
@@ -109,16 +111,21 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap, modal?: 
             }
             if (Platform.OS === 'android') {
                 return {
-
+                    containerStyle: {
+                        backgroundColor: 'transparent'
+                    },
+                    cardStyle: {
+                        backgroundColor: 'transparent',
+                    },
                     screenInterpolator: androidInterpolator
                 };
             }
             return {
                 cardStyle: {
-                    backgroundColor: '#000000',
+                    backgroundColor: 'transparent',
                 },
                 containerStyle: {
-                    backgroundColor: '#000000'
+                    backgroundColor: 'transparent'
                 },
             };
         },

@@ -38,7 +38,7 @@ class DialogsComponent extends React.Component<NavigationInjectedProps> {
             <>
                 <ZHeader title="Messages" />
                 <ZHeaderButton title="New" onPress={() => this.props.navigation.navigate('ComposeModal')} />
-                <View style={{ height: '100%', backgroundColor: '#ffffff' }}>
+                <View style={{ height: '100%' }}>
                     <MessengerContext.Consumer>
                         {(messenger) => <ConversationsListener engine={messenger!!} onItemClick={this.handleItemClick} />}
                     </MessengerContext.Consumer>
