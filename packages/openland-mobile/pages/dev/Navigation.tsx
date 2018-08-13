@@ -34,7 +34,7 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
                         backgroundColor="pink"
                     >
                         <ZImagePreview
-                            src="dc01c0c6-4b2a-4d84-88eb-9f5a1c0bc8da"
+                            src="9da80a8f-0fe2-4d65-bda0-a4002bb0cd86"
                             srcWidth={1024}
                             srcHeight={1024}
                             width={300}

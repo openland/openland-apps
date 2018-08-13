@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, LayoutChangeEvent, Dimensions, Vibration } from 'react-native';
+import { View, Animated, Text } from 'react-native';
 import { XPImage } from 'openland-xp/XPImage';
 import {
     PanGestureHandler,
@@ -8,8 +8,6 @@ import {
     PanGestureHandlerStateChangeEvent,
     PinchGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import ViewOverflow from 'react-native-view-overflow';
 
 function animate(value: Animated.Value, toValue: number | Animated.Value, velocity: number) {
     Animated.spring(value, {
@@ -19,6 +17,11 @@ function animate(value: Animated.Value, toValue: number | Animated.Value, veloci
         toValue: toValue,
         useNativeDriver: true,
     }).start();
+    // Animated.timing(value, {
+    //     toValue: toValue,
+    //     duration: 300,
+    //     useNativeDriver: true
+    // }).start();
 }
 
 export interface ZImagePreviewProps {
@@ -29,10 +32,13 @@ export interface ZImagePreviewProps {
     height: number;
 }
 
-export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
+export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { debug: string }> {
 
     private _maxZoom = 2;
     private _minZoom = 1;
+
+    private _panMoverX = new Animated.Value(0);
+    private _panMoverY = new Animated.Value(0);
 
     private _panStarted = false;
     private _panCompleted = false;
@@ -51,9 +57,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
     private _pinchScaleLastTransform = 1;
     private _pinchScale = new Animated.Value(1);
     private _punchBaseScale = new Animated.Value(1);
-    private _scale = Animated.multiply(this._punchBaseScale, this._pinchScale);
 
-    private _pinchStartScale = 1;
     private _pinchX = new Animated.Value(0);
     private _pinchXRaw = 0;
     private _pinchY = new Animated.Value(0);
@@ -64,7 +68,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
     constructor(props: ZImagePreviewProps) {
         super(props);
 
-        this._minZoom = Math.max(this.props.srcHeight / this.props.srcHeight, this.props.srcWidth / this.props.srcWidth);
+        this._minZoom = Math.min(this.props.height / this.props.srcHeight, this.props.width / this.props.srcWidth);
         this._maxZoom = this._minZoom * 2;
         this._pinchScaleLast = this._minZoom;
         this._punchBaseScale.setValue(this._minZoom);
@@ -72,13 +76,14 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
         this._pinchY.setValue(0);
 
         this._panX.addListener((state) => {
-            // console.log('panx: ' + state.value);
             this._panXCached = state.value;
         });
         this._panY.addListener((state) => {
-            // console.log('pany: ' + state.value);
             this._panYCached = state.value;
         });
+        this.state = {
+            debug: ''
+        };
     }
 
     _onPandHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
@@ -90,61 +95,8 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
 
         // Handle completition
         if (event.nativeEvent.oldState === State.ACTIVE) {
-
-            // console.log(this._lastPan.x);
-            // console.log(event.nativeEvent.translationX);
-            // console.log(currentWidth);
-            // console.log(this._contentWidthRaw);
-
-            // const prepan = { x: this._lastPan.x + event.nativeEvent.translationX, y: this._lastPan.y + event.nativeEvent.translationY };
-
-            // let cx1 = this._contentWidthRaw / 2 + prepan.x - currentWidth / 2;
-            // let cx2 = this._contentWidthRaw / 2 + prepan.x + currentWidth / 2;
-
-            // console.log('cx');
-            // console.log(cx1);
-            // console.log(cx2);
-
-            // console.log(prepan.x + currentWidth);
-
-            // if (prepan.x + currentWidth < this._contentWidthRaw) {
-            //     console.log('right-x');
-            //     this._lastPan.x = this._contentWidthRaw - currentWidth;
-            //     this._panX.setOffset(this._contentWidthRaw - currentWidth);
-            //     this._panX.setValue(-this._lastPan.x + prepan.x);
-            //     animate(this._panX, 0, event.nativeEvent.velocityX);
-            // } else if (prepan.x >= 0) {
-            //     console.log('left-x');
-            //     console.log(prepan.x);
-            //     this._lastPan.x = 0;
-            //     this._panX.setOffset(0);
-            //     this._panX.setValue(prepan.x);
-            //     animate(this._panX, 0, event.nativeEvent.velocityX);
-            // } else {
-            //     console.log('center-x');
-            //     this._lastPan.x += event.nativeEvent.translationX;
-            //     this._panX.setOffset(this._lastPan.x);
-            //     this._panX.setValue(0);
-            // }
-
-            // if (cx1 >= 0) {
-            //     this._lastPan.x = 0;
-            //     this._panX.setOffset(0);
-            //     this._panX.setValue(cx1 * this._pinchScaleLast);
-            //     animate(this._panX, 0, event.nativeEvent.velocityX);
-            // } else {
-            //     this._lastPan.x += event.nativeEvent.translationX;
-            //     this._panX.setOffset(this._lastPan.x);
-            //     this._panX.setValue(0);
-            // }
-
             this._lastPan.x += event.nativeEvent.translationX;
             this._lastPan.y += event.nativeEvent.translationY;
-
-            // animate(this._panX, 0, event.nativeEvent.velocityX);
-            // animate(this._panY, 0, event.nativeEvent.velocityY);
-
-            console.log('pan release');
 
             this._panCompleted = true;
             if ((this._pinchStarted && this._pinchCompleted) || !this._pinchStarted) {
@@ -158,48 +110,20 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
     }
 
     _onPinchHandlerStateChange = (event: PinchGestureHandlerStateChangeEvent) => {
+
+        // Start Pinching
         if (event.nativeEvent.state === State.ACTIVE) {
-            // console.log('pinch active');
-            // console.log(this._lastPan.x + 'x' + this._lastPan.y);
-            this._pinchStartScale = this._pinchScaleLast;
             this._pinchXRaw = (event.nativeEvent.focalX - this.props.width / 2) - this._panXCached;
             this._pinchYRaw = (event.nativeEvent.focalY - this.props.height / 2) - this._panYCached;
             this._pinchX.setValue(this._pinchXRaw);
             this._pinchY.setValue(this._pinchYRaw);
             this._pinchStarted = true;
-            console.log('Pinch started in ' + this._pinchXRaw + 'x' + this._pinchYRaw);
-        } else if (event.nativeEvent.oldState === State.ACTIVE) {
+        }
 
-            // Persist and align zoom
+        // Handle completition
+        if (event.nativeEvent.oldState === State.ACTIVE) {
             this._pinchScaleLastTransform = event.nativeEvent.scale;
             this._pinchScaleLast = this._pinchScaleLast * event.nativeEvent.scale;
-            // let preScale = this._pinchScaleLast * event.nativeEvent.scale;
-            // if (preScale > this._maxZoom) {
-            //     this._pinchScaleLast = this._maxZoom;
-            //     this._punchBaseScale.setValue(this._pinchScaleLast);
-            //     this._pinchScale.setValue(preScale / this._pinchScaleLast);
-            //     animate(this._pinchScale, 1, event.nativeEvent.velocity);
-            //     ReactNativeHapticFeedback.trigger('impactLight', false);
-            // } else if (preScale < this._minZoom) {
-            //     this._pinchScaleLast = this._minZoom;
-            //     this._punchBaseScale.setValue(this._pinchScaleLast);
-            //     this._pinchScale.setValue(preScale / this._pinchScaleLast);
-            //     animate(this._pinchScale, 1, event.nativeEvent.velocity);
-            // } else {
-            //     this._pinchScaleLast = preScale;
-            //     this._punchBaseScale.setValue(this._pinchScaleLast);
-            //     this._pinchScale.setValue(1);
-            // }
-            // this._pinchScaleLast = preScale;
-
-            // Reset Offsets
-            // this._pinchX.setValue(0);
-            // this._pinchY.setValue(0);
-            // animate(this._pinchX, 0, event.nativeEvent.velocity);
-            // animate(this._pinchY, 0, event.nativeEvent.velocity);
-
-            console.log('zoom release');
-
             this._pinchCompleted = true;
             if ((this._panStarted && this._panCompleted) || !this._panStarted) {
                 this._panCompleted = false;
@@ -212,60 +136,101 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
     }
 
     _handleCompleted = () => {
-        console.log('completed');
 
         //
-        // Fix offset
+        // Correct Pan Offset according to our zoom operation
         //
 
-        // console.log(this._pinchXRaw * this._pinchStartScale);
-        // console.log(this._pinchYRaw * this._pinchStartScale);
-
-        let cx = this._lastPan.x / this._pinchScaleLast;
-        let cy = this._lastPan.y / this._pinchScaleLast;
-
-        let px = this._pinchXRaw * (1 - this._pinchScaleLastTransform); // (this._pinchStartScale - this._pinchScaleLast);
-        let py = this._pinchYRaw * (1 - this._pinchScaleLastTransform); // (this._pinchStartScale - this._pinchScaleLast);
-
-        console.log('Delta');
-        console.log('Scale1: ' + this._pinchScaleLastTransform);
-        console.log('Scale2: ' + this._pinchScaleLast);
-        console.log('Scale3: ' + this._pinchStartScale);
-        console.log('Center: (' + this._lastPan.x + ', ' + this._lastPan.y + ')');
-        console.log('Pinch: (' + this._pinchXRaw + ', ' + this._pinchYRaw + ')');
-        console.log('Predicted: (' + px + ', ' + py + ')');
-
-        // this._lastPan.x = -this._pinchScaleLastTransform * this._pinchXRaw / this._pinchScaleLast;
-        // this._lastPan.y = -this._pinchScaleLastTransform * this._pinchYRaw / this._pinchScaleLast;
+        let px = this._pinchXRaw * (1 - this._pinchScaleLastTransform);
+        let py = this._pinchYRaw * (1 - this._pinchScaleLastTransform);
         this._lastPan.x += px;
         this._lastPan.y += py;
+
+        //
+        // Commit Pan
+        //
+
+        //
+        // Commit Pinch
+        //
+
+        this._pinchX.setValue(0);
+        this._pinchY.setValue(0);
+        this._pinchXRaw = 0;
+        this._pinchYRaw = 0;
+        this._punchBaseScale.setValue(this._pinchScaleLast);
+        this._pinchScale.setValue(1);
+        this._pinchScaleLastTransform = 1;
+
+        //
+        // Fix zoom
+        //
+
+        // if (this._pinchScaleLast > this._maxZoom) {
+        //     let scale = this._pinchScaleLast / this._maxZoom;
+        //     console.log('fixed scale from: ' + this._pinchScaleLast);
+        //     console.log('fixed scale by: ' + scale);
+        //     console.log('fixed scale to: ' + this._maxZoom);
+
+        //     // let px2 = pinchX / this._pinchScaleLast;
+        //     // let py2 = pinchY * (1 - scale);
+        //     // console.log('px: (' + px2 + ', ' + py2 + ')');
+
+        //     this._punchBaseScale.setValue(this._maxZoom);
+        //     this._pinchScaleLast = this._maxZoom;
+
+        //     // this._lastPan.x += pinchX * (1 - scale);
+        //     // this._lastPan.y += pinchY * (1 - scale);
+
+        //     // this._panX.setOffset(this._lastPan.x);
+        //     // this._panX.setValue(px2);
+        //     // this._panXCached = this._lastPan.x;
+        //     // this._panY.setOffset(this._lastPan.y);
+        //     // this._panY.setValue(py2);
+        //     // this._panYCached = this._lastPan.y;
+
+        //     this._pinchScale.setValue(scale);
+        //     this._pinchX.setValue(pinchX);
+        //     this._pinchY.setValue(pinchY);
+
+        //     animate(this._pinchScale, 1, 0);
+        //     animate(this._pinchX, 0, 0);
+        //     animate(this._panY, 0, 0);
+        // }
+
+        //
+        // Fix paddings
+        //
+
+        // This calculations are verivied and correct
+        const containerWidth = this.props.width;
+        const containerHeight = this.props.height;
+        const visibleWidth = this.props.srcWidth * this._pinchScaleLast;
+        const visibleHeight = this.props.srcHeight * this._pinchScaleLast;
+        const visibleLeft = this._lastPan.x + containerWidth / 2 - visibleWidth / 2;
+        const visibleTop = this._lastPan.y + containerHeight / 2 - visibleHeight / 2;
+
+        // Animate out of bounds location
+        if (visibleLeft > 0) {
+            this._lastPan.x -= visibleLeft;
+            this._panMoverX.setOffset(0);
+            this._panMoverX.setValue(visibleLeft);
+            animate(this._panMoverX, 0, 0);
+        }
+        if (visibleTop > 0) {
+            this._lastPan.y -= visibleTop;
+            this._panMoverY.setOffset(0);
+            this._panMoverY.setValue(visibleTop);
+            animate(this._panMoverY, 0, 0);
+        }
+
+        // Commit pan
         this._panX.setOffset(this._lastPan.x);
         this._panX.setValue(0);
         this._panXCached = this._lastPan.x;
         this._panY.setOffset(this._lastPan.y);
         this._panY.setValue(0);
         this._panYCached = this._lastPan.y;
-
-        //
-        // Reset Zooming
-        //
-
-        animate(this._pinchX, 0, 0);
-        animate(this._pinchY, 0, 0);
-        // this._pinchX.setValue(0);
-        // this._pinchY.setValue(0);
-        // this._pinchXRaw = 0;
-        // this._pinchYRaw = 0;
-
-        this._punchBaseScale.setValue(this._pinchScaleLast);
-        this._pinchScale.setValue(1);
-        this._pinchStartScale = this._pinchScaleLast;
-        this._pinchScaleLastTransform = 1;
-
-        // let currentWidth = this.props.srcWidth * this._pinchScaleLast;
-        // let currentHeight = this.props.srcWidth * this._pinchScaleLast;
-        // console.log(currentWidth + 'x' + currentHeight);
-        // console.log('(' + this._lastPan.x + ',' + this._lastPan.y + ')');
     }
 
     render() {
@@ -309,10 +274,10 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
                                             height: this.props.srcHeight,
                                             transform: [
                                                 {
-                                                    translateX: this._panX
+                                                    translateX: Animated.add(this._panX, this._panMoverX)
                                                 },
                                                 {
-                                                    translateY: this._panY
+                                                    translateY: Animated.add(this._panY, this._panMoverY)
                                                 },
                                                 {
                                                     translateX: this._pinchX
@@ -341,29 +306,22 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
                                             height={this.props.srcHeight}
                                             imageSize={{ width: this.props.srcWidth, height: this.props.srcHeight }}
                                         />
-                                        <Animated.View
-                                            style={{
-                                                position: 'absolute',
-                                                left: (this.props.srcWidth / 2 - 3),
-                                                top: (this.props.srcHeight / 2 - 3),
-                                                width: 6,
-                                                height: 6,
-                                                backgroundColor: '#f00',
-                                                transform: [
-                                                    {
-                                                        translateX: this._pinchX
-                                                    },
-                                                    {
-                                                        translateY: this._pinchY
-                                                    }
-                                                ]
-                                            }}
-                                        />
                                     </Animated.View>
                                 </Animated.View>
                             </PanGestureHandler>
                         </Animated.View>
                     </PinchGestureHandler>
+                </View>
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: 10,
+                        left: 10,
+                        padding: 10,
+                        backgroundColor: '#fff'
+                    }}
+                >
+                    <Text>{this.state.debug}</Text>
                 </View>
             </View>
         );
