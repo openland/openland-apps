@@ -8,7 +8,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
 import { withAllChats } from '../../../api/withAllChats';
-import { ChannelsList } from './components/channelsList';
+import { ChannelsList } from './channelsList';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { XIcon } from 'openland-x/XIcon';
 import { TextChannel } from 'openland-text/TextChannel';

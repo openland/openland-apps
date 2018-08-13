@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withChatsAll } from '../../../../api/withChatsAll';
+import { withChatsAll } from '../../../api/withChatsAll';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -7,7 +7,7 @@ import { TextChannel } from 'openland-text/TextChannel';
 import { XButton } from 'openland-x/XButton';
 
 const ChannelsItemWrapper = Glamorous.div<{ highlighted: boolean }>([
-    (props) => ({
+    ({
         display: 'flex',
         height: 40,
         flexDirection: 'row',
