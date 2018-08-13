@@ -857,16 +857,16 @@ export const CreateOrganization = withCreateOrganization((props) => {
                             field="input.name"
                             size="medium"
                             placeholder={InitTexts.create_organization_popper.namePlaceholder}
-                        // tooltipContent={<InputTooltip />}
+                            // tooltipContent={<InputTooltip />}
                         />
                         <XFormSubmit style="primary" text={InitTexts.create_organization_popper.submit} size="medium" alignSelf="flex-end" />
                     </XHorizontal>
                 </XFormLoadingContent>
-
             </XVertical>
         </XModalForm>
     );
 });
+
 export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
