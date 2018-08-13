@@ -233,28 +233,32 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
         const visibleTop = this._lastPan.y + containerHeight / 2 - visibleHeight / 2;
         const visibleRight = -(this._lastPan.x - containerWidth / 2 + visibleWidth / 2);
         const visibleBottom = -(this._lastPan.y - containerHeight / 2 + visibleHeight / 2);
+        const visibleInsetTop = (containerHeight - this.props.srcHeight * this._minZoom) / 2;
+        const visibleInsetBottom = (containerHeight - this.props.srcHeight * this._minZoom) / 2;
+        const visibleInsetLeft = (containerWidth - this.props.srcWidth * this._minZoom) / 2;
+        const visibleInsetRight = (containerWidth - this.props.srcWidth * this._minZoom) / 2;
 
         // Animate out of bounds location
-        if (visibleLeft > 0) {
-            this._lastPan.x -= visibleLeft;
+        if (visibleLeft > visibleInsetLeft) {
+            this._lastPan.x -= visibleLeft - visibleInsetLeft;
             this._panMoverX.setOffset(0);
-            this._panMoverX.setValue(visibleLeft);
+            this._panMoverX.setValue(visibleLeft - visibleInsetLeft);
             animate(this._panMoverX, 0, 0);
-        } else if (visibleRight > 0) {
+        } else if (visibleRight > visibleInsetRight) {
             this._lastPan.x += visibleRight;
             this._panMoverX.setOffset(0);
-            this._panMoverX.setValue(-visibleRight);
+            this._panMoverX.setValue(-visibleRight + visibleInsetRight);
             animate(this._panMoverX, 0, 0);
         }
-        if (visibleTop > 0) {
-            this._lastPan.y -= visibleTop;
+        if (visibleTop > visibleInsetTop) {
+            this._lastPan.y -= visibleTop - visibleInsetTop;
             this._panMoverY.setOffset(0);
-            this._panMoverY.setValue(visibleTop);
+            this._panMoverY.setValue(visibleTop - visibleInsetTop);
             animate(this._panMoverY, 0, 0);
-        } else if (visibleBottom > 0) {
-            this._lastPan.y += visibleBottom;
+        } else if (visibleBottom > visibleInsetBottom) {
+            this._lastPan.y += visibleBottom - visibleInsetBottom;
             this._panMoverY.setOffset(0);
-            this._panMoverY.setValue(-visibleBottom);
+            this._panMoverY.setValue(-visibleBottom + visibleInsetBottom);
             animate(this._panMoverY, 0, 0);
         }
 
