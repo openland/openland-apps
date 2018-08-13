@@ -7,7 +7,6 @@ import { ConversationRepository } from './repositories/ConversationRepository';
 export class DialogListEngine {
 
     readonly engine: MessengerEngine;
-    private listeners: ((data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => void)[] = [];
     private conversations: ConversationShortFragment[] = [];
     private next?: string;
     private loading: boolean = true;
@@ -19,7 +18,7 @@ export class DialogListEngine {
     // Update Handlers
     //
 
-    handleInitialConversations = (conversations: any[]) => {
+    handleInitialConversations = (conversations: any[], next: string) => {
         // Improve conversation resolving
         for (let c of conversations) {
             ConversationRepository.improveConversationResolving(this.engine.client, c.id);
@@ -27,6 +26,8 @@ export class DialogListEngine {
 
         // Start engine
         this.loading = false;
+        this.conversations = conversations;
+        this.next = next;
     }
 
     handleUserRead = (conversationId: string, unread: number, visible: boolean) => {
@@ -47,8 +48,6 @@ export class DialogListEngine {
 
     loadNext = async () => {
         if (!this.loading && this.next !== null) {
-            this.loading = true;
-            this.onUpdate();
             let initialDialogs: any = await backoff(async () => {
                 try {
                     return await this.engine.client.client.query({
@@ -65,28 +64,14 @@ export class DialogListEngine {
 
             this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShortFragment) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
             this.next = initialDialogs.data.chats.next;
+
+            this.engine.client.client.writeQuery({
+                query: ChatListQuery.document,
+                data: { ...initialDialogs, chats: { ...initialDialogs.data.chats, conversations: [...this.conversations] } },
+            });
+
             this.loading = false;
-            this.onUpdate();
         }
-    }
-
-    onUpdate = () => {
-        for (let l of this.listeners) {
-            l({ conversations: this.conversations, loadingMore: this.loading });
-        }
-    }
-
-    subcribe = (listener: (data: { conversations: ConversationShortFragment[], loadingMore?: boolean }) => void) => {
-        this.listeners.push(listener);
-        listener({ conversations: this.conversations, loadingMore: this.loading });
-        return () => {
-            let index = this.listeners.indexOf(listener);
-            if (index < 0) {
-                console.warn('Double unsubscribe detected!');
-            } else {
-                this.listeners.splice(index, 1);
-            }
-        };
     }
 
 }
