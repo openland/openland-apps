@@ -68,7 +68,7 @@ export const FooterWrap = Glamorous.div({
     height: 54,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#fafbfc',
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
     borderTop: '1px solid rgba(220, 222, 228, 0.6)'
@@ -200,7 +200,6 @@ interface InvitesMoadalRawProps {
 }
 
 interface InvitesMoadalRawState {
-    customText?: string;
     customTextAreaOpen?: boolean;
     showLink?: boolean;
 }
@@ -264,7 +263,7 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     <XFormSubmit key="link" style="primary" succesText={TextInvites.copied} {...submitProps} text={'Copy'} />
                 )}
                 {!this.state.showLink && (
-                    <XFormSubmit key="invites" succesText={TextInvites.sent} style="primary" keyDownSubmit={true} {...submitProps} />
+                    <XFormSubmit key="invites" succesText="Invitations sent!" style="primary" keyDownSubmit={true} {...submitProps} />
                 )}
             </FooterWrap>
         );

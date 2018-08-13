@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
-import { XLink } from 'openland-x/XLink';
+import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XModalContext } from './XModalContext';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import CloseIcon from './ic-close.svg';
@@ -97,7 +97,7 @@ export const XModalTitle = Glamorous.div({
 
 export const XModalHeader = Glamorous(XHorizontal)({
     paddingLeft: 24,
-    paddingRight: 18,
+    paddingRight: 24,
     height: 64
 });
 
@@ -123,7 +123,7 @@ export const XModalFooter = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
-export const XModalCloser = Glamorous(XLink)({
+const XModalCloserStyles = Glamorous(XLink)({
     width: 28,
     height: 28,
     display: 'flex',
@@ -138,6 +138,12 @@ export const XModalCloser = Glamorous(XLink)({
         border: 'solid 1px #dcdee4'
     }
 });
+
+export const XModalCloser = (props: XLinkProps) => (
+    <XModalCloserStyles {...props}>
+        <CloseIcon />
+    </XModalCloserStyles>
+);
 
 export const XModalBodyScrollableContent = Glamorous.div({
     maxHeight: '70vh',
@@ -188,7 +194,7 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
                             <XModalTitle>{this.props.title}</XModalTitle>
                             {this.props.titleChildren !== undefined && this.props.titleChildren}
                         </XHorizontal>
-                        {this.props.useTopCloser && <XModalCloser autoClose={true}><CloseIcon/></XModalCloser>}
+                        {this.props.useTopCloser && <XModalCloser autoClose={true} />}
                     </XModalHeader>
                 )}
                 {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
