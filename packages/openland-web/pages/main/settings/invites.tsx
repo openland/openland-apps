@@ -125,14 +125,14 @@ const LinkHolder = Glamorous(XHorizontal)({
     }
 });
 
-interface OwnerLinkComponentProps { 
-    invite: { 
-        id: string, 
-        key: string, 
-        ttl: string | null 
+interface OwnerLinkComponentProps {
+    invite: {
+        id: string,
+        key: string,
+        ttl: string | null
     } | null;
     createMutation: any;
-    deleteMutation: any; 
+    deleteMutation: any;
 }
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWithRouter> {
@@ -275,7 +275,14 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 size={this.state.showLink !== true ? 'large' : 'default'}
                 defaultAction={async (data) => {
                     if (!this.state.showLink) {
-                        let invites = data.inviteRequests.filter((invite: any) => invite.email || invite.firstName || invite.lastName).map((invite: any) => ({ ...invite, role: this.props.useRoles !== false ? invite.role : undefined, emailText: this.state.customTextAreaOpen ? data.customText : null }));
+                        let invites = data.inviteRequests.filter((invite: any) => (
+                            (invite.email || invite.firstName || invite.lastName))).map((invite: any) => (
+                                {
+                                    ...invite,
+                                    role: this.props.useRoles !== false ? invite.role : undefined,
+                                    emailText: this.state.customTextAreaOpen ? data.customText : null
+                                }
+                            ));
                         await this.props.mutation({
                             variables: {
                                 inviteRequests: invites
@@ -284,7 +291,6 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     } else {
                         this.copyLink();
                     }
-
                 }}
                 scrollableContent={true}
                 defaultData={{
@@ -304,7 +310,15 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                         <XVertical separator={8}>
                                             <XVertical separator={6}>
                                                 {invites.map((invite: Invite, i: number) => (
-                                                    <InviteComponent first={i === 0} key={i} index={i} invite={invite} single={invites.length === 1} handleRemove={(index) => this.handleRemove(index, store)} useRoles={this.props.useRoles} />
+                                                    <InviteComponent
+                                                        first={i === 0}
+                                                        key={i}
+                                                        index={i}
+                                                        invite={invite}
+                                                        single={invites.length === 1}
+                                                        handleRemove={(index) => this.handleRemove(index, store)}
+                                                        useRoles={this.props.useRoles}
+                                                    />
                                                 ))}
                                             </XVertical>
                                             <FlexStart>
