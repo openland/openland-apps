@@ -87,7 +87,7 @@ export class GlobalStateEngine {
         })).data;
         let seq = (res as any).chats.seq;
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
-        this.engine.dialogList.handleInitialConversations((res as any).chats.conversations);
+        this.engine.dialogList.handleInitialConversations((res as any).chats.conversations, (res as any).chats.next);
         console.info('[global] Initial state loaded with seq #' + seq);
 
         // Starting Sequence Watcher

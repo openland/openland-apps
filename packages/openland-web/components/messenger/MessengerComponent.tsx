@@ -82,7 +82,7 @@ const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftC
     cursor: props.path ? 'pointer' : undefined
 }));
 
-const XButtonMargin = Glamorous(XButton)({ margin: 4});
+const XButtonMargin = Glamorous(XButton)({ margin: 4 });
 const BlockButton = withBlockUser((props) => {
     return (
         <XButtonMargin text={(props as any).blocked ? 'Unblock' : 'Block'} style="flat" action={async () => await ((props as any).blocked ? props.unblock({ variables: { userId: (props as any).userId } }) : props.block({ variables: { userId: (props as any).userId } }))} />
@@ -112,7 +112,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
 
                             <TypignsComponent conversatonId={props.data.chat.id}>
                                 <TypingContext.Consumer>
-                                    {typing => <SubTitle>{typing.typing || (props.data.chat.__typename === 'SharedConversation' ? 'Organization' : 'Person')}</SubTitle>}
+                                    {typing => <SubTitle>{typing.typing || (props.data.chat.__typename === 'SharedConversation' ? 'Organization' : props.data.chat.__typename === 'GroupConversation' ? 'Group' : 'Person')}</SubTitle>}
                                 </TypingContext.Consumer>
                             </TypignsComponent>
 
@@ -123,7 +123,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         content={(
                             <>
                                 <XMenuItem path="/mail">exit</XMenuItem>
-                                {props.data.chat.__typename === 'PrivateConversation' && <BlockButton blocked={(props.data.chat as any).blocked} userId={(props.data.chat as any).user.id}/>}
+                                {props.data.chat.__typename === 'PrivateConversation' && <BlockButton blocked={(props.data.chat as any).blocked} userId={(props.data.chat as any).user.id} />}
                             </>
                         )}
                     />

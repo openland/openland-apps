@@ -78,6 +78,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages = [...(initialChat.data as any).messages.messages];
         this.messages.reverse();
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+        this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         let seq = (initialChat.data as any).messages.seq as number;
         console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
         this.watcher = new SequenceWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, seq, { conversationId: this.conversationId }, this.updateHandler, this.engine.client);
