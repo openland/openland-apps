@@ -224,8 +224,8 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
         let cx = this._lastPan.x / this._pinchScaleLast;
         let cy = this._lastPan.y / this._pinchScaleLast;
 
-        let px = this._pinchXRaw * (this._pinchStartScale - this._pinchScaleLast);
-        let py = this._pinchYRaw * (this._pinchStartScale - this._pinchScaleLast);
+        let px = this._pinchXRaw * (1 - this._pinchScaleLastTransform); // (this._pinchStartScale - this._pinchScaleLast);
+        let py = this._pinchYRaw * (1 - this._pinchScaleLastTransform); // (this._pinchStartScale - this._pinchScaleLast);
 
         console.log('Delta');
         console.log('Scale1: ' + this._pinchScaleLastTransform);
@@ -260,6 +260,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
         this._punchBaseScale.setValue(this._pinchScaleLast);
         this._pinchScale.setValue(1);
         this._pinchStartScale = this._pinchScaleLast;
+        this._pinchScaleLastTransform = 1;
 
         // let currentWidth = this.props.srcWidth * this._pinchScaleLast;
         // let currentHeight = this.props.srcWidth * this._pinchScaleLast;
