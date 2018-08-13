@@ -95,8 +95,6 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
 
     _onPandHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
 
-        console.log('pan: ' + event.nativeEvent.state);
-
         // Mark pan as started
         if (event.nativeEvent.state === State.ACTIVE) {
             this._panStarted = true;
@@ -119,7 +117,6 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     }
 
     _onPinchHandlerStateChange = (event: PinchGestureHandlerStateChangeEvent) => {
-        console.log('pinch: ' + event.nativeEvent.state);
 
         // Start Pinching
         if (event.nativeEvent.state === State.ACTIVE) {
@@ -191,38 +188,6 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
             animate(this._pinchMoverY, 1, 0);
             ReactNativeHapticFeedback.trigger('impactLight', false);
         }
-
-        //     let scale = this._pinchScaleLast / this._maxZoom;
-        //     console.log('fixed scale from: ' + this._pinchScaleLast);
-        //     console.log('fixed scale by: ' + scale);
-        //     console.log('fixed scale to: ' + this._maxZoom);
-
-        //     // let px2 = pinchX / this._pinchScaleLast;
-        //     // let py2 = pinchY * (1 - scale);
-        //     // console.log('px: (' + px2 + ', ' + py2 + ')');
-
-        //     this._punchBaseScale.setValue(this._maxZoom);
-        //     this._pinchScaleLast = this._maxZoom;
-
-        //     // this._lastPan.x += pinchX * (1 - scale);
-        //     // this._lastPan.y += pinchY * (1 - scale);
-
-        //     // this._panX.setOffset(this._lastPan.x);
-        //     // this._panX.setValue(px2);
-        //     // this._panXCached = this._lastPan.x;
-        //     // this._panY.setOffset(this._lastPan.y);
-        //     // this._panY.setValue(py2);
-        //     // this._panYCached = this._lastPan.y;
-
-        //     this._pinchScale.setValue(scale);
-        //     this._pinchX.setValue(pinchX);
-        //     this._pinchY.setValue(pinchY);
-
-        //     animate(this._pinchScale, 1, 0);
-        //     animate(this._pinchX, 0, 0);
-        //     animate(this._panY, 0, 0);
-        // }
-
         //
         // Fix paddings
         //
@@ -275,7 +240,6 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     }
 
     _handleTap = (event: TapGestureHandlerStateChangeEvent) => {
-        console.log('tap: ' + event.nativeEvent.state);
         if (event.nativeEvent.state === State.ACTIVE) {
             console.log('tap');
         }
@@ -284,13 +248,11 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     _handleDoubleTap = (event: TapGestureHandlerStateChangeEvent) => {
         if (event.nativeEvent.state === State.ACTIVE) {
             if ((this._pinchScaleLast - this._minZoom) / 2 < (this._maxZoom - this._minZoom) / 2) {
-                console.log('double tap: zoom in');
                 this._punchBaseScale.setOffset(0);
                 this._punchBaseScale.setValue(this._pinchScaleLast);
                 this._pinchScaleLast = this._maxZoom;
                 animate(this._punchBaseScale, this._maxZoom, 0);
             } else {
-                console.log('double tap: zoom out');
                 this._punchBaseScale.setOffset(0);
                 this._punchBaseScale.setValue(this._pinchScaleLast);
                 this._pinchScaleLast = this._minZoom;

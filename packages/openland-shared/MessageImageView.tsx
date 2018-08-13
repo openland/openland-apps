@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XPBubbleView, resolveCorners } from 'openland-xp/XPBubbleView';
-import { View, Platform, Dimensions, TouchableHighlight } from 'react-native';
+import { View, Platform, Dimensions, TouchableHighlight, LayoutChangeEvent } from 'react-native';
 import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
@@ -13,6 +13,10 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
         if (this.props.onPress) {
             this.props.onPress(this.props.message, this.ref.current ? this.ref.current : undefined);
         }
+    }
+
+    handleLayout = (event: LayoutChangeEvent) => {
+        // do nothing
     }
 
     render() {
@@ -31,6 +35,7 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                     width={layout.width}
                     height={layout.height}
                     ref={this.ref}
+                    onLayout={this.handleLayout}
                 >
                     <TouchableHighlight
                         onPress={this.handleTouch}
