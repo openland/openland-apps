@@ -7,6 +7,7 @@ import { XPImage } from 'openland-xp/XPImage';
 import { ZHeader } from '../../../components/ZHeader';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { ZHeaderButton } from '../../../components/ZHeaderButton';
+import { ZImagePreview } from '../../../components/media/ZImagePreview';
 
 class PicturePreviewComponent extends React.PureComponent<NavigationInjectedProps, { isInited: boolean }> {
     constructor(props: NavigationInjectedProps) {
@@ -37,16 +38,40 @@ class PicturePreviewComponent extends React.PureComponent<NavigationInjectedProp
             <>
                 <ZHeader title="Photo" />
                 <ZHeaderButton title="Close" onPress={() => this.props.navigation.pop()} />
-                {!this.state.isInited && (
+                {/* {!this.state.isInited && (
                     <View key="img" position="absolute" top={animate.y} left={animate.x} width={animate.width} height={animate.height} backgroundColor="#f00">
+                        <ZImagePreview
+                            src={uuid}
+                            srcWidth={w}
+                            srcHeight={h}
+                            width={Dimensions.get('window').width}
+                            height={Dimensions.get('window').height}
+                        />
                         <XPImage source={{ uuid: uuid }} width={animate.width} height={animate.height} imageSize={size} />
                     </View>
                 )}
                 {this.state.isInited && (
                     <View key="img" position="absolute" top={0} left={0} width={l.width} height={l.height}>
-                        <XPImage source={{ uuid: uuid }} width={l.width} height={l.height} imageSize={size} />
+                        <ZImagePreview
+                            src={uuid}
+                            srcWidth={w}
+                            srcHeight={h}
+                            width={Dimensions.get('window').width}
+                            height={Dimensions.get('window').height}
+                        />
                     </View>
-                )}
+                )} */}
+
+                <View key="img" position="absolute">
+                    <ZImagePreview
+                        src={uuid}
+                        srcWidth={w}
+                        srcHeight={h}
+                        width={Dimensions.get('window').width}
+                        height={Dimensions.get('window').height}
+                    />
+                </View>
+
                 <View width="100%" height="100%">
                     {/* <ImageZoom
                         cropWidth={Dimensions.get('window').width}

@@ -5,6 +5,7 @@ import { ZHeaderBackButton } from '../navigation/ZHeaderBackButton';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
+import { ZImagePreview } from '../media/ZImagePreview';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { inited: boolean, closing: boolean }> {
 
@@ -84,7 +85,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
             <View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, flexDirection: 'column', alignItems: 'stretch' }} pointerEvents="box-none">
                 <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: this.progress }} />
 
-                {!completed && (
+                {/* {!completed && (
                     <View key="img" position="absolute" top={animate.y} left={animate.x} width={animate.width} height={animate.height} backgroundColor="#f00">
                         <XPImage source={{ uuid: this.props.config.uuid }} width={animate.width} height={animate.height} imageSize={size} />
                     </View>
@@ -93,7 +94,17 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                     <View key="img" position="absolute" top={0} left={0} width={l.width} height={l.height}>
                         <XPImage source={{ uuid: this.props.config.uuid }} width={l.width} height={l.height} imageSize={size} />
                     </View>
-                )}
+                )} */}
+
+                <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, opacity: this.progress }}>
+                    <ZImagePreview
+                        src={this.props.config.uuid}
+                        srcWidth={w}
+                        srcHeight={h}
+                        width={Dimensions.get('window').width}
+                        height={Dimensions.get('window').height}
+                    />
+                </Animated.View>
 
                 <Animated.View style={{ height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, paddingTop: ZAppConfig.statusBarHeight, backgroundColor: 'rgba(0,0,0,0.6)', transform: [{ translateY: Animated.multiply(Animated.add(this.progress, -1), ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight) }] }}>
                     <ZHeaderBackButton inverted={true} onPress={this.handleClose} />

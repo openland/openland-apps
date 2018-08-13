@@ -31,7 +31,6 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
                     <View
                         width={300}
                         height={300}
-                        backgroundColor="pink"
                     >
                         <ZImagePreview
                             src="9da80a8f-0fe2-4d65-bda0-a4002bb0cd86"
