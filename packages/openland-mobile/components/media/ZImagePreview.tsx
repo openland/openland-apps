@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Text } from 'react-native';
+import { View, Animated, Text, Platform } from 'react-native';
 import { XPImage } from 'openland-xp/XPImage';
 import {
     PanGestureHandler,
@@ -95,6 +95,8 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
 
     _onPandHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
 
+        console.log('pan: ' + event.nativeEvent.state);
+
         // Mark pan as started
         if (event.nativeEvent.state === State.ACTIVE) {
             this._panStarted = true;
@@ -117,6 +119,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     }
 
     _onPinchHandlerStateChange = (event: PinchGestureHandlerStateChangeEvent) => {
+        console.log('pinch: ' + event.nativeEvent.state);
 
         // Start Pinching
         if (event.nativeEvent.state === State.ACTIVE) {
@@ -245,7 +248,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
             this._panMoverX.setValue(visibleLeft - visibleInsetLeft);
             animate(this._panMoverX, 0, 0);
         } else if (visibleRight > visibleInsetRight) {
-            this._lastPan.x += visibleRight;
+            this._lastPan.x += visibleRight - visibleInsetRight;
             this._panMoverX.setOffset(0);
             this._panMoverX.setValue(-visibleRight + visibleInsetRight);
             animate(this._panMoverX, 0, 0);
@@ -272,6 +275,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     }
 
     _handleTap = (event: TapGestureHandlerStateChangeEvent) => {
+        console.log('tap: ' + event.nativeEvent.state);
         if (event.nativeEvent.state === State.ACTIVE) {
             console.log('tap');
         }
@@ -281,14 +285,21 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
         if (event.nativeEvent.state === State.ACTIVE) {
             if ((this._pinchScaleLast - this._minZoom) / 2 < (this._maxZoom - this._minZoom) / 2) {
                 console.log('double tap: zoom in');
+                this._punchBaseScale.setOffset(0);
                 this._punchBaseScale.setValue(this._pinchScaleLast);
                 this._pinchScaleLast = this._maxZoom;
                 animate(this._punchBaseScale, this._maxZoom, 0);
             } else {
                 console.log('double tap: zoom out');
+                this._punchBaseScale.setOffset(0);
                 this._punchBaseScale.setValue(this._pinchScaleLast);
                 this._pinchScaleLast = this._minZoom;
                 animate(this._punchBaseScale, this._minZoom, 0);
+
+                this._panX.setOffset(0);
+                this._panX.setValue(this._panXCached);
+                this._panY.setOffset(0);
+                this._panY.setValue(this._panYCached);
                 animate(this._panX, 0, 0);
                 animate(this._panY, 0, 0);
             }
@@ -296,117 +307,120 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     }
 
     render() {
+
+        const content = (
+            <Animated.View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', }}>
+                <Animated.View
+                    style={{
+                        width: this.props.srcWidth,
+                        height: this.props.srcHeight,
+                        transform: [
+                            {
+                                translateX: Animated.add(this._panX, this._panMoverX)
+                            },
+                            {
+                                translateY: Animated.add(this._panY, this._panMoverY)
+                            },
+                            {
+                                translateX: this._pinchX
+                            },
+                            {
+                                translateY: this._pinchY
+                            },
+                            {
+                                scale: this._pinchScale
+                            },
+                            {
+                                translateX: Animated.multiply(this._pinchX, -1)
+                            },
+                            {
+                                translateY: Animated.multiply(this._pinchY, -1)
+                            },
+                            {
+                                scale: Animated.multiply(this._punchBaseScale, this._pinchMoverY)
+                            },
+                        ]
+                    }}
+                >
+                    <XPImage
+                        source={{ uuid: this.props.src }}
+                        width={this.props.srcWidth}
+                        height={this.props.srcHeight}
+                        imageSize={{ width: this.props.srcWidth, height: this.props.srcHeight }}
+                    />
+                </Animated.View>
+            </Animated.View>
+        );
+
+        const panZoomedContent = (
+            <Animated.View style={{ width: '100%', height: '100%' }}>
+                <PanGestureHandler
+                    onGestureEvent={this._panEvent}
+                    onHandlerStateChange={this._onPandHandlerStateChange}
+                    simultaneousHandlers={[this._pinchRef as any]}
+                    waitFor={[this._tapRef as any, this._doubleTapRef as any]}
+                    ref={this._panRef}
+                    minPointers={1}
+                    maxPointers={2}
+                    minDist={0}
+                    minDeltaX={0}
+                    minDeltaY={0}
+                    minOffsetX={0}
+                    minOffsetY={0}
+                    minVelocityX={0}
+                    minVelocityY={0}
+                    minVelocity={0}
+                    avgTouches={true}
+                >
+                    <Animated.View style={{ width: '100%', height: '100%' }}>
+                        <PinchGestureHandler
+                            ref={this._pinchRef}
+                            simultaneousHandlers={[this._panRef as any]}
+                            onGestureEvent={this._pinchEvent}
+                            onHandlerStateChange={this._onPinchHandlerStateChange}
+                            waitFor={[this._tapRef as any, this._doubleTapRef as any]}
+                        >
+                            {content}
+                        </PinchGestureHandler>
+                    </Animated.View>
+                </PanGestureHandler>
+            </Animated.View>
+        );
+
+        let platformContent = panZoomedContent;
+
+        if (Platform.OS === 'ios') {
+            platformContent = (
+                <TapGestureHandler
+                    ref={this._tapRef}
+                    maxDeltaX={15}
+                    maxDeltaY={15}
+                    minPointers={1}
+                    maxDurationMs={100}
+                    onHandlerStateChange={this._handleTap}
+                >
+                    <Animated.View style={{ width: '100%', height: '100%' }}>
+                        <TapGestureHandler
+                            ref={this._doubleTapRef}
+                            maxDeltaX={15}
+                            maxDeltaY={15}
+                            minPointers={1}
+                            numberOfTaps={2}
+                            maxDurationMs={100}
+                            onHandlerStateChange={this._handleDoubleTap}
+                            waitFor={[this._tapRef as any]}
+                        >
+                            {panZoomedContent}
+                        </TapGestureHandler>
+                    </Animated.View>
+                </TapGestureHandler>
+            );
+        }
+
         return (
             <View width={this.props.width} height={this.props.height} alignItems="center" justifyContent="center">
                 <View width="100%" height="100%" overflow="hidden">
-                    <TapGestureHandler
-                        ref={this._tapRef}
-                        maxDeltaX={5}
-                        maxDeltaY={5}
-                        minPointers={1}
-                        onHandlerStateChange={this._handleTap}
-                        waitFor={this._doubleTapRef as any}
-                    >
-                        <Animated.View
-                            style={{
-                                width: '100%',
-                                height: '100%'
-                            }}
-                        >
-                            <TapGestureHandler
-                                ref={this._doubleTapRef}
-                                maxDeltaX={5}
-                                maxDeltaY={5}
-                                minPointers={1}
-                                numberOfTaps={2}
-                                onHandlerStateChange={this._handleDoubleTap}
-                            >
-
-                                <Animated.View
-                                    style={{
-                                        width: '100%',
-                                        height: '100%'
-                                    }}
-                                >
-                                    <PinchGestureHandler
-                                        ref={this._pinchRef}
-                                        simultaneousHandlers={[this._panRef as any]}
-                                        onGestureEvent={this._pinchEvent}
-                                        onHandlerStateChange={this._onPinchHandlerStateChange}
-                                        waitFor={[this._tapRef as any, this._doubleTapRef as any]}
-                                    >
-                                        <Animated.View
-                                            style={{
-                                                width: '100%',
-                                                height: '100%'
-                                            }}
-                                        >
-                                            <PanGestureHandler
-                                                onGestureEvent={this._panEvent}
-                                                onHandlerStateChange={this._onPandHandlerStateChange}
-                                                simultaneousHandlers={[this._panRef as any]}
-                                                waitFor={[this._tapRef as any, this._doubleTapRef as any]}
-                                                ref={this._panRef}
-                                                minPointers={1}
-                                                maxPointers={2}
-                                                // minDist={0}
-                                                // minDeltaX={5}
-                                                // minDeltaY={5}
-                                                // minOffsetX={0}
-                                                // minOffsetY={0}
-                                                // minVelocityX={0}
-                                                // minVelocityY={0}
-                                                // minVelocity={0}
-                                                avgTouches={true}
-                                            >
-                                                <Animated.View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                                                    <Animated.View
-                                                        style={{
-                                                            width: this.props.srcWidth,
-                                                            height: this.props.srcHeight,
-                                                            transform: [
-                                                                {
-                                                                    translateX: Animated.add(this._panX, this._panMoverX)
-                                                                },
-                                                                {
-                                                                    translateY: Animated.add(this._panY, this._panMoverY)
-                                                                },
-                                                                {
-                                                                    translateX: this._pinchX
-                                                                },
-                                                                {
-                                                                    translateY: this._pinchY
-                                                                },
-                                                                {
-                                                                    scale: this._pinchScale
-                                                                },
-                                                                {
-                                                                    translateX: Animated.multiply(this._pinchX, -1)
-                                                                },
-                                                                {
-                                                                    translateY: Animated.multiply(this._pinchY, -1)
-                                                                },
-                                                                {
-                                                                    scale: Animated.multiply(this._punchBaseScale, this._pinchMoverY)
-                                                                },
-                                                            ]
-                                                        }}
-                                                    >
-                                                        <XPImage
-                                                            source={{ uuid: this.props.src }}
-                                                            width={this.props.srcWidth}
-                                                            height={this.props.srcHeight}
-                                                            imageSize={{ width: this.props.srcWidth, height: this.props.srcHeight }}
-                                                        />
-                                                    </Animated.View>
-                                                </Animated.View>
-                                            </PanGestureHandler>
-                                        </Animated.View>
-                                    </PinchGestureHandler>
-                                </Animated.View>
-                            </TapGestureHandler>
-                        </Animated.View>
-                    </TapGestureHandler>
+                    {platformContent}
                 </View>
             </View>
         );
