@@ -8,6 +8,7 @@ import {
     PanGestureHandlerStateChangeEvent,
     PinchGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 function animate(value: Animated.Value, toValue: number | Animated.Value, velocity: number) {
     Animated.spring(value, {
@@ -39,6 +40,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
 
     private _panMoverX = new Animated.Value(0);
     private _panMoverY = new Animated.Value(0);
+    private _pinchMoverY = new Animated.Value(1);
 
     private _panStarted = false;
     private _panCompleted = false;
@@ -166,7 +168,22 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
         // Fix zoom
         //
 
-        // if (this._pinchScaleLast > this._maxZoom) {
+        if (this._pinchScaleLast > this._maxZoom) {
+            let scale = this._pinchScaleLast / this._maxZoom;
+            this._pinchScaleLast = this._maxZoom;
+            this._punchBaseScale.setValue(this._pinchScaleLast);
+            this._pinchMoverY.setValue(scale);
+            animate(this._pinchMoverY, 1, 0);
+            ReactNativeHapticFeedback.trigger('impactLight', false);
+        } else if (this._pinchScaleLast < this._minZoom) {
+            let scale = this._pinchScaleLast / this._minZoom;
+            this._pinchScaleLast = this._minZoom;
+            this._punchBaseScale.setValue(this._pinchScaleLast);
+            this._pinchMoverY.setValue(scale);
+            animate(this._pinchMoverY, 1, 0);
+            ReactNativeHapticFeedback.trigger('impactLight', false);
+        }
+
         //     let scale = this._pinchScaleLast / this._maxZoom;
         //     console.log('fixed scale from: ' + this._pinchScaleLast);
         //     console.log('fixed scale by: ' + scale);
@@ -209,6 +226,8 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
         const visibleHeight = this.props.srcHeight * this._pinchScaleLast;
         const visibleLeft = this._lastPan.x + containerWidth / 2 - visibleWidth / 2;
         const visibleTop = this._lastPan.y + containerHeight / 2 - visibleHeight / 2;
+        const visibleRight = -(this._lastPan.x - containerWidth / 2 + visibleWidth / 2);
+        const visibleBottom = -(this._lastPan.y - containerHeight / 2 + visibleHeight / 2);
 
         // Animate out of bounds location
         if (visibleLeft > 0) {
@@ -216,11 +235,21 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
             this._panMoverX.setOffset(0);
             this._panMoverX.setValue(visibleLeft);
             animate(this._panMoverX, 0, 0);
+        } else if (visibleRight > 0) {
+            this._lastPan.x += visibleRight;
+            this._panMoverX.setOffset(0);
+            this._panMoverX.setValue(-visibleRight);
+            animate(this._panMoverX, 0, 0);
         }
         if (visibleTop > 0) {
             this._lastPan.y -= visibleTop;
             this._panMoverY.setOffset(0);
             this._panMoverY.setValue(visibleTop);
+            animate(this._panMoverY, 0, 0);
+        } else if (visibleBottom > 0) {
+            this._lastPan.y += visibleBottom;
+            this._panMoverY.setOffset(0);
+            this._panMoverY.setValue(-visibleBottom);
             animate(this._panMoverY, 0, 0);
         }
 
@@ -295,7 +324,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
                                                     translateY: Animated.multiply(this._pinchY, -1)
                                                 },
                                                 {
-                                                    scale: this._punchBaseScale
+                                                    scale: Animated.multiply(this._punchBaseScale, this._pinchMoverY)
                                                 },
                                             ]
                                         }}
