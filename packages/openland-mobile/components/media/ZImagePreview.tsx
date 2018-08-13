@@ -75,7 +75,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps, { deb
     constructor(props: ZImagePreviewProps) {
         super(props);
 
-        this._minZoom = Math.max(this.props.height / this.props.srcHeight, this.props.width / this.props.srcWidth);
+        this._minZoom = Math.min(this.props.height / this.props.srcHeight, this.props.width / this.props.srcWidth);
         this._maxZoom = this._minZoom * 2;
         this._pinchScaleLast = this._minZoom;
         this._punchBaseScale.setValue(this._minZoom);
