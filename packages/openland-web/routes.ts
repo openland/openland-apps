@@ -213,6 +213,10 @@ routes.add('/channel', '/main/channel/root');
 routes.add('/channel/', '/main/channel/root');
 routes.add('/channel/:conversationId', '/main/channel/root');
 routes.add('/channel/:conversationId/', '/main/channel/root');
+routes.add('/channel/:conversationId/listings', '/main/channel/root');
+routes.add('/channel/:conversationId/listings/', '/main/channel/root');
+routes.add('/channel/:conversationId/members', '/main/channel/root');
+routes.add('/channel/:conversationId/members/', '/main/channel/root');
 
 //
 // UI

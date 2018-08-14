@@ -6,7 +6,7 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
+import { ChannelView } from './channelView';
 import { withAllChats } from '../../../api/withAllChats';
 import { ChannelsList } from './channelsList';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
@@ -80,7 +80,6 @@ let ChannelsHeaderIcon = Glamorous(XIcon)({
     paddingRight: 10,
     cursor: 'pointer',
     color: '#bcc3cc',
-    transition: '300ms all ease',
     '&:hover': {
         color: '#5c6a81',
     },
@@ -139,7 +138,7 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
                                 </MessengerContainer>
                             )}
                             {props.router.routeQuery.conversationId && (
-                                <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
+                                <ChannelView conversationId={props.router.routeQuery.conversationId} />
                             )}
                         </ConversationContainer>
                     </ChannelsContainer>

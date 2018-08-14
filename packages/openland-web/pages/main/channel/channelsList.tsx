@@ -59,8 +59,8 @@ const ChannelsItemBox = Glamorous(XLink)({
     flex: 1,
     display: 'flex',
     padding: '10px 12px 10px 36px',
-    transition: '300ms all ease',
     letterSpacing: 0.4,
+    width: '100%',
     '&.is-active, &:hover': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
         color: '#1790ff'
@@ -75,11 +75,15 @@ const ChannelsItemTools = Glamorous.div({
 
 let ChannelsItemTitle = Glamorous.div({
     flexGrow: 1,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
 });
 
 let ChannelsItemCounter = Glamorous.div({
     color: '#5c6a81',
     opacity: .5,
+    paddingLeft: 12
 });
 
 export class ChannelsItem extends React.Component<XLinkProps & { unread?: number, title: string }> {
