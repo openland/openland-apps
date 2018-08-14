@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Image } from 'react-native';
 import { XPRoundedMask } from './XPRoundedMask';
 
 export function resolveCorners(isOut: boolean, attach?: 'bottom' | 'top' | 'both') {
@@ -14,12 +14,18 @@ export function resolveCorners(isOut: boolean, attach?: 'bottom' | 'top' | 'both
         if (attach === 'bottom' || attach === 'both') {
             bottomRightRadius = 4;
         }
+        if (attach !== 'bottom' && attach !== 'both') {
+            bottomRightRadius = 0;
+        }
     } else {
         if (attach === 'top' || attach === 'both') {
             topLeftRadius = 4;
         }
         if (attach === 'bottom' || attach === 'both') {
             bottomLeftRadius = 4;
+        }
+        if (attach !== 'bottom' && attach !== 'both') {
+            bottomLeftRadius = 0;
         }
     }
     return {
@@ -49,7 +55,8 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
         if (this.props.attach === 'bottom' || this.props.attach === 'both') {
             bottomPadding = 1;
         }
-        let backgroundColor = this.props.isOut && (this.props.appearance !== 'media') ? '#4747ec' : '#eff2f5';
+        const attachedBottom = this.props.attach === 'bottom' || this.props.attach === 'both';
+        let backgroundColor = this.props.isOut && (this.props.appearance !== 'media') ? '#4747ec' : '#f5f7f8';
         if (Platform.OS === 'macos') {
             radius.bottomLeft = 18;
             radius.topLeft = 18;
@@ -57,7 +64,16 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
             radius.bottomRight = 18;
         }
         return (
-            <View paddingTop={topPadding} paddingBottom={bottomPadding}>
+            <View
+                style={{
+                    paddingTop: topPadding,
+                    paddingBottom: bottomPadding,
+                    paddingLeft: !this.props.isOut && attachedBottom ? 8 : 0,
+                    paddingRight: this.props.isOut && attachedBottom ? 8 : 0,
+                    flexDirection: 'row'
+                }}
+            >
+                {!this.props.isOut && !attachedBottom && <Image source={require('assets/bubble-corner.png')} style={{ alignSelf: 'flex-end' }} />}
                 <XPRoundedMask
                     radius={radius}
                     backgroundColor={backgroundColor}
@@ -68,6 +84,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
                         <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, borderColor: 'rgba(220, 224, 231, 0.45)' }} pointerEvents="none" />
                     </View>
                 </XPRoundedMask>
+                {this.props.isOut && !attachedBottom && <Image source={require('assets/bubble-corner-my.png')} style={{ alignSelf: 'flex-end' }} />}
             </View>
         );
     }

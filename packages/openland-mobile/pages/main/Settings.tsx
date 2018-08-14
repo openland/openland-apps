@@ -10,6 +10,7 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZQuery } from '../../components/ZQuery';
 import { ZScrollView } from '../../components/ZScrollView';
 import { ZHeader } from '../../components/ZHeader';
+import { ZListItemFooter } from '../../components/ZListItemFooter';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -96,6 +97,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                                         <ZListItem text="Reboot" onPress={this.handleReboot} />
                                         <ZListItem text="Log out" onPress={this.handleLogout} />
                                     </ZListItemGroup>
+                                    <ZListItemFooter />
                                 </>
                             );
                         }}

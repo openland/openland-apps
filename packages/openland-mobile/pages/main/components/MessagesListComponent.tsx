@@ -205,6 +205,15 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
                     extraData={this.props.bottomInset * 10000 + this.props.topInset}
                     maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
                 />
+                {!this.state.loading && this.state.messages2.length <= 2 && (
+                    <View style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: 375, height: 375, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }} />
+                            <Image source={require('assets/img-messages.png')} style={{ width: 48, height: 42, marginBottom: 13 }} />
+                            <Text style={{ color: '#c8c7cc', fontSize: 13, fontWeight: '500' }}>No messages yet</Text>
+                        </View>
+                    </View>
+                )}
                 <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.bottomInset} top={ZAppConfig.navigationBarContentInsetSmall} pointerEvents="none">
                     <ZLoader transparent={true} enabled={this.state.loading} />
                 </View>

@@ -1,25 +1,25 @@
 import * as React from 'react';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeybardAwareBar';
 import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
+import { AppStyles } from '../../../styles/AppStyles';
 
 let styles = StyleSheet.create({
     textInput: {
-        backgroundColor: '#fff',
-        borderRadius: 16,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 2,
-        paddingBottom: 2,
+        backgroundColor: '#fafafa',
+        borderRadius: 17.5,
+        paddingLeft: 12,
+        paddingRight: 12,
+        paddingTop: 7,
+        paddingBottom: 7,
         height: 34,
-        fontSize: 14,
-        borderColor: '#e6e6e6',
-        borderWidth: 1
+        fontSize: 16,
+        borderColor: '#E6E6E7',
+        borderWidth: 0.5
     } as ViewStyle
 });
 
 const iconAttach = require('assets/ic-attachment.png');
 const icon = require('assets/ic-send.png');
-const iconActive = require('assets/ic-send-active.png');
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -35,7 +35,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         let hasText = this.props.text.trim().length > 0;
         return (
             <ZKeyboardAwareBar>
-                <View flexDirection="row" style={{ paddingBottom: 10, paddingTop: 10 }}>
+                <View flexDirection="row" style={{ paddingBottom: 8, paddingTop: 8 }}>
                     {this.props.attachesEnabled !== false && (
                         <TouchableOpacity onPress={this.props.onAttachPress}>
                             <View width={52} height={33} alignItems="center" justifyContent="center">
@@ -53,13 +53,14 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         placeholderTextColor="#aaaaaa"
                         onChangeText={this.props.onChangeText}
                         value={this.props.text}
-                        onSubmitEditing={this.props.onSubmitPress}
+                        // onSubmitEditing={this.props.onSubmitPress}
                         style={styles.textInput}
                         editable={this.props.enabled !== false}
+                        multiline={true}
                     />
                     <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
                         <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                            <Image source={hasText ? iconActive : icon} style={{ width: 24, height: 24 }} />
+                            <Image source={icon} style={{ width: 24, height: 24, tintColor: hasText && this.props.enabled !== false ? AppStyles.primaryColor : '#C8C7CC' }} />
                         </View>
                     </TouchableOpacity>
                 </View>

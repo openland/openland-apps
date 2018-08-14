@@ -22,11 +22,13 @@ let styles = StyleSheet.create({
         paddingLeft: 7,
         flexGrow: 1,
         flexBasis: 0,
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        paddingRight: 50,
     } as ViewStyle,
     messageContainerOut: {
         alignItems: 'flex-end',
         paddingLeft: 51,
+        paddingRight: 0
     } as ViewStyle,
     header: {
         flexDirection: 'row',
@@ -114,7 +116,7 @@ export class MessageView extends React.PureComponent<MessageViewProps> {
         return (
             <View style={styles.container}>
                 {!isOut && (
-                    <View paddingBottom={7}>
+                    <View paddingBottom={7} marginRight={-8}>
                         <TouchableOpacity onPress={this.handlePress}>
                             <XPAvatar
                                 src={this.props.message.sender.picture}

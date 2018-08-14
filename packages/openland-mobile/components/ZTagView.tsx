@@ -96,15 +96,15 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                         <View flexWrap="wrap" flexDirection="row">
                             {this.props.title && (
                                 <View style={{ height: 28, paddingRight: 5 }}>
-                                    <Text style={{ lineHeight: 28, fontSize: 13, color: '#000' }}>{this.props.title}</Text>
+                                    <Text style={{ lineHeight: 28, fontSize: 15, color: '#000', opacity: 0.6, fontWeight: '500' }}>{this.props.title}</Text>
                                 </View>
                             )}
 
                             {this.props.items.map((v) => (
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
                                     <View paddingLeft={1} paddingRight={1} paddingTop={2} paddingBottom={2}>
-                                        <View height={24} borderRadius={12} backgroundColor={this.state.focused === v.id ? AppStyles.primaryColor : undefined} paddingLeft={1} paddingRight={1}>
-                                            <Text style={{ color: this.state.focused === v.id ? '#fff' : AppStyles.primaryColor, height: 24, lineHeight: 24, textAlignVertical: 'center', fontSize: 13 }}>{v.text},</Text>
+                                        <View height={28} borderRadius={8} backgroundColor={this.state.focused === v.id ? AppStyles.primaryColor : undefined} paddingLeft={1} paddingRight={1}>
+                                            <Text style={{ color: this.state.focused === v.id ? '#fff' : AppStyles.primaryColor, height: 24, lineHeight: 24, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
                                         </View>
                                     </View>
                                 </TouchableWithoutFeedback>
@@ -113,7 +113,7 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                 ref={this.ref}
                                 onChangeText={this.handleChange}
                                 onKeyPress={this.handleKeyPress}
-                                style={{ minWidth: Math.min(Dimensions.get('window').width * 0.3, 250), fontSize: 13, height: 28 }}
+                                style={{ minWidth: Math.min(Dimensions.get('window').width * 0.3, 250), fontSize: 15, height: 28 }}
                                 value={this.state.query}
                                 opacity={this.state.focused ? 0 : 1}
                                 spellCheck={false}

@@ -5,13 +5,14 @@ import { ZHeaderActionButtonAndroid } from './navigation/ZHeaderActionButtonAndr
 import { randomKey } from '../utils/randomKey';
 import { ZHeaderConfigRegistrator } from './navigation/ZHeaderConfigRegistrator';
 import { ZHeaderConfig } from './navigation/ZHeaderConfig';
+import { ZHeaderActionButtonIOS } from './navigation/ZHeaderActionButtonIOS';
 
 export interface ZHeaderButtonDescription {
     id: string;
     render: () => React.ReactElement<{}>;
 }
 
-export class ZHeaderButton extends React.PureComponent<{ title?: string, onPress?: () => void }> {
+export class ZHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void }> {
 
     private buttonId = randomKey();
 
@@ -27,6 +28,10 @@ export class ZHeaderButton extends React.PureComponent<{ title?: string, onPress
                 return (
                     <ZHeaderActionButtonAndroid title={this.props.title} onPress={this.handlePress} />
                 );
+            } else if (Platform.OS === 'ios') {
+                return (
+                    <ZHeaderActionButtonIOS title={this.props.title} icon={this.props.icon} onPress={this.handlePress} />
+                );
             }
             return (<Button color={AppStyles.primaryColor} onPress={this.handlePress} title={this.props.title} />);
         } else {
@@ -39,6 +44,6 @@ export class ZHeaderButton extends React.PureComponent<{ title?: string, onPress
     }
 
     render() {
-        return <ZHeaderConfigRegistrator config={new ZHeaderConfig({ buttons: [{ id: this.buttonId, render: this.renderButton }]})} />;
+        return <ZHeaderConfigRegistrator config={new ZHeaderConfig({ buttons: [{ id: this.buttonId, render: this.renderButton }] })} />;
     }
 }

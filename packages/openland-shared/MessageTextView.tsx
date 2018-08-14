@@ -34,8 +34,9 @@ let styles = StyleSheet.create({
         color: '#fff',
     } as TextStyle,
     date: {
-        fontSize: 11,
+        fontSize: 13,
         color: '#8a8a8f',
+        // fontWeight: '00',
         opacity: 0.6
     } as TextStyle,
     dateOut: {
@@ -45,6 +46,9 @@ let styles = StyleSheet.create({
 });
 
 export class MessageTextView extends React.PureComponent<{ date: string, text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
+
+    paddedText = ' ' + '\u00A0'.repeat(13);
+
     render() {
         let preprocessed = preprocessText(this.props.text);
         let parts = preprocessed.map((v, i) => {
@@ -61,12 +65,13 @@ export class MessageTextView extends React.PureComponent<{ date: string, text: s
             let placeholderIndex = doSimpleHash(this.props.sender.id) % XPStyles.avatars.length;
             sender = <Text key="sender-name" style={[styles.sender, { color: XPStyles.avatars[placeholderIndex].nameColor }]}>{this.props.sender.name}</Text>;
         }
+
         return (
             <XPBubbleView appearance="text" isOut={this.props.isOut} attach={this.props.attach}>
                 {sender}
                 <Text key="message" style={[styles.message, this.props.isOut && styles.messageOut]}>
                     {parts}
-                    <Text>{' \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'}</Text>
+                    <Text>{this.paddedText}</Text>
                 </Text>
                 <View style={{ position: 'absolute', bottom: 0, right: -5 }}><Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text></View>
             </XPBubbleView>
