@@ -93,8 +93,8 @@ const ChannelTools = Glamorous.div({
 });
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
-    let isListingsTab = props.router.path.endsWith('/listings');
-    let isMembersTab = props.router.path.endsWith('/members');
+    let isListingsTab = props.router.path.endsWith('/listings') || props.router.path.endsWith('/listings/');
+    let isMembersTab = props.router.path.endsWith('/members') || props.router.path.endsWith('/members/');
 
     return (
         <ChatRoot flexGrow={1} separator={'none'}>
