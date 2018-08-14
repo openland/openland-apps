@@ -291,7 +291,7 @@ let sizeStyles = styleResolver({
         height: 32,
         lineHeight: '30px',
         fontSize: 14,
-        letterSpacing: 0.4,
+        letterSpacing: -0.4,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 16,
@@ -698,7 +698,7 @@ interface StyledButtonTextProps {
 let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProps) => ({
     'top': {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            bottom: 'calc(100% + 0px)',
+            bottom: 'calc(100% + 5px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
 
@@ -711,7 +711,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
     },
     'right': {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            left: 'calc(100% - 10px)',
+            left: 'calc(100% - 5px)',
             top: '50%',
             transform: 'translate(0, -50%)',
 
@@ -724,7 +724,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
     },
     'bottom': {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            top: 'calc(100% + 0px)',
+            top: 'calc(100% + 5px)',
             left: '50%',
             transform: 'translate(-50%, 0)',
 
@@ -737,7 +737,7 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
     },
     'left': {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            right: 'calc(100% - 10px)',
+            right: 'calc(100% - 5px)',
             top: '50%',
             transform: 'translate(0, -50%)',
 
@@ -788,7 +788,7 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
             }
         }
     } || {}),
-    (props) => (props.responsive && tooltipPlacementStyles(props, props.tooltipPlacement) || {})
+    (props) => (props.responsive && tooltipPlacementStyles(props, props.tooltipPlacement || 'bottom') || {})
 ]);
 
 interface StyledButtonProps extends XFlexStyles {
@@ -839,7 +839,8 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
                 display: 'none'
             },
             '& .icon-responsive': {
-                display: 'block'
+                display: 'block',
+                opacity: 1
             }
         }
     } || {}),
