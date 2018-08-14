@@ -13,7 +13,7 @@ class AppNotiticationsStub implements AppNotificationsApi {
         // Do nothing
     }
 
-    displayNotification(content: { path: string, title: string, body: string, image?: string }) {
+    displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
         // Do nothing
     }
 }

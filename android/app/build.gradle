@@ -146,6 +146,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-core:16.0.1'
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-gesture-handler')
     compile project(':lottie-react-native')
@@ -181,3 +182,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 //task bundleReleaseJsAndAssets(overwrite: true) {
 //
 //}
+
+apply plugin: 'com.google.gms.google-services'

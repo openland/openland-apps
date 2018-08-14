@@ -3,6 +3,7 @@ import { SettingsQuery } from 'openland-api';
 import { SettingsQuery as SettingsQueryType } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
+import { doSimpleHash } from 'openland-y-utils/hash';
 
 export class NotificationsEngine {
     readonly engine: MessengerEngine;
@@ -34,14 +35,16 @@ export class NotificationsEngine {
                 title: 'New Message',
                 body: msg.message.sender.name + ': ' + msg.message.message,
                 path: '/mail/' + conversationId,
-                image: msg.message.sender.picture
+                image: msg.message.sender.picture,
+                id: doSimpleHash(msg.conversation.id).toString(),
             });
         } else {
             AppNotifications.displayNotification({
                 title: 'New Message',
                 body: msg.message.sender.name + ': <file>',
                 path: '/mail/' + conversationId,
-                image: msg.message.sender.picture
+                image: msg.message.sender.picture,
+                id: doSimpleHash(msg.conversation.id).toString(),
             });
         }
     }

@@ -13,7 +13,7 @@ Push.configure({
         }
         tokenListeners = [];
     },
-    senderID: '1095846783035',
+    senderID: '1096143404604',
     requestPermissions: false,
 });
 
@@ -52,10 +52,13 @@ class AppNotiticationsIOS implements AppNotificationsApi {
         Push.requestPermissions();
     }
 
-    displayNotification(content: { path: string, title: string, body: string, image?: string }) {
+    displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
+        console.log('RNPushNotification', 'local', content);
         Push.localNotification({
             title: content.title,
-            message: content.body
+            message: content.body,
+            group: 'conversation_message',
+            ...content.id ? { id: content.id } : {},
         });
     }
 }
