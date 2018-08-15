@@ -1,16 +1,7 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import {
-    View, FlatList,
-    TextInput,
-    StyleSheet,
-    ViewStyle,
-    Image,
-    TouchableOpacity,
-    Platform,
-    UIManager,
-} from 'react-native';
+import { View, FlatList } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessagesListComponent } from './components/MessagesListComponent';
@@ -22,8 +13,8 @@ import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ZHeaderView } from '../../components/ZHeaderView';
-import { Modals } from './modals/Modals';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
+import { ZKeyboardAwareContainer } from '../../components/layout/ZKeyboardAwareContainer';
 
 class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean }> {
     engine: ConversationEngine;

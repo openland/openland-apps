@@ -7,6 +7,7 @@ import { ZAppConfig } from '../../../components/ZAppConfig';
 import { MessageView } from 'openland-shared/MessageView';
 import { MessageFullFragment } from 'openland-api/Types';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
+import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -153,7 +154,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
             return (<View height={this.props.topInset} />);
         }
         if (section.section.key === 'header') {
-            return (<View height={62 + this.props.bottomInset} />);
+            return (<View height={this.props.bottomInset} />);
         }
         return (<DateSeparator day={section.section.day} key={section.section.key} />);
     }
@@ -171,7 +172,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
             );
         }
         if (itm.item.key === 'header') {
-            return (<View height={62 + this.props.bottomInset} />);
+            return (<View height={this.props.bottomInset} />);
         }
         return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
     }
@@ -181,6 +182,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
     }
 
     render() {
+        console.log(this.props.bottomInset);
         return (
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
@@ -197,7 +199,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
                     initialNumToRender={Platform.OS === 'android' ? 0 : undefined}
                     scrollIndicatorInsets={{
                         bottom: this.props.topInset,
-                        top: 54 + this.props.bottomInset
+                        top: this.props.bottomInset
                     }}
                     keyboardDismissMode="interactive"
                     removeClippedSubviews={true}
@@ -206,17 +208,17 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
                     maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
                 />
                 {!this.state.loading && this.state.messages2.length <= 2 && (
-                    <View style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                    <ZSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ width: 375, height: 375, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }} />
                             <Image source={require('assets/img-messages.png')} style={{ width: 48, height: 42, marginBottom: 13 }} />
                             <Text style={{ color: '#c8c7cc', fontSize: 13, fontWeight: '500' }}>No messages yet</Text>
                         </View>
-                    </View>
+                    </ZSafeAreaView>
                 )}
-                <View position="absolute" left={0} right={0} bottom={ZAppConfig.bottomNavigationBarInset + 54 + this.props.bottomInset} top={ZAppConfig.navigationBarContentInsetSmall} pointerEvents="none">
+                <ZSafeAreaView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} pointerEvents="none">
                     <ZLoader transparent={true} enabled={this.state.loading} />
-                </View>
+                </ZSafeAreaView>
             </View>
         );
     }

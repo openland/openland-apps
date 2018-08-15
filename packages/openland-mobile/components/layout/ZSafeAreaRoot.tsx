@@ -1,16 +1,23 @@
 import * as React from 'react';
 import { ZKeyboardListener } from './ZKeyboardListener';
-import { ZSafeAreaProvider } from './ZSafeAreaContext';
+import { ZSafeAreaContext } from './ZSafeAreaContext';
 import { ZAppConfig } from '../ZAppConfig';
+import { ZKeyboardAwareContainer } from './ZKeyboardAwareContainer';
 
 export class ZSafeAreaRoot extends React.PureComponent {
     render() {
         return (
             <ZKeyboardListener bottomOffset={ZAppConfig.bottomNavigationBarInset}>
                 {(height) => (
-                    <ZSafeAreaProvider top={ZAppConfig.navigationBarContentInsetSmall} bottom={ZAppConfig.bottomNavigationBarInset + height}>
-                        {this.props.children}
-                    </ZSafeAreaProvider>
+                    <ZSafeAreaContext.Consumer>
+                        {area => (
+                            <ZSafeAreaContext.Provider value={{ top: ZAppConfig.navigationBarContentInsetSmall + area.top, bottom: ZAppConfig.bottomNavigationBarInset + area.bottom + height, hasKeyboard: height > 0 }}>
+                                <ZKeyboardAwareContainer>
+                                    {this.props.children}
+                                </ZKeyboardAwareContainer>
+                            </ZSafeAreaContext.Provider>
+                        )}
+                    </ZSafeAreaContext.Consumer>
                 )}
             </ZKeyboardListener>
         );

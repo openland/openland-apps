@@ -18,6 +18,7 @@ import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEng
 import { ZLoader } from '../../../components/ZLoader';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
+import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 
 interface ComposeModalState {
     message: string;
@@ -148,7 +149,9 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
                                 <MessagesListComponent key={this.state.conversationId} onAvatarPress={this.handleAvatarPress} onPhotoPress={this.handlePhotoPress} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.resolving) && (
-                                <ZLoader />
+                                <ZSafeAreaView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                                    <ZLoader />
+                                </ZSafeAreaView>
                             )}
                         </ZSafeAreaProvider>
                     </View>

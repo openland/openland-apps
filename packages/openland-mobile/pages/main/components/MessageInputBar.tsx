@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ZKeyboardAwareBar } from '../../../components/layout/ZKeybardAwareBar';
 import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
+import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 
 let styles = StyleSheet.create({
     textInput: {
@@ -11,7 +11,8 @@ let styles = StyleSheet.create({
         paddingRight: 12,
         paddingTop: 7,
         paddingBottom: 7,
-        height: 34,
+        minHeight: 34,
+        maxHeight: 100,
         fontSize: 16,
         borderColor: '#E6E6E7',
         borderWidth: 0.5
@@ -25,6 +26,8 @@ export interface MessageInputBarProps {
     onAttachPress?: () => void;
     onSubmitPress: () => void;
     onChangeText: (value: string) => void;
+    onBlur?: () => void;
+    onFocus?: () => void;
     enabled?: boolean;
     attachesEnabled?: boolean;
     text: string;
@@ -35,7 +38,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         let hasText = this.props.text.trim().length > 0;
         return (
             <ZKeyboardAwareBar>
-                <View flexDirection="row" style={{ paddingBottom: 8, paddingTop: 8 }}>
+                <View style={{ paddingBottom: 8, paddingTop: 8, flexDirection: 'row', alignItems: 'flex-end' }}>
                     {this.props.attachesEnabled !== false && (
                         <TouchableOpacity onPress={this.props.onAttachPress}>
                             <View width={52} height={33} alignItems="center" justifyContent="center">
@@ -53,10 +56,11 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         placeholderTextColor="#aaaaaa"
                         onChangeText={this.props.onChangeText}
                         value={this.props.text}
-                        // onSubmitEditing={this.props.onSubmitPress}
                         style={styles.textInput}
                         editable={this.props.enabled !== false}
                         multiline={true}
+                        onBlur={() => console.log('blur')}
+                        onFocus={() => console.log('focus')}
                     />
                     <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
                         <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
