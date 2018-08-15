@@ -84,7 +84,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
                     backgroundColor={backgroundColor}
                     borderColor={(!this.props.isOut || this.props.appearance === 'media') ? 'rgba(220, 224, 231, 0.45)' : undefined}
                 >
-                    <View style={{ marginBottom: innerPaddingBottom, marginTop: innerPaddingTop, marginHorizontal: innerPaddingHorizontal, backgroundColor: this.props.appearance !== 'media' ? backgroundColor : undefined }}>
+                    <View style={{ marginBottom: innerPaddingBottom, marginTop: innerPaddingTop, marginHorizontal: innerPaddingHorizontal, backgroundColor: (Platform.OS === 'macos' && this.props.appearance !== 'media') ? backgroundColor : undefined }}>
                         {this.props.children}
                         <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, borderColor: 'rgba(220, 224, 231, 0.45)' }} pointerEvents="none" />
                     </View>
