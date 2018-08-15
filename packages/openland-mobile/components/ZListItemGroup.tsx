@@ -62,7 +62,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                 }
                 {this.props.header === null && <View height={30} />}
                 {/* <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" /> */}
-                <View backgroundColor="#fff">
+                <View>
                     {components}
                 </View>
                 <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />

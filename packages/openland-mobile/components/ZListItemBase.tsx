@@ -29,19 +29,32 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
 
     render() {
         let height = this.props.height === null ? undefined : (this.props.height ? this.props.height : 44);
-        return (
-            <RectButton onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} enabled={!!this.props.onPress || !!this.props.path}>
-                <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
-                    <View style={{ height: height, flexDirection: 'row' }}>
-                        <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
-                        {!isAndroid && this.props.path && (
-                            <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} />
-                        )}
-                    </View>
-                    {this.props.separator !== false && <View style={{ backgroundColor: AppStyles.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
+
+        const content = (
+            <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
+                <View style={{ height: height, flexDirection: 'row' }}>
+                    <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
+                    {!isAndroid && this.props.path && (
+                        <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} />
+                    )}
                 </View>
-            </RectButton>
+                {this.props.separator !== false && <View style={{ backgroundColor: AppStyles.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
+            </View>
         );
+
+        if (!!this.props.onPress || !!this.props.path) {
+            return (
+                <RectButton onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                    {content}
+                </RectButton>
+            );
+        } else {
+            return (
+                <View style={{ backgroundColor: this.props.backgroundColor }}>
+                    {content}
+                </View>
+            );
+        }
     }
 }
 
