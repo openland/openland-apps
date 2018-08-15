@@ -6,16 +6,21 @@ import { ZHeaderSafeArea } from './layout/ZHeaderSafeArea';
 import { ZHeaderAppearance } from './navigation/ZHeaderAppearance';
 
 export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, args?: { navigationAppearance?: ZHeaderAppearance }) => {
-    let res = (props: NavigationInjectedProps) => {
-        return (
-            <ZHeaderContextDirect navigation={props.navigation}>
-                <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                    <Wrapped {...props} />
-                </ZHeaderSafeArea>
-            </ZHeaderContextDirect>
-        );
-    };
 
+    let res = class WrappedPage extends React.Component<NavigationInjectedProps> {
+        shouldComponentUpdate() {
+            return false;
+        }
+        render() {
+            return (
+                <ZHeaderContextDirect navigation={this.props.navigation}>
+                    <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                        <Wrapped {...this.props} />
+                    </ZHeaderSafeArea>
+                </ZHeaderContextDirect>
+            );
+        }
+    };
     hoistNonReactStatics(res, Wrapped);
 
     return res;
