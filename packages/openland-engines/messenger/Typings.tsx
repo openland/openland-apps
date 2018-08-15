@@ -10,6 +10,7 @@ const SUBSCRIBE_TYPINGS = gql`
             user {
                 id
                 name
+                picture
             }
             cancel
         }
@@ -17,11 +18,23 @@ const SUBSCRIBE_TYPINGS = gql`
 `;
 
 export class TypingsWatcher {
-    private typings: { [conversationId: string]: { [userId: string]: string | undefined } } = {};
-    private timeouts: { [conversationId: string]: { [userId: string]: number } } = {};
+    private typings: {
+        [conversationId: string]: {
+            [userId: string]: {
+                userName: string,
+                userPic: string | null
+            } | undefined
+        }
+    } = {};
+    private timeouts: {
+        [conversationId: string]: {
+            [userId: string]: number
+        }
+    } = {};
     private sub?: ZenObservable.Subscription = undefined;
-    private onChange: (conversationId: string, typing?: string) => void;
-    constructor(client: OpenApolloClient, onChange: (conversationId: string, typing?: string) => void, currentUserId: string) {
+    private onChange: (conversationId: string, data?: { typing: string, pictures: (string | null)[] }) => void;
+
+    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, pictures: (string | null)[] }) => void, currentUserId: string) {
         this.onChange = onChange;
         let typingSubscription = client.client.subscribe({
             query: SUBSCRIBE_TYPINGS
@@ -33,12 +46,17 @@ export class TypingsWatcher {
                     return;
                 }
                 let cId: string = event.data.alphaSubscribeTypings.conversation.id;
-                // console.warn(event.data.alphaSubscribeTypings.user.name, 'typing in ', cId);
+
                 // add new typings
                 let existing = this.typings[cId] || {};
+
                 if (!event.data.alphaSubscribeTypings.cancel) {
-                    existing[event.data.alphaSubscribeTypings.user.id] = event.data.alphaSubscribeTypings.user.name;
+                    existing[event.data.alphaSubscribeTypings.user.id] = {
+                        userName: event.data.alphaSubscribeTypings.user.name,
+                        userPic: event.data.alphaSubscribeTypings.user.picture
+                    };
                     this.typings[cId] = existing;
+
                     this.onChange(cId, this.renderString(cId));
                 }
 
@@ -59,9 +77,19 @@ export class TypingsWatcher {
     }
 
     renderString = (cId: string) => {
-        let usersTyping = Object.keys(this.typings[cId]).map(userId => this.typings[cId][userId]).filter(u => u);
-        let str = usersTyping.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing';
-        return usersTyping.length > 0 ? str : undefined;
+        let usersTyping = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => u);
+
+        let userNames = usersTyping.map(u => u!.userName);
+        let usersPic = usersTyping.map(u => u!.userPic);
+
+        let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing';
+
+        let data = {
+            typing: str,
+            pictures: usersPic,
+        };
+
+        return usersTyping.length > 0 ? data : undefined;
     }
 
     destroy = () => {
@@ -69,23 +97,24 @@ export class TypingsWatcher {
             this.sub.unsubscribe();
         }
     }
-
 }
 
 export class TypingEngine {
-    listeners: ((typing?: string) => void)[] = [];
+    listeners: ((typing?: string, pictures?: (string | null)[]) => void)[] = [];
     typing?: string;
+    pictures?: (string | null)[];
 
-    onTyping = (typing?: string) => {
-        this.typing = typing;
+    onTyping = (data?: {typing: string, pictures: (string | null)[]}) => {
+        this.typing = data !== undefined ?  data.typing : undefined;
+        this.pictures = data !== undefined ?  data.pictures : undefined;
         for (let l of this.listeners) {
-            l(this.typing);
+            l(this.typing, this.pictures);
         }
     }
 
-    subcribe = (listener: (typing?: string) => void) => {
+    subcribe = (listener: (typing?: string, pictures?: (string | null)[]) => void) => {
         this.listeners.push(listener);
-        listener(this.typing);
+        listener(this.typing, this.pictures);
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {

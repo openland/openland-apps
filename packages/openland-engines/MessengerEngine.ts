@@ -8,6 +8,7 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { DialogListEngine } from './messenger/DialogListEngine';
+
 export class MessengerEngine {
 
     readonly client: OpenApolloClient;
@@ -51,8 +52,8 @@ export class MessengerEngine {
         await this.global.start();
     }
 
-    handleTyping = (conversationId: string, typing?: string) => {
-        this.getTypings(conversationId).onTyping(typing);
+    handleTyping = (conversationId: string, data?: {typing: string, pictures: (string | null)[]}) => {
+        this.getTypings(conversationId).onTyping(data);
     }
 
     awaitLoading() {

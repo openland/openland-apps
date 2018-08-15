@@ -3,18 +3,30 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { TypingEngine } from 'openland-engines/messenger/Typings';
 
-export const TypingContext = React.createContext<{ typing?: string }>({});
+interface TypingContextProps {
+    typing?: string;
+    pictures?: (string | null)[];
+}
 
-class TypingsWrapper extends React.PureComponent<{ engine: TypingEngine }, { typing?: string }> {
+export const TypingContext = React.createContext<TypingContextProps>({});
+
+interface TypingsWrapperProps {
+    engine: TypingEngine;
+}
+
+class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, pictures?: (string | null)[] }> {
     private destructor: () => void;
-    constructor(props: { engine: TypingEngine }) {
+    constructor(props: TypingsWrapperProps) {
         super(props);
         this.destructor = props.engine.subcribe(this.onTyping);
         this.state = {};
     }
 
-    onTyping = (typing?: string) => {
-        this.setState({ typing: typing });
+    onTyping = (typing?: string, pictures?: (string | null)[]) => {
+        this.setState({ 
+            typing: typing,
+            pictures: pictures
+        });
     }
 
     componentWillUnmount() {
@@ -25,7 +37,12 @@ class TypingsWrapper extends React.PureComponent<{ engine: TypingEngine }, { typ
 
     render() {
         return (
-            <TypingContext.Provider value={{ typing: this.state.typing }}>
+            <TypingContext.Provider
+                value={{
+                    typing: this.state.typing,
+                    pictures: this.state.pictures
+                }}
+            >
                 {this.props.children}
             </TypingContext.Provider>
         );
@@ -39,16 +56,17 @@ export class TypignsComponent extends React.PureComponent<{ conversatonId: strin
                 {canUseDOM && (
                     <MessengerContext.Consumer>
                         {
-                            messenger => (
-                                <TypingsWrapper engine={messenger.getTypings(this.props.conversatonId)}>
-                                    {this.props.children}
-                                </TypingsWrapper>
-                            )
+                            messenger => {
+                                return (
+                                    <TypingsWrapper engine={messenger.getTypings(this.props.conversatonId)}>
+                                        {this.props.children}
+                                    </TypingsWrapper>
+                                );
+                            }
                         }
                     </MessengerContext.Consumer>
                 )}
                 {!canUseDOM && this.props.children}
-
             </>
         );
     }
