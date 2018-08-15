@@ -20,11 +20,18 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         if (!this.state.closing) {
             Animated.spring(this.progress, {
                 toValue: 0,
-                // easing: Easing.ease,
                 useNativeDriver: true
-            }).start();
+            }).start(() => {
+                this.props.onClose();
+            });
+            // Animated.timing(this.progress, {
+            //     toValue: 0,
+            //     duration: 6000,
+            //     useNativeDriver: true
+            // }).start(() => {
+            //     this.props.onClose();
+            // });
             this.setState({ closing: true });
-            setTimeout(() => { this.props.onClose(); }, 400);
             setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
         }
     }
@@ -47,58 +54,76 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         const w = this.props.config.width;
         const h = this.props.config.height;
         const animate = this.props.config.animate!!;
-        console.log(animate);
+        const containerW = Dimensions.get('window').width;
+        const containerH = Dimensions.get('window').height;
         const size = layoutMedia(w, h, 1024, 1024);
         const l = layoutMedia(w, h, Dimensions.get('window').width, Dimensions.get('window').height);
+        const baseScale = Math.max(animate.width / containerW, animate.height / containerH);
 
         return (
             <View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, flexDirection: 'column', alignItems: 'stretch' }} pointerEvents="box-none">
                 <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: this.progress }} />
 
-                <Animated.View
+                <View
                     style={{
                         position: 'absolute',
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                        right: 0,
-                        width: Dimensions.get('window').width,
-                        height: Dimensions.get('window').height,
-                        opacity: this.progress,
-                        transform: [
-                            {
-                                translateY: Animated.multiply(animate.y - (Platform.OS === 'android' ? animate.height : 0), this.progressInverted)
-                            },
-                            {
-                                translateX: Animated.multiply(animate.x - (Platform.OS === 'android' ? animate.width : 0), this.progressInverted)
-                            },
-                            {
-                                scale: Animated.add(
-                                    Animated.multiply(l.width / Dimensions.get('window').width, this.progress),
-                                    Animated.multiply(animate.width / Dimensions.get('window').width, this.progressInverted)
-                                )
-                            }
-                        ]
+                        width: containerW,
+                        height: containerH,
+                    }}
+                    pointerEvents="box-none"
+                >
+                    <Animated.View
+                        style={{
+                            width: containerW,
+                            height: containerH,
+                            transform: [
+                                {
+                                    translateX: Animated.multiply(animate.x + animate.width / 2 - containerW / 2, this.progressInverted)
+                                },
+                                {
+                                    translateY: Animated.multiply(animate.y + animate.height / 2 - containerH / 2, this.progressInverted)
+                                },
+                                {
+                                    scale: Animated.add(this.progress, Animated.multiply(baseScale, this.progressInverted))
+                                },
+                            ]
+                        }}
+                        pointerEvents="box-none"
+                    >
+                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressInverted, alignItems: 'center', justifyContent: 'center' }} pointerEvents="none">
+                            <XPImage
+                                source={{ uuid: this.props.config.uuid }}
+                                imageSize={{ width: size.width, height: size.height }}
+                                width={l.width}
+                                height={l.height}
+                                borderRadius={18 / baseScale}
+                            />
+                        </Animated.View>
+                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progress }}>
+                            <ZImagePreview
+                                src={this.props.config.uuid}
+                                srcWidth={size.width}
+                                srcHeight={size.height}
+                                width={containerW}
+                                height={containerH}
+                            />
+                        </Animated.View>
+                    </Animated.View>
+                </View>
+
+                <Animated.View
+                    style={{
+                        height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight,
+                        paddingTop: ZAppConfig.statusBarHeight,
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        transform: [{
+                            translateY:
+                                Animated.multiply(
+                                    Animated.add(this.progress, -1),
+                                    ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight)
+                        }]
                     }}
                 >
-                    <View
-                        style={{
-
-                            width: Dimensions.get('window').width,
-                            height: Dimensions.get('window').height
-                        }}
-                    >
-                        <ZImagePreview
-                            src={this.props.config.uuid}
-                            srcWidth={w}
-                            srcHeight={h}
-                            width={Dimensions.get('window').width}
-                            height={Dimensions.get('window').height}
-                        />
-                    </View>
-                </Animated.View>
-
-                <Animated.View style={{ height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, paddingTop: ZAppConfig.statusBarHeight, backgroundColor: 'rgba(0,0,0,0.6)', transform: [{ translateY: Animated.multiply(Animated.add(this.progress, -1), ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight) }] }}>
                     <ZHeaderBackButton inverted={true} onPress={this.handleClose} />
                 </Animated.View>
             </View>
