@@ -24,6 +24,9 @@ export const UserQuery = gql`
             about
             location
             isBot
+            primaryOrganization: alphaPrimaryOrganization{
+                name
+            }
         }
     }
 `;

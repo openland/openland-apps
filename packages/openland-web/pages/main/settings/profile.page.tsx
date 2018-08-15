@@ -68,7 +68,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                         input: {
                                             firstName: props.data.profile!!.firstName,
                                             lastName: props.data.profile!!.lastName,
-                                            primaryOrganizationId: props.data.profile!!.primaryOrganizationId,
+                                            primaryOrganizationId: props.data.profile!!.primaryOrganization && props.data.profile!!.primaryOrganization!!.id,
                                             role: props.data.profile!!.role,
 
                                             photoRef: sanitizeIamgeRef(props.data.profile!!.photoRef)

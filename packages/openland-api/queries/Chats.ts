@@ -210,7 +210,11 @@ export const ChatChangeGroupTitleMutation = gql`
 
 export const ChatAddMemberMutation = gql`
     mutation ChatAddMember($conversationId: ID!, $userId: ID!) {
-        alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}])
+        alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}]){
+            chat{
+                id
+            }
+        }
     }
 `;
 

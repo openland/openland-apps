@@ -30,6 +30,12 @@ const Name = Glamorous.div({
     fontWeight: 500,
 });
 
+const Organization = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 400,
+    opacity: 0.5
+});
+
 const DateComponent = Glamorous.div<{small?: boolean}>((props) => ({
     width: props.small ? 56 : 62,
     fontSize: props.small ? 13 : 14,
@@ -146,7 +152,9 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                     <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
                     <MessageWrapper separator={'none'} flexGrow={1}>
                         <XHorizontal separator={4}>
-                            <Name>{this.props.sender!!.name}</Name><DateComponent>{date}</DateComponent>
+                            <Name>{this.props.sender!!.name}</Name>
+                            {this.props.sender!!.primaryOrganization && <Organization>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                            <DateComponent>{date}</DateComponent>
                         </XHorizontal>
                         {content}
                     </MessageWrapper>
