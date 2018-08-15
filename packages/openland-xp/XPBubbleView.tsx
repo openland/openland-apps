@@ -48,6 +48,11 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
             innerPaddingHorizontal = 13;
             innerPaddingTop = 7;
             innerPaddingBottom = 8;
+        } else if (this.props.appearance === 'media') {
+            radius.bottomLeft = 18;
+            radius.topLeft = 18;
+            radius.topRight = 18;
+            radius.bottomRight = 18;
         }
         if (this.props.attach === 'top' || this.props.attach === 'both') {
             topPadding = 2;
@@ -73,7 +78,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
                     flexDirection: 'row'
                 }}
             >
-                {!this.props.isOut && !attachedBottom && <Image source={require('assets/bubble-corner.png')} style={{ alignSelf: 'flex-end' }} />}
+                {!this.props.isOut && !attachedBottom && this.props.appearance !== 'media' && <Image source={require('assets/bubble-corner.png')} style={{ alignSelf: 'flex-end' }} />}
                 <XPRoundedMask
                     radius={radius}
                     backgroundColor={backgroundColor}
@@ -84,7 +89,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
                         <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, borderColor: 'rgba(220, 224, 231, 0.45)' }} pointerEvents="none" />
                     </View>
                 </XPRoundedMask>
-                {this.props.isOut && !attachedBottom && <Image source={require('assets/bubble-corner-my.png')} style={{ alignSelf: 'flex-end' }} />}
+                {this.props.isOut && !attachedBottom && this.props.appearance !== 'media' && <Image source={require('assets/bubble-corner-my.png')} style={{ alignSelf: 'flex-end' }} />}
             </View>
         );
     }

@@ -19,6 +19,10 @@ export function isServerMessage(message: MessageFullFragment | PendingMessage): 
     return !!(message as any).__typename;
 }
 
+export function extractKey(message: ModelMessage) {
+    return isServerMessage(message) ? message.id : message.key;
+}
+
 export interface FileMetadata {
     name?: string;
 }

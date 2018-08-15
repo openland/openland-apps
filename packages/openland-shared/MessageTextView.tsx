@@ -61,7 +61,7 @@ export class MessageTextView extends React.PureComponent<{ date: string, text: s
             }
         });
         let sender: any = undefined;
-        if (this.props.sender) {
+        if (this.props.sender && (this.props.attach !== 'top' && this.props.attach !== 'both')) {
             let placeholderIndex = doSimpleHash(this.props.sender.id) % XPStyles.avatars.length;
             sender = <Text key="sender-name" style={[styles.sender, { color: XPStyles.avatars[placeholderIndex].nameColor }]}>{this.props.sender.name}</Text>;
         }

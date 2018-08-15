@@ -7,6 +7,8 @@ import { MessageView } from 'openland-shared/MessageView';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { FlatList } from 'react-native-gesture-handler';
+import { ModelMessage, extractKey } from 'openland-engines/messenger/types';
+import { MessageViewSingle } from 'openland-shared/MessageViewSingle';
 
 let months = [
     'Jan',
@@ -57,22 +59,34 @@ type MessageListItem = {
     year: number;
 } | {
     type: 'message',
-    message: MessageGroup
+    message: ModelMessage,
+    attach?: 'top' | 'bottom' | 'both'
 };
 
 function convertMessages(days: Day[]) {
     let res: MessageListItem[] = [];
-    res.push({ type: 'header' });
+    res.unshift({ type: 'header' });
     for (let d of days) {
-        let msgs = [...d.messages];
-        msgs.reverse();
-        res.push({ 'type': 'date', day: d.day, month: d.month, year: d.year });
+        res.unshift({ 'type': 'date', day: d.day, month: d.month, year: d.year });
         for (let g of d.messages) {
-            res.push({ 'type': 'message', message: g });
+            let index = 0;
+            for (let m of g.messages) {
+                let attach: 'top' | 'bottom' | 'both' | undefined;
+                if (g.messages.length > 1) {
+                    if (index === 0) {
+                        attach = 'bottom';
+                    } else if (index === g.messages.length - 1) {
+                        attach = 'top';
+                    } else {
+                        attach = 'both';
+                    }
+                }
+                res.unshift({ 'type': 'message', message: m, attach });
+                index++;
+            }
         }
     }
-    res.push({ type: 'footer' });
-    res.reverse();
+    res.unshift({ type: 'footer' });
     return res;
 }
 
@@ -101,12 +115,12 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
             return (<DateSeparator day={itm.day} month={itm.month} year={itm.year} />);
         } else if (itm.type === 'message') {
             return (
-                <MessageView
-                    key={itm.message.key}
+                <MessageViewSingle
                     onPhotoPress={this.props.onPhotoPress}
                     onAvatarPress={this.props.onAvatarPress}
                     message={itm.message}
                     engine={this.props.engine}
+                    attach={itm.attach}
                 />
             );
         } else {
@@ -122,7 +136,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
         } else if (itm.type === 'date') {
             return 'date-' + itm.day + '-' + itm.month + '-' + itm.year;
         } else if (itm.type === 'message') {
-            return itm.message.key;
+            return extractKey(itm.message);
         } else {
             throw Error('Unexpected item');
         }

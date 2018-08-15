@@ -5,7 +5,7 @@ import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
 
-export class MessageImageView extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean, attach?: 'bottom' | 'top' | 'both', message: MessageFullFragment, onPress?: (message: MessageFullFragment, view?: View) => void }> {
+export class MessageImageView extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean, message: MessageFullFragment, onPress?: (message: MessageFullFragment, view?: View) => void }> {
 
     ref = React.createRef<View>();
 
@@ -27,9 +27,8 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
         });
         let layout = layoutMedia(this.props.width, this.props.height, maxSize, maxSize);
         let optimalSize = layoutMedia(this.props.width, this.props.height, 1024, 1024);
-        let corners = resolveCorners(this.props.isOut, this.props.attach);
         return (
-            <XPBubbleView isOut={this.props.isOut} attach={this.props.attach} appearance="media">
+            <XPBubbleView isOut={this.props.isOut} appearance="media">
 
                 <View
                     width={layout.width}
@@ -44,21 +43,13 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                         activeOpacity={0.8}
                         delayPressIn={0}
                         style={{
-                            borderRadius: 18, // Hack for MAC OS
-                            borderTopLeftRadius: corners.topLeft,
-                            borderTopRightRadius: corners.topRight,
-                            borderBottomLeftRadius: corners.bottomLeft,
-                            borderBottomRightRadius: corners.bottomRight,
+                            borderRadius: 18
                         }}
                     >
                         <XPImage
                             source={{ uuid: this.props.file }}
                             imageSize={{ width: optimalSize.width, height: optimalSize.height }}
-                            borderRadius={18} // Hack for MAC OS
-                            borderTopLeftRadius={corners.topLeft}
-                            borderTopRightRadius={corners.topRight}
-                            borderBottomLeftRadius={corners.bottomLeft}
-                            borderBottomRightRadius={corners.bottomRight}
+                            borderRadius={18}
                             resize={this.props.isGif ? 'none' : undefined}
                             width={layout.width}
                             height={layout.height}
