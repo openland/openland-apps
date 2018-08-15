@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
 import { MessageFullFragment } from 'openland-api/Types';
-import { View, Text, ListRenderItemInfo, FlatList, Platform } from 'react-native';
+import { View, Text, ListRenderItemInfo, Platform } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { MessageView } from 'openland-shared/MessageView';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
+import { FlatList } from 'react-native-gesture-handler';
 
 let months = [
     'Jan',
