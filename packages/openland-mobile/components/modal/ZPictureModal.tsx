@@ -22,7 +22,9 @@ export class ZPictureModal extends React.PureComponent<{}, { config?: ZPictureTr
         return (
             <View width="100%" height="100%">
                 <ZPictureModalContext.Provider value={this}>
-                    {this.props.children}
+                    <View width="100%" height="100%" renderToHardwareTextureAndroid={!!this.state.config}>
+                        {this.props.children}
+                    </View>
                 </ZPictureModalContext.Provider>
                 {this.state.config &&
                     <ZPictureOverlay config={this.state.config} onClose={() => this.setState({ config: undefined })} />

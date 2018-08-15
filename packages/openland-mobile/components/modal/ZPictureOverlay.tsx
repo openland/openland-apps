@@ -11,6 +11,10 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
     progress = new Animated.Value(0);
     progressInverted = Animated.add(1, Animated.multiply(this.progress, -1));
+    progressLinear = new Animated.Value(0);
+    progressLinearInverted = Animated.add(1, Animated.multiply(this.progressLinear, -1));
+
+    previewLoaded = false;
 
     state = {
         closing: false
@@ -18,10 +22,17 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
     handleClose = () => {
         if (!this.state.closing) {
-            Animated.spring(this.progress, {
-                toValue: 0,
-                useNativeDriver: true
-            }).start(() => {
+            Animated.parallel([
+                Animated.spring(this.progress, {
+                    toValue: 0,
+                    useNativeDriver: true
+                }),
+                Animated.timing(this.progressLinear, {
+                    toValue: 0,
+                    duration: 150,
+                    useNativeDriver: true
+                })
+            ]).start(() => {
                 this.props.onClose();
             });
             // Animated.timing(this.progress, {
@@ -41,12 +52,30 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     componentDidMount() {
-        Animated.spring(this.progress, {
-            toValue: 1,
-            // duration: 300,
-            // easing: Easing.ease,
-            useNativeDriver: true
-        }).start();
+        // Animated.spring(this.progress, {
+        //     toValue: 1,
+        //     // duration: 300,
+        //     // easing: Easing.ease,
+        //     useNativeDriver: true
+        // }).start();
+    }
+
+    onPreviewLoaded = () => {
+        if (this.previewLoaded) {
+            return;
+        }
+        this.previewLoaded = true;
+        Animated.parallel([
+            Animated.spring(this.progress, {
+                toValue: 1,
+                useNativeDriver: true
+            }),
+            Animated.timing(this.progressLinear, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true
+            })
+        ]).start();
     }
 
     render() {
@@ -62,7 +91,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
         return (
             <View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, flexDirection: 'column', alignItems: 'stretch' }} pointerEvents="box-none">
-                <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: this.progress }} />
+                <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: this.progressLinear }} />
 
                 <View
                     style={{
@@ -90,27 +119,24 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         }}
                         pointerEvents="box-none"
                     >
-                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressInverted, alignItems: 'center', justifyContent: 'center' }} pointerEvents="none">
-                            <View renderToHardwareTextureAndroid={true}>
-                                <XPImage
-                                    source={{ uuid: this.props.config.uuid }}
-                                    imageSize={{ width: size.width, height: size.height }}
-                                    width={l.width}
-                                    height={l.height}
-                                    borderRadius={18 / baseScale}
-                                />
-                            </View>
+                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, alignItems: 'center', justifyContent: 'center', opacity: this.progressInverted }} pointerEvents="none">
+                            <XPImage
+                                source={{ uuid: this.props.config.uuid }}
+                                imageSize={{ width: size.width, height: size.height }}
+                                width={l.width}
+                                height={l.height}
+                                borderRadius={18 / baseScale}
+                                onLoaded={this.onPreviewLoaded}
+                            />
                         </Animated.View>
-                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progress }}>
-                            <View renderToHardwareTextureAndroid={true}>
-                                <ZImagePreview
-                                    src={this.props.config.uuid}
-                                    srcWidth={size.width}
-                                    srcHeight={size.height}
-                                    width={containerW}
-                                    height={containerH}
-                                />
-                            </View>
+                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressLinear }}>
+                            <ZImagePreview
+                                src={this.props.config.uuid}
+                                srcWidth={size.width}
+                                srcHeight={size.height}
+                                width={containerW}
+                                height={containerH}
+                            />
                         </Animated.View>
                     </Animated.View>
                 </View>
@@ -123,7 +149,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         transform: [{
                             translateY:
                                 Animated.multiply(
-                                    Animated.add(this.progress, -1),
+                                    Animated.add(this.progressLinear, -1),
                                     ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight)
                         }]
                     }}

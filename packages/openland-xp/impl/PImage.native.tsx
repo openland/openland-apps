@@ -47,6 +47,7 @@ export class PImage extends React.Component<PImageProps> {
                     borderBottomLeftRadius: this.props.borderBottomLeftRadius,
                     borderBottomRightRadius: this.props.borderBottomRightRadius
                 }}
+                onLoadEnd={this.props.onLoaded}
             />
         );
     }

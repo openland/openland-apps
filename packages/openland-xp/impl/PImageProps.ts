@@ -10,4 +10,5 @@ export interface PImageProps {
     borderTopLeftRadius?: number;
     borderTopRightRadius?: number;
     highPriority?: boolean;
+    onLoaded?: () => void;
 }

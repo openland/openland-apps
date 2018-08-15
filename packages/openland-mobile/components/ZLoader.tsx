@@ -24,7 +24,7 @@ export interface ZLoaderProps {
     transparent?: boolean;
 }
 
-export class ZLoader extends React.PureComponent<ZLoaderProps> {
+export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolean }> {
 
     opacity = new Animated.Value(0);
     wasStarted = false;
@@ -32,9 +32,17 @@ export class ZLoader extends React.PureComponent<ZLoaderProps> {
 
     // });
 
+    constructor(props: ZLoaderProps) {
+        super(props);
+        this.state = {
+            visible: props.enabled !== false
+        };
+    }
+
     componentDidMount() {
         if (this.props.enabled !== false) {
             this.wasStarted = true;
+            this.setState({ visible: true });
             Animated.timing(this.opacity, {
                 toValue: 1,
                 duration: 500,
@@ -46,6 +54,7 @@ export class ZLoader extends React.PureComponent<ZLoaderProps> {
     componentDidUpdate() {
         if (this.props.enabled !== false && !this.wasStarted) {
             this.wasStarted = true;
+            this.setState({ visible: true });
             Animated.timing(this.opacity, {
                 toValue: 1,
                 duration: 500,
@@ -56,18 +65,20 @@ export class ZLoader extends React.PureComponent<ZLoaderProps> {
                 toValue: 0,
                 duration: 100,
                 useNativeDriver: true
-            }).start();
+            }).start(() => { this.setState({ visible: false }); });
         }
     }
 
     render() {
-        let size = this.props.appearance === 'large' ? 170 : this.props.appearance === 'small' ? 48  : 100;
+        let size = this.props.appearance === 'large' ? 170 : this.props.appearance === 'small' ? 48 : 100;
         return (
             <View style={[styles.container, (this.props.transparent !== true) && styles.containerFilled]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
-                <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
-                    {this.props.appearance === 'small' &&  <LottieView source={require('assets/loader_small.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
-                    {this.props.appearance !== 'small' &&  <LottieView source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
-                </Animated.View>
+                {this.state.visible && (
+                    <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
+                        {this.props.appearance === 'small' && <LottieView source={require('assets/loader_small.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
+                        {this.props.appearance !== 'small' && <LottieView source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
+                    </Animated.View>
+                )}
             </View>
         );
     }

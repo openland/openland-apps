@@ -15,6 +15,7 @@ export interface XPImageProps extends XPFlexStyle {
     borderTopLeftRadius?: number;
     borderTopRightRadius?: number;
     highPriority?: boolean;
+    onLoaded?: () => void;
 }
 
 export class XPImage extends React.PureComponent<XPImageProps> {
@@ -34,6 +35,7 @@ export class XPImage extends React.PureComponent<XPImageProps> {
                     borderBottomRightRadius={this.props.borderBottomRightRadius}
                     borderTopLeftRadius={this.props.borderTopLeftRadius}
                     borderTopRightRadius={this.props.borderTopRightRadius}
+                    onLoaded={this.props.onLoaded}
                 />
             </View>
         );

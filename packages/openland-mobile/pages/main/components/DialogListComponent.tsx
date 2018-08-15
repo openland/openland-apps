@@ -7,6 +7,12 @@ import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZLoader } from '../../../components/ZLoader';
 
+class DialogListSeparator extends React.PureComponent {
+    render() {
+        return <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />; 
+    }
+}
+
 export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], loadingMore?: boolean, onPress?: (id: ConversationShortFragment) => void }> {
 
     handleItemClick = (id: ConversationShortFragment) => {
@@ -55,7 +61,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 renderItem={this.renderItem}
                 onEndReached={this.loadMore}
                 onEndReachedThreshold={1}
-                ItemSeparatorComponent={() => <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />}
+                ItemSeparatorComponent={DialogListSeparator}
                 fixedHeight={80}
             />
         );

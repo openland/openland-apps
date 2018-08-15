@@ -27,6 +27,7 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
             <>
                 <ZHeaderConfigRegistrator config={new ZHeaderConfig({ contentOffset: this.contentOffset })} />
                 <AnimatedFlatList
+                    removeClippedSubviews={true}
                     {...other}
                     style={[other.style, {
                         // Work-around for freezing navive animation driver
@@ -55,7 +56,7 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
     }
 }
 
-export const ZFlatList = function <T>(props: ZFlatListProps<T> ) {
+export const ZFlatList = function <T>(props: ZFlatListProps<T>) {
     return (
         <ZSafeAreaContext.Consumer>
             {(area) => <ZFlatListComponent {...props} insets={area} />}
