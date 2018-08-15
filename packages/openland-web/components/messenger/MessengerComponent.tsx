@@ -9,10 +9,12 @@ import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper } from 'openland-x/XMenuItem';
-import { XCheckbox } from 'openland-x/XCheckbox';
+import { XCheckbox, XCheckboxBasic } from 'openland-x/XCheckbox';
 import { TypignsComponent, TypingContext } from './components/TypingsComponent';
 import { XButton } from 'openland-x/XButton';
 import { withBlockUser } from '../../api/withBlockUser';
+import { XLoadingCircular } from 'openland-x/XLoadingCircular';
+import { delay } from 'openland-y-utils/timer';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -60,25 +62,49 @@ const XButtonMargin = Glamorous(XButton)({
     margin: 4
 });
 
+class BlockSwitcherComponent extends React.Component<{ unblock: any, block: any, blocked: boolean, userId: string, refetchVars: { conversationId: string } }, { blocked: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { blocked: props.blocked };
+    }
+
+    render() {
+        return (
+            <XMenuItemWrapper>
+                <XVertical>
+                    <XCheckbox
+                        label="Block"
+                        switcher={true}
+                        value={this.state.blocked ? 'blocked' : 'unblocked'}
+                        trueValue="blocked"
+                        onChange={() => {
+                            this.setState({ blocked: !this.state.blocked });
+                            delay(0).then(() => {
+                                this.props.blocked
+                                    ? this.props.unblock({
+                                        variables: {
+                                            userId: this.props.userId
+                                        }
+                                    })
+                                    : this.props.block({
+                                        variables: {
+                                            userId: this.props.userId
+                                        }
+                                    });
+                            });
+
+                        }
+                        }
+                    />
+                </XVertical>
+            </XMenuItemWrapper>
+        );
+    }
+}
+
 const BlockButton = withBlockUser((props) => (
-    <XButtonMargin
-        text={(props as any).blocked ? 'Unblock' : 'Block'}
-        style="flat"
-        action={async () => await (
-            (props as any).blocked
-                ? props.unblock({
-                    variables: {
-                        userId: (props as any).userId
-                    }
-                })
-                : props.block({
-                    variables: {
-                        userId: (props as any).userId
-                    }
-                })
-        )}
-    />
-)) as React.ComponentType<{ blocked: boolean, userId: string }>;
+    <BlockSwitcherComponent block={props.block} unblock={props.unblock} blocked={(props as any).blocked} userId={(props as any).userId} refetchVars={(props as any).refetchVars} />
+)) as React.ComponentType<{ blocked: boolean, userId: string, refetchVars: { conversationId: string } }>;
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     console.log(props);
@@ -145,6 +171,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     <BlockButton
                                         blocked={(props.data.chat as any).blocked}
                                         userId={(props.data.chat as any).user.id}
+                                        refetchVars={{ conversationId: props.data.chat.id }}
                                     />
                                 )}
                             </div>
