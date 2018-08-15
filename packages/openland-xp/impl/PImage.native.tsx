@@ -36,7 +36,7 @@ export class PImage extends React.Component<PImageProps> {
         }
         return (
             <FastImage
-                source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal' }}
+                source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal', ...{ disableAnimations: true } as any }}
                 resizeMode={this.props.resize === 'fit' ? 'contain' : 'stretch'}
                 style={{
                     width: this.props.width,

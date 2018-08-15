@@ -1,0 +1,45 @@
+patch-package
+--- a/node_modules/react-native-fast-image/android/src/main/java/com/dylanvann/fastimage/FastImageViewManager.java
++++ b/node_modules/react-native-fast-image/android/src/main/java/com/dylanvann/fastimage/FastImageViewManager.java
+@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
+ import android.graphics.drawable.Drawable;
+ import android.widget.ImageView;
+ 
++import com.bumptech.glide.DrawableRequestBuilder;
+ import com.bumptech.glide.Glide;
+ import com.bumptech.glide.Priority;
+ import com.bumptech.glide.load.engine.DiskCacheStrategy;
+@@ -149,15 +150,21 @@ class FastImageViewManager extends SimpleViewManager<ImageViewWithUrl> implement
+         int viewId = view.getId();
+         eventEmitter.receiveEvent(viewId, REACT_ON_LOAD_START_EVENT, new WritableNativeMap());
+ 
+-        Glide
++        boolean disableAnimations = source.getBoolean("disableAnimations");
++        DrawableRequestBuilder<GlideUrl> request = Glide
+                 .with(view.getContext().getApplicationContext())
+                 .load(glideUrl)
+                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                 .dontTransform()
+                 .priority(priority)
+                 .placeholder(TRANSPARENT_DRAWABLE)
+-                .listener(LISTENER)
+-                .into(view);
++                .listener(LISTENER);
++
++        if (disableAnimations) {
++            request = request.dontAnimate();
++        }
++
++        request.into(view);
+     }
+ 
+     @ReactProp(name = "resizeMode")
+@@ -201,7 +208,7 @@ class FastImageViewManager extends SimpleViewManager<ImageViewWithUrl> implement
+     public void onProgress(String key, long bytesRead, long expectedLength) {
+         List<ImageViewWithUrl> viewsForKey = VIEWS_FOR_URLS.get(key);
+         if (viewsForKey != null) {
+-            for (ImageViewWithUrl view: viewsForKey) {
++            for (ImageViewWithUrl view : viewsForKey) {
+                 WritableMap event = new WritableNativeMap();
+                 event.putInt("loaded", (int) bytesRead);
+                 event.putInt("total", (int) expectedLength);
