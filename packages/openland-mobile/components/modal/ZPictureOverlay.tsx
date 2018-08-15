@@ -91,22 +91,26 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         pointerEvents="box-none"
                     >
                         <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressInverted, alignItems: 'center', justifyContent: 'center' }} pointerEvents="none">
-                            <XPImage
-                                source={{ uuid: this.props.config.uuid }}
-                                imageSize={{ width: size.width, height: size.height }}
-                                width={l.width}
-                                height={l.height}
-                                borderRadius={18 / baseScale}
-                            />
+                            <View renderToHardwareTextureAndroid={true}>
+                                <XPImage
+                                    source={{ uuid: this.props.config.uuid }}
+                                    imageSize={{ width: size.width, height: size.height }}
+                                    width={l.width}
+                                    height={l.height}
+                                    borderRadius={18 / baseScale}
+                                />
+                            </View>
                         </Animated.View>
                         <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progress }}>
-                            <ZImagePreview
-                                src={this.props.config.uuid}
-                                srcWidth={size.width}
-                                srcHeight={size.height}
-                                width={containerW}
-                                height={containerH}
-                            />
+                            <View renderToHardwareTextureAndroid={true}>
+                                <ZImagePreview
+                                    src={this.props.config.uuid}
+                                    srcWidth={size.width}
+                                    srcHeight={size.height}
+                                    width={containerW}
+                                    height={containerH}
+                                />
+                            </View>
                         </Animated.View>
                     </Animated.View>
                 </View>
