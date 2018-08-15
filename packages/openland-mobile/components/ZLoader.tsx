@@ -24,6 +24,21 @@ export interface ZLoaderProps {
     transparent?: boolean;
 }
 
+class FixedLottie extends React.PureComponent<any> {
+
+    private ref = React.createRef<LottieView>();
+
+    render() {
+        return (<LottieView ref={this.ref} {...this.props as any} />);
+    }
+
+    componentWillUnmount() {
+        if (this.ref.current) {
+            this.ref.current.reset();
+        }
+    }
+}
+
 export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolean }> {
 
     opacity = new Animated.Value(0);
@@ -75,8 +90,8 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
             <View style={[styles.container, (this.props.transparent !== true) && styles.containerFilled]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
                 {this.state.visible && (
                     <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
-                        {this.props.appearance === 'small' && <LottieView source={require('assets/loader_small.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
-                        {this.props.appearance !== 'small' && <LottieView source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
+                        {this.props.appearance === 'small' && <FixedLottie source={require('assets/loader_small.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
+                        {this.props.appearance !== 'small' && <FixedLottie source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
                     </Animated.View>
                 )}
             </View>
