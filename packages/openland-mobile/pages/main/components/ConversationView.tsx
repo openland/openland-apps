@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState, Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Dimensions, Platform, FlatList } from 'react-native';
+import { View, Image, Text, Dimensions, Platform, FlatList, ListRenderItemInfo } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ZAppConfig } from '../../../components/ZAppConfig';
 import { MessageView } from 'openland-shared/MessageView';
@@ -21,44 +21,32 @@ interface MessagesSection {
     data: MessageGroup[];
 }
 
-function convertMessagesFlat(days: Day[]) {
-    let res = [];
-    res.push({ key: 'footer' });
-    for (let d of days) {
-        let msgs = [...d.messages];
-        msgs.reverse();
-        for (let g of d.messages) {
-            res.push(g);
-        }
-    }
-    res.push({ key: 'header' });
-    res.reverse();
-    return res;
-}
+type MessageListItem = {
+    type: 'footer'
+} | {
+    type: 'header'
+} | {
+    type: 'date',
+    day: number;
+    month: number;
+    year: number;
+} | {
+    type: 'message',
+    message: MessageGroup
+};
 
 function convertMessages(days: Day[]) {
-    // let res: MessageGroup[] = [];
-    // for (let d of days) {
-    //     let msgs = [...d.messages];
-    //     msgs.reverse();
-    //     for (let g of d.messages) {
-    //         res.push(g);
-    //     }
-    // }
-    // res.reverse();
-    // return res;
-    let res: MessagesSection[] = [];
-    res.push({ key: 'footer', data: [] });
+    let res: MessageListItem[] = [];
+    res.push({ type: 'header' });
     for (let d of days) {
         let msgs = [...d.messages];
         msgs.reverse();
-        res.push({
-            day: d,
-            key: d.key,
-            data: msgs
-        });
+        res.push({ 'type': 'date', day: d.day, month: d.month, year: d.year });
+        for (let g of d.messages) {
+            res.push({ 'type': 'message', message: g });
+        }
     }
-    res.push({ key: 'header', data: [] });
+    res.push({ type: 'footer' });
     res.reverse();
     return res;
 }
@@ -78,30 +66,30 @@ let months = [
     'Dec'
 ];
 
-function dateFormat(date: Day) {
+function dateFormat(day: number, month: number, year: number) {
     let now = new Date();
     let prefix = '';
-    if (now.getFullYear() !== date.year) {
-        prefix = date.year.toString() + ', ';
+    if (now.getFullYear() !== year) {
+        prefix = year.toString() + ', ';
     }
-    if (now.getFullYear() === date.year && now.getMonth() === date.month && now.getDate() === date.day) {
+    if (now.getFullYear() === year && now.getMonth() === month && now.getDate() === day) {
         return 'Today';
     }
-    return (prefix + months[date.month] + ' ' + date.day + 'th');
+    return (prefix + months[month] + ' ' + day + 'th');
 }
-class DateSeparator extends React.PureComponent<{ day: Day }> {
+class DateSeparator extends React.PureComponent<{ day: number, month: number, year: number }> {
     render() {
         return (
             <View flexDirection={'row'}>
                 <View height={1} flexGrow={1} backgroundColor="#b9c1cd" opacity={0.6} marginRight={8} marginTop={10} />
-                <Text style={{ fontSize: 12, height: 19, lineHeight: 19, textAlignVertical: 'center', color: '#99a2b0' }}>{dateFormat(this.props.day)}</Text>
+                <Text style={{ fontSize: 12, height: 19, lineHeight: 19, textAlignVertical: 'center', color: '#99a2b0' }}>{dateFormat(this.props.day, this.props.month, this.props.year)}</Text>
                 <View height={1} flexGrow={1} backgroundColor="#b9c1cd" opacity={0.6} marginLeft={8} marginTop={10} />
             </View>
         );
     }
 }
 
-class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { loading: boolean, messages: MessagesSection[], messages2: any[], loadingHistoty?: boolean, historyFullyLoaded?: boolean }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { loading: boolean, empty: boolean, messages: MessageListItem[], loadingHistoty?: boolean, historyFullyLoaded?: boolean }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<FlatList<any>>();
@@ -112,7 +100,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
         this.state = {
             loading: initialState.loading,
             messages: convertMessages(initialState.messagesPrepprocessed),
-            messages2: convertMessagesFlat(initialState.messagesPrepprocessed)
+            empty: initialState.messagesPrepprocessed.length === 0
         };
     }
 
@@ -125,7 +113,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
         this.setState({
             loading: state.loading,
             messages: convertMessages(state.messagesPrepprocessed),
-            messages2: convertMessagesFlat(state.messagesPrepprocessed),
+            empty: state.messagesPrepprocessed.length === 0,
             loadingHistoty: state.loadingHistory,
             historyFullyLoaded: state.historyFullyLoaded
         });
@@ -149,18 +137,9 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
         }
     }
 
-    renderHeader = (section: any) => {
-        if (section.section.key === 'footer') {
-            return (<View height={this.props.topInset} />);
-        }
-        if (section.section.key === 'header') {
-            return (<View height={this.props.bottomInset} />);
-        }
-        return (<DateSeparator day={section.section.day} key={section.section.key} />);
-    }
-
-    renderItem = (itm: any) => {
-        if (itm.item.key === 'footer') {
+    renderItem = (src: ListRenderItemInfo<MessageListItem>) => {
+        const itm = src.item;
+        if (itm.type === 'header') {
             return (
                 this.state.loadingHistoty && !this.state.historyFullyLoaded ?
                     (
@@ -170,11 +149,37 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
                     )
                     : <View height={this.props.topInset + 48} />
             );
-        }
-        if (itm.item.key === 'header') {
+        } else if (itm.type === 'footer') {
             return (<View height={this.props.bottomInset} />);
+        } else if (itm.type === 'date') {
+            return (<DateSeparator day={itm.day} month={itm.month} year={itm.year} />);
+        } else if (itm.type === 'message') {
+            return (
+                <MessageView
+                    key={itm.message.key}
+                    onPhotoPress={this.props.onPhotoPress}
+                    onAvatarPress={this.props.onAvatarPress}
+                    message={itm.message}
+                    engine={this.props.engine}
+                />
+            );
+        } else {
+            throw Error('Unexpected item');
         }
-        return (<MessageView key={itm.item.key} onPhotoPress={this.props.onPhotoPress} onAvatarPress={this.props.onAvatarPress} message={itm.item} engine={this.props.engine} />);
+    }
+
+    extractKey = (itm: MessageListItem) => {
+        if (itm.type === 'header') {
+            return 'header';
+        } else if (itm.type === 'footer') {
+            return 'footer';
+        } else if (itm.type === 'date') {
+            return 'date-' + itm.day + '-' + itm.month + '-' + itm.year;
+        } else if (itm.type === 'message') {
+            return itm.message.key;
+        } else {
+            throw Error('Unexpected item');
+        }
     }
 
     onEndReached = (info: { distanceFromEnd: number }) => {
@@ -188,7 +193,7 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
 
                 <FlatList
-                    data={this.state.messages2}
+                    data={this.state.messages}
                     renderItem={this.renderItem}
                     inverted={true}
                     flexBasis={0}
@@ -203,11 +208,11 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
                     }}
                     keyboardDismissMode="interactive"
                     removeClippedSubviews={true}
-                    keyExtractor={(item) => item.key}
+                    keyExtractor={this.extractKey}
                     extraData={this.props.bottomInset * 10000 + this.props.topInset}
                     maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
                 />
-                {!this.state.loading && this.state.messages2.length <= 2 && (
+                {!this.state.loading && this.state.messages.length <= 2 && (
                     <ZSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ width: 375, height: 375, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }} />
@@ -224,10 +229,10 @@ class MessagesList extends React.PureComponent<MessagesListProps & { bottomInset
     }
 }
 
-export const MessagesListComponent = (props: MessagesListProps) => {
+export const ConversationView = (props: MessagesListProps) => {
     return (
         <ZSafeAreaContext.Consumer>
-            {area => (<MessagesList {...props} bottomInset={area.bottom} topInset={area.top} />)}
+            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} />)}
         </ZSafeAreaContext.Consumer>
     );
 };

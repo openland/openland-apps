@@ -13,12 +13,12 @@ import { ChatSearchForComposeMobileQuery } from 'openland-api/ChatSearchForCompo
 import { ZUserListItem } from '../components/ZUserListItem';
 import { UserShortFragment, MessageFullFragment } from 'openland-api/Types';
 import { ZTagView } from '../../../components/ZTagView';
-import { MessagesListComponent } from '../components/MessagesListComponent';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ZLoader } from '../../../components/ZLoader';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
+import { ConversationView } from '../components/ConversationView';
 
 interface ComposeModalState {
     message: string;
@@ -146,7 +146,7 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
                                 </ZQuery>
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.conversationId) && (
-                                <MessagesListComponent key={this.state.conversationId} onAvatarPress={this.handleAvatarPress} onPhotoPress={this.handlePhotoPress} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
+                                <ConversationView key={this.state.conversationId} onAvatarPress={this.handleAvatarPress} onPhotoPress={this.handlePhotoPress} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.resolving) && (
                                 <ZSafeAreaView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
