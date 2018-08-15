@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
 import { MessageFullFragment } from 'openland-api/Types';
-import { View, Text, ListRenderItemInfo, Platform } from 'react-native';
+import { View, Text, ListRenderItemInfo, Platform, FlatList, LayoutAnimation } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
-import { MessageView } from 'openland-shared/MessageView';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
-import { FlatList } from 'react-native-gesture-handler';
 import { ModelMessage, extractKey } from 'openland-engines/messenger/types';
 import { MessageViewSingle } from 'openland-shared/MessageViewSingle';
 
@@ -100,6 +98,7 @@ export interface ConversationMessagesViewProps {
 }
 
 class ConversationMessagesViewComponent extends React.PureComponent<ConversationMessagesViewProps & { topInset: number, bottomInset: number }> {
+    private listRef = React.createRef<FlatList<any>>();
 
     private renderItem = (src: ListRenderItemInfo<MessageListItem>) => {
         const itm = src.item;
@@ -146,6 +145,13 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
         this.props.onEndReached();
     }
 
+    scrollToStart = () => {
+        if (this.listRef.current) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+            this.listRef.current.scrollToIndex({ index: 0, animated: false });
+        }
+    }
+
     render() {
         const messages = convertMessages(this.props.messages);
         return (
@@ -157,7 +163,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                 flexGrow={1}
                 onEndReachedThreshold={1}
                 onEndReached={this.handleEndReached}
-                // ref={this.listRef}
+                ref={this.listRef}
                 initialNumToRender={Platform.OS === 'android' ? 0 : undefined}
                 scrollIndicatorInsets={{
                     bottom: this.props.topInset,
@@ -173,10 +179,20 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
     }
 }
 
-export const ConversationMessagesView = (props: ConversationMessagesViewProps) => {
-    return (
-        <ZSafeAreaContext.Consumer>
-            {area => (<ConversationMessagesViewComponent {...props} bottomInset={area.bottom} topInset={area.top} />)}
-        </ZSafeAreaContext.Consumer>
-    );
-};
+export class ConversationMessagesView extends React.PureComponent<ConversationMessagesViewProps> {
+    ref = React.createRef<ConversationMessagesViewComponent>();
+
+    scrollToStart = () => {
+        if (this.ref.current) {
+            this.ref.current.scrollToStart();
+        }
+    }
+
+    render() {
+        return (
+            <ZSafeAreaContext.Consumer>
+                {area => (<ConversationMessagesViewComponent ref={this.ref} {...this.props} bottomInset={area.bottom} topInset={area.top} />)}
+            </ZSafeAreaContext.Consumer>
+        );
+    }
+}

@@ -17,7 +17,7 @@ export interface MessagesListProps {
 class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
-    private listRef = React.createRef<FlatList<any>>();
+    private listRef = React.createRef<ConversationMessagesView>();
 
     constructor(props: MessagesListProps & { bottomInset: number, topInset: number }) {
         super(props);
@@ -38,8 +38,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
     onMessageSend() {
         if (this.listRef.current) {
-            // this.listRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: false });
-            this.listRef.current.scrollToIndex({ index: 0, animated: true });
+            this.listRef.current.scrollToStart();
         }
     }
 
@@ -63,6 +62,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
             <View flexBasis={0} flexGrow={1}>
                 <Image source={require('assets/img_chat.png')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
                 <ConversationMessagesView
+                    ref={this.listRef}
                     messages={this.state.conversation.messagesPrepprocessed}
                     loaded={this.state.conversation.historyFullyLoaded}
                     onAvatarPress={this.props.onAvatarPress}
