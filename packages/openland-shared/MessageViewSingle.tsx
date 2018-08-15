@@ -139,7 +139,7 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                     </View>
                 )}
                 {!isOut && (this.props.attach === 'both' || this.props.attach === 'bottom') && (
-                    <View width={35} />
+                    <View width={28} />
                 )}
                 <View style={[styles.messageContainer, isOut && styles.messageContainerOut]}>
                     {content}
