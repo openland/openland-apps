@@ -147,7 +147,20 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
 
     scrollToStart = () => {
         if (this.listRef.current) {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+            console.log(LayoutAnimation.Presets.spring);
+            LayoutAnimation.configureNext({
+                duration: 700,
+                update: {
+                    type: 'spring',
+                    springDamping: 0.4
+                },
+                create: {
+                    type: 'easeInEaseOut',
+                    property: 'opacity',
+                    duration: 300
+                }
+            });
+
             this.listRef.current.scrollToIndex({ index: 0, animated: false });
         }
     }

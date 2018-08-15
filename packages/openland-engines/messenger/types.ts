@@ -20,7 +20,7 @@ export function isServerMessage(message: MessageFullFragment | PendingMessage): 
 }
 
 export function extractKey(message: ModelMessage) {
-    return isServerMessage(message) ? message.id : message.key;
+    return isServerMessage(message) ? (message.repeatKey ? message.repeatKey : message.id) : message.key;
 }
 
 export interface FileMetadata {
