@@ -2,10 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 import { XTag } from '../XTag';
-// import { XSelectProps, XSelectAsyncProps } from '../XSelect';
-import { XSelectProps } from '../XSelect';
+import { XSelectProps, XSelect } from '../XSelect';
 import { Option } from 'react-select';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XPopper } from '../XPopper';
+import { MultiplePicker } from '../XMultiplePicker';
 
 const Container = Glamorous(XHorizontal)<XFlexStyles>([{
     minHeight: 48,
@@ -52,17 +53,19 @@ const Input = Glamorous.input({
 interface XSelectCustomState {
     lastValue: Option<string>[];
     inputVal: string;
+    focus?: boolean;
 }
 
 interface XSelectCustomProps extends XSelectProps, XFlexStyles {
     placeholder?: string;
+    popper?: boolean;
 }
 
-export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCustomState> {
+export class XSelectCustomInputRender extends React.Component<XSelectCustomProps, XSelectCustomState> {
     input?: any;
     constructor(props: XSelectCustomProps) {
         super(props);
-        this.state = { inputVal: '', lastValue: (props.value as Option<string>[]) };
+        this.state = { inputVal: '', lastValue: (props.value as Option<string>[] || []) };
     }
 
     handleRef = (e: any) => {
@@ -85,7 +88,7 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
         }
         this.setState(
             {
-                lastValue: (props.value as Option<string>[]),
+                lastValue: (props.value as Option<string>[]) || [],
             },
             () => {
                 if (this.input && this.input.inputRef && this.input.inputRef) {
@@ -100,16 +103,14 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
             e.preventDefault();
             this.onDelete(this.state.lastValue[this.state.lastValue.length - 1].value);
         }
+    }
 
-        // if (e.code === 'Enter' && this.props.creatable && this.props.onChange && this.state.inputVal.length > 0) {
-        //     e.preventDefault();
-        //     // prevent duplicates
-        //     if ((this.state.lastValue || []).map(v => v.value).filter(v => v === this.state.inputVal).length === 0) {
-        //         this.props.onChange([...(this.state.lastValue || []), { label: this.state.inputVal, value: this.state.inputVal }]);
-        //     } else {
-        //         this.setState({ inputVal: '' });
-        //     }
-        // }
+    focusInHandler = (e: any) => {
+        this.setState({focus: true});
+    }
+
+    focusOutHandler = (e: any) => {
+        this.setState({focus: false});
     }
 
     componentDidMount() {
@@ -133,6 +134,19 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
         let res = this.state.lastValue.filter(v => v.value !== value);
         if (this.props.onChange) {
             this.props.onChange(res);
+        } else {
+            this.setState({ lastValue: res });
+        }
+    }
+
+    onPick = (option: { label: string, value: string }) => {
+        let res = this.state.lastValue;
+        res.push(option);
+        if (this.props.onChange) {
+            this.props.onChange(res);
+            this.setState({ inputVal: '' });
+        } else {
+            this.setState({ lastValue: res, inputVal: '' });
         }
     }
 
@@ -150,13 +164,26 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
             maxHeight,
             maxWidth,
             zIndex,
-            opacity
+            opacity,
         } = this.props;
 
+        let options = this.props.options as { label: string, value: string }[];
         let inputValue = this.state.inputVal;
         if (inputValue === null) {
             inputValue = '';
         }
+
+        let input = (
+            <Input
+                innerRef={this.handleRef}
+                value={inputValue}
+                placeholder={this.props.placeholder}
+                autoFocus={true}
+                onChange={this.onInputChange}
+                onFocus={this.focusInHandler}
+                onBlur={this.focusOutHandler}
+            />
+        );
 
         return (
             <Container
@@ -184,13 +211,12 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
                         onClick={() => this.onDelete(v.value)}
                     />
                 ))}
-                <Input
-                    innerRef={this.handleRef}
-                    value={inputValue}
-                    placeholder={this.props.placeholder}
-                    autoFocus={true}
-                    onChange={this.onInputChange}
-                />
+                {!this.props.popper && input}
+                {this.props.popper && (
+                    <XPopper placement="bottom-start" arrow={null} zIndex={999} show={this.state.inputVal.length > 0 || this.state.focus} content={<MultiplePicker query={this.state.inputVal} options={[{ values: options }]} onPick={this.onPick} />}>
+                        {input}
+                    </XPopper>
+                )}
             </Container>
         );
     }

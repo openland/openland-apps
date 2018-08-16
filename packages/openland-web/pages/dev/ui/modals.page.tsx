@@ -13,6 +13,8 @@ import { BrowseChannelsModal } from '../../main/channel/components/browseChannel
 import { InviteMembersModal } from '../../main/channel/components/inviteMembersModal';
 import { CreateChannelModal } from '../../main/channel/components/createChannelModal';
 import { PostChannelModal } from '../../main/channel/components/postChannelModal';
+import { XSelect } from 'openland-x/XSelect';
+import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -36,12 +38,12 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
         <DevDocsScaffold title="Modals">
             <XContent>
                 <XVertical>
-                    
+
                     <XTitle>for channels</XTitle>
                     <BrowseChannelsModal title="Browse channels" target={<XButton text="Browse channels" />} />
                     <CreateChannelModal defaultAction={() => null} title="Create channel" target={<XButton text="Create channel" />} />
-                    <InviteMembersModal defaultAction={() => null} title="Invite members" target={<XButton text="Invite channels" />} />                    
-                    <PostChannelModal defaultAction={() => null} title="Post listing" target={<XButton text="Post channel" />} />                    
+                    <InviteMembersModal defaultAction={() => null} title="Invite members" target={<XButton text="Invite channels" />} />
+                    <PostChannelModal defaultAction={() => null} title="Post listing" target={<XButton text="Post channel" />} />
 
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
@@ -74,6 +76,23 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XTitle>Large Content</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={40} />
+                    </XModal>
+
+                    <XModal target={<XButton text="Custom XSelect" />}>
+                        <XSelect
+                            options={[
+                                { label: 'option1', value: 'option1' },
+                                { label: 'option2', value: 'option2' },
+                                { label: 'option3', value: 'option3' },
+                                { label: 'option4', value: 'option4' },
+                                { label: 'option5', value: 'option5' },
+                                { label: 'option6', value: 'option6' },
+                                { label: 'option7', value: 'option7' },
+                                { label: 'option8', value: 'option8' },
+                                { label: 'option9', value: 'option9' },
+                            ]}
+                            render={<XSelectCustomInputRender popper={true} />}
+                        />
                     </XModal>
                 </XVertical>
             </XContent>

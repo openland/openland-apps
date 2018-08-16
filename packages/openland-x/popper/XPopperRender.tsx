@@ -21,6 +21,8 @@ export interface PopperRendererProps {
     marginTop?: number;
     marginBottom?: number;
 
+    zIndex?: number;
+
     groupId?: string;
 
     animation?: 'fade' | 'pop' | null;
@@ -179,8 +181,9 @@ const PopperRoot = Glamorous.div<{
     marginRight?: number,
     marginTop?: number,
     marginBottom?: number,
+    zIndex?: number,
 }>((props) => ({
-    zIndex: 2,
+    zIndex: props.zIndex === undefined ? 2 : props.zIndex,
     marginLeft: props.marginLeft,
     marginRight: props.marginRight,
     marginTop: props.marginTop,
@@ -271,6 +274,7 @@ export class XPopperRender extends React.Component<PopperRendererProps> {
                         marginRight={this.props.marginRight}
                         marginTop={this.props.marginTop}
                         marginBottom={this.props.marginBottom}
+                        zIndex={this.props.zIndex}
                     >
 
                         {this.prepareRef(this.props.contentContainer, {

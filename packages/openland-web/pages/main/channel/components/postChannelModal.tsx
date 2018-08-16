@@ -11,7 +11,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XSelect } from 'openland-x/XSelect';
 import UploadCare from 'uploadcare-widget';
-import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
+import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 import PicIcon from './icons/ic-img.svg';
 import LocationIcon from './icons/ic-location.svg';
 
@@ -124,7 +124,7 @@ class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: strin
                     <XTextArea placeholder="Description" resize={false} size="small" />
                     <XSelect
                         field="input.locations"
-                        render={<XSelectCustom flexGrow={1} width="100%" flexShrink={0} placeholder="Enter a channel " />}
+                        render={<XSelectCustomInputRender flexGrow={1} width="100%" flexShrink={0} placeholder="Enter a channel " />}
                         onInputChange={v => { this.setState({ val: v }); return v; }}
                         creatable={true}
                     />
