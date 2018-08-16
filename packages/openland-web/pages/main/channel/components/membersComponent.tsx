@@ -30,7 +30,7 @@ let RequestsArray: MemberType[] = [{
 }, {
     name: 'Subway',
     photo: '',
-    members: ['John Doe', 'John Doe', 'John Doe', 'John Doe'],
+    members: ['John Doe'],
     isMine: false,
     isAccepted: false
 }];
@@ -164,7 +164,7 @@ class MemberItem extends React.Component<MemberItemProps, { isHovered: boolean }
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
-                    <MemberStaff>{item.members[0] + ' +' + (item.members.length - 1) + ' more'}</MemberStaff>
+                    <MemberStaff>{item.members[0] + ((item.members.length > 1) ? ' +' + (item.members.length - 1) + ' more' : '')}</MemberStaff>
                 </MemberInfo>
 
                 {item.isAccepted && (
