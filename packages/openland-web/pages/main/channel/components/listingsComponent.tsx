@@ -118,7 +118,9 @@ interface ListingItemProps {
 }
 
 function formatDate (date: Date) {
-    return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
+    let monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    return date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
 }
 
 class ListingItem extends React.Component<ListingItemProps, { isHovered: boolean }> {
