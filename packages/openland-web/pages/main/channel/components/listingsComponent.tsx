@@ -7,7 +7,7 @@ import { XSubHeader, XSubHeaderLink } from 'openland-x/XSubHeader';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
-import FilterIcon from './icons/ic-email.svg';
+import FilterIcon from './icons/ic-filter-1.svg';
 
 interface ListingType {
     organization: {
@@ -59,6 +59,9 @@ const Listing = Glamorous.div({
     '&:first-child': {
         paddingTop: 20
     },
+    '&:hover': {
+        backgroundColor: '#f9fafb'
+    }
 });
 
 const ListingAvatar = Glamorous(XAvatar)({
