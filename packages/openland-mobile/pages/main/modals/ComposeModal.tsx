@@ -137,7 +137,7 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
                     <View style={{ flexGrow: 1, flexBasis: 0, flexDirection: 'column' }}>
                         <ZSafeAreaProvider top={this.state.searchHeight}>
                             {(this.state.users.length === 0 || this.state.query !== '') && (
-                                <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-first">
+                                <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                                     {r => (
                                         <ZScrollView keyboardShouldPersistTaps={true} style={{ flexGrow: 1, flexBasis: 0 }} keyboardDismissMode="on-drag">
                                             {r.data.items.map((v) => (<ZUserListItem key={v.id} id={v.id} name={v.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v as UserShortFragment)} />))}

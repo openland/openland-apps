@@ -242,3 +242,14 @@ export const UnBlockUserMutation = gql`
         blockUser: alphaUnblockUser(userId: $userId, conversationId: $conversationId)
     }
 `;
+
+export const ChatSearchTextQuery = gql`
+    query ChatSearchText($query: String!) {
+        items: alphaChatTextSearch(query: $query) {
+            ...ConversationShort           
+        }
+    }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
+`;
