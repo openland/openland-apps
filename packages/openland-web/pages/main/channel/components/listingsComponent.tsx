@@ -106,6 +106,7 @@ const ListingHeader = Glamorous.div({
     fontWeight: 500,
     lineHeight: '24px',
     letterSpacing: -0.4,
+    color: '#5c6a81',
 });
 
 const ListingDate = Glamorous.div({
