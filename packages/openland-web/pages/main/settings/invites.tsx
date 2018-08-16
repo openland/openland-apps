@@ -3,26 +3,98 @@ import '../../init';
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { withOrganizationInviteMembers } from '../../../api/withOrganizationInviteMember';
+import { withOrganizationInviteOrganization } from '../../../api/withOrganizationInviteOrganization';
+import { withPublicInviteOrganization } from '../../../api/withPublicInviteOrganization';
+import { withPublicInvite } from '../../../api/withPublicInvite';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
-import { XInput } from 'openland-x/XInput';
+import { XModalCloser } from 'openland-x-modal/XModal';
+import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
+import { XFormField } from 'openland-x-forms/XFormField';
 import { XSelect } from 'openland-x/XSelect';
 import { XButton } from 'openland-x/XButton';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import { XLink } from 'openland-x/XLink';
+import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XTextArea } from 'openland-x/XTextArea';
-import { withOrganizationInviteMembers } from '../../../api/withOrganizationInviteMember';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withPublicInvite } from '../../../api/withPublicInvite';
 import { XMutation } from 'openland-x/XMutation';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
-import { withOrganizationInviteOrganization } from '../../../api/withOrganizationInviteOrganization';
-import { withPublicInviteOrganization } from '../../../api/withPublicInviteOrganization';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import PlusIcon from './icons/ic-add-small.svg';
+import LinkIcon from './icons/ic-link.svg';
+import EmailIcon from './icons/ic-email.svg';
+
+const AddButtonStyled = Glamorous(XLink)({
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: -0.4,
+    color: '#5c6a81',
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    '&:hover': {
+        color: '#99a2b0'
+    },
+    '& > svg': {
+        marginRight: 10,
+        marginLeft: 4
+    }
+});
+
+interface InviteButtonStylesProps {
+    marginRight?: number;
+    marginLeft?: number;
+    icon?: any;
+    title: string;
+}
+
+const InviteButtonStyles = Glamorous(XLink)<InviteButtonStylesProps>(props => ({
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: -0.4,
+    color: '#99a2b0',
+    display: 'flex',
+    alignItems: 'center',
+    '&:hover': {
+        color: '#5c6a81',
+    },
+    '& > svg': {
+        marginRight: props.marginRight,
+        marginLeft: props.marginLeft
+    }
+}));
+
+const AddButton = (props: XLinkProps & { title: string }) => (
+    <AddButtonStyled {...props}>
+        <PlusIcon />
+        <span>{props.title}</span>
+    </AddButtonStyled>
+);
+
+const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
+    <InviteButtonStyles {...props}>
+        {props.icon}
+        <span>{props.title}</span>
+    </InviteButtonStyles>
+);
+
+export const FooterWrap = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 24,
+    paddingRight: 24,
+    height: 64,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#fafbfc',
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
+});
 
 const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>((props) => ({
     paddingBottom: props.bottomOfset ? 60 : undefined
@@ -34,45 +106,6 @@ interface Invite {
     lastName?: string;
     role?: 'OWNER' | 'MEMBER';
 }
-
-const DeleteButton = Glamorous(XButton)<{ hide?: boolean }>((props) => ({
-    width: 28,
-    height: 28,
-    borderRadius: 50,
-    color: '#334562',
-    opacity: props.hide ? 0 : 0.2,
-    '& i': {
-        marginLeft: -2
-    }
-}));
-
-const LinkButton = Glamorous(XLink)<{ primary?: boolean }>((props) => ({
-    fontSize: 15,
-    fontWeight: 500,
-    letterSpacing: -0.2,
-    color: props.primary ? '#654bfa' : 'rgba(51, 69, 98, 0.4)',
-    '&:hover': {
-        textDecoration: props.primary ? 'underline' : undefined
-    }
-}));
-
-const FlexStart = Glamorous.div({
-    alignSelf: 'flex-start'
-});
-
-export const FooterWrap = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    paddingLeft: 24,
-    paddingRight: 24,
-    height: 54,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#fafbfc',
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
-    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
-});
 
 interface InviteComponentProps {
     index: number;
@@ -90,24 +123,19 @@ const RoleSelectWrapper = Glamorous(XHorizontal)({
 });
 
 const InviteText = Glamorous.div({
-    fontSize: 14,
+    fontSize: 12,
+    fontWeight: 500,
     letterSpacing: -0.2,
-    color: 'rgba(51, 69, 98, 0.4)'
-});
-
-const XInputNoTitle = Glamorous(XInput)({
-    '> input': {
-        '::placeholder': {
-            color: 'rgb(51, 69, 98)'
-        }
-    }
+    color: '#99a2b0'
 });
 
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
-        <XInputNoTitle autofocus={props.first} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
-        <XInputNoTitle placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
-        <XInputNoTitle placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
+        <XInputGroup flexGrow={1}>
+            <XInput size="r-default" color="primary-sky-blue" autofocus={props.first} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
+            <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
+            <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
+        </XInputGroup>
         {props.useRoles !== false &&
             <RoleSelectWrapper width={126}>
                 <XWithRole role="super-admin">
@@ -115,13 +143,17 @@ const InviteComponent = (props: InviteComponentProps) => (
                 </XWithRole>
             </RoleSelectWrapper>
         }
-        <DeleteButton hide={props.single} enabled={!props.single} icon="close" style="flat" onClick={() => props.handleRemove(props.index)} />
+        {!props.single && (
+            <XModalCloser onClick={() => props.handleRemove(props.index)} />
+        )}
     </XHorizontal>
 );
 
-const LinkHolder = Glamorous(XHorizontal)({
-    '& div > input': {
-        color: 'rgba(51,69,98, 0.8)'
+const LinkHolder = Glamorous(XVertical)({
+    '& > div:first-child': {
+        backgroundColor: '#f5f7f9',
+        borderColor: 'transparent',
+        color: '#5c6a81'
     }
 });
 
@@ -159,15 +191,16 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {this.props.invite && (
-                    <>
-                        <XHorizontal justifyContent="space-between" alignItems="center">
-                            <XFormFieldTitle>Invitation link</XFormFieldTitle>
-                            <InviteText>Anyone with the link will be able to join</InviteText>
-                        </XHorizontal>
-                        <LinkHolder alignItems="center" justifyContent="stretch">
-                            <XInput flexGrow={1} ref={this.handleRef} value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key} />
-                        </LinkHolder>
-                    </>
+                    <LinkHolder separator={4}>
+                        <XInput
+                            size="r-default"
+                            color="primary-sky-blue"
+                            flexGrow={1}
+                            ref={this.handleRef}
+                            value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key}
+                        />
+                        <InviteText>Anyone with the link will be able to join</InviteText>
+                    </LinkHolder>
                 )}
             </XVertical>
         );
@@ -177,6 +210,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
 const RenewButton = Glamorous(XButton)({
     color: 'rgba(51,69,98, 0.45)'
 });
+
 const RenewInviteLinkButton = withPublicInvite((props) => (
     <XMutation mutation={props.createPublicInvite}><RenewButton text="Renew link" style="link" /></XMutation>
 ));
@@ -246,11 +280,23 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 <XHorizontal flexGrow={1}>
                     {!this.state.showLink && (
                         <XWithRole role="admin" orgPermission={true}>
-                            {!this.state.showLink && <LinkButton primary={true} onClick={() => this.setState({ showLink: true })}>{TextInvites.getLinkButtonLinkExists}</LinkButton>}
+                            <InviteButton
+                                onClick={() => this.setState({ showLink: true })}
+                                icon={<LinkIcon />}
+                                title={TextInvites.getLinkButtonLinkExists}
+                                marginLeft={4}
+                                marginRight={10}
+                            />
                         </XWithRole>
                     )}
                     {this.state.showLink && (
-                        <LinkButton primary={true} onClick={() => this.setState({ showLink: false })}>{TextInvites.backToEmailInvites}</LinkButton>
+                        <InviteButton
+                            onClick={() => this.setState({ showLink: false })}
+                            icon={<EmailIcon />}
+                            marginLeft={4}
+                            marginRight={10}
+                            title={TextInvites.backToEmailInvites}
+                        />
                     )}
                 </XHorizontal>
                 {this.state.showLink && this.props.organization && (
@@ -260,10 +306,24 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                     <RenewInviteLinkButton />
                 )}
                 {this.state.showLink && (
-                    <XFormSubmit key="link" style="primary" succesText={TextInvites.copied} {...submitProps} text={'Copy'} />
+                    <XFormSubmit
+                        key="link"
+                        style="primary-sky-blue"
+                        size="r-default"
+                        succesText={TextInvites.copied}
+                        {...submitProps}
+                        text={'Copy'}
+                    />
                 )}
                 {!this.state.showLink && (
-                    <XFormSubmit key="invites" succesText="Invitations sent!" style="primary" keyDownSubmit={true} {...submitProps} />
+                    <XFormSubmit
+                        key="invites"
+                        succesText="Invitations sent!"
+                        style="primary-sky-blue"
+                        size="r-default"
+                        keyDownSubmit={true}
+                        {...submitProps}
+                    />
                 )}
             </FooterWrap>
         );
@@ -320,32 +380,42 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                                                     />
                                                 ))}
                                             </XVertical>
-                                            <FlexStart>
-                                                <LinkButton onClick={() => this.handleAdd(store)}>{TextInvites.addEmail}</LinkButton>
-                                            </FlexStart>
+                                            <AddButton
+                                                onClick={() => this.handleAdd(store)}
+                                                title={TextInvites.addEmail}
+                                            />
                                         </XVertical>
                                     );
                                 }}
                             </XStoreContext.Consumer>
                             {!this.state.customTextAreaOpen && (
-                                <FlexStart>
-                                    <LinkButton onClick={() => this.setState({ customTextAreaOpen: true })}>
-                                        {TextInvites.customMessageButton}
-                                    </LinkButton>
-                                </FlexStart>
+                                <AddButton
+                                    onClick={() => this.setState({ customTextAreaOpen: true })}
+                                    title={TextInvites.customMessageButton}
+                                />
                             )}
                             {this.state.customTextAreaOpen && (
                                 <XHorizontal flexGrow={1} width="100%" separator={6}>
                                     <XFormField field="customText" title={TextInvites.customMessageTitle} flexGrow={1}>
                                         <XTextArea flexGrow={1} valueStoreKey="fields.customText" resize={false} />
                                     </XFormField>
-                                    <DeleteButton hide={false} icon="close" style="flat" onClick={() => this.setState({ customTextAreaOpen: false })} />
+                                    <XModalCloser onClick={() => this.setState({ customTextAreaOpen: false })} />
                                 </XHorizontal>
                             )}
                         </XVertical>
                     )}
-                    {this.state.showLink && !this.props.organization && <OwnerLink innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
-                    {this.state.showLink && this.props.organization && <OwnerLinkOrganization innerRef={this.handleLinkComponentRef} onBack={() => this.setState({ showLink: false })} />}
+                    {this.state.showLink && !this.props.organization && (
+                        <OwnerLink
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
+                    {this.state.showLink && this.props.organization && (
+                        <OwnerLinkOrganization
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
                 </ModalContentWrapper>
             </XModalForm>
         );

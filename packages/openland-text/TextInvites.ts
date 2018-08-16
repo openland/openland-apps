@@ -23,10 +23,10 @@ export const TextInvites = {
     firstNamePlaceholder: 'First Name',
     lastNamePlaceholder: 'Last Name',
 
-    addEmail: ' + Add another',
+    addEmail: 'Add another',
 
     customMessageTitle: 'Custom Message',
-    customMessageButton: '+ Add a custom message to make your invitation more personal', 
+    customMessageButton: 'Add a custom message to make your invitation more personal', 
 
     // LINK
     getLinkButtonLinkExists: 'Invite with a link',

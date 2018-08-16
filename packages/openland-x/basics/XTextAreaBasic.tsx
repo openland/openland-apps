@@ -10,24 +10,7 @@ interface TextAreaStyledProps {
     disabled?: boolean;
     maxheight?: number | string;
     format?: 'default' | 'small';
-    appearance?: 'default' | 'chat';
 }
-
-let appearanceStyles = styleResolver({
-    'default': {
-        borderRadius: 4,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 6,
-    },
-    'chat': {
-        paddingTop: 8,
-        paddingLeft: 0,
-        paddingRight: 10,
-        paddingBottom: 6,
-    }
-});
 
 let sizeStyles = styleResolver({
     'default': {
@@ -47,23 +30,27 @@ const TextAreaStyled = Glamorous.textarea <TextAreaStyledProps & XFlexStyles> ([
         width: '100%',
         minHeight: props.maxheight ? props.maxheight : '100px',
         opacity: props.disabled ? 0.7 : undefined,
-        border: props.bordered === false ? 'none' : `1px solid ${props.invalid ? '#e26363' : '#d4dae7'}`,
+        border: props.bordered === false ? 'none' : `1px solid ${props.invalid ? '#e26363' : 'rgba(220, 222, 228, 0.45)'}`,
+        borderRadius: 12,
+        paddingTop: 16,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 16,
         backgroundColor: '#fff',
         outline: 'none',
         appearance: 'none',
         msOverflowStyle: 'none',
         resize: props.resize === false ? 'none' : undefined,
         '&:focus': {
-            boxShadow: props.bordered === false ? 'none' : '0 0 0 2px rgba(143, 124, 246, 0.2)',
-            border: props.bordered === false ? 'none' : props.invalid ? undefined : '1px solid #986AFE',
+            boxShadow: props.bordered === false ? 'none' : '0 0 0 2px rgba(23, 144, 255, 0.2)',
+            border: props.bordered === false ? 'none' : props.invalid ? undefined : '1px solid #74bcff',
         },
         '&::placeholder': {
             color: '#9d9d9d'
         }
     }),
     (props) => applyFlex(props),
-    (props) => sizeStyles(props.format),
-    (props) => appearanceStyles(props.appearance)
+    (props) => sizeStyles(props.format)
 ]);
 
 export interface XTextAreaBasicProps extends XFlexStyles {
@@ -76,7 +63,6 @@ export interface XTextAreaBasicProps extends XFlexStyles {
     bordered?: boolean;
     maxheight?: number | string;
     size?: 'default' | 'small';
-    appearance?: 'default' | 'chat';
     onChange?: (value: string) => void;
     onEnter?: () => void;
 }
@@ -131,7 +117,6 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
                 resize={this.props.resize}
                 bordered={this.props.bordered}
                 format={this.props.size}
-                appearance={this.props.appearance}
                 maxheight={this.props.maxheight}
             />
         );

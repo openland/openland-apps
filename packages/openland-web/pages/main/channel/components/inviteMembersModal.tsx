@@ -7,11 +7,10 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
+import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XButton } from 'openland-x/XButton';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import PlusIcon from './icons/ic-add-small.svg';
 import LinkIcon from './icons/ic-link.svg';
@@ -34,6 +33,53 @@ const ChannelName = Glamorous.div({
     letterSpacing: -0.3,
     color: '#1790ff'
 });
+
+const InviteLinkField = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
+    height: 40,
+    borderRadius: 24,
+    backgroundColor: '#f5f7f9',
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#5c6a81'
+});
+
+const InviteText = Glamorous.div({
+    fontSize: 12,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#99a2b0'
+});
+
+class OwnerLinkComponent extends React.Component<{ invite: boolean }> {
+    constructor(props: any) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <XVertical width="100%" flexGrow={1} separator={2}>
+                {this.props.invite && (
+                    <XVertical separator={4}>
+                        <InviteLinkField>https://app.openland.com/invite/b3e29082-2726-463e-a8a3432fddsds</InviteLinkField>
+                        <InviteText>Anyone with the link will be able to join</InviteText>
+                    </XVertical>
+                )}
+            </XVertical>
+        );
+    }
+}
+
+const OwnerLink = (props: { innerRef: any }) => (
+    <OwnerLinkComponent
+        ref={props.innerRef}
+        invite={true}
+    />
+);
 
 interface Invite {
     email?: string;
@@ -94,7 +140,6 @@ const InviteButtonStyles = Glamorous(XLink)<InviteButtonStylesProps>(props => ({
     color: '#99a2b0',
     display: 'flex',
     alignItems: 'center',
-    alignSelf: 'flex-start',
     '&:hover': {
         color: '#5c6a81',
     },
@@ -138,6 +183,8 @@ interface InvitesMoadalRawState {
 }
 
 class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoadalRawState> {
+    linkComponent?: any;
+
     constructor(props: any) {
         super(props);
 
@@ -145,6 +192,10 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
             customTextAreaOpen: undefined,
             showLink: undefined
         };
+    }
+
+    handleLinkComponentRef = (ref: any) => {
+        this.linkComponent = ref;
     }
 
     handleAdd = (store?: XStoreState) => {
@@ -187,18 +238,22 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
                             onClick={() => this.setState({ showLink: false })}
                             title="Invite by email"
                             icon={<EmailIcon />}
+                            marginLeft={4}
+                            marginRight={10}
                         />
                     )}
                 </XHorizontal>
-                {/* {this.state.showLink && this.props.organization && (
-                    <RenewGlobalInviteLinkButton />
-                )}
-                {this.state.showLink && !this.props.organization && (
-                    <RenewInviteLinkButton />
-                )}
                 {this.state.showLink && (
-                    <XFormSubmit key="link" style="primary" succesText={TextInvites.copied} {...submitProps} text={'Copy'} />
-                )} */}
+                    <XHorizontal alignItems="center">
+                        <InviteButton title="Renew link" />
+                        <XFormSubmit
+                            key="link"
+                            style="primary-sky-blue"
+                            size="r-default"
+                            text="Copy"
+                        />
+                    </XHorizontal>
+                )}
                 {!this.state.showLink && (
                     <XFormSubmit
                         key="invites"
@@ -207,7 +262,6 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
                         size="r-default"
                         text="Send invitations"
                         keyDownSubmit={true}
-                        // {...submitProps}
                     />
                 )}
             </FooterWrap>
@@ -220,51 +274,66 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
                 titleChildren={<ChannelName>Government incentives</ChannelName>}
                 useTopCloser={true}
                 scrollableContent={true}
-                size="large"
+                size={this.state.showLink !== true ? 'large' : 'default'}
                 customFooter={footer}
                 defaultData={{
                     inviteRequests: [{ email: '' }, { email: '' }]
                 }}
             >
                 <ModalContentWrapper bottomOfset={this.state.showLink !== true}>
-                    <XStoreContext.Consumer>
-                        {(store) => {
-                            let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
-                            return (
-                                <XVertical flexGrow={1} separator={11}>
-                                    <XVertical>
-                                        {invites.map((invite: Invite, i: number) => (
-                                            <InviteComponent
-                                                first={i === 0}
-                                                key={i}
-                                                index={i}
-                                                invite={invite}
-                                                single={invites.length === 1}
-                                                handleRemove={(index) => this.handleRemove(index, store)}
+                    {!this.state.showLink && (
+                        <>
+                            <XStoreContext.Consumer>
+                                {(store) => {
+                                    let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
+                                    return (
+                                        <XVertical flexGrow={1} separator={11}>
+                                            <XVertical>
+                                                {invites.map((invite: Invite, i: number) => (
+                                                    <InviteComponent
+                                                        first={i === 0}
+                                                        key={i}
+                                                        index={i}
+                                                        invite={invite}
+                                                        single={invites.length === 1}
+                                                        handleRemove={(index) => this.handleRemove(index, store)}
+                                                    />
+                                                ))}
+                                            </XVertical>
+                                            <AddButton
+                                                onClick={() => this.handleAdd(store)}
+                                                title="Add another"
                                             />
-                                        ))}
-                                    </XVertical>
-                                    <AddButton
-                                        onClick={() => this.handleAdd(store)}
-                                        title="Add another"
-                                    />
-                                </XVertical>
-                            );
-                        }}
-                    </XStoreContext.Consumer>
-                    {!this.state.customTextAreaOpen && (
-                        <AddButton
-                            onClick={() => this.setState({ customTextAreaOpen: true })}
-                            title="Add a custom message to make your invitations more personal"
-                        />
+                                        </XVertical>
+                                    );
+                                }}
+                            </XStoreContext.Consumer>
+                            {!this.state.customTextAreaOpen && (
+                                <AddButton
+                                    onClick={() => this.setState({ customTextAreaOpen: true })}
+                                    title="Add a custom message to make your invitations more personal"
+                                />
+                            )}
+                            {this.state.customTextAreaOpen && (
+                                <XHorizontal flexGrow={1} width="100%" separator={6}>
+                                    <XFormField field="customText" title="Custom Message" flexGrow={1}>
+                                        <XTextArea
+                                            flexGrow={1}
+                                            valueStoreKey="fields.customText"
+                                            resize={false}
+                                            size="small"
+                                            placeholder="message..."
+                                        />
+                                    </XFormField>
+                                    <XModalCloser onClick={() => this.setState({ customTextAreaOpen: false })} />
+                                </XHorizontal>
+                            )}
+                        </>
                     )}
-                    {this.state.customTextAreaOpen && (
-                        <XHorizontal flexGrow={1} width="100%" separator={6}>
-                            <XFormField field="customText" title="Custom Message" flexGrow={1}>
-                                <XTextArea flexGrow={1} valueStoreKey="fields.customText" resize={false} />
-                            </XFormField>
-                            <XModalCloser onClick={() => this.setState({ customTextAreaOpen: false })} />
-                        </XHorizontal>
+                    {this.state.showLink && (
+                        <OwnerLink
+                            innerRef={this.handleLinkComponentRef}
+                        />
                     )}
                 </ModalContentWrapper>
             </XModalForm>
