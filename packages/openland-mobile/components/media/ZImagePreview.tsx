@@ -23,7 +23,7 @@ export interface ZImagePreviewProps {
 export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
     render() {
         return (
-            <FastImageViewer width={this.props.width} height={this.props.height} srcWidth={this.props.srcWidth} srcHeight={this.props.srcHeight} onTap={this.props.onTap}>
+            <FastImageViewer width={this.props.width} height={this.props.height} srcWidth={this.props.srcWidth} srcHeight={this.props.srcHeight} onTap={this.props.onTap} background={true}>
                 <XPImage
                     source={{ uuid: this.props.src }}
                     width={this.props.srcWidth}
