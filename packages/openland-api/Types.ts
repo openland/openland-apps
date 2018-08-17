@@ -27,7 +27,7 @@ export interface CreateOrganizationInput {
   personal: boolean,
   photoRef?: ImageRefInput | null,
   about?: string | null,
-  isCommunity?: string | null,
+  isCommunity?: boolean | null,
 };
 
 export interface ImageRefInput {
@@ -3235,6 +3235,45 @@ export interface ExploreOrganizationsQueryVariables {
 };
 
 export interface ExploreOrganizationsQuery {
+  items:  {
+    __typename: "OrganizationsConnection",
+    edges:  Array< {
+      __typename: "OrganizationsEdge",
+      node:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+        photo: string | null,
+        locations: Array< string > | null,
+        isMine: boolean,
+        organizationType: Array< string > | null,
+        interests: Array< string > | null,
+        followed: boolean,
+        published: boolean,
+        editorial: boolean,
+        featured: boolean,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
+export interface ExploreComunityQueryVariables {
+  query?: string | null,
+  sort?: string | null,
+  page?: number | null,
+};
+
+export interface ExploreComunityQuery {
   items:  {
     __typename: "OrganizationsConnection",
     edges:  Array< {
