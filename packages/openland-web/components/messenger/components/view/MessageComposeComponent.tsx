@@ -8,48 +8,62 @@ import { getConfig } from '../../../../config';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
 
+const SendMessageWrapper = Glamorous(XHorizontal)({
+    width: '100%',
+    minHeight: 64,
+    maxHeight: 150,
+    backgroundColor: '#f9fafb',
+    flexShrink: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)'
+});
+
+const SendMessageContent = Glamorous(XHorizontal)({
+    width: '100%',
+    maxWidth: '100%',
+    flexBasis: '100%'
+});
+
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
-    width: 24,
-    height: 24,
-    marginTop: 5,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     cursor: props.disable ? 'default !important' : 'poonter',
     '& > i': {
         fontSize: 25,
         color: '#bcc3cc'
     },
     '&:hover': {
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
         '& > i': {
-            color: props.disable ? '#bcc3cc' : '#334562'
+            color: props.disable ? '#bcc3cc' : '#1790ff'
         }
     }
 }));
 
-const SendMessageWrapper = Glamorous(XHorizontal)({
-    width: '100%',
-    height: 100,
-    flexShrink: 0,
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingTop: 15,
-    paddingBottom: 10,
-    borderTop: '1px solid rgba(229, 233, 242, 0.5)'
-});
-
-const SendMessageContent = Glamorous(XHorizontal)({
-    width: '100%',
-    maxWidth: '850px',
-    flexBasis: '100%'
-});
-
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
     maxHeight: '100%',
-    maxWidth: 'calc(100% - 188px)',
+    maxWidth: 'calc(100% - 145px)',
     '& > div': {
         maxHeight: '100%',
         height: '100%',
         '& .DraftEditor-root': {
-            overflow: 'auto'
+            overflow: 'auto',
+            borderRadius: 20,
+            backgroundColor: '#fff',
+            border: 'solid 1px #eef0f2',
+            minHeight: 40,
+            maxHeight: 125,
+            paddingTop: 9,
+            paddingLeft: 16,
+            paddingRight: 16,
         }
     }
 });
@@ -127,7 +141,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
     render() {
         return (
             <SendMessageWrapper alignItems="stretch" justifyContent="center" >
-                <SendMessageContent separator={15}>
+                <SendMessageContent separator={4} alignItems="center">
                     <AttachmentButton
                         onClick={this.props.enabled === false ? undefined : this.handleAttach}
                         enabled={this.props.enabled === false}
@@ -146,8 +160,8 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                     </TextInputWrapper>
                     <XButton
                         text="Send"
-                        size="medium"
-                        style="primary"
+                        size="r-default"
+                        style="primary-sky-blue"
                         action={this.handleSend}
                         iconRight="send"
                         enabled={this.props.enabled !== false}

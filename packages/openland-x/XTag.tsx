@@ -61,8 +61,8 @@ let colorStyles = styleResolver({
         color: '#5640d6',
     },
     'default': {
-        backgroundColor: '#edf3fe',
-        color: '#4285f4',
+        backgroundColor: 'rgba(23, 144, 255, 0.08)',
+        color: '#1790ff',
     },
     'gray': {
         backgroundColor: '#f3f3f5',

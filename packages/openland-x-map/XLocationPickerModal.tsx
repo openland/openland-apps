@@ -197,14 +197,17 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
     }
 
     render() {
-        let target = <XInput placeholder={(this.props.placeholder || 'Adress')} value={this.state.picked ? (this.state.picked.result.place_name || this.state.picked.result.text) : ''} />;
+        let target = this.props.target !== undefined
+            ? this.props.target
+            : <XInput placeholder={(this.props.placeholder || 'Adress')} value={this.state.picked ? (this.state.picked.result.place_name || this.state.picked.result.text) : ''} />;
+
         return (
             <XModal
                 targetQuery="pick"
                 size="x-large"
                 useTopCloser={true}
                 title={this.state.value ? (this.state.value.result.place_name || this.state.value.result.text) : this.props.headerText || 'Search for adress'}
-                target={!this.props.targetQuery ? (this.props.target || target) : undefined}
+                target={!this.props.targetQuery ? target : undefined}
                 body={(
                     <MapContainer2>
                         <JustMap lastKnownCameraLocation={this.state.value ? { latitude: this.state.value.result.center[1], longitude: this.state.value.result.center[0], zoom: 17 } : undefined}>

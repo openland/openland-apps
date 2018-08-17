@@ -20,7 +20,7 @@ export const ExternalLinkIcon = Glamorous(XIcon)({
     fontSize: '14px',
 });
 
-export function XLinkExternal(props: { href: string, content?: string, showIcon?: boolean }) {
+export function XLinkExternal(props: { href: string, content?: string, showIcon?: boolean, className?: string }) {
 
     let content = props.content;
     if (!content) {
@@ -42,7 +42,7 @@ export function XLinkExternal(props: { href: string, content?: string, showIcon?
     }
 
     return (
-        <ExternalLinkDiv href={props.href} target="_blank" className={(props as any).className}>
+        <ExternalLinkDiv href={props.href} target="_blank" className={props.className}>
             {content}{props.showIcon !== false && <ExternalLinkIcon icon="launch" />}
         </ExternalLinkDiv>
     );

@@ -21,8 +21,8 @@ const MessagesContainerInner = Glamorous.div({
     position: 'relative',
     maxHeight: '100%',
     height: '100%',
-    maxWidth: 900,
     width: '100%',
+    maxWidth: '100%',
     overflow: 'hidden',
     '& > div:first-child': {
         width: '100%',
@@ -31,6 +31,9 @@ const MessagesContainerInner = Glamorous.div({
         height: '100%',
         maxHeight: '100%',
         flexGrow: 1,
+        '& > .simplebar-track.horizontal': {
+            display: 'none'
+        },
         '& > .simplebar-scroll-content > .simplebar-content': {
             overflowX: 'unset !important',
             overflowY: 'unset !important',

@@ -27,7 +27,7 @@ import { OrgCategoties } from '../directory/categoryPicker';
 import { Cities, MetropolitanAreas, States, MultiStateRegions, LocationControlledPicker } from '../directory/locationPicker';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { XSelectCustom } from 'openland-x/basics/XSelectCustom';
+import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMutation } from 'openland-x/XMutation';
 import { withOrganizationFollow } from '../../../api/withOrganizationFollow';
@@ -626,7 +626,7 @@ class LocationSelect extends React.Component<{}, { val?: string }> {
                 <LocationInputWrapper>
                     <XSelect
                         field="input.locations"
-                        render={<XSelectCustom flexGrow={1} width="100%" flexShrink={0} placeholder="Just typing..." />}
+                        render={<XSelectCustomInputRender flexGrow={1} width="100%" flexShrink={0} placeholder="Just typing..." />}
                         onInputChange={v => { this.setState({ val: v }); return v; }}
                         creatable={true}
                     />

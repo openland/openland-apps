@@ -24,7 +24,10 @@ export const ProfileQuery = gql`
             role: alphaRole
             locations: alphaLocations
             linkedin: alphaLinkedin
-            primaryOrganizationId: alphaPrimaryOrganizationId
+            primaryOrganization: alphaPrimaryOrganization{
+                id
+                name
+            }
             joinedAt: alphaJoinedAt
             invitedBy: alphaInvitedBy{
                 name

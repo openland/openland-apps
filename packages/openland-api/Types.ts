@@ -357,6 +357,10 @@ export interface AccountQuery {
     lastName: string | null,
     picture: string | null,
     email: string | null,
+    primaryOrganization:  {
+      __typename: "Organization",
+      name: string,
+    } | null,
   } | null,
   organization:  {
     __typename: "Organization",
@@ -413,6 +417,10 @@ export interface AccountInviteInfoQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     } | null,
     forEmail: string | null,
     forName: string | null,
@@ -540,6 +548,45 @@ export interface ChatListQuery {
   chats:  {
     __typename: "ConversationConnection",
     conversations:  Array<( {
+        __typename: "ChannelConversation",
+        id: string,
+        title: string,
+        flexibleId: string,
+        unreadCount: number,
+        photos: Array< string >,
+        topMessage:  {
+          __typename: "ConversationMessage",
+          id: string,
+          message: string | null,
+          file: string | null,
+          repeatKey: string | null,
+          isService: boolean,
+          fileMetadata:  {
+            __typename: "FileMetadata",
+            name: string,
+            mimeType: string | null,
+            isImage: boolean,
+            imageWidth: number | null,
+            imageHeight: number | null,
+            imageFormat: string | null,
+            size: number,
+          } | null,
+          sender:  {
+            __typename: "User",
+            id: string,
+            name: string,
+            firstName: string,
+            lastName: string | null,
+            picture: string | null,
+            email: string | null,
+            primaryOrganization:  {
+              __typename: "Organization",
+              name: string,
+            } | null,
+          },
+          date: string,
+        } | null,
+      } | {
         __typename: "AnonymousConversation",
         id: string,
         title: string,
@@ -571,6 +618,10 @@ export interface ChatListQuery {
             lastName: string | null,
             picture: string | null,
             email: string | null,
+            primaryOrganization:  {
+              __typename: "Organization",
+              name: string,
+            } | null,
           },
           date: string,
         } | null,
@@ -606,6 +657,10 @@ export interface ChatListQuery {
             lastName: string | null,
             picture: string | null,
             email: string | null,
+            primaryOrganization:  {
+              __typename: "Organization",
+              name: string,
+            } | null,
           },
           date: string,
         } | null,
@@ -641,6 +696,10 @@ export interface ChatListQuery {
             lastName: string | null,
             picture: string | null,
             email: string | null,
+            primaryOrganization:  {
+              __typename: "Organization",
+              name: string,
+            } | null,
           },
           date: string,
         } | null,
@@ -676,6 +735,10 @@ export interface ChatListQuery {
             lastName: string | null,
             picture: string | null,
             email: string | null,
+            primaryOrganization:  {
+              __typename: "Organization",
+              name: string,
+            } | null,
           },
           date: string,
         } | null,
@@ -733,6 +796,10 @@ export interface ChatHistoryQuery {
         lastName: string | null,
         picture: string | null,
         email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          name: string,
+        } | null,
       },
       date: string,
     } >,
@@ -745,6 +812,12 @@ export interface ChatInfoQueryVariables {
 
 export interface ChatInfoQuery {
   chat: ( {
+      __typename: "ChannelConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
       __typename: "AnonymousConversation",
       id: string,
       flexibleId: string,
@@ -787,6 +860,12 @@ export interface ChatFullInfoQueryVariables {
 
 export interface ChatFullInfoQuery {
   chat: ( {
+      __typename: "ChannelConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
       __typename: "AnonymousConversation",
       id: string,
       flexibleId: string,
@@ -818,6 +897,10 @@ export interface ChatFullInfoQuery {
         lastName: string | null,
         picture: string | null,
         email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          name: string,
+        } | null,
       },
     } | {
       __typename: "GroupConversation",
@@ -833,6 +916,10 @@ export interface ChatFullInfoQuery {
         lastName: string | null,
         picture: string | null,
         email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          name: string,
+        } | null,
       } >,
     }
   ),
@@ -844,6 +931,12 @@ export interface GroupChatFullInfoQueryVariables {
 
 export interface GroupChatFullInfoQuery {
   chat: ( {
+      __typename: "ChannelConversation",
+      id: string,
+      flexibleId: string,
+      title: string,
+      photos: Array< string >,
+    } | {
       __typename: "AnonymousConversation",
       id: string,
       flexibleId: string,
@@ -879,6 +972,10 @@ export interface GroupChatFullInfoQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     },
     role: string,
   } >,
@@ -920,6 +1017,10 @@ export interface SendMessageMutation {
         lastName: string | null,
         picture: string | null,
         email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          name: string,
+        } | null,
       },
       date: string,
     },
@@ -940,6 +1041,10 @@ export interface ChatReadMutation {
       unreadCount: number,
     },
     conversation: ( {
+        __typename: "ChannelConversation",
+        id: string,
+        unreadCount: number,
+      } | {
         __typename: "AnonymousConversation",
         id: string,
         unreadCount: number,
@@ -992,6 +1097,10 @@ export interface ChatSearchForComposeMobileQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     } | {
       __typename: "Organization",
       id: string,
@@ -1007,6 +1116,10 @@ export interface ChatSearchGroupQueryVariables {
 
 export interface ChatSearchGroupQuery {
   group: ( {
+      __typename: "ChannelConversation",
+      id: string,
+      flexibleId: string,
+    } | {
       __typename: "AnonymousConversation",
       id: string,
       flexibleId: string,
@@ -1033,6 +1146,9 @@ export interface ChatCreateGroupMutationVariables {
 
 export interface ChatCreateGroupMutation {
   group: ( {
+      __typename: "ChannelConversation",
+      id: string,
+    } | {
       __typename: "AnonymousConversation",
       id: string,
     } | {
@@ -1065,6 +1181,11 @@ export interface ChatChangeGroupTitleMutation {
   alphaChatChangeGroupTitle:  {
     __typename: "GroupChatUpdateResponse",
     chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+        flexibleId: string,
+        title: string,
+      } | {
         __typename: "AnonymousConversation",
         id: string,
         flexibleId: string,
@@ -1095,7 +1216,26 @@ export interface ChatAddMemberMutationVariables {
 };
 
 export interface ChatAddMemberMutation {
-  alphaChatInviteToGroup: string,
+  alphaChatInviteToGroup:  {
+    __typename: "GroupChatUpdateResponse",
+    chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+      }
+    ),
+  },
 };
 
 export interface BlockedListQueryVariables {
@@ -1113,6 +1253,10 @@ export interface BlockedListQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     },
     blockedBy:  {
       __typename: "User",
@@ -1122,6 +1266,10 @@ export interface BlockedListQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     },
   } >,
 };
@@ -1141,6 +1289,210 @@ export interface UnBlockUserMutationVariables {
 
 export interface UnBlockUserMutation {
   blockUser: string,
+};
+
+export interface ChatSearchTextQueryVariables {
+  query: string,
+};
+
+export interface ChatSearchTextQuery {
+  items:  Array<( {
+      __typename: "ChannelConversation",
+      id: string,
+      title: string,
+      flexibleId: string,
+      unreadCount: number,
+      photos: Array< string >,
+      topMessage:  {
+        __typename: "ConversationMessage",
+        id: string,
+        message: string | null,
+        file: string | null,
+        repeatKey: string | null,
+        isService: boolean,
+        fileMetadata:  {
+          __typename: "FileMetadata",
+          name: string,
+          mimeType: string | null,
+          isImage: boolean,
+          imageWidth: number | null,
+          imageHeight: number | null,
+          imageFormat: string | null,
+          size: number,
+        } | null,
+        sender:  {
+          __typename: "User",
+          id: string,
+          name: string,
+          firstName: string,
+          lastName: string | null,
+          picture: string | null,
+          email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
+        },
+        date: string,
+      } | null,
+    } | {
+      __typename: "AnonymousConversation",
+      id: string,
+      title: string,
+      flexibleId: string,
+      unreadCount: number,
+      photos: Array< string >,
+      topMessage:  {
+        __typename: "ConversationMessage",
+        id: string,
+        message: string | null,
+        file: string | null,
+        repeatKey: string | null,
+        isService: boolean,
+        fileMetadata:  {
+          __typename: "FileMetadata",
+          name: string,
+          mimeType: string | null,
+          isImage: boolean,
+          imageWidth: number | null,
+          imageHeight: number | null,
+          imageFormat: string | null,
+          size: number,
+        } | null,
+        sender:  {
+          __typename: "User",
+          id: string,
+          name: string,
+          firstName: string,
+          lastName: string | null,
+          picture: string | null,
+          email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
+        },
+        date: string,
+      } | null,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+      title: string,
+      flexibleId: string,
+      unreadCount: number,
+      photos: Array< string >,
+      topMessage:  {
+        __typename: "ConversationMessage",
+        id: string,
+        message: string | null,
+        file: string | null,
+        repeatKey: string | null,
+        isService: boolean,
+        fileMetadata:  {
+          __typename: "FileMetadata",
+          name: string,
+          mimeType: string | null,
+          isImage: boolean,
+          imageWidth: number | null,
+          imageHeight: number | null,
+          imageFormat: string | null,
+          size: number,
+        } | null,
+        sender:  {
+          __typename: "User",
+          id: string,
+          name: string,
+          firstName: string,
+          lastName: string | null,
+          picture: string | null,
+          email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
+        },
+        date: string,
+      } | null,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+      title: string,
+      flexibleId: string,
+      unreadCount: number,
+      photos: Array< string >,
+      topMessage:  {
+        __typename: "ConversationMessage",
+        id: string,
+        message: string | null,
+        file: string | null,
+        repeatKey: string | null,
+        isService: boolean,
+        fileMetadata:  {
+          __typename: "FileMetadata",
+          name: string,
+          mimeType: string | null,
+          isImage: boolean,
+          imageWidth: number | null,
+          imageHeight: number | null,
+          imageFormat: string | null,
+          size: number,
+        } | null,
+        sender:  {
+          __typename: "User",
+          id: string,
+          name: string,
+          firstName: string,
+          lastName: string | null,
+          picture: string | null,
+          email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
+        },
+        date: string,
+      } | null,
+    } | {
+      __typename: "GroupConversation",
+      id: string,
+      title: string,
+      flexibleId: string,
+      unreadCount: number,
+      photos: Array< string >,
+      topMessage:  {
+        __typename: "ConversationMessage",
+        id: string,
+        message: string | null,
+        file: string | null,
+        repeatKey: string | null,
+        isService: boolean,
+        fileMetadata:  {
+          __typename: "FileMetadata",
+          name: string,
+          mimeType: string | null,
+          isImage: boolean,
+          imageWidth: number | null,
+          imageHeight: number | null,
+          imageFormat: string | null,
+          size: number,
+        } | null,
+        sender:  {
+          __typename: "User",
+          id: string,
+          name: string,
+          firstName: string,
+          lastName: string | null,
+          picture: string | null,
+          email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
+        },
+        date: string,
+      } | null,
+    }
+  ) >,
 };
 
 export interface AllDealsQuery {
@@ -2929,6 +3281,10 @@ export interface OrganizationMembersQuery {
         lastName: string | null,
         picture: string | null,
         email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          name: string,
+        } | null,
       },
       joinedAt: string | null,
       showInContacts: boolean,
@@ -3701,6 +4057,10 @@ export interface SuperAdminsQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     },
     email: string | null,
   } >,
@@ -3735,6 +4095,10 @@ export interface SuperAccountQuery {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     } >,
     features:  Array< {
       __typename: "FeatureFlag",
@@ -3829,6 +4193,10 @@ export interface SuperAccountMemberAddMutation {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     } >,
   },
 };
@@ -3850,6 +4218,10 @@ export interface SuperAccountMemberRemoveMutation {
       lastName: string | null,
       picture: string | null,
       email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        name: string,
+      } | null,
     } >,
   },
 };
@@ -4078,7 +4450,11 @@ export interface ProfileQuery {
     role: string | null,
     locations: Array< string > | null,
     linkedin: string | null,
-    primaryOrganizationId: string | null,
+    primaryOrganization:  {
+      __typename: "Organization",
+      id: string,
+      name: string,
+    } | null,
     joinedAt: string | null,
     invitedBy:  {
       __typename: "User",
@@ -5160,6 +5536,10 @@ export interface UserQuery {
     about: string | null,
     location: string | null,
     isBot: boolean,
+    primaryOrganization:  {
+      __typename: "Organization",
+      name: string,
+    } | null,
   },
 };
 
@@ -5174,6 +5554,45 @@ export interface ChartFullFragment {
 };
 
 export type ConversationShortFragment = ( {
+      __typename: "ChannelConversation",
+      id: string,
+      title: string,
+      flexibleId: string,
+      unreadCount: number,
+      photos: Array< string >,
+      topMessage:  {
+        __typename: "ConversationMessage",
+        id: string,
+        message: string | null,
+        file: string | null,
+        repeatKey: string | null,
+        isService: boolean,
+        fileMetadata:  {
+          __typename: "FileMetadata",
+          name: string,
+          mimeType: string | null,
+          isImage: boolean,
+          imageWidth: number | null,
+          imageHeight: number | null,
+          imageFormat: string | null,
+          size: number,
+        } | null,
+        sender:  {
+          __typename: "User",
+          id: string,
+          name: string,
+          firstName: string,
+          lastName: string | null,
+          picture: string | null,
+          email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
+        },
+        date: string,
+      } | null,
+    } | {
       __typename: "AnonymousConversation",
       id: string,
       title: string,
@@ -5205,6 +5624,10 @@ export type ConversationShortFragment = ( {
           lastName: string | null,
           picture: string | null,
           email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
         },
         date: string,
       } | null,
@@ -5240,6 +5663,10 @@ export type ConversationShortFragment = ( {
           lastName: string | null,
           picture: string | null,
           email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
         },
         date: string,
       } | null,
@@ -5275,6 +5702,10 @@ export type ConversationShortFragment = ( {
           lastName: string | null,
           picture: string | null,
           email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
         },
         date: string,
       } | null,
@@ -5310,6 +5741,10 @@ export type ConversationShortFragment = ( {
           lastName: string | null,
           picture: string | null,
           email: string | null,
+          primaryOrganization:  {
+            __typename: "Organization",
+            name: string,
+          } | null,
         },
         date: string,
       } | null,
@@ -5347,6 +5782,10 @@ export interface MessageFullFragment {
     lastName: string | null,
     picture: string | null,
     email: string | null,
+    primaryOrganization:  {
+      __typename: "Organization",
+      name: string,
+    } | null,
   },
   date: string,
 };
@@ -5815,6 +6254,10 @@ export interface UserShortFragment {
   lastName: string | null,
   picture: string | null,
   email: string | null,
+  primaryOrganization:  {
+    __typename: "Organization",
+    name: string,
+  } | null,
 };
 
 export interface ParcelFullFragment {

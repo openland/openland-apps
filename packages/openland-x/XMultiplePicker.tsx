@@ -171,6 +171,7 @@ interface MultiplePickerState {
     empty: boolean;
     filteredOptions: { label?: string, values: { label: string, value: string }[] }[];
     scrollToSelected?: boolean;
+    query?: string;
 }
 
 export class MultiplePicker extends React.Component<MultoplePickerProps, MultiplePickerState> {
@@ -178,15 +179,17 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
     constructor(props: MultoplePickerProps) {
         super(props);
         let fOptions = [];
+        let count = 0;
         for (let o of props.options) {
             if (filterOptions(o.values, props.query || '').length > 0) {
+                count += filterOptions(o.values, props.query || '').length;
                 fOptions.push({ label: o.label, values: filterOptions(o.values, props.query || '') });
             }
         }
 
         this.state = {
             selected: [0, 0],
-            empty: false,
+            empty: count === 0,
             filteredOptions: fOptions
         };
     }
@@ -201,7 +204,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
             }
         }
 
-        this.setState({ selected: [0, 0], empty: count === 0, filteredOptions: fOptions });
+        this.setState({ selected: [0, 0], empty: count === 0, filteredOptions: fOptions, query: props.query });
     }
 
     keydownHandler = (e: any) => {
@@ -254,7 +257,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
     render() {
         return (
             <>
-                {this.state.empty && <HelpText>{'Press Enter to add "' + this.props.query + '" location'}</HelpText>}
+                {this.state.empty && <HelpText>{'Press Enter to add "' + this.props.query + '"'}</HelpText>}
                 {!this.state.empty && (
                     <XVertical separator={9} width="100%">
                         {this.props.title && <PickerTitle>{this.props.title}</PickerTitle>}

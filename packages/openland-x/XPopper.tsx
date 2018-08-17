@@ -58,6 +58,7 @@ interface XPopperProps {
 
     arrow?: any | null;
     contentContainer?: any;
+    zIndex?: number;
 }
 
 interface XPopperState {
@@ -452,7 +453,9 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             onMounted: this.captureMounted,
             onUnmounted: this.captureUnmounted,
 
-            orientation: (isVertical) ? 'vertical' : 'horizontal'
+            orientation: (isVertical) ? 'vertical' : 'horizontal',
+
+            zIndex: this.props.zIndex
         };
 
         return (

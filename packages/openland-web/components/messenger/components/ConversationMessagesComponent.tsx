@@ -1,18 +1,98 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
+import { XAvatar } from 'openland-x/XAvatar';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
+import { TypignsComponent, TypingContext } from './TypingsComponent';
 
-export class ConversationMessagesComponent extends React.PureComponent<{ conversation: ConversationEngine }, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
+const TypingWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'flex-start',
+    width: '100%',
+    flexShrink: 0,
+    paddingLeft: 4,
+    paddingRight: 4,
+    position: 'absolute',
+    bottom: 0,
+    left: 0
+});
+
+const TypingContent = Glamorous(XHorizontal)({
+    backgroundColor: '#fff',
+    maxHeight: 33
+});
+
+const TypingString = Glamorous.div({
+    opacity: 0.5,
+    fontSize: 12,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#334562',
+    marginTop: 8,
+    marginBottom: 8
+});
+
+const TypingAvatarWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 9,
+    '& > div': {
+        marginLeft: '-8px !important',
+    },
+    '& > div:first-child': {
+        marginLeft: '0 !important'
+    }
+});
+
+const TypingAvatar = Glamorous(XAvatar)({
+    width: 16,
+    height: 16,
+    flexShrink: 0,
+    '& img': {
+        width: '16px !important',
+        height: '16px !important',
+        objectFit: 'contain'
+    }
+});
+
+const TypingComponent = (props: { chatId: string }) => (
+    <TypingWrapper>
+        <TypignsComponent conversatonId={props.chatId}>
+            <TypingContext.Consumer>
+                {typing => (
+                    <TypingContent separator={2} alignItems="center" flexGrow={1}>
+                        {typing.pictures && (
+                            <TypingAvatarWrapper>
+                                {typing.pictures.map((i, j) => (
+                                    <TypingAvatar key={'typing_img_' + j} cloudImageUuid={i || undefined} />
+                                ))}
+                            </TypingAvatarWrapper>
+                        )}
+                        {typing.typing && (
+                            <TypingString>
+                                {typing.typing}
+                            </TypingString>
+                        )}
+                    </TypingContent>
+                )}
+            </TypingContext.Consumer>
+        </TypignsComponent>
+    </TypingWrapper>
+);
+
+export class ConversationMessagesComponent extends React.PureComponent<{ conversation: ConversationEngine, conversationId: string }, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
 
     messagesList = React.createRef<MessageListComponent>();
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
 
-    constructor(props: { conversation: ConversationEngine }) {
+    constructor(props: { conversation: ConversationEngine, conversationId: string }) {
         super(props);
         let convState = props.conversation.getState();
         this.state = {
@@ -62,6 +142,7 @@ export class ConversationMessagesComponent extends React.PureComponent<{ convers
                     ref={this.messagesList}
                 />
                 <XLoader loading={!this.state.mounted || this.state.loading} />
+                <TypingComponent chatId={this.props.conversationId} />
             </MessagesContainer>
         );
     }

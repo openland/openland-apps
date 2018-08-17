@@ -210,7 +210,11 @@ export const ChatChangeGroupTitleMutation = gql`
 
 export const ChatAddMemberMutation = gql`
     mutation ChatAddMember($conversationId: ID!, $userId: ID!) {
-        alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}])
+        alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}]){
+            chat{
+                id
+            }
+        }
     }
 `;
 
@@ -237,4 +241,15 @@ export const UnBlockUserMutation = gql`
     mutation UnBlockUser($userId: ID!, $conversationId: ID) {
         blockUser: alphaUnblockUser(userId: $userId, conversationId: $conversationId)
     }
+`;
+
+export const ChatSearchTextQuery = gql`
+    query ChatSearchText($query: String!) {
+        items: alphaChatTextSearch(query: $query) {
+            ...ConversationShort           
+        }
+    }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
 `;

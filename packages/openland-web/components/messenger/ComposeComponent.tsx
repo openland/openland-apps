@@ -31,7 +31,7 @@ const HeaderWrapper = Glamorous.div({
 
 const Title = Glamorous.div({
     alignItems: 'center',
-    maxWidth: 850,
+    maxWidth: '100%',
     width: '100%',
     flexBasis: '100%',
     fontSize: 20,
@@ -66,7 +66,7 @@ const ComposeText = Glamorous.div({
     marginTop: 10
 });
 
-class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null }> {
+class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null }> {
 
     state = {
         values: [] as Option<OptionValues>[],
@@ -150,11 +150,16 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                     <MessagesContainer>
                         {!this.state.conversationId && (
                             <EmptyDiv>
-                                <img src={'/static/X/chat-compose.svg'}/>
+                                <img src={'/static/X/chat-compose.svg'} />
                                 <ComposeText>There are no people to create a chat</ComposeText>
                             </EmptyDiv>
                         )}
-                        {this.state.conversationId && <ConversationMessagesComponent conversation={this.props.messenger.getConversation(this.state.conversationId!!)} />}
+                        {this.state.conversationId && (
+                            <ConversationMessagesComponent
+                                conversation={this.props.messenger.getConversation(this.state.conversationId!!)}
+                                conversationId={this.props.conversationId}
+                            />
+                        )}
                     </MessagesContainer>
                     <MessageComposeComponent onSend={this.handleSend} enabled={this.state.values.length > 0} />
                 </ConversationContainer>
@@ -163,10 +168,10 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
     }
 }
 
-export const ComposeComponent = () => {
+export const ComposeComponent = (props: {conversationId: string}) => {
     return (
         <MessengerContext.Consumer>
-            {messenger => <ComposeComponentRender messenger={messenger!!} />}
+            {messenger => <ComposeComponentRender messenger={messenger!!} conversationId={props.conversationId} />}
         </MessengerContext.Consumer>
     );
 };

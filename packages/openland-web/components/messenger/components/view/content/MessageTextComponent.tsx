@@ -12,7 +12,18 @@ export interface MessageTextComponentProps {
 const TextWrapper = Glamorous.span<{ isService: boolean }>((props) => ({
     display: 'inline',
     whiteSpace: 'pre-wrap',
-    opacity: props.isService ? 0.3 : 1
+    opacity: props.isService ? 0.3 : 1,
+    fontSize: 14,
+    lineHeight: 1.71,
+    letterSpacing: -0.2,
+    color: '#1f3449',
+    '& .link': {
+        color: '#1790ff',
+        '&:hover': {
+            color: '#1790ff',
+            textDecoration: 'underline'
+        }
+    }
 }));
 
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
@@ -29,7 +40,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
             } else if (v.type === 'link') {
-                return <XLinkExternal key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
+                return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
                 return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>;
             }

@@ -2,37 +2,41 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 import { XTag } from '../XTag';
-// import { XSelectProps, XSelectAsyncProps } from '../XSelect';
-import { XSelectProps } from '../XSelect';
+import { XSelectProps, XSelect } from '../XSelect';
 import { Option } from 'react-select';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XPopper } from '../XPopper';
+import { MultiplePicker } from '../XMultiplePicker';
 
-const Container = Glamorous(XHorizontal)<XFlexStyles>([{
-    minHeight: 48,
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    cursor: 'text',
-    borderRadius: 5,
-    paddingTop: 3,
-    paddingBottom: 3,
-    paddingLeft: 8,
-    paddingRight: 8,
-    border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    '&:focus-within': {
-        boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)',
-        border: '1px solid #986AFE',
-        '> .icon': {
-            color: '#986AFE'
+const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
+    (props) => ({
+        minHeight: props.rounded ? 42 : 48,
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        cursor: 'text',
+        borderRadius: props.rounded ? 24 : 5,
+        paddingTop: 3,
+        paddingBottom: 3,
+        paddingLeft: 8,
+        paddingRight: 8,
+        border: 'solid 1px rgba(220, 222, 228, 0.45)',
+        '&:focus-within': {
+            boxShadow: `0 0 0 2px rgba${props.rounded ? '(23, 144, 255, 0.2)' : '(143, 124, 246, 0.2)'}`,
+            border: `1px solid ${props.rounded ? '#74bcff' : '#986AFE'}`,
+            '> .icon': {
+                color: '#986AFE'
+            },
+            '& .popper': {
+                color: '#8A80E7'
+            }
         },
-        '& .popper': {
-            color: '#8A80E7'
-        }
-    },
-}, applyFlex]);
+    }),
+    applyFlex]
+);
 
-const Input = Glamorous.input({
-    height: 46,
+const Input = Glamorous.input<{ rounded?: boolean }>((props) => ({
+    height: props.rounded ? 40 : 46,
     flexGrow: 1,
     marginTop: -4,
     marginBottom: -4,
@@ -40,29 +44,32 @@ const Input = Glamorous.input({
     marginLeft: -8,
     paddingLeft: 8,
     paddingRight: 8,
-    fontSize: 16,
+    fontSize: props.rounded ? 14 : 16,
     letterSpacing: -0.2,
     color: '#334562',
     outline: 'none',
     '&::placeholder': {
         color: '#9d9d9d'
     }
-});
+}));
 
 interface XSelectCustomState {
     lastValue: Option<string>[];
     inputVal: string;
+    focus?: boolean;
 }
 
 interface XSelectCustomProps extends XSelectProps, XFlexStyles {
     placeholder?: string;
+    popper?: boolean;
+    rounded?: boolean;
 }
 
-export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCustomState> {
+export class XSelectCustomInputRender extends React.Component<XSelectCustomProps, XSelectCustomState> {
     input?: any;
     constructor(props: XSelectCustomProps) {
         super(props);
-        this.state = { inputVal: '', lastValue: (props.value as Option<string>[]) };
+        this.state = { inputVal: '', lastValue: (props.value as Option<string>[] || []) };
     }
 
     handleRef = (e: any) => {
@@ -85,7 +92,7 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
         }
         this.setState(
             {
-                lastValue: (props.value as Option<string>[]),
+                lastValue: (props.value as Option<string>[]) || [],
             },
             () => {
                 if (this.input && this.input.inputRef && this.input.inputRef) {
@@ -100,16 +107,14 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
             e.preventDefault();
             this.onDelete(this.state.lastValue[this.state.lastValue.length - 1].value);
         }
+    }
 
-        // if (e.code === 'Enter' && this.props.creatable && this.props.onChange && this.state.inputVal.length > 0) {
-        //     e.preventDefault();
-        //     // prevent duplicates
-        //     if ((this.state.lastValue || []).map(v => v.value).filter(v => v === this.state.inputVal).length === 0) {
-        //         this.props.onChange([...(this.state.lastValue || []), { label: this.state.inputVal, value: this.state.inputVal }]);
-        //     } else {
-        //         this.setState({ inputVal: '' });
-        //     }
-        // }
+    focusInHandler = (e: any) => {
+        this.setState({ focus: true });
+    }
+
+    focusOutHandler = (e: any) => {
+        this.setState({ focus: false });
     }
 
     componentDidMount() {
@@ -133,6 +138,19 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
         let res = this.state.lastValue.filter(v => v.value !== value);
         if (this.props.onChange) {
             this.props.onChange(res);
+        } else {
+            this.setState({ lastValue: res });
+        }
+    }
+
+    onPick = (option: { label: string, value: string }) => {
+        let res = this.state.lastValue;
+        res.push(option);
+        if (this.props.onChange) {
+            this.props.onChange(res);
+            this.setState({ inputVal: '' });
+        } else {
+            this.setState({ lastValue: res, inputVal: '' });
         }
     }
 
@@ -150,13 +168,28 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
             maxHeight,
             maxWidth,
             zIndex,
-            opacity
+            opacity,
+            rounded
         } = this.props;
 
+        let options = this.props.options as { label: string, value: string }[];
         let inputValue = this.state.inputVal;
         if (inputValue === null) {
             inputValue = '';
         }
+
+        let input = (
+            <Input
+                innerRef={this.handleRef}
+                value={inputValue}
+                placeholder={this.props.placeholder}
+                autoFocus={true}
+                onChange={this.onInputChange}
+                onFocus={this.focusInHandler}
+                onBlur={this.focusOutHandler}
+                rounded={rounded}
+            />
+        );
 
         return (
             <Container
@@ -174,23 +207,36 @@ export class XSelectCustom extends React.Component<XSelectCustomProps, XSelectCu
                 maxWidth={maxWidth}
                 zIndex={zIndex}
                 opacity={opacity}
+                rounded={rounded}
             >
                 {((this.state.lastValue as Option<string>[]) || []).map(v => (
                     <XTag
                         key={v.value}
                         icon="close"
-                        size="large"
+                        size={rounded ? 'default' : 'large'}
                         text={v.label}
+                        rounded={rounded}
                         onClick={() => this.onDelete(v.value)}
                     />
                 ))}
-                <Input
-                    innerRef={this.handleRef}
-                    value={inputValue}
-                    placeholder={this.props.placeholder}
-                    autoFocus={true}
-                    onChange={this.onInputChange}
-                />
+                {!this.props.popper && input}
+                {this.props.popper && (
+                    <XPopper
+                        placement="bottom-start"
+                        arrow={null}
+                        zIndex={999}
+                        show={this.state.inputVal.length > 0 || this.state.focus}
+                        content={
+                            <MultiplePicker
+                                query={this.state.inputVal}
+                                options={[{ values: options }]}
+                                onPick={this.onPick}
+                            />
+                        }
+                    >
+                        {input}
+                    </XPopper>
+                )}
             </Container>
         );
     }

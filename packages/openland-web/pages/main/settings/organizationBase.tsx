@@ -23,6 +23,7 @@ import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directo
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
+import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 
 const Content = Glamorous(XContent)({
     paddingTop: 30
@@ -175,7 +176,7 @@ export const OrganizationSettigs = ((props: any) => {
                                             <Separator />
 
                                             <XFormField title="Primary location" field="input.primaryLocation" optional={true}>
-                                                <XSelect large={true} creatable={true} multi={true} field="input.primaryLocation" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
+                                                <XSelect creatable={true} multi={true} field="input.primaryLocation" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
                                             </XFormField>
                                             <XFormField title="More locations" field="input.locations" optional={true}>
                                                 <XSelect large={true} creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />

@@ -15,7 +15,13 @@ const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     zIndex: 11,
 }));
 
-const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, horizontal?: boolean }>((props) => ({
+interface DottedMenuButtonStyleProps {
+    active?: boolean;
+    horizontal?: boolean;
+    flat?: boolean;
+}
+
+const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>((props) => ({
     width: 32,
     height: 32,
     display: 'flex',
@@ -25,14 +31,22 @@ const DottedMenuButtonStyle = Glamorous.div<{ active?: boolean, horizontal?: boo
     flexShrink: 0,
     cursor: 'pointer',
     borderRadius: 5,
-    backgroundColor: props.active ? '#654bfa' : 'transparent',
+    backgroundColor: props.flat
+        ? 'transparent'
+        : props.active
+            ? '#654bfa'
+            : 'transparent',
     border: 'solid 1px transparent',
     transition: 'background-color .2s',
     '&:hover': {
-        border: props.active ? 'solid 1px transparent' : 'solid 1px #dcdee4'
+        border: props.flat
+            ? 'solid 1px #dcdee4'
+            : props.active
+                ? 'solid 1px transparent'
+                : 'solid 1px #dcdee4'
     },
     '& > div': {
-        backgroundColor: props.active ? '#fff' : '#abbacb',
+        backgroundColor: (props.flat && props.active) ? '#1790ff' : props.active ? '#fff' : '#abbacb',
         width: 4,
         height: 4,
         borderRadius: 100,
@@ -54,6 +68,7 @@ interface XOverflowProps {
     target?: any;
     shadow?: boolean;
     horizontal?: boolean;
+    flat?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -108,10 +123,11 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                             active={this.state.show}
                             innerRef={this.createRef}
                             horizontal={this.props.horizontal}
+                            flat={this.props.flat}
                         >
-                            <div/>
-                            <div/>
-                            <div/>
+                            <div />
+                            <div />
+                            <div />
                         </DottedMenuButtonStyle>
                     )}
                 </XPopper>

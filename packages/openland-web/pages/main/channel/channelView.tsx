@@ -9,6 +9,8 @@ import { XMenuTitle, XMenuItemWrapper } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
+import { ListingsComponent } from './components/listingsComponent';
+import { MembersComponent } from './components/membersComponent';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -17,8 +19,8 @@ const ChatRoot = Glamorous(XVertical)({
 
 const ChannelWrapper = Glamorous.div({
     width: '100%',
-    height: 'calc(100% - 56px)',
-    maxHeight: 'calc(100% - 56px)'
+    height: 'calc(100vh - 56px)',
+    maxHeight: 'calc(100vh - 56px)'
 });
 
 const ChannelHeader = Glamorous.div({
@@ -69,7 +71,7 @@ const ChannelTab = Glamorous(XLink)({
 const ChannelTools = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    padding: '12px 8px 11px 35px',
+    padding: '12px 18px 11px 35px',
 
     '@media (max-width: 1200px)': {
         paddingLeft: '10px',
@@ -137,8 +139,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             </ChannelHeader>
             <ChannelWrapper>
                 {(!isListingsTab && !isMembersTab) && (<MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />)}
-                {(isListingsTab && !isMembersTab) && (<div>Listings</div>)}
-                {(!isListingsTab && isMembersTab) && (<div>Members</div>)}
+                {(isListingsTab && !isMembersTab) && (<ListingsComponent />)}
+                {(!isListingsTab && isMembersTab) && (<MembersComponent />)}
             </ChannelWrapper>
         </ChatRoot>
     );

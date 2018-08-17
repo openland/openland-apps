@@ -1,16 +1,16 @@
 import * as React from 'react';
+import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageListComponent } from './view/MessageListComponent';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponent } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
-import { XLoader } from 'openland-x/XLoader';
 import { ConversationContainer } from './view/ConversationContainer';
-import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { UplaodCareUploading } from '../UploadCareUploading';
-import { SetTypingMutation } from 'openland-api';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -48,7 +48,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     handleChange = async (text: string) => {
-        let res = await this.props .messenger.client.client.mutate({
+        let res = await this.props.messenger.client.client.mutate({
             mutation: SetTypingMutation.document,
             variables: {
                 conversationId: this.props.conversationId
@@ -71,7 +71,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     render() {
         return (
             <ConversationContainer>
-                <ConversationMessagesComponent conversation={this.conversation} />
+                <ConversationMessagesComponent conversation={this.conversation} conversationId={this.props.conversationId} />
                 <MessageComposeComponent onChange={this.handleChange} onSend={this.handleSend} onSendFile={this.handleSendFile} enabled={this.state.mounted} />
             </ConversationContainer>
         );
