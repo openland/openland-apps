@@ -7,6 +7,7 @@ import { Option } from 'react-select';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from '../XPopper';
 import { MultiplePicker } from '../XMultiplePicker';
+import { delay } from 'openland-y-utils/timer';
 
 const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
     (props) => ({
@@ -114,7 +115,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
     }
 
     focusOutHandler = (e: any) => {
-        this.setState({ focus: false });
+        delay(1000).then(() => {
+            this.setState({ focus: false });
+        });
     }
 
     componentDidMount() {
@@ -148,9 +151,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
         res.push(option);
         if (this.props.onChange) {
             this.props.onChange(res);
-            this.setState({ inputVal: '' });
+            this.setState({ inputVal: '', focus: false });
         } else {
-            this.setState({ lastValue: res, inputVal: '' });
+            this.setState({ lastValue: res, inputVal: '', focus: false });
         }
     }
 
