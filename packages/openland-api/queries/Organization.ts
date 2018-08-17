@@ -90,6 +90,28 @@ export const ExploreOrganizationsQuery = gql`
     ${OrganizationSearch}
 `;
 
+export const ExploreComunityQuery = gql`
+    query ExploreComunity($query: String, $sort: String, $page: Int) {
+        items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 10) {
+            edges {
+                node {
+                    ...OrganizationSearch
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${OrganizationSearch}
+`;
+
 export const CreateListingMutation = gql`
     mutation CreateListing($type: String!, $input: AlphaOrganizationListingInput!) {
         createListing: alphaOrganizationCreateListing(type: $type, input: $input) {

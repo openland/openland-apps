@@ -7,6 +7,7 @@ import { Option } from 'react-select';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from '../XPopper';
 import { MultiplePicker } from '../XMultiplePicker';
+import { delay } from 'openland-y-utils/timer';
 
 const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
     (props) => ({
@@ -113,7 +114,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
         this.setState({ focus: true });
     }
 
-    focusOutHandler = (e: any) => {
+    focusOutHandler = () => {
         this.setState({ focus: false });
     }
 
@@ -145,12 +146,14 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
 
     onPick = (option: { label: string, value: string }) => {
         let res = this.state.lastValue;
-        res.push(option);
+        if (!(res || []).find(i => i.value === option.value)) {
+            res.push(option);
+        }
         if (this.props.onChange) {
             this.props.onChange(res);
-            this.setState({ inputVal: '' });
+            this.setState({ inputVal: '', focus: false });
         } else {
-            this.setState({ lastValue: res, inputVal: '' });
+            this.setState({ lastValue: res, inputVal: '', focus: false });
         }
     }
 
@@ -183,10 +186,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                 innerRef={this.handleRef}
                 value={inputValue}
                 placeholder={this.props.placeholder}
-                autoFocus={true}
+                autoFocus={this.props.autoFocus}
                 onChange={this.onInputChange}
                 onFocus={this.focusInHandler}
-                onBlur={this.focusOutHandler}
                 rounded={rounded}
             />
         );
@@ -226,10 +228,11 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         arrow={null}
                         zIndex={999}
                         show={this.state.inputVal.length > 0 || this.state.focus}
+                        onClickOutside={this.focusOutHandler}
                         content={
                             <MultiplePicker
                                 query={this.state.inputVal}
-                                options={[{ values: options }]}
+                                options={[{ values: options.filter(o => !(this.state.lastValue || []).find(l => l.value === o.value)) }]}
                                 onPick={this.onPick}
                             />
                         }

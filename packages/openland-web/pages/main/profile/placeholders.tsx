@@ -415,14 +415,8 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
                     }
                 });
             }}
-            target={(
-                <div style={{ cursor: 'pointer' }}>
-                    <XCardStyled padding={18}>
-                        <XHorizontal alignItems="center">
-                            <PlaceholderAbout /> <Text marginWidth={18}>{TextOrganizationProfile.placeholderAbout}</Text>
-                        </XHorizontal>
-                    </XCardStyled>
-                </div>
+            target={(props as any).target || (
+                <XButton text="About" iconRight="add" />
             )}
         >
             <XVertical>
@@ -435,7 +429,7 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
         </XModalForm>
 
     );
-});
+}) as React.ComponentType<{ target?: any }>;
 
 export const SocialPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
@@ -464,12 +458,8 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                     }
                 });
             }}
-            target={(
-                <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal alignItems="center">
-                        <PlaceholderSocial /> <Text marginWidth={18}>{TextOrganizationProfile.placeholderSocial}</Text>
-                    </XHorizontal>
-                </div>
+            target={(props as any).target || (
+                <XButton text="Links" iconRight="add" />
             )}
         >
             <ModalFormContentWrapper>
@@ -496,7 +486,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
         </XModalForm>
 
     );
-});
+}) as React.ComponentType<{ target?: any }>;
 
 export const ContactPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
@@ -684,29 +674,22 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
                     }
                 });
             }}
-            target={(
-                <HeaderPlaceholderWrap marginTop={20} separator={6}>
-                    <PlaceholderLocations style={{ marginLeft: 4, marginRight: 4 }} />
-                    <Text>{TextOrganizationProfile.placeholderLocation}</Text>
-                </HeaderPlaceholderWrap>
+            target={(props as any).target || (
+                <XButton text="Locations" icon="add" />
             )}
         >
             <XFormLoadingContent>
-                <XWithRole role="software-developer" negate={true}>
-                    <XSelect
-                        creatable={true}
-                        multi={true}
-                        field="input.locations"
-                        options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
-                    />
-                </XWithRole>
-                <XWithRole role="software-developer" >
-                    <LocationSelect />
-                </XWithRole>
+                <XSelect
+                    creatable={true}
+                    multi={true}
+                    render={<XSelectCustomInputRender popper={true} />}
+                    field="input.locations"
+                    options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                />
             </XFormLoadingContent>
         </XModalForm>
     );
-});
+}) as React.ComponentType<{ target?: any }>;
 
 export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
@@ -717,7 +700,7 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
             title="Add categories"
             defaultData={{
                 input: {
-                    locations: props.data.organizationProfile!!.organizationType,
+                    organizationType: props.data.organizationProfile!!.organizationType,
                 }
             }}
             defaultAction={async (data) => {
@@ -729,11 +712,8 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
                     }
                 });
             }}
-            target={(
-                <HeaderPlaceholderWrap marginTop={9} separator={4}>
-                    <PlaceholderInterests style={{ marginLeft: 2 }} />
-                    <Text>{TextOrganizationProfile.placeholderCategory}</Text>
-                </HeaderPlaceholderWrap>
+            target={(props as any).target || (
+                <XButton text="Categories" icon="add" />
             )}
         >
             <ModalFormContentWrapper>
@@ -742,6 +722,7 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
                         creatable={true}
                         multi={true}
                         field="input.organizationType"
+                        render={<XSelectCustomInputRender popper={true} />}
                         options={TextDirectoryData.categoryPicker.categories}
                     />
                 </XFormLoadingContent>
@@ -749,7 +730,7 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
         </XModalForm>
 
     );
-});
+}) as React.ComponentType<{ target?: any }>;
 
 export const EmptyPlaceholder = () => {
     return (

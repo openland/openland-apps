@@ -224,7 +224,7 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
             dx = 1;
         }
 
-        if (e.code === 'Enter') {
+        if (e.code === 'Enter' || e.code === 'Tab') {
             e.preventDefault();
             if (!this.state.empty) {
                 this.props.onPick(this.state.filteredOptions[this.state.selected[0]].values[this.state.selected[1]]);

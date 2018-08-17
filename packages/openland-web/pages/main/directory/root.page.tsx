@@ -31,6 +31,7 @@ import { HitsPopularQuery } from 'openland-api/HitsPopularQuery';
 import { withHitsAdd } from '../../../api/withHItsAdd';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
+import { OrganizationProfile } from '../profile/ProfileComponent';
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
@@ -949,78 +950,82 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     render() {
 
         const { searchText, conditions, orgCount } = this.state;
+        let org = this.props.router.routeQuery.organizationId;
         return (
-            <Root separator={14}>
-                <Header orgCount={orgCount} tagsCount={this.state.conditions.length} reset={this.reset} />
-                <ContentWrapper>
-                    <MainContent>
-                        <XVertical>
-                            <SearchRoot>
-                                <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                    <SearchFormContent separator={4} flexGrow={1}>
-                                        <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                                        <AutocompletePopper
-                                            target={
-                                                <SearchInput
-                                                    onFocus={this.onSearchFocus}
+            org ? <OrganizationProfile organizationId={org as string} onBack={() => this.props.router.push('/directory')} /> :
+                (
+                    <Root separator={14}>
+                        <Header orgCount={orgCount} tagsCount={this.state.conditions.length} reset={this.reset} />
+                        <ContentWrapper>
+                            <MainContent>
+                                <XVertical>
+                                    <SearchRoot>
+                                        <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
+                                            <SearchFormContent separator={4} flexGrow={1}>
+                                                <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                                                <AutocompletePopper
+                                                    target={
+                                                        <SearchInput
+                                                            onFocus={this.onSearchFocus}
+                                                            value={searchText}
+                                                            onChange={this.handleSearchChange}
+                                                            placeholder={TextDirectory.searchInputPlaceholder}
+                                                        />
+                                                    }
+                                                    onPick={this.addCondition}
+                                                    query={searchText}
                                                     value={searchText}
-                                                    onChange={this.handleSearchChange}
-                                                    placeholder={TextDirectory.searchInputPlaceholder}
+                                                    onInputChange={this.handleSearchChange}
                                                 />
-                                            }
-                                            onPick={this.addCondition}
-                                            query={searchText}
-                                            value={searchText}
-                                            onInputChange={this.handleSearchChange}
-                                        />
-                                    </SearchFormContent>
+                                            </SearchFormContent>
 
-                                    <XHorizontal separator={5}>
-                                        {this.state.conditions.length > 0 &&
-                                            <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
-                                        <XButton
-                                            text={TextDirectory.buttonSearch}
-                                            style="primary"
-                                            enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
-                                            onClick={this.searchButtonHandler}
+                                            <XHorizontal separator={5}>
+                                                {this.state.conditions.length > 0 &&
+                                                    <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
+                                                <XButton
+                                                    text={TextDirectory.buttonSearch}
+                                                    style="primary"
+                                                    enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
+                                                    onClick={this.searchButtonHandler}
+                                                />
+                                            </XHorizontal>
+                                        </SearchFormWrapper>
+                                        <SearchPickersWrapper separator={0} hiden={this.state.showFilters}>
+                                            <SearchPickers separator="none" flexGrow={1}>
+                                                <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }} fetchPolicy="network-only">
+                                                    {data => {
+                                                        return (
+                                                            <>
+                                                                <InterestPicker onPick={this.addCondition} top={((data.data && data.data.hitsPopular) || []).filter((c: { category: string, tags: string[] }) => c.category === 'directory_interest')[0]} />
+                                                                <LocationPicker onPick={this.addCondition} />
+                                                                <CategoryPicker onPick={this.addCondition} />
+                                                            </>
+                                                        );
+                                                    }}
+                                                </Query>
+
+                                            </SearchPickers>
+                                            <SortContainer>
+                                                <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                            </SortContainer>
+                                        </SearchPickersWrapper>
+                                    </SearchRoot>
+                                    <XHorizontal>
+                                        <Organizations
+                                            featuredFirst={this.state.sort.featured}
+                                            orderBy={this.state.sort.orderBy}
+                                            conditions={conditions}
+                                            onPick={this.replaceConditions}
+                                            onSearchReset={this.reset}
+                                            tagsCount={this.tagsCount}
                                         />
+                                        <TopTags onPick={this.addCondition} />
                                     </XHorizontal>
-                                </SearchFormWrapper>
-                                <SearchPickersWrapper separator={0} hiden={this.state.showFilters}>
-                                    <SearchPickers separator="none" flexGrow={1}>
-                                        <Query query={HitsPopularQuery.document} variables={{ categories: ['directory_interest', 'directory_organizationType', 'directory_location'] }} fetchPolicy="network-only">
-                                            {data => {
-                                                return (
-                                                    <>
-                                                        <InterestPicker onPick={this.addCondition} top={((data.data && data.data.hitsPopular) || []).filter((c: { category: string, tags: string[] }) => c.category === 'directory_interest')[0]} />
-                                                        <LocationPicker onPick={this.addCondition} />
-                                                        <CategoryPicker onPick={this.addCondition} />
-                                                    </>
-                                                );
-                                            }}
-                                        </Query>
-
-                                    </SearchPickers>
-                                    <SortContainer>
-                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                    </SortContainer>
-                                </SearchPickersWrapper>
-                            </SearchRoot>
-                            <XHorizontal>
-                                <Organizations
-                                    featuredFirst={this.state.sort.featured}
-                                    orderBy={this.state.sort.orderBy}
-                                    conditions={conditions}
-                                    onPick={this.replaceConditions}
-                                    onSearchReset={this.reset}
-                                    tagsCount={this.tagsCount}
-                                />
-                                <TopTags onPick={this.addCondition} />
-                            </XHorizontal>
-                        </XVertical>
-                    </MainContent>
-                </ContentWrapper>
-            </Root >
+                                </XVertical>
+                            </MainContent>
+                        </ContentWrapper>
+                    </Root >
+                )
         );
     }
 }
