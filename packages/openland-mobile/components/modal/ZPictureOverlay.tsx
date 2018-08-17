@@ -6,8 +6,11 @@ import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { ZImagePreview } from '../media/ZImagePreview';
+import { FastImageViewer } from 'react-native-fast-image-viewer';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
+
+    ref = React.createRef<FastImageViewer>();
 
     progress = new Animated.Value(0);
     progressInverted = Animated.add(1, Animated.multiply(this.progress, -1));
@@ -29,46 +32,60 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     };
 
     handleClose = () => {
-        if (!this.state.closing) {
-            Animated.parallel([
-                Animated.spring(this.progress, {
-                    toValue: 0,
-                    stiffness: 500,
-                    mass: 1,
-                    damping: 10000,
-                    useNativeDriver: true
-                }),
-                Animated.timing(this.progressLinear, {
-                    toValue: 0,
-                    duration: 150,
-                    useNativeDriver: true
-                })
-            ]).start(() => {
-                if (this.props.config.onEnd) {
-                    this.props.config.onEnd();
-                }
-                this.props.onClose();
-            });
-            // Animated.timing(this.progress, {
-            //     toValue: 0,
-            //     duration: 6000,
-            //     useNativeDriver: true
-            // }).start(() => {
-            //     this.props.onClose();
-            // });
-            this.setState({ closing: true });
+        // if (!this.state.closing) {
+        //     Animated.parallel([
+        //         Animated.spring(this.progress, {
+        //             toValue: 0,
+        //             stiffness: 500,
+        //             mass: 1,
+        //             damping: 10000,
+        //             useNativeDriver: true
+        //         }),
+        //         Animated.timing(this.progressLinear, {
+        //             toValue: 0,
+        //             duration: 150,
+        //             useNativeDriver: true
+        //         })
+        //     ]).start(() => {
+        //         if (this.props.config.onEnd) {
+        //             this.props.config.onEnd();
+        //         }
+        //         this.props.onClose();
+        //     });
+        //     // Animated.timing(this.progress, {
+        //     //     toValue: 0,
+        //     //     duration: 6000,
+        //     //     useNativeDriver: true
+        //     // }).start(() => {
+        //     //     this.props.onClose();
+        //     // });
+        //     this.setState({ closing: true });
+        //     if (Platform.OS === 'ios') {
+        //         setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
+        //     }
+        // }
+        if (this.ref.current) {
+            this.ref.current.close();
+        }
+    }
+
+    handleClosed = () => {
+        if (Platform.OS === 'ios') {
             setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
         }
+        this.props.onClose();
     }
 
     componentWillMount() {
-        StatusBar.setBarStyle('light-content');
+        if (Platform.OS === 'ios') {
+            StatusBar.setBarStyle('light-content');
+        }
     }
 
     componentDidMount() {
-        if (this.props.config.onBegin) {
-            this.props.config.onBegin();
-        }
+        // if (this.props.config.onBegin) {
+        //     this.props.config.onBegin();
+        // }
     }
 
     onPreviewLoaded = () => {
@@ -181,16 +198,24 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                             />
                         </Animated.View> */}
                     {/* <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressLinear }}> */}
-                    <ZImagePreview
-                        src={this.props.config.uuid}
-                        srcWidth={size.width}
-                        srcHeight={size.height}
+                    <FastImageViewer
+                        ref={this.ref}
+                        srcWidth={this.props.config.width}
+                        srcHeight={this.props.config.height}
                         width={containerW}
                         height={containerH}
                         onTap={this.handleTap}
-                        onLoaded={this.onDestLoaded}
-                        initialLayout={animate}
-                    />
+                        startLayout={animate}
+                        onClosed={this.handleClosed}
+                    >
+                        <XPImage
+                            source={{ uuid: this.props.config.uuid }}
+                            width={this.props.config.width}
+                            height={this.props.config.height}
+                            imageSize={{ width: this.props.config.width, height: this.props.config.height }}
+                            onLoaded={this.onDestLoaded}
+                        />
+                    </FastImageViewer>
                     {/* </Animated.View> */}
                     {/* </Animated.View> */}
                 </View>
