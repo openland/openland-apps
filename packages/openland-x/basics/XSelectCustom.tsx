@@ -146,7 +146,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
 
     onPick = (option: { label: string, value: string }) => {
         let res = this.state.lastValue;
-        res.push(option);
+        if (!(res || []).find(i => i.value === option.value)) {
+            res.push(option);
+        }
         if (this.props.onChange) {
             this.props.onChange(res);
             this.setState({ inputVal: '', focus: false });
@@ -184,7 +186,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                 innerRef={this.handleRef}
                 value={inputValue}
                 placeholder={this.props.placeholder}
-                autoFocus={true}
+                autoFocus={this.props.autoFocus}
                 onChange={this.onInputChange}
                 onFocus={this.focusInHandler}
                 rounded={rounded}
@@ -230,7 +232,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         content={
                             <MultiplePicker
                                 query={this.state.inputVal}
-                                options={[{ values: options }]}
+                                options={[{ values: options.filter(o => !(this.state.lastValue || []).find(l => l.value === o.value)) }]}
                                 onPick={this.onPick}
                             />
                         }
