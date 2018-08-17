@@ -79,7 +79,7 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     </XModal>
 
                     <XModal target={<XButton text="Custom XSelect" />}>
-                    
+
                         <XSelect
                             options={[
                                 { label: 'option1', value: 'option1' },
@@ -95,7 +95,7 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                             render={<XSelectCustomInputRender popper={true} />}
                         />
 
-                         <XSelect
+                        <XSelect
                             options={[
                                 { label: 'option1', value: 'option1' },
                                 { label: 'option2', value: 'option2' },
