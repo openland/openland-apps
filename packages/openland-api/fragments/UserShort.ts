@@ -10,5 +10,8 @@ export const UserShort = gql`
         primaryOrganization: alphaPrimaryOrganization{
             name
         }
+        role: alphaRole
+        linkedin: alphaLinkedin
+        twitter: alphaTwitter
     }
 `;

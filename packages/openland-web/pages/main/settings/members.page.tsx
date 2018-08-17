@@ -176,7 +176,7 @@ const PermissionsHoverButton = Glamorous(XButton)({
     left: 0
 });
 
-const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
+export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
     let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
     if (!member) {
         return null;
@@ -243,7 +243,7 @@ const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
     );
 }) as React.ComponentType<{ members: any[], refetchVars: { orgId: string } }>;
 
-const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => {
+export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => {
     let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.changeRole || '')[0];
     if (!member) {
         return null;

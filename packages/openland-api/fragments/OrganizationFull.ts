@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { UserShort } from './UserShort';
 
 export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
@@ -6,7 +7,7 @@ export const OrganizationFull = gql`
         isMine
         editorial: alphaEditorial
         featured: alphaFeatured
-
+        isCommunity: alphaIsCommunity
         name
         photo
 
@@ -28,6 +29,13 @@ export const OrganizationFull = gql`
             role: alphaRole
             linkedin: alphaLinkedin
             twitter: alphaTwitter
+        }
+
+        members: alphaOrganizationMembers{
+            role
+            user{
+                ...UserShort
+            }
         }
 
         organizationType: alphaOrganizationType
@@ -186,4 +194,5 @@ export const OrganizationFull = gql`
             unitCapacity
         }
     }
+    ${UserShort}
 `;

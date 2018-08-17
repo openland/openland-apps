@@ -80,6 +80,8 @@ routes.add('/home/', '/main/home/main');
 
 routes.add('/directory', '/main/directory/root');
 routes.add('/directory/', '/main/directory/root');
+routes.add('/directory/:organizationId', '/main/directory/root');
+routes.add('/directory/:organizationId/', '/main/directory/root');
 
 //
 // Profiles
