@@ -122,11 +122,31 @@ class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: strin
                 <XVertical separator={16}>
                     <XInput size="r-default" color="primary-sky-blue" placeholder="Listing title" />
                     <XTextArea placeholder="Description" resize={false} size="small" />
-                    <XSelect
+                    {/* <XSelect
                         field="input.locations"
                         render={<XSelectCustomInputRender flexGrow={1} width="100%" flexShrink={0} placeholder="Enter a channel " />}
                         onInputChange={v => { this.setState({ val: v }); return v; }}
                         creatable={true}
+                    /> */}
+                    <XSelect
+                        options={[
+                            { label: 'option1', value: 'option1' },
+                            { label: 'option2', value: 'option2' },
+                            { label: 'option3', value: 'option3' },
+                            { label: 'option4', value: 'option4' },
+                            { label: 'option5', value: 'option5' },
+                            { label: 'option6', value: 'option6' },
+                            { label: 'option7', value: 'option7' },
+                            { label: 'option8', value: 'option8' },
+                            { label: 'option9', value: 'option9' },
+                        ]}
+                        render={
+                            <XSelectCustomInputRender
+                                popper={true}
+                                placeholder="Enter a channel"
+                                rounded={true}
+                            />
+                        }
                     />
                 </XVertical>
             </XModalForm>
