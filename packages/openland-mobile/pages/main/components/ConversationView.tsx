@@ -60,7 +60,11 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
-                <Image source={require('assets/img-chat-3.jpg')} style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="repeat" />
+                <Image
+                    source={require('assets/img-chat-3.jpg')}
+                    style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                    resizeMode="cover"
+                />
                 <ConversationMessagesView
                     ref={this.listRef}
                     messages={this.state.conversation.messagesPrepprocessed}
