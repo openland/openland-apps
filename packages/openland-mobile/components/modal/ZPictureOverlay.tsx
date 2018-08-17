@@ -200,8 +200,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                     {/* <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressLinear }}> */}
                     <FastImageViewer
                         ref={this.ref}
-                        srcWidth={this.props.config.width}
-                        srcHeight={this.props.config.height}
+                        srcWidth={size.width}
+                        srcHeight={size.height}
                         width={containerW}
                         height={containerH}
                         onTap={this.handleTap}
@@ -210,9 +210,9 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                     >
                         <XPImage
                             source={{ uuid: this.props.config.uuid }}
-                            width={this.props.config.width}
-                            height={this.props.config.height}
-                            imageSize={{ width: this.props.config.width, height: this.props.config.height }}
+                            width={size.width}
+                            height={size.height}
+                            imageSize={{ width: size.width, height: size.height }}
                             onLoaded={this.onDestLoaded}
                         />
                     </FastImageViewer>
