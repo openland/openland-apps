@@ -114,10 +114,8 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
         this.setState({ focus: true });
     }
 
-    focusOutHandler = (e: any) => {
-        delay(1000).then(() => {
-            this.setState({ focus: false });
-        });
+    focusOutHandler = () => {
+        this.setState({ focus: false });
     }
 
     componentDidMount() {
@@ -189,7 +187,6 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                 autoFocus={true}
                 onChange={this.onInputChange}
                 onFocus={this.focusInHandler}
-                onBlur={this.focusOutHandler}
                 rounded={rounded}
             />
         );
@@ -229,6 +226,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         arrow={null}
                         zIndex={999}
                         show={this.state.inputVal.length > 0 || this.state.focus}
+                        onClickOutside={this.focusOutHandler}
                         content={
                             <MultiplePicker
                                 query={this.state.inputVal}
