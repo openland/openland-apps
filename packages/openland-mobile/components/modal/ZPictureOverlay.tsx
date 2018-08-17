@@ -21,7 +21,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     barOpacity = new Animated.Value(1);
     barVisible = true;
 
-    previewLoaded = false;
+    previewLoaded = true;
     fullLoaded = false;
 
     state = {
@@ -152,7 +152,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                     }}
                     pointerEvents="box-none"
                 >
-                    <Animated.View
+                    {/* <Animated.View
                         style={{
                             width: containerW,
                             height: containerH,
@@ -169,8 +169,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                             ]
                         }}
                         pointerEvents="box-none"
-                    >
-                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, alignItems: 'center', justifyContent: 'center', opacity: this.unredlayOpacity }} pointerEvents="none">
+                    > */}
+                    {/* <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, alignItems: 'center', justifyContent: 'center', opacity: this.unredlayOpacity }} pointerEvents="none">
                             <XPImage
                                 source={{ uuid: this.props.config.uuid }}
                                 imageSize={{ width: size.width, height: size.height }}
@@ -179,19 +179,20 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                 borderRadius={18 / baseScale}
                                 onLoaded={this.onPreviewLoaded}
                             />
-                        </Animated.View>
-                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressLinear }}>
-                            <ZImagePreview
-                                src={this.props.config.uuid}
-                                srcWidth={size.width}
-                                srcHeight={size.height}
-                                width={containerW}
-                                height={containerH}
-                                onTap={this.handleTap}
-                                onLoaded={this.onDestLoaded}
-                            />
-                        </Animated.View>
-                    </Animated.View>
+                        </Animated.View> */}
+                    {/* <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressLinear }}> */}
+                    <ZImagePreview
+                        src={this.props.config.uuid}
+                        srcWidth={size.width}
+                        srcHeight={size.height}
+                        width={containerW}
+                        height={containerH}
+                        onTap={this.handleTap}
+                        onLoaded={this.onDestLoaded}
+                        initialLayout={animate}
+                    />
+                    {/* </Animated.View> */}
+                    {/* </Animated.View> */}
                 </View>
 
                 <Animated.View
