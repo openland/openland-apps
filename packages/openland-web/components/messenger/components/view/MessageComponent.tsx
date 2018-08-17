@@ -28,51 +28,44 @@ const MessageWrapper = Glamorous(XVertical)({
 const Name = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
+    color: '#334562'
 });
 
 const Organization = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 400,
-    opacity: 0.5
+    fontSize: 12,
+    fontWeight: 500,
+    opacity: 0.5,
+    color: '#334562',
+    letterSpacing: -0.2,
+    alignSelf: 'flex-end',
+    marginBottom: -1
 });
 
-const DateComponent = Glamorous.div<{small?: boolean}>((props) => ({
+const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     width: props.small ? 56 : 62,
-    fontSize: props.small ? 13 : 14,
-    fontWeight: 300,
+    marginBottom: props.small ? undefined : -1,
+    fontSize: 12,
+    paddingTop: props.small ? 3 : undefined,
+    fontWeight: 500,
+    letterSpacing: -0.2,
     opacity: 0.5,
     color: '#334562'
 }));
 
-const MessageContainer = Glamorous.div({
+const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 4,
-    paddingBottom: 4,
+    flexDirection: props.compact ? 'row' : 'column',
+    alignItems: props.compact ? 'center' : undefined,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: props.compact ? 3 : 7,
+    paddingBottom: 3,
     width: '100%',
-    marginBottom: 12,
-    borderRadius: 5,
+    marginTop: props.compact ? undefined : 20,
+    // marginBottom: 12,
+    borderRadius: 2,
     '&:hover': {
-        backgroundColor: 'rgba(248, 248, 251, 0.7)'
-    },
-});
-
-const MessageCompactContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 4,
-    paddingBottom: 4,
-    width: '100%',
-    marginTop: -12,
-    marginBottom: 12,
-    borderRadius: 5,
-    '&:hover': {
-        backgroundColor: 'rgba(248, 248, 251, 0.7)',
+        backgroundColor: 'rgba(242, 244, 245, 0.5)',
         '& > .time': {
             opacity: 0.5
         }
@@ -80,7 +73,7 @@ const MessageCompactContainer = Glamorous.div({
     '& > .time': {
         opacity: 0
     }
-});
+}));
 
 export class MessageComponent extends React.PureComponent<MessageComponentProps> {
     render() {
@@ -139,21 +132,23 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
 
         if (this.props.compact) {
             return (
-                <MessageCompactContainer className="compact-message">
+                <MessageContainer className="compact-message" compact={true}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     {content}
-                </MessageCompactContainer>
+                </MessageContainer>
             );
         }
 
         return (
-            <MessageContainer className="full-message">
+            <MessageContainer className="full-message" compact={false}>
                 <XHorizontal alignSelf="stretch">
                     <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
-                    <MessageWrapper separator={'none'} flexGrow={1}>
+                    <MessageWrapper separator={2} flexGrow={1}>
                         <XHorizontal separator={4}>
-                            <Name>{this.props.sender!!.name}</Name>
-                            {this.props.sender!!.primaryOrganization && <Organization>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                            <XHorizontal separator={4} alignItems="center">
+                                <Name>{this.props.sender!!.name}</Name>
+                                {this.props.sender!!.primaryOrganization && <Organization>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                            </XHorizontal>
                             <DateComponent>{date}</DateComponent>
                         </XHorizontal>
                         {content}

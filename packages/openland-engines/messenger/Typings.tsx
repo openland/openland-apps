@@ -82,7 +82,7 @@ export class TypingsWatcher {
         let userNames = usersTyping.map(u => u!.userName);
         let usersPic = usersTyping.map(u => u!.userPic);
 
-        let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing';
+        let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing...';
 
         let data = {
             typing: str,

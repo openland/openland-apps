@@ -10,7 +10,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper } from 'openland-x/XMenuItem';
 import { XCheckbox, XCheckboxBasic } from 'openland-x/XCheckbox';
-import { TypignsComponent, TypingContext } from './components/TypingsComponent';
 import { XButton } from 'openland-x/XButton';
 import { withBlockUser } from '../../api/withBlockUser';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
@@ -29,7 +28,7 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
     alignItems: 'center',
-    maxWidth: 850,
+    maxWidth: '100%',
     width: '100%',
     flexBasis: '100%'
 });
@@ -127,22 +126,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             />
                             <XHorizontal alignItems="center" separator={6}>
                                 <Title>{props.data.chat.title}</Title>
-                                <TypignsComponent conversatonId={props.data.chat.id}>
-                                    <TypingContext.Consumer>
-                                        {typing => {
-                                            console.log('typing ---- ', typing);
-                                            return (
-                                                <SubTitle>
-                                                    {typing.typing || (props.data.chat.__typename === 'SharedConversation'
-                                                        ? 'Organization'
-                                                        : props.data.chat.__typename === 'GroupConversation'
-                                                            ? 'Group'
-                                                            : 'Person')}
-                                                </SubTitle>
-                                            );
-                                        }}
-                                    </TypingContext.Consumer>
-                                </TypignsComponent>
+                                <SubTitle>
+                                    {(props.data.chat.__typename === 'SharedConversation'
+                                        ? 'Organization'
+                                        : props.data.chat.__typename === 'GroupConversation'
+                                            ? 'Group'
+                                            : 'Person'
+                                    )}
+                                </SubTitle>
                             </XHorizontal>
                         </XHorizontal>
                     </NavChatLeftContentStyled>

@@ -124,7 +124,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                         <ConversationContainer>
                             {isCompose && canUseDOM && (
                                 <MessengerContainer>
-                                    <ComposeComponent />
+                                    <ComposeComponent conversationId={props.router.routeQuery.conversationId} />
                                 </MessengerContainer>
                             )}
                             {!isCompose && !props.router.routeQuery.conversationId && (

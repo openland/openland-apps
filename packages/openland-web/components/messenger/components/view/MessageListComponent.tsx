@@ -49,8 +49,8 @@ const DateDivider = Glamorous.div({
     position: 'sticky',
     top: 8,
     zIndex: 1,
-    marginTop: 18,
-    marginBottom: 12,
+    marginTop: 24,
+    marginBottom: 24,
     '& > div': {
         display: 'flex',
         justifyContent: 'center',
@@ -63,9 +63,10 @@ const DateDivider = Glamorous.div({
         paddingBottom: 2,
         '& > span': {
             fontSize: 12,
-            fontWeight: 300,
+            fontWeight: 500,
             color: '#334562',
             opacity: 0.5,
+            letterSpacing: -0.2
         }
     }
 });
@@ -74,8 +75,8 @@ const MessagesWrapper = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    paddingTop: '96px',
-    paddingBottom: '24px',
+    paddingTop: 96,
+    paddingBottom: 40,
     width: '100%'
 });
 
