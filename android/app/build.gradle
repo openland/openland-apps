@@ -145,6 +145,12 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'org.webkit:android-jsc:r224109'
+    }
+}
+
 dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     compile project(':react-native-haptic-feedback')

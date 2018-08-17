@@ -7642,6 +7642,10 @@ jsbn@^0.1.0, jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
 
+jsc-android@224109.1.0:
+  version "224109.1.0"
+  resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-224109.1.0.tgz#9749ec92f1e284b3c09befe7c47cc6e60b1f0cdf"
+
 jsdom@^11.5.1:
   version "11.11.0"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-11.11.0.tgz#df486efad41aee96c59ad7a190e2449c7eb1110e"
@@ -10698,6 +10702,15 @@ react-native-extra-dimensions-android@^0.21.0:
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/react-native-extra-dimensions-android/-/react-native-extra-dimensions-android-0.21.0.tgz#2992384a90df738cf678a452cadbf251052ce7bc"
 
+react-native-fast-image-viewer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image-viewer/-/react-native-fast-image-viewer-1.0.0.tgz#9cd48f8fb5d08b15f2c26545a59fb61fb7f8945a"
+  dependencies:
+    react "^16.3.0"
+    react-native "^0.56.0"
+    react-native-gesture-handler "^1.0.7"
+    react-native-haptic-feedback "^1.2.0"
+
 react-native-fast-image@^4.0.14:
   version "4.0.14"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-4.0.14.tgz#1e84c9a01b1471793e294ef4e7c3cc20e09562a0"
@@ -11068,6 +11081,15 @@ react-with-styles@^3.1.0:
 react@16.4.1, "react@^15.6.2 || ^16.0":
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
+react@^16.3.0:
+  version "16.4.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
