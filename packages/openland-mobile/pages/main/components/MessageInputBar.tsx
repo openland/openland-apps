@@ -5,7 +5,7 @@ import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar'
 
 let styles = StyleSheet.create({
     textInput: {
-        backgroundColor: '#fafafa',
+        backgroundColor: '#f5f6f7',
         borderRadius: 17.5,
         paddingLeft: 12,
         paddingRight: 12,
@@ -15,7 +15,8 @@ let styles = StyleSheet.create({
         maxHeight: 100,
         fontSize: 16,
         borderColor: '#E6E6E7',
-        borderWidth: 0.5
+        borderWidth: 0.5,
+        marginBottom: 8
     } as ViewStyle
 });
 
@@ -38,11 +39,11 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         let hasText = this.props.text.trim().length > 0;
         return (
             <ZKeyboardAwareBar>
-                <View style={{ paddingBottom: 8, paddingTop: 8, flexDirection: 'row', alignItems: 'flex-end' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
                     {this.props.attachesEnabled !== false && (
                         <TouchableOpacity onPress={this.props.onAttachPress}>
-                            <View width={52} height={33} alignItems="center" justifyContent="center">
-                                <Image source={iconAttach} style={{ width: 22, height: 21 }} />
+                            <View width={50} height={50} alignItems="center" justifyContent="center">
+                                <Image source={iconAttach} style={{ width: 24, height: 24 }} />
                             </View>
                         </TouchableOpacity>
                     )}
@@ -59,12 +60,10 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         style={styles.textInput}
                         editable={this.props.enabled !== false}
                         multiline={true}
-                        onBlur={() => console.log('blur')}
-                        onFocus={() => console.log('focus')}
                     />
                     <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
-                        <View alignContent="center" justifyContent="center" width={54} height={33} paddingLeft={12}>
-                            <Image source={icon} style={{ width: 24, height: 24, tintColor: hasText && this.props.enabled !== false ? AppStyles.primaryColor : '#C8C7CC' }} />
+                        <View alignItems="center" justifyContent="center" width={50} height={50}>
+                            <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && this.props.enabled !== false ? AppStyles.primaryColor : '#C8C7CC' }} />
                         </View>
                     </TouchableOpacity>
                 </View>

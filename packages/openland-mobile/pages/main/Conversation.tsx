@@ -60,7 +60,13 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
                 uuid: message.file!!,
                 width: message.fileMetadata!!.imageWidth!!,
                 height: message.fileMetadata!!.imageHeight!!,
-                animate: { x: pageX, y: pageY, width, height, view: view!! }
+                animate: { x: pageX, y: pageY, width, height, view: view!! },
+                onBegin: () => {
+                    view!!.setNativeProps({ 'opacity': 0 });
+                },
+                onEnd: () => {
+                    view!!.setNativeProps({ 'opacity': 1 });
+                },
             });
             // console.log({ x, y, width, height, pageX, pageY });
             // Modals.showPicturePreview(

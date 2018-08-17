@@ -5,4 +5,7 @@ export interface ZPictureTransitionConfig {
     width: number;
     height: number;
     animate?: { x: number, y: number, width: number, height: number, view: View };
+    title?: string;
+    onBegin?: () => void;
+    onEnd?: () => void;
 }

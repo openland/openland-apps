@@ -73,8 +73,8 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
                 style={{
                     paddingTop: topPadding,
                     paddingBottom: bottomPadding,
-                    paddingLeft: !this.props.isOut && attachedBottom ? 8 : 0,
-                    paddingRight: this.props.isOut && attachedBottom ? 8 : 0,
+                    paddingLeft: !this.props.isOut && (attachedBottom || this.props.appearance === 'media') ? 8 : 0,
+                    paddingRight: this.props.isOut && (attachedBottom || this.props.appearance === 'media') ? 8 : 0,
                     flexDirection: 'row'
                 }}
             >

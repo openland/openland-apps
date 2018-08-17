@@ -29,6 +29,7 @@
   //   #endif
       // jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
     #ifdef DEBUG
+ //jsCodeLocation = [NSURL URLWithString:@"https://openland.eu.ngrok.io/index.bundle?platform=ios&dev=true&minify=false" ];
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
     #else
       jsCodeLocation = [CodePush bundleURL];

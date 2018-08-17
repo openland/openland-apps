@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { XPBubbleView, resolveCorners } from 'openland-xp/XPBubbleView';
-import { View, Platform, Dimensions, TouchableHighlight, LayoutChangeEvent } from 'react-native';
+import { XPBubbleView } from 'openland-xp/XPBubbleView';
+import { View, Platform, Dimensions, LayoutChangeEvent, TouchableWithoutFeedback } from 'react-native';
 import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
@@ -36,11 +36,9 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                     ref={this.ref}
                     onLayout={this.handleLayout}
                 >
-                    <TouchableHighlight
+                    <TouchableWithoutFeedback
                         onPress={this.handleTouch}
                         disabled={!this.props.onPress}
-                        underlayColor="#000"
-                        activeOpacity={0.8}
                         delayPressIn={0}
                         style={{
                             borderRadius: 18
@@ -54,7 +52,7 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                             width={layout.width}
                             height={layout.height}
                         />
-                    </TouchableHighlight>
+                    </TouchableWithoutFeedback>
                 </View>
             </XPBubbleView>
         );

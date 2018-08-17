@@ -11,8 +11,15 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
     progress = new Animated.Value(0);
     progressInverted = Animated.add(1, Animated.multiply(this.progress, -1));
+    unredlayOpacity = this.progressInverted.interpolate({
+        inputRange: [0, 0.5],
+        outputRange: [0, 1],
+        extrapolate: 'clamp'
+    });
     progressLinear = new Animated.Value(0);
     progressLinearInverted = Animated.add(1, Animated.multiply(this.progressLinear, -1));
+    barOpacity = new Animated.Value(1);
+    barVisible = true;
 
     previewLoaded = false;
 
@@ -25,6 +32,9 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
             Animated.parallel([
                 Animated.spring(this.progress, {
                     toValue: 0,
+                    stiffness: 500,
+                    mass: 1,
+                    damping: 10000,
                     useNativeDriver: true
                 }),
                 Animated.timing(this.progressLinear, {
@@ -33,6 +43,9 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                     useNativeDriver: true
                 })
             ]).start(() => {
+                if (this.props.config.onEnd) {
+                    this.props.config.onEnd();
+                }
                 this.props.onClose();
             });
             // Animated.timing(this.progress, {
@@ -58,6 +71,9 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         //     // easing: Easing.ease,
         //     useNativeDriver: true
         // }).start();
+        if (this.props.config.onBegin) {
+            this.props.config.onBegin();
+        }
     }
 
     onPreviewLoaded = () => {
@@ -78,6 +94,24 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         ]).start();
     }
 
+    handleTap = () => {
+        if (this.barVisible) {
+            this.barVisible = false;
+            Animated.timing(this.barOpacity, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true
+            });
+        } else {
+            this.barVisible = true;
+            Animated.timing(this.barOpacity, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true
+            });
+        }
+    }
+
     render() {
 
         const w = this.props.config.width;
@@ -91,7 +125,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
         return (
             <View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, flexDirection: 'column', alignItems: 'stretch' }} pointerEvents="box-none">
-                <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: this.progressLinear }} />
+                <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: Animated.multiply(this.progressLinear, this.barOpacity) }} />
 
                 <View
                     style={{
@@ -119,7 +153,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         }}
                         pointerEvents="box-none"
                     >
-                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, alignItems: 'center', justifyContent: 'center', opacity: this.progressInverted }} pointerEvents="none">
+                        <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, alignItems: 'center', justifyContent: 'center', opacity: this.unredlayOpacity }} pointerEvents="none">
                             <XPImage
                                 source={{ uuid: this.props.config.uuid }}
                                 imageSize={{ width: size.width, height: size.height }}
@@ -136,6 +170,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                 srcHeight={size.height}
                                 width={containerW}
                                 height={containerH}
+                                onTap={this.handleTap}
                             />
                         </Animated.View>
                     </Animated.View>
@@ -146,12 +181,13 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight,
                         paddingTop: ZAppConfig.statusBarHeight,
                         backgroundColor: 'rgba(0,0,0,0.6)',
-                        transform: [{
-                            translateY:
-                                Animated.multiply(
-                                    Animated.add(this.progressLinear, -1),
-                                    ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight)
-                        }]
+                        opacity: Animated.multiply(this.progressLinear, this.barOpacity)
+                        // transform: [{
+                        //     translateY:
+                        //         Animated.multiply(
+                        //             Animated.add(Animated.multiply(this.progressLinear, this.barOpacity), -1),
+                        //             ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight)
+                        // }]
                     }}
                 >
                     <ZHeaderBackButton inverted={true} onPress={this.handleClose} />
