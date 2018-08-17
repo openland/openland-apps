@@ -22,6 +22,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     barVisible = true;
 
     previewLoaded = false;
+    fullLoaded = false;
 
     state = {
         closing: false
@@ -65,12 +66,6 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     componentDidMount() {
-        // Animated.spring(this.progress, {
-        //     toValue: 1,
-        //     // duration: 300,
-        //     // easing: Easing.ease,
-        //     useNativeDriver: true
-        // }).start();
         if (this.props.config.onBegin) {
             this.props.config.onBegin();
         }
@@ -81,17 +76,39 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
             return;
         }
         this.previewLoaded = true;
-        Animated.parallel([
-            Animated.spring(this.progress, {
-                toValue: 1,
-                useNativeDriver: true
-            }),
-            Animated.timing(this.progressLinear, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true
-            })
-        ]).start();
+        if (this.fullLoaded) {
+            Animated.parallel([
+                Animated.spring(this.progress, {
+                    toValue: 1,
+                    useNativeDriver: true
+                }),
+                Animated.timing(this.progressLinear, {
+                    toValue: 1,
+                    duration: 200,
+                    useNativeDriver: true
+                })
+            ]).start();
+        }
+    }
+
+    onDestLoaded = () => {
+        if (this.fullLoaded) {
+            return;
+        }
+        this.fullLoaded = true;
+        if (this.previewLoaded) {
+            Animated.parallel([
+                Animated.spring(this.progress, {
+                    toValue: 1,
+                    useNativeDriver: true
+                }),
+                Animated.timing(this.progressLinear, {
+                    toValue: 1,
+                    duration: 200,
+                    useNativeDriver: true
+                })
+            ]).start();
+        }
     }
 
     handleTap = () => {
@@ -171,6 +188,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                 width={containerW}
                                 height={containerH}
                                 onTap={this.handleTap}
+                                onLoaded={this.onDestLoaded}
                             />
                         </Animated.View>
                     </Animated.View>

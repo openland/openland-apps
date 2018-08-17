@@ -1,16 +1,7 @@
 import * as React from 'react';
-import { View, Animated, Platform } from 'react-native';
 import { XPImage } from 'openland-xp/XPImage';
-import {
-    PanGestureHandler,
-    PinchGestureHandler,
-    State,
-    PanGestureHandlerStateChangeEvent,
-    PinchGestureHandlerStateChangeEvent,
-    TapGestureHandler,
-    TapGestureHandlerStateChangeEvent,
-} from 'react-native-gesture-handler';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
+
 export interface ZImagePreviewProps {
     src: string;
     srcWidth: number;
@@ -18,6 +9,7 @@ export interface ZImagePreviewProps {
     width: number;
     height: number;
     onTap?: () => void;
+    onLoaded?: () => void;
 }
 
 export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
@@ -29,6 +21,7 @@ export class ZImagePreview extends React.PureComponent<ZImagePreviewProps> {
                     width={this.props.srcWidth}
                     height={this.props.srcHeight}
                     imageSize={{ width: this.props.srcWidth, height: this.props.srcHeight }}
+                    onLoaded={this.props.onLoaded}
                 />
             </FastImageViewer>
         );
