@@ -2,6 +2,7 @@
 /// <resources type="react-native" />
 declare module 'rn-fetch-blob' {
     const instance: {
+        config: (args: any) => any;
         fetch: (method: string, url: string, options: any, args: any[]) => any
         wrap: (src: any) => any
     };

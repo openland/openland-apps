@@ -5,10 +5,32 @@ import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
 import { formatTime } from './utils/formatTime';
+import { DownloadManagerInterface, DownloadState } from './DownloadManagerInterface';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
 
-export class MessageImageView extends React.PureComponent<{ date: string, isSending: boolean, file: string, width: number, height: number, isGif: boolean, isOut: boolean, message: MessageFullFragment, onPress?: (message: MessageFullFragment, view?: View) => void }> {
+export interface MessageImageViewProps {
+    downloadManager?: DownloadManagerInterface;
+    date: string;
+    isSending: boolean;
+    file: string;
+    width: number;
+    height: number;
+    isGif: boolean;
+    isOut: boolean;
+    message: MessageFullFragment;
+    onPress?: (message: MessageFullFragment, view?: View) => void;
+}
+
+export class MessageImageView extends React.PureComponent<MessageImageViewProps, { downloadState?: DownloadState }> {
 
     ref = React.createRef<View>();
+    downloadManagerWatch?: WatchSubscription;
+
+    constructor(props: MessageImageViewProps) {
+        super(props);
+        this.state = {};
+    }
 
     handleTouch = () => {
         if (this.props.onPress) {
@@ -18,6 +40,20 @@ export class MessageImageView extends React.PureComponent<{ date: string, isSend
 
     handleLayout = (event: LayoutChangeEvent) => {
         // do nothing
+    }
+
+    componentWillMount() {
+        if (this.props.downloadManager) {
+            this.downloadManagerWatch = this.props.downloadManager.watch(this.props.file, (state) => {
+                this.setState({ downloadState: state });
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.downloadManagerWatch) {
+            this.downloadManagerWatch();
+        }
     }
 
     render() {
@@ -46,7 +82,7 @@ export class MessageImageView extends React.PureComponent<{ date: string, isSend
                         }}
                     >
                         <XPImage
-                            source={{ uuid: this.props.file }}
+                            source={this.props.downloadManager ? (this.state.downloadState && this.state.downloadState.path) : { uuid: this.props.file }}
                             imageSize={{ width: optimalSize.width, height: optimalSize.height }}
                             borderRadius={18}
                             resize={this.props.isGif ? 'none' : undefined}
@@ -54,6 +90,11 @@ export class MessageImageView extends React.PureComponent<{ date: string, isSend
                             height={layout.height}
                         />
                     </TouchableWithoutFeedback>
+                    {this.props.downloadManager && (
+                        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                            <XPCircularLoader progress={this.state.downloadState && this.state.downloadState.progress} />
+                        </View>
+                    )}
                     <View style={{ flexDirection: 'row', position: 'absolute', bottom: 4, right: 3, borderRadius: 8, height: 16, paddingHorizontal: 5, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                         <Text style={{ color: '#fff', fontSize: 11, lineHeight: 16 }}>{formatTime(parseInt(this.props.date, 10))}</Text>
                         {this.props.isOut && (

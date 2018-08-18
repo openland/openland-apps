@@ -36,6 +36,7 @@
 		"chart.js": "^2.7.1",
 		"classnames": "^2.2.5",
 		"compression": "^1.7.1",
+		"d3-shape": "^1.2.0",
 		"diff": "^3.4.0",
 		"draft-js": "^0.10.5",
 		"draft-js-emoji-plugin": "^2.0.6",

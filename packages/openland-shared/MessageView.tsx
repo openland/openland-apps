@@ -5,6 +5,7 @@ import { extractKey } from 'openland-engines/messenger/types';
 import { View, ViewStyle, StyleSheet } from 'react-native';
 import { MessageFullFragment } from 'openland-api/Types';
 import { MessageViewSingle } from './MessageViewSingle';
+import { DownloadManagerInterface } from './DownloadManagerInterface';
 
 let styles = StyleSheet.create({
     container: {
@@ -15,6 +16,7 @@ let styles = StyleSheet.create({
 export interface MessageViewProps {
     onAvatarPress?: (userId: string) => void;
     onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
+    downloadManager?: DownloadManagerInterface;
     message: MessageGroup;
     engine: ConversationEngine;
 }
@@ -28,6 +30,7 @@ export class MessageView extends React.PureComponent<MessageViewProps> {
                         key={extractKey(v)}
                         message={v}
                         engine={this.props.engine}
+                        downloadManager={this.props.downloadManager}
                         onAvatarPress={this.props.onAvatarPress}
                         onPhotoPress={this.props.onPhotoPress}
                         attach={

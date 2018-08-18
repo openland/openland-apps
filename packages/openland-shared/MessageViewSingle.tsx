@@ -7,6 +7,7 @@ import { MessageTextView } from './MessageTextView';
 import { MessageImageView } from './MessageImageView';
 import { MessageDocumentView } from './MessageDocumentView';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { DownloadManagerInterface } from './DownloadManagerInterface';
 
 let styles = StyleSheet.create({
     container: {
@@ -33,6 +34,7 @@ let styles = StyleSheet.create({
 
 export interface MessageViewSingleProps {
     engine: ConversationEngine;
+    downloadManager?: DownloadManagerInterface;
     onAvatarPress?: (userId: string) => void;
     onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
     message: ModelMessage;
@@ -96,6 +98,7 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                             message={message}
                             date={message.date}
                             isSending={false}
+                            downloadManager={this.props.downloadManager}
                         />
                     );
                 } else {

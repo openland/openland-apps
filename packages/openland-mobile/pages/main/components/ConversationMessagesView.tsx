@@ -7,6 +7,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ModelMessage, extractKey } from 'openland-engines/messenger/types';
 import { MessageViewSingle } from 'openland-shared/MessageViewSingle';
+import { DownloadManagerInstance } from '../../../files/DownloadManager';
 
 let months = [
     'Jan',
@@ -120,6 +121,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                     message={itm.message}
                     engine={this.props.engine}
                     attach={itm.attach}
+                    downloadManager={DownloadManagerInstance}
                 />
             );
         } else {
