@@ -361,6 +361,7 @@ export interface AccountQuery {
     email: string | null,
     primaryOrganization:  {
       __typename: "Organization",
+      id: string,
       name: string,
     } | null,
     role: string | null,
@@ -424,6 +425,7 @@ export interface AccountInviteInfoQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -589,6 +591,7 @@ export interface ChatListQuery {
             email: string | null,
             primaryOrganization:  {
               __typename: "Organization",
+              id: string,
               name: string,
             } | null,
             role: string | null,
@@ -631,6 +634,7 @@ export interface ChatListQuery {
             email: string | null,
             primaryOrganization:  {
               __typename: "Organization",
+              id: string,
               name: string,
             } | null,
             role: string | null,
@@ -673,6 +677,7 @@ export interface ChatListQuery {
             email: string | null,
             primaryOrganization:  {
               __typename: "Organization",
+              id: string,
               name: string,
             } | null,
             role: string | null,
@@ -715,6 +720,7 @@ export interface ChatListQuery {
             email: string | null,
             primaryOrganization:  {
               __typename: "Organization",
+              id: string,
               name: string,
             } | null,
             role: string | null,
@@ -757,6 +763,7 @@ export interface ChatListQuery {
             email: string | null,
             primaryOrganization:  {
               __typename: "Organization",
+              id: string,
               name: string,
             } | null,
             role: string | null,
@@ -821,6 +828,7 @@ export interface ChatHistoryQuery {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -869,6 +877,19 @@ export interface ChatInfoQuery {
       user:  {
         __typename: "User",
         id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          id: string,
+          name: string,
+        } | null,
+        role: string | null,
+        linkedin: string | null,
+        twitter: string | null,
       },
     } | {
       __typename: "GroupConversation",
@@ -876,6 +897,7 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      membersCount: number,
     }
   ),
 };
@@ -925,6 +947,7 @@ export interface ChatFullInfoQuery {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -947,6 +970,7 @@ export interface ChatFullInfoQuery {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -1006,6 +1030,7 @@ export interface GroupChatFullInfoQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -1054,6 +1079,7 @@ export interface SendMessageMutation {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -1137,6 +1163,7 @@ export interface ChatSearchForComposeMobileQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -1296,6 +1323,7 @@ export interface BlockedListQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -1312,6 +1340,7 @@ export interface BlockedListQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -1377,6 +1406,7 @@ export interface ChatSearchTextQuery {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -1419,6 +1449,7 @@ export interface ChatSearchTextQuery {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -1461,6 +1492,7 @@ export interface ChatSearchTextQuery {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -1503,6 +1535,7 @@ export interface ChatSearchTextQuery {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -1545,6 +1578,7 @@ export interface ChatSearchTextQuery {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -2168,6 +2202,7 @@ export interface MyOrganizationQuery {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -2826,6 +2861,7 @@ export interface OrganizationQuery {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -3419,6 +3455,7 @@ export interface OrganizationMembersQuery {
         email: string | null,
         primaryOrganization:  {
           __typename: "Organization",
+          id: string,
           name: string,
         } | null,
         role: string | null,
@@ -4205,6 +4242,7 @@ export interface SuperAdminsQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -4246,6 +4284,7 @@ export interface SuperAccountQuery {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -4347,6 +4386,7 @@ export interface SuperAccountMemberAddMutation {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -4375,6 +4415,7 @@ export interface SuperAccountMemberRemoveMutation {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -5696,7 +5737,9 @@ export interface UserQuery {
     isBot: boolean,
     primaryOrganization:  {
       __typename: "Organization",
+      id: string,
       name: string,
+      photo: string | null,
     } | null,
   },
 };
@@ -5745,6 +5788,7 @@ export type ConversationShortFragment = ( {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -5787,6 +5831,7 @@ export type ConversationShortFragment = ( {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -5829,6 +5874,7 @@ export type ConversationShortFragment = ( {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -5871,6 +5917,7 @@ export type ConversationShortFragment = ( {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -5913,6 +5960,7 @@ export type ConversationShortFragment = ( {
           email: string | null,
           primaryOrganization:  {
             __typename: "Organization",
+            id: string,
             name: string,
           } | null,
           role: string | null,
@@ -5957,6 +6005,7 @@ export interface MessageFullFragment {
     email: string | null,
     primaryOrganization:  {
       __typename: "Organization",
+      id: string,
       name: string,
     } | null,
     role: string | null,
@@ -6009,6 +6058,7 @@ export interface OrganizationFullFragment {
       email: string | null,
       primaryOrganization:  {
         __typename: "Organization",
+        id: string,
         name: string,
       } | null,
       role: string | null,
@@ -6453,6 +6503,7 @@ export interface UserShortFragment {
   email: string | null,
   primaryOrganization:  {
     __typename: "Organization",
+    id: string,
     name: string,
   } | null,
   role: string | null,

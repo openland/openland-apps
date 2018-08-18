@@ -88,9 +88,9 @@ export function createZStackNavigator(routes: NavigationRouteConfigMap, modal?: 
         navigationOptions: {
             header: ZHeader,
             gesturesEnabled: true,
-            gestureResponseDistance: {
-                horizontal: Dimensions.get('window').width
-            },
+            // gestureResponseDistance: {
+            //     horizontal: Dimensions.get('window').width
+            // },
         },
         headerMode: 'float',
         transitionConfig: (transitionProps: NavigationTransitionProps, prevTransitionProps: NavigationTransitionProps, isModal: boolean) => {

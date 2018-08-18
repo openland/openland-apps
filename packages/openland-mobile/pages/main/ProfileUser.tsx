@@ -27,7 +27,7 @@ class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
                                     photo={resp.data.user.photo}
                                     id={resp.data.user.id}
                                     title={resp.data.user.name}
-                                    subtitle="Person"
+                                    subtitle={resp.data.user.primaryOrganization ? resp.data.user.primaryOrganization.name : 'Person'}
                                     action="Send message"
                                     onPress={this.handleSend}
                                 />

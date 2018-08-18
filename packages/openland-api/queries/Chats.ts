@@ -59,12 +59,16 @@ export const ChatInfoQuery = gql`
             }
             ... on PrivateConversation {
                 blocked
-                user{
-                    id
+                user {
+                    ...UserShort
                 }
+            }
+            ... on GroupConversation {
+                membersCount
             }
         }
     }
+    ${UserShort}
 `;
 
 export const ChatFullInfoQuery = gql`

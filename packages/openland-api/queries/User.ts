@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { OrganizationShort } from '../fragments/OrganizationShort';
 
 export const UsersQuery = gql`
     query Users($query: String!) {
@@ -25,8 +26,9 @@ export const UserQuery = gql`
             location
             isBot
             primaryOrganization: alphaPrimaryOrganization{
-                name
+                ...OrganizationShort
             }
         }
     }
+    ${OrganizationShort}
 `;

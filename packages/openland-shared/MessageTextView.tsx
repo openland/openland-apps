@@ -80,7 +80,7 @@ export class MessageTextView extends React.PureComponent<{ date: string, text: s
                     {this.props.isOut && (
                         <View style={{ width: 18, height: 13, justifyContent: 'center', alignItems: 'center' }}>
                             {this.props.isSending && <Image source={require('assets/ic-sending.png')} style={{ width: 13, height: 13 }} />}
-                            {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ width: 13, height: 13 }} />}
+                            {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ width: 9, height: 8 }} />}
                         </View>
                     )}
                 </View>
