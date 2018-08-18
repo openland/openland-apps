@@ -14,14 +14,27 @@ export class DownloadManager implements DownloadManagerInterface {
         }
     })();
 
-    watch(uuid: string, handler: (state: DownloadState) => void) {
+    resolvePath(uuid: string, resize: { width: number, height: number } | null) {
+        let suffix = '';
+        if (resize) {
+            suffix = '_' + resize.width + 'x' + resize.height;
+        }
+        let path = this.rootDir + '/' + uuid + suffix;
+        return path;
+    }
+
+    watch(uuid: string, resize: { width: number, height: number } | null, handler: (state: DownloadState) => void) {
         if (!this._watchers.has(uuid)) {
             let watcher = new Watcher<DownloadState>();
             this._watchers.set(uuid, watcher);
 
             // Init
 
-            let path = this.rootDir + '/' + uuid;
+            let suffix = '';
+            if (resize) {
+                suffix = '_' + resize.width + 'x' + resize.height;
+            }
+            let path = this.rootDir + '/' + uuid + suffix;
 
             (async () => {
 
@@ -40,12 +53,17 @@ export class DownloadManager implements DownloadManagerInterface {
                     return;
                 }
 
+                let url = 'https://ucarecdn.com/' + uuid + '/';
+                if (resize) {
+                    url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
+                }
+
                 // Download
                 try {
                     watcher.setState({ progress: 0 });
                     let res = RNFetchBlob.config({
-                        path: this.rootIncompleteDir + '/' + uuid
-                    }).fetch('GET', 'https://ucarecdn.com/' + uuid + '/');
+                        path: this.rootIncompleteDir + '/' + uuid + suffix
+                    }).fetch('GET', url);
                     setTimeout(
                         () => {
                             res.progress({ interval: 100 }, (written: number, total: number) => {
@@ -58,7 +76,7 @@ export class DownloadManager implements DownloadManagerInterface {
 
                     await this.createRootFolder;
 
-                    await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid, path);
+                    await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid + suffix, path);
 
                     watcher.setState({ path, progress: 1 });
                 } catch (e) {

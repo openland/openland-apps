@@ -5,5 +5,5 @@ export interface DownloadState {
     progress?: number;
 }
 export interface DownloadManagerInterface {
-    watch(uuid: string, handler: (state: DownloadState) => void): WatchSubscription;
+    watch(uuid: string, resize: { width: number, height: number } | null, handler: (state: DownloadState) => void): WatchSubscription;
 }

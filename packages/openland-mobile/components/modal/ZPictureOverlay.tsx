@@ -209,7 +209,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         onClosed={this.handleClosed}
                     >
                         <XPImage
-                            source={{ uuid: this.props.config.uuid }}
+                            source={this.props.config.url}
                             width={size.width}
                             height={size.height}
                             imageSize={{ width: size.width, height: size.height }}

@@ -17,6 +17,8 @@ import { ConversationView } from './components/ConversationView';
 import { UploadManagerInstance, UploadState } from '../../files/UploadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
+import { layoutMedia } from 'openland-shared/utils/layoutMedia';
+import { DownloadManagerInstance } from '../../files/DownloadManager';
 
 class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -70,9 +72,10 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     handlePhotoPress = (message: MessageFullFragment, view?: View) => {
+        const optimalSize = layoutMedia(message.fileMetadata!!.imageWidth!!, message.fileMetadata!!.imageHeight!!, 1024, 1024);
         view!!.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             this.props.provider.showModal({
-                uuid: message.file!!,
+                url: DownloadManagerInstance.resolvePath(message.file!!, optimalSize),
                 width: message.fileMetadata!!.imageWidth!!,
                 height: message.fileMetadata!!.imageHeight!!,
                 animate: { x: pageX, y: pageY, width, height, view: view!! },

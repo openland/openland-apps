@@ -44,7 +44,8 @@ export class MessageImageView extends React.PureComponent<MessageImageViewProps,
 
     componentWillMount() {
         if (this.props.downloadManager) {
-            this.downloadManagerWatch = this.props.downloadManager.watch(this.props.file, (state) => {
+            let optimalSize = layoutMedia(this.props.width, this.props.height, 1024, 1024);
+            this.downloadManagerWatch = this.props.downloadManager.watch(this.props.file, !this.props.isGif ? optimalSize : null, (state) => {
                 this.setState({ downloadState: state });
             });
         }
