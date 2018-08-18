@@ -78,7 +78,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
                 url: DownloadManagerInstance.resolvePath(message.file!!, optimalSize),
                 width: message.fileMetadata!!.imageWidth!!,
                 height: message.fileMetadata!!.imageHeight!!,
-                animate: { x: pageX, y: pageY, width, height, view: view!! },
+                animate: { x: pageX, y: pageY, width, height, view: view!!, borderRadius: 18 },
                 onBegin: () => {
                     view!!.setNativeProps({ 'opacity': 0 });
                 },
@@ -86,16 +86,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
                     view!!.setNativeProps({ 'opacity': 1 });
                 },
             });
-            // console.log({ x, y, width, height, pageX, pageY });
-            // Modals.showPicturePreview(
-            //     this.props.navigator,
-            //     message.file!!,
-            //     message.fileMetadata!!.imageWidth!!,
-            //     message.fileMetadata!!.imageHeight!!,
-            //     { x: pageX, y: pageY, width, height }
-            // );
         });
-
     }
 
     render() {

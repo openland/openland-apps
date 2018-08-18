@@ -54,6 +54,20 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         if (Platform.OS === 'ios') {
             setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
         }
+        Animated.parallel([
+            Animated.spring(this.progress, {
+                toValue: 0,
+                stiffness: 500,
+                mass: 1,
+                damping: 10000,
+                useNativeDriver: true
+            }),
+            Animated.timing(this.progressLinear, {
+                toValue: 0,
+                duration: 150,
+                useNativeDriver: true
+            })
+        ]).start();
     }
 
     handleClosed = () => {
