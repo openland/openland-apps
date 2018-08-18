@@ -34,7 +34,6 @@ export class PImage extends React.Component<PImageProps> {
                 url += '-/quality/lighter/-/progressive/yes/';
             }
         }
-        console.log(url);
         return (
             <FastImage
                 source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal', ...{ disableAnimations: true } as any }}
