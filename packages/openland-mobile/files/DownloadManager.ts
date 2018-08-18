@@ -5,7 +5,14 @@ import RNFetchBlob from 'rn-fetch-blob';
 export class DownloadManager implements DownloadManagerInterface {
 
     private _watchers = new Map<string, Watcher<DownloadState>>();
-    private rootDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files';
+    private version = 1;
+    private rootDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_v' + this.version;
+    private rootIncompleteDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_incomplete_v' + this.version;
+    private createRootFolder = (async () => {
+        if (!await (RNFetchBlob as any).fs.exists(this.rootDir)) {
+            await (RNFetchBlob as any).fs.mkdir(this.rootDir);
+        }
+    })();
 
     watch(uuid: string, handler: (state: DownloadState) => void) {
         if (!this._watchers.has(uuid)) {
@@ -37,23 +44,21 @@ export class DownloadManager implements DownloadManagerInterface {
                 try {
                     watcher.setState({ progress: 0 });
                     let res = RNFetchBlob.config({
-                        path
+                        path: this.rootIncompleteDir + '/' + uuid
                     }).fetch('GET', 'https://ucarecdn.com/' + uuid + '/');
-
                     setTimeout(
                         () => {
                             res.progress({ interval: 100 }, (written: number, total: number) => {
                                 let p = written / total;
                                 watcher.setState({ progress: p });
-                                // this.state = { status: UploadStatus.UPLOADING, progress: p };
-                                // for (let w of this.watchers) {
-                                //     w(this.state);
-                                // }
                             });
                         },
                         0);
+                    await res;
 
-                    console.log(await res);
+                    await this.createRootFolder;
+
+                    await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid, path);
 
                     watcher.setState({ path, progress: 1 });
                 } catch (e) {

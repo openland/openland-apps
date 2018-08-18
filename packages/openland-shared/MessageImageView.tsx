@@ -91,8 +91,8 @@ export class MessageImageView extends React.PureComponent<MessageImageViewProps,
                         />
                     </TouchableWithoutFeedback>
                     {this.props.downloadManager && (
-                        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                            <XPCircularLoader progress={this.state.downloadState && this.state.downloadState.progress} />
+                        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }} pointerEvents="none">
+                            <XPCircularLoader visible={!!this.state.downloadState && !this.state.downloadState.path} progress={this.state.downloadState && this.state.downloadState.progress || 0} />
                         </View>
                     )}
                     <View style={{ flexDirection: 'row', position: 'absolute', bottom: 4, right: 3, borderRadius: 8, height: 16, paddingHorizontal: 5, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
