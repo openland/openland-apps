@@ -10,7 +10,6 @@ import { ProfileUser } from './pages/main/ProfileUser';
 import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Navigation } from './pages/dev/Navigation';
-import { PicturePreview } from './pages/main/modals/PicturePreview';
 import { Loader } from './pages/dev/Loader';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { TextEditModal } from './pages/main/modals/TextEditModal';
@@ -43,37 +42,7 @@ export const MainStack = createZStackNavigator({
   DevLoader: Loader,
 });
 
-export const PreviewStack = createZStackNavigator(
-  {
-    PicturePreviewRoot: PicturePreview
-  },
-  true);
-
-export const AppStack = createStackNavigator(
-  {
-    Main: MainStack,
-    PicturePreview: PreviewStack,
-  },
-  {
-    mode: 'modal',
-    headerMode: 'none',
-    transitionConfig: () => {
-      return ({
-        cardStyle: {
-          backgroundColor: 'transparent',
-        },
-        containerStyle: {
-          backgroundColor: 'transparent',
-        },
-        transitionSpec: {
-          duration: 0,
-          timing: Animated.timing,
-          easing: Easing.step0,
-        }
-      });
-    }
-  }
-);
+export const AppStack = MainStack;
 
 //
 // Authentication Routes

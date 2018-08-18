@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import { View, Animated, Dimensions, LayoutChangeEvent } from 'react-native';
+import { View, LayoutChangeEvent } from 'react-native';
 import { ZHeader } from '../../components/ZHeader';
-import { ZImagePreview } from '../../components/media/ZImagePreview';
 import { ZAppConfig } from '../../components/ZAppConfig';
 
 export class NavigationComponent extends React.PureComponent<NavigationInjectedProps, { layout?: { width: number, height: number } }> {
@@ -28,18 +27,7 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
             <>
                 <ZHeader title="Some title" />
                 <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: ZAppConfig.bottomNavigationBarInset, flexDirection: 'column' }} onLayout={this.handleLayout}>
-                    <View
-                        width={300}
-                        height={300}
-                    >
-                        <ZImagePreview
-                            src="9da80a8f-0fe2-4d65-bda0-a4002bb0cd86"
-                            srcWidth={1024}
-                            srcHeight={1024}
-                            width={300}
-                            height={300}
-                        />
-                    </View>
+                    {}
                 </View>
             </>
         );

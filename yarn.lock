@@ -10712,9 +10712,9 @@ react-native-extra-dimensions-android@^0.21.0:
   version "0.21.0"
   resolved "https://registry.yarnpkg.com/react-native-extra-dimensions-android/-/react-native-extra-dimensions-android-0.21.0.tgz#2992384a90df738cf678a452cadbf251052ce7bc"
 
-react-native-fast-image-viewer@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image-viewer/-/react-native-fast-image-viewer-1.0.4.tgz#fb462d9b935cb0dcfa822e4b3ceaa0128648a345"
+react-native-fast-image-viewer@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image-viewer/-/react-native-fast-image-viewer-1.0.5.tgz#826849147fbad258bdcb79a7682c5d31e66d815e"
   dependencies:
     react "^16.3.0"
     react-native "^0.56.0"

@@ -16,8 +16,13 @@ const styles = StyleSheet.create({
         color: '#fff'
     } as TextStyle
 });
-
-export class XPAvatar extends React.PureComponent<{ size: number, src?: string | null, placeholderKey?: string | null, placeholderTitle?: string | null }> {
+export interface XPAvatarProps {
+    size: number;
+    src?: string | null;
+    placeholderKey?: string | null;
+    placeholderTitle?: string | null;
+}
+export class XPAvatar extends React.PureComponent<XPAvatarProps> {
     render() {
         if (this.props.src) {
             return (

@@ -5,7 +5,6 @@ import { ZHeaderBackButton } from '../navigation/ZHeaderBackButton';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
-import { ZImagePreview } from '../media/ZImagePreview';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
@@ -31,7 +30,40 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         closing: false
     };
 
-    handleClose = () => {
+    handleStarting = () => {
+        Animated.parallel([
+            Animated.spring(this.progress, {
+                toValue: 1,
+                stiffness: 500,
+                mass: 1,
+                damping: 10000,
+                useNativeDriver: true
+            }),
+            Animated.timing(this.progressLinear, {
+                toValue: 1,
+                duration: 150,
+                useNativeDriver: true
+            })
+        ]).start();
+        if (this.props.config.onBegin) {
+            this.props.config.onBegin();
+        }
+    }
+
+    handleClosing = () => {
+        if (Platform.OS === 'ios') {
+            setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
+        }
+    }
+
+    handleClosed = () => {
+        if (this.props.config.onEnd) {
+            this.props.config.onEnd();
+        }
+        this.props.onClose();
+    }
+
+    handleCloseClick = () => {
         // if (!this.state.closing) {
         //     Animated.parallel([
         //         Animated.spring(this.progress, {
@@ -69,13 +101,6 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         }
     }
 
-    handleClosed = () => {
-        if (Platform.OS === 'ios') {
-            setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
-        }
-        this.props.onClose();
-    }
-
     componentWillMount() {
         if (Platform.OS === 'ios') {
             StatusBar.setBarStyle('light-content');
@@ -86,46 +111,6 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         // if (this.props.config.onBegin) {
         //     this.props.config.onBegin();
         // }
-    }
-
-    onPreviewLoaded = () => {
-        if (this.previewLoaded) {
-            return;
-        }
-        this.previewLoaded = true;
-        if (this.fullLoaded) {
-            Animated.parallel([
-                Animated.spring(this.progress, {
-                    toValue: 1,
-                    useNativeDriver: true
-                }),
-                Animated.timing(this.progressLinear, {
-                    toValue: 1,
-                    duration: 200,
-                    useNativeDriver: true
-                })
-            ]).start();
-        }
-    }
-
-    onDestLoaded = () => {
-        if (this.fullLoaded) {
-            return;
-        }
-        this.fullLoaded = true;
-        if (this.previewLoaded) {
-            Animated.parallel([
-                Animated.spring(this.progress, {
-                    toValue: 1,
-                    useNativeDriver: true
-                }),
-                Animated.timing(this.progressLinear, {
-                    toValue: 1,
-                    duration: 200,
-                    useNativeDriver: true
-                })
-            ]).start();
-        }
     }
 
     handleTap = () => {
@@ -159,8 +144,6 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
         return (
             <View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, flexDirection: 'column', alignItems: 'stretch' }} pointerEvents="box-none">
-                {/* <Animated.View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#000', opacity: Animated.multiply(this.progressLinear, this.barOpacity) }} /> */}
-
                 <View
                     style={{
                         position: 'absolute',
@@ -169,35 +152,6 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                     }}
                     pointerEvents="box-none"
                 >
-                    {/* <Animated.View
-                        style={{
-                            width: containerW,
-                            height: containerH,
-                            transform: [
-                                {
-                                    translateX: Animated.multiply(animate.x + animate.width / 2 - containerW / 2, this.progressInverted)
-                                },
-                                {
-                                    translateY: Animated.multiply(animate.y + animate.height / 2 - containerH / 2, this.progressInverted)
-                                },
-                                {
-                                    scale: Animated.add(this.progress, Animated.multiply(baseScale, this.progressInverted))
-                                },
-                            ]
-                        }}
-                        pointerEvents="box-none"
-                    > */}
-                    {/* <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, alignItems: 'center', justifyContent: 'center', opacity: this.unredlayOpacity }} pointerEvents="none">
-                            <XPImage
-                                source={{ uuid: this.props.config.uuid }}
-                                imageSize={{ width: size.width, height: size.height }}
-                                width={l.width}
-                                height={l.height}
-                                borderRadius={18 / baseScale}
-                                onLoaded={this.onPreviewLoaded}
-                            />
-                        </Animated.View> */}
-                    {/* <Animated.View style={{ position: 'absolute', width: containerW, height: containerH, opacity: this.progressLinear }}> */}
                     <FastImageViewer
                         ref={this.ref}
                         srcWidth={size.width}
@@ -206,18 +160,32 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         height={containerH}
                         onTap={this.handleTap}
                         startLayout={animate}
+                        startLayoutRenderer={
+                            (onLoaded) => (
+                                <XPImage
+                                    source={this.props.config.url}
+                                    width={animate.width}
+                                    height={animate.height}
+                                    imageSize={{ width: size.width, height: size.height }}
+                                    onLoaded={onLoaded}
+                                    borderRadius={this.props.config.animate!!.borderRadius}
+                                />
+                            )}
+                        onStarting={this.handleStarting}
+                        onClosing={this.handleClosing}
                         onClosed={this.handleClosed}
+
                     >
-                        <XPImage
-                            source={this.props.config.url}
-                            width={size.width}
-                            height={size.height}
-                            imageSize={{ width: size.width, height: size.height }}
-                            onLoaded={this.onDestLoaded}
-                        />
+                        {onLoaded => (
+                            <XPImage
+                                source={this.props.config.url}
+                                width={size.width}
+                                height={size.height}
+                                imageSize={{ width: size.width, height: size.height }}
+                                onLoaded={onLoaded}
+                            />
+                        )}
                     </FastImageViewer>
-                    {/* </Animated.View> */}
-                    {/* </Animated.View> */}
                 </View>
 
                 <Animated.View
@@ -234,7 +202,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         // }]
                     }}
                 >
-                    <ZHeaderBackButton inverted={true} onPress={this.handleClose} />
+                    <ZHeaderBackButton inverted={true} onPress={this.handleCloseClick} />
                 </Animated.View>
             </View>
         );

@@ -30,10 +30,11 @@ export class PImage extends React.Component<PImageProps> {
             let w = this.props.imageSize ? this.props.imageSize.width : PixelRatio.getPixelSizeForLayoutSize(this.props.width);
             let h = this.props.imageSize ? this.props.imageSize.height : PixelRatio.getPixelSizeForLayoutSize(this.props.height);
             url += '-/scale_crop/' + w + 'x' + h + '/';
-            if (PixelRatio.get() > 2) {
+            if (PixelRatio.get() > 2 && !this.props.imageSize) {
                 url += '-/quality/lighter/-/progressive/yes/';
             }
         }
+        console.log(url);
         return (
             <FastImage
                 source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal', ...{ disableAnimations: true } as any }}
