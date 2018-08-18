@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Animated } from 'react-native';
 import { ZHeaderTitleAndroid } from './ZHeaderTitleAndroid';
 import { ZHeaderTitleIOS } from './ZHeaderTitleIOS';
+import { ZHeaderConfig } from './ZHeaderConfig';
 
 export interface ZHeaderTitleProps {
     index: number;
@@ -14,7 +15,9 @@ export interface ZHeaderTitleProps {
 
     progress: Animated.AnimatedInterpolation;
     contentOffset: Animated.AnimatedValue;
-    hairlineOffset: Animated.AnimatedInterpolation;
+    headerBaseHeight: Animated.AnimatedInterpolation;
+    headerHeight: Animated.AnimatedInterpolation;
+    config: ZHeaderConfig;
 }
 
 export class ZHeaderTitle extends React.PureComponent<ZHeaderTitleProps> {

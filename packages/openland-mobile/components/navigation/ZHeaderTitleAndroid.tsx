@@ -60,7 +60,7 @@ export class ZHeaderTitleAndroid extends React.PureComponent<ZHeaderTitleProps> 
             outputRange: [1, 0, 0, 0, 1],
             extrapolate: 'clamp'
         });
-        let progress = Animated.multiply(Animated.add(this.props.hairlineOffset, -56), 1 / 40);
+        let progress = Animated.multiply(Animated.add(this.props.headerBaseHeight, -56), 1 / 40);
         return (
             <View style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none" flexDirection="row">
                 <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0}>

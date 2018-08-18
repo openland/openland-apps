@@ -63,6 +63,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 onEndReachedThreshold={1}
                 ItemSeparatorComponent={DialogListSeparator}
                 fixedHeight={80}
+                initialScrollIndex={0}
             />
         );
     }

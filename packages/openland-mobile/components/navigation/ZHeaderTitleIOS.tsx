@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, TextStyle, Dimensions } from 'react-native';
+import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, TextStyle, Dimensions, Image, Button, TouchableWithoutFeedback } from 'react-native';
 import { ZHeaderTitleProps } from './ZHeaderTitle';
 import { ZAppConfig } from '../ZAppConfig';
 import { ZHeaderBackButton } from './ZHeaderBackButton';
@@ -137,6 +137,10 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         }
     }
 
+    handleSearchClose = () => {
+        //
+    }
+
     render() {
         let opacity = this.props.progress.interpolate({
             inputRange: [-0.98, 0, 0.98],
@@ -184,30 +188,48 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
                     </View>
                 )}
 
-                <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100 }} onLayout={this.handleLeftLayout} pointerEvents="none">
+                <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, opacity: this.props.config.searchActive ? 0 : 1, }} onLayout={this.handleLeftLayout} pointerEvents="none">
                     {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
                     {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><ZHeaderBackButton /></View>}
                 </View>
-                <View key="button-padding" style={{ flexGrow: 1, flexBasis: 0 }} pointerEvents="box-none" />
-                <Animated.View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: opacity, alignItems: 'center', transform: [{ translateY: Animated.multiply(faraway, 10000) }] }} onLayout={this.handleRightLayout} pointerEvents="box-none">
+                <View key="button-padding" style={{ flexGrow: 1, flexBasis: 0, opacity: this.props.config.searchActive ? 0 : 1, }} pointerEvents="box-none" />
+                <Animated.View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: this.props.config.searchActive ? 0 : opacity, alignItems: 'center', transform: [{ translateY: Animated.multiply(faraway, 10000) }] }} onLayout={this.handleRightLayout} pointerEvents="box-none">
                     {this.props.rightView}
                 </Animated.View>
             </>
         );
 
         const largeHeader = this.props.headerAppearance === 'large' && (
-            <View key="large-header" style={{ overflow: 'hidden', position: 'absolute', top: ZAppConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
-                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', opacity: largeOpacity, transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.hairlineOffset, -(ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
+            <View key="large-header" style={{ opacity: this.props.config.searchActive ? 0 : 1, overflow: 'hidden', position: 'absolute', top: ZAppConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
+                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.headerBaseHeight, -(ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
                     {!this.props.titleView && this.props.titleText && <Text style={styles.titleLarge}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
                 </Animated.View>
             </View>
         );
 
+        const search = this.props.config.search && (
+            <View style={{ overflow: 'hidden', position: 'absolute', top: ZAppConfig.navigationBarHeightLarge, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
+                <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: this.props.config.searchActive ? 0 : Animated.add(Animated.add(this.props.headerHeight, -(ZAppConfig.navigationBarHeightLarge + 48 + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="box-none">
+                    <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
+                        <TouchableWithoutFeedback onPress={this.props.config.searchPress}>
+                            <View style={{ flexDirection: 'row', height: 36, marginRight: 15, alignItems: 'center', flexGrow: 1 }}>
+                                <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
+                                <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
+                                <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        {this.props.config.searchActive && <Button title="Close" onPress={this.props.config.searchClosed!!} />}
+                    </View>
+                </Animated.View>
+            </View >
+        );
+
         return (
             <View style={{ height: 44, flexDirection: 'row' }} onLayout={this.handleGlobalLayout} pointerEvents="box-none">
                 {mainHeader}
                 {largeHeader}
+                {search}
             </View>
         );
     }

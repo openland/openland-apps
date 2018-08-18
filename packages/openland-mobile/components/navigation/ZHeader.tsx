@@ -24,6 +24,7 @@ interface Descriptor {
 interface Scene {
     key: string;
     index: number;
+    isStale: boolean;
     descriptor: Descriptor;
 }
 
@@ -121,7 +122,8 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
     render() {
         // Build Offsets
-        let offsets = this.props.scenes.map((v) => {
+        let filtered = this.props.scenes.filter((v) => !v.isStale || (!this.props.scenes.find((v2) => v.index === v2.index && !v2.isStale)));
+        let offsets = filtered.map((v) => {
 
             // Resolve param name
             let config = v.descriptor.navigation.getParam('_z_header_config') as ZHeaderConfig;
@@ -169,6 +171,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             // Calculate navigation bar offset
             let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
             let screenHairlineOffset: Animated.AnimatedInterpolation = defaultHairlineOffset;
+            let screenHeaderBaseHeight: Animated.AnimatedInterpolation = defaultHairlineOffset;
             let contentOffset = config.contentOffset;
 
             //
@@ -190,13 +193,31 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                 // 2) Clamp between min height and min height + background size (our scroll background)
                 //
                 let computedHairlineOffset = Animated
-                    .add(invertedOffset, resolvedNavigationBarHeightLarge)
+                    .add(invertedOffset, (config.search ? 48 : 0) + resolvedNavigationBarHeightLarge)
                     .interpolate({
                         inputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeight + BACKGROUND_SIZE],
                         outputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeight + BACKGROUND_SIZE],
                         extrapolate: 'clamp'
                     });
+
+                // if (config.search && config.searchActive) {
+                //     computedHairlineOffset = defaultHairlineOffset;
+                // }
                 screenHairlineOffset = computedHairlineOffset;
+
+                // Subsctract from baseheight
+                if (config.search) {
+                    screenHeaderBaseHeight = Animated
+                        .add(invertedOffset, 48 + resolvedNavigationBarHeightLarge)
+                        .interpolate({
+                            inputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeightLarge, resolvedNavigationBarHeightLarge + 48, resolvedNavigationBarHeight + BACKGROUND_SIZE],
+                            outputRange: [resolvedNavigationBarHeight, resolvedNavigationBarHeightLarge, resolvedNavigationBarHeightLarge, resolvedNavigationBarHeight + BACKGROUND_SIZE],
+                            extrapolate: 'clamp'
+                        });
+                } else {
+                    screenHeaderBaseHeight = computedHairlineOffset;
+                }
+                // screenHeaderBaseHeight = computedHairlineOffset;
 
                 //
                 // Background offset: Just subsctract BACKGROUND_SIZE from hairline offset
@@ -219,12 +240,16 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             } else if (config.hairline === 'hidden') {
                 screenHailineOpacity = zeroValue;
             }
+            if (config.search && config.searchActive) {
+                screenHailineOpacity = oneValue;
+            }
 
             return {
                 backgroundOffset: Animated.multiply(computedOffset, interpolated),
                 position: interpolated,
                 position2: position,
                 hairlineOffset: screenHairlineOffset,
+                headerBottom: screenHeaderBaseHeight,
                 hairlineOpacity: screenHailineOpacity,
                 contentOffset: inputOffset,
                 scene: v,
@@ -268,6 +293,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         let titles: any[] = [];
         let w = Dimensions.get('window').width;
+        let searchActive = offsets.find((v) => !!v.config.searchActive);
         for (let s of offsets) {
             let headerText = s.config.title;
             let headerView = s.config.titleView ? s.config.titleView() : undefined;
@@ -287,7 +313,9 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                         titleText={headerText}
                         titleView={headerView}
                         rightView={rightView}
-                        hairlineOffset={hairlineOffset}
+                        headerHeight={hairlineOffset}
+                        headerBaseHeight={s.headerBottom}
+                        config={s.config}
                     />
                 </View>
             );
@@ -404,7 +432,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
         if (ZAppConfig.navigationBarTransparent) {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, position: 'absolute', left: 0, right: 0, top: 0, paddingTop: ZAppConfig.statusBarHeight }}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, position: 'absolute', left: 0, right: 0, top: 0, paddingTop: ZAppConfig.statusBarHeight, marginTop: searchActive ? -ZAppConfig.navigationBarHeightLarge : 0 }}>
                     {content}
                 </ViewOverflow>
             );
