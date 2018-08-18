@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View, Platform } from 'react-native';
+import { AsyncStorage, View, Platform, Dimensions } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
@@ -17,6 +17,7 @@ import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { Test } from './main/Test';
 import { NativeModules } from 'react-native';
+import FastImage from 'react-native-fast-image';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
     constructor(props: NavigationInjectedProps) {
         super(props);
@@ -72,6 +73,13 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
             return (
                 <ZSafeAreaRoot>
                     <View style={{ width: '100%', height: '100%' }}>
+                        <View style={{ position: 'absolute', width: 0, height: 0 }} >
+                            <FastImage
+                                source={require('assets/img-chat-3.jpg')}
+                                style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                                resizeMode="cover"
+                            />
+                        </View>
                         <YApolloProvider client={getClient()}>
                             <ZPictureModal>
                                 <MessengerContext.Provider value={getMessenger()}>
