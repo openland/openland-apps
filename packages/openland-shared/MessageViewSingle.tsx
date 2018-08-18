@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
+import { ModelMessage, isServerMessage, isPendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageFullFragment } from 'openland-api/Types';
 import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
@@ -71,6 +71,7 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                     isOut={isOut}
                     attach={this.props.attach}
                     sender={!isOut ? sender : undefined}
+                    isSending={isPendingMessage(this.props.message)}
                 />
             );
         }
@@ -120,6 +121,7 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                     text="Unsupported content"
                     isOut={isOut}
                     attach={this.props.attach}
+                    isSending={isPendingMessage(this.props.message)}
                 />
             );
         }

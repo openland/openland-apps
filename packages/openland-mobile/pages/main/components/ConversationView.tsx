@@ -7,6 +7,7 @@ import { MessageFullFragment } from 'openland-api/Types';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationMessagesView } from './ConversationMessagesView';
+import FastImage from 'react-native-fast-image';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -60,7 +61,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
-                <Image
+                <FastImage
                     source={require('assets/img-chat-3.jpg')}
                     style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                     resizeMode="cover"

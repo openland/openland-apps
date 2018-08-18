@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserShortFragment } from 'openland-api/Types';
-import { Text, Linking, TextStyle, StyleSheet, Platform, View } from 'react-native';
+import { Text, Linking, TextStyle, StyleSheet, Platform, View, Image } from 'react-native';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { XPBubbleView } from 'openland-xp/XPBubbleView';
@@ -35,6 +35,7 @@ let styles = StyleSheet.create({
     } as TextStyle,
     date: {
         fontSize: 13,
+        lineHeight: 15,
         color: '#8a8a8f',
         // fontWeight: '00',
         opacity: 0.6
@@ -45,9 +46,10 @@ let styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class MessageTextView extends React.PureComponent<{ date: string, text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
+export class MessageTextView extends React.PureComponent<{ date: string, text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both', isSending: boolean }> {
 
     paddedText = ' ' + '\u00A0'.repeat(13);
+    paddedTextOut = ' ' + '\u00A0'.repeat(16);
 
     render() {
         let preprocessed = preprocessText(this.props.text);
@@ -71,9 +73,17 @@ export class MessageTextView extends React.PureComponent<{ date: string, text: s
                 {sender}
                 <Text key="message" style={[styles.message, this.props.isOut && styles.messageOut]}>
                     {parts}
-                    <Text>{this.paddedText}</Text>
+                    <Text>{this.props.isOut ? this.paddedTextOut : this.paddedText}</Text>
                 </Text>
-                <View style={{ position: 'absolute', bottom: 0, right: -5 }}><Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text></View>
+                <View style={{ position: 'absolute', bottom: 0, height: 15, alignItems: 'center', justifyContent: 'center', right: -5, flexDirection: 'row' }}>
+                    <Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text>
+                    {this.props.isOut && (
+                        <View style={{ width: 18, height: 13, justifyContent: 'center', alignItems: 'center' }}>
+                            {this.props.isSending && <Image source={require('assets/ic-sending.png')} style={{ width: 13, height: 13 }} />}
+                            {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ width: 13, height: 13 }} />}
+                        </View>
+                    )}
+                </View>
             </XPBubbleView>
         );
     }
