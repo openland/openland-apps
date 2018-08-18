@@ -99,9 +99,9 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     render() {
-        if (!this.state.render) {
-            return <View />;
-        }
+        // if (!this.state.render) {
+        //     return <View />;
+        // }
         return (
             <>
                 <ZHeaderView>

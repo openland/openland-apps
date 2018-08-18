@@ -34,6 +34,10 @@ export class MessageImageView extends React.PureComponent<MessageImageViewProps,
 
     handleTouch = () => {
         if (this.props.onPress) {
+            // Ignore clicks for not-downloaded files
+            if (this.props.downloadManager && (!this.state.downloadState || !this.state.downloadState.path)) {
+                return;
+            }
             this.props.onPress(this.props.message, this.ref.current ? this.ref.current : undefined);
         }
     }
