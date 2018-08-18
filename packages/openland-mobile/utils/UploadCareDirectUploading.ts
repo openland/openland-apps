@@ -11,7 +11,7 @@ export class UploadCareDirectUploading implements UploadingFile {
             uri = uri.substring(8);
         }
         this.uri = uri;
-        RNFetchBlob.fetch(
+        let req = RNFetchBlob.fetch(
             'POST',
             'https://upload.uploadcare.com/base/',
             {
@@ -27,24 +27,33 @@ export class UploadCareDirectUploading implements UploadingFile {
                 name: 'file',
                 filename: this.name,
                 data: RNFetchBlob.wrap(this.uri)
-            }]).uploadProgress((written: number, total: number) => {
-                let p = written / total;
-                this.state = { status: UploadStatus.UPLOADING, progress: p };
-                for (let w of this.watchers) {
-                    w(this.state);
-                }
-            }).then((v: any) => {
-                let res = JSON.parse(v.data);
-                this.state = { status: UploadStatus.COMPLETED, progress: 1, uuid: res.file };
-                for (let w of this.watchers) {
-                    w(this.state);
-                }
-            }).catch((v: any) => {
-                this.state = { status: UploadStatus.FAILED };
-                for (let w of this.watchers) {
-                    w(this.state);
-                }
-            });
+            }]);
+
+        // Work-around for IOS
+        setTimeout(
+            () => {
+                req.uploadProgress({ interval: 100 }, (written: number, total: number) => {
+                    let p = written / total;
+                    this.state = { status: UploadStatus.UPLOADING, progress: p };
+                    for (let w of this.watchers) {
+                        w(this.state);
+                    }
+                });
+            },
+            0);
+
+        req.then((v: any) => {
+            let res = JSON.parse(v.data);
+            this.state = { status: UploadStatus.COMPLETED, progress: 1, uuid: res.file };
+            for (let w of this.watchers) {
+                w(this.state);
+            }
+        }).catch((v: any) => {
+            this.state = { status: UploadStatus.FAILED };
+            for (let w of this.watchers) {
+                w(this.state);
+            }
+        });
     }
     async fetchInfo() {
         return { name: this.name };

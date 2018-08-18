@@ -18,6 +18,22 @@ export class MessageSender {
         this.client = client;
     }
 
+    async sendFileDirect(conversationId: string, uuid: string) {
+        await new Promise<void>((resolver, reject) => {
+            this.doSendMessage(conversationId, null, uuid, UUID(), {
+                onProgress(key: string, progress: number) {
+                    //
+                },
+                onCompleted(key: string) {
+                    resolver();
+                },
+                onFailed(key: string) {
+                    reject();
+                }
+            });
+        });
+    }
+
     sendFile(conversationId: string, file: UploadingFile, callback: MessageSendHandler) {
         let key = UUID();
         (async () => {

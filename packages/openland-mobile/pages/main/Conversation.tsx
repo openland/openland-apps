@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ChatHeader } from './components/ChatHeader';
@@ -14,10 +14,14 @@ import { MessageInputBar } from './components/MessageInputBar';
 import { ZHeaderView } from '../../components/ZHeaderView';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 import { ConversationView } from './components/ConversationView';
+import { UploadManagerInstance, UploadState } from '../../files/UploadManager';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
 
-class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean }> {
+class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
+    watchSubscription?: WatchSubscription;
 
     constructor(props: { provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
@@ -25,8 +29,18 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
         this.state = { text: '', render: false };
     }
 
+    componentWillMount() {
+        this.watchSubscription = UploadManagerInstance.watch(this.props.conversationId, (state) => {
+            this.setState({ uploadState: state });
+        });
+    }
+
     componentDidMount() {
         setTimeout(() => { this.setState({ render: true }); }, 10);
+    }
+
+    componentWillUnmount() {
+        this.watchSubscription!!();
     }
 
     handleTextChange = (src: string) => {
@@ -46,7 +60,8 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
             if (response.didCancel) {
                 return;
             }
-            this.engine.sendFile(new UploadCareDirectUploading(response.fileName || 'image.jpg', response.uri));
+            UploadManagerInstance.registerUpload(this.props.conversationId, response.fileName || 'image.jpg', response.uri);
+            // this.engine.sendFile(new UploadCareDirectUploading(response.fileName || 'image.jpg', response.uri));
         });
     }
 
@@ -103,6 +118,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
                         onSubmitPress={this.handleSubmit}
                         onChangeText={this.handleTextChange}
                         text={this.state.text}
+                        uploadState={this.state.uploadState}
                     />
                 </View>
             </>
