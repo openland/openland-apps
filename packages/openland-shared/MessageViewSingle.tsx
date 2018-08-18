@@ -94,6 +94,8 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                             isOut={isOut}
                             onPress={this.props.onPhotoPress}
                             message={message}
+                            date={message.date}
+                            isSending={false}
                         />
                     );
                 } else {

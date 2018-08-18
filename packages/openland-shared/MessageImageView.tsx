@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { XPBubbleView } from 'openland-xp/XPBubbleView';
-import { View, Platform, Dimensions, LayoutChangeEvent, TouchableWithoutFeedback } from 'react-native';
+import { View, Platform, Dimensions, LayoutChangeEvent, TouchableWithoutFeedback, Text, Image } from 'react-native';
 import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { MessageFullFragment } from 'openland-api/Types';
+import { formatTime } from './utils/formatTime';
 
-export class MessageImageView extends React.PureComponent<{ file: string, width: number, height: number, isGif: boolean, isOut: boolean, message: MessageFullFragment, onPress?: (message: MessageFullFragment, view?: View) => void }> {
+export class MessageImageView extends React.PureComponent<{ date: string, isSending: boolean, file: string, width: number, height: number, isGif: boolean, isOut: boolean, message: MessageFullFragment, onPress?: (message: MessageFullFragment, view?: View) => void }> {
 
     ref = React.createRef<View>();
 
@@ -53,6 +54,15 @@ export class MessageImageView extends React.PureComponent<{ file: string, width:
                             height={layout.height}
                         />
                     </TouchableWithoutFeedback>
+                    <View style={{ flexDirection: 'row', position: 'absolute', bottom: 4, right: 3, borderRadius: 8, height: 16, paddingHorizontal: 5, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+                        <Text style={{ color: '#fff', fontSize: 11, lineHeight: 16 }}>{formatTime(parseInt(this.props.date, 10))}</Text>
+                        {this.props.isOut && (
+                            <View style={{ width: 18, height: 13, justifyContent: 'center', alignItems: 'center' }}>
+                                {this.props.isSending && <Image source={require('assets/ic-sending.png')} style={{ width: 13, height: 13 }} />}
+                                {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ width: 9, height: 8 }} />}
+                            </View>
+                        )}
+                    </View>
                 </View>
             </XPBubbleView>
         );
