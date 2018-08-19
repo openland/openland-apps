@@ -33,7 +33,7 @@ class AggressiveImage: RCTView {
     if let val = AggressiveImage.cache[s as String] {
       _baseImage = val
     } else {
-      _baseImage = UIImage(contentsOfFile: s as String)
+      _baseImage = try! UIImage(data: Data(contentsOf: URL(string: s as String)!), scale: UIScreen.main.scale)
       if _baseImage != nil {
         AggressiveImage.cache[s as String] = _baseImage
       }
