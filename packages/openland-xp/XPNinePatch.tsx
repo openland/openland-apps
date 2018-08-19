@@ -14,7 +14,7 @@ export class XPNinePatch extends React.PureComponent<ViewProps & { source: any, 
         return (
             <View {...other}>
                 <Image
-                    source={source}
+                    source={Image.resolveAssetSource(source)}
                     resizeMode="stretch"
                     capInsets={capInsets}
                     style={styles.image}
