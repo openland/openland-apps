@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ViewProps, View, Image, StyleSheet, ViewStyle, ImageBackground } from 'react-native';
+import { ViewProps, View, Image, StyleSheet, ViewStyle } from 'react-native';
 
 const styles = StyleSheet.create({
     image: {
@@ -13,11 +13,11 @@ export class XPNinePatch extends React.PureComponent<ViewProps & { source: any, 
         const { source, capInsets, ...other } = this.props;
         return (
             <View {...other}>
-                <ImageBackground
-                    source={Image.resolveAssetSource(source)}
+                <Image
+                    source={source}
                     resizeMode="stretch"
                     capInsets={capInsets}
-                    style={styles.image}
+                    style={[styles.image, { width: 100, height: 50 }]}
                 />
             </View>
         );
