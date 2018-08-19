@@ -89,13 +89,70 @@ let styles = StyleSheet.create({
         justifyContent: 'flex-end',
         // height: isAndroid ? 100 : 140,
         paddingLeft: isAndroid ? 16 : 15
-    } as ViewStyle
+    } as ViewStyle,
+    titleWrapper: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0
+    } as ViewStyle,
+    backgroundContainer: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: Dimensions.get('window').height,
+        overflow: 'hidden'
+    } as ViewStyle,
+    container: {
+        flexGrow: 1,
+        flexBasis: 0,
+        zIndex: 4
+    } as ViewStyle,
+    styleMainContainerTransparent: {
+        overflow: 'visible',
+        flexDirection: 'row',
+        height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        paddingTop: ZAppConfig.statusBarHeight,
+    } as ViewStyle,
+    styleMainContainerTransparentSearch: {
+        marginTop: -ZAppConfig.navigationBarHeightLarge
+    },
+    hairline: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: 0.5,
+        backgroundColor: '#b7bdc6',
+        zIndex: 10,
+    } as ViewStyle,
 });
 
 class ZHeaderComponent extends React.PureComponent<Props> {
 
     wasAnimaged = false;
     lastIndex = 0;
+    backButtonOpacity = this.props.position.interpolate({
+        inputRange: [
+            0,
+            1],
+        outputRange: [0, 1]
+    });
+    backStyle = {
+        height: ZAppConfig.navigationBarHeight,
+        position: 'absolute',
+        left: 0,
+        top: ZAppConfig.statusBarHeight,
+        width: ZAppConfig.navigationBarBackWidth,
+        opacity: this.backButtonOpacity,
+        zIndex: 3,
+        backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined
+    };
 
     handleBack = () => {
         this.props.scene.descriptor.navigation.goBack();
@@ -277,22 +334,10 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         }
 
         //
-        // Back button opacity
-        //
-
-        let backButtonOpacity = this.props.position.interpolate({
-            inputRange: [
-                0,
-                1],
-            outputRange: [0, 1]
-        });
-
-        //
         // Rendering Titles
         //
 
         let titles: any[] = [];
-        let w = Dimensions.get('window').width;
         let searchActive = offsets.find((v) => !!v.config.searchActive);
         for (let s of offsets) {
             let headerText = s.config.title;
@@ -303,7 +348,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             }
 
             let header = (
-                <View position="absolute" top={0} left={0} right={0} pointerEvents="box-none" key={s.scene.key}>
+                <View style={styles.titleWrapper} pointerEvents="box-none" key={s.scene.key}>
                     <ZHeaderTitle
                         contentOffset={s.contentOffset}
                         index={s.scene.index}
@@ -330,44 +375,17 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         let content = (
             <>
                 {/* Back button */}
-                <Animated.View style={{ height: ZAppConfig.navigationBarHeight, position: 'absolute', left: 0, top: ZAppConfig.statusBarHeight, width: ZAppConfig.navigationBarBackWidth, opacity: backButtonOpacity, zIndex: 3, backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined }}>
+                <Animated.View style={this.backStyle}>
                     <ZHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
                 {/* Content */}
-                <View flexGrow={1} flexBasis={0} zIndex={4} pointerEvents="box-none">
+                <View style={styles.container} pointerEvents="box-none">
                     {titles}
                 </View>
 
-                {/* Debug Statusbar */}
-                {/* <View style={{ position: 'absolute', left: 0, top: 0, right: 0, height: ZAppConfig.statusBarHeight, backgroundColor: '#ff0', zIndex: 3 }}/> */}
-
-                {/* Debug Hairline */}
-                {/* <Animated.View
-                    style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        height: 1,
-                        transform: [{ translateY: hairlineOffset2 }],
-                        backgroundColor: '#0f0',
-                        zIndex: 3
-                    }}
-                /> */}
-
                 {/* Background */}
-                <ViewOverflow
-                    style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        height: Dimensions.get('window').height,
-                        overflow: 'hidden'
-                    }}
-                    pointerEvents="box-none"
-                >
+                <ViewOverflow style={styles.backgroundContainer} pointerEvents="box-none">
                     <ViewOverflowAnimated
                         style={{
                             position: 'absolute',
@@ -390,49 +408,17 @@ class ZHeaderComponent extends React.PureComponent<Props> {
 
                 {/* Hairline */}
                 <ViewOverflowAnimated
-                    style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        height: 0.5,
+                    style={[styles.hairline, {
                         transform: [{ translateY: hairlineOffset }],
                         opacity: Animated.multiply(hairlineOpacity, 0.3),
-                        backgroundColor: '#b7bdc6',
-                        zIndex: 10,
-                    }}
+                    }]}
                 />
-
-                {/* <View
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        // height: 16,
-                        // width: 16,
-                        zIndex: 100,
-                        overflow: 'hidden',
-                        backgroundColor: '#fff'
-                    }}
-                >
-                    <View
-                        style={{
-                            // marginLeft: -8,
-                            // marginTop: -8,
-                            width: 48,
-                            height: 48,
-                            borderTopLeftRadius: 16,
-                            borderColor: '#000',
-                            borderWidth: 16
-                        }}
-                    />
-                </View> */}
             </>
         );
 
         if (ZAppConfig.navigationBarTransparent) {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, position: 'absolute', left: 0, right: 0, top: 0, paddingTop: ZAppConfig.statusBarHeight, marginTop: searchActive ? -ZAppConfig.navigationBarHeightLarge : 0 }}>
+                <ViewOverflow style={[styles.styleMainContainerTransparent, searchActive && styles.styleMainContainerTransparentSearch]}>
                     {content}
                 </ViewOverflow>
             );
