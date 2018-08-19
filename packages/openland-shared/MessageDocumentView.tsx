@@ -33,7 +33,7 @@ export class MessageDocumentView extends React.PureComponent<MessageDocumentView
             <XPBubbleView isOut={this.props.isOut} attach={this.props.attach}>
                 <View style={{ height: 64, flexDirection: 'row', minWidth: this.props.isOut ? 200 : 180 }}>
                     <View style={{ width: 40, height: 40, backgroundColor: this.props.isOut ? '#2828c9' : '#ffffff', borderRadius: 20, margin: 12, alignItems: 'center', justifyContent: 'center' }}>
-                        <Image source={this.props.isOut ? require('assets/ic-file-download-my.png') : require('assets/ic-file-download-ios.png')} style={{ width: 12, height: 16 }} />
+                        <Image source={this.props.isOut ? require('assets/ic-file-download-my.png') : require('assets/ic-file-download-ios.png')} style={{ width: 16, height: 20 }} />
                     </View>
                     <View flexGrow={1} flexDirection="column" marginTop={12} marginBottom={12} marginRight={14} alignSelf="center">
                         <Text style={{ color: this.props.isOut ? '#ffffff' : '#000000', height: 16, fontSize: 15, lineHeight: 18, fontWeight: '600' }}>{this.props.fileName || 'file'}</Text>
