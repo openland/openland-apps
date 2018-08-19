@@ -12,7 +12,8 @@ let styles = StyleSheet.create({
         height: 14,
         lineHeight: 14,
         fontSize: 12,
-        letterSpacing: 0.2
+        letterSpacing: -0.1,
+        fontWeight: '500'
     } as TextStyle,
     message: {
         color: '#000',
@@ -75,7 +76,7 @@ export class MessageTextView extends React.PureComponent<{ date: string, text: s
                     {parts}
                     <Text>{this.props.isOut ? this.paddedTextOut : this.paddedText}</Text>
                 </Text>
-                <View style={{ position: 'absolute', bottom: -2, height: 15, alignItems: 'center', justifyContent: 'center', right: -11, flexDirection: 'row' }}>
+                <View style={{ position: 'absolute', bottom: -1, height: 15, alignItems: 'center', justifyContent: 'center', right: this.props.isOut ? -14 : -6, flexDirection: 'row' }}>
                     <Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text>
                     {this.props.isOut && (
                         <View style={{ width: 18, height: 13, marginLeft: 2, justifyContent: 'center', alignItems: 'flex-start' }}>

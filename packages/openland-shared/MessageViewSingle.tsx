@@ -134,11 +134,11 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
         return (
             <View style={styles.container}>
                 {!isOut && this.props.attach !== 'both' && this.props.attach !== 'bottom' && (
-                    <View paddingBottom={7} marginRight={-8}>
+                    <View paddingBottom={7} marginRight={-4} marginLeft={4}>
                         <TouchableOpacity onPress={this.handleAvatarPress}>
                             <XPAvatar
                                 src={sender.picture}
-                                size={36}
+                                size={28}
                                 placeholderKey={sender.id}
                                 placeholderTitle={sender.name}
                             />

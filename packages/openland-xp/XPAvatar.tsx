@@ -54,6 +54,9 @@ export class XPAvatar extends React.PureComponent<XPAvatarProps> {
         if (this.props.size === 32) {
             textSize = 14;
         }
+        if (this.props.size === 28) {
+            textSize = 12;
+        }
         if (this.props.size === 30) {
             textSize = 13;
         }

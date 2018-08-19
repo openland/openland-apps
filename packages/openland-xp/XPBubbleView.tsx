@@ -75,7 +75,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
             : (this.props.isOut ? require('assets/chat-bubble-out.png') : require('assets/chat-bubble-in.png'));
         const contentInsets = compact
             ? { left: 4, right: 4, top: 2, bottom: 4 }
-            : { left: 4, right: 8, top: 2, bottom: 4 };
+            : this.props.isOut ? { left: 4, right: 8, top: 2, bottom: 4 } : { left: 8, right: 4, top: 2, bottom: 4 };
         return (
             <View
                 style={{
@@ -88,7 +88,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
                     flexDirection: 'row'
                 }}
             >
-                <View>
+                <View style={{ marginBottom: -2 }}>
                     <XPNinePatch
                         source={image}
                         style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
