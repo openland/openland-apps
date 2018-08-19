@@ -3,6 +3,8 @@ package com.korshakov.testing.openland;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cl.json.RNSharePackage;
+import com.reactlibrary.RNRootViewBackgroundPackage;
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 import com.korshakov.testing.openland.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
@@ -49,6 +51,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNSharePackage(),
+            new RNRootViewBackgroundPackage(),
             new RCTImageCapInsetPackage(),
                     new RNReactNativeHapticFeedbackPackage(),
                     new RNGestureHandlerPackage(),

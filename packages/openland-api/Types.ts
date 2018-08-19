@@ -1591,6 +1591,14 @@ export interface ChatSearchTextQuery {
   ) >,
 };
 
+export interface DocumentFetchPreviewLinkQueryVariables {
+  file: string,
+};
+
+export interface DocumentFetchPreviewLinkQuery {
+  previewLink: string,
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",

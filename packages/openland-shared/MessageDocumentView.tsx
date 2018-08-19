@@ -45,8 +45,8 @@ export class MessageDocumentView extends React.PureComponent<MessageDocumentView
                             <Image source={this.props.isOut ? require('assets/ic-file-download-my.png') : require('assets/ic-file-download-ios.png')} style={{ width: 16, height: 20 }} />
                         </View>
                         <View flexGrow={1} flexDirection="column" marginTop={12} marginBottom={12} marginRight={14} alignSelf="center">
-                            <Text style={{ color: this.props.isOut ? '#ffffff' : '#000000', height: 16, fontSize: 15, lineHeight: 18, fontWeight: '600' }}>{this.props.fileName || 'file'}</Text>
-                            <Text style={{ color: this.props.isOut ? '#ffffff' : '#000000', height: 15, fontSize: 13, lineHeight: 15, marginTop: 4, fontWeight: '500', opacity: 0.7 }}>{formatBytes(this.props.size)}</Text>
+                            <Text style={{ color: this.props.isOut ? '#ffffff' : '#000000', height: 20, fontSize: 15, lineHeight: 20, fontWeight: '600' }}>{this.props.fileName || 'file'}</Text>
+                            <Text style={{ color: this.props.isOut ? '#ffffff' : '#000000', height: 15, fontSize: 13, lineHeight: 15, marginTop: 2, fontWeight: '500', opacity: 0.7 }}>{formatBytes(this.props.size)}</Text>
                         </View>
                         <View style={{ position: 'absolute', bottom: 6, height: 15, alignItems: 'center', justifyContent: 'center', right: this.props.isOut ? 0 : 8, flexDirection: 'row' }}>
                             <Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text>

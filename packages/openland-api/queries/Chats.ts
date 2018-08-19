@@ -257,3 +257,9 @@ export const ChatSearchTextQuery = gql`
     ${MessageFull}
     ${UserShort}
 `;
+
+export const DocumentFetchPreviewLinkQuery = gql`
+    query DocumentFetchPreviewLink($file: String!) {
+        previewLink: alphaFilePreviewLink(uuid: $file)
+    }
+`;
