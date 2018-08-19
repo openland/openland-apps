@@ -18,18 +18,18 @@ export class PImage extends React.Component<PImageProps, { started: boolean }> {
     constructor(props: PImageProps) {
         super(props);
         this.state = {
-            started: this.props.highPriority || false
+            started: false// this.props.highPriority || false
         };
-        if (!this.props.highPriority) {
-            InteractionManager.runAfterInteractions(() => {
-                this.setState({ started: true });
-            });
-            setTimeout(
-                () => {
-                    this.setState({ started: true });
-                },
-                400);
-        }
+        // if (!this.props.highPriority) {
+        //     InteractionManager.runAfterInteractions(() => {
+        //         this.setState({ started: true });
+        //     });
+        //     setTimeout(
+        //         () => {
+        //             this.setState({ started: true });
+        //         },
+        //         400);
+        // }
     }
     render() {
         let baseUrl: string | undefined;
