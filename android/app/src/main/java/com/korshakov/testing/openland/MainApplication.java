@@ -3,6 +3,7 @@ package com.korshakov.testing.openland;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 import com.korshakov.testing.openland.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -48,6 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RCTImageCapInsetPackage(),
                     new RNReactNativeHapticFeedbackPackage(),
                     new RNGestureHandlerPackage(),
                     new LottiePackage(),

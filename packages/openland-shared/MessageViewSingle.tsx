@@ -12,14 +12,14 @@ import { DownloadManagerInterface } from './DownloadManagerInterface';
 let styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingHorizontal: 8,
+        paddingHorizontal: 4,
         // paddingVertical: 5,
         width: '100%',
         alignItems: 'flex-end'
     } as ViewStyle,
     messageContainer: {
         flexDirection: 'column',
-        paddingLeft: 7,
+        paddingLeft: 0,
         flexGrow: 1,
         flexBasis: 0,
         alignItems: 'flex-start',
@@ -27,7 +27,7 @@ let styles = StyleSheet.create({
     } as ViewStyle,
     messageContainerOut: {
         alignItems: 'flex-end',
-        paddingLeft: 51,
+        paddingLeft: 50,
         paddingRight: 0
     } as ViewStyle
 });

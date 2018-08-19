@@ -16,12 +16,12 @@ let styles = StyleSheet.create({
     } as TextStyle,
     message: {
         color: '#000',
-        letterSpacing: 0.1,
+        letterSpacing: -0.3,
         ...Platform.select({
             default: {
                 lineHeight: 22,
                 fontSize: 16,
-                fontWeight: 'normal',
+                fontWeight: '500',
             },
             macos: {
                 lineHeight: 22,

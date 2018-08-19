@@ -105,8 +105,8 @@ android {
         applicationId "com.korshakov.testing.openland"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
-        versionName "1.0.22"
+        versionCode 25
+        versionName "1.0.23"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -152,6 +152,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-image-capinsets')
     implementation 'com.google.firebase:firebase-core:16.0.1'
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-gesture-handler')

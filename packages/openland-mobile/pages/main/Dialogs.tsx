@@ -35,13 +35,7 @@ function startAnimation() {
         duration: 500,
         update: {
             type: 'easeInEaseOut',
-            // springDamping: 0.4
             duration: 340
-        },
-        create: {
-            type: 'easeInEaseOut',
-            property: 'opacity',
-            duration: 300
         }
     });
 }

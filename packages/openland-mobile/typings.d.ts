@@ -18,7 +18,10 @@ declare module 'react-native-super-ellipse-mask' {
     class Mask extends React.Component<any> { }
     export default Mask;
 }
-
+declare module 'react-native-image-capinsets' {
+    class ImageViewCapInsets extends React.Component<any>{ }
+    export default ImageViewCapInsets;
+}
 declare module 'react-native-keyboard-tracking-view' {
     export class KeyboardTrackingView extends React.Component<any> { }
 }
