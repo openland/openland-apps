@@ -18,7 +18,7 @@ export class XPNinePatch extends React.PureComponent<ViewProps & { source: any, 
                     resizeMode="repeat"
                     source={source}
                     style={styles.image}
-                />F
+                />
             </View>
         );
     }
