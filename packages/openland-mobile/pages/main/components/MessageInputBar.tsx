@@ -16,8 +16,9 @@ let styles = StyleSheet.create({
         minHeight: 34,
         maxHeight: 100,
         fontSize: 16,
-        borderColor: '#E6E6E7',
+        borderColor: '#e6e8eb',
         borderWidth: 0.5,
+        marginTop: 8,
         marginBottom: 8
     } as ViewStyle
 });
@@ -51,7 +52,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                     <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress}>
-                                <View width={50} height={50} alignItems="center" justifyContent="center">
+                                <View width={48} height={50} alignItems="center" justifyContent="center">
                                     <Image source={iconAttach} style={{ width: 24, height: 24 }} />
                                 </View>
                             </TouchableOpacity>
@@ -71,7 +72,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             multiline={true}
                         />
                         <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
-                            <View alignItems="center" justifyContent="center" width={50} height={50}>
+                            <View alignItems="center" justifyContent="center" width={48} height={50}>
                                 <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && this.props.enabled !== false ? AppStyles.primaryColor : '#C8C7CC' }} />
                             </View>
                         </TouchableOpacity>

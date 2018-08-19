@@ -70,9 +70,11 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
             radius.bottomRight = 18;
         }
         const compact = (this.props.attach === 'bottom' || this.props.attach === 'both');
-        const image = compact
-            ? (this.props.isOut ? require('assets/chat-bubble-out-compact.png') : require('assets/chat-bubble-in-compact.png'))
-            : (this.props.isOut ? require('assets/chat-bubble-out.png') : require('assets/chat-bubble-in.png'));
+        const image = this.props.appearance === 'media' ?
+            require('assets/chat-bubble-media.png') :
+            (compact
+                ? (this.props.isOut ? require('assets/chat-bubble-out-compact.png') : require('assets/chat-bubble-in-compact.png'))
+                : (this.props.isOut ? require('assets/chat-bubble-out.png') : require('assets/chat-bubble-in.png')));
         const contentInsets = compact
             ? { left: 4, right: 4, top: 2, bottom: 4 }
             : this.props.isOut ? { left: 4, right: 8, top: 2, bottom: 4 } : { left: 8, right: 4, top: 2, bottom: 4 };
