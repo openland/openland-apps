@@ -75,12 +75,12 @@ export class MessageTextView extends React.PureComponent<{ date: string, text: s
                     {parts}
                     <Text>{this.props.isOut ? this.paddedTextOut : this.paddedText}</Text>
                 </Text>
-                <View style={{ position: 'absolute', bottom: 0, height: 15, alignItems: 'center', justifyContent: 'center', right: -5, flexDirection: 'row' }}>
+                <View style={{ position: 'absolute', bottom: -2, height: 15, alignItems: 'center', justifyContent: 'center', right: -11, flexDirection: 'row' }}>
                     <Text style={[styles.date, this.props.isOut && styles.dateOut]}>{formatTime(parseInt(this.props.date, 10))}</Text>
                     {this.props.isOut && (
-                        <View style={{ width: 18, height: 13, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ width: 18, height: 13, marginLeft: 2, justifyContent: 'center', alignItems: 'flex-start' }}>
                             {this.props.isSending && <Image source={require('assets/ic-sending.png')} style={{ width: 13, height: 13 }} />}
-                            {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ width: 9, height: 8 }} />}
+                            {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ marginTop: 2, width: 9, height: 8 }} />}
                         </View>
                     )}
                 </View>

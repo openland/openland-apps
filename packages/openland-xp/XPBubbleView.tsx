@@ -40,8 +40,8 @@ export function resolveCorners(isOut: boolean, attach?: 'bottom' | 'top' | 'both
 export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'media', isOut: boolean, attach?: 'bottom' | 'top' | 'both' }> {
     render() {
         let radius = resolveCorners(this.props.isOut, this.props.attach);
-        let topPadding = 0;
-        let bottomPadding = 0;
+        let topPadding = 4;
+        let bottomPadding = 4;
         let innerPaddingHorizontal = 0;
         let innerPaddingTop = 0;
         let innerPaddingBottom = 0;
@@ -55,12 +55,12 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
             radius.topRight = 18;
             radius.bottomRight = 18;
         }
-        // if (this.props.attach === 'top' || this.props.attach === 'both') {
-        //     topPadding = 2;
-        // }
-        // if (this.props.attach === 'bottom' || this.props.attach === 'both') {
-        //     bottomPadding = 1;
-        // }
+        if (this.props.attach === 'top' || this.props.attach === 'both') {
+            topPadding = 0;
+        }
+        if (this.props.attach === 'bottom' || this.props.attach === 'both') {
+            bottomPadding = 0;
+        }
         const attachedBottom = this.props.attach === 'bottom' || this.props.attach === 'both';
         let backgroundColor = this.props.isOut && (this.props.appearance !== 'media') ? '#4747ec' : '#f5f7f8';
         if (Platform.OS === 'macos') {
@@ -74,7 +74,7 @@ export class XPBubbleView extends React.PureComponent<{ appearance?: 'text' | 'm
             ? (this.props.isOut ? require('assets/chat-bubble-out-compact.png') : require('assets/chat-bubble-in-compact.png'))
             : (this.props.isOut ? require('assets/chat-bubble-out.png') : require('assets/chat-bubble-in.png'));
         const contentInsets = compact
-            ? { left: 4, right: 8, top: 2, bottom: 4 }
+            ? { left: 4, right: 4, top: 2, bottom: 4 }
             : { left: 4, right: 8, top: 2, bottom: 4 };
         return (
             <View
