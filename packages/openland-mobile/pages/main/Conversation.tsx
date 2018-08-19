@@ -72,13 +72,17 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     handlePhotoPress = (message: MessageFullFragment, view?: View) => {
+        if (message.fileMetadata!!.imageFormat === 'GIF') {
+            return;
+        }
         const optimalSize = layoutMedia(message.fileMetadata!!.imageWidth!!, message.fileMetadata!!.imageHeight!!, 1024, 1024);
         view!!.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             this.props.provider.showModal({
                 url: DownloadManagerInstance.resolvePath(message.file!!, optimalSize),
                 width: message.fileMetadata!!.imageWidth!!,
                 height: message.fileMetadata!!.imageHeight!!,
-                animate: { x: pageX, y: pageY, width, height, view: view!!, borderRadius: 18 },
+                isGif: message.fileMetadata!!.imageFormat === 'GIF',
+                animate: { x: pageX, y: pageY, width, height, view: view!!, borderRadius: 10 },
                 onBegin: () => {
                     view!!.setNativeProps({ 'opacity': 0 });
                 },

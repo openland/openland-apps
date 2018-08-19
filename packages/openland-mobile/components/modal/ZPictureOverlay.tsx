@@ -153,8 +153,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         const containerW = Dimensions.get('window').width;
         const containerH = Dimensions.get('window').height;
         const size = layoutMedia(w, h, 1024, 1024);
-        const l = layoutMedia(w, h, Dimensions.get('window').width, Dimensions.get('window').height);
-        const baseScale = Math.max(animate.width / containerW, animate.height / containerH);
+        console.log(this.props.config.isGif);
 
         return (
             <View style={{ position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, flexDirection: 'column', alignItems: 'stretch' }} pointerEvents="box-none">
@@ -183,6 +182,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                     imageSize={{ width: size.width, height: size.height }}
                                     onLoaded={onLoaded}
                                     borderRadius={this.props.config.animate!!.borderRadius}
+                                    resize={this.props.config.isGif ? 'none' : undefined}
                                 />
                             )}
                         onStarting={this.handleStarting}
@@ -197,6 +197,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                 height={size.height}
                                 imageSize={{ width: size.width, height: size.height }}
                                 onLoaded={onLoaded}
+                                resize={this.props.config.isGif ? 'none' : undefined}
                             />
                         )}
                     </FastImageViewer>

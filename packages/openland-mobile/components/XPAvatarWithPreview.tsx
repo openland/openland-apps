@@ -25,6 +25,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps & {
                 url,
                 width: 256,
                 height: 256,
+                isGif: false,
                 animate: { x: pageX, y: pageY, width, height, view: view!!, borderRadius: this.props.size / 2 },
                 onBegin: () => {
                     view!!.setNativeProps({ 'opacity': 0 });

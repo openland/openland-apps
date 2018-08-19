@@ -57,10 +57,10 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
         let path = require('d3-shape').
             arc()
             .outerRadius(20)
-            .innerRadius(19)
+            .innerRadius(17)
             .startAngle(0)
             .endAngle(Math.PI * 2 * progress)
-            .cornerRadius(2);
+            .cornerRadius(1.5);
         return (
             <Animated.View style={{ width: 46, height: 46, backgroundColor: 'rgba(0, 0, 0, 0.4)', borderRadius: 23, opacity: this.opactiy, transform: [{ rotate: this.rotation }], alignItems: 'center', justifyContent: 'center' }}>
                 <ART.Surface
@@ -68,7 +68,7 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
                     height={46}
                 >
                     <ART.Group x={23} y={23}>
-                        <ART.Shape d={path()} stroke={'#fff'} />
+                        <ART.Shape d={path()} fill={'#fff'} />
                     </ART.Group>
                 </ART.Surface>
             </Animated.View>

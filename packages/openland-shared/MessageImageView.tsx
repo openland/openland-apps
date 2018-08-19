@@ -82,14 +82,11 @@ export class MessageImageView extends React.PureComponent<MessageImageViewProps,
                         onPress={this.handleTouch}
                         disabled={!this.props.onPress}
                         delayPressIn={0}
-                        style={{
-                            borderRadius: 18
-                        }}
                     >
                         <XPImage
                             source={this.props.downloadManager ? (this.state.downloadState && this.state.downloadState.path) : { uuid: this.props.file }}
                             imageSize={{ width: optimalSize.width, height: optimalSize.height }}
-                            borderRadius={18}
+                            borderRadius={10}
                             resize={this.props.isGif ? 'none' : undefined}
                             width={layout.width}
                             height={layout.height}
@@ -100,12 +97,12 @@ export class MessageImageView extends React.PureComponent<MessageImageViewProps,
                             <XPCircularLoader visible={!!this.state.downloadState && !this.state.downloadState.path} progress={this.state.downloadState && this.state.downloadState.progress || 0} />
                         </View>
                     )}
-                    <View style={{ flexDirection: 'row', position: 'absolute', bottom: 4, right: 3, borderRadius: 8, height: 16, paddingHorizontal: 5, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
-                        <Text style={{ color: '#fff', fontSize: 11, lineHeight: 16 }}>{formatTime(parseInt(this.props.date, 10))}</Text>
+                    <View style={{ flexDirection: 'row', position: 'absolute', bottom: 4, right: 4, borderRadius: 8, height: 16, paddingHorizontal: 5, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+                        <Text style={{ color: '#fff', fontSize: 11, lineHeight: 16, height: 16, fontWeight: '500' }}>{formatTime(parseInt(this.props.date, 10))}</Text>
                         {this.props.isOut && (
-                            <View style={{ width: 18, height: 13, justifyContent: 'center', alignItems: 'center' }}>
-                                {this.props.isSending && <Image source={require('assets/ic-sending.png')} style={{ width: 13, height: 13 }} />}
-                                {!this.props.isSending && <Image source={require('assets/ic-sent.png')} style={{ width: 9, height: 8 }} />}
+                            <View style={{ width: 13, height: 16, justifyContent: 'center', alignItems: 'center', marginLeft: 2 }}>
+                                {this.props.isSending && <Image source={require('assets/ic-sending-photo.png')} style={{ width: 13, height: 13 }} />}
+                                {!this.props.isSending && <Image source={require('assets/ic-sent-photo.png')} style={{ width: 9, height: 8 }} />}
                             </View>
                         )}
                     </View>
