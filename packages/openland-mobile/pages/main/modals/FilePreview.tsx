@@ -11,6 +11,7 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
+import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 
 class FilePreviewComponent extends React.PureComponent<NavigationInjectedProps> {
 
@@ -46,11 +47,14 @@ class FilePreviewComponent extends React.PureComponent<NavigationInjectedProps> 
             <>
                 <ZHeader title="File" />
                 <ZHeaderButton title="Open" onPress={this.handlePress} />
-                <View backgroundColor="#fff" flexGrow={1} alignItems="center" justifyContent="center">
+                <View backgroundColor="#fff" flexGrow={1}>
                     <ZQuery query={DocumentFetchPreviewLinkQuery} variables={{ file: config.uuid }} fetchPolicy="network-only">
                         {resp => {
                             if (!resp) {
-                                return (<View><Text>Preview is not available</Text></View>);
+                                return (
+                                    <ZSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text>Preview is not available</Text>
+                                    </ZSafeAreaView>);
                             }
                             return (
                                 <ZSafeAreaContext.Consumer>

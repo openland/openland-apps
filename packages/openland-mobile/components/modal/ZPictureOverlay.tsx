@@ -183,6 +183,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                     onLoaded={onLoaded}
                                     borderRadius={this.props.config.animate!!.borderRadius}
                                     resize={this.props.config.isGif ? 'none' : undefined}
+                                    highPriority={true}
                                 />
                             )}
                         onStarting={this.handleStarting}
@@ -198,6 +199,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                                 imageSize={{ width: size.width, height: size.height }}
                                 onLoaded={onLoaded}
                                 resize={this.props.config.isGif ? 'none' : undefined}
+                                highPriority={true}
                             />
                         )}
                     </FastImageViewer>

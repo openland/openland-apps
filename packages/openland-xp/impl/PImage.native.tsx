@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PImageProps } from './PImageProps';
 import FastImage from 'react-native-fast-image';
-import { PixelRatio } from 'react-native';
+import { PixelRatio, UIManager, InteractionManager } from 'react-native';
 
 export function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null }) {
     if (!source) {
@@ -18,8 +18,18 @@ export class PImage extends React.Component<PImageProps, { started: boolean }> {
     constructor(props: PImageProps) {
         super(props);
         this.state = {
-            started: false
+            started: this.props.highPriority || false
         };
+        if (!this.props.highPriority) {
+            InteractionManager.runAfterInteractions(() => {
+                this.setState({ started: true });
+            });
+            setTimeout(
+                () => {
+                    this.setState({ started: true });
+                },
+                400);
+        }
     }
     render() {
         let baseUrl: string | undefined;
