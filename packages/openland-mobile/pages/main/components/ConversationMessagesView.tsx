@@ -181,7 +181,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                 onEndReachedThreshold={1}
                 onEndReached={this.handleEndReached}
                 ref={this.listRef}
-                initialNumToRender={Platform.OS === 'android' ? 0 : undefined}
+                initialNumToRender={10}
                 scrollIndicatorInsets={{
                     bottom: this.props.topInset,
                     top: this.props.bottomInset
@@ -190,7 +190,8 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                 removeClippedSubviews={true}
                 keyExtractor={this.extractKey}
                 extraData={this.props.bottomInset * 10000 + this.props.topInset}
-                maxToRenderPerBatch={Platform.OS === 'android' ? 3 : undefined}
+                windowSize={3}
+                maxToRenderPerBatch={3}
             />
         );
     }

@@ -13,14 +13,28 @@ const styles = StyleSheet.create({
 export class XPNinePatch extends React.PureComponent<ViewProps & { source: any, capInsets: { top: number, bottom: number, right: number, left: number } }> {
     render() {
         const { source, capInsets, ...other } = this.props;
-        return (
-            <View {...other}>
-                <AggressiveImage
-                    // capInsets={capInsets}
-                    source={Image.resolveAssetSource(source).uri}
-                    style={styles.image}
-                />
-            </View>
-        );
+        const resolved = Image.resolveAssetSource(source);
+        if (resolved.uri.startsWith('file://')) {
+            return (
+                <View {...other}>
+                    <AggressiveImage
+                        capInsets={capInsets}
+                        source={resolved.uri}
+                        style={styles.image}
+                    />
+                </View>
+            );
+        } else {
+            return (
+                <View {...other}>
+                    <Image
+                        resizeMode="stretch"
+                        capInsets={capInsets}
+                        source={resolved}
+                        style={styles.image}
+                    />
+                </View>
+            );
+        }
     }
 }

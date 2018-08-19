@@ -11,14 +11,17 @@ import Nuke
 
 @objc(AggressiveImage)
 class AggressiveImage: RCTView {
-  private var image:UIImageView?
+  static var cache = [String : UIImage]()
+  private var imageView: UIImageView!
+  private var _baseImage: UIImage? = nil;
   private var _source: String? = nil;
+  private var _insets: UIEdgeInsets = UIEdgeInsets.zero;
   
   override init(frame: CGRect) {
     super.init(frame: frame);
     self.frame = frame;
-    image = UIImageView(frame: frame);
-    self.addSubview(image!)
+    imageView = UIImageView(frame: frame);
+    self.addSubview(imageView)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -27,18 +30,31 @@ class AggressiveImage: RCTView {
   
   public func setSource(_ s: NSString) {
     _source = s as String;
-    
-    Nuke.loadImage(with: URL(string: (s as String))!, into: self.image!)
-    
-    // self.image?.image = UIImage(contentsOfFile: self._source!)
-    // print("Loaded");
-    // print(self.image!.image!.size.width);
+    if let val = AggressiveImage.cache[s as String] {
+      _baseImage = val
+    } else {
+      _baseImage = UIImage(contentsOfFile: s as String)
+      if _baseImage != nil {
+        AggressiveImage.cache[s as String] = _baseImage
+      }
+    }
+    if _baseImage != nil {
+      imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+    } else {
+      imageView.image = nil
+    }
   }
   
+  public func setCapInsets(_ insets: UIEdgeInsets) {
+    _insets = insets
+    if _baseImage != nil {
+      imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+    }
+  }
   
   override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame);
-    self.image?.frame = frame;
+    self.imageView.frame = frame;
   }
 }
 

@@ -8,6 +8,7 @@ export interface XPCircularLoaderProps {
 export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps, { visible: boolean }> {
     private rotation = new Animated.Value(0);
     private opactiy = new Animated.Value(0);
+    private animation: Animated.CompositeAnimation | null = null;
     private shown = false;
 
     constructor(props: XPCircularLoaderProps) {
@@ -18,15 +19,15 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
         if (this.props.visible) {
             this.opactiy.setValue(1);
             this.shown = true;
+            this.animation = Animated.loop(
+                Animated.timing(this.rotation, {
+                    toValue: Math.PI * 2,
+                    useNativeDriver: true,
+                    isInteraction: false
+                })
+            );
+            this.animation!!.start();
         }
-
-        Animated.loop(
-            Animated.timing(this.rotation, {
-                toValue: Math.PI * 2,
-                useNativeDriver: true,
-                isInteraction: false
-            })
-        ).start();
     }
 
     componentWillUpdate(nextProps: XPCircularLoaderProps) {
@@ -34,11 +35,14 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
             if (!this.shown) {
                 this.setState({ visible: true });
                 this.shown = true;
-                Animated.timing(this.opactiy, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                    isInteraction: false
-                }).start();
+                this.animation = Animated.loop(
+                    Animated.timing(this.rotation, {
+                        toValue: Math.PI * 2,
+                        useNativeDriver: true,
+                        isInteraction: false
+                    })
+                );
+                this.animation!!.start();
             }
         } else {
             if (this.shown) {
@@ -47,7 +51,13 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
                     toValue: 0,
                     useNativeDriver: true,
                     isInteraction: false
-                }).start(() => { this.setState({ visible: false }); });
+                }).start(() => {
+                    this.setState({ visible: false });
+                    if (this.animation && !this.shown) {
+                        this.animation!!.stop();
+                        this.animation = null;
+                    }
+                });
             }
         }
     }
