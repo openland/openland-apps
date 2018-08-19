@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
+import { Text, StyleSheet, TextStyle, ViewStyle, Animated } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
 const styles = StyleSheet.create({
@@ -53,13 +53,15 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
                 Animated.timing(this.opacity, {
                     toValue: 1,
                     duration: 150,
-                    useNativeDriver: true
+                    useNativeDriver: true,
+                    isInteraction: false
                 }).start();
             } else {
                 Animated.timing(this.opacity, {
                     toValue: 0,
                     duration: 150,
-                    useNativeDriver: true
+                    useNativeDriver: true,
+                    isInteraction: false
                 }).start();
             }
         } else {

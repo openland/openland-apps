@@ -23,7 +23,8 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
         Animated.loop(
             Animated.timing(this.rotation, {
                 toValue: Math.PI * 2,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             })
         ).start();
     }
@@ -35,7 +36,8 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
                 this.shown = true;
                 Animated.timing(this.opactiy, {
                     toValue: 1,
-                    useNativeDriver: true
+                    useNativeDriver: true,
+                    isInteraction: false
                 }).start();
             }
         } else {
@@ -43,7 +45,8 @@ export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps,
                 this.shown = false;
                 Animated.timing(this.opactiy, {
                     toValue: 0,
-                    useNativeDriver: true
+                    useNativeDriver: true,
+                    isInteraction: false
                 }).start(() => { this.setState({ visible: false }); });
             }
         }

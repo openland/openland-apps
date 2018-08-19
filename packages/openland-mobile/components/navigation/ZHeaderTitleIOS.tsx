@@ -75,7 +75,8 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
                 Animated.timing(this.titleProgress, {
                     toValue: 1,
                     duration: 150,
-                    useNativeDriver: true
+                    useNativeDriver: true,
+                    isInteraction: false
                 }).start();
             }
         } else {
@@ -84,7 +85,8 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
                 Animated.timing(this.titleProgress, {
                     toValue: 0,
                     duration: 150,
-                    useNativeDriver: true
+                    useNativeDriver: true,
+                    isInteraction: false
                 }).start();
             }
         }

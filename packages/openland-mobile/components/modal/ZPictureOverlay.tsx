@@ -37,12 +37,14 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                 stiffness: 500,
                 mass: 1,
                 damping: 10000,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             }),
             Animated.timing(this.progressLinear, {
                 toValue: 1,
                 duration: 150,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             })
         ]).start();
         if (this.props.config.onBegin) {
@@ -60,12 +62,14 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                 stiffness: 500,
                 mass: 1,
                 damping: 10000,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             }),
             Animated.timing(this.progressLinear, {
                 toValue: 0,
                 duration: 150,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             })
         ]).start();
     }
@@ -133,14 +137,16 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
             Animated.timing(this.barOpacity, {
                 toValue: 0,
                 duration: 200,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             });
         } else {
             this.barVisible = true;
             Animated.timing(this.barOpacity, {
                 toValue: 1,
                 duration: 200,
-                useNativeDriver: true
+                useNativeDriver: true,
+                isInteraction: false
             });
         }
     }
