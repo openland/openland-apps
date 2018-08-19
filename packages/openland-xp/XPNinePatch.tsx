@@ -3,7 +3,6 @@ import { ViewProps, View, Image, StyleSheet, ViewStyle } from 'react-native';
 
 const styles = StyleSheet.create({
     image: {
-        position: 'absolute',
         width: '100%',
         height: '100%'
     } as ViewStyle
