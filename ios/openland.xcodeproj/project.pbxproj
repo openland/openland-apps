@@ -71,6 +71,10 @@
 		AA90469F210F2F0F00F989BC /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; };
 		AA9046A0210F2F0F00F989BC /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
+		AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */; };
+		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
+		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
+		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAF27E202113F61100F9FCD5 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAF27DEF2113F5FC00F9FCD5 /* libKeyboardTrackingView.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4AF608A4BB3404E9C9EA40D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 51B34DCF3D0040749F561F46 /* FontAwesome.ttf */; };
@@ -565,6 +569,76 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNShare;
 		};
+		AAE56DD2212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C9174901BAE99EE004A7905;
+			remoteInfo = "Nuke iOS";
+		};
+		AAE56DD4212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C22DA2C1BCAA220006E1D3B;
+			remoteInfo = "Nuke macOS";
+		};
+		AAE56DD6212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C22D9C51BCA9734006E1D3B;
+			remoteInfo = "Nuke watchOS";
+		};
+		AAE56DD8212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CC345971BD96CFE005C2DD8;
+			remoteInfo = "Nuke tvOS";
+		};
+		AAE56DDA212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C7C06771BCA882A00089D7F;
+			remoteInfo = "Nuke iOS Tests";
+		};
+		AAE56DDC212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C22DA381BCAA22A006E1D3B;
+			remoteInfo = "Nuke macOS Tests";
+		};
+		AAE56DDE212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CC345A31BD96D2A005C2DD8;
+			remoteInfo = "Nuke tvOS Tests";
+		};
+		AAE56DE0212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C8D7BD01D9DBF1600D12EB7;
+			remoteInfo = "Nuke iOS Tests Host";
+		};
+		AAE56DE2212A0CAC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C8D7BE81D9DC02B00D12EB7;
+			remoteInfo = "Nuke iOS Performance Tests";
+		};
+		AAE56DE6212A0CDC003706B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0C91748F1BAE99EE004A7905;
+			remoteInfo = "Nuke iOS";
+		};
 		AAF27DEE2113F5FC00F9FCD5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AAF27DE52113F5FA00F9FCD5 /* KeyboardTrackingView.xcodeproj */;
@@ -589,6 +663,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */,
+				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 				AA9046A0210F2F0F00F989BC /* RSKImageCropper.framework in Embed Frameworks */,
 				AA006CD0211A581D0093F7EF /* Lottie.framework in Embed Frameworks */,
 			);
@@ -662,6 +737,11 @@
 		AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAE56C072127F447003706B3 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
+		AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AggressiveImage.swift; path = openland/hacks/AggressiveImage.swift; sourceTree = "<group>"; };
+		AAE56DC32129FA25003706B3 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Bridge.h; path = openland/hacks/Bridge.h; sourceTree = "<group>"; };
+		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
+		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
 		AAF27DE52113F5FA00F9FCD5 /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
@@ -734,6 +814,7 @@
 				00D6797578F243AEA38C10EF /* libRNSuperEllipseMask.a in Frameworks */,
 				70089A5B001040609BA9578A /* libRNGestureHandler.a in Frameworks */,
 				31BF43914ABF488487ED441A /* libRNReactNativeHapticFeedback.a in Frameworks */,
+				AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */,
 				15817B58418043DEB7E08A65 /* libRNRootViewBackground.a in Frameworks */,
 				0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */,
 			);
@@ -848,6 +929,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AAE56DBF2129F997003706B3 /* hacks */,
 				AACFC575210778FE00225C86 /* openland.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -915,6 +997,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */,
 				AAE56C072127F447003706B3 /* ART.xcodeproj */,
 				AAF27DE52113F5FA00F9FCD5 /* KeyboardTrackingView.xcodeproj */,
 				AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */,
@@ -1194,6 +1277,33 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AAE56DBF2129F997003706B3 /* hacks */ = {
+			isa = PBXGroup;
+			children = (
+				AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */,
+				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
+				AAE56DC32129FA25003706B3 /* Bridge.h */,
+				AAE56DC42129FA3C003706B3 /* Bridge.m */,
+			);
+			name = hacks;
+			sourceTree = "<group>";
+		};
+		AAE56DC7212A0CAC003706B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AAE56DD3212A0CAC003706B3 /* Nuke.framework */,
+				AAE56DD5212A0CAC003706B3 /* Nuke.framework */,
+				AAE56DD7212A0CAC003706B3 /* Nuke.framework */,
+				AAE56DD9212A0CAC003706B3 /* Nuke.framework */,
+				AAE56DDB212A0CAC003706B3 /* Nuke iOS Tests.xctest */,
+				AAE56DDD212A0CAC003706B3 /* Nuke macOS Tests.xctest */,
+				AAE56DDF212A0CAC003706B3 /* Nuke tvOS Tests.xctest */,
+				AAE56DE1212A0CAC003706B3 /* Nuke iOS Tests Host.app */,
+				AAE56DE3212A0CAC003706B3 /* Nuke iOS Performance Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		AAF27DE62113F5FA00F9FCD5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1264,6 +1374,7 @@
 			);
 			dependencies = (
 				AA006CD2211A581D0093F7EF /* PBXTargetDependency */,
+				AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */,
 			);
 			name = openland;
 			productName = "Hello World";
@@ -1321,6 +1432,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = ZLY9DP39MF;
+						LastSwiftMigration = 0940;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1388,6 +1500,10 @@
 				{
 					ProductGroup = AA006C86211A58060093F7EF /* Products */;
 					ProjectRef = B47A0635150046B7B0F3B1CE /* LottieReactNative.xcodeproj */;
+				},
+				{
+					ProductGroup = AAE56DC7212A0CAC003706B3 /* Products */;
+					ProjectRef = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1963,6 +2079,69 @@
 			remoteRef = AAE56D552129D099003706B3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		AAE56DD3212A0CAC003706B3 /* Nuke.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Nuke.framework;
+			remoteRef = AAE56DD2212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DD5212A0CAC003706B3 /* Nuke.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Nuke.framework;
+			remoteRef = AAE56DD4212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DD7212A0CAC003706B3 /* Nuke.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Nuke.framework;
+			remoteRef = AAE56DD6212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DD9212A0CAC003706B3 /* Nuke.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Nuke.framework;
+			remoteRef = AAE56DD8212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DDB212A0CAC003706B3 /* Nuke iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Nuke iOS Tests.xctest";
+			remoteRef = AAE56DDA212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DDD212A0CAC003706B3 /* Nuke macOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Nuke macOS Tests.xctest";
+			remoteRef = AAE56DDC212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DDF212A0CAC003706B3 /* Nuke tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Nuke tvOS Tests.xctest";
+			remoteRef = AAE56DDE212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DE1212A0CAC003706B3 /* Nuke iOS Tests Host.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Nuke iOS Tests Host.app";
+			remoteRef = AAE56DE0212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AAE56DE3212A0CAC003706B3 /* Nuke iOS Performance Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Nuke iOS Performance Tests.xctest";
+			remoteRef = AAE56DE2212A0CAC003706B3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		AAF27DEF2113F5FC00F9FCD5 /* libKeyboardTrackingView.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2068,7 +2247,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2108,6 +2289,11 @@
 			name = Lottie_iOS;
 			targetProxy = AA006CD1211A581D0093F7EF /* PBXContainerItemProxy */;
 		};
+		AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Nuke iOS";
+			targetProxy = AAE56DE6212A0CDC003706B3 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -2126,6 +2312,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2177,6 +2364,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = (
@@ -2225,7 +2413,9 @@
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = openland/openland.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -2261,6 +2451,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.testing.openland.debug;
 				PRODUCT_NAME = openland;
+				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2268,7 +2461,9 @@
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = openland/openland.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZLY9DP39MF;
@@ -2303,6 +2498,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.korshakov.testing.openland;
 				PRODUCT_NAME = openland;
+				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

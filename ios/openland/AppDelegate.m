@@ -36,6 +36,8 @@
     #endif
   #endif
 
+  // jsCodeLocation = [CodePush bundleURL];
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"openland"
                                                initialProperties:nil
