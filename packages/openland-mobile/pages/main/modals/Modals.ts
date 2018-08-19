@@ -9,5 +9,8 @@ export const Modals = {
     },
     showPicturePreview(navigator: NavigationScreenProp<NavigationState, any>, uuid: string, width: number, height: number, animate?: { x: number, y: number, width: number, height: number }) {
         navigator.navigate('PicturePreview', { uuid, width, height, animate });
+    },
+    showFilePreview(navigator: NavigationScreenProp<NavigationState, any>, uuid: string, name: string, size: number) {
+        navigator.navigate('FilePreview', { config: { uuid, name, size } });
     }
 };

@@ -96,6 +96,7 @@ export interface ConversationMessagesViewProps {
     engine: ConversationEngine;
     onAvatarPress?: (userId: string) => void;
     onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
+    onDocumentPress?: (message: MessageFullFragment) => void;
 }
 
 class ConversationMessagesViewComponent extends React.PureComponent<ConversationMessagesViewProps & { topInset: number, bottomInset: number }> {
@@ -118,6 +119,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                 <MessageViewSingle
                     onPhotoPress={this.props.onPhotoPress}
                     onAvatarPress={this.props.onAvatarPress}
+                    onDocumentPress={this.props.onDocumentPress}
                     message={itm.message}
                     engine={this.props.engine}
                     attach={itm.attach}

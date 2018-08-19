@@ -17,6 +17,7 @@ import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { Animated, Easing } from 'react-native';
 import { Test } from './pages/main/Test';
+import { FilePreview } from './pages/main/modals/FilePreview';
 
 //
 // App Routes
@@ -35,6 +36,7 @@ export const MainStack = createZStackNavigator({
   UserPicker: UserPicker,
   TextEditModal: TextEditModal,
   ComposeModal: ComposeModal,
+  FilePreview: FilePreview,
 
   DevTypography: Typography,
   DevComponents: Components,

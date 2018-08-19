@@ -37,6 +37,7 @@ export interface MessageViewSingleProps {
     downloadManager?: DownloadManagerInterface;
     onAvatarPress?: (userId: string) => void;
     onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
+    onDocumentPress?: (message: MessageFullFragment) => void;
     message: ModelMessage;
     attach?: 'top' | 'bottom' | 'both';
 }
@@ -111,7 +112,9 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                             isOut={isOut}
                             attach={this.props.attach}
                             date={message.date}
+                            message={message}
                             isSending={false}
+                            onPress={this.props.onDocumentPress}
                         />
                     );
                 }

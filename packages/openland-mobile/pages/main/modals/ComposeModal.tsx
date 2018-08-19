@@ -128,6 +128,10 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
         // this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
     }
 
+    handleDocumentPress = (message: MessageFullFragment) => {
+        // this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
+    }
+
     render() {
         return (
             <>
@@ -146,7 +150,7 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
                                 </ZQuery>
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.conversationId) && (
-                                <ConversationView key={this.state.conversationId} onAvatarPress={this.handleAvatarPress} onPhotoPress={this.handlePhotoPress} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
+                                <ConversationView key={this.state.conversationId} onAvatarPress={this.handleAvatarPress} onPhotoPress={this.handlePhotoPress} onDocumentPress={this.handleDocumentPress} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.resolving) && (
                                 <ZSafeAreaView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>

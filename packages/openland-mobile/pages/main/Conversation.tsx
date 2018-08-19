@@ -19,6 +19,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { DownloadManagerInstance } from '../../files/DownloadManager';
+import { Modals } from './modals/Modals';
 
 class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -92,6 +93,12 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
             });
         });
     }
+    handleDocumentPress = (message: MessageFullFragment) => {
+        if (!message.file || !message.fileMetadata || !message.fileMetadata.name || !message.fileMetadata.size) {
+            return;
+        }
+        Modals.showFilePreview(this.props.navigator, message.file, message.fileMetadata.name, message.fileMetadata.size);
+    }
 
     render() {
         if (!this.state.render) {
@@ -109,6 +116,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
                     <ConversationView
                         onPhotoPress={this.handlePhotoPress}
                         onAvatarPress={this.handleAvatarPress}
+                        onDocumentPress={this.handleDocumentPress}
                         engine={this.engine}
                     />
                     <MessageInputBar

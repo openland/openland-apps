@@ -12,6 +12,7 @@ import FastImage from 'react-native-fast-image';
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
     onPhotoPress: (message: MessageFullFragment) => void;
+    onDocumentPress: (message: MessageFullFragment) => void;
     engine: ConversationEngine;
 }
 
@@ -72,6 +73,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     loaded={this.state.conversation.historyFullyLoaded}
                     onAvatarPress={this.props.onAvatarPress}
                     onPhotoPress={this.props.onPhotoPress}
+                    onDocumentPress={this.props.onDocumentPress}
                     onEndReached={this.onEndReached}
                     engine={this.props.engine}
                 />
