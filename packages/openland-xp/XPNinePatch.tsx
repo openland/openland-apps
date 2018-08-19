@@ -13,12 +13,12 @@ export class XPNinePatch extends React.PureComponent<ViewProps & { source: any, 
         const { source, capInsets, ...other } = this.props;
         return (
             <View {...other}>
-                {/* <Image
+                <Image
                     capInsets={capInsets}
                     resizeMode="repeat"
                     source={source}
                     style={styles.image}
-                /> */}
+                />F
             </View>
         );
     }
