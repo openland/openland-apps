@@ -110,6 +110,8 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                             size={size}
                             isOut={isOut}
                             attach={this.props.attach}
+                            date={message.date}
+                            isSending={false}
                         />
                     );
                 }
