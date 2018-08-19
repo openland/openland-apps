@@ -14,7 +14,13 @@ export function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y
     return res;
 }
 
-export class PImage extends React.Component<PImageProps> {
+export class PImage extends React.Component<PImageProps, { started: boolean }> {
+    constructor(props: PImageProps) {
+        super(props);
+        this.state = {
+            started: false
+        };
+    }
     render() {
         let baseUrl: string | undefined;
         if (this.props.source) {
@@ -36,7 +42,7 @@ export class PImage extends React.Component<PImageProps> {
         }
         return (
             <FastImage
-                source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal', ...{ disableAnimations: true } as any }}
+                source={this.state.started && { uri: url, priority: this.props.highPriority ? 'high' : 'normal', ...{ disableAnimations: true } as any }}
                 resizeMode={this.props.resize === 'fit' ? 'contain' : 'stretch'}
                 style={{
                     width: this.props.width,
