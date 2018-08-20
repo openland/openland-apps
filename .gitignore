@@ -66,3 +66,4 @@ org.eclipse.buildship.core.prefs
 .project
 .classpath
 android/captures
+ios/Pods
