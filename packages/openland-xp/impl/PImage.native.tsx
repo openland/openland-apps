@@ -18,7 +18,7 @@ export class PImage extends React.Component<PImageProps, { started: boolean }> {
     constructor(props: PImageProps) {
         super(props);
         this.state = {
-            started: false// this.props.highPriority || false
+            started: this.props.highPriority || false
         };
         if (!this.props.highPriority) {
             InteractionManager.runAfterInteractions(() => {
