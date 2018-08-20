@@ -15,7 +15,7 @@ import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
-    height: 62,
+    height: 64,
     fontSize: 15,
     fontWeight: 500,
     color: '#334562',
@@ -24,17 +24,28 @@ const ItemContainer = Glamorous.a({
     paddingRight: 12,
     paddingTop: 12,
     paddingBottom: 12,
-    marginBottom: 4,
     alignItems: 'center',
     '&.is-active': {
-        backgroundColor: '#ebedf0',
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
         '&:hover': {
-            backgroundColor: '#ebedf0',
+            backgroundColor: 'rgba(23, 144, 255, 0.05)',
             color: '#334562'
+        },
+        '& .title, .date, .content': {
+            color: '#1790ff !important',
+            opacity: '1 !important'
         }
     },
     '&:hover': {
-        backgroundColor: '#f2f4f5'
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        '&:hover': {
+            backgroundColor: 'rgba(23, 144, 255, 0.05)',
+            color: '#334562'
+        },
+        '& .title, .date, .content': {
+            color: '#1790ff !important',
+            opacity: '1 !important'
+        }
     }
 });
 
@@ -85,7 +96,7 @@ const Date = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.33,
     letterSpacing: -0.1,
-    color: '#334562',
+    color: '#5c6a81',
     opacity: 0.5,
     marginLeft: 5
 });
@@ -142,11 +153,11 @@ const renderConversation = (v: any) => (
         <XAvatar style={v.__typename === 'SharedConversation' ? 'organization' : 'person'} cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined} />
         <Header>
             <Main>
-                <Title><span>{v.title}</span></Title>
-                {v.topMessage && <Date><XDate value={v.topMessage!!.date} format="datetime_short" /></Date>}
+                <Title className="title"><span>{v.title}</span></Title>
+                {v.topMessage && <Date className="date"><XDate value={v.topMessage!!.date} format="datetime_short" /></Date>}
             </Main>
             <Content>
-                <ContentText>
+                <ContentText className="content">
                     {v.topMessage && v.topMessage.message && (
                         <span>{v.topMessage.sender.firstName}: {v.topMessage.message}</span>
                     )}
