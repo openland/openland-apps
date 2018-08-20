@@ -53,6 +53,14 @@ export interface CreateProfileInput {
   location?: string | null,
 };
 
+export enum ChannelMembershipStatus {
+  invited = "invited",
+  member = "member",
+  none = "none",
+  requested = "requested",
+}
+
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -1596,7 +1604,87 @@ export interface DocumentFetchPreviewLinkQueryVariables {
 };
 
 export interface DocumentFetchPreviewLinkQuery {
-  previewLink: string,
+  previewLink: string | null,
+};
+
+export interface ChatSearchChannelQueryVariables {
+  query?: string | null,
+  sort?: string | null,
+  page?: number | null,
+};
+
+export interface ChatSearchChannelQuery {
+  channels:  {
+    __typename: "ChannelConversationConnection",
+    edges:  Array< {
+      __typename: "ChannelConversationConnectionEdge",
+      node:  {
+        __typename: "ChannelConversation",
+        id: string,
+        title: string,
+        flexibleId: string,
+        unreadCount: number,
+        photos: Array< string >,
+        topMessage:  {
+          __typename: "ConversationMessage",
+          id: string,
+          message: string | null,
+          file: string | null,
+          repeatKey: string | null,
+          isService: boolean,
+          fileMetadata:  {
+            __typename: "FileMetadata",
+            name: string,
+            mimeType: string | null,
+            isImage: boolean,
+            imageWidth: number | null,
+            imageHeight: number | null,
+            imageFormat: string | null,
+            size: number,
+          } | null,
+          sender:  {
+            __typename: "User",
+            id: string,
+            name: string,
+            firstName: string,
+            lastName: string | null,
+            picture: string | null,
+            email: string | null,
+            primaryOrganization:  {
+              __typename: "Organization",
+              id: string,
+              name: string,
+            } | null,
+            role: string | null,
+            linkedin: string | null,
+            twitter: string | null,
+          },
+          date: string,
+        } | null,
+        membersCount: number,
+        featured: boolean,
+        description: string,
+        myStatus: ChannelMembershipStatus,
+        organization:  {
+          __typename: "Organization",
+          id: string,
+          name: string,
+          photo: string | null,
+        } | null,
+        isRoot: boolean,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
 };
 
 export interface AllDealsQuery {
