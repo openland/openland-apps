@@ -12,6 +12,10 @@ import { XInput } from 'openland-x/XInput';
 import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XIcon } from 'openland-x/XIcon';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -202,10 +206,14 @@ const Search = Glamorous(XInput)({
     height: 36
 });
 
-class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, { query?: string }> {
+const ExploreChannels = Glamorous(XMenuItem)({
+    backgroundColor: '#f2f4f5',
+});
+
+class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, { query: string }> {
     constructor(props: { data: ChatListQuery }) {
         super(props);
-        this.state = {};
+        this.state = { query: '' };
     }
 
     onInput = (q: string) => {
@@ -223,6 +231,10 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     icon="search"
                     color="primary-sky-blue"
                 />
+                <XWithRole role={['software-developer', 'super-admin']}>
+                    <ExploreChannels path={'/mail/channels'}><XText>(/) Explore channels</XText></ExploreChannels>
+                </XWithRole>
+
                 {search && <SearchChats variables={{ query: this.state.query!! }} />}
                 {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(renderConversation)}
             </XVertical>

@@ -14,6 +14,7 @@ import { ComposeComponent } from '../../../components/messenger/ComposeComponent
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -92,6 +93,27 @@ const ComposeText = Glamorous.div({
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
     let isCompose = props.router.path.endsWith('/new');
+    let isChannels = props.router.path.endsWith('/channels');
+
+    let tab: 'empty' | 'conversation' | 'compose' | 'channels' = 'empty';
+
+    if (isCompose && canUseDOM) {
+        tab = 'compose';
+    }
+
+    if (!isCompose && !props.router.routeQuery.conversationId) {
+        tab = 'empty';
+
+    }
+
+    if (!isCompose && props.router.routeQuery.conversationId) {
+        tab = 'conversation';
+
+    }
+
+    if (isChannels) {
+        tab = 'channels';
+    }
 
     return (
         <>
@@ -112,12 +134,12 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             <ChatsComponent />
                         </ChatListContainer>
                         <ConversationContainer>
-                            {isCompose && canUseDOM && (
+                            {tab === 'compose' && (
                                 <MessengerContainer>
                                     <ComposeComponent conversationId={props.router.routeQuery.conversationId} />
                                 </MessengerContainer>
                             )}
-                            {!isCompose && !props.router.routeQuery.conversationId && (
+                            {tab === 'empty' && (
                                 <MessengerContainer>
                                     <EmptyDiv>
                                         <img src={'/static/X/chat-compose.svg'} />
@@ -125,8 +147,11 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                                     </EmptyDiv>
                                 </MessengerContainer>
                             )}
-                            {!isCompose && props.router.routeQuery.conversationId && (
+                            {tab === 'conversation' && (
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
+                            )}
+                            {tab === 'channels' && (
+                                <ChannelsExploreComponent />
                             )}
                         </ConversationContainer>
                     </ChatContainer>
