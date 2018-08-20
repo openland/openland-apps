@@ -11,9 +11,9 @@ import { withAllChats } from '../../../api/withAllChats';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
-import { XLink } from 'openland-x/XLink';
-import { XIcon } from 'openland-x/XIcon';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XButton } from 'openland-x/XButton';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -33,9 +33,8 @@ let ChatListContainer = Glamorous.div({
     height: '100vh',
     width: 300,
     flexShrink: 0,
-    borderRightColor: '#e2e3e8',
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
+    borderRight: '1px solid #e2e3e8',
+    backgroundColor: '#f9fafb',
     '@media (max-width: 950px)': {
         width: 200
     }
@@ -56,32 +55,20 @@ let ConversationContainer = Glamorous.div({
     }
 });
 
-let Header = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+const Header = Glamorous(XHorizontal)({
     height: 48,
     paddingLeft: 16,
     paddingRight: 16,
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 6,
+    marginBottom: 6,
+});
+
+const Title = Glamorous.div({
     fontSize: 18,
-    fontWeight: 600,
-    lineHeight: 1.11,
-    letterSpacing: -0.3,
-    color: '#334562',
-    '& > a': {
-        display: 'flex',
-        alignItems: 'center',
-        color: '#BEC3CA',
-        '&:hover': {
-            color: '#334562'
-        },
-        '& > i': {
-            fontSize: 30
-        }
-    }
+    fontWeight: 500,
+    lineHeight: 1.33,
+    letterSpacing: -0.4,
+    color: '#334562'
 });
 
 const EmptyDiv = Glamorous.div({
@@ -113,11 +100,14 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
                         <ChatListContainer>
-                            <Header>
-                                <span>Messages</span>
-                                <XLink path="/mail/new">
-                                    <XIcon icon="add" />
-                                </XLink>
+                            <Header alignItems="center" justifyContent="space-between">
+                                <Title>Messenger</Title>
+                                <XButton
+                                    path="/mail/new"
+                                    text="New chat"
+                                    icon="add"
+                                    size="r-small"
+                                />
                             </Header>
                             <ChatsComponent />
                         </ChatListContainer>
