@@ -4,3 +4,5 @@
 
 #import <React/RCTView.h>
 #import <React/RCTViewManager.h>
+#define YOGA false
+#import <AsyncDisplayKit/AsyncDisplayKit.h>

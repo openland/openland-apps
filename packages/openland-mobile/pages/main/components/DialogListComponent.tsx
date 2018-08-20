@@ -6,10 +6,179 @@ import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZLoader } from '../../../components/ZLoader';
+import { ASDisplayNode } from '../../../components/asyncdisplay/ASDisplayNode';
+import { ASView, ASText, ASImage, ASLinearGradient, ASInsets } from '../../../components/asyncdisplay/Views';
+import { formatDate } from 'openland-shared/utils/formatDate';
+import { doSimpleHash } from 'openland-y-utils/hash';
+import { XPStyles } from 'openland-xp/XPStyles';
+import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
+import { XPListItem } from 'openland-xp/XPListItem';
 
 class DialogListSeparator extends React.PureComponent {
     render() {
-        return <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />; 
+        return <View marginLeft={80} backgroundColor={AppStyles.separatorColor} height={1} />;
+    }
+}
+
+interface ASAvatarProps {
+    size: number;
+    src?: string | null;
+    placeholderKey?: string | null;
+    placeholderTitle?: string | null;
+}
+
+class ASAvatar extends React.PureComponent<ASAvatarProps> {
+    render() {
+        if (this.props.src) {
+            return (
+                <ASImage
+                    width={this.props.size}
+                    height={this.props.size}
+                    source={{ uri: this.props.src }}
+                    borderRadius={this.props.size / 2}
+                />
+            );
+        }
+
+        let placeholderIndex = 0;
+        if (this.props.placeholderKey) {
+            placeholderIndex = doSimpleHash(this.props.placeholderKey);
+        }
+        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
+        let placeholderText = '?';
+        if (this.props.placeholderTitle) {
+            placeholderText = extractPlaceholder(this.props.placeholderTitle);
+        }
+        let textSize = 28;
+        if (this.props.size === 40) {
+            textSize = 16;
+        }
+        if (this.props.size === 32) {
+            textSize = 14;
+        }
+        if (this.props.size === 28) {
+            textSize = 12;
+        }
+        if (this.props.size === 30) {
+            textSize = 13;
+        }
+        if (this.props.size === 56) {
+            textSize = 26;
+        }
+        if (this.props.size === 96) {
+            textSize = 28;
+        }
+        if (this.props.size === 36) {
+            textSize = 14;
+        }
+
+        return (
+            <ASLinearGradient
+                width={this.props.size}
+                height={this.props.size}
+                borderRadius={this.props.size / 2}
+                colorStart={placeholderStyle.placeholderColorStart}
+                colorEnd={placeholderStyle.placeholderColorEnd}
+            >
+                <ASView
+                    width={this.props.size}
+                    height={this.props.size}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
+                </ASView>
+            </ASLinearGradient>
+        );
+    }
+}
+
+class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
+    render() {
+        return (
+            <ASLinearGradient borderRadius={8} colorStart={XPStyles.colors.brand} colorEnd={XPStyles.colors.brand}>
+                <ASView height={16}>
+                    <ASInsets left={4} right={4} top={3}>
+                        <ASText color="#fff" lineHeight={12} fontSize={12}>{this.props.value + ''}</ASText>
+                    </ASInsets>
+                </ASView>
+            </ASLinearGradient>
+        );
+    }
+}
+
+class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortFragment, engine: MessengerEngine, onPress: (id: ConversationShortFragment) => void; }> {
+
+    handlePress = () => {
+        this.props.onPress(this.props.item);
+    }
+
+    render() {
+        let messageText: string | undefined = undefined;
+        let messageDate: string | undefined = undefined;
+        let messageSender: string | undefined = undefined;
+        if (this.props.item.topMessage) {
+            messageSender = this.props.item.topMessage!!.sender.id === this.props.engine.user.id ? 'You' : this.props.item.topMessage!!.sender.name;
+            let date = parseInt(this.props.item.topMessage.date, 10);
+            messageDate = formatDate(date);
+            if (this.props.item.topMessage.message) {
+                messageText = this.props.item.topMessage.message;
+            } else if (this.props.item.topMessage.file) {
+                if (this.props.item.topMessage.fileMetadata) {
+                    if (this.props.item.topMessage.fileMetadata.isImage) {
+                        if (this.props.item.topMessage.fileMetadata.imageFormat === 'GIF') {
+                            messageText = 'GIF';
+                        } else {
+                            messageText = 'Photo';
+                        }
+                    } else {
+                        messageText = this.props.item.topMessage.fileMetadata!!.name;
+                    }
+                } else {
+                    messageText = 'Document';
+                }
+            }
+        }
+        let showSenderName = this.props.item.topMessage && (!(this.props.item.topMessage.sender.id === this.props.engine.user.id && this.props.item.__typename === 'PrivateConversation'));
+        return (
+            <XPListItem onPress={this.handlePress} style={{ height: 80 }}>
+                <ASDisplayNode style={{ height: 80, width: '100%' }}>
+                    <ASView direction="row" height={80} width={300}>
+                        <ASView width={80} height={80} alignItems="center" justifyContent="center">
+                            <ASAvatar
+                                src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                                size={60}
+                                placeholderKey={this.props.item.flexibleId}
+                                placeholderTitle={this.props.item.title}
+                            />
+                        </ASView>
+                        <ASInsets right={10} top={12} bottom={12} flexGrow={1} flexBasis={0}>
+                            <ASView direction="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                                <ASView height={18}>
+                                    <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{this.props.item.title}</ASText>
+                                    <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText>
+                                </ASView>
+                                <ASInsets top={2} bottom={2} height={36}>
+                                    <ASView direction="row" alignItems="stretch">
+                                        <ASView direction="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                                            {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
+                                            <ASText fontSize={14} height={36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
+                                        </ASView>
+                                        {this.props.item.unreadCount > 0 && (
+                                            <ASInsets top={18}>
+                                                <ASView flexShrink={0}>
+                                                    <ASCounter value={this.props.item.unreadCount} />
+                                                </ASView>
+                                            </ASInsets>
+                                        )}
+                                    </ASView>
+                                </ASInsets>
+                            </ASView>
+                        </ASInsets>
+                    </ASView>
+                </ASDisplayNode>
+            </XPListItem>
+        );
     }
 }
 
@@ -22,7 +191,8 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
     }
 
     renderItem = (item: ListRenderItemInfo<ConversationShortFragment>) => {
-        return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
+        // return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
+        return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
     }
 
     keyExtractor = (item: ConversationShortFragment) => {

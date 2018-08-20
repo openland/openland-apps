@@ -29,3 +29,7 @@ declare module 'react-native-keyboard-tracking-view' {
 declare module 'react-native-root-view-background' {
     export function setRootViewBackgroundColor(color: string): void
 }
+
+declare module 'react-tree-walker' {
+    export default function (element: any, visitor: (element: any, instance: any) => any): any
+}

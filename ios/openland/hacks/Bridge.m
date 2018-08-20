@@ -16,3 +16,8 @@ RCT_EXPORT_VIEW_PROPERTY(source, NSString)
 RCT_EXPORT_VIEW_PROPERTY(capInsets, UIEdgeInsets)
 
 @end
+
+
+@interface RCT_EXTERN_MODULE(AsyncDisplayNodeManager, RCTViewManager)
+RCT_EXPORT_VIEW_PROPERTY(config, NSString)
+@end

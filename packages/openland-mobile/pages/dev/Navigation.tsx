@@ -5,6 +5,8 @@ import { View, LayoutChangeEvent, requireNativeComponent, Image } from 'react-na
 import { ZHeader } from '../../components/ZHeader';
 import { ZAppConfig } from '../../components/ZAppConfig';
 import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
+import { ASDisplayNode } from '../../components/asyncdisplay/ASDisplayNode';
+import { ASView, ASText } from '../../components/asyncdisplay/Views';
 
 // const AggressiveImage = requireNativeComponent('AggressiveImage') as any;
 
@@ -31,8 +33,11 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
                 <ZHeader title="Some title" />
                 <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: ZAppConfig.bottomNavigationBarInset, flexDirection: 'column' }} onLayout={this.handleLayout}>
                     <ZSafeAreaView>
-                        {/* <AggressiveImage source={Image.resolveAssetSource(require('assets/chat-bubble-out.png')).uri} style={{ width: 100, height: 100, backgroundColor: '#f00' }} /> */}
-                        {}
+                        <ASDisplayNode>
+                            <ASView direction="row">
+                                <ASText>Hello world</ASText>
+                            </ASView>
+                        </ASDisplayNode>
                     </ZSafeAreaView>
                 </View>
             </>

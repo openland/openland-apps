@@ -54,9 +54,9 @@
 		51D70AEAB6A747C08BE764A3 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */; };
 		549581E2E64549E4915281B0 /* libRNViewOverflow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E68240253A49F7AD8DDC9B /* libRNViewOverflow.a */; };
 		55D599EBBE1841FC8E8B5FF1 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8FCC122D9489FA4F5334B /* libCodePush.a */; };
-		56DE1B3A080DE140092C8E46 /* Pods_openland.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0082F634711EE2403F18FFF2 /* Pods_openland.framework */; };
 		5E4DE43B3861435D86A03954 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADCC97C91984930BD1B8081 /* libz.tbd */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		67A6E3B5C09216A6BDDE1CC0 /* Pods_openland.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B751CF72B6AA4AFD32BD4527 /* Pods_openland.framework */; };
 		6DA947124120484DA2DD9B89 /* libLottie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DDC5D7B8BC46629B7918F3 /* libLottie.a */; };
 		70089A5B001040609BA9578A /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1364232686B4C9CBE4687ED /* libRNGestureHandler.a */; };
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
@@ -76,6 +76,7 @@
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AAE56E0F212A4993003706B3 /* AsyncDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56E0E212A4993003706B3 /* AsyncDisplay.swift */; };
 		AAF27E202113F61100F9FCD5 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAF27DEF2113F5FC00F9FCD5 /* libKeyboardTrackingView.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4AF608A4BB3404E9C9EA40D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 51B34DCF3D0040749F561F46 /* FontAwesome.ttf */; };
@@ -675,7 +676,6 @@
 
 /* Begin PBXFileReference section */
 		0005AA27BE4249C29ACB8249 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
-		0082F634711EE2403F18FFF2 /* Pods_openland.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_openland.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
@@ -746,11 +746,13 @@
 		AAE56DC32129FA25003706B3 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Bridge.h; path = openland/hacks/Bridge.h; sourceTree = "<group>"; };
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
+		AAE56E0E212A4993003706B3 /* AsyncDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDisplay.swift; sourceTree = "<group>"; };
 		AAF27DE52113F5FA00F9FCD5 /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		B47A0635150046B7B0F3B1CE /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
 		B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
+		B751CF72B6AA4AFD32BD4527 /* Pods_openland.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_openland.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8E68240253A49F7AD8DDC9B /* libRNViewOverflow.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNViewOverflow.a; sourceTree = "<group>"; };
 		B9B41ACA907A43C6B225DDDC /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		CBD8B25AE0A3419FA1E6792C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -821,7 +823,7 @@
 				AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */,
 				15817B58418043DEB7E08A65 /* libRNRootViewBackground.a in Frameworks */,
 				0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */,
-				56DE1B3A080DE140092C8E46 /* Pods_openland.framework in Frameworks */,
+				67A6E3B5C09216A6BDDE1CC0 /* Pods_openland.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -977,7 +979,7 @@
 				AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				3ADCC97C91984930BD1B8081 /* libz.tbd */,
-				0082F634711EE2403F18FFF2 /* Pods_openland.framework */,
+				B751CF72B6AA4AFD32BD4527 /* Pods_openland.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1300,6 +1302,7 @@
 				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
 				AAE56DC42129FA3C003706B3 /* Bridge.m */,
+				AAE56E0E212A4993003706B3 /* AsyncDisplay.swift */,
 			);
 			name = hacks;
 			sourceTree = "<group>";
@@ -1386,7 +1389,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				AA904695210F2C2900F989BC /* Embed Frameworks */,
-				975DBF96656FE37819B4DDEE /* [CP] Embed Pods Frameworks */,
+				39D275B45C4158F7A660503F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2250,54 +2253,48 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		7BBDAD96E4127F89599FD53F /* [CP] Check Pods Manifest.lock */ = {
+		39D275B45C4158F7A660503F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-openland-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		975DBF96656FE37819B4DDEE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
 				"${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework",
 				"${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINOperation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINRemoteImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7BBDAD96E4127F89599FD53F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-openland-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2318,6 +2315,7 @@
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
+				AAE56E0F212A4993003706B3 /* AsyncDisplay.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2484,6 +2482,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = openland/openland.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2533,6 +2532,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = openland/openland.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2803,7 +2803,9 @@
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2844,7 +2846,9 @@
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
