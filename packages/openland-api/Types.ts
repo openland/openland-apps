@@ -1687,6 +1687,32 @@ export interface ChatSearchChannelQuery {
   },
 };
 
+export interface CreateChannelMutationVariables {
+  title: string,
+  message: string,
+  description?: string | null,
+};
+
+export interface CreateChannelMutation {
+  channel: ( {
+      __typename: "ChannelConversation",
+      id: string,
+    } | {
+      __typename: "AnonymousConversation",
+      id: string,
+    } | {
+      __typename: "SharedConversation",
+      id: string,
+    } | {
+      __typename: "PrivateConversation",
+      id: string,
+    } | {
+      __typename: "GroupConversation",
+      id: string,
+    }
+  ),
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",

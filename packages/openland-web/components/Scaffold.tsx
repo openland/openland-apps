@@ -42,12 +42,13 @@ import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
 import { withCreateOrganization } from '../api/withCreateOrganization';
-import { delayForewer } from 'openland-y-utils/timer';
+import { delayForewer, delay } from 'openland-y-utils/timer';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { InitTexts } from '../pages/init/_text';
+import { withCreateChannel } from '../api/withCreateChannel';
 
 //
 // Root
@@ -706,6 +707,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                     <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
                     <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
                     <MenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</MenuItem>
+                    <MenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</MenuItem>
                 </>
             );
         });
@@ -857,13 +859,46 @@ export const CreateOrganization = withCreateOrganization((props) => {
                             field="input.name"
                             size="medium"
                             placeholder={InitTexts.create_organization_popper.namePlaceholder}
-                            // tooltipContent={<InputTooltip />}
+                        // tooltipContent={<InputTooltip />}
                         />
                         <XFormSubmit style="primary" text={InitTexts.create_organization_popper.submit} size="medium" alignSelf="flex-end" />
                     </XHorizontal>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>
+    );
+});
+
+export const CreateChannel = withCreateChannel((props) => {
+    return (
+        <XModalForm
+            {...props}
+            useTopCloser={true}
+            title="Create channel"
+            targetQuery="createChannel"
+            defaultAction={async (data) => {
+                let channel = await props.createChannel({ variables: { title: data.input.name, message: 'channel created' } });
+                delay(0).then(() => {
+                    props.router.push('/mail/' + channel.data.channel.id);
+                });
+
+            }}
+            defaultData={{
+                input: {
+                    name: ''
+                }
+            }}
+            submitBtnText="Create channel"
+        >
+            <XInput
+                flexGrow={1}
+                size="r-default"
+                color="primary-sky-blue"
+                placeholder="Channel title"
+                field="input.name"
+            />
+        </XModalForm>
+
     );
 });
 
@@ -1180,6 +1215,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                 </ContentView>
 
                 <CreateOrganization />
+                <CreateChannel />
             </RootContainer>
         );
     }

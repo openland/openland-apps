@@ -296,3 +296,11 @@ export const ChatSearchChannelQuery = gql`
     ${UserShort}
     ${OrganizationShort}
 `;
+
+export const CreateChannelMutation = gql`
+    mutation CreateChannel($title: String!, $message: String!, $description: String) {
+        channel: alphaChannelCreate(title: $title, message: $message, description: $description){
+            id
+        }
+    }
+`;

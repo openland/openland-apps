@@ -8,6 +8,7 @@ export const TextGlobal = {
     invite: 'Invite colleagues',
     inviteGlobal: 'Invite other organization',
     addOrganization: 'Create organization',
+    addChannel: 'Create channel',
     signOut: 'Sign out',
     viewProfile: 'View profile',
     postUpdate: 'Post update',
