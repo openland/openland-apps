@@ -859,6 +859,7 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      featured: boolean,
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -1711,6 +1712,15 @@ export interface CreateChannelMutation {
       id: string,
     }
   ),
+};
+
+export interface ChannelSetFeaturedMutationVariables {
+  channelId: string,
+  featured: boolean,
+};
+
+export interface ChannelSetFeaturedMutation {
+  alphaChannelSetFeatured: string,
 };
 
 export interface AllDealsQuery {

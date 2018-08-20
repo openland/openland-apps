@@ -54,6 +54,7 @@ export const ChatSearchTextQuery = typedQuery<Types.ChatSearchTextQuery, Types.C
 export const DocumentFetchPreviewLinkQuery = typedQuery<Types.DocumentFetchPreviewLinkQuery, Types.DocumentFetchPreviewLinkQueryVariables>(Chats.DocumentFetchPreviewLinkQuery);
 export const ChatSearchChannelQuery = typedQuery<Types.ChatSearchChannelQuery, Types.ChatSearchChannelQueryVariables>(Chats.ChatSearchChannelQuery);
 export const CreateChannelMutation = typedMutation<Types.CreateChannelMutation, Types.CreateChannelMutationVariables>(Chats.CreateChannelMutation);
+export const ChannelSetFeaturedMutation = typedMutation<Types.ChannelSetFeaturedMutation, Types.ChannelSetFeaturedMutationVariables>(Chats.ChannelSetFeaturedMutation);
 export const AllDealsQuery = typedQuery<Types.AllDealsQuery, {}>(Deals.AllDealsQuery);
 export const AllDealsMapQuery = typedQuery<Types.AllDealsMapQuery, {}>(Deals.AllDealsMapQuery);
 export const DealQuery = typedQuery<Types.DealQuery, Types.DealQueryVariables>(Deals.DealQuery);

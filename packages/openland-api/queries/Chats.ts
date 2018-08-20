@@ -66,6 +66,9 @@ export const ChatInfoQuery = gql`
             ... on GroupConversation {
                 membersCount
             }
+            ... on ChannelConversation {
+                featured
+            }
         }
     }
     ${UserShort}
@@ -302,5 +305,11 @@ export const CreateChannelMutation = gql`
         channel: alphaChannelCreate(title: $title, message: $message, description: $description){
             id
         }
+    }
+`;
+
+export const ChannelSetFeaturedMutation = gql`
+    mutation ChannelSetFeatured($channelId: ID!, $featured: Boolean!) {
+        alphaChannelSetFeatured(channelId: $channelId, featured: $featured)
     }
 `;

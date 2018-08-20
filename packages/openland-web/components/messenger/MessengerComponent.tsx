@@ -14,6 +14,8 @@ import { XButton } from 'openland-x/XButton';
 import { withBlockUser } from '../../api/withBlockUser';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { delay } from 'openland-y-utils/timer';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -105,6 +107,43 @@ const BlockButton = withBlockUser((props) => (
     <BlockSwitcherComponent block={props.block} unblock={props.unblock} blocked={(props as any).blocked} userId={(props as any).userId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ blocked: boolean, userId: string, refetchVars: { conversationId: string } }>;
 
+class ChannelSetFeaturedComponent extends React.Component<{ mutation: any, conversationId: string, featured: boolean, refetchVars: { conversationId: string } }, { featured: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { featured: props.featured };
+    }
+
+    render() {
+        return (
+            <XMenuItemWrapper>
+                <XVertical>
+                    <XCheckbox
+                        label="Featured"
+                        value={this.state.featured ? 'featured' : 'unfeatured'}
+                        trueValue="featured"
+                        onChange={() => {
+                            this.props.mutation({
+                                variables: {
+                                    channelId: this.props.conversationId,
+                                    featured: !this.props.featured
+                                }
+                            });
+                            this.setState({
+                                featured: !this.state.featured
+                            });
+                        }
+                        }
+                    />
+                </XVertical>
+            </XMenuItemWrapper>
+        );
+    }
+}
+
+const ChannelSetFeatured = withChannelSetFeatured((props) => (
+    <ChannelSetFeaturedComponent mutation={props.setFeatured} featured={(props as any).featured} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
+)) as React.ComponentType<{ featured: boolean, conversationId: string, refetchVars: { conversationId: string } }>;
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     console.log(props);
     return (
@@ -137,37 +176,51 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             </XHorizontal>
                         </XHorizontal>
                     </NavChatLeftContentStyled>
-                    <XOverflow
-                        flat={true}
-                        placement="bottom-end"
-                        content={(
-                            <div style={{ width: 160 }}>
-                                <XMenuTitle>Notifications</XMenuTitle>
-                                <XMenuItemWrapper>
-                                    <XVertical>
-                                        <XCheckbox label="Email" switcher={true} checked={true} />
-                                    </XVertical>
-                                </XMenuItemWrapper>
-                                <XMenuItemWrapper>
-                                    <XVertical>
-                                        <XCheckbox label="Mobile" switcher={true} />
-                                    </XVertical>
-                                </XMenuItemWrapper>
-                                <XMenuItemWrapper>
-                                    <XVertical>
-                                        <XCheckbox label="Mute" switcher={true} />
-                                    </XVertical>
-                                </XMenuItemWrapper>
-                                {props.data.chat.__typename === 'PrivateConversation' && (
-                                    <BlockButton
-                                        blocked={(props.data.chat as any).blocked}
-                                        userId={(props.data.chat as any).user.id}
-                                        refetchVars={{ conversationId: props.data.chat.id }}
-                                    />
+                    <XHorizontal>
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={(
+                                <div style={{ width: 160 }}>
+                                    <XMenuTitle>Notifications</XMenuTitle>
+                                    <XMenuItemWrapper>
+                                        <XVertical>
+                                            <XCheckbox label="Email" switcher={true} checked={true} />
+                                        </XVertical>
+                                    </XMenuItemWrapper>
+                                    <XMenuItemWrapper>
+                                        <XVertical>
+                                            <XCheckbox label="Mobile" switcher={true} />
+                                        </XVertical>
+                                    </XMenuItemWrapper>
+                                    <XMenuItemWrapper>
+                                        <XVertical>
+                                            <XCheckbox label="Mute" switcher={true} />
+                                        </XVertical>
+                                    </XMenuItemWrapper>
+                                    {props.data.chat.__typename === 'PrivateConversation' && (
+                                        <BlockButton
+                                            blocked={(props.data.chat as any).blocked}
+                                            userId={(props.data.chat as any).user.id}
+                                            refetchVars={{ conversationId: props.data.chat.id }}
+                                        />
+                                    )}
+                                </div>
+                            )}
+                        />
+                        {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']}>
+                            <XOverflow
+                                flat={true}
+                                placement="bottom-end"
+                                content={(
+                                    <div style={{ width: 160 }}>
+                                        <XMenuTitle>Super admin</XMenuTitle>
+                                        <ChannelSetFeatured conversationId={props.data.chat.id} featured={props.data.chat.featured} refetchVars={{ conversationId: props.data.chat.id }} />
+                                    </div>
                                 )}
-                            </div>
-                        )}
-                    />
+                            />
+                        </XWithRole>}
+                    </XHorizontal>
                 </ChatHeaderContent>
             </ChatHeaderWrapper>
             <XHorizontal
