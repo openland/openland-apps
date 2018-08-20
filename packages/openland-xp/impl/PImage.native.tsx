@@ -20,16 +20,16 @@ export class PImage extends React.Component<PImageProps, { started: boolean }> {
         this.state = {
             started: false// this.props.highPriority || false
         };
-        // if (!this.props.highPriority) {
-        //     InteractionManager.runAfterInteractions(() => {
-        //         this.setState({ started: true });
-        //     });
-        //     setTimeout(
-        //         () => {
-        //             this.setState({ started: true });
-        //         },
-        //         400);
-        // }
+        if (!this.props.highPriority) {
+            InteractionManager.runAfterInteractions(() => {
+                this.setState({ started: true });
+            });
+            setTimeout(
+                () => {
+                    this.setState({ started: true });
+                },
+                200);
+        }
     }
     render() {
         let baseUrl: string | undefined;
