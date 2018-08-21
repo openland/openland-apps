@@ -183,7 +183,6 @@ const PlaceholderLoader = Glamorous(XLoadingCircular)({
     alignSelf: 'center'
 });
 const SearchChats = withChatSearchText((props) => {
-    console.warn(props.data);
     let items = (props.data && props.data.items ? props.data.items : []).filter(c => c.topMessage).reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
