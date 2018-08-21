@@ -975,6 +975,10 @@ export interface ChatInfoQuery {
       title: string,
       photos: Array< string >,
       featured: boolean,
+      organization:  {
+        __typename: "Organization",
+        isMine: boolean,
+      } | null,
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -2026,6 +2030,43 @@ export interface ChannelMembersQuery {
     role: string,
     status: string,
   } >,
+};
+
+export interface ChannelInviteMutationVariables {
+  channelId: string,
+  userId: string,
+};
+
+export interface ChannelInviteMutation {
+  alphaChannelInvite: string,
+};
+
+export interface ConversationKickMutationVariables {
+  conversationId: string,
+  userId: string,
+};
+
+export interface ConversationKickMutation {
+  alphaChatKickFromGroup:  {
+    __typename: "GroupChatUpdateResponse",
+    chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+      }
+    ),
+  },
 };
 
 export interface AllDealsQuery {

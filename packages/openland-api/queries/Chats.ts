@@ -68,6 +68,9 @@ export const ChatInfoQuery = gql`
             }
             ... on ChannelConversation {
                 featured
+                organization{
+                    isMine
+                }
             }
         }
     }
@@ -337,3 +340,20 @@ export const ChannelMembersQuery = gql`
     }
     ${UserShort}
 `;
+
+export const ChannelInviteMutation = gql`
+    mutation ChannelInvite($channelId: ID!, $userId: ID!) {
+        alphaChannelInvite(channelId: $channelId, userId: $userId)
+    }
+`;
+
+export const ConversationKickMutation = gql`
+    mutation ConversationKick($conversationId: ID!, $userId: ID!) {
+        alphaChatKickFromGroup(conversationId: $conversationId, userId: $userId){
+            chat{
+                id
+            }
+        }
+    }
+`;
+ 

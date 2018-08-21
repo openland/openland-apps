@@ -269,7 +269,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 maxHeight="calc(100% - 56px)"
             >
                 {tab === 'chat' && <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />}
-                {props.data.chat.__typename === 'ChannelConversation' && tab === 'members' && <ChannelMembersComponent key={props.data.chat.id + '_members'} variables={{channelId: props.data.chat.id}}/>}
+                {props.data.chat.__typename === 'ChannelConversation' && tab === 'members' && <ChannelMembersComponent key={props.data.chat.id + '_members'} variables={{channelId: props.data.chat.id}} {...{isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine}}/>}
             </XHorizontal>
         </XVertical>
     );

@@ -13,6 +13,13 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
 import { ChannelMembersQuery, UserShortFragment } from 'openland-api/Types';
 import { XLoader } from 'openland-x/XLoader';
+import { withChannelInvite } from '../../../../api/withChannelInvite';
+import { XMutation } from 'openland-x/XMutation';
+import { withConversationKick } from '../../../../api/withConversationKick';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XText } from 'openland-x/XText';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
@@ -84,7 +91,7 @@ const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
     } : {})
 ]);
 
-class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean }> {
+class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean, userId: string }> {
     render() {
         return (
             <XPopper
@@ -94,7 +101,7 @@ class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean }> {
                 style="dark"
                 padding={1}
             >
-                <DeclineButtonWrapper isHoveredWrapper={this.props.isHoveredWrapper}>
+                <DeclineButtonWrapper isHoveredWrapper={this.props.isHoveredWrapper} query={{ field: 'remove', value: this.props.userId }}>
                     <XIcon icon="close" />
                 </DeclineButtonWrapper>
             </XPopper>
@@ -102,8 +109,20 @@ class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean }> {
     }
 }
 
-class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment }, { isHovered: boolean }> {
-    constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment }) {
+const Accept = withChannelInvite((props) => {
+    return (
+        <XMutation mutation={props.invite}>
+            <XButton
+                size="r-default"
+                style={((props as any).isHovered) ? 'primary-sky-blue' : 'default'}
+                text="Accept"
+            />
+        </XMutation>
+    );
+}) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string }, isHovered: boolean }>;
+
+class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment, channelId: string }, { isHovered: boolean }> {
+    constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment, channelId: string }) {
         super(props);
         this.state = {
             isHovered: false,
@@ -132,7 +151,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                         <XOverflow
                             placement="bottom-end"
                             content={(
-                                <XMenuItem style="danger">Remove from channel</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: this.props.item.id }}>Remove from channel</XMenuItem>
                             )}
                         />
                     </MemberTools>
@@ -140,12 +159,8 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
 
                 {item.status === 'requested' && (
                     <MemberTools separator={6}>
-                        <XButton
-                            size="r-default"
-                            style={(this.state.isHovered) ? 'primary-sky-blue' : 'default'}
-                            text="Accept"
-                        />
-                        <DeclineButton isHoveredWrapper={this.state.isHovered} />
+                        <Accept variables={{ userId: item.id, channelId: this.props.channelId }} isHovered={this.state.isHovered} refetchVars={{ channelId: this.props.channelId }} />
+                        <DeclineButton isHoveredWrapper={this.state.isHovered} userId={item.id} />
                     </MemberTools>
                 )}
             </Member>
@@ -153,39 +168,77 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
     }
 }
 
-class ChannelMembersComponentInner extends React.Component<{ data: ChannelMembersQuery }> {
+const RemoveMemberModal = withConversationKick((props) => {
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
+    if (!member) {
+        return null;
+    }
+    console.warn(member);
+    return (
+        <XModalForm
+            submitProps={{
+                text: 'Remove',
+                style: 'danger',
+            }}
+            title="Remove member"
+            targetQuery="remove"
+            defaultAction={async (data) => {
+                await props.kick({
+                    variables: {
+                        userId: member.user.id,
+                        conversationId: (props as any).channelId
+                    }
+                });
+
+            }}
+        >
+            <XHorizontal>
+                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} />
+                <XVertical separator={4} justifyContent="center">
+                    <XText textStyle="h500">{member.user.name}</XText>
+                    {member.primaryOrganization && <XText opacity={0.5} >{member.primaryOrganization.name}</XText>}
+                </XVertical>
+            </XHorizontal>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string }>;
+
+class ChannelMembersComponentInner extends React.Component<{ data: ChannelMembersQuery, channelId: string, isMyOrganization: boolean }> {
     render() {
-        console.warn(this.props.data.members);
         if (!this.props.data || !this.props.data.members) {
             return <XLoader loading={true} />;
         }
         let requests = this.props.data.members.filter(m => m.status === 'requested');
         let members = this.props.data.members.filter(m => m.status === 'member');
 
-        // todo remove 
-        // requests = members.map(m => ({...m, status: 'requested'}));
+        // for tests
+        // requests = members.map(m => ({ ...m, status: 'requested' }));
 
         return (
             <MembersWrapper>
-                {requests.length > 0 && (
-                    <>
-                        <XSubHeader title="Requests" counter={requests.length} />
-                        <MembersView>
-                            {requests.map(m => (
-                                <MemberItem item={{ status: m.status as any, ...m.user }} />
-                            ))}
-                        </MembersView>
-                    </>
-                )}
+                <XWithRole role="admin" orgPermission={true}>
+                    {this.props.isMyOrganization && requests.length > 0 && (
+                        <>
+                            <XSubHeader title="Requests" counter={requests.length} />
+                            <MembersView>
+                                {requests.map(m => (
+                                    <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                                ))}
+                            </MembersView>
+                        </>
+                    )}
+                </XWithRole>
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
                     {members.map(m => (
-                        <MemberItem item={{ status: m.status as any, ...m.user }} />
+                        <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                     ))}
                 </MembersView>
+                <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
+
             </MembersWrapper>
         );
     }
 }
 
-export const ChannelMembersComponent = withChannelMembers((props) => <ChannelMembersComponentInner data={props.data} />);
+export const ChannelMembersComponent = withChannelMembers((props) => <ChannelMembersComponentInner data={props.data} channelId={(props.variables as any).channelId} isMyOrganization={(props as any).isMyOrganization} />);
