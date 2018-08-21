@@ -68,6 +68,9 @@ export const ChatInfoQuery = gql`
             }
             ... on ChannelConversation {
                 featured
+                organization{
+                    isMine
+                }
             }
         }
     }
@@ -313,3 +316,44 @@ export const ChannelSetFeaturedMutation = gql`
         alphaChannelSetFeatured(channelId: $channelId, featured: $featured)
     }
 `;
+
+export const UserChannelsQuery = gql`
+    query UserChannels{
+        channels: alphaChannelsList(first: 100){
+            conversations {
+                id
+                title
+            }
+        }
+    }
+`;
+
+export const ChannelMembersQuery = gql`
+    query ChannelMembers($channelId: ID!){
+        members: alphaChannelMembers(channelId: $channelId){
+           user{
+               ...UserShort
+           }
+           role
+           status
+        }
+    }
+    ${UserShort}
+`;
+
+export const ChannelInviteMutation = gql`
+    mutation ChannelInvite($channelId: ID!, $userId: ID!) {
+        alphaChannelInvite(channelId: $channelId, userId: $userId)
+    }
+`;
+
+export const ConversationKickMutation = gql`
+    mutation ConversationKick($conversationId: ID!, $userId: ID!) {
+        alphaChatKickFromGroup(conversationId: $conversationId, userId: $userId){
+            chat{
+                id
+            }
+        }
+    }
+`;
+ 

@@ -104,7 +104,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
     }
 
     keydownHandler = (e: any) => {
-        if (e.code === 'Backspace' && this.state.inputVal === '' && this.state.lastValue.length > 0) {
+        if (this.state.focus && e.code === 'Backspace' && this.state.inputVal === '' && this.state.lastValue.length > 0) {
             e.preventDefault();
             this.onDelete(this.state.lastValue[this.state.lastValue.length - 1].value);
         }
@@ -185,7 +185,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
             <Input
                 innerRef={this.handleRef}
                 value={inputValue}
-                placeholder={this.props.placeholder}
+                placeholder={(this.state.lastValue || []).length === 0 ? this.props.placeholder : ''}
                 autoFocus={this.props.autoFocus}
                 onChange={this.onInputChange}
                 onFocus={this.focusInHandler}
@@ -216,7 +216,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         key={v.value}
                         icon="close"
                         size={rounded ? 'default' : 'large'}
-                        text={v.label}
+                        text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
                         rounded={rounded}
                         onClick={() => this.onDelete(v.value)}
                     />

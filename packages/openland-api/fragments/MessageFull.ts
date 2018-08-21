@@ -19,6 +19,22 @@ export const MessageFull = gql`
     sender {
         ...UserShort
     }
+    urlAugmentation{
+        url
+        title
+        date
+        subtitle
+        description
+        photo{
+            uuid
+                crop{
+                    x
+                    y
+                    w
+                    h
+                }
+        }
+    }
     date
  }
 `;

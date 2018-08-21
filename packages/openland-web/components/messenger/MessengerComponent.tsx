@@ -16,6 +16,8 @@ import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
+import { XLink } from 'openland-x/XLink';
+import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -144,8 +146,38 @@ const ChannelSetFeatured = withChannelSetFeatured((props) => (
     <ChannelSetFeaturedComponent mutation={props.setFeatured} featured={(props as any).featured} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ featured: boolean, conversationId: string, refetchVars: { conversationId: string } }>;
 
+const ChannelTabs = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+});
+
+const ChannelTab = Glamorous(XLink)({
+    padding: '20px 5px 17px',
+    borderBottom: '3px solid transparent',
+    color: 'rgba(51, 69, 98, 0.5)',
+    fontSize: 14,
+    lineHeight: '16px',
+    fontWeight: 500,
+    margin: '0 0 -1px 19px',
+    display: 'block',
+    letterSpacing: -0.4,
+
+    '&:hover': {
+        color: '#334562'
+    },
+
+    '&.is-active': {
+        color: '#334562',
+        borderColor: '#1790ff'
+    }
+});
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     console.log(props);
+    let tab: 'chat' | 'members' = 'chat';
+    if (props.router.query.tab === 'members') {
+        tab = 'members';
+    }
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
             <ChatHeaderWrapper>
@@ -170,13 +202,20 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         ? 'Organization'
                                         : props.data.chat.__typename === 'GroupConversation'
                                             ? 'Group'
-                                            : 'Person'
+                                            : props.data.chat.__typename === 'ChannelConversation'
+                                                ? 'Channel' : 'Person'
                                     )}
                                 </SubTitle>
                             </XHorizontal>
                         </XHorizontal>
                     </NavChatLeftContentStyled>
-                    <XHorizontal>
+                    <XHorizontal alignItems="center">
+                        {props.data.chat.__typename === 'ChannelConversation' &&
+                            <ChannelTabs>
+                                <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
+                                <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
+                            </ChannelTabs>
+                        }
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
@@ -229,7 +268,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 height="calc(100% - 56px)"
                 maxHeight="calc(100% - 56px)"
             >
-                <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />
+                {tab === 'chat' && <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />}
+                {props.data.chat.__typename === 'ChannelConversation' && tab === 'members' && <ChannelMembersComponent key={props.data.chat.id + '_members'} variables={{channelId: props.data.chat.id}} {...{isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine}}/>}
             </XHorizontal>
         </XVertical>
     );

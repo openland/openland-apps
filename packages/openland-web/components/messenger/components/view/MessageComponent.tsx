@@ -13,6 +13,7 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { XText } from 'openland-x/XText';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -98,6 +99,9 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                     content.push(<MessageFileComponent key={'file'} file={this.props.message.file} fileName={name} fileSize={size} />);
                 }
             }
+            // if (this.props.message.urlAugmentation) {
+            //     content.push(<XText key="urlAugmentation">{JSON.stringify(this.props.message.urlAugmentation)}</XText>);
+            // }
             date = <XDate value={this.props.message.date} format="time" />;
         } else {
             if (this.props.message.message && this.props.message.message.length > 0) {

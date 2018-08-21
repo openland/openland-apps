@@ -194,6 +194,7 @@ export interface AlphaOrganizationListingInput {
   geographies?: Array< string > | null,
   landUse?: Array< string > | null,
   unitCapacity?: Array< string > | null,
+  channels?: Array< string > | null,
 };
 
 export interface MapPointInput {
@@ -606,6 +607,25 @@ export interface ChatListQuery {
             linkedin: string | null,
             twitter: string | null,
           },
+          urlAugmentation:  {
+            __typename: "UrlAugmentation",
+            url: string,
+            title: string | null,
+            date: string | null,
+            subtitle: string | null,
+            description: string | null,
+            photo:  {
+              __typename: "ImageRef",
+              uuid: string,
+              crop:  {
+                __typename: "ImageCrop",
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+              } | null,
+            } | null,
+          } | null,
           date: string,
         } | null,
       } | {
@@ -649,6 +669,25 @@ export interface ChatListQuery {
             linkedin: string | null,
             twitter: string | null,
           },
+          urlAugmentation:  {
+            __typename: "UrlAugmentation",
+            url: string,
+            title: string | null,
+            date: string | null,
+            subtitle: string | null,
+            description: string | null,
+            photo:  {
+              __typename: "ImageRef",
+              uuid: string,
+              crop:  {
+                __typename: "ImageCrop",
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+              } | null,
+            } | null,
+          } | null,
           date: string,
         } | null,
       } | {
@@ -692,6 +731,25 @@ export interface ChatListQuery {
             linkedin: string | null,
             twitter: string | null,
           },
+          urlAugmentation:  {
+            __typename: "UrlAugmentation",
+            url: string,
+            title: string | null,
+            date: string | null,
+            subtitle: string | null,
+            description: string | null,
+            photo:  {
+              __typename: "ImageRef",
+              uuid: string,
+              crop:  {
+                __typename: "ImageCrop",
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+              } | null,
+            } | null,
+          } | null,
           date: string,
         } | null,
       } | {
@@ -735,6 +793,25 @@ export interface ChatListQuery {
             linkedin: string | null,
             twitter: string | null,
           },
+          urlAugmentation:  {
+            __typename: "UrlAugmentation",
+            url: string,
+            title: string | null,
+            date: string | null,
+            subtitle: string | null,
+            description: string | null,
+            photo:  {
+              __typename: "ImageRef",
+              uuid: string,
+              crop:  {
+                __typename: "ImageCrop",
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+              } | null,
+            } | null,
+          } | null,
           date: string,
         } | null,
       } | {
@@ -778,6 +855,25 @@ export interface ChatListQuery {
             linkedin: string | null,
             twitter: string | null,
           },
+          urlAugmentation:  {
+            __typename: "UrlAugmentation",
+            url: string,
+            title: string | null,
+            date: string | null,
+            subtitle: string | null,
+            description: string | null,
+            photo:  {
+              __typename: "ImageRef",
+              uuid: string,
+              crop:  {
+                __typename: "ImageCrop",
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+              } | null,
+            } | null,
+          } | null,
           date: string,
         } | null,
       }
@@ -843,6 +939,25 @@ export interface ChatHistoryQuery {
         linkedin: string | null,
         twitter: string | null,
       },
+      urlAugmentation:  {
+        __typename: "UrlAugmentation",
+        url: string,
+        title: string | null,
+        date: string | null,
+        subtitle: string | null,
+        description: string | null,
+        photo:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
+      } | null,
       date: string,
     } >,
   },
@@ -860,6 +975,10 @@ export interface ChatInfoQuery {
       title: string,
       photos: Array< string >,
       featured: boolean,
+      organization:  {
+        __typename: "Organization",
+        isMine: boolean,
+      } | null,
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -1095,6 +1214,25 @@ export interface SendMessageMutation {
         linkedin: string | null,
         twitter: string | null,
       },
+      urlAugmentation:  {
+        __typename: "UrlAugmentation",
+        url: string,
+        title: string | null,
+        date: string | null,
+        subtitle: string | null,
+        description: string | null,
+        photo:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
+      } | null,
       date: string,
     },
   },
@@ -1422,6 +1560,25 @@ export interface ChatSearchTextQuery {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -1465,6 +1622,25 @@ export interface ChatSearchTextQuery {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -1508,6 +1684,25 @@ export interface ChatSearchTextQuery {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -1551,6 +1746,25 @@ export interface ChatSearchTextQuery {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -1594,6 +1808,25 @@ export interface ChatSearchTextQuery {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     }
@@ -1660,6 +1893,25 @@ export interface ChatSearchChannelQuery {
             linkedin: string | null,
             twitter: string | null,
           },
+          urlAugmentation:  {
+            __typename: "UrlAugmentation",
+            url: string,
+            title: string | null,
+            date: string | null,
+            subtitle: string | null,
+            description: string | null,
+            photo:  {
+              __typename: "ImageRef",
+              uuid: string,
+              crop:  {
+                __typename: "ImageCrop",
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+              } | null,
+            } | null,
+          } | null,
           date: string,
         } | null,
         membersCount: number,
@@ -1721,6 +1973,100 @@ export interface ChannelSetFeaturedMutationVariables {
 
 export interface ChannelSetFeaturedMutation {
   alphaChannelSetFeatured: string,
+};
+
+export interface UserChannelsQuery {
+  channels:  {
+    __typename: "ConversationConnection",
+    conversations:  Array<( {
+        __typename: "ChannelConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+        title: string,
+      }
+    ) >,
+  },
+};
+
+export interface ChannelMembersQueryVariables {
+  channelId: string,
+};
+
+export interface ChannelMembersQuery {
+  members:  Array< {
+    __typename: "ChannelMember",
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+      } | null,
+      role: string | null,
+      linkedin: string | null,
+      twitter: string | null,
+    },
+    role: string,
+    status: string,
+  } >,
+};
+
+export interface ChannelInviteMutationVariables {
+  channelId: string,
+  userId: string,
+};
+
+export interface ChannelInviteMutation {
+  alphaChannelInvite: string,
+};
+
+export interface ConversationKickMutationVariables {
+  conversationId: string,
+  userId: string,
+};
+
+export interface ConversationKickMutation {
+  alphaChatKickFromGroup:  {
+    __typename: "GroupChatUpdateResponse",
+    chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+      }
+    ),
+  },
 };
 
 export interface AllDealsQuery {
@@ -5927,6 +6273,25 @@ export type ConversationShortFragment = ( {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -5970,6 +6335,25 @@ export type ConversationShortFragment = ( {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -6013,6 +6397,25 @@ export type ConversationShortFragment = ( {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -6056,6 +6459,25 @@ export type ConversationShortFragment = ( {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     } | {
@@ -6099,6 +6521,25 @@ export type ConversationShortFragment = ( {
           linkedin: string | null,
           twitter: string | null,
         },
+        urlAugmentation:  {
+          __typename: "UrlAugmentation",
+          url: string,
+          title: string | null,
+          date: string | null,
+          subtitle: string | null,
+          description: string | null,
+          photo:  {
+            __typename: "ImageRef",
+            uuid: string,
+            crop:  {
+              __typename: "ImageCrop",
+              x: number,
+              y: number,
+              w: number,
+              h: number,
+            } | null,
+          } | null,
+        } | null,
         date: string,
       } | null,
     }
@@ -6144,6 +6585,25 @@ export interface MessageFullFragment {
     linkedin: string | null,
     twitter: string | null,
   },
+  urlAugmentation:  {
+    __typename: "UrlAugmentation",
+    url: string,
+    title: string | null,
+    date: string | null,
+    subtitle: string | null,
+    description: string | null,
+    photo:  {
+      __typename: "ImageRef",
+      uuid: string,
+      crop:  {
+        __typename: "ImageCrop",
+        x: number,
+        y: number,
+        w: number,
+        h: number,
+      } | null,
+    } | null,
+  } | null,
   date: string,
 };
 

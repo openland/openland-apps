@@ -1,19 +1,22 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { getConfig } from '../../../../config';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { XLocationPickerModal } from 'openland-x-map/XLocationPickerModal';
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XSelect } from 'openland-x/XSelect';
-import UploadCare from 'uploadcare-widget';
 import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 import PicIcon from './icons/ic-img.svg';
-import LocationIcon from './icons/ic-location.svg';
+import { withUserChannels } from '../../../../api/withUserChannels';
+import { withCreateListing } from '../../../../api/withCreateListing';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { XStoreState } from 'openland-y-store/XStoreState';
+import { XText } from 'openland-x/XText';
 
 interface ImgButtonStylesProps {
     marginRight?: number;
@@ -60,7 +63,23 @@ const FooterWrap = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.6)'
 });
 
-class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: string }> {
+const Channels = withUserChannels((props) => {
+    return (
+        <XSelect
+            field="input.channels"
+            options={(props.data && props.data.channels && props.data.channels.conversations || []).map(c => ({ label: c.title, value: c.id }))}
+            render={
+                <XSelectCustomInputRender
+                    popper={true}
+                    placeholder="Enter a channel"
+                    rounded={true}
+                />
+            }
+        />
+    );
+});
+
+class PostChannelModalRaw extends React.Component<Partial<XModalFormProps>, { val?: string, addPhoto?: boolean }> {
     constructor(props: XModalFormProps) {
         super(props);
         this.state = {
@@ -69,11 +88,8 @@ class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: strin
     }
 
     private handleAttach = () => {
-        let dialog = UploadCare.openDialog(null, {
-            publicKey: getConfig().uploadcareKey!!
-        });
-        dialog.done((r) => {
-            console.log(UploadCare);
+        this.setState({
+            addPhoto: !this.state.addPhoto
         });
     }
 
@@ -81,15 +97,7 @@ class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: strin
         let footer = (
             <FooterWrap>
                 <XHorizontal flexGrow={1} separator={15}>
-                    <XLocationPickerModal
-                        target={(
-                            <ImgButton
-                                title="Locations"
-                                icon={<LocationIcon />}
-                                marginRight={6}
-                            />
-                        )}
-                    />
+
                     <ImgButton
                         onClick={this.handleAttach}
                         title="Photo"
@@ -99,7 +107,7 @@ class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: strin
                 </XHorizontal>
                 <XFormSubmit
                     key="invites"
-                    succesText="Invitations sent!"
+                    succesText="Listing posted!"
                     style="primary-sky-blue"
                     size="r-default"
                     text="Create listing"
@@ -110,50 +118,65 @@ class PostChannelModalRaw extends React.Component<XModalFormProps, { val?: strin
         return (
             <XModalForm
                 {...this.props}
-                defaultAction={this.props.defaultAction}
+                defaultAction={this.props.defaultAction!!}
                 title="Post listing"
                 useTopCloser={true}
                 scrollableContent={true}
                 customFooter={footer}
                 defaultData={{
-                    inviteRequests: [{ email: '' }, { email: '' }]
+                    input: {
+                        title: '',
+                    },
                 }}
             >
                 <XVertical separator={16}>
-                    <XInput size="r-default" color="primary-sky-blue" placeholder="Listing title" />
-                    <XTextArea placeholder="Description" resize={false} size="small" />
-                    {/* <XSelect
-                        field="input.locations"
-                        render={<XSelectCustomInputRender flexGrow={1} width="100%" flexShrink={0} placeholder="Enter a channel " />}
-                        onInputChange={v => { this.setState({ val: v }); return v; }}
-                        creatable={true}
-                    /> */}
-                    <XSelect
-                        options={[
-                            { label: 'option1', value: 'option1' },
-                            { label: 'option2', value: 'option2' },
-                            { label: 'option3', value: 'option3' },
-                            { label: 'option4', value: 'option4' },
-                            { label: 'option5', value: 'option5' },
-                            { label: 'option6', value: 'option6' },
-                            { label: 'option7', value: 'option7' },
-                            { label: 'option8', value: 'option8' },
-                            { label: 'option9', value: 'option9' },
-                        ]}
-                        render={
-                            <XSelectCustomInputRender
-                                popper={true}
-                                placeholder="Enter a channel"
-                                rounded={true}
-                            />
-                        }
+
+                    <XInput
+                        size="r-default"
+                        color="primary-sky-blue"
+                        placeholder="Listing title"
+                        field="input.name"
                     />
+                    <XTextArea
+                        placeholder="Description"
+                        resize={false}
+                        size="small"
+                        valueStoreKey="fields.input.summary"
+                    />
+                    {this.state.addPhoto && <XAvatarUpload field="input.photo" cropParams="1:1, free" placeholder={{ add: TextOrganizationProfile.listingCreateDoPhotoPlaceholderAdd, change: TextOrganizationProfile.listingCreateDoPhotoPlaceholderChange }} />}
+
+                    {/* <XLocationPickerModal field="input.location" placeholder={TextOrganizationProfile.listingCreateDoLocationPlaceholder} /> */}
+
+                    <Channels />
+
                 </XVertical>
-            </XModalForm>
+            </XModalForm >
         );
     }
 }
 
-export const PostChannelModal = (props: XModalFormProps) => (
-    <PostChannelModalRaw {...props} />
-);
+const MutationProvider = withCreateListing((props) => (
+    <PostChannelModalRaw
+        {...props}
+        defaultAction={async (data) => {
+            let input = data.input || {};
+            await props.createListing({
+                variables: {
+                    type: 'common',
+                    input: {
+                        name: input.name || '',
+                        summary: input.summary,
+                        location: input.location ? { lat: input.location.result.center[1], lon: input.location.result.center[0] } : null,
+                        locationTitle: input.location ? (input.location.result.place_name || input.location.result.text) : '',
+                        photo: input.photo,
+                        channels: input.channels,
+                    }
+                }
+            });
+        }}
+    />
+)) as React.ComponentType<Partial<XModalFormProps>>;
+
+export const PostChannelModal = withCreateListing((props: Partial<XModalFormProps>) => (
+    <MutationProvider {...props} />
+)) as React.ComponentType<Partial<XModalFormProps>>;

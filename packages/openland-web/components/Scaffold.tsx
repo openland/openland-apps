@@ -49,6 +49,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { InitTexts } from '../pages/init/_text';
 import { withCreateChannel } from '../api/withCreateChannel';
+import { PostChannelModal } from '../pages/main/channel/components/postChannelModal';
 
 //
 // Root
@@ -704,8 +705,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                             </MenuItemWithIcon>
                         </XPopper>
                     </XWithRole>
-                    <MenuItem path={'/o/' + props.organization!!.id + '?addListing=DO'}>{TextAppBar.items.addDevelopmentOpportunity}</MenuItem>
-                    <MenuItem path={'/o/' + props.organization!!.id + '?addListing=AR'}>{TextAppBar.items.addAquisitionRequest}</MenuItem>
+                    <MenuItem query={{ field: 'addListing', value: 'true' }}>{TextAppBar.items.addListing}</MenuItem>
                     <MenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</MenuItem>
                     <MenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</MenuItem>
                 </>
@@ -1216,6 +1216,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                 <CreateOrganization />
                 <CreateChannel />
+                <PostChannelModal targetQuery="addListing"/>
             </RootContainer>
         );
     }
