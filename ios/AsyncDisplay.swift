@@ -346,7 +346,7 @@ class AsyncDisplayNodeManager: RCTViewManager {
   override func view() -> UIView! {
     return AsyncDisplayNode()
   }
-  static func requiresMainQueueSetup() -> Bool {
+  static override func requiresMainQueueSetup() -> Bool {
     return true
   }
 }

@@ -63,7 +63,7 @@ class AggressiveImageManager: RCTViewManager {
   override func view() -> UIView! {
     return AggressiveImage()
   }
-  static func requiresMainQueueSetup() -> Bool {
+  static override func requiresMainQueueSetup() -> Bool {
     return true
   }
 }

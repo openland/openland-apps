@@ -79,7 +79,7 @@ class AsyncDisplayListManager: RCTViewManager {
   override func view() -> UIView! {
     return AsyncDisplayList()
   }
-  static func requiresMainQueueSetup() -> Bool {
+  static override func requiresMainQueueSetup() -> Bool {
     return true
   }
 }
