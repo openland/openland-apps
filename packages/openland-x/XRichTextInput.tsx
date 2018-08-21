@@ -8,6 +8,34 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 
+const EmojiWrapper = Glamorous.div({
+    position: 'absolute',
+    top: 'calc(50% - 9px)',
+    right: 12,
+    '& > div > button': {
+        width: 18,
+        height: 18,
+        opacity: 1,
+        borderRadius: 50,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        lineHeight: '10px',
+        fontSize: 26,
+        paddingBottom: 2,
+        '&:hover': {
+            backgroundColor: 'rgba(23, 144, 255, 0.05)'
+        },
+        '&.draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu': {
+            backgroundColor: 'rgba(23, 144, 255, 0.05)'
+        }
+    },
+    '& > div > div': {
+        bottom: 50,
+        right: 0
+    }
+});
+
 const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element: HTMLElement) => {
     if (!element) {
         return null;
@@ -66,7 +94,7 @@ const emojiPlugin = createEmojiPlugin({
         };
     }
 });
-const { EmojiSuggestions } = emojiPlugin;
+const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
 const Container = Glamorous.div<XFlexStyles>([{
     position: 'relative'
@@ -133,7 +161,9 @@ export class XRichTextInput extends React.Component<{ onChange?: (value: string)
                     />
 
                     <EmojiSuggestions />
-                    {/* <EmojiSelect /> */}
+                    <EmojiWrapper className="emoji-button">
+                        <EmojiSelect />
+                    </EmojiWrapper>
                 </Container>
             );
         } else {

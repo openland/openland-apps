@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../../components/withApp';
 import { ZHeader } from '../../../components/ZHeader';
-import { View, WebView, Text } from 'react-native';
+import { View, WebView, Text, WebViewUriSource } from 'react-native';
 import { ZQuery } from '../../../components/ZQuery';
 import { DocumentFetchPreviewLinkQuery } from 'openland-api/DocumentFetchPreviewLinkQuery';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
@@ -62,7 +62,7 @@ class FilePreviewComponent extends React.PureComponent<NavigationInjectedProps> 
                                         <WebView
                                             contentInset={{ top: area.top }}
                                             style={{ width: '100%', height: '100%' }}
-                                            source={{ uri: resp.data.previewLink }}
+                                            source={{ uri: resp.data.previewLink } as WebViewUriSource}
                                         />
                                     )}
                                 </ZSafeAreaContext.Consumer>

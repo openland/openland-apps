@@ -21,12 +21,12 @@ const PickerEntries = Glamorous(XHorizontal)({
     margin: 0
 });
 
-class SortControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void }> {
-    options = [
-        { label: 'Sort by', values: [{ label: 'Last updated', value: 'updatedAt' }, { label: 'Join date', value: 'createdAt' }] },
-    ];
+const options = { label: 'Sort by', values: [{ label: 'Last updated', value: 'updatedAt' }, { label: 'Join date', value: 'createdAt' }] };
+
+class SortControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void, options: { label: string, values: { label: string, value: string }[] } }> {
+
     render() {
-        return (<MultiplePicker options={this.options} onPick={this.props.onPick} query={this.props.query} />);
+        return (<MultiplePicker options={[this.props.options]} onPick={this.props.onPick} query={this.props.query} />);
     }
 }
 
@@ -40,7 +40,7 @@ const CheckboxWrap = Glamorous.div({
     borderTop: '1px solid #f1f2f5',
 });
 
-export class SortPicker extends React.Component<{ sort: { orderBy: string, featured: boolean }, onPick: (sort: { orderBy: string, featured: boolean }) => void }, { popper: boolean, featured: boolean }> {
+export class SortPicker extends React.Component<{ sort: { orderBy: string, featured: boolean }, onPick: (sort: { orderBy: string, featured: boolean }) => void, options?: { label: string, values: { label: string, value: string }[] } }, { popper: boolean, featured: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { popper: false, featured: props.sort.featured };
@@ -72,7 +72,7 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
                 <PickerWrapper>
 
                     <PickerEntries separator="none" width="100%">
-                        <SortControlledPicker onPick={this.onPick} />
+                        <SortControlledPicker onPick={this.onPick} options={this.props.options || options} />
                     </PickerEntries>
                 </PickerWrapper>
                 <CheckboxWrap>
@@ -80,6 +80,7 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
                 </CheckboxWrap>
             </>
         );
+        let selected = (this.props.options || options).values.find(v => v.value === this.props.sort.orderBy);
         return (
             <XPopper
                 placement="bottom-end"
@@ -88,7 +89,7 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={this.props.sort.orderBy === 'createdAt' ? 'Join date' : 'Last updated'} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={selected ? selected.label : '?'} style="flat" iconRight="expand_more" onClick={this.switch} />
             </XPopper>
         );
     }

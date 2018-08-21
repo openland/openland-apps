@@ -63,7 +63,7 @@ const TextInputWrapper = Glamorous.div({
             maxHeight: 125,
             paddingTop: 9,
             paddingLeft: 16,
-            paddingRight: 16,
+            paddingRight: 40,
         }
     }
 });

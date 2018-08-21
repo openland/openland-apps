@@ -66,6 +66,9 @@ export const ChatInfoQuery = gql`
             ... on GroupConversation {
                 membersCount
             }
+            ... on ChannelConversation {
+                featured
+            }
         }
     }
     ${UserShort}
@@ -261,5 +264,52 @@ export const ChatSearchTextQuery = gql`
 export const DocumentFetchPreviewLinkQuery = gql`
     query DocumentFetchPreviewLink($file: String!) {
         previewLink: alphaFilePreviewLink(uuid: $file)
+    }
+`;
+
+export const ChatSearchChannelQuery = gql`
+    query ChatSearchChannel($query: String, $sort: String, $page: Int) {
+        channels: alphaChannels(query: $query, sort: $sort, page: $page, first: 10) {
+            edges {
+                node {
+                    ...ConversationShort
+                    membersCount
+                    featured
+                    description
+                    myStatus
+                    organization{
+                        ...OrganizationShort
+                    }
+                    isRoot
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
+    ${OrganizationShort}
+`;
+
+export const CreateChannelMutation = gql`
+    mutation CreateChannel($title: String!, $message: String!, $description: String) {
+        channel: alphaChannelCreate(title: $title, message: $message, description: $description){
+            id
+        }
+    }
+`;
+
+export const ChannelSetFeaturedMutation = gql`
+    mutation ChannelSetFeatured($channelId: ID!, $featured: Boolean!) {
+        alphaChannelSetFeatured(channelId: $channelId, featured: $featured)
     }
 `;
