@@ -39,7 +39,11 @@ class AggressiveImage: RCTView {
       }
     }
     if _baseImage != nil {
-      imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+      if UIEdgeInsetsEqualToEdgeInsets(self._insets, UIEdgeInsets.zero) {
+        imageView.image = _baseImage
+      } else {
+        imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+      }
     } else {
       imageView.image = nil
     }
@@ -48,7 +52,11 @@ class AggressiveImage: RCTView {
   public func setCapInsets(_ insets: UIEdgeInsets) {
     _insets = insets
     if _baseImage != nil {
-      imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+      if UIEdgeInsetsEqualToEdgeInsets(self._insets, UIEdgeInsets.zero) {
+        imageView.image = _baseImage
+      } else {
+        imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+      }
     }
   }
   

@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Dimensions, Platform, FlatList } from 'react-native';
+import { View, Image, Text, Dimensions, Platform, FlatList, PlatformIOS } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { MessageFullFragment } from 'openland-api/Types';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import FastImage from 'react-native-fast-image';
+import { AggressiveImageIOS } from 'openland-xp/platform/AggressiveImageIOS';
+import { ASDisplayNode } from '../../../components/asyncdisplay/ASDisplayNode';
+import { ASImage, ASView } from '../../../components/asyncdisplay/Views';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -62,12 +65,30 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
-                <FastImage
-                    source={require('assets/img-chat-3.jpg')}
-                    style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                    resizeMode="cover"
-                />
-                <ConversationMessagesView
+                {Platform.OS === 'ios' && (
+                    <ASDisplayNode
+                        style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                    >
+                        <ASView
+                            width={Dimensions.get('window').width}
+                            height={Dimensions.get('window').height}
+                        >
+                            <ASImage
+                                source={require('assets/img-chat-3.jpg')}
+                                width={Dimensions.get('window').width}
+                                height={Dimensions.get('window').height}
+                            />
+                        </ASView>
+                    </ASDisplayNode>
+                )}
+                {Platform.OS !== 'ios' && (
+                    <FastImage
+                        source={require('assets/img-chat-3.jpg')}
+                        style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                        resizeMode="cover"
+                    />)
+                }
+                < ConversationMessagesView
                     ref={this.listRef}
                     messages={this.state.conversation.messagesPrepprocessed}
                     loaded={this.state.conversation.historyFullyLoaded}

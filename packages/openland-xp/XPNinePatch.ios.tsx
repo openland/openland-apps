@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ViewProps, View, StyleSheet, ViewStyle, requireNativeComponent, Image } from 'react-native';
-
-const AggressiveImage = requireNativeComponent('AggressiveImage') as any;
+import { AggressiveImageIOS } from './platform/AggressiveImageIOS';
 
 const styles = StyleSheet.create({
     image: {
@@ -17,7 +16,7 @@ export class XPNinePatch extends React.PureComponent<ViewProps & { source: any, 
         if (resolved.uri.startsWith('file://')) {
             return (
                 <View {...other}>
-                    <AggressiveImage
+                    <AggressiveImageIOS
                         capInsets={capInsets}
                         source={resolved.uri}
                         style={styles.image}
