@@ -1999,6 +1999,35 @@ export interface UserChannelsQuery {
   },
 };
 
+export interface ChannelMembersQueryVariables {
+  channelId: string,
+};
+
+export interface ChannelMembersQuery {
+  members:  Array< {
+    __typename: "ChannelMember",
+    user:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+      } | null,
+      role: string | null,
+      linkedin: string | null,
+      twitter: string | null,
+    },
+    role: string,
+    status: string,
+  } >,
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",

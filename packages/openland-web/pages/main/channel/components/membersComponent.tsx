@@ -10,53 +10,17 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XPopper } from 'openland-x/XPopper';
 import { XIcon } from 'openland-x/XIcon';
 import { XLink, XLinkProps } from 'openland-x/XLink';
-
-interface MemberType {
-    name: string;
-    photo: string | null;
-    members: string[];
-    isMine: boolean;
-    isAccepted: boolean;
-}
-
-// START: Example data
-
-let RequestsArray: MemberType[] = [{
-    name: 'Subway',
-    photo: '',
-    members: ['John Doe', 'John Doe', 'John Doe', 'John Doe'],
-    isMine: false,
-    isAccepted: false
-}, {
-    name: 'Subway',
-    photo: '',
-    members: ['John Doe'],
-    isMine: false,
-    isAccepted: false
-}];
-
-const MembersArray: MemberType[] = [{
-    name: 'Subway',
-    photo: '',
-    members: ['John Doe', 'John Doe', 'John Doe', 'John Doe'],
-    isMine: true,
-    isAccepted: true
-}, {
-    name: 'Subway',
-    photo: '',
-    members: ['John Doe', 'John Doe', 'John Doe', 'John Doe'],
-    isMine: false,
-    isAccepted: true
-}];
-
-// END: Example data
+import { withChannelMembers } from '../../../../api/withChannelMembers';
+import { ChannelMembersQuery, UserShortFragment } from 'openland-api/Types';
+import { XLoader } from 'openland-x/XLoader';
 
 const MembersWrapper = Glamorous(XScrollView)({
-    height: 'calc(100vh - 56px)'
+    height: '100%',
+    width: '100%'
 });
 
 const MembersView = Glamorous.div({
-    
+
 });
 
 const Member = Glamorous.div({
@@ -94,16 +58,12 @@ const MemberStaff = Glamorous.div({
     fontWeight: 500,
     letterSpacing: -0.3,
     color: '#99a2b0'
-    
+
 });
 
 const MemberTools = Glamorous(XHorizontal)({
     paddingTop: 4,
 });
-
-interface MemberItemProps {
-    item: MemberType;
-}
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
     {
@@ -142,8 +102,8 @@ class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean }> {
     }
 }
 
-class MemberItem extends React.Component<MemberItemProps, { isHovered: boolean }> {
-    constructor(props: MemberItemProps) {
+class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment }, { isHovered: boolean }> {
+    constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment }) {
         super(props);
         this.state = {
             isHovered: false,
@@ -159,17 +119,15 @@ class MemberItem extends React.Component<MemberItemProps, { isHovered: boolean }
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <MemberAvatar
-                    cloudImageUuid={item.photo!!}
-                    style="organization"
+                    cloudImageUuid={item.picture || undefined}
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
-                    <MemberStaff>{item.members[0] + ((item.members.length > 1) ? ' +' + (item.members.length - 1) + ' more' : '')}</MemberStaff>
+                    <MemberStaff>{item.primaryOrganization && item.primaryOrganization.name}</MemberStaff>
                 </MemberInfo>
 
-                {item.isAccepted && (
+                {item.status === 'member' && (
                     <MemberTools separator={5}>
-                        {item.isMine && (<XButton size="r-default" style="ghost" text="Your organization" />)}
 
                         <XOverflow
                             placement="bottom-end"
@@ -180,12 +138,12 @@ class MemberItem extends React.Component<MemberItemProps, { isHovered: boolean }
                     </MemberTools>
                 )}
 
-                {!item.isAccepted && (
+                {item.status === 'requested' && (
                     <MemberTools separator={6}>
                         <XButton
                             size="r-default"
                             style={(this.state.isHovered) ? 'primary-sky-blue' : 'default'}
-                            text="Accept"    
+                            text="Accept"
                         />
                         <DeclineButton isHoveredWrapper={this.state.isHovered} />
                     </MemberTools>
@@ -195,27 +153,39 @@ class MemberItem extends React.Component<MemberItemProps, { isHovered: boolean }
     }
 }
 
-export class MembersComponent extends React.Component {
+class ChannelMembersComponentInner extends React.Component<{ data: ChannelMembersQuery }> {
     render() {
+        console.warn(this.props.data.members);
+        if (!this.props.data || !this.props.data.members) {
+            return <XLoader loading={true} />;
+        }
+        let requests = this.props.data.members.filter(m => m.status === 'requested');
+        let members = this.props.data.members.filter(m => m.status === 'member');
+
+        // todo remove 
+        // requests = members.map(m => ({...m, status: 'requested'}));
+
         return (
             <MembersWrapper>
-                {RequestsArray.length > 0 && (
+                {requests.length > 0 && (
                     <>
-                        <XSubHeader title="Requests" counter={RequestsArray.length} />
+                        <XSubHeader title="Requests" counter={requests.length} />
                         <MembersView>
-                            {RequestsArray.map((member: MemberType) => (
-                                <MemberItem item={member} />
+                            {requests.map(m => (
+                                <MemberItem item={{ status: m.status as any, ...m.user }} />
                             ))}
                         </MembersView>
                     </>
                 )}
-                <XSubHeader title="Members" counter={MembersArray.length} />
+                <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
-                    {MembersArray.map((member: MemberType) => (
-                        <MemberItem item={member} />
+                    {members.map(m => (
+                        <MemberItem item={{ status: m.status as any, ...m.user }} />
                     ))}
                 </MembersView>
             </MembersWrapper>
         );
     }
 }
+
+export const ChannelMembersComponent = withChannelMembers((props) => <ChannelMembersComponentInner data={props.data} />);

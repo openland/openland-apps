@@ -324,3 +324,16 @@ export const UserChannelsQuery = gql`
         }
     }
 `;
+
+export const ChannelMembersQuery = gql`
+    query ChannelMembers($channelId: ID!){
+        members: alphaChannelMembers(channelId: $channelId){
+           user{
+               ...UserShort
+           }
+           role
+           status
+        }
+    }
+    ${UserShort}
+`;
