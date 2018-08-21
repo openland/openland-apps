@@ -60,6 +60,19 @@ class AsyncTextSpec: AsyncViewSpec {
   var numberOfLines: Int?
 }
 
+class AsyncScrollViewSpec: AsyncViewSpec {
+  var style: AsyncStyleSpec = AsyncStyleSpec()
+  var key: String = ""
+  var children: AsyncViewSpec!
+}
+
+class AsyncListViewSpec: AsyncViewSpec {
+  var style: AsyncStyleSpec = AsyncStyleSpec()
+  var key: String = ""
+  var children: [AsyncViewSpec]!
+}
+
+
 class AsyncImageSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
@@ -215,6 +228,18 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.style = resolveStyle(src)
     res.key = src["key"].stringValue
     res.url = src["props"]["source"].stringValue
+    return res
+  } else if type == "scroll" {
+    let res = AsyncScrollViewSpec()
+    res.style = resolveStyle(src)
+    res.key = src["key"].stringValue
+    res.children = resolveSingleChildren(src)
+    return res
+  } else if type == "list" {
+    let res = AsyncListViewSpec()
+    res.style = resolveStyle(src)
+    res.key = src["key"].stringValue
+    res.children = resolveChildren(src)
     return res
   }
   fatalError("Unknown view type:" + type)

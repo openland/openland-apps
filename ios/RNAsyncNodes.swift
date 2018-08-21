@@ -19,6 +19,10 @@ func resolveNode(spec: AsyncViewSpec) -> ASLayoutElement {
     return createTextNode(spec: textSpec)
   } else if let imageSpec = spec as? AsyncImageSpec {
     return createImageNode(spec: imageSpec)
+  } else if let scrollSpec = spec as? AsyncScrollViewSpec {
+    return createScrollNode(spec: scrollSpec)
+  } else if let listSpec = spec as? AsyncListViewSpec {
+    return createListNode(spec: listSpec)
   }
   
   fatalError("Unknown view spec")
@@ -83,6 +87,21 @@ func createImageNode(spec: AsyncImageSpec) -> ASLayoutElement {
   let res = ASNetworkImageNode()
   res.shouldCacheImage = false; // It doesn't work otherwise
   res.url = URL(string: spec.url)
+  return resolveStyle(spec.style, res)
+}
+
+func createScrollNode(spec: AsyncScrollViewSpec) -> ASLayoutElement {
+  let res = ASScrollNode()
+  res.automaticallyManagesContentSize = true
+  res.automaticallyManagesSubnodes = true
+  res.layoutSpecBlock = { node, constrainedSize in
+    return resolveNode(spec: spec.children) as! ASLayoutSpec
+  }
+  return resolveStyle(spec.style, res)
+}
+
+func createListNode(spec: AsyncListViewSpec) -> ASLayoutElement {
+  let res = RNASyncList(data: spec.children)
   return resolveStyle(spec.style, res)
 }
 

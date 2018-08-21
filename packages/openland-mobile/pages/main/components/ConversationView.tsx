@@ -8,7 +8,6 @@ import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import FastImage from 'react-native-fast-image';
-import { ASDisplayNode } from '../../../components/asyncdisplay/ASDisplayNode';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';

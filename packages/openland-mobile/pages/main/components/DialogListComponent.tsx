@@ -224,5 +224,16 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 initialScrollIndex={0}
             />
         );
+        // return (
+        //     <ASView style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
+        //         <ASFlex flexDirection="column" alignItems="stretch">
+        //             <ASListView flexGrow={1}>
+        //                 {this.props.dialogs.map((v) => (
+        //                     <DialogItemViewAsync key={v.id} item={v} onPress={this.handleItemClick} engine={this.props.engine} />
+        //                 ))}
+        //             </ASListView>
+        //         </ASFlex>
+        //     </ASView>
+        // );
     }
 }
