@@ -80,7 +80,6 @@ const Channels = withUserChannels((props) => {
 });
 
 class PostChannelModalRaw extends React.Component<Partial<XModalFormProps>, { val?: string, addPhoto?: boolean }> {
-    store?: XStoreState;
     constructor(props: XModalFormProps) {
         super(props);
         this.state = {
@@ -151,15 +150,6 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps>, { va
                     <Channels />
 
                 </XVertical>
-                <XStoreContext.Consumer>
-                    {(store) => {
-                        this.store = store;
-                        if (store && store.readValue('fields.input.photo')) {
-                            return <XText>{store.readValue('fields.input.photo')}</XText>;
-                        }
-                        return null;
-                    }}
-                </XStoreContext.Consumer>
             </XModalForm >
         );
     }
