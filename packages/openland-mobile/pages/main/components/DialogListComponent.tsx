@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ListRenderItemInfo, FlatList, View } from 'react-native';
+import { ListRenderItemInfo, FlatList, View, Platform } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
@@ -189,10 +189,11 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
             this.props.onPress(id);
         }
     }
-
     renderItem = (item: ListRenderItemInfo<ConversationShortFragment>) => {
-        // return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
-        return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
+        if (Platform.OS === 'ios') {
+            return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
+        }
+        return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
     }
 
     keyExtractor = (item: ConversationShortFragment) => {

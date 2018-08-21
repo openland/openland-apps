@@ -178,7 +178,7 @@ func resolveTextLayout(src: JSON) -> ASTextNode {
     attributes[NSForegroundColorAttributeName] = resolveColor(rgbValue:src["props"]["color"].uInt64Value)
   }
   if (src["props"]["lineHeight"].float != nil) {
-    var style = NSMutableParagraphStyle();
+    let style = NSMutableParagraphStyle();
     style.minimumLineHeight = CGFloat(src["props"]["lineHeight"].floatValue)
     style.maximumLineHeight = CGFloat(src["props"]["lineHeight"].floatValue)
     attributes[NSParagraphStyleAttributeName] = style
@@ -189,6 +189,42 @@ func resolveTextLayout(src: JSON) -> ASTextNode {
   res.attributedText = resolveTextChildren(src: src["children"].arrayValue, baseAttributes: attributes)
   resolveStyle(src: src["props"], style: res.style)
   return res;
+}
+
+func buildChildren(src: JSON) -> ASLayoutElement {
+  if (src["element"] == "view") {
+    return  resolveViewLayout(src: src, children: src["children"].arrayValue.map(buildChildren))
+  } else if (src["element"] == "text") {
+    return resolveTextLayout(src: src)
+  } else if (src["element"] == "image") {
+    return resolveWebImageLayout(src: src);
+  } else if (src["element"] == "linear_gradient") {
+    return resolveGradientLayout(src: src, children: src["children"].arrayValue.map(buildChildren));
+  } else if (src["element"] == "insets") {
+    return resolveInsetsLayout(src: src, children: src["children"].arrayValue.map(buildChildren))
+  } else {
+    // Fallback?
+    return ASStackLayoutSpec(
+      direction: ASStackLayoutDirection.horizontal,
+      spacing: 0.0,
+      justifyContent: ASStackLayoutJustifyContent.start,
+      alignItems: ASStackLayoutAlignItems.start,
+      children: [])
+  }
+}
+
+func buildLayoutSpec(src: JSON) -> ASLayoutSpec {
+  if (src["element"] == "view") {
+    return resolveViewLayout(src: src, children: src["children"].arrayValue.map(buildChildren))
+  } else {
+    // Fallback?
+    return ASStackLayoutSpec(
+      direction: ASStackLayoutDirection.horizontal,
+      spacing: 0.0,
+      justifyContent: ASStackLayoutJustifyContent.start,
+      alignItems: ASStackLayoutAlignItems.start,
+      children: [])
+  }
 }
 
 class GradientNode: ASDisplayNode {
@@ -246,7 +282,7 @@ class GradientNode: ASDisplayNode {
   }
 }
 
-class SampleNode: ASDisplayNode {
+class ConfiguredNode: ASDisplayNode {
   
   var config: String? = nil
   var pendingFrame: CGRect? = nil
@@ -274,42 +310,6 @@ class SampleNode: ASDisplayNode {
     }
   }
   
-  func buildChildren(src: JSON) -> ASLayoutElement {
-    if (src["element"] == "view") {
-      return  resolveViewLayout(src: src, children: src["children"].arrayValue.map(buildChildren))
-    } else if (src["element"] == "text") {
-      return resolveTextLayout(src: src)
-    } else if (src["element"] == "image") {
-      return resolveWebImageLayout(src: src);
-    } else if (src["element"] == "linear_gradient") {
-      return resolveGradientLayout(src: src, children: src["children"].arrayValue.map(buildChildren));
-    } else if (src["element"] == "insets") {
-      return resolveInsetsLayout(src: src, children: src["children"].arrayValue.map(buildChildren))
-    } else {
-      // Fallback?
-      return ASStackLayoutSpec(
-        direction: ASStackLayoutDirection.horizontal,
-        spacing: 0.0,
-        justifyContent: ASStackLayoutJustifyContent.start,
-        alignItems: ASStackLayoutAlignItems.start,
-        children: [])
-    }
-  }
-  
-  func buildLayoutSpec(src: JSON) -> ASLayoutSpec {
-    if (src["element"] == "view") {
-      return resolveViewLayout(src: src, children: src["children"].arrayValue.map(buildChildren))
-    } else {
-      // Fallback?
-      return ASStackLayoutSpec(
-        direction: ASStackLayoutDirection.horizontal,
-        spacing: 0.0,
-        justifyContent: ASStackLayoutJustifyContent.start,
-        alignItems: ASStackLayoutAlignItems.start,
-        children: [])
-    }
-  }
-  
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     let c = JSON(parseJSON: self.config!)
     let res = buildLayoutSpec(src: c);
@@ -320,11 +320,8 @@ class SampleNode: ASDisplayNode {
 @objc(AsyncDisplayNode)
 class AsyncDisplayNode: RCTView {
   
-  var node: SampleNode
+  var node: ConfiguredNode = ConfiguredNode()
   override init(frame: CGRect) {
-    node = SampleNode()
-    node.setNeedsDisplay()
-    node.setNeedsLayout()
     super.init(frame: frame);
     self.frame = frame;
     self.addSubview(node.view)
@@ -348,5 +345,8 @@ class AsyncDisplayNode: RCTView {
 class AsyncDisplayNodeManager: RCTViewManager {
   override func view() -> UIView! {
     return AsyncDisplayNode()
+  }
+  static func requiresMainQueueSetup() -> Bool {
+    return true
   }
 }

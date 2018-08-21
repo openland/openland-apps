@@ -77,6 +77,7 @@
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAE56E0F212A4993003706B3 /* AsyncDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56E0E212A4993003706B3 /* AsyncDisplay.swift */; };
+		AAE56FFB212AD13C003706B3 /* AsyncDisplayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56FFA212AD13C003706B3 /* AsyncDisplayList.swift */; };
 		AAF27E202113F61100F9FCD5 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAF27DEF2113F5FC00F9FCD5 /* libKeyboardTrackingView.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4AF608A4BB3404E9C9EA40D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 51B34DCF3D0040749F561F46 /* FontAwesome.ttf */; };
@@ -747,6 +748,7 @@
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
 		AAE56E0E212A4993003706B3 /* AsyncDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDisplay.swift; sourceTree = "<group>"; };
+		AAE56FFA212AD13C003706B3 /* AsyncDisplayList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDisplayList.swift; sourceTree = "<group>"; };
 		AAF27DE52113F5FA00F9FCD5 /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
@@ -1303,6 +1305,7 @@
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
 				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 				AAE56E0E212A4993003706B3 /* AsyncDisplay.swift */,
+				AAE56FFA212AD13C003706B3 /* AsyncDisplayList.swift */,
 			);
 			name = hacks;
 			sourceTree = "<group>";
@@ -2317,6 +2320,7 @@
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE56E0F212A4993003706B3 /* AsyncDisplay.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				AAE56FFB212AD13C003706B3 /* AsyncDisplayList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
