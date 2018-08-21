@@ -118,6 +118,9 @@
       ],
       "openland-shared": [
         "openland-shared"
+      ],
+      "react-native-async-view": [
+        "react-native-async-view"
       ]
     },
     "importHelpers": true
@@ -168,6 +171,7 @@
     "./packages/openland-y-runtime-native",
     "./packages/openland-y-runtime-mac",
     "./packages/openland-mac/src",
-    "./packages/openland-shared"
+    "./packages/openland-shared",
+    "./packages/react-native-async-view"
   ]
 }

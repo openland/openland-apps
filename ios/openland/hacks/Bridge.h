@@ -6,6 +6,8 @@
 //  Copyright © 2018 Facebook. All rights reserved.
 //
 
+#define YOGA false
+
 #ifndef Bridge_h
 #define Bridge_h
 

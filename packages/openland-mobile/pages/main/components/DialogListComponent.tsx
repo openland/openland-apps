@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ListRenderItemInfo, FlatList, View, Platform } from 'react-native';
+import { ListRenderItemInfo, View, Platform } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZLoader } from '../../../components/ZLoader';
-import { ASDisplayNode } from '../../../components/asyncdisplay/ASDisplayNode';
-import { ASView, ASText, ASImage, ASLinearGradient, ASInsets } from '../../../components/asyncdisplay/Views';
 import { formatDate } from 'openland-shared/utils/formatDate';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { XPListItem } from 'openland-xp/XPListItem';
+import { ASView } from 'react-native-async-view/ASView';
+import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASText } from 'react-native-async-view/ASText';
+import { ASImage } from 'react-native-async-view/ASImage';
 
 class DialogListSeparator extends React.PureComponent {
     render() {
@@ -73,22 +75,17 @@ class ASAvatar extends React.PureComponent<ASAvatarProps> {
         }
 
         return (
-            <ASLinearGradient
+            <ASFlex
                 width={this.props.size}
                 height={this.props.size}
+                alignItems="center"
+                justifyContent="center"
+                backgroundColor={placeholderStyle.placeholderColor}
+                backgroundGradient={{ start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd }}
                 borderRadius={this.props.size / 2}
-                colorStart={placeholderStyle.placeholderColorStart}
-                colorEnd={placeholderStyle.placeholderColorEnd}
             >
-                <ASView
-                    width={this.props.size}
-                    height={this.props.size}
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
-                </ASView>
-            </ASLinearGradient>
+                <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
+            </ASFlex>
         );
     }
 }
@@ -96,13 +93,9 @@ class ASAvatar extends React.PureComponent<ASAvatarProps> {
 class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
-            <ASLinearGradient borderRadius={8} colorStart={XPStyles.colors.brand} colorEnd={XPStyles.colors.brand}>
-                <ASView height={16}>
-                    <ASInsets left={4} right={4} top={3}>
-                        <ASText color="#fff" lineHeight={12} fontSize={12}>{this.props.value + ''}</ASText>
-                    </ASInsets>
-                </ASView>
-            </ASLinearGradient>
+            <ASFlex borderRadius={8} backgroundColor={XPStyles.colors.brand} height={16}>
+                <ASText marginLeft-={4} marginRight={4} marginTop={3} color="#fff" lineHeight={12} fontSize={12}>{this.props.value + ''}</ASText>
+            </ASFlex>
         );
     }
 }
@@ -142,41 +135,35 @@ class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortF
         let showSenderName = this.props.item.topMessage && (!(this.props.item.topMessage.sender.id === this.props.engine.user.id && this.props.item.__typename === 'PrivateConversation'));
         return (
             <XPListItem onPress={this.handlePress} style={{ height: 80 }}>
-                <ASDisplayNode style={{ height: 80, width: '100%' }}>
-                    <ASView direction="row" height={80} width={300}>
-                        <ASView width={80} height={80} alignItems="center" justifyContent="center">
+                <ASView style={{ height: 80, width: '100%' }}>
+                    <ASFlex height={80} flexDirection="row">
+                        <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
                             <ASAvatar
                                 src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
                                 size={60}
                                 placeholderKey={this.props.item.flexibleId}
                                 placeholderTitle={this.props.item.title}
                             />
-                        </ASView>
-                        <ASInsets right={10} top={12} bottom={12} flexGrow={1} flexBasis={0}>
-                            <ASView direction="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                                <ASView height={18}>
-                                    <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{this.props.item.title}</ASText>
-                                    <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText>
-                                </ASView>
-                                <ASInsets top={2} bottom={2} height={36}>
-                                    <ASView direction="row" alignItems="stretch">
-                                        <ASView direction="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                                            {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
-                                            <ASText fontSize={14} height={36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
-                                        </ASView>
-                                        {this.props.item.unreadCount > 0 && (
-                                            <ASInsets top={18}>
-                                                <ASView flexShrink={0}>
-                                                    <ASCounter value={this.props.item.unreadCount} />
-                                                </ASView>
-                                            </ASInsets>
-                                        )}
-                                    </ASView>
-                                </ASInsets>
-                            </ASView>
-                        </ASInsets>
-                    </ASView>
-                </ASDisplayNode>
+                        </ASFlex>
+                        <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                            <ASFlex height={18}>
+                                <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{this.props.item.title}</ASText>
+                                <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText>
+                            </ASFlex>
+                            <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={32}>
+                                <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                                    {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
+                                    <ASText fontSize={14} height={36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
+                                </ASFlex>
+                                {this.props.item.unreadCount > 0 && (
+                                    <ASFlex marginTop={18} flexShrink={0}>
+                                        <ASCounter value={this.props.item.unreadCount} />
+                                    </ASFlex>
+                                )}
+                            </ASFlex>
+                        </ASFlex>
+                    </ASFlex>
+                </ASView>
             </XPListItem>
         );
     }

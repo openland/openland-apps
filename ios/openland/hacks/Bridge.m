@@ -26,3 +26,6 @@ RCT_EXPORT_VIEW_PROPERTY(config, NSString)
 RCT_EXPORT_VIEW_PROPERTY(config, NSString)
 @end
 
+@interface RCT_EXTERN_MODULE(RNAsyncViewManager, RCTViewManager)
+RCT_EXPORT_VIEW_PROPERTY(config, NSString)
+@end

@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Dimensions, Platform, FlatList, PlatformIOS } from 'react-native';
+import { View, Image, Text, Dimensions, Platform } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { MessageFullFragment } from 'openland-api/Types';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import FastImage from 'react-native-fast-image';
-import { AggressiveImageIOS } from 'openland-xp/platform/AggressiveImageIOS';
 import { ASDisplayNode } from '../../../components/asyncdisplay/ASDisplayNode';
-import { ASImage, ASView } from '../../../components/asyncdisplay/Views';
+import { ASView } from 'react-native-async-view/ASView';
+import { ASImage } from 'react-native-async-view/ASImage';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 
 export interface MessagesListProps {
     onAvatarPress: (userId: string) => void;
@@ -66,10 +67,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         return (
             <View flexBasis={0} flexGrow={1}>
                 {Platform.OS === 'ios' && (
-                    <ASDisplayNode
+                    <ASView
                         style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                     >
-                        <ASView
+                        <ASFlex
                             width={Dimensions.get('window').width}
                             height={Dimensions.get('window').height}
                         >
@@ -78,8 +79,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                 width={Dimensions.get('window').width}
                                 height={Dimensions.get('window').height}
                             />
-                        </ASView>
-                    </ASDisplayNode>
+                        </ASFlex>
+                    </ASView>
                 )}
                 {Platform.OS !== 'ios' && (
                     <FastImage

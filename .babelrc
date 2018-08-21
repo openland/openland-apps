@@ -12,6 +12,7 @@
                 ["module-resolver", {
                     "root": ["./build/native"],
                     "alias": {
+                        "react-native-async-view": "./build/native/react-native-async-view",
                         "openland-api": "./build/native/openland-api",
                         "openland-y-graphql": "./build/native/openland-y-graphql",
                         "openland-engines": "./build/native/openland-engines",
@@ -33,6 +34,7 @@
                 ["module-resolver", {
                     "root": ["."],
                     "alias": {
+                        "react-native-async-view": "./build/native/react-native-async-view",
                         "openland-api": "./build/native/openland-api",
                         "openland-y-graphql": "./build/native/openland-y-graphql",
                         "openland-engines": "./build/native/openland-engines",

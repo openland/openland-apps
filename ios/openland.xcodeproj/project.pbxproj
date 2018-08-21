@@ -71,6 +71,11 @@
 		AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA90469F210F2F0F00F989BC /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; };
 		AA9046A0210F2F0F00F989BC /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AAA47D73212C45FA00E71A74 /* RNAsyncNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47D72212C45FA00E71A74 /* RNAsyncNodes.swift */; };
+		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
+		AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */; };
+		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
+		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
 		AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
@@ -740,7 +745,12 @@
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		AA904699210F2EDB00F989BC /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA47D72212C45FA00E71A74 /* RNAsyncNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncNodes.swift; sourceTree = "<group>"; };
+		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
+		AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncBackground.swift; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
+		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
+		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
 		AAE56C072127F447003706B3 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
 		AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AggressiveImage.swift; path = openland/hacks/AggressiveImage.swift; sourceTree = "<group>"; };
@@ -938,6 +948,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AACFC575210778FE00225C86 /* openland.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -1246,6 +1257,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AAA47DBF212CB25D00E71A74 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */,
+				AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */,
+			);
+			name = Nodes;
+			sourceTree = "<group>";
+		};
 		AAA8A6E7211F77920025A392 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1270,6 +1290,17 @@
 				AACFC5FC2107D00A00225C86 /* libCodePush.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AAE104CF212C2A440034DA0F /* RNAsyncView */ = {
+			isa = PBXGroup;
+			children = (
+				AAA47DBF212CB25D00E71A74 /* Nodes */,
+				AAE10482212C29E30034DA0F /* RNAsyncView.swift */,
+				AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */,
+				AAA47D72212C45FA00E71A74 /* RNAsyncNodes.swift */,
+			);
+			name = RNAsyncView;
 			sourceTree = "<group>";
 		};
 		AAE56C082127F447003706B3 /* Products */ = {
@@ -2263,19 +2294,23 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ComponentKit/ComponentKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
 				"${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework",
 				"${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ComponentKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINOperation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINRemoteImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2316,9 +2351,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
+				AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
+				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
+				AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */,
 				AAE56E0F212A4993003706B3 /* AsyncDisplay.swift in Sources */,
+				AAA47D73212C45FA00E71A74 /* RNAsyncNodes.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAE56FFB212AD13C003706B3 /* AsyncDisplayList.swift in Sources */,
 			);

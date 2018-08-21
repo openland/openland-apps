@@ -123,6 +123,7 @@ func resolveInsetsLayout(src: JSON, children: [ASLayoutElement]) -> ASLayoutSpec
 func resolveWebImageLayout(src: JSON) -> ASImageNode {
   let url = src["props"]["source"].stringValue;
   let res = ASNetworkImageNode()
+  res.shouldCacheImage = false;
   res.setURL(URL(string: url), resetToDefault: true)
   resolveStyle(src: src["props"], style: res.style)
   if (src["props"]["borderRadius"].float != nil) {

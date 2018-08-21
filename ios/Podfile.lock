@@ -1,4 +1,6 @@
 PODS:
+  - ComponentKit (0.23):
+    - Yoga (~> 1.6)
   - PINCache (3.0.1-beta.6):
     - PINCache/Arc-exception-safe (= 3.0.1-beta.6)
     - PINCache/Core (= 3.0.1-beta.6)
@@ -22,26 +24,32 @@ PODS:
     - PINRemoteImage/iOS (= 3.0.0-beta.13)
     - PINRemoteImage/PINCache
     - Texture/Core
+  - Yoga (1.9.0)
 
 DEPENDENCIES:
+  - ComponentKit (~> 0.23)
   - SwiftyJSON (~> 4.0)
   - Texture
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - ComponentKit
     - PINCache
     - PINOperation
     - PINRemoteImage
     - SwiftyJSON
     - Texture
+    - Yoga
 
 SPEC CHECKSUMS:
+  ComponentKit: bf8b4c4e7448bd15b3a8e5a71174ea7aa6cea98d
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
   PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
+  Yoga: aaae8abea68951f60bee05f6277d3eed90bb91bb
 
-PODFILE CHECKSUM: 1ec926f681a7335367ab682902c3df19c959b526
+PODFILE CHECKSUM: 502a67ed88f5b51d6acc8e2bb48ec026ebfd0d4e
 
 COCOAPODS: 1.5.3
