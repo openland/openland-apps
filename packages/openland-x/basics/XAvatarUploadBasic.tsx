@@ -22,8 +22,8 @@ const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'normal'
     backgroundColor: '#ffffff',
     overflow: 'hidden',
 
-    borderRadius: 5,
-    border: 'solid 1px #dcdee4',
+    borderRadius: 12,
+    border: '1px solid rgba(220, 222, 228, 0.45)',
 
     cursor: 'pointer',
 

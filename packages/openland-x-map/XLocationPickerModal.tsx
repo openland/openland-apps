@@ -199,7 +199,7 @@ class XLocationPickerModalBasic extends React.Component<XLocationPickerBaiscProp
     render() {
         let target = this.props.target !== undefined
             ? this.props.target
-            : <XInput placeholder={(this.props.placeholder || 'Adress')} value={this.state.picked ? (this.state.picked.result.place_name || this.state.picked.result.text) : ''} />;
+            : <XInput size="r-default" color="primary-sky-blue" placeholder={(this.props.placeholder || 'Adress')} value={this.state.picked ? (this.state.picked.result.place_name || this.state.picked.result.text) : ''} />;
 
         return (
             <XModal

@@ -194,6 +194,7 @@ export interface AlphaOrganizationListingInput {
   geographies?: Array< string > | null,
   landUse?: Array< string > | null,
   unitCapacity?: Array< string > | null,
+  channels?: Array< string > | null,
 };
 
 export interface MapPointInput {
@@ -1721,6 +1722,34 @@ export interface ChannelSetFeaturedMutationVariables {
 
 export interface ChannelSetFeaturedMutation {
   alphaChannelSetFeatured: string,
+};
+
+export interface UserChannelsQuery {
+  channels:  {
+    __typename: "ConversationConnection",
+    conversations:  Array<( {
+        __typename: "ChannelConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+        title: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+        title: string,
+      }
+    ) >,
+  },
 };
 
 export interface AllDealsQuery {

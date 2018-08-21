@@ -13,8 +13,6 @@ export const TextAppBar = {
         favorites: 'Favorites',
         folders: 'Folders',
         devTools: 'DevTools',
-        addDevelopmentOpportunity: 'New development opportunity',
-        addAquisitionRequest: 'New acquisition request',
         adminMenu: 'Super admin',
         xFramework: 'Design system',
     }

@@ -313,3 +313,14 @@ export const ChannelSetFeaturedMutation = gql`
         alphaChannelSetFeatured(channelId: $channelId, featured: $featured)
     }
 `;
+
+export const UserChannelsQuery = gql`
+    query UserChannels{
+        channels: alphaChannelsList(first: 100){
+            conversations {
+                id
+                title
+            }
+        }
+    }
+`;
