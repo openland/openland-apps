@@ -5,6 +5,7 @@ import { XFlexStyles, applyFlex } from './Flex';
 import { XPopper } from '../XPopper';
 import { XIcon } from '../XIcon';
 import { style } from '../../../node_modules/glamor';
+import ClearIcon from '../icons/ic-close.svg';
 
 type XInputSize = 'large' | 'medium' | 'default' | 'small' | 'r-default' | 'r-small' | 'r-tiny';
 type XInputAttach = 'left' | 'right' | 'both';
@@ -28,6 +29,7 @@ export interface XInputBasicProps extends XFlexStyles {
     tooltipContent?: any;
     onChange?: (value: string) => void;
     onEnter?: () => void;
+    cleansable?: boolean;
 }
 
 let sizeStyles = styleResolver({
@@ -416,12 +418,27 @@ const PopperPlaceholder = Glamorous.div({
     }
 });
 
-export class XInputBasic extends React.PureComponent<XInputBasicProps> {
+const ClearButton = Glamorous.a({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 10,
+    top: 'calc(50% - 8px)',
+    width: 16,
+    height: 16,
+    cursor: 'pointer'
+});
 
+export class XInputBasic extends React.Component<XInputBasicProps, {value: string}> {
     inputRef: any | null = null;
 
     constructor(props: XInputBasicProps) {
         super(props);
+
+        this.state = {
+            value: this.props.value || ''
+        };
     }
 
     handleRef = (e: any) => {
@@ -439,6 +456,18 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
     handleChange = (e: any) => {
         if (this.props.onChange) {
             this.props.onChange(e.target.value);
+            this.setState({
+                value: e.target.value
+            });
+        }
+    }
+
+    handleClear = () => {
+        if (this.props.onChange) {
+            this.props.onChange('');
+            this.setState({
+                value: ''
+            });
         }
     }
 
@@ -472,12 +501,15 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
             disabled,
             tooltipContent,
             color,
+            cleansable,
             ...other
         } = this.props;
-        let v = this.props.value;
+
+        let v = this.state.value;
         if (v === null) {
             v = '';
         }
+
         return (
             <RootContainer
                 {...other}
@@ -514,6 +546,15 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                             <XIcon icon="error" className="popper" />
                         </PopperPlaceholder>
                     </XPopper>
+                )}
+                {(cleansable && v !== '') && (
+                    <ClearButton
+                        onClick={() => {
+                            this.handleClear();
+                        }}
+                    >
+                        <ClearIcon />
+                    </ClearButton>
                 )}
             </RootContainer>
         );
