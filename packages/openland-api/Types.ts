@@ -61,6 +61,11 @@ export enum ChannelMembershipStatus {
 }
 
 
+export interface UpdateConversationSettingsInput {
+  mobileNotifications?: NotificationMessages | null,
+  mute?: boolean | null,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -340,6 +345,8 @@ export interface UpdateProfileInput {
 export interface UpdateSettingsInput {
   emailFrequency?: EmailFrequency | null,
   desktopNotifications?: NotificationMessages | null,
+  mobileNotifications?: NotificationMessages | null,
+  mute?: boolean | null,
 };
 
 export enum OpportunitySort {
@@ -974,6 +981,11 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       featured: boolean,
       organization:  {
         __typename: "Organization",
@@ -985,12 +997,22 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
     } | {
       __typename: "SharedConversation",
       id: string,
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       organization:  {
         __typename: "Organization",
         id: string,
@@ -1001,6 +1023,11 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       blocked: boolean,
       user:  {
         __typename: "User",
@@ -1025,6 +1052,11 @@ export interface ChatInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       membersCount: number,
     }
   ),
@@ -2066,6 +2098,19 @@ export interface ConversationKickMutation {
         id: string,
       }
     ),
+  },
+};
+
+export interface ConversationSettingsUpdateMutationVariables {
+  settings: UpdateConversationSettingsInput,
+  conversationId: string,
+};
+
+export interface ConversationSettingsUpdateMutation {
+  alphaUpdateConversationSettings:  {
+    __typename: "ConversationSettings",
+    mobileNotifications: NotificationMessages,
+    mute: boolean,
   },
 };
 
