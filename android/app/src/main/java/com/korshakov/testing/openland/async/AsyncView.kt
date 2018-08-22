@@ -24,23 +24,20 @@ import com.facebook.react.views.view.ReactViewGroup
 import com.korshakov.testing.openland.R
 
 class AsyncView(context: Context?) : FrameLayout(context) {
+    private val asyncContext = ComponentContext(context)
+    private val lithoView = LithoView(context)
+
     init {
-        ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
-        val asyncContext = ComponentContext(context)
-        val asyncNode = LithoView.create(context,
-                Text.create(asyncContext)
-                        .text("Hello!")
-                        .textSizeSp(18.0f)
-                        .backgroundColor(Color.CYAN)
-                        .widthDip(100.0f)
-                        .heightDip(100.0f)
-                        .build()
-        )
-        this.addView(asyncNode,
+        this.addView(this.lithoView,
                 android.widget.FrameLayout.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                        android.view.ViewGroup.LayoutParams.MATCH_PARENT)
-        )
+                        android.view.ViewGroup.LayoutParams.MATCH_PARENT))
+    }
+
+    fun setConfig(src: String) {
+        val parsed = parseSpec(src)
+        this.lithoView.setComponent(resolveNode(this.asyncContext, parsed))
+        resolveNode(this.asyncContext, parsed)
     }
 }
 
@@ -56,11 +53,15 @@ class AsyncViewManager : SimpleViewManager<AsyncView>() {
 
     @ReactProp(name = "config")
     fun setConfig(view: AsyncView, config: String) {
-        // TODO: Implement
+        view.setConfig(config)
     }
 }
 
 class AsyncPackage : ReactPackage {
+    constructor() {
+        ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
+    }
+
     override fun createNativeModules(reactContext: ReactApplicationContext?): MutableList<NativeModule> {
         return mutableListOf()
     }
