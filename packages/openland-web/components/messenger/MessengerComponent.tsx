@@ -18,6 +18,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
+import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -146,6 +147,68 @@ const ChannelSetFeatured = withChannelSetFeatured((props) => (
     <ChannelSetFeaturedComponent mutation={props.setFeatured} featured={(props as any).featured} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ featured: boolean, conversationId: string, refetchVars: { conversationId: string } }>;
 
+class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mobileNotifications: string, mute: boolean }, conversationId: string }, { settings: { mobileNotifications: string, mute: boolean } }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { settings: props.settings };
+    }
+
+    apply = (mobile: string, mute: boolean) => {
+        this.props.mutation({
+            variables: {
+                settings: {
+                    mobileNotifications: mobile,
+                    mute: mute
+                },
+                conversationId: this.props.conversationId,
+            }
+        });
+    }
+
+    render() {
+        return (
+            <XVertical>
+                <XMenuItemWrapper key="mobile">
+                    <XVertical>
+                        <XCheckbox
+                            label="Mobile"
+                            switcher={true}
+                            value={this.state.settings.mobileNotifications}
+                            trueValue="ALL"
+                            onChange={(checked) => {
+                                this.apply(checked.checked ? 'ALL' : 'NONE', this.state.settings.mute);
+                                this.setState({
+                                    settings: { ... this.state.settings, mobileNotifications: checked.checked ? 'ALL' : 'NONE' }
+                                });
+                            }}
+                        />
+                    </XVertical>
+                </XMenuItemWrapper>
+                <XMenuItemWrapper key="mute">
+                    <XVertical>
+                        <XCheckbox
+                            label="Mute"
+                            switcher={true}
+                            value={this.state.settings.mute ? 'true' : 'false'}
+                            trueValue="true"
+                            onChange={(checked) => {
+                                this.apply(this.state.settings.mobileNotifications, checked.checked);
+                                this.setState({
+                                    settings: { ... this.state.settings, mute: !this.state.settings.mute }
+                                });
+                            }}
+                        />
+                    </XVertical>
+                </XMenuItemWrapper>
+            </XVertical>
+        );
+    }
+}
+
+const NotificationSettings = withConversationSettingsUpdate((props) => (
+    <NotificationSettingsComponent mutation={props.update} settings={(props as any).settings} conversationId={(props as any).conversationId} />
+)) as React.ComponentType<{ settings: { mobileNotifications: string, mute: boolean }, conversationId: string }>;
+
 const ChannelTabs = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
@@ -222,21 +285,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             content={(
                                 <div style={{ width: 160 }}>
                                     <XMenuTitle>Notifications</XMenuTitle>
-                                    <XMenuItemWrapper>
-                                        <XVertical>
-                                            <XCheckbox label="Email" switcher={true} checked={true} />
-                                        </XVertical>
-                                    </XMenuItemWrapper>
-                                    <XMenuItemWrapper>
-                                        <XVertical>
-                                            <XCheckbox label="Mobile" switcher={true} />
-                                        </XVertical>
-                                    </XMenuItemWrapper>
-                                    <XMenuItemWrapper>
-                                        <XVertical>
-                                            <XCheckbox label="Mute" switcher={true} />
-                                        </XVertical>
-                                    </XMenuItemWrapper>
+                                    <NotificationSettings settings={props.data.chat.settings} conversationId={props.data.chat.id} />
+
                                     {props.data.chat.__typename === 'PrivateConversation' && (
                                         <BlockButton
                                             blocked={(props.data.chat as any).blocked}
@@ -269,7 +319,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 maxHeight="calc(100% - 56px)"
             >
                 {tab === 'chat' && <MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />}
-                {props.data.chat.__typename === 'ChannelConversation' && tab === 'members' && <ChannelMembersComponent key={props.data.chat.id + '_members'} variables={{channelId: props.data.chat.id}} {...{isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine}}/>}
+                {props.data.chat.__typename === 'ChannelConversation' && tab === 'members' && <ChannelMembersComponent key={props.data.chat.id + '_members'} variables={{ channelId: props.data.chat.id }} {...{ isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine }} />}
             </XHorizontal>
         </XVertical>
     );

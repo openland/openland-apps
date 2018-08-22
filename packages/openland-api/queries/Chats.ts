@@ -3,6 +3,7 @@ import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
 import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { SettingsFull } from '../fragments/SettingsFragment';
 
 export const ChatListQuery = gql`
     query ChatList($after: String) {
@@ -52,6 +53,10 @@ export const ChatInfoQuery = gql`
             flexibleId
             title
             photos
+            settings{
+                mobileNotifications
+                mute
+            }
             ... on SharedConversation {
                 organization {
                     id
@@ -356,4 +361,12 @@ export const ConversationKickMutation = gql`
         }
     }
 `;
- 
+
+export const ConversationSettingsUpdateMutation = gql`
+    mutation ConversationSettingsUpdate($settings: UpdateConversationSettingsInput!, $conversationId: ID!) {
+        alphaUpdateConversationSettings(settings: $settings, conversationId: $conversationId) {
+            mobileNotifications
+            mute
+        }
+    }
+`;

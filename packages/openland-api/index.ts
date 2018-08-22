@@ -59,6 +59,7 @@ export const UserChannelsQuery = typedQuery<Types.UserChannelsQuery, {}>(Chats.U
 export const ChannelMembersQuery = typedQuery<Types.ChannelMembersQuery, Types.ChannelMembersQueryVariables>(Chats.ChannelMembersQuery);
 export const ChannelInviteMutation = typedMutation<Types.ChannelInviteMutation, Types.ChannelInviteMutationVariables>(Chats.ChannelInviteMutation);
 export const ConversationKickMutation = typedMutation<Types.ConversationKickMutation, Types.ConversationKickMutationVariables>(Chats.ConversationKickMutation);
+export const ConversationSettingsUpdateMutation = typedMutation<Types.ConversationSettingsUpdateMutation, Types.ConversationSettingsUpdateMutationVariables>(Chats.ConversationSettingsUpdateMutation);
 export const AllDealsQuery = typedQuery<Types.AllDealsQuery, {}>(Deals.AllDealsQuery);
 export const AllDealsMapQuery = typedQuery<Types.AllDealsMapQuery, {}>(Deals.AllDealsMapQuery);
 export const DealQuery = typedQuery<Types.DealQuery, Types.DealQueryVariables>(Deals.DealQuery);
