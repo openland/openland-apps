@@ -986,10 +986,16 @@ export interface ChatInfoQuery {
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
+      isRoot: boolean,
       featured: boolean,
+      description: string,
+      myStatus: ChannelMembershipStatus,
+      membersCount: number,
       organization:  {
         __typename: "Organization",
+        id: string,
         isMine: boolean,
+        name: string,
       } | null,
     } | {
       __typename: "AnonymousConversation",
@@ -2112,6 +2118,14 @@ export interface ConversationSettingsUpdateMutation {
     mobileNotifications: NotificationMessages,
     mute: boolean,
   },
+};
+
+export interface ChannelJoinMutationVariables {
+  channelId: string,
+};
+
+export interface ChannelJoinMutation {
+  join: string,
 };
 
 export interface AllDealsQuery {
