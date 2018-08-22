@@ -143,7 +143,7 @@ const JoinButton = withChannelJoin((props) => {
     );
 }) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string }>;
 
-export class ChannelsInviteComponent extends React.Component<{ channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization: { name: string } }, invite?: { user?: { name: string, photo?: string } } }> {
+export class ChannelsInviteComponent extends React.Component<{ channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization?: { name: string } | null }, invite?: { user?: { name: string, photo?: string } } }> {
     render() {
         console.warn(this.props.channel);
         let joinText = this.props.channel.myStatus === 'none' ? 'Rrequest invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
@@ -153,7 +153,7 @@ export class ChannelsInviteComponent extends React.Component<{ channel: { myStat
                 <MainContent>
                     <XHorizontal justifyContent="flex-end">
                         <Close path="/mail/channels">
-                            <CloseIcon/>
+                            <CloseIcon />
                         </Close>
                     </XHorizontal>
                     {this.props.invite && this.props.invite.user ?
@@ -165,7 +165,7 @@ export class ChannelsInviteComponent extends React.Component<{ channel: { myStat
                     <InfoCardWrapper>
                         <XVertical separator={10} justifyContent="center">
                             <XVertical justifyContent="center">
-                                <ChannelTitle>{(!this.props.channel.isRoot ? this.props.channel.organization.name + '/' : '') + this.props.channel.title}</ChannelTitle>
+                                <ChannelTitle>{(!this.props.channel.isRoot ? this.props.channel.organization!!.name + '/' : '') + this.props.channel.title}</ChannelTitle>
                                 {this.props.channel.description && <Text width={354}>{this.props.channel.description}</Text>}
                             </XVertical>
                             <ChannelCounter>
