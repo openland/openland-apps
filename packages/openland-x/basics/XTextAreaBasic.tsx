@@ -31,7 +31,7 @@ const TextAreaStyled = Glamorous.textarea <TextAreaStyledProps & XFlexStyles> ([
         minHeight: props.maxheight ? props.maxheight : '100px',
         opacity: props.disabled ? 0.7 : undefined,
         border: props.bordered === false ? 'none' : `1px solid ${props.invalid ? '#e26363' : 'rgba(220, 222, 228, 0.45)'}`,
-        borderRadius: 12,
+        borderRadius: 16,
         paddingTop: 16,
         paddingLeft: 20,
         paddingRight: 20,

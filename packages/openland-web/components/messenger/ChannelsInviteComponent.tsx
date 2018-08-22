@@ -9,6 +9,7 @@ import { XLink } from 'openland-x/XLink';
 import CloseIcon from './components/icons/ic-close.svg';
 import ProfileIcon from './components/icons/ic-profile.svg';
 import MainImage from './components/icons/channel-invite-pic.svg';
+import { withChannelJoin } from '../../api/withChannelJoin';
 
 const Root = Glamorous.div({
     position: 'relative',
@@ -18,7 +19,6 @@ const Root = Glamorous.div({
     height: '100%',
     padding: 28,
     flexShrink: 0,
-    overflowY: 'scroll'
 });
 
 const MainContent = Glamorous.div({
@@ -58,7 +58,7 @@ const InfoCardWrapper = Glamorous.div({
     flexShrink: 0
 });
 
-const Text = Glamorous.div<{width?: number}>(props => ({
+const Text = Glamorous.div<{ width?: number }>(props => ({
     fontSize: 14,
     lineHeight: 1.43,
     letterSpacing: -0.3,
@@ -128,40 +128,62 @@ const ImageWrapper = Glamorous.div({
     alignSelf: 'center'
 });
 
-export class ChannelsInviteComponent extends React.Component {
+const JoinButton = withChannelJoin((props) => {
+    return (
+        <XButton
+            style="primary-sky-blue"
+            size="r-default"
+            text={(props as any).text}
+            alignSelf="center"
+            flexShrink={0}
+            action={async () => {
+                await props.join({ variables: { channelId: (props as any).channelId } });
+            }}
+        />
+    );
+}) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string }>;
+
+export class ChannelsInviteComponent extends React.Component<{ channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization: { name: string } }, invite?: { user?: { name: string, photo?: string } } }> {
     render() {
+        console.warn(this.props.channel);
+        let joinText = this.props.channel.myStatus === 'none' ? 'Rrequest invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
         return (
             <Root>
                 <Reactangle />
                 <MainContent>
                     <XHorizontal justifyContent="flex-end">
-                        <Close>
-                            <CloseIcon />
+                        <Close path="/mail/channels">
+                            <CloseIcon/>
                         </Close>
                     </XHorizontal>
-                    <UserInfoWrapper separator={6} justifyContent="center">
-                        <UserAvatar />
-                        <Text><b>John Doe</b> has invited you</Text>
-                    </UserInfoWrapper>
+                    {this.props.invite && this.props.invite.user ?
+                        <UserInfoWrapper separator={6} justifyContent="center">
+                            <UserAvatar />
+                            <Text><b>John Doe</b> has invited you</Text>
+                        </UserInfoWrapper> : <div style={{ height: 120 }} />
+                    }
                     <InfoCardWrapper>
                         <XVertical separator={10} justifyContent="center">
                             <XVertical justifyContent="center">
-                                <ChannelTitle>Real estate technology / Startups</ChannelTitle>
-                                <Text width={354}>Invitation-only channel to connect with industry insiders, share market data, and discover opportunities.</Text>
+                                <ChannelTitle>{(!this.props.channel.isRoot ? this.props.channel.organization.name + '/' : '') + this.props.channel.title}</ChannelTitle>
+                                {this.props.channel.description && <Text width={354}>{this.props.channel.description}</Text>}
                             </XVertical>
                             <ChannelCounter>
                                 <ProfileIcon />
-                                <span>500+</span>
+                                <span>{this.props.channel.membersCount}</span>
                             </ChannelCounter>
                         </XVertical>
                     </InfoCardWrapper>
-                    <XButton
-                        style="primary-sky-blue"
-                        size="r-default"
-                        text="Accept invite"
-                        alignSelf="center"
-                        flexShrink={0}
-                    />
+                    {(this.props.channel.myStatus === 'none' || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
+                    {this.props.channel.myStatus === 'requested' && (
+                        <XButton
+                            style="ghost"
+                            size="r-default"
+                            text="Pending"
+                            alignSelf="center"
+                            flexShrink={0}
+                        />
+                    )}
                     <ImageWrapper>
                         <MainImage />
                     </ImageWrapper>

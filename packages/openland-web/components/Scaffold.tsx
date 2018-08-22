@@ -37,7 +37,6 @@ import HomeIcon from './icons/home-1.svg';
 import MessagesIcon from './icons/messages-1.svg';
 import ChannelIcon from './icons/channel-1.svg';
 import DevToolsIcon from './icons/devtools_1.svg';
-import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
@@ -45,11 +44,11 @@ import { withCreateOrganization } from '../api/withCreateOrganization';
 import { delayForewer, delay } from 'openland-y-utils/timer';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { InitTexts } from '../pages/init/_text';
 import { withCreateChannel } from '../api/withCreateChannel';
 import { PostChannelModal } from '../pages/main/channel/components/postChannelModal';
+import { XTextArea } from 'openland-x/XTextArea';
 
 //
 // Root
@@ -877,7 +876,7 @@ export const CreateChannel = withCreateChannel((props) => {
             title="Create channel"
             targetQuery="createChannel"
             defaultAction={async (data) => {
-                let channel = await props.createChannel({ variables: { title: data.input.name, message: 'channel created' } });
+                let channel = await props.createChannel({ variables: { title: data.input.name, message: 'channel created', description: data.input.description } });
                 delay(0).then(() => {
                     props.router.push('/mail/' + channel.data.channel.id);
                 });
@@ -890,13 +889,21 @@ export const CreateChannel = withCreateChannel((props) => {
             }}
             submitBtnText="Create channel"
         >
-            <XInput
-                flexGrow={1}
-                size="r-default"
-                color="primary-sky-blue"
-                placeholder="Channel title"
-                field="input.name"
-            />
+            <XVertical separator={8}>
+                <XInput
+                    flexGrow={1}
+                    size="r-default"
+                    color="primary-sky-blue"
+                    placeholder="Channel title"
+                    field="input.name"
+                />
+                <XTextArea
+                    placeholder="Description"
+                    resize={false}
+                    size="small"
+                    valueStoreKey="fields.input.description"
+                />
+            </XVertical>
         </XModalForm>
 
     );
@@ -1216,7 +1223,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                 <CreateOrganization />
                 <CreateChannel />
-                <PostChannelModal targetQuery="addListing"/>
+                <PostChannelModal targetQuery="addListing" />
             </RootContainer>
         );
     }
