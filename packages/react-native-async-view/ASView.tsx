@@ -6,6 +6,7 @@ import { AsyncRenderer } from './internals/renderer';
 
 export interface ASViewProps {
     style?: StyleProp<ViewStyle>;
+    children?: any;
 }
 
 export class ASView extends React.PureComponent<ASViewProps, { config?: string }> {
@@ -23,7 +24,14 @@ export class ASView extends React.PureComponent<ASViewProps, { config?: string }
     private handleChanged = (state: any) => {
         this.setState({ config: JSON.stringify(state) });
     }
-
+    componentWillUpdate(nextProps: ASViewProps) {
+        if (this.props.children !== nextProps.children) {
+            if (supportsAsyncRendering) {
+                this.renderer!!.render(nextProps.children);
+            }
+        }
+    }
+    
     render() {
         if (supportsAsyncRendering) {
             return <ASViewRender style={this.props.style} config={this.state.config!} />;
