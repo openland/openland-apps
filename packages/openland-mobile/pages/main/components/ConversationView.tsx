@@ -64,22 +64,20 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
-                {Platform.OS === 'ios' && (
-                    <ASView
-                        style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                <ASView
+                    style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                >
+                    <ASFlex
+                        width={Dimensions.get('window').width}
+                        height={Dimensions.get('window').height}
                     >
-                        <ASFlex
+                        <ASImage
+                            source={require('assets/img-chat-3.jpg')}
                             width={Dimensions.get('window').width}
                             height={Dimensions.get('window').height}
-                        >
-                            <ASImage
-                                source={require('assets/img-chat-3.jpg')}
-                                width={Dimensions.get('window').width}
-                                height={Dimensions.get('window').height}
-                            />
-                        </ASFlex>
-                    </ASView>
-                )}
+                        />
+                    </ASFlex>
+                </ASView>
                 < ConversationMessagesView
                     ref={this.listRef}
                     messages={this.state.conversation.messagesPrepprocessed}
