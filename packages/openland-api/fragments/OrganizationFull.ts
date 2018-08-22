@@ -42,6 +42,14 @@ export const OrganizationFull = gql`
         interests: alphaInterests
         locations: alphaLocations
 
+        channels: alphaCreatedChannels{
+            id
+            isRoot
+            title
+            photos
+            membersCount
+        }
+
         posts: alphaDummyPosts{
             text 
             type 

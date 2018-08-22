@@ -2691,6 +2691,14 @@ export interface MyOrganizationQuery {
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
+    channels:  Array< {
+      __typename: "ChannelConversation",
+      id: string,
+      isRoot: boolean,
+      title: string,
+      photos: Array< string >,
+      membersCount: number,
+    } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
       text: string,
@@ -3350,6 +3358,14 @@ export interface OrganizationQuery {
     organizationType: Array< string > | null,
     interests: Array< string > | null,
     locations: Array< string > | null,
+    channels:  Array< {
+      __typename: "ChannelConversation",
+      id: string,
+      isRoot: boolean,
+      title: string,
+      photos: Array< string >,
+      membersCount: number,
+    } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
       text: string,
@@ -6661,6 +6677,14 @@ export interface OrganizationFullFragment {
   organizationType: Array< string > | null,
   interests: Array< string > | null,
   locations: Array< string > | null,
+  channels:  Array< {
+    __typename: "ChannelConversation",
+    id: string,
+    isRoot: boolean,
+    title: string,
+    photos: Array< string >,
+    membersCount: number,
+  } | null >,
   posts:  Array< {
     __typename: "AlphaDummyPost",
     text: string,
