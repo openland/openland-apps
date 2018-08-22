@@ -30,9 +30,9 @@ export class NavigationComponent extends React.PureComponent<NavigationInjectedP
         return (
             <>
                 <ZHeader title="Some title" />
-                <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: ZAppConfig.bottomNavigationBarInset, flexDirection: 'column' }} onLayout={this.handleLayout}>
+                <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: ZAppConfig.bottomNavigationBarInset, flexDirection: 'column', backgroundColor: '#fff' }} onLayout={this.handleLayout}>
                     <ZSafeAreaView style={{ width: '100%', height: '100%' }}>
-                        <ASView style={{ width: 100, height: 100, backgroundColor: '#f00' }}>
+                        <ASView style={{ width: 300, height: 300 }}>
                             <ASFlex>
                                 <ASText>Hello</ASText>
                             </ASFlex>

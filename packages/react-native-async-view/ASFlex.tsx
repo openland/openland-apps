@@ -13,7 +13,7 @@ class ASFlexFallback extends React.PureComponent<ASFlexProps> {
     render() {
         return (
             <View flexDirection={this.props.flexDirection} alignItems={this.props.alignItems} justifyContent={this.props.justifyContent}>
-                {this.props}
+                {this.props.children}
             </View>
         );
     }
