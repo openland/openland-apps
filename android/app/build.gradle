@@ -100,6 +100,9 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+    dexOptions {
+        preDexLibraries = false
+    }
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
@@ -113,7 +116,7 @@ android {
         }
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
-        multiDexEnabled true
+        // multiDexEnabled true
     }
     splits {
         abi {
@@ -164,7 +167,6 @@ dependencies {
     implementation 'com.beust:klaxon:3.0.1'
 
     compile project(':react-native-share')
-    compile project(':react-native-root-view-background')
     compile project(':react-native-image-capinsets')
     implementation 'com.google.firebase:firebase-core:16.0.1'
     compile project(':react-native-haptic-feedback')

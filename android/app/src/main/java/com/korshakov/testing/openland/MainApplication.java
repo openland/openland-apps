@@ -7,7 +7,6 @@ import com.facebook.react.ReactApplication;
 import cl.json.RNSharePackage;
 
 import com.korshakov.testing.openland.async.AsyncPackage;
-import com.reactlibrary.RNRootViewBackgroundPackage;
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 import com.korshakov.testing.openland.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
@@ -55,7 +54,6 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
             new RNSharePackage(),
-            new RNRootViewBackgroundPackage(),
             new RCTImageCapInsetPackage(),
                     new RNReactNativeHapticFeedbackPackage(),
                     new RNGestureHandlerPackage(),
