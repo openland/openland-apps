@@ -70,7 +70,6 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
         let content = (
             <>
                 <PickerWrapper>
-
                     <PickerEntries separator="none" width="100%">
                         <SortControlledPicker onPick={this.onPick} options={this.props.options || options} />
                     </PickerEntries>

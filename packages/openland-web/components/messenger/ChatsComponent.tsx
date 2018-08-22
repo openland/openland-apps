@@ -16,6 +16,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import EmptyImage from './components/icons/channels-search-empty.svg';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -179,9 +180,15 @@ const PlaceholderEmpty = Glamorous(XText)({
     marginLeft: 16,
     opacity: 0.5
 });
+
 const PlaceholderLoader = Glamorous(XLoadingCircular)({
     alignSelf: 'center'
 });
+
+const NoResultWrapper = Glamorous(XVertical)({
+    marginTop: 34
+});
+
 const SearchChats = withChatSearchText((props) => {
     let items = (props.data && props.data.items ? props.data.items : []).filter(c => c.topMessage).reduce(
         (p, x) => {
@@ -192,11 +199,19 @@ const SearchChats = withChatSearchText((props) => {
         },
         [] as any[]
     );
-    return props.data && props.data.items ? items.length ? (
-        <>
-            {items.map(renderConversation)}
-        </>
-    ) : <PlaceholderEmpty>No results</PlaceholderEmpty> : <PlaceholderLoader color="#334562" />;
+    return props.data && props.data.items ? items.length
+        ? (
+            <>
+                {items.map(renderConversation)}
+            </>
+        )
+        : (
+            <NoResultWrapper separator={10} alignItems="center">
+                <EmptyImage/>
+                <PlaceholderEmpty>No results</PlaceholderEmpty>
+            </NoResultWrapper>
+        )
+        : <PlaceholderLoader color="#334562" />;
 });
 
 const Search = Glamorous(XInput)({
@@ -229,6 +244,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     placeholder="Search"
                     icon="search"
                     color="primary-sky-blue"
+                    cleansable={true}
                 />
                 <XWithRole role={['software-developer', 'super-admin']}>
                     <ExploreChannels path={'/mail/channels'}><XText>(/) Explore channels</XText></ExploreChannels>

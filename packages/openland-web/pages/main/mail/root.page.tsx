@@ -15,6 +15,8 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
+import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
+import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -72,24 +74,6 @@ const Title = Glamorous.div({
     color: '#334562'
 });
 
-const EmptyDiv = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    flexGrow: 1,
-    flexBasis: '100%'
-});
-
-const ComposeText = Glamorous.div({
-    fontSize: 14,
-    letterSpacing: -0.3,
-    color: '#99a2b0',
-    marginTop: 10
-});
-
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
     let isCompose = props.router.path.endsWith('/new');
@@ -140,12 +124,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                                 </MessengerContainer>
                             )}
                             {tab === 'empty' && (
-                                <MessengerContainer>
-                                    <EmptyDiv>
-                                        <img src={'/static/X/chat-compose.svg'} />
-                                        <ComposeText>Select a chat to start messaging</ComposeText>
-                                    </EmptyDiv>
-                                </MessengerContainer>
+                                <MessengerEmptyComponent />
                             )}
                             {tab === 'conversation' && (
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
@@ -153,6 +132,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             {tab === 'channels' && (
                                 <ChannelsExploreComponent />
                             )}
+                            {/* <ChannelsInviteComponent /> */}
                         </ConversationContainer>
                     </ChatContainer>
                 </Scaffold.Content>

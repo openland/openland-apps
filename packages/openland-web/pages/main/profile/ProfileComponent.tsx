@@ -1,7 +1,6 @@
 import '../../init';
 import '../../../globals';
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { OrganizationQuery } from 'openland-api/Types';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -23,14 +22,6 @@ import { PermissionsModal, RemoveJoinedModal } from '../settings/members.page';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { TextInvites } from 'openland-text/TextInvites';
-
-interface Channel {
-    isRoot: string;
-    name: string;
-    members: number;
-    requests: number;
-    id: string;
-}
 
 const Back = (props: { callback: () => void }) => (
     <div onClick={props.callback}>
@@ -64,47 +55,6 @@ class Header extends React.Component<{ organizationQuery: OrganizationQuery } & 
         );
     }
 }
-
-const Channels = ((props: any) => {
-    let channesls: Channel[] = [
-        {
-            name: 'Main channel',
-            members: 100,
-            requests: 1,
-            isRoot: 'true',
-            id: '61gk9KRrl9ComJkvYnvdcddr4o'
-        },
-        {
-            name: 'Startups',
-            members: 100,
-            requests: 1,
-            isRoot: 'false',
-            id: '61gk9KRrl9ComJkvYnvdcddr4o'
-        },
-        {
-            name: 'Investors',
-            members: 100,
-            requests: 1,
-            isRoot: 'false',
-            id: '61gk9KRrl9ComJkvYnvdcddr4o'
-        }
-    ];
-
-    return (
-        <XVertical>
-            {channesls.map(c => (
-                <XHorizontal justifyContent="space-between">
-                    <XText>{(c.isRoot ? '' : '/') + c.name}</XText>
-                    <XText>{c.members}</XText>
-                    {(props as any).myOrg && <XWithRole role="admin" orgPermission={true}>
-                        <XText>{c.requests}</XText>
-                    </XWithRole>}
-                    <XButton text="View" path={'/mail/' + c.id} />
-                </XHorizontal>
-            ))}
-        </XVertical>
-    );
-}) as React.ComponentType<{ variables: { organizationId: string }, myOrg: boolean }>;
 
 class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
     render() {
@@ -240,7 +190,17 @@ class OrganizationProfileInner extends React.Component<{ organizationQuery: Orga
             <XVertical>
                 <Back callback={this.props.onBack} />
                 <Header organizationQuery={this.props.organizationQuery} router={this.props.router} />
-                {channelsTab && <Channels variables={{ organizationId: this.props.organizationQuery.organization.id }} myOrg={this.props.organizationQuery.organization.isMine} />}
+                {channelsTab && (
+                    <XVertical>
+                        {this.props.organizationQuery.organization.channels.map(c => (
+                            <XHorizontal justifyContent="space-between">
+                                <XText>{(c!!.isRoot ? '' : '/') + c!!.title}</XText>
+                                <XText>{c!!.membersCount}</XText>
+                                <XButton text="View" path={'/mail/' + c!!.id} />
+                            </XHorizontal>
+                        ))}
+                    </XVertical>
+                )}
                 {aboutTab && <About organizationQuery={this.props.organizationQuery} />}
                 {membersTab && <Members organizationQuery={this.props.organizationQuery} />}
             </XVertical >
