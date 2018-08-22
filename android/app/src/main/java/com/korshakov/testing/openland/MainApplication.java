@@ -2,6 +2,7 @@ package com.korshakov.testing.openland;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import cl.json.RNSharePackage;
 
@@ -92,5 +93,6 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+        Fresco.initialize(this);
     }
 }

@@ -94,7 +94,7 @@ class ASCounter extends React.PureComponent<{ value: number | string, muted?: bo
     render() {
         return (
             <ASFlex borderRadius={8} backgroundColor={XPStyles.colors.brand} height={16}>
-                <ASText marginLeft-={4} marginRight={4} marginTop={3} color="#fff" lineHeight={12} fontSize={12}>{this.props.value + ''}</ASText>
+                <ASText marginLeft={4} marginRight={4} marginTop={3} color="#fff" lineHeight={12} fontSize={12}>{this.props.value + ''}</ASText>
             </ASFlex>
         );
     }
@@ -150,10 +150,10 @@ class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortF
                                 <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{this.props.item.title}</ASText>
                                 <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText>
                             </ASFlex>
-                            <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={32}>
+                            <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                                 <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                                     {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
-                                    <ASText fontSize={14} height={36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
+                                    <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
                                 </ASFlex>
                                 {this.props.item.unreadCount > 0 && (
                                     <ASFlex marginTop={18} flexShrink={0}>
@@ -177,10 +177,10 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
         }
     }
     renderItem = (item: ListRenderItemInfo<ConversationShortFragment>) => {
-        if (Platform.OS === 'ios') {
-            return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
-        }
-        return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
+        // if (Platform.OS === 'ios') {
+        return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
+        // }
+        // return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
     }
 
     keyExtractor = (item: ConversationShortFragment) => {

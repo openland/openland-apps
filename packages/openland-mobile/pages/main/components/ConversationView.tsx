@@ -7,7 +7,6 @@ import { MessageFullFragment } from 'openland-api/Types';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationMessagesView } from './ConversationMessagesView';
-import FastImage from 'react-native-fast-image';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -81,13 +80,6 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         </ASFlex>
                     </ASView>
                 )}
-                {Platform.OS !== 'ios' && (
-                    <FastImage
-                        source={require('assets/img-chat-3.jpg')}
-                        style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                        resizeMode="cover"
-                    />)
-                }
                 < ConversationMessagesView
                     ref={this.listRef}
                     messages={this.state.conversation.messagesPrepprocessed}
