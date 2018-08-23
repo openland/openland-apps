@@ -23,9 +23,6 @@ const OrganizationCardWrapper = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
     padding: '22px 18px 19px 24px',
-    '&:last-child': {
-        borderBottom: 'none'
-    },
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
