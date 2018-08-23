@@ -6,6 +6,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
 import { XButton } from 'openland-x/XButton';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
+import CommunityIcon from '../icons/ic-community.svg';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
@@ -50,6 +51,7 @@ export const SidebarItemHead = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
     padding: '14px 11px 13px 14px',
+    color: '#5c6a81',
 
     '& i:first-child': {
         fontSize: 20,
@@ -61,7 +63,7 @@ export const SidebarItemHead = Glamorous(XLink)({
         width: 20,
         marginRight: 10,
 
-        '& *': {
+        '& > *': {
             fill: '#bcc3cc'
         }
     },
@@ -70,13 +72,28 @@ export const SidebarItemHead = Glamorous(XLink)({
         flex: 1,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        fontWeight: 500,
     },
 
     '& i:last-child': {
         fontSize: 16,
         marginLeft: 12,
         color: '#bcc3cc'
+    },
+
+    '&:hover': {
+        color: '#1790ff',
+
+        '& svg > *': {
+            opacity: 0.5,
+            fill: '#1790ff',
+        },
+
+        '& i': {
+            opacity: 0.5,
+            color: '#1790ff',
+        },
     },
 });
 
@@ -156,7 +173,7 @@ export class CommunitiesSidebarItemHead extends React.Component {
     render() {
         return (
             <SidebarItemHead path="/directory/communities">
-                <XIcon icon="star" />
+                <CommunityIcon />
                 <span>Communities</span>
                 <XIcon icon="chevron_right" />
             </SidebarItemHead>
