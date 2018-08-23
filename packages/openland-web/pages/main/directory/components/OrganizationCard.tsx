@@ -22,15 +22,18 @@ interface SearchCondition {
 const OrganizationCardWrapper = Glamorous.div({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
-    padding: '20px 18px 20px 24px',
+    padding: '22px 18px 19px 24px',
     '&:last-child': {
         borderBottom: 'none'
+    },
+    '&:hover': {
+        backgroundColor: '#f9fafb'
     }
 });
 
 const OrganizationContentWrapper = Glamorous(XHorizontal)({
     flexGrow: 1,
-    marginLeft: 8
+    marginLeft: 12
 });
 
 const OrganizationInfoWrapper = Glamorous.div({
@@ -42,43 +45,30 @@ const OrganizationAvatar = Glamorous(XAvatar)({
 });
 
 const OrganizationTitle = Glamorous(XLink)({
-    height: 22,
-    fontSize: 20,
+    fontSize: 16,
+    lineHeight: '20px',
     fontWeight: 500,
-    letterSpacing: 0.6,
-    color: '#1f3449',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    maxWidth: '100%'
+    letterSpacing: -0.5,
+    color: '#5c6a81'
 });
 
-const OrganizationLocation = Glamorous.div({
-    fontSize: 14,
-    letterSpacing: -0.2,
-    color: '#1f3449',
-    opacity: 0.5,
-    margin: '2px 0 -2px 20px',
-    cursor: 'pointer'
-});
-
-const OrganizationTitleWrapper = Glamorous.div({
+const OrganizationMembers = Glamorous.div({
     display: 'flex',
-    padding: '6px 0',
-});
+    flexAlign: 'center',
+    marginTop: 7,
 
-const OrganizationTypesText = Glamorous.div(props => ({
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: -0.2,
-    color: '#1f3449',
-    opacity: 0.5,
-    marginBottom: 6,
-    cursor: 'pointer'
-}));
+    '& span': {
+        marginLeft: 8,
+        fontSize: 14,
+        letterSpacing: -0.4,
+        color: '#99a2b0',
+        fontWeight: 500,
+        lineHeight: '18px'
+    }
+});
 
 const OrganizationToolsWrapper = Glamorous(XHorizontal)({
-    paddingTop: 4
+    paddingTop: 1
 });
 
 class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q: SearchCondition) => void }> {
@@ -91,18 +81,29 @@ class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q
         let key = 0;
         for (let orgType of this.props.orgTypes.filter((e, i) => i <= 2)) {
             key++;
-            elements.push(<OrganizationTypesText key={'_org_type_text_' + key} onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}>{orgType}</OrganizationTypesText>);
-            elements.push(<OrganizationTypesText key={'_org_type_text_' + key + 1}>{'•'}</OrganizationTypesText>);
+            elements.push(
+                <XTag
+                    color="gray"
+                    rounded={true}
+                    key={'_org_type_text_' + key}
+                    onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}
+                    text={orgType}
+                />
+            );
         }
         elements.pop();
         if (this.props.orgTypes.length > 3) {
             key++;
-            elements.push(<OrganizationTypesText key={'_org_type_text_' + key}>{'•'}</OrganizationTypesText>);
-            elements.push(<OrganizationTypesText key={'_org_type_text_' + key + 1}>{'+ ' + String(this.props.orgTypes.length - 3) + ' more'}</OrganizationTypesText>);
+            elements.push(
+                <XTag
+                    color="gray"
+                    rounded={true}
+                    key={'_org_type_text_' + key + 1}
+                    text={'+ ' + String(this.props.orgTypes.length - 3) + ' more'}
+                />
+            );
         }
-        return (
-            <XHorizontal separator={2}>{elements}</XHorizontal>
-        );
+        return elements;
     }
 }
 
@@ -151,13 +152,14 @@ interface OrganizationCardProps {
 
 const OrganizationCardTypeWrapper = Glamorous(XHorizontal)({
     flexWrap: 'wrap',
+    marginTop: 11,
     '& > div': {
         marginRight: 8
     }
 });
 
-export const OrganizationCard = (props: OrganizationCardProps) => {
-    const tagsCounter = (data: string[]) => {
+export class OrganizationCard extends React.Component<OrganizationCardProps, { isHovered: boolean }> {
+    tagsCounter = (data: string[]) => {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
             if (i === 2) {
@@ -167,73 +169,97 @@ export const OrganizationCard = (props: OrganizationCardProps) => {
             arr.push({ label: data[i], value: data[i] });
         }
         return arr;
-    };
-    return (
-        <OrganizationCardWrapper>
-            <XHorizontal justifyContent="space-between" separator={12}>
-                <XLink path={'/o/' + props.item.id}>
-                    <OrganizationAvatar
-                        cloudImageUuid={props.item.photo!!}
-                        size="s-large"
-                        style="organization"
-                    />
-                </XLink>
-                <OrganizationContentWrapper>
-                    <OrganizationInfoWrapper>
-                        <OrganizationTitleWrapper>
-                            <OrganizationTitle path={'/o/' + props.item.id}>{props.item.name}</OrganizationTitle>
-                            <OrganizationLocation onClick={() => props.onPick({ type: 'location', value: (props.item.locations || [])[0], label: (props.item.locations || [])[0] })}>{(props.item.locations || [])[0]}</OrganizationLocation>
-                        </OrganizationTitleWrapper>
-                        {props.item.organizationType && (
-                            <OrganizationTypes orgTypes={props.item.organizationType} onPick={props.onPick} />
-                        )}
-                        {props.item.interests && (
-                            <OrganizationCardTypeWrapper separator={0}>
-                                {tagsCounter(props.item.interests).map((tag, i) => (
-                                    <XTag
-                                        key={'_org_tag_' + props.item.id + i}
-                                        text={tag.label}
-                                        onClick={tag.value ? () => props.onPick({ type: 'interest', value: tag.value!!, label: tag.label }) : undefined}
-                                    />
-                                ))}
-                            </OrganizationCardTypeWrapper>
-                        )}
-                    </OrganizationInfoWrapper>
-                    <OrganizationToolsWrapper>
-                        {props.item.isMine &&
-                            <XButton style="ghost" text={TextDirectory.labelYourOrganization} enabled={false} />}
-                        {!props.item.isMine &&
-                            <OrganizationFollowBtn followed={props.item.followed} organizationId={props.item.id} />}
-                        {!props.item.isMine && !props.item.editorial &&
-                            <XButton style="primary" path={'/mail/' + props.item.id} text={TextDirectory.labelSendMessage} />}
+    }
+    
+    constructor(props: OrganizationCardProps) {
+        super(props);
+        this.state = {
+            isHovered: false,
+        };
+    }
 
-                        <XOverflow
-                            placement="bottom-end"
-                            content={(
-                                <>
-                                    <XMenuItem href={'/o/' + props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
-
-                                    {props.item.isMine && (
-                                        <XWithRole role="admin" orgPermission={true}>
-                                            <XMenuItem href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
-                                        </XWithRole>
-                                    )}
-
-                                    {!props.item.isMine && (
-                                        <XWithRole role={['super-admin', 'editor']}>
-                                            <XMenuItem href={'/settings/organization/' + props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
-                                        </XWithRole>
-                                    )}
-
-                                    <XWithRole role={['super-admin', 'editor']}>
-                                        <AlterOrgPublishedButton orgId={props.item.id} published={props.item.published} />
-                                    </XWithRole>
-                                </>
-                            )}
+    render() {
+        return (
+            <OrganizationCardWrapper
+                onMouseEnter={() => this.setState({ isHovered: true })}
+                onMouseLeave={() => this.setState({ isHovered: false })}
+            >
+                <XHorizontal justifyContent="space-between" separator={12}>
+                    <XLink path={'/o/' + this.props.item.id}>
+                        <OrganizationAvatar
+                            cloudImageUuid={this.props.item.photo!!}
+                            size="x-medium"
+                            style="organization"
                         />
-                    </OrganizationToolsWrapper>
-                </OrganizationContentWrapper>
-            </XHorizontal>
-        </OrganizationCardWrapper>
-    );
+                    </XLink>
+                    <OrganizationContentWrapper>
+                        <OrganizationInfoWrapper>
+                            <OrganizationTitle path={'/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
+                            <OrganizationMembers>
+                                <XAvatar
+                                    size="x-small"
+                                />
+                                <span>Eula Hogan +2 more</span>
+                            </OrganizationMembers>
+                            <OrganizationCardTypeWrapper separator={0}>
+                                {this.props.item.locations && (
+                                    <XTag
+                                        color="gray"
+                                        rounded={true}
+                                        text={(this.props.item.locations || [])[0]}
+                                        onClick={() => this.props.onPick({ type: 'location', value: (this.props.item.locations || [])[0], label: (this.props.item.locations || [])[0] })}
+                                    />
+                                )}
+                                {this.props.item.organizationType && (
+                                    <OrganizationTypes orgTypes={this.props.item.organizationType} onPick={this.props.onPick} />
+                                )}
+                            </OrganizationCardTypeWrapper>
+                        </OrganizationInfoWrapper>
+                        <OrganizationToolsWrapper>
+                            {this.props.item.isMine && (
+                                <XButton
+                                    style="ghost"
+                                    size="r-default"
+                                    text={TextDirectory.labelYourOrganization}
+                                    enabled={false}
+                                />
+                            )}
+                            {!this.props.item.isMine && !this.props.item.editorial && (
+                                <XButton
+                                    style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
+                                    size="r-default"
+                                    path={'/mail/' + this.props.item.id}
+                                    text={TextDirectory.labelSendMessage}
+                                />
+                            )}
+                            <XOverflow
+                                placement="bottom-end"
+                                content={(
+                                    <>
+                                        <XMenuItem style="primary-sky-blue" href={'/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+
+                                        {this.props.item.isMine && (
+                                            <XWithRole role="admin" orgPermission={true}>
+                                                <XMenuItem style="primary-sky-blue" href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
+                                            </XWithRole>
+                                        )}
+
+                                        {!this.props.item.isMine && (
+                                            <XWithRole role={['super-admin', 'editor']}>
+                                                <XMenuItem style="primary-sky-blue" href={'/settings/organization/' + this.props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
+                                            </XWithRole>
+                                        )}
+
+                                        <XWithRole role={['super-admin', 'editor']}>
+                                            <AlterOrgPublishedButton orgId={this.props.item.id} published={this.props.item.published} />
+                                        </XWithRole>
+                                    </>
+                                )}
+                            />
+                        </OrganizationToolsWrapper>
+                    </OrganizationContentWrapper>
+                </XHorizontal>
+            </OrganizationCardWrapper>
+        )
+    }
 };
