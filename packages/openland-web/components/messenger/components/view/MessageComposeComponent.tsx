@@ -23,7 +23,7 @@ const SendMessageWrapper = Glamorous(XHorizontal)({
 
 const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
-    maxWidth: '100%',
+    maxWidth: 1000,
     flexBasis: '100%'
 });
 

@@ -98,7 +98,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                         <CommunityAvatar
                             cloudImageUuid={this.props.item.photo!!}
                             size="small"
-                            style="community"
+                            style="channel"
                         />
                     </XLink>
                     <CommunityContentWrapper>

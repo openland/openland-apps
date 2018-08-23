@@ -20,6 +20,7 @@ import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { ChannelsInviteComponent } from './ChannelsInviteComponent';
+import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -242,8 +243,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         tab = 'members';
     }
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
-        return <ChannelsInviteComponent channel={props.data.chat}/>;
+        return <ChannelsInviteComponent channel={props.data.chat} />;
     }
+    let title = props.data.chat.__typename === 'ChannelConversation' ?
+        ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + '/' : '') + props.data.chat.title) :
+        props.data.chat.title;
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
             <ChatHeaderWrapper>
@@ -258,11 +262,15 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
-                                style={props.data.chat.__typename === 'SharedConversation' ? 'organization' : 'person'}
+                                style={(props.data.chat.__typename === 'SharedConversation'
+                                    ? 'organization'
+                                    : props.data.chat.__typename === 'ChannelConversation'
+                                        ? 'channel' : undefined
+                                )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : undefined}
                             />
                             <XHorizontal alignItems="center" separator={6}>
-                                <Title>{props.data.chat.title}</Title>
+                                <Title>{title}</Title>
                                 <SubTitle>
                                     {(props.data.chat.__typename === 'SharedConversation'
                                         ? 'Organization'
@@ -276,12 +284,22 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         </XHorizontal>
                     </NavChatLeftContentStyled>
                     <XHorizontal alignItems="center">
-                        {props.data.chat.__typename === 'ChannelConversation' &&
-                            <ChannelTabs>
-                                <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
-                                <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
-                            </ChannelTabs>
-                        }
+                        {props.data.chat.__typename === 'ChannelConversation' && (
+                            <>
+                                <ChannelTabs>
+                                    <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
+                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
+                                </ChannelTabs>
+                                <InviteMembersModal
+                                    channelTitle={title}
+                                    channelId={props.data.chat.id}
+                                    target={
+                                        <XButton text="Invite" iconResponsive="add" icon="add" size="r-default" />
+                                    }
+                                />
+                            </>
+                        )}
+
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
