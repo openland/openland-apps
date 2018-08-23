@@ -155,7 +155,14 @@ let Item = makeNavigable((props) => (
 
 const renderConversation = (v: any) => (
     <Item path={'/mail/' + v.flexibleId} key={v.id}>
-        <XAvatar style={v.__typename === 'SharedConversation' ? 'organization' : 'person'} cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined} />
+        <XAvatar
+            style={(v.__typename === 'SharedConversation'
+                ? 'organization'
+                : v.__typename === 'ChannelConversation'
+                    ? 'channel' : undefined
+            )}
+            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined}
+        />
         <Header>
             <Main>
                 <Title className="title"><span>{v.title}</span></Title>
@@ -207,7 +214,7 @@ const SearchChats = withChatSearchText((props) => {
         )
         : (
             <NoResultWrapper separator={10} alignItems="center">
-                <EmptyImage/>
+                <EmptyImage />
                 <PlaceholderEmpty>No results</PlaceholderEmpty>
             </NoResultWrapper>
         )

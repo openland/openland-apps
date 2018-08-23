@@ -20,15 +20,95 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XText } from 'openland-x/XText';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import MembersImage from './icons/channel-members.svg';
+
+const EmptyRoot = Glamorous.div({
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+});
+
+const EmptyContent = Glamorous.div({
+    zIndex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+    marginBottom: 50
+});
+
+const Reactangle = Glamorous.div({
+    borderRadius: '100%',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: '10%',
+    left: '0%',
+    opacity: 0.1,
+    backgroundImage: 'linear-gradient(21deg, #ecf2fc, #b9cff7)',
+    zIndex: 0
+});
+
+const ImageWrapper = Glamorous.div<{ smaller: boolean }>(props => ({
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 50,
+    alignSelf: 'center',
+    marginBottom: 50,
+    '& > svg': {
+        width: props.smaller ? 350 : undefined
+    },
+    '@media (max-height: 800px)': {
+        marginTop: 30,
+        marginBottom: 30,
+        '& > svg': {
+            width: 350
+        }
+    }
+}));
+
+const Text = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 1.71,
+    letterSpacing: -0.2,
+    color: '#5c6a81',
+    marginBottom: 8
+});
+
+const InfoText = Glamorous.div({
+    opacity: 0.5,
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.5,
+    letterSpacing: -0.4,
+    color: '#334562',
+    marginBottom: 32
+});
+
+const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean }) => (
+    <EmptyRoot>
+        <Reactangle />
+        <EmptyContent>
+            <ImageWrapper smaller={props.smaller}>
+                <MembersImage />
+            </ImageWrapper>
+            {props.aloneMember && <Text>You are alone</Text>}
+            <InfoText>To grow the community, invite people to this channel</InfoText>
+            <XButton size="r-default" style="primary-sky-blue" text="Send invitations" />
+        </EmptyContent>
+    </EmptyRoot>
+);
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
     width: '100%'
 });
 
-const MembersView = Glamorous.div({
-
-});
+const MembersView = Glamorous.div({});
 
 const Member = Glamorous.div({
     display: 'flex',
@@ -218,26 +298,29 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
 
         return (
             <MembersWrapper>
-                <XWithRole role="admin" orgPermission={true}>
-                    {this.props.isMyOrganization && requests.length > 0 && (
-                        <>
-                            <XSubHeader title="Requests" counter={requests.length} />
-                            <MembersView>
-                                {requests.map(m => (
-                                    <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
-                                ))}
-                            </MembersView>
-                        </>
-                    )}
-                </XWithRole>
+                {this.props.isMyOrganization && requests.length > 0 && (
+                    <XWithRole role="admin" orgPermission={true}>
+                        <XSubHeader title="Requests" counter={requests.length} />
+                        <MembersView>
+                            {requests.map(m => (
+                                <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                            ))}
+                        </MembersView>
+                    </XWithRole>
+                )}
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
-                    {members.map(m => (
+                    {(members.length > 1) && members.map(m => (
                         <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                     ))}
                 </MembersView>
+                {(members.length <= 3) && (
+                    <EmptyComponent
+                        aloneMember={members.length === 1}
+                        smaller={members.length >= 2}
+                    />
+                )}
                 <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
-
             </MembersWrapper>
         );
     }
