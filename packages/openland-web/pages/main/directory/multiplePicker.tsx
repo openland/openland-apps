@@ -15,13 +15,12 @@ const EntryTitle = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     height: 40,
-    fontSize: 16,
-    fontWeight: 500,
-    lineHeight: 1.25,
+    fontSize: 14,
+    fontWeight: 600,
     letterSpacing: -0.2,
-    color: '#334562',
-    paddingLeft: 24,
-    paddingRight: 24,
+    color: '#99a2b0',
+    paddingLeft: 16,
+    paddingRight: 16,
     marginTop: 8
 });
 
@@ -37,23 +36,22 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     alignItems: 'center',
     height: 40,
     flexShrink: 0,
-    paddingLeft: 24,
-    paddingRight: 24,
-    opacity: 0.8,
-    fontSize: 15,
-    lineHeight: 1.33,
+    paddingLeft: 16,
+    paddingRight: 16,
+    fontSize: 14,
     fontWeight: 500,
-    color: props.selected ? '#6b50ff' : '#334562',
+    lineHeight: 1.43,
+    color: props.selected ? '#1790ff' : '#334562',
     letterSpacing: -0.2,
-    backgroundColor: props.selected ? '#f8f8fb' : undefined,
+    backgroundColor: props.selected ? '#f9fafb' : undefined,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     cursor: 'pointer',
     ':hover': {
         ...(props.hover ? {
-            color: '#6b50ff',
-            backgroundColor: '#f8f8fb'
+            color: '#1790ff',
+            backgroundColor: '#f9fafb'
         } : {})
     }
 }));

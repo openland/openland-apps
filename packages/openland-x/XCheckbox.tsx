@@ -56,7 +56,7 @@ const CheckIcon = Glamorous.div<{ active?: boolean, square?: boolean }>((props) 
     height: 18,
     borderRadius: props.square ? 50 : 3.5,
     color: '#fff',
-    backgroundColor: props.active ? '#4428e0' : '#fff',
+    backgroundColor: props.active ? '#1790ff' : '#fff',
     backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
     backgroundSize: 12,
     backgroundPosition: 'center',

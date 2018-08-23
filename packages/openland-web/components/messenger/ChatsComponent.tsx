@@ -13,10 +13,11 @@ import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XIcon } from 'openland-x/XIcon';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import EmptyImage from './components/icons/channels-search-empty.svg';
+import CircleIcon from './components/icons/circle-icon.svg';
+import ArrowIcon from './components/icons/ic-arrow-rignt.svg';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -228,7 +229,11 @@ const Search = Glamorous(XInput)({
 });
 
 const ExploreChannels = Glamorous(XMenuItem)({
-    backgroundColor: '#f2f4f5',
+    backgroundColor: '#F3F5F6',
+    '&:hover': {
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#334562'
+    }
 });
 
 class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, { query: string }> {
@@ -255,7 +260,15 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     cleansable={true}
                 />
                 <XWithRole role={['software-developer', 'super-admin']}>
-                    <ExploreChannels path={'/mail/channels'}><XText>(/) Explore channels</XText></ExploreChannels>
+                    <ExploreChannels path={'/mail/channels'}>
+                        <XHorizontal alignItems="center" justifyContent="space-between">
+                            <XHorizontal alignItems="center" separator={6}>
+                                <CircleIcon />
+                                <XText>Explore channels</XText>
+                            </XHorizontal>
+                            <ArrowIcon />
+                        </XHorizontal>
+                    </ExploreChannels>
                 </XWithRole>
 
                 {search && <SearchChats variables={{ query: this.state.query!! }} />}

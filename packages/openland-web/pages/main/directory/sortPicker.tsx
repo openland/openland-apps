@@ -1,16 +1,28 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XVertical } from 'openland-x-layout/XVertical';
-import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MultiplePicker } from './multiplePicker';
 import { XCheckboxBasic } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
 
+const ContentWrapper = Glamorous(XPopper.Content)({
+    borderRadius: 10,
+    boxShadow: '0 4px 12px 0 rgba(0, 0, 0, 0.06)',
+    backgroundColor: '#fff',
+    border: 'solid 1px #dcdee4',
+    minWidth: 180
+});
+
 const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
-    backgroundColor: (props.activated) ? 'white' : 'none',
-    borderColor: (props.activated) ? 'rgba(220, 222, 228, 0.5)' : 'none',
+    backgroundColor: props.activated ? '#fff' : 'none',
+    borderColor: props.activated ? '#dcdee4' : 'none',
+    borderRadius: 10,
+    '& .icon': {
+        fontSize: 20
+    }
 }));
 
 const PickerWrapper = Glamorous(XVertical)({
@@ -23,10 +35,28 @@ const PickerEntries = Glamorous(XHorizontal)({
 
 const options = { label: 'Sort by', values: [{ label: 'Last updated', value: 'updatedAt' }, { label: 'Join date', value: 'createdAt' }] };
 
-class SortControlledPicker extends React.Component<{ query?: string, onPick: (location: { label: string, value: string }) => void, options: { label: string, values: { label: string, value: string }[] } }> {
+interface SortControlledPickerProps {
+    query?: string;
+    onPick: (location: { label: string, value: string }) => void;
+    options: {
+        label: string,
+        values: {
+            label: string,
+            value: string
+        }[]
+    };
+}
+
+class SortControlledPicker extends React.Component<SortControlledPickerProps> {
 
     render() {
-        return (<MultiplePicker options={[this.props.options]} onPick={this.props.onPick} query={this.props.query} />);
+        return (
+            <MultiplePicker
+                options={[this.props.options]}
+                onPick={this.props.onPick}
+                query={this.props.query}
+            />
+        );
     }
 }
 
@@ -34,9 +64,9 @@ const CheckboxWrap = Glamorous.div({
     marginTop: 8,
     marginLeft: -10,
     marginRight: -10,
-    paddingLeft: 22,
+    paddingLeft: 16,
     paddingTop: 16,
-    paddingRight: 27,
+    paddingRight: 16,
     borderTop: '1px solid #f1f2f5',
 });
 
@@ -87,8 +117,19 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
                 content={content}
                 onClickOutside={this.close}
                 arrow={null}
+                contentContainer={(
+                    <ContentWrapper />
+                )}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={selected ? selected.label : '?'} style="flat" icon="sort" onClick={this.switch} />
+                <PickerButton
+                    iconOpacity={0.4}
+                    activated={this.state.popper}
+                    text={selected ? selected.label : '?'}
+                    style="flat"
+                    size="r-default"
+                    icon="sort"
+                    onClick={this.switch}
+                />
             </XPopper>
         );
     }
