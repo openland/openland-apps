@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper, Placement } from 'openland-x/XPopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
+import NotifyIcon from '../icons/notify-icon.svg';
 
 const Shadow = Glamorous.div<{ active: boolean }>((props) => ({
     position: 'fixed',
@@ -60,6 +61,31 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>((props) 
     zIndex: props.active ? 11 : undefined
 }));
 
+const NotificationButton = Glamorous.div<{ active: boolean }>((props) => ({
+    width: 32,
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    borderRadius: 5,
+    '& svg': {
+        height: 21,
+        width: 15,
+        '& > g > path:last-child': {
+            fill: props.active ? '#1790ff' : '#BCC3CC'
+        }
+    },
+    '&:hover': {
+        border: 'solid 1px #dcdee4',
+        '& svg': {
+            '& > g > path:last-child': {
+                fill: '#1790ff'
+            }
+        }
+    }
+}));
+
 interface XOverflowProps {
     placement?: Placement;
     show?: boolean;
@@ -69,6 +95,7 @@ interface XOverflowProps {
     shadow?: boolean;
     horizontal?: boolean;
     flat?: boolean;
+    notificationStyle?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -117,19 +144,31 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                     width={this.props.width}
                     onClickOutside={this.handleClose}
                 >
-                    {targetElement ? targetElement : (
-                        <DottedMenuButtonStyle
-                            onClick={this.switch}
-                            active={this.state.show}
-                            innerRef={this.createRef}
-                            horizontal={this.props.horizontal}
-                            flat={this.props.flat}
-                        >
-                            <div />
-                            <div />
-                            <div />
-                        </DottedMenuButtonStyle>
-                    )}
+                    {targetElement
+                        ? targetElement
+                        : this.props.notificationStyle === true
+                            ? (
+                                <NotificationButton
+                                    onClick={this.switch}
+                                    active={this.state.show}
+                                    innerRef={this.createRef}
+                                >
+                                    <NotifyIcon/>
+                                </NotificationButton>
+                            )
+                            : (
+                                <DottedMenuButtonStyle
+                                    onClick={this.switch}
+                                    active={this.state.show}
+                                    innerRef={this.createRef}
+                                    horizontal={this.props.horizontal}
+                                    flat={this.props.flat}
+                                >
+                                    <div />
+                                    <div />
+                                    <div />
+                                </DottedMenuButtonStyle>
+                            )}
                 </XPopper>
             </>
         );

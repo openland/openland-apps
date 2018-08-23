@@ -303,6 +303,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
+                            notificationStyle={true}
                             content={(
                                 <div style={{ width: 160 }}>
                                     <XMenuTitle>Notifications</XMenuTitle>
