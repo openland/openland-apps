@@ -84,7 +84,7 @@ const SubHeaderLink = Glamorous(XLink)({
 export class XSubHeaderLink extends React.Component<XLinkProps> {
     render() {
         return (
-            <SubHeaderLink>
+            <SubHeaderLink {...this.props}>
                 {this.props.children}
             </SubHeaderLink>
         );
