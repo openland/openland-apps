@@ -38,6 +38,10 @@ export const AuthRouter = withUserInfo((props) => {
             redirectPath = '/';
         }
     }
+    // redirect non auth joinChannel to accept invite page
+    redirect = redirect.replace('joinChannel', 'acceptChannelInvite');
+    redirectPath = redirectPath.replace('joinChannel', 'acceptChannelInvite');
+
     let handled = false;
 
     // Redirect to Join prview before Signup/Signin if there are was redirect to join
@@ -47,7 +51,7 @@ export const AuthRouter = withUserInfo((props) => {
     }
 
     // Redirect to Join Channel prview before Signup/Signin if there are was redirect to join
-    if (!handled && !props.isLoggedIn && redirectPath.startsWith('/joinChannel/')) {
+    if (!handled && !props.isLoggedIn && redirectPath.startsWith('/acceptChannelInvite/')) {
         handled = true;
         return <XPageRedirect path={'/signin/channel' + redirect} />;
     }
@@ -105,12 +109,12 @@ export const AuthRouter = withUserInfo((props) => {
         }
     }
 
-    if (!handled && !props.isCompleted && redirectPath.startsWith('/joinChannel/')) {
+    if (!handled && !props.isCompleted && redirectPath.startsWith('/acceptChannelInvite/')) {
         handled = true;
         console.warn('boom');
 
         if (!props.router.path.startsWith('/acceptChannelInvite/')) {
-            return <XPageRedirect path={redirectPath.replace('joinChannel', 'acceptChannelInvite')} />;
+            return <XPageRedirect path={redirectPath} />;
         }
     }
 
