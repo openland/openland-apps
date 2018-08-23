@@ -48,7 +48,7 @@ export const SidebarItem = Glamorous.div<{ active?: boolean }>([
 export const SidebarItemHead = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
-    padding: '11px 11px 13px 16px',
+    padding: '14px 11px 13px 14px',
 
     '& i:first-child': {
         fontSize: 20,
@@ -71,7 +71,7 @@ export const SidebarItemHead = Glamorous(XLink)({
 });
 
 export const SidebarItemBody = Glamorous.div({
-    padding: '6px 16px 16px'
+    padding: '3px 16px 16px 15px'
 });
 
 export const Container = Glamorous.div({

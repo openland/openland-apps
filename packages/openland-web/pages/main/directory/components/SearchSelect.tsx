@@ -3,19 +3,12 @@ import Glamorous from 'glamorous';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XInput } from 'openland-x/XInput';
 import { XTag } from 'openland-x/XTag';
+import { XIcon } from 'openland-x/XIcon';
 
 interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
     value: string | string[];
     label: string;
-}
-
-interface SearchSelectProps {
-    title: string;
-    conditionType: 'name' | 'location' | 'organizationType' | 'interest';
-    onPick: (q: SearchCondition) => void;
-    options: { label: string, value: string }[];
-    initialShown?: boolean;
 }
 
 interface PickerProps {
@@ -118,11 +111,22 @@ const SearchSelectBox = Glamorous.div({
 });
 
 const SearchSelectHead = Glamorous.div({
-    cursor: 'pointer'
+    cursor: 'pointer',
+    padding: '9px 9px 10px 16px',
+    display: 'flex',
+    '& span': {
+        flex: 1
+    },
+    '& i': {
+        fontSize: 20,
+        color: '#c1c7cf'
+    }
 });
 
 const SearchSelectInputWrapper = Glamorous.div({
-    
+    '& i': {
+        color: '#c1c7cf!important'
+    }
 });
 
 const SearchSelectBody = Glamorous(XScrollView)({
@@ -136,13 +140,21 @@ const SearchSelectInput = Glamorous(XInput)({
     boxShadow: 'none!important'
 });
 
-export class SearchSelect extends React.Component<SearchSelectProps, { query: string, shown: boolean }> {
+interface SearchSelectProps {
+    title: string;
+    conditionType: 'name' | 'location' | 'organizationType' | 'interest';
+    onPick: (q: SearchCondition) => void;
+    options: { label: string, value: string }[];
+    shown: boolean;
+    onShow: () => void;
+}
+
+export class SearchSelect extends React.Component<SearchSelectProps, { query: string }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
             query: '',
-            shown: this.props.initialShown || false
         };
     }
 
@@ -169,14 +181,15 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
     render() {
         return (
             <SearchSelectBox>
-                {!this.state.shown && (
+                {!this.props.shown && (
                     <SearchSelectHead
-                        onClick={() => this.setState({ shown: true })}
+                        onClick={this.props.onShow}
                     >
-                        {this.props.title}
+                        <span>{this.props.title}</span>
+                        <XIcon icon="expand_more" />
                     </SearchSelectHead>
                 )}
-                {this.state.shown && (
+                {this.props.shown && (
                     <>
                         <SearchSelectInputWrapper>
                             <SearchSelectInput
@@ -185,6 +198,7 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
                                 value={this.state.query}
                                 onChange={this.handleChange}
                                 onEnter={this.onEnter}
+                                autofocus={true}
                             />
                         </SearchSelectInputWrapper>
                         <SearchSelectBody>

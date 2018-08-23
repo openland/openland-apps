@@ -223,6 +223,7 @@ interface RootComponentState {
     sort: { orderBy: string, featured: boolean };
     orgCount: number;
     showFilters: boolean;
+    shownSelect: number;
 }
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
@@ -236,7 +237,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             conditions: [],
             sort: { orderBy: 'createdAt', featured: true },
             orgCount: 0,
-            showFilters: false
+            showFilters: false,
+            shownSelect: 1
         };
     }
 
@@ -358,13 +360,16 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     conditionType="organizationType"
                                     onPick={this.addCondition}
                                     options={CategoryOptions}
-                                    initialShown={true}
+                                    onShow={() => this.setState({ shownSelect: 1 })}
+                                    shown={this.state.shownSelect === 1}
                                 />
                                 <SearchSelect
-                                    title="Locations"
+                                    title="Location"
                                     conditionType="location"
                                     onPick={this.addCondition}
                                     options={LocationOptions}
+                                    onShow={() => this.setState({ shownSelect: 2 })}
+                                    shown={this.state.shownSelect === 2}
                                 />
                             </SidebarItemBody>
                         </SidebarItem>
