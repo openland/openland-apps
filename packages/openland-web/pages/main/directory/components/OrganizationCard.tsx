@@ -260,6 +260,6 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                     </OrganizationContentWrapper>
                 </XHorizontal>
             </OrganizationCardWrapper>
-        )
+        );
     }
-};
+}
