@@ -88,7 +88,7 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
                 onClickOutside={this.close}
                 arrow={null}
             >
-                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={selected ? selected.label : '?'} style="flat" iconRight="expand_more" onClick={this.switch} />
+                <PickerButton iconOpacity={0.4} activated={this.state.popper} text={selected ? selected.label : '?'} style="flat" icon="sort" onClick={this.switch} />
             </XPopper>
         );
     }

@@ -4,11 +4,11 @@ export const TextDirectory = {
 
     headerButtonAddOrganization: 'Add an organization',
 
-    searchInputPlaceholder: 'Enter a keyword',
+    searchInputPlaceholder: 'Add a keyword or tag',
     searchConditionAll: 'All organizations',
 
     buttonSearch: 'Search',
-    buttonReset: 'Reset',
+    buttonReset: 'Clear',
 
     labelYourOrganization: 'Your organization',
     labelSendMessage: 'Message',
