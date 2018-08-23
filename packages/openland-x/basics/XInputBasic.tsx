@@ -430,15 +430,11 @@ const ClearButton = Glamorous.a({
     cursor: 'pointer'
 });
 
-export class XInputBasic extends React.Component<XInputBasicProps, {value: string}> {
+export class XInputBasic extends React.PureComponent<XInputBasicProps> {
     inputRef: any | null = null;
 
     constructor(props: XInputBasicProps) {
         super(props);
-
-        this.state = {
-            value: this.props.value || ''
-        };
     }
 
     handleRef = (e: any) => {
@@ -456,18 +452,12 @@ export class XInputBasic extends React.Component<XInputBasicProps, {value: strin
     handleChange = (e: any) => {
         if (this.props.onChange) {
             this.props.onChange(e.target.value);
-            this.setState({
-                value: e.target.value
-            });
         }
     }
 
     handleClear = () => {
         if (this.props.onChange) {
             this.props.onChange('');
-            this.setState({
-                value: ''
-            });
         }
     }
 
@@ -505,7 +495,7 @@ export class XInputBasic extends React.Component<XInputBasicProps, {value: strin
             ...other
         } = this.props;
 
-        let v = this.state.value;
+        let v = this.props.value;
         if (v === null) {
             v = '';
         }

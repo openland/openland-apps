@@ -40,7 +40,6 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
 
                     <XTitle>for channels</XTitle>
                     <BrowseChannelsModal title="Browse channels" target={<XButton text="Browse channels" />} />
-                    <InviteMembersModal defaultAction={() => null} title="Invite members" target={<XButton text="Invite channels" />} />
                     <PostChannelModal defaultAction={() => null} title="Post listing" target={<XButton text="Post channel" />} />
 
                     <XTitle>Modals</XTitle>

@@ -382,3 +382,27 @@ export const ChannelJoinMutation = gql`
         join: alphaChannelJoin(channelId: $channelId)
     }
 `;
+
+export const ChannelInviteMembersMutation = gql`
+    mutation ChannelInviteMembers($channelId: ID!, $inviteRequests: [ChannelInviteRequest!]!) {
+        alphaChannelInviteMembers(channelId: $channelId, inviteRequests: $inviteRequests)
+    }
+`;
+
+export const ChannelJoinInviteMutation = gql`
+    mutation ChannelJoinInvite($invite: String!) {
+        alphaChannelJoinInvite(invite: $invite)
+    }
+`;
+
+export const ChannelRenewInviteLinkMutation = gql`
+    mutation ChannelRenewInviteLink($channelId: ID!) {
+        link: alphaChannelRenewInviteLink(channelId: $channelId)
+    }
+`;
+
+export const ChannelInviteLinkQuery = gql`
+    query ChannelInviteLink($channelId: ID!) {
+        link: alphaChannelInviteLink(channelId: $channelId)
+    }
+`;
