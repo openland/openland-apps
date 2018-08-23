@@ -13,11 +13,12 @@ export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, a
         }
         render() {
             return (
-                <ZHeaderContextDirect navigation={this.props.navigation}>
-                    <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                        <Wrapped {...this.props} />
-                    </ZHeaderSafeArea>
-                </ZHeaderContextDirect>
+                // <ZHeaderContextDirect navigation={this.props.navigation}>
+                //     <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                //         <Wrapped {...this.props} />
+                //     </ZHeaderSafeArea>
+                // </ZHeaderContextDirect>
+                <Wrapped {...this.props} />
             );
         }
     };

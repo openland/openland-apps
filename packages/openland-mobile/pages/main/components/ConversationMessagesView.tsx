@@ -181,7 +181,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                 onEndReachedThreshold={1}
                 onEndReached={this.handleEndReached}
                 ref={this.listRef}
-                initialNumToRender={10}
+                initialNumToRender={0}
                 scrollIndicatorInsets={{
                     bottom: this.props.topInset,
                     top: this.props.bottomInset

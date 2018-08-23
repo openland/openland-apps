@@ -7,17 +7,14 @@ import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
-import { AppStack, LoginStack } from '../routes';
+import { LoginStack, Routes } from '../routes';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
-import { ZSafeAreaProvider } from '../components/layout/ZSafeAreaContext';
-import { ZAppConfig } from '../components/ZAppConfig';
 import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
-import { Test } from './main/Test';
 import { NativeModules } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { FastRouterProvider } from 'react-native-fast-navigation/FastRouterProvider';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
     constructor(props: NavigationInjectedProps) {
         super(props);
@@ -71,25 +68,18 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
             return <ZLoader appearance="large" />;
         } else if (this.state.state === 'app') {
             return (
-                <ZSafeAreaRoot>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <View style={{ position: 'absolute', width: 0, height: 0 }} >
-                            <FastImage
-                                source={require('assets/img-chat-3.jpg')}
-                                style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                                resizeMode="cover"
-                            />
-                        </View>
-                        <YApolloProvider client={getClient()}>
-                            <ZPictureModal>
-                                <MessengerContext.Provider value={getMessenger()}>
-                                    <PushManager client={getClient()} />
-                                    <AppStack />
-                                </MessengerContext.Provider>
-                            </ZPictureModal>
-                        </YApolloProvider>
-                    </View>
-                </ZSafeAreaRoot>
+                <YApolloProvider client={getClient()}>
+                    <PushManager client={getClient()} />
+                    <MessengerContext.Provider value={getMessenger()}>
+                        <ZSafeAreaRoot>
+                            <View style={{ width: '100%', height: '100%' }}>
+                                <ZPictureModal>
+                                    <FastRouterProvider routes={Routes} />
+                                </ZPictureModal>
+                            </View>
+                        </ZSafeAreaRoot>
+                    </MessengerContext.Provider>
+                </YApolloProvider>
             );
         } else if (this.state.state === 'auth') {
             return <LoginStack />;

@@ -20,13 +20,16 @@ import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { DownloadManagerInstance } from '../../files/DownloadManager';
 import { Modals } from './modals/Modals';
+import { withRouter, FastRouterInjectedProps } from 'react-native-fast-navigation/withRouter';
+import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
+import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 
-class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
+class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, router: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     watchSubscription?: WatchSubscription;
 
-    constructor(props: { provider: ZPictureModalProvider, navigator: any, engine: MessengerEngine, conversationId: string }) {
+    constructor(props: { provider: ZPictureModalProvider, router: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
         this.state = { text: '', render: false };
@@ -39,7 +42,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     componentDidMount() {
-        setTimeout(() => { this.setState({ render: true }); }, 10);
+        setTimeout(() => { this.setState({ render: true }); }, 200);
     }
 
     componentWillUnmount() {
@@ -69,7 +72,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     handleAvatarPress = (userId: string) => {
-        this.props.navigator.navigate('ProfileUser', { 'id': userId });
+        this.props.router.push('ProfileUser', { 'id': userId });
     }
 
     handlePhotoPress = (message: MessageFullFragment, view?: View) => {
@@ -97,7 +100,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
         if (!message.file || !message.fileMetadata || !message.fileMetadata.name || !message.fileMetadata.size) {
             return;
         }
-        Modals.showFilePreview(this.props.navigator, message.file, message.fileMetadata.name, message.fileMetadata.size);
+        // Modals.showFilePreview(this.props.router, message.file, message.fileMetadata.name, message.fileMetadata.size);
     }
 
     render() {
@@ -106,12 +109,12 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
         }
         return (
             <>
-                <ZHeaderView>
-                    <ChatHeader conversationId={this.engine.conversationId} navigation={this.props.navigator} />
+                {/* <ZHeaderView>
+                    <ChatHeader conversationId={this.engine.conversationId} navigation={this.props.router} />
                 </ZHeaderView>
                 <ZHeaderButton>
-                    <ChatRight conversationId={this.engine.conversationId} navigation={this.props.navigator} />
-                </ZHeaderButton>
+                    <ChatRight conversationId={this.engine.conversationId} navigation={this.props.router} />
+                </ZHeaderButton> */}
                 <View style={{ height: '100%', flexDirection: 'column' }}>
                     <ConversationView
                         onPhotoPress={this.handlePhotoPress}
@@ -132,17 +135,18 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 }
 
-class ConversationComponent extends React.Component<NavigationInjectedProps> {
+class ConversationComponent extends React.Component<FastRouterInjectedProps> {
     render() {
         return (
             <>
+                <FastHeaderConfigRegistrator config={new FastHeaderConfig({ title: 'Messages' })} />
                 <View backgroundColor="#fff" flexDirection={'column'} height="100%" width="100%">
                     <ZPictureModalContext.Consumer>
                         {modal => (
                             <MessengerContext.Consumer>
                                 {messenger => {
                                     return (
-                                        <ConversationRoot provider={modal!!} key={this.props.navigation.getParam('id')} navigator={this.props.navigation} engine={messenger!!} conversationId={this.props.navigation.getParam('id')} />
+                                        <ConversationRoot provider={modal!!} key={this.props.router.params.id} router={this.props.router} engine={messenger!!} conversationId={this.props.router.params.id} />
                                     );
                                 }}
                             </MessengerContext.Consumer>
@@ -154,4 +158,4 @@ class ConversationComponent extends React.Component<NavigationInjectedProps> {
     }
 }
 
-export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small' });
+export const Conversation = withApp(withRouter(ConversationComponent) as any, { navigationAppearance: 'small' });

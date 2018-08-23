@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, ScrollView } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { NavigationInjectedProps } from 'react-navigation';
 import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
@@ -67,20 +67,20 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
     render() {
         return (
             <>
-                <ZHeader title="Settings" />
-                <ZScrollView>
+                {/* <ZHeader title="Settings" /> */}
+                <ScrollView>
                     <ZQuery query={AccountQuery}>
                         {resp => {
                             return (
                                 <>
-                                    <ZListItemHeader
+                                    {/* <ZListItemHeader
                                         photo={resp.data!!.me!!.picture}
                                         id={resp.data!!.me!!.id}
                                         title={resp.data!!.me!!.name}
                                         subtitle={resp.data!!.organization!!.name}
                                         path="SettingsProfile"
                                         action="Edit profile"
-                                    />
+                                    /> */}
                                     <ZListItemGroup header="Settings">
                                         <ZListItem text="Notifications" path="SettingsNotifications" />
                                     </ZListItemGroup>
@@ -102,7 +102,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                             );
                         }}
                     </ZQuery>
-                </ZScrollView>
+                </ScrollView>
             </>
         );
     }

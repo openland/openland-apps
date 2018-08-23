@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ListRenderItemInfo, View, Platform } from 'react-native';
+import { ListRenderItemInfo, View, Platform, FlatList } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
@@ -211,7 +211,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
 
     render() {
         return (
-            <ZFlatList
+            <FlatList
                 ListHeaderComponent={this.renderHeader}
                 ListFooterComponent={this.renderFooter}
                 data={this.props.dialogs}
@@ -220,7 +220,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 onEndReached={this.loadMore}
                 onEndReachedThreshold={1}
                 ItemSeparatorComponent={DialogListSeparator}
-                fixedHeight={80}
+                // fixedHeight={80}
                 initialScrollIndex={0}
             />
         );

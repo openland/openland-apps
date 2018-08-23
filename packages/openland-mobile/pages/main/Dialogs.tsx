@@ -11,6 +11,9 @@ import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { ZHeader } from '../../components/ZHeader';
 import { ZHeaderSearch } from '../../components/ZHeaderSearch';
 import { ZSafeAreaProvider } from '../../components/layout/ZSafeAreaContext';
+import { FastRouterInjectedProps, withRouter } from 'react-native-fast-navigation/withRouter';
+import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
+import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 
 class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }> {
 
@@ -40,9 +43,9 @@ function startAnimation() {
     });
 }
 
-class DialogsComponent extends React.Component<NavigationInjectedProps, { search: boolean }> {
+class DialogsComponent extends React.Component<FastRouterInjectedProps, { search: boolean }> {
 
-    constructor(props: NavigationInjectedProps) {
+    constructor(props: FastRouterInjectedProps) {
         super(props);
         this.state = {
             search: false
@@ -50,7 +53,7 @@ class DialogsComponent extends React.Component<NavigationInjectedProps, { search
     }
 
     handleItemClick = (item: ConversationShortFragment) => {
-        this.props.navigation.navigate('Conversation', { id: item.id, title: item.title });
+        this.props.router.push('Conversation', { id: item.id, title: item.title });
     }
 
     handleSearchStart = () => {
@@ -64,13 +67,15 @@ class DialogsComponent extends React.Component<NavigationInjectedProps, { search
     }
 
     render() {
+        console.log(this.props);
         return (
             <>
-                <ZHeader title="Messages" />
+                <FastHeaderConfigRegistrator config={new FastHeaderConfig({ title: 'Messages' })} />
+                {/* <ZHeader title="Messages" />
                 <ZHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.navigation.navigate('ComposeModal')} />
-                <ZHeaderSearch active={this.state.search} onActivate={this.handleSearchStart} onDeactivate={this.handleSearchStop} />
+                <ZHeaderSearch active={this.state.search} onActivate={this.handleSearchStart} onDeactivate={this.handleSearchStop} /> */}
                 <ZSafeAreaProvider top={this.state.search ? -44 : 48}>
-                    <View style={{ height: '100%', backgroundColor: '#fff' }}>
+                    <View style={{ height: '100%' }}>
                         <MessengerContext.Consumer>
                             {(messenger) => <ConversationsListener engine={messenger!!} onItemClick={this.handleItemClick} />}
                         </MessengerContext.Consumer>
@@ -81,4 +86,4 @@ class DialogsComponent extends React.Component<NavigationInjectedProps, { search
     }
 }
 
-export const Dialogs = withApp(DialogsComponent);
+export const Dialogs = withApp(withRouter(DialogsComponent) as any);
