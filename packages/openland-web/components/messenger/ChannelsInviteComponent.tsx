@@ -161,7 +161,7 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
     );
 }) as React.ComponentType<{ invite: string, refetchVars: { conversationId: string }, text: string }>;
 
-export class ChannelsInviteComponent extends React.Component<{ inviteLink?: string, channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization?: { name: string } | null }, invite?: { invitedByUser?: { name: string, picture?: string } } }> {
+export class ChannelsInviteComponent extends React.Component<{ inviteLink?: string, signup?: string, channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization?: { name: string } | null }, invite?: { invitedByUser?: { name: string, picture?: string | null } } }> {
     render() {
         console.warn(this.props);
         let joinText = this.props.channel.myStatus === 'none' ? 'Rrequest invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
@@ -176,7 +176,7 @@ export class ChannelsInviteComponent extends React.Component<{ inviteLink?: stri
                     </XHorizontal>
                     {this.props.invite && this.props.invite.invitedByUser ?
                         <UserInfoWrapper separator={6} justifyContent="center">
-                            <UserAvatar cloudImageUuid={this.props.invite.invitedByUser.picture || undefined}/>
+                            <UserAvatar cloudImageUuid={this.props.invite.invitedByUser.picture || undefined} />
                             <Text><b>{this.props.invite.invitedByUser.name}</b> has invited you</Text>
                         </UserInfoWrapper> : <div style={{ height: 120 }} />
                     }
@@ -192,25 +192,39 @@ export class ChannelsInviteComponent extends React.Component<{ inviteLink?: stri
                             </ChannelCounter>
                         </XVertical>
                     </InfoCardWrapper>
-                    {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} refetchVars={{ conversationId: this.props.channel.id }} text={joinText}/>}
-                    {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: this.props.channel.id }} text="Accept invite"  />}
-                    {this.props.channel.myStatus === 'requested' && (
-                        <XButton
-                            style="ghost"
-                            size="r-default"
-                            text="Pending"
-                            alignSelf="center"
-                            flexShrink={0}
-                        />
-                    )}
-                    {this.props.channel.myStatus === 'member' && (
+                    {!this.props.signup &&
+                        <>
+                            {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
+                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: this.props.channel.id }} text="Accept invite" />}
+                            {this.props.channel.myStatus === 'requested' && (
+                                <XButton
+                                    style="ghost"
+                                    size="r-default"
+                                    text="Pending"
+                                    alignSelf="center"
+                                    flexShrink={0}
+                                />
+                            )}
+                            {this.props.channel.myStatus === 'member' && (
+                                <XButton
+                                    style="primary-sky-blue"
+                                    size="r-default"
+                                    text="Open channel"
+                                    alignSelf="center"
+                                    flexShrink={0}
+                                    path={'/mail/' + this.props.channel.id}
+                                />
+                            )}
+                        </>
+                    }
+                    {this.props.signup && (
                         <XButton
                             style="primary-sky-blue"
                             size="r-default"
-                            text="Open channel"
+                            text="Accept invite"
                             alignSelf="center"
                             flexShrink={0}
-                            path={'/mail/' + this.props.channel.id}
+                            path={this.props.signup}
                         />
                     )}
                     <ImageWrapper>

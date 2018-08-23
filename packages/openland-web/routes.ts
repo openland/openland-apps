@@ -13,6 +13,8 @@ routes.add('/signin', '/init/signin');
 routes.add('/signin/', '/init/signin');
 routes.add('/signin/invite', '/init/signinvite');
 routes.add('/signin/invite/', '/init/signinvite');
+routes.add('/signin/channel', '/init/signChannelInvite');
+routes.add('/signin/channel/', '/init/signChannelInvite');
 routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
@@ -33,6 +35,8 @@ routes.add('/join/:inviteKey', '/init/join');
 routes.add('/join/:inviteKey/', '/init/join');
 routes.add('/invite/:inviteKey', '/init/invite');
 routes.add('/invite/:inviteKey/', '/init/invite');
+routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
+routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 routes.add('/404', '/404');
 
 //

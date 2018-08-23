@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
+import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XIcon } from 'openland-x/XIcon';
@@ -415,7 +415,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                         </SearchRow>
                         {(this.state.conditions.length <= 0) && (
                             <XSubHeader title="All organizations">
-                                <XSubHeaderLink>
+                                <XSubHeaderLink query={{ field: 'createOrganization', value: 'true' }}>
                                     <XIcon icon="add" />
                                     New organization
                                 </XSubHeaderLink>
@@ -446,6 +446,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                         </Results>
                     </ContentView>
                 </Container>
+
+                <CreateOrganization />
             </RootWrapper>
         );
     }
