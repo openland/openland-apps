@@ -75,11 +75,13 @@ const DateDivider = Glamorous.div({
 const MessagesWrapper = Glamorous.div<{empty?: boolean}>(props => ({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
+    alignItems: 'stretch', 
+    alignSelf: 'center',
     flexGrow: props.empty ? 1 : undefined,
     paddingTop: props.empty ? 20 : 96,
     paddingBottom: props.empty ? 0 : 40,
-    width: '100%'
+    width: '100%',
+    maxWidth: 1000
 }));
 
 const EmptyRoot = Glamorous.div({
