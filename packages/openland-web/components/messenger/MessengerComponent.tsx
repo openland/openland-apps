@@ -21,6 +21,9 @@ import { ChannelMembersComponent } from '../../pages/main/channel/components/mem
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { ChannelsInviteComponent } from './ChannelsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
+import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
+import { XLoader } from 'openland-x/XLoader';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -242,6 +245,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     if (props.router.query.tab === 'members') {
         tab = 'members';
     }
+
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
         return <ChannelsInviteComponent channel={props.data.chat} />;
     }

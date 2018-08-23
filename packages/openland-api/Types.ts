@@ -2168,6 +2168,58 @@ export interface ChannelInviteLinkQuery {
   link: string,
 };
 
+export interface ChannelInviteInfoQueryVariables {
+  uuid: string,
+};
+
+export interface ChannelInviteInfoQuery {
+  invite:  {
+    __typename: "ChannelInvite",
+    channel:  {
+      __typename: "ChannelConversation",
+      id: string,
+      title: string,
+      photos: Array< string >,
+      isRoot: boolean,
+      featured: boolean,
+      description: string,
+      myStatus: ChannelMembershipStatus,
+      membersCount: number,
+      organization:  {
+        __typename: "Organization",
+        id: string,
+        isMine: boolean,
+        name: string,
+      } | null,
+    },
+    invitedByUser:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+      } | null,
+      role: string | null,
+      linkedin: string | null,
+      twitter: string | null,
+    },
+  } | null,
+};
+
+export interface ChannelJoinInviteLinkMutationVariables {
+  invite: string,
+};
+
+export interface ChannelJoinInviteLinkMutation {
+  cannelId: string,
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",

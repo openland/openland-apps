@@ -14,7 +14,7 @@ import PlaceholderChannelSmall from './icons/avatar_community_small.svg';
 import { XPImage } from 'openland-xp/XPImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 'medium' | 'default' | 'small' | 'x-small';
-export type XAvatarStyle = 'organization' | 'person' | 'channel';
+export type XAvatarStyle = 'organization' | 'person' | 'channel' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
