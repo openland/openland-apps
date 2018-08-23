@@ -5,6 +5,7 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
 import { XButton } from 'openland-x/XButton';
+import OrganizationsIcon from '../icons/ic-organization-small.svg';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
@@ -54,6 +55,15 @@ export const SidebarItemHead = Glamorous(XLink)({
         fontSize: 20,
         marginRight: 12,
         color: '#bcc3cc'
+    },
+
+    '& svg': {
+        width: 20,
+        marginRight: 10,
+
+        '& *': {
+            fill: '#bcc3cc'
+        }
     },
 
     '& span': {
@@ -134,7 +144,7 @@ export class OrganizationsSidebarItemHead extends React.Component {
     render() {
         return (
             <SidebarItemHead path="/directory">
-                <XIcon icon="star" />
+                <OrganizationsIcon />
                 <span>Organizations</span>
                 <XIcon icon="chevron_right" />
             </SidebarItemHead>

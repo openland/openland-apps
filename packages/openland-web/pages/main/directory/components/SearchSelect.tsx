@@ -81,9 +81,8 @@ class Picker extends React.Component<PickerProps, PickerState> {
                 {!this.state.empty && (
                     <TagsWrapper>
                         {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
-                            <TagBox>
+                            <TagBox key={e.value}>
                                 <XTag
-                                    key={e.value}
                                     text={e.label}
                                     rounded={true}
                                     color="default"

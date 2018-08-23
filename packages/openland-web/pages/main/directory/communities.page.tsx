@@ -55,7 +55,7 @@ const CommunitiesCards = withExploreCommunities((props) => {
                 </>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
-                <EmptySearchBlock />
+                <EmptySearchBlock text="No community matches your search" />
             )}
         </>
     );

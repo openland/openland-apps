@@ -1,26 +1,30 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XVertical } from 'openland-x-layout/XVertical';
 
-const EmptySearchWrapper = Glamorous(XVertical)({
-    paddingTop: 85,
-    paddingBottom: 85
+const EmptySearchWrapper = Glamorous.div({
+    height: 'calc(100vh - 118px)',
+    minHeight: 600,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
 });
 
 const EmptySearchBlockTitle = Glamorous.div({
-    fontSize: 18,
-    letterSpacing: -0.2,
-    color: '#334562'
+    marginTop: 54,
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: '24px',
+    letterSpacing: -0.5,
+    color: '#99a2b0',
 });
 
-export class EmptySearchBlock extends React.Component {
+export class EmptySearchBlock extends React.Component<{ text: string }> {
     render() {
         return (
-            <EmptySearchWrapper separator={12} alignItems="center">
-                <XVertical separator={9}>
-                    <img src="/static/X/directory-empty.svg" />
-                    <EmptySearchBlockTitle>No results found</EmptySearchBlockTitle>
-                </XVertical>
+            <EmptySearchWrapper>
+                <img src="/static/X/directory/empty-state.png" srcSet="/static/X/directory/empty-state.png, /static/X/directory/empty-state@2x.png 2x, /static/X/directory/empty-state@3x.png 3x" />
+                <EmptySearchBlockTitle>{this.props.text}</EmptySearchBlockTitle>
             </EmptySearchWrapper>
         );
     }
