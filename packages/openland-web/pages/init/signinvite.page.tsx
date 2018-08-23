@@ -16,6 +16,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XText } from 'openland-x/XText';
 import { XLinkProps, XLink } from 'openland-x/XLink';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 const BubbleMsg = Glamorous(XVertical)({
     borderRadius: 18,
@@ -167,7 +168,7 @@ const InviteInfo = withInviteInfo((props) => {
         (<XPageRedirect path={signPath} />);
 }) as React.ComponentType<{ variables: { inviteKey: string }, redirect: string }>;
 
-export default withAppBase('Invite', withInviteActivation((props) => {
+export default withAppBase('Invite', withRouter((props) => {
     console.warn(String(props.router.query.redirect).split('/')[2]);
 
     return (

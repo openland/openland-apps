@@ -9,8 +9,10 @@ export const AuthRouter = withUserInfo((props) => {
     let redirectPath: string = '/';
 
     let isJoinRedirect = false;
+    let isJoinChannelRedirect = false;
     if (redirect) {
         isJoinRedirect = redirect.startsWith('/join/');
+        isJoinChannelRedirect = redirect.startsWith('/joinChannel/');
         redirect = '?redirect=' + encodeURIComponent(redirect);
         redirectPath = redirect;
     } else {
@@ -44,6 +46,13 @@ export const AuthRouter = withUserInfo((props) => {
     if (!handled && !props.isLoggedIn && (redirectPath.startsWith('/join/') || redirectPath.startsWith('/invite/'))) {
         handled = true;
         return <XPageRedirect path={'/signin/invite' + redirect} />;
+    }
+
+    console.warn(redirectPath);
+    // Redirect to Join Channel prview before Signup/Signin if there are was redirect to join
+    if (!handled && !props.isLoggedIn && redirectPath.startsWith('/joinChannel/')) {
+        handled = true;
+        return <XPageRedirect path={'/signin/channel' + redirect} />;
     }
 
     // Redirect to Signup/Signin pages
@@ -99,8 +108,15 @@ export const AuthRouter = withUserInfo((props) => {
         }
     }
 
+    if (!handled && !props.isCompleted && redirectPath.startsWith('/joinChannel/')) {
+        handled = true;
+        if (!props.router.path.startsWith('/joinChannel/')) {
+            return <XPageRedirect path={redirectPath} />;
+        }
+    }
+
     // Bypass Next steps for invite
-    if (!handled && !props.isCompleted && props.router.path.startsWith('/invite/')) {
+    if (!handled && !props.isCompleted && (props.router.path.startsWith('/invite/') || props.router.path.startsWith('/joinChannel/'))) {
         handled = true;
     }
 
@@ -177,7 +193,7 @@ export const AuthRouter = withUserInfo((props) => {
             // '/createOrganization', // Do not redirect to createOrganization
             '/signin',
             '/signup'
-        ].indexOf(props.router.path) >= 0 || props.router.path.startsWith('/invite')) {
+        ].indexOf(props.router.path) >= 0 || (props.router.path.startsWith('/invite') || props.router.path.startsWith('/joinChannel'))) {
             console.warn('Completed');
             console.warn(redirectPath);
             if (props.router.path.startsWith('/invite')) {
