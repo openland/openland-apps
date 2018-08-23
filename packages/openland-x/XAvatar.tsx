@@ -9,10 +9,11 @@ import PlaceholderOrg from './icons/avatar_org_large.svg';
 import PlaceholderOrgSmall from './icons/avatar_org_small.svg';
 import PlaceholderUser from './icons/avatar_user_large.svg';
 import PlaceholderUserSmall from './icons/avatar_user_small.svg';
+import PlaceholderCommunity from './icons/avatar_community.svg';
 import { XPImage } from 'openland-xp/XPImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 'medium' | 'default' | 'small' | 'x-small';
-export type XAvatarStyle = 'organization' | 'person';
+export type XAvatarStyle = 'organization' | 'person' | 'community';
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
@@ -188,6 +189,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
                     {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderOrg /> : <PlaceholderOrgSmall />)}
+                    {props.style === 'community' && (<PlaceholderCommunity />)}
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderUser /> : <PlaceholderUserSmall />)}
                 </StyledPlaceholder>
             )}

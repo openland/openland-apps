@@ -32,7 +32,7 @@ const SubHeaderCounter = Glamorous.div({
 export const XSubHeaderRight = Glamorous.div({
     position: 'absolute',
     top: 12,
-    right: 12
+    right: 14
 });
 
 const SubHeaderLink = Glamorous(XLink)({
