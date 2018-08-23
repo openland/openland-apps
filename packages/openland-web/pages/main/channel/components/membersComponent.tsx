@@ -208,6 +208,8 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
         if (!this.props.data || !this.props.data.members) {
             return <XLoader loading={true} />;
         }
+
+        console.warn(this.props.data.members);
         let requests = this.props.data.members.filter(m => m.status === 'requested');
         let members = this.props.data.members.filter(m => m.status === 'member');
 

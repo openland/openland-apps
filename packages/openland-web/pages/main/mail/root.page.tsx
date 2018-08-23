@@ -16,7 +16,6 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
-import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -132,7 +131,6 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             {tab === 'channels' && (
                                 <ChannelsExploreComponent />
                             )}
-                            {/* <ChannelsInviteComponent /> */}
                         </ConversationContainer>
                     </ChatContainer>
                 </Scaffold.Content>

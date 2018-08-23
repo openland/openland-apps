@@ -72,9 +72,15 @@ export const ChatInfoQuery = gql`
                 membersCount
             }
             ... on ChannelConversation {
+                isRoot
                 featured
+                description
+                myStatus
+                membersCount
                 organization{
+                    id
                     isMine
+                    name
                 }
             }
         }
@@ -368,5 +374,11 @@ export const ConversationSettingsUpdateMutation = gql`
             mobileNotifications
             mute
         }
+    }
+`;
+
+export const ChannelJoinMutation = gql`
+    mutation ChannelJoin($channelId: ID!) {
+        join: alphaChannelJoin(channelId: $channelId)
     }
 `;

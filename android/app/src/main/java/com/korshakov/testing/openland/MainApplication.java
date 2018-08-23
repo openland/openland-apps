@@ -2,11 +2,11 @@ package com.korshakov.testing.openland;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import cl.json.RNSharePackage;
 
 import com.korshakov.testing.openland.async.AsyncPackage;
-import com.reactlibrary.RNRootViewBackgroundPackage;
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 import com.korshakov.testing.openland.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
@@ -54,7 +54,6 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
             new RNSharePackage(),
-            new RNRootViewBackgroundPackage(),
             new RCTImageCapInsetPackage(),
                     new RNReactNativeHapticFeedbackPackage(),
                     new RNGestureHandlerPackage(),
@@ -92,5 +91,6 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+        Fresco.initialize(this);
     }
 }

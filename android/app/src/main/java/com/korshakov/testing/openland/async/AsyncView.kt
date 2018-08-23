@@ -37,7 +37,6 @@ class AsyncView(context: Context?) : FrameLayout(context) {
     fun setConfig(src: String) {
         val parsed = parseSpec(src)
         this.lithoView.setComponent(resolveNode(this.asyncContext, parsed))
-        resolveNode(this.asyncContext, parsed)
     }
 }
 

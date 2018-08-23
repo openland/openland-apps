@@ -19,6 +19,7 @@ import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
+import { ChannelsInviteComponent } from './ChannelsInviteComponent';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -236,10 +237,12 @@ const ChannelTab = Glamorous(XLink)({
 });
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
-    console.log(props);
     let tab: 'chat' | 'members' = 'chat';
     if (props.router.query.tab === 'members') {
         tab = 'members';
+    }
+    if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
+        return <ChannelsInviteComponent channel={props.data.chat}/>;
     }
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
