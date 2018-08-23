@@ -159,7 +159,7 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
                     let Component = v.record.component;
                     return (
                         <>
-                            <Animated.View
+                            {/* <Animated.View
                                 key={v.record.key + '-shadow'}
                                 style={{
                                     position: 'absolute',
@@ -167,12 +167,12 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
                                     bottom: 0,
                                     right: 0,
                                     left: 0,
-                                    opacity: v.underlayOpacity,
+                                    opacity: i !== 0 && (!!this.state.mounted.find((m) => v.record.key === m)) ? v.underlayOpacity : 0,
                                     backgroundColor: '#000'
                                 }}
                                 flexDirection="column"
                                 alignItems="stretch"
-                            />
+                            /> */}
                             <Animated.View
                                 key={v.record.key + '-content'}
                                 style={{

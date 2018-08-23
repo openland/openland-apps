@@ -140,7 +140,7 @@ class ConversationComponent extends React.Component<FastRouterInjectedProps> {
         return (
             <>
                 <FastHeaderConfigRegistrator config={new FastHeaderConfig({ title: 'Messages' })} />
-                <View backgroundColor="#fff" flexDirection={'column'} height="100%" width="100%">
+                <View flexDirection={'column'} height="100%" width="100%">
                     <ZPictureModalContext.Consumer>
                         {modal => (
                             <MessengerContext.Consumer>
