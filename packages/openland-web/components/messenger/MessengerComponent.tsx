@@ -255,7 +255,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
-                                style={props.data.chat.__typename === 'SharedConversation' ? 'organization' : 'person'}
+                                style={(props.data.chat.__typename === 'SharedConversation'
+                                    ? 'organization'
+                                    : props.data.chat.__typename === 'ChannelConversation'
+                                        ? 'channel' : undefined
+                                )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : undefined}
                             />
                             <XHorizontal alignItems="center" separator={6}>

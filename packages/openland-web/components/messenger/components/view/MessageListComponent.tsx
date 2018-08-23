@@ -7,6 +7,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFullFragment } from 'openland-api/Types';
+import EmptyChatImg from '../icons/chat-empty.svg';
 
 interface MessageListProps {
     conversation: ConversationEngine;
@@ -71,13 +72,59 @@ const DateDivider = Glamorous.div({
     }
 });
 
-const MessagesWrapper = Glamorous.div({
+const MessagesWrapper = Glamorous.div<{empty?: boolean}>(props => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    paddingTop: 96,
-    paddingBottom: 40,
+    flexGrow: props.empty ? 1 : undefined,
+    paddingTop: props.empty ? 20 : 96,
+    paddingBottom: props.empty ? 0 : 40,
     width: '100%'
+}));
+
+const EmptyRoot = Glamorous.div({
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+});
+
+const EmptyContent = Glamorous.div({
+    zIndex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0
+});
+
+const Reactangle = Glamorous.div({
+    borderRadius: '100%',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: '10%',
+    left: '0%',
+    opacity: 0.1,
+    backgroundImage: 'linear-gradient(21deg, #ecf2fc, #b9cff7)',
+    zIndex: 0
+});
+
+const ImageWrapper = Glamorous.div({
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 64,
+    alignSelf: 'center'
+});
+
+const Text = Glamorous.div({
+    opacity: 0.5,
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.5,
+    letterSpacing: -0.2,
+    color: '#334562'
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
@@ -168,8 +215,19 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
         return (
             <XScrollViewReversed ref={this.scroller}>
-                <MessagesWrapper>
-                    {messages}
+                <MessagesWrapper empty={messages.length <= 2}>
+                    {(messages.length <= 2) && (
+                        <EmptyRoot>
+                            <Reactangle/>
+                            <EmptyContent>
+                                <ImageWrapper>
+                                    <EmptyChatImg/>
+                                </ImageWrapper>
+                                <Text>No messages yet</Text>
+                            </EmptyContent>
+                        </EmptyRoot>
+                    )}
+                    {(messages.length > 2) && messages}
                 </MessagesWrapper>
             </XScrollViewReversed>
         );

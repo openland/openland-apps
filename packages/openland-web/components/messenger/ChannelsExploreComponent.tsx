@@ -81,7 +81,10 @@ const Channels = withChatSearchChannels((props) => {
                         return (
                             <ChannelItemWrapper key={c.node.id} justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
-                                    <Avatar cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)} />
+                                    <Avatar
+                                        style="channel"
+                                        cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
+                                    />
                                     <XVertical separator={1}>
                                         <ChannelName>{title}</ChannelName>
                                         <MembersText>{channel.membersCount} {channel.membersCount === 1 ? 'member' : 'members'}</MembersText>
