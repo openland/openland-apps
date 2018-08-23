@@ -287,7 +287,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             </XHorizontal>
                         </XHorizontal>
                     </NavChatLeftContentStyled>
-                    <XHorizontal alignItems="center">
+                    <XHorizontal alignItems="center" separator={5}>
                         {props.data.chat.__typename === 'ChannelConversation' && (
                             <>
                                 <ChannelTabs>
