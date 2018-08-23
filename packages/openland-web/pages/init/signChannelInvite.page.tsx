@@ -24,7 +24,7 @@ const InviteInfo = withChannelInviteInfo((props) => {
             <XTrack event="Join Channel">
                 <MessagePage>
                     {props.data.invite && (
-                        <ChannelsInviteComponent channel={props.data.invite.channel} signup={'/signin?redirect=' + encodeURIComponent((props as any).redirect)} />
+                        <ChannelsInviteComponent  channel={props.data.invite.channel} invite={props.data.invite} signup={'/signin?redirect=' + encodeURIComponent((props as any).redirect)} />
                     )}
                     {!props.data.invite && (
                         <MessagePageContent title="Join">
