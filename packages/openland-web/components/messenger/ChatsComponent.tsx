@@ -246,6 +246,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
         return (
             <XVertical separator={'none'}>
                 <Search
+                    value={this.state.query}
                     onChange={this.onInput}
                     size="r-default"
                     placeholder="Search"

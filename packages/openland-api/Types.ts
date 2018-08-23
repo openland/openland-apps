@@ -66,6 +66,13 @@ export interface UpdateConversationSettingsInput {
   mute?: boolean | null,
 };
 
+export interface ChannelInviteRequest {
+  email: string,
+  emailText?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -2126,6 +2133,39 @@ export interface ChannelJoinMutationVariables {
 
 export interface ChannelJoinMutation {
   join: string,
+};
+
+export interface ChannelInviteMembersMutationVariables {
+  channelId: string,
+  inviteRequests: Array< ChannelInviteRequest >,
+};
+
+export interface ChannelInviteMembersMutation {
+  alphaChannelInviteMembers: string,
+};
+
+export interface ChannelJoinInviteMutationVariables {
+  invite: string,
+};
+
+export interface ChannelJoinInviteMutation {
+  alphaChannelJoinInvite: string,
+};
+
+export interface ChannelRenewInviteLinkMutationVariables {
+  channelId: string,
+};
+
+export interface ChannelRenewInviteLinkMutation {
+  link: string,
+};
+
+export interface ChannelInviteLinkQueryVariables {
+  channelId: string,
+};
+
+export interface ChannelInviteLinkQuery {
+  link: string,
 };
 
 export interface AllDealsQuery {
