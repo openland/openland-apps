@@ -10,6 +10,8 @@ import CloseIcon from './components/icons/ic-close.svg';
 import ProfileIcon from './components/icons/ic-profile.svg';
 import MainImage from './components/icons/channel-invite-pic.svg';
 import { withChannelJoin } from '../../api/withChannelJoin';
+import { withChannelJoinInviteLink } from '../../api/withChannelJoinInviteLink';
+import { delayForewer } from 'openland-y-utils/timer';
 
 const Root = Glamorous.div({
     position: 'relative',
@@ -143,9 +145,25 @@ const JoinButton = withChannelJoin((props) => {
     );
 }) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string }>;
 
-export class ChannelsInviteComponent extends React.Component<{ channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization?: { name: string } | null }, invite?: { user?: { name: string, photo?: string } } }> {
+const JoinLinkButton = withChannelJoinInviteLink((props) => {
+    return (
+        <XButton
+            style="primary-sky-blue"
+            size="r-default"
+            text={(props as any).text}
+            alignSelf="center"
+            flexShrink={0}
+            action={async () => {
+                props.join({ variables: { invite: (props as any).invite } });
+                await delayForewer();
+            }}
+        />
+    );
+}) as React.ComponentType<{ invite: string, refetchVars: { conversationId: string }, text: string }>;
+
+export class ChannelsInviteComponent extends React.Component<{ inviteLink?: string, channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization?: { name: string } | null }, invite?: { invitedByUser?: { name: string, picture?: string } } }> {
     render() {
-        console.warn(this.props.channel);
+        console.warn(this.props);
         let joinText = this.props.channel.myStatus === 'none' ? 'Rrequest invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
         return (
             <Root>
@@ -156,10 +174,10 @@ export class ChannelsInviteComponent extends React.Component<{ channel: { myStat
                             <CloseIcon />
                         </Close>
                     </XHorizontal>
-                    {this.props.invite && this.props.invite.user ?
+                    {this.props.invite && this.props.invite.invitedByUser ?
                         <UserInfoWrapper separator={6} justifyContent="center">
-                            <UserAvatar />
-                            <Text><b>John Doe</b> has invited you</Text>
+                            <UserAvatar cloudImageUuid={this.props.invite.invitedByUser.picture || undefined}/>
+                            <Text><b>{this.props.invite.invitedByUser.name}</b> has invited you</Text>
                         </UserInfoWrapper> : <div style={{ height: 120 }} />
                     }
                     <InfoCardWrapper>
@@ -174,7 +192,8 @@ export class ChannelsInviteComponent extends React.Component<{ channel: { myStat
                             </ChannelCounter>
                         </XVertical>
                     </InfoCardWrapper>
-                    {(this.props.channel.myStatus === 'none' || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
+                    {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} refetchVars={{ conversationId: this.props.channel.id }} text={joinText}/>}
+                    {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: this.props.channel.id }} text="Accept invite"  />}
                     {this.props.channel.myStatus === 'requested' && (
                         <XButton
                             style="ghost"
@@ -182,6 +201,16 @@ export class ChannelsInviteComponent extends React.Component<{ channel: { myStat
                             text="Pending"
                             alignSelf="center"
                             flexShrink={0}
+                        />
+                    )}
+                    {this.props.channel.myStatus === 'member' && (
+                        <XButton
+                            style="primary-sky-blue"
+                            size="r-default"
+                            text="Open channel"
+                            alignSelf="center"
+                            flexShrink={0}
+                            path={'/mail/' + this.props.channel.id}
                         />
                     )}
                     <ImageWrapper>

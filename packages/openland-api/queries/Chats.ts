@@ -406,3 +406,35 @@ export const ChannelInviteLinkQuery = gql`
         link: alphaChannelInviteLink(channelId: $channelId)
     }
 `;
+
+export const ChannelInviteInfoQuery = gql`
+    query ChannelInviteInfo($uuid: String!) {
+        invite: alphaChannelInviteInfo(uuid: $uuid){
+            channel{
+                id
+                title
+                photos
+                isRoot
+                featured
+                description
+                myStatus
+                membersCount
+                organization{
+                    id
+                    isMine
+                    name
+                }
+            }            
+            invitedByUser{
+                ...UserShort
+            }
+        }
+    }
+    ${UserShort}
+`;
+
+export const ChannelJoinInviteLinkMutation = gql`
+    mutation ChannelJoinInviteLink($invite: String!) {
+        cannelId: alphaChannelJoinInvite(invite: $invite)
+    }
+`;
