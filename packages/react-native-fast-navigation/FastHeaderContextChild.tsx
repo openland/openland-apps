@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { ZHeaderContextProvider, ZHeaderContext } from './ZHeaderContext';
-import { isConfigEquals, mergeConfigs, ZHeaderConfig } from './ZHeaderConfig';
-import { randomKey } from '../../utils/randomKey';
+import { FastHeaderContextProvider, FastHeaderContext } from './FastHeaderContext';
+import { FastHeaderConfig, mergeConfigs, isConfigEquals } from './FastHeaderConfig';
+import UUID from 'uuid/v4';
 
-class ZHeaderContextChildComponent extends React.Component<{ enabled: boolean, provider: ZHeaderContextProvider }> implements ZHeaderContextProvider {
-    private configs = new Map<string, ZHeaderConfig>();
-    private lastConfig = new ZHeaderConfig({});
+class FastHeaderContextChildComponent extends React.Component<{ enabled: boolean, provider: FastHeaderContextProvider }> implements FastHeaderContextProvider {
+    private configs = new Map<string, FastHeaderConfig>();
+    private lastConfig = new FastHeaderConfig({});
     private unmounting = false;
     private registrationId: string | undefined = undefined;
 
-    registerConfig = (config: ZHeaderConfig) => {
-        let key = randomKey();
+    registerConfig = (config: FastHeaderConfig) => {
+        let key = UUID();
         this.configs.set(key, config);
         this.supplyConfig();
         return key;
     }
-    updateConfig = (key: string, config: ZHeaderConfig) => {
+    updateConfig = (key: string, config: FastHeaderConfig) => {
         if (this.configs.has(key)) {
             this.configs.set(key, config);
         } else {
@@ -38,7 +38,7 @@ class ZHeaderContextChildComponent extends React.Component<{ enabled: boolean, p
         }
 
         // Merge configs
-        let configs: ZHeaderConfig[] = [];
+        let configs: FastHeaderConfig[] = [];
         for (let k of this.configs.keys()) {
             configs.push(this.configs.get(k)!!);
         }
@@ -61,7 +61,7 @@ class ZHeaderContextChildComponent extends React.Component<{ enabled: boolean, p
         }
     }
 
-    componentWillReceiveProps(nextProps: { enabled: boolean, provider: ZHeaderContextProvider }) {
+    componentWillReceiveProps(nextProps: { enabled: boolean, provider: FastHeaderContextProvider }) {
         if (nextProps.enabled !== this.props.enabled) {
             if (nextProps.enabled) {
                 if (this.registrationId) {
@@ -84,17 +84,17 @@ class ZHeaderContextChildComponent extends React.Component<{ enabled: boolean, p
 
     render() {
         return (
-            <ZHeaderContext.Provider value={this}>
+            <FastHeaderContext.Provider value={this}>
                 {this.props.children}
-            </ZHeaderContext.Provider>
+            </FastHeaderContext.Provider>
         );
     }
 }
 
-export const ZHeaderContextChild = (props: { enabled: boolean, children?: any }) => {
+export const FastHeaderContextChild = (props: { enabled: boolean, children?: any }) => {
     return (
-        <ZHeaderContext.Consumer>
-            {ctx => <ZHeaderContextChildComponent provider={ctx!!} enabled={props.enabled}>{props.children}</ZHeaderContextChildComponent>}
-        </ZHeaderContext.Consumer>
+        <FastHeaderContext.Consumer>
+            {ctx => <FastHeaderContextChildComponent provider={ctx!!} enabled={props.enabled}>{props.children}</FastHeaderContextChildComponent>}
+        </FastHeaderContext.Consumer>
     );
 };

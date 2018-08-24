@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
-import { isAndroid } from '../utils/isAndroid';
 
 export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null }> {
     render() {

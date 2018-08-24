@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { TouchableHighlight, View, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
-import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { isAndroid } from '../utils/isAndroid';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { RectButton } from 'react-native-gesture-handler';
+import { FastRouter } from 'react-native-fast-navigation/FastRouter';
+import { withRouter } from 'react-native-fast-navigation/withRouter';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
@@ -16,14 +16,14 @@ export interface ZListItemBaseProps {
     backgroundColor?: string;
 }
 
-class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & NavigationInjectedProps> {
+class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: FastRouter }> {
 
     handlePress = () => {
         if (this.props.onPress) {
             this.props.onPress();
         }
         if (this.props.path) {
-            this.props.navigation.navigate(this.props.path);
+            this.props.router.push(this.props.path);
         }
     }
 
@@ -58,4 +58,4 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & Navigat
     }
 }
 
-export const ZListItemBase = withNavigation(ZListItemBaseImpl);
+export const ZListItemBase = withRouter(ZListItemBaseImpl);

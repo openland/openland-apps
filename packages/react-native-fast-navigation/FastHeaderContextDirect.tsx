@@ -1,22 +1,23 @@
 import * as React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { ZHeaderContextProvider, ZHeaderContext } from './ZHeaderContext';
-import { ZHeaderConfig, mergeConfigs, isConfigEquals } from './ZHeaderConfig';
-import { randomKey } from '../../utils/randomKey';
+import UUID from 'uuid/v4';
+import { FastHeaderContext, FastHeaderContextProvider } from './FastHeaderContext';
+import { FastHeaderConfig, mergeConfigs, isConfigEquals } from './FastHeaderConfig';
+import { FastRouter } from './FastRouter';
 
-export class ZHeaderContextDirect extends React.PureComponent<{ navigation: NavigationScreenProp<NavigationParams> }> implements ZHeaderContextProvider {
+export class FastHeaderContextDirect extends React.PureComponent<{ router: FastRouter }> implements FastHeaderContextProvider {
 
-    private configs = new Map<string, ZHeaderConfig>();
-    private lastConfig = new ZHeaderConfig({});
+    private configs = new Map<string, FastHeaderConfig>();
+    private lastConfig = new FastHeaderConfig({});
     private unmounting = false;
 
-    registerConfig = (config: ZHeaderConfig) => {
-        let key = randomKey();
+    registerConfig = (config: FastHeaderConfig) => {
+        let key = UUID();
         this.configs.set(key, config);
         this.supplyConfig();
         return key;
     }
-    updateConfig = (key: string, config: ZHeaderConfig) => {
+    updateConfig = (key: string, config: FastHeaderConfig) => {
         if (this.configs.has(key)) {
             this.configs.set(key, config);
         } else {
@@ -39,7 +40,7 @@ export class ZHeaderContextDirect extends React.PureComponent<{ navigation: Navi
         }
 
         // Merge configs
-        let configs: ZHeaderConfig[] = [];
+        let configs: FastHeaderConfig[] = [];
         for (let k of this.configs.keys()) {
             configs.push(this.configs.get(k)!!);
         }
@@ -52,7 +53,7 @@ export class ZHeaderContextDirect extends React.PureComponent<{ navigation: Navi
 
         // Update config
         this.lastConfig = merged;
-        this.props.navigation.setParams({ '_z_header_config': this.lastConfig });
+        this.props.router.updateConfig(this.lastConfig);
     }
 
     componentWillUnmount() {
@@ -61,23 +62,23 @@ export class ZHeaderContextDirect extends React.PureComponent<{ navigation: Navi
 
     render() {
         return (
-            <ZHeaderContext.Consumer>
+            <FastHeaderContext.Consumer>
                 {ctx => {
                     if (ctx) {
                         return (
-                            <ZHeaderContext.Provider value={ctx}>
+                            <FastHeaderContext.Provider value={ctx}>
                                 {this.props.children}
-                            </ZHeaderContext.Provider>
+                            </FastHeaderContext.Provider>
                         );
                     } else {
                         return (
-                            <ZHeaderContext.Provider value={this}>
+                            <FastHeaderContext.Provider value={this}>
                                 {this.props.children}
-                            </ZHeaderContext.Provider>
+                            </FastHeaderContext.Provider>
                         );
                     }
                 }}
-            </ZHeaderContext.Consumer>
+            </FastHeaderContext.Consumer>
         );
     }
 }

@@ -1,27 +1,25 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { ZHeaderContextDirect } from './navigation/ZHeaderContextDirect';
 import { ZHeaderSafeArea } from './layout/ZHeaderSafeArea';
-import { ZHeaderAppearance } from './navigation/ZHeaderAppearance';
+import { PageProps } from './PageProps';
+import { withRouter } from 'react-native-fast-navigation/withRouter';
+import { FastHeaderAppearance } from 'react-native-fast-navigation/FastHeaderAppearance';
 
-export const withApp = (Wrapped: React.ComponentType<NavigationInjectedProps>, args?: { navigationAppearance?: ZHeaderAppearance }) => {
+export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: FastHeaderAppearance }) => {
 
-    let res = class WrappedPage extends React.Component<NavigationInjectedProps> {
+    let res = class WrappedPage extends React.Component<PageProps> {
         shouldComponentUpdate() {
             return false;
         }
         render() {
             return (
-                <ZHeaderContextDirect navigation={this.props.navigation}>
-                    <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                        <Wrapped {...this.props} />
-                    </ZHeaderSafeArea>
-                </ZHeaderContextDirect>
+                <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                    <Wrapped {...this.props} />
+                </ZHeaderSafeArea>
             );
         }
     };
     hoistNonReactStatics(res, Wrapped);
 
-    return res;
+    return withRouter(res);
 };

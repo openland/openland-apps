@@ -4,8 +4,9 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 
-export class ChatRight extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }, { loading: boolean }> {
+export class ChatRight extends React.PureComponent<{ conversationId: string, router: FastRouter }, { loading: boolean }> {
 
     state = {
         loading: false
@@ -49,7 +50,7 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, nav
                     }
 
                     return (
-                        <TouchableOpacity disabled={!destPath} onPress={() => this.props.navigation.navigate(destPath!!, destPathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 0, marginLeft: 10 }}>
+                        <TouchableOpacity disabled={!destPath} onPress={() => this.props.router.push(destPath!!, destPathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 0, marginLeft: 10 }}>
                             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                                 <XPAvatar
                                     src={res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined}

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FlatList, FlatListProps, Animated } from 'react-native';
-import { ZHeaderConfigRegistrator } from './navigation/ZHeaderConfigRegistrator';
-import { ZHeaderConfig } from './navigation/ZHeaderConfig';
 import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
+import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
+import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -25,7 +25,7 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
 
         return (
             <>
-                <ZHeaderConfigRegistrator config={new ZHeaderConfig({ contentOffset: this.contentOffset })} />
+                <FastHeaderConfigRegistrator config={new FastHeaderConfig({ contentOffset: this.contentOffset })} />
                 <AnimatedFlatList
                     removeClippedSubviews={true}
                     {...other}

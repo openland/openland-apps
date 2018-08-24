@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
 import { View, Text } from 'react-native';
@@ -13,20 +12,21 @@ import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChatChangeGroupTitleMutation } from 'openland-api';
 import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
-import { ZHeader } from '../../components/ZHeader';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
-class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
+class ProfileGroupComponent extends React.Component<PageProps> {
 
     handleAddMember = () => {
-        this.props.navigation.navigate('UserPicker');
+        this.props.router.push('UserPicker');
     }
 
     render() {
         return (
             <>
-                <ZHeader title="Info" />
-                <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.navigation.getParam('id') }}>
+                <FastHeader title="Info" />
+                <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.router.params.id }}>
                     {(resp) => {
                         if (resp.data.chat.__typename !== 'GroupConversation') {
                             throw Error('');
@@ -50,7 +50,7 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                                                 text="Change name"
                                                 onPress={() =>
                                                     Modals.showTextEdit(
-                                                        this.props.navigation,
+                                                        this.props.router,
                                                         resp.data.chat.title,
                                                         async (src) => await save({ variables: { name: src, conversationId: resp.data.chat.id } })
                                                     )
@@ -69,7 +69,7 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                                                 text="Add members"
                                                 onPress={() => {
                                                     Modals.showUserPicker(
-                                                        this.props.navigation,
+                                                        this.props.router,
                                                         async (src) => await add({ variables: { userId: src, conversationId: resp.data.chat.id } })
                                                     );
                                                 }}
@@ -77,7 +77,7 @@ class ProfileGroupComponent extends React.Component<NavigationInjectedProps> {
                                         )}
                                     </YMutation>
                                     {resp.data.members.map((v) => (
-                                        <ZListItemBase key={v.user.id} separator={false} height={56} onPress={() => this.props.navigation.navigate('ProfileUser', { 'id': v.user.id })}>
+                                        <ZListItemBase key={v.user.id} separator={false} height={56} onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}>
                                             <View paddingTop={12} paddingLeft={15} paddingRight={15}>
                                                 <XPAvatar size={32} src={v.user.picture} placeholderKey={v.user.id} placeholderTitle={v.user.name} />
                                             </View>

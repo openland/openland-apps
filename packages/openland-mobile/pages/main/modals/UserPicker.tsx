@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../../components/withApp';
 import { ZScrollView } from '../../../components/ZScrollView';
 import { ZQuery } from '../../../components/ZQuery';
@@ -8,21 +7,22 @@ import { ZListItem } from '../../../components/ZListItem';
 import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { Keyboard } from 'react-native';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
-import { ZHeader } from '../../../components/ZHeader';
+import { PageProps } from '../../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
-class UserPickerComponent extends React.PureComponent<NavigationInjectedProps, { query: string }> {
+class UserPickerComponent extends React.PureComponent<PageProps, { query: string }> {
 
     state = {
         query: ''
     };
 
     handlePicked = async (id: string) => {
-        let action = this.props.navigation.getParam('action') as (value: string) => any;
+        let action = this.props.router.params.action as (value: string) => any;
         try {
             Keyboard.dismiss();
             startLoader();
             let res = await action(id);
-            this.props.navigation.goBack();
+            this.props.router.back();
         } catch (e) {
             // 
         } finally {
@@ -33,7 +33,7 @@ class UserPickerComponent extends React.PureComponent<NavigationInjectedProps, {
     render() {
         return (
             <>
-                <ZHeader title="Add member" />
+                <FastHeader title="Add member" />
                 <ZQuery query={UsersQuery} variables={{ query: this.state.query }}>
                     {(reponse) => (
                         <ZScrollView>

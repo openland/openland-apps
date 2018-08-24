@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, TextStyle, Dimensions, Image, Button, TouchableWithoutFeedback } from 'react-native';
-import { ZHeaderTitleProps } from './ZHeaderTitle';
-import { ZAppConfig } from '../ZAppConfig';
-import { ZHeaderBackButton } from './ZHeaderBackButton';
+import { FastHeaderTitleProps } from './FastHeaderTitle';
+import { FastHeaderBackButton } from './FastHeaderBackButton';
+import { DeviceConfig } from '../DeviceConfig';
 
 const styles = StyleSheet.create({
     title: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { leftSize?: number, rightSize?: number }> {
+export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps, { leftSize?: number, rightSize?: number }> {
     containerWidth = new Animated.Value(0);
     opacity = this.props.progress.interpolate({
         inputRange: [-1, 0, 1],
@@ -42,7 +42,7 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
     subscribedValue: Animated.Value | null = null;
     subscribed: string | null = null;
 
-    constructor(props: ZHeaderTitleProps) {
+    constructor(props: FastHeaderTitleProps) {
         super(props);
         this.state = {};
     }
@@ -110,7 +110,7 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         }
     }
 
-    componentWillReceiveProps(nextProps: ZHeaderTitleProps) {
+    componentWillReceiveProps(nextProps: FastHeaderTitleProps) {
 
         // Animate title/subtitle changes
         // if (this.props.titleText !== nextProps.titleText || this.props.subtitleText !== nextProps.subtitleText) {
@@ -192,7 +192,7 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
 
                 <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, opacity: this.props.config.searchActive ? 0 : 1, }} onLayout={this.handleLeftLayout} pointerEvents="none">
                     {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
-                    {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><ZHeaderBackButton /></View>}
+                    {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><FastHeaderBackButton /></View>}
                 </View>
                 <View key="button-padding" style={{ flexGrow: 1, flexBasis: 0, opacity: this.props.config.searchActive ? 0 : 1, }} pointerEvents="box-none" />
                 <Animated.View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: this.props.config.searchActive ? 0 : opacity, alignItems: 'center', transform: [{ translateY: Animated.multiply(faraway, 10000) }] }} onLayout={this.handleRightLayout} pointerEvents="box-none">
@@ -202,8 +202,8 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         );
 
         const largeHeader = this.props.headerAppearance === 'large' && (
-            <View key="large-header" style={{ opacity: this.props.config.searchActive ? 0 : 1, overflow: 'hidden', position: 'absolute', top: ZAppConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
-                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.headerBaseHeight, -(ZAppConfig.navigationBarHeightLarge + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
+            <View key="large-header" style={{ opacity: this.props.config.searchActive ? 0 : 1, overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
+                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
                     {!this.props.titleView && this.props.titleText && <Text style={styles.titleLarge}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
                 </Animated.View>
@@ -211,8 +211,8 @@ export class ZHeaderTitleIOS extends React.PureComponent<ZHeaderTitleProps, { le
         );
 
         const search = this.props.config.search && (
-            <View style={{ overflow: 'hidden', position: 'absolute', top: ZAppConfig.navigationBarHeightLarge, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
-                <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: this.props.config.searchActive ? 0 : Animated.add(Animated.add(this.props.headerHeight, -(ZAppConfig.navigationBarHeightLarge + 48 + ZAppConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="box-none">
+            <View style={{ overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeightLarge, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
+                <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: this.props.config.searchActive ? 0 : Animated.add(Animated.add(this.props.headerHeight, -(DeviceConfig.navigationBarHeightLarge + 48 + DeviceConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="box-none">
                     <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                         <TouchableWithoutFeedback onPress={this.props.config.searchPress}>
                             <View style={{ flexDirection: 'row', height: 36, marginRight: 15, alignItems: 'center', flexGrow: 1 }}>

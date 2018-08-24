@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
 import { ExploreOrganizationsQuery } from 'openland-api';
@@ -7,20 +6,20 @@ import { View, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZScrollView } from '../../components/ZScrollView';
-import { ZHeader } from '../../components/ZHeader';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { PageProps } from '../../components/PageProps';
 
-class DirectoryComponent extends React.PureComponent<NavigationInjectedProps> {
+class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <ZHeader title="Search" />
+                {/* <ZHeader title="Search" /> */}
                 <ZQuery query={ExploreOrganizationsQuery}>
                     {resp => (
                         <ZScrollView backgroundColor="#fff">
                             <ZListItemGroup>
                                 {resp.data.items.edges.map((v) => (
-                                    <ZListItemBase separator={false} height={56} key={v.node.id} onPress={() => this.props.navigation.navigate('ProfileOrganization', { id: v.node.id })}>
+                                    <ZListItemBase separator={false} height={56} key={v.node.id} onPress={() => this.props.router.push('ProfileOrganization', { id: v.node.id })}>
                                         <View paddingTop={12} paddingLeft={15} paddingRight={15}>
                                             <XPAvatar size={32} src={v.node.photo} placeholderKey={v.node.id} placeholderTitle={v.node.name} />
                                         </View>

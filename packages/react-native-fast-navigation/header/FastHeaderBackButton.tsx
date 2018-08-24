@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { ZTouchable } from '../ZTouchable';
+// import { ZTouchable } from '../ZTouchable';
 import { Image, View, Text, Platform } from 'react-native';
-import { isAndroid } from '../../utils/isAndroid';
-import { AppStyles } from '../../styles/AppStyles';
+import { FastTouchable } from '../utils/FastTouchable';
+// import { isAndroid } from '../../utils/isAndroid';
+// import { AppStyles } from '../../styles/AppStyles';
 
-let image = (inverted: boolean) => isAndroid ?
+let image = (inverted: boolean) => Platform.OS === 'android' ?
     (
         <Image
             source={require('assets/ic-back.png')}
@@ -16,7 +17,7 @@ let image = (inverted: boolean) => isAndroid ?
                 // marginRight: 16,
                 // marginVertical: 16,
                 resizeMode: 'center',
-                tintColor: inverted ? '#fff' : AppStyles.primaryColor
+                tintColor: inverted ? '#fff' : '#000'// AppStyles.primaryColor
             }}
         />
     ) : (
@@ -28,20 +29,20 @@ let image = (inverted: boolean) => isAndroid ?
                 marginLeft: 9,
                 marginVertical: 12,
                 resizeMode: 'contain',
-                tintColor: inverted ? '#fff' : AppStyles.primaryColor
+                tintColor: inverted ? '#fff' : '#000' // AppStyles.primaryColor
             }}
         />
     );
 
-export class ZHeaderBackButton extends React.PureComponent<{ inverted?: boolean, onPress?: () => void }> {
+export class FastHeaderBackButton extends React.PureComponent<{ inverted?: boolean, onPress?: () => void }> {
     render() {
         return (
-            <ZTouchable onPress={this.props.onPress} style={{ margin: isAndroid ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={isAndroid ? { top: 13, left: 13, bottom: 13, right: 13 } : undefined}>
+            <FastTouchable onPress={this.props.onPress} style={{ margin: Platform.OS === 'android' ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={Platform.OS === 'android' ? { top: 13, left: 13, bottom: 13, right: 13 } : undefined}>
                 <View style={{ backgroundColor: 'transparent', flexDirection: 'row' }}>
                     {image(this.props.inverted !== undefined ? this.props.inverted : false)}
                     {Platform.OS === 'ios' && <Text style={{ height: 44, lineHeight: 44, marginLeft: 3, fontSize: 16, paddingRight: 10, color: this.props.inverted ? '#fff' : '#4747ec' }}>Back</Text>}
                 </View>
-            </ZTouchable>
+            </FastTouchable>
         );
     }
 }

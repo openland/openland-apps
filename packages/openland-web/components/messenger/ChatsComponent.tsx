@@ -107,7 +107,7 @@ const Date = Glamorous.div({
     marginLeft: 5
 });
 
-const Content = Glamorous.div({
+const Content = Glamorous.div<{ counterColor?: string }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -119,10 +119,10 @@ const Content = Glamorous.div({
         fontWeight: 600,
         border: 'none',
         textAlign: 'center',
-        backgroundColor: '#1790ff',
+        backgroundColor: props.counterColor || '#1790ff',
         lineHeight: '10px'
     }
-});
+}));
 
 const ContentText = Glamorous.div({
     display: 'flex',
@@ -171,7 +171,7 @@ const renderConversation = (v: any) => (
                 <Title className="title"><span>{v.title}</span></Title>
                 {v.topMessage && <Date className="date"><XDate value={v.topMessage!!.date} format="datetime_short" /></Date>}
             </Main>
-            <Content>
+            <Content counterColor={v.settings.mute ? '#9f9f9f' : undefined}>
                 <ContentText className="content">
                     {v.topMessage && v.topMessage.message && (
                         <span>{v.topMessage.sender.firstName}: {v.topMessage.message}</span>

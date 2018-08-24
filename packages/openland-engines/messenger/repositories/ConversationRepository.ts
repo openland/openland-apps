@@ -26,6 +26,14 @@ let GROUP_CONVERSATION_TINY = gql`
     }
 `;
 
+let CHANNEL_CONVERSATION_TINY = gql`
+    fragment CannelConversationTiny on ChannelConversation {
+        id
+        flexibleId
+        unreadCount
+    }
+`;
+
 const CHAT_INFO_TINY = gql`
     query ChatInfo($conversationId: ID!) {
         chat: alphaChat(conversationId: $conversationId) {
@@ -80,6 +88,16 @@ export const ConversationRepository = {
         conv = client.client.readFragment({
             id,
             fragment: GROUP_CONVERSATION_TINY
+        });
+        if (conv) {
+            return conv as any;
+        }
+
+        // Resolve Group Conversaion
+        id = defaultDataIdFromObject({ __typename: 'ChannelConversation', id: conversationId })!!;
+        conv = client.client.readFragment({
+            id,
+            fragment: CHANNEL_CONVERSATION_TINY
         });
         if (conv) {
             return conv as any;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 
-export class ZHeaderActionButtonIOS extends React.PureComponent<{ title: string, icon?: any, onPress?: () => void }> {
+export class FastHeaderActionButtonIOS extends React.PureComponent<{ title: string, icon?: any, onPress?: () => void }> {
     render() {
         return (
             <TouchableOpacity onPress={this.props.onPress}>

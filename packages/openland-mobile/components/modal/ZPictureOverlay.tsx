@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Animated, StatusBar, Dimensions, LayoutAnimation, Easing, Platform } from 'react-native';
+import { View, Animated, StatusBar, Dimensions, Platform } from 'react-native';
 import { ZAppConfig } from '../ZAppConfig';
-import { ZHeaderBackButton } from '../navigation/ZHeaderBackButton';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
+import { FastHeaderBackButton } from 'react-native-fast-navigation/header/FastHeaderBackButton';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -225,7 +225,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         // }]
                     }}
                 >
-                    <ZHeaderBackButton inverted={true} onPress={this.handleCloseClick} />
+                    <FastHeaderBackButton inverted={true} onPress={this.handleCloseClick} />
                 </Animated.View>
             </View>
         );

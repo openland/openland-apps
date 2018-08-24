@@ -1,7 +1,5 @@
-import { createStackNavigator } from 'react-navigation';
 import { Login } from './pages/auth/Login';
 import { Conversation } from './pages/main/Conversation';
-import { createZStackNavigator } from './components/ZNavigatorStack';
 import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
@@ -15,41 +13,29 @@ import { UserPicker } from './pages/main/modals/UserPicker';
 import { TextEditModal } from './pages/main/modals/TextEditModal';
 import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
-import { Animated, Easing } from 'react-native';
-import { Test } from './pages/main/Test';
 import { FilePreview } from './pages/main/modals/FilePreview';
+import { FastRoutesBuilder } from 'react-native-fast-navigation/FastRoutes';
 
-//
-// App Routes
-//
-
-export const MainStack = createZStackNavigator({
-  Home: Home,
-  Conversation: Conversation,
-  ProfileUser: ProfileUser,
-  ProfileOrganization: ProfileOrganization,
-  ProfileGroup: ProfileGroup,
-  SettingsProfile: SettingsProfile,
-  SettingsNotifications: SettingsNotifications,
-
-  // Modals
-  UserPicker: UserPicker,
-  TextEditModal: TextEditModal,
-  ComposeModal: ComposeModal,
-  FilePreview: FilePreview,
-
-  DevTypography: Typography,
-  DevComponents: Components,
-  DevNavigation: Navigation,
-  DevLoader: Loader,
-});
-
-export const AppStack = MainStack;
+export const Routes = new FastRoutesBuilder()
+  .addRoute('Home', Home)
+  .addRoute('Conversation', Conversation)
+  .addRoute('ProfileUser', ProfileUser)
+  .addRoute('ProfileOrganization', ProfileUser)
+  .addRoute('ProfileGroup', ProfileGroup)
+  .addRoute('SettingsProfile', SettingsProfile)
+  .addRoute('SettingsNotifications', SettingsNotifications)
+  .addRoute('UserPicker', UserPicker)
+  .addRoute('TextEditModal', TextEditModal)
+  .addRoute('ComposeModal', ComposeModal)
+  .addRoute('FilePreview', FilePreview)
+  .addRoute('DevTypography', Typography)
+  .addRoute('DevComponents', Components)
+  .addRoute('DevNavigation', Navigation)
+  .addRoute('DevLoader', Loader)
+  .build();
 
 //
 // Authentication Routes
 //
 
-export const LoginStack = createStackNavigator({
-  Home: Login
-});
+export const LoginStack = Login;

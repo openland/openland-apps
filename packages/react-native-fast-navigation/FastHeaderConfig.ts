@@ -1,22 +1,22 @@
 import { Animated } from 'react-native';
-import { ZHeaderButtonDescription } from './ZHeaderButtonDescription';
-import { ZHeaderAppearance, ZHeaderHairline } from './ZHeaderAppearance';
+import { FastHeaderButtonDescription } from './FastHeaderButtonDescription';
+import { FastHeaderAppearance, FastHeaderHairline } from './FastHeaderAppearance';
 
-export class ZHeaderConfig {
+export class FastHeaderConfig {
 
     readonly title?: string;
     readonly titleView?: any;
     readonly counter: number;
     readonly contentOffset?: Animated.Value;
-    readonly buttons: ZHeaderButtonDescription[];
-    readonly appearance?: ZHeaderAppearance;
-    readonly hairline?: ZHeaderHairline;
+    readonly buttons: FastHeaderButtonDescription[];
+    readonly appearance?: FastHeaderAppearance;
+    readonly hairline?: FastHeaderHairline;
     readonly search?: boolean;
     readonly searchActive?: boolean;
     readonly searchPress?: () => void;
     readonly searchClosed?: () => void;
 
-    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: Animated.Value, buttons?: ZHeaderButtonDescription[], appearance?: ZHeaderAppearance, hairline?: ZHeaderHairline, search?: boolean, searchActive?: boolean, searchPress?: () => void, searchClosed?: () => void }) {
+    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: Animated.Value, buttons?: FastHeaderButtonDescription[], appearance?: FastHeaderAppearance, hairline?: FastHeaderHairline, search?: boolean, searchActive?: boolean, searchPress?: () => void, searchClosed?: () => void }) {
         this.counter = args.counter || 0;
         this.buttons = args.buttons || [];
         this.title = args.title;
@@ -31,13 +31,13 @@ export class ZHeaderConfig {
     }
 }
 
-export function mergeConfigs(configs: ZHeaderConfig[]) {
+export function mergeConfigs(configs: FastHeaderConfig[]) {
     let title: string | undefined;
-    let buttons: ZHeaderButtonDescription[] = [];
+    let buttons: FastHeaderButtonDescription[] = [];
     let contentOffset: Animated.Value | undefined;
-    let appearance: ZHeaderAppearance | undefined;
+    let appearance: FastHeaderAppearance | undefined;
     let titleView: any | undefined;
-    let hairline: ZHeaderHairline | undefined;
+    let hairline: FastHeaderHairline | undefined;
     let search: boolean | undefined;
     let searchActive: boolean | undefined;
     let searchPress: (() => void) | undefined;
@@ -72,10 +72,10 @@ export function mergeConfigs(configs: ZHeaderConfig[]) {
         }
         buttons.push(...c.buttons);
     }
-    return new ZHeaderConfig({ title, buttons, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress });
+    return new FastHeaderConfig({ title, buttons, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress });
 }
 
-export function isConfigEquals(a: ZHeaderConfig, b: ZHeaderConfig) {
+export function isConfigEquals(a: FastHeaderConfig, b: FastHeaderConfig) {
     if (a.title !== b.title) {
         return false;
     }

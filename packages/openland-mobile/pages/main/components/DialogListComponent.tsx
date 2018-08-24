@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ListRenderItemInfo, View, Platform } from 'react-native';
+import { ListRenderItemInfo, View, Platform, FlatList, PixelRatio } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
@@ -32,11 +32,13 @@ interface ASAvatarProps {
 class ASAvatar extends React.PureComponent<ASAvatarProps> {
     render() {
         if (this.props.src) {
+            let url = this.props.src;
+            url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
             return (
                 <ASImage
                     width={this.props.size}
                     height={this.props.size}
-                    source={{ uri: this.props.src }}
+                    source={{ uri: url }}
                     borderRadius={this.props.size / 2}
                 />
             );
@@ -178,9 +180,10 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
     }
     renderItem = (item: ListRenderItemInfo<ConversationShortFragment>) => {
         // if (Platform.OS === 'ios') {
-        return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
+        // return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
         // }
         // return (<DialogItemView item={item.item} onPress={this.handleItemClick} engine={this.props.engine} />);
+        return (<DialogItemViewAsync engine={this.props.engine} item={item.item} onPress={this.handleItemClick} />);
     }
 
     keyExtractor = (item: ConversationShortFragment) => {
@@ -222,6 +225,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
                 ItemSeparatorComponent={DialogListSeparator}
                 fixedHeight={80}
                 initialScrollIndex={0}
+                removeClippedSubviews={true}
             />
         );
         // return (

@@ -1,95 +1,38 @@
 import * as React from 'react';
-import { View, Animated, StyleSheet, TextStyle, ViewStyle, Dimensions, Keyboard, Image, Platform } from 'react-native';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { ZHeaderButtonDescription } from '../ZHeaderButton';
+import { View, Animated, StyleSheet, ViewStyle, Dimensions, Keyboard, Image, Platform } from 'react-native';
 import ViewOverflow from 'react-native-view-overflow';
-import { isAndroid } from '../../utils/isAndroid';
-import { ZHeaderBackButton } from './ZHeaderBackButton';
-import { ZAppConfig } from '../ZAppConfig';
-import { ZBlurredView } from '../ZBlurredView';
-import { ZHeaderTitle } from './ZHeaderTitle';
-import { ZHeaderConfig } from './ZHeaderConfig';
+import { FastHeaderBackButton } from './FastHeaderBackButton';
+import { DeviceConfig } from '../DeviceConfig';
+import { FastHistoryRecord } from '../FastHistory';
+import { FastBlurredView } from '../utils/FastBlurView';
+import { FastHeaderConfig } from '../FastHeaderConfig';
+import { FastHeaderTitle } from './FastHeaderTitle';
 
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
-interface Descriptor {
+interface NormalizedRoute {
+    current: boolean;
+    mounted: boolean;
+    record: FastHistoryRecord;
+    config: FastHeaderConfig;
     progress: Animated.Value;
-    position: Animated.Value;
-    options: {
-        headerHeight?: number;
-    };
-    navigation: NavigationScreenProp<NavigationParams>;
 }
 
-interface Scene {
-    key: string;
-    index: number;
-    isStale: boolean;
-    descriptor: Descriptor;
-}
-
-interface Props {
-    scenes: Scene[];
-    scene: Scene;
-    progress: Animated.Value;
-    position: Animated.Value;
+interface FastHeaderProps {
+    routes: NormalizedRoute[];
 }
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const BACKGROUND_SIZE = Math.max(SCREEN_WIDTH, Dimensions.get('screen').height);
 
-const defaultHairlineOffset = new Animated.Value(ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight);
-const defaultBackgroundOffset = new Animated.Value(ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight - BACKGROUND_SIZE);
+const defaultHairlineOffset = new Animated.Value(DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight);
+const defaultBackgroundOffset = new Animated.Value(DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight - BACKGROUND_SIZE);
 
 // const NAVIGATOR_MIN_HEIGHT = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
 const zeroValue = new Animated.Value(0);
 const oneValue = new Animated.Value(1);
 
 let styles = StyleSheet.create({
-
-    title: {
-        color: ZAppConfig.titleColor,
-        width: '100%',
-        height: '100%',
-        textAlignVertical: 'center',
-        ...isAndroid ? {
-            textAlign: 'left',
-            fontSize: 28,
-            fontFamily: 'Montserrat-Medium',
-            fontWeight: undefined,
-            lineHeight: 56
-        } : {
-                textAlign: 'center',
-                fontSize: 17,
-                fontWeight: '600',
-                lineHeight: 44
-            }
-    } as TextStyle,
-    titleLarge: {
-        color: ZAppConfig.titleColor,
-        width: '100%',
-        height: '100%',
-        textAlign: 'left',
-        textAlignVertical: 'bottom',
-        fontSize: isAndroid ? 28 : 34,
-        // letterSpacing: isAndroid ? undefined : 0.5,
-        fontWeight: isAndroid ? undefined : 'bold',
-        lineHeight: isAndroid ? 34 : 135,
-        fontFamily: isAndroid ? 'Montserrat-Medium' : undefined,
-    } as TextStyle,
-    titleContainer: {
-        position: 'absolute',
-        width: '100%',
-        height: isAndroid ? 56 : 44,
-        paddingLeft: ZAppConfig.navigationBarBackWidth
-    } as ViewStyle,
-    titleLargeContainer: {
-        position: 'absolute',
-        width: '100%',
-        justifyContent: 'flex-end',
-        // height: isAndroid ? 100 : 140,
-        paddingLeft: isAndroid ? 16 : 15
-    } as ViewStyle,
     titleWrapper: {
         position: 'absolute',
         top: 0,
@@ -112,15 +55,15 @@ let styles = StyleSheet.create({
     styleMainContainerTransparent: {
         overflow: 'visible',
         flexDirection: 'row',
-        height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight,
+        height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight,
         position: 'absolute',
         left: 0,
         right: 0,
         top: 0,
-        paddingTop: ZAppConfig.statusBarHeight,
+        paddingTop: DeviceConfig.statusBarHeight,
     } as ViewStyle,
     styleMainContainerTransparentSearch: {
-        marginTop: -ZAppConfig.navigationBarHeightLarge
+        marginTop: -DeviceConfig.navigationBarHeightLarge
     },
     hairline: {
         position: 'absolute',
@@ -133,94 +76,62 @@ let styles = StyleSheet.create({
     } as ViewStyle,
 });
 
-class ZHeaderComponent extends React.PureComponent<Props> {
+export class FastHeader extends React.PureComponent<FastHeaderProps> {
 
-    wasAnimaged = false;
     lastIndex = 0;
-    backButtonOpacity = this.props.position.interpolate({
-        inputRange: [
-            0,
-            1],
-        outputRange: [0, 1]
-    });
+    // backButtonOpacity = this.props.position.interpolate({
+    //     inputRange: [
+    //         0,
+    //         1],
+    //     outputRange: [0, 1]
+    // });
+    backButtonOpacity = new Animated.Value(1);
     backStyle = {
-        height: ZAppConfig.navigationBarHeight,
+        height: DeviceConfig.navigationBarHeight,
         position: 'absolute',
         left: 0,
-        top: ZAppConfig.statusBarHeight,
-        width: ZAppConfig.navigationBarBackWidth,
+        top: DeviceConfig.statusBarHeight,
+        width: DeviceConfig.navigationBarBackWidth,
         opacity: this.backButtonOpacity,
         zIndex: 3,
-        backgroundColor: isAndroid ? ZAppConfig.navigationBarBackgroundColor : undefined
+        backgroundColor: Platform.OS === 'android' ? DeviceConfig.navigationBarBackgroundColor : undefined
     };
 
+    // Back Button
     handleBack = () => {
-        this.props.scene.descriptor.navigation.goBack();
-    }
-
-    componentWillMount() {
-
-        // Auto hide keyboard
-        this.props.position.addListener((c) => {
-            if (c.value !== parseInt(c.value + '', 10)) {
-                if (this.wasAnimaged) {
-                    // Only for back-swipe
-                    if (c.value < this.lastIndex) {
-                        Keyboard.dismiss();
-                    }
-                    this.wasAnimaged = false;
-                }
-            } else {
-                this.lastIndex = c.value;
-                this.wasAnimaged = true;
-            }
-        });
+        let currentRoute = this.props.routes.find((v) => v.current);
+        if (currentRoute) {
+            currentRoute.record.router.back();
+        }
     }
 
     render() {
         // Build Offsets
-        let filtered = this.props.scenes.filter((v) => !v.isStale || (!this.props.scenes.find((v2) => v.index === v2.index && !v2.isStale)));
+        let filtered = this.props.routes;
         let offsets = filtered.map((v) => {
 
             // Resolve param name
-            let config = v.descriptor.navigation.getParam('_z_header_config') as ZHeaderConfig;
-            if (!config) {
-                config = new ZHeaderConfig({});
-            }
+            // let config = v.descriptor.navigation.getParam('_z_header_config') as ZHeaderConfig;
+            // if (!config) {
+            //     config = new ZHeaderConfig({});
+            // }
+            let config = v.config;
 
             //
             // Resolving Settings
             //
 
-            let resolvedTitleSwitchTreshold = ZAppConfig.navigationBarHeightLarge - ZAppConfig.navigationBarHeight;
-            let resolvedNavigationBarHeight = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
-            let resolvedNavigationBarHeightLarge = (v.descriptor.options.headerHeight ? v.descriptor.options.headerHeight : ZAppConfig.navigationBarHeightLarge) + ZAppConfig.statusBarHeight;
-
-            // let config: ZHeaderConfig | undefined = v.descriptor.navigation.getParam('__z_header_config');
-            // if (!config) {
-            //     let parent = (v.descriptor.navigation as any).dangerouslyGetParent();
-            //     if (parent) {
-            //         //
-            //     }
-            // }
+            let resolvedTitleSwitchTreshold = DeviceConfig.navigationBarHeightLarge - DeviceConfig.navigationBarHeight;
+            let resolvedNavigationBarHeight = DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight;
+            let resolvedNavigationBarHeightLarge = DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight;
 
             // Calculate position offset
-            let interpolated = this.props.position.interpolate({
-                inputRange: [
-                    v.index - 1,
-                    v.index,
-                    v.index + 1],
+            let interpolated = v.progress.interpolate({
+                inputRange: [- 1, 0, 1],
                 outputRange: [0, 1, 0],
                 extrapolate: 'clamp'
             });
-            let position = this.props.position.interpolate({
-                inputRange: [
-                    v.index - 1,
-                    v.index,
-                    v.index + 1],
-                outputRange: [-1, 0, 1],
-                extrapolate: 'clamp'
-            });
+            let position = v.progress;
 
             // Small title opacity
             let titleOpacity: Animated.AnimatedInterpolation = interpolated;
@@ -348,10 +259,10 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             }
 
             let header = (
-                <View style={styles.titleWrapper} pointerEvents="box-none" key={s.scene.key}>
-                    <ZHeaderTitle
+                <View style={styles.titleWrapper} pointerEvents="box-none" key={s.scene.record.key}>
+                    <FastHeaderTitle
                         contentOffset={s.contentOffset}
-                        index={s.scene.index}
+                        index={1}
                         progress={s.position2}
                         headerAppearance={s.config.appearance || 'large'}
                         appearance={Platform.OS === 'android' ? 'android' : 'ios'}
@@ -376,7 +287,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             <>
                 {/* Back button */}
                 <Animated.View style={this.backStyle}>
-                    <ZHeaderBackButton onPress={this.handleBack} />
+                    <FastHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
                 {/* Content */}
@@ -397,7 +308,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
                             zIndex: 1
                         }}
                     >
-                        <ZBlurredView
+                        <FastBlurredView
                             style={{
                                 height: BACKGROUND_SIZE,
                                 width: '100%',
@@ -416,7 +327,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             </>
         );
 
-        if (ZAppConfig.navigationBarTransparent) {
+        if (DeviceConfig.navigationBarTransparent) {
             return (
                 <ViewOverflow style={[styles.styleMainContainerTransparent, searchActive && styles.styleMainContainerTransparentSearch]}>
                     {content}
@@ -424,7 +335,7 @@ class ZHeaderComponent extends React.PureComponent<Props> {
             );
         } else {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight, backgroundColor: ZAppConfig.navigationBarBackgroundColor, paddingTop: ZAppConfig.statusBarHeight }}>
+                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight, backgroundColor: DeviceConfig.navigationBarBackgroundColor, paddingTop: DeviceConfig.statusBarHeight }}>
                     {content}
                     {Platform.OS === 'android' && (
                         <View style={{ position: 'absolute', top: 0, left: 0, zIndex: 1000 }}>
@@ -441,5 +352,3 @@ class ZHeaderComponent extends React.PureComponent<Props> {
         }
     }
 }
-
-export const ZHeader = (props: any) => <ZHeaderComponent {...props} />;

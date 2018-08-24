@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Animated } from 'react-native';
-import { ZHeaderTitleAndroid } from './ZHeaderTitleAndroid';
-import { ZHeaderTitleIOS } from './ZHeaderTitleIOS';
-import { ZHeaderConfig } from './ZHeaderConfig';
+import { FastHeaderConfig } from '../FastHeaderConfig';
+import { FastHeaderTitleAndroid } from './FastHeaderTitleAndroid';
+import { FastHeaderTitleIOS } from './FastHeaderTitleIOS';
 
-export interface ZHeaderTitleProps {
+export interface FastHeaderTitleProps {
     index: number;
     appearance: 'ios' | 'android';
     titleText?: string;
@@ -17,16 +17,16 @@ export interface ZHeaderTitleProps {
     contentOffset: Animated.AnimatedValue;
     headerBaseHeight: Animated.AnimatedInterpolation;
     headerHeight: Animated.AnimatedInterpolation;
-    config: ZHeaderConfig;
+    config: FastHeaderConfig;
 }
 
-export class ZHeaderTitle extends React.PureComponent<ZHeaderTitleProps> {
+export class FastHeaderTitle extends React.PureComponent<FastHeaderTitleProps> {
 
     render() {
         if (this.props.appearance === 'android') {
-            return <ZHeaderTitleAndroid {...this.props} />;
+            return <FastHeaderTitleAndroid {...this.props} />;
         } else {
-            return <ZHeaderTitleIOS {...this.props} />;
+            return <FastHeaderTitleIOS {...this.props} />;
         }
     }
 }

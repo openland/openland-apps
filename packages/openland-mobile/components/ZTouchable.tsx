@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { isAndroid } from '../utils/isAndroid';
 import { TouchableNativeFeedback, TouchableOpacity, View, Platform, ViewStyle, Insets } from 'react-native';
-import ViewOverflow from 'react-native-view-overflow';
 
 export class ZTouchable extends React.PureComponent<{ onPress?: () => void, style?: ViewStyle, hitSlop?: Insets }> {
     render() {

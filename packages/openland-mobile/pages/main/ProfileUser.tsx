@@ -7,19 +7,20 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { ZScrollView } from '../../components/ZScrollView';
-import { ZHeader } from '../../components/ZHeader';
+import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
-class ProfileUserComponent extends React.Component<NavigationInjectedProps> {
+class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
-        this.props.navigation.navigate('Conversation', { 'id': this.props.navigation.getParam('id') });
+        this.props.router.push('Conversation', { 'id': this.props.router.params.id });
     }
 
     render() {
         return (
             <>
-                <ZHeader title="Info" />
-                <ZQuery query={UserQuery} variables={{ userId: this.props.navigation.getParam('id') }}>
+                <FastHeader title="Info" />
+                <ZQuery query={UserQuery} variables={{ userId: this.props.router.params.id }}>
                     {(resp) => {
                         return (
                             <ZScrollView>

@@ -1,34 +1,34 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { NavigationInjectedProps } from 'react-navigation';
 import { ZScrollView } from '../../../components/ZScrollView';
 import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../../components/ZListItemEdit';
-import { ZHeaderButton } from '../../../components/ZHeaderButton';
 import { stopLoader, startLoader } from '../../../components/ZGlobalLoader';
 import { Keyboard } from 'react-native';
-import { ZHeader } from '../../../components/ZHeader';
+import { PageProps } from '../../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
-class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps, { value: string }> {
+class TextEditModalComponent extends React.PureComponent<PageProps, { value: string }> {
 
-    constructor(props: NavigationInjectedProps) {
+    constructor(props: PageProps) {
         super(props);
         this.state = {
-            value: this.props.navigation.getParam('value', '')
+            value: this.props.router.params.value || ''
         };
     }
 
     handleSave = async () => {
-        if (this.state.value === this.props.navigation.getParam('value', '')) {
-            this.props.navigation.goBack();
+        if (this.state.value === (this.props.router.params.value || '')) {
+            this.props.router.back();
             return;
         }
-        let action = this.props.navigation.getParam('action') as (value: string) => any;
+        let action = this.props.router.params.action as (value: string) => any;
         try {
             Keyboard.dismiss();
             startLoader();
             let res = await action(this.state.value);
-            this.props.navigation.goBack();
+            this.props.router.back();
         } catch (e) {
             // 
         } finally {
@@ -43,8 +43,8 @@ class TextEditModalComponent extends React.PureComponent<NavigationInjectedProps
     render() {
         return (
             <>
-                <ZHeader title="Edit group name" />
-                <ZHeaderButton title="Save" onPress={this.handleSave} />
+                <FastHeader title="Edit group name" />
+                <FastHeaderButton title="Save" onPress={this.handleSave} />
                 <ZScrollView>
                     <ZListItemGroup header={null}>
                         <ZListItemEdit title="Group name" value={this.state.value} onChange={this.handleChange} autoFocus={true} />

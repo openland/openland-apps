@@ -78,7 +78,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         />
                     </ASFlex>
                 </ASView>
-                < ConversationMessagesView
+                <ConversationMessagesView
                     ref={this.listRef}
                     messages={this.state.conversation.messagesPrepprocessed}
                     loaded={this.state.conversation.historyFullyLoaded}

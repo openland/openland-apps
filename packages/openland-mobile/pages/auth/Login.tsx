@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class Login extends React.Component<NavigationInjectedProps, { initing: boolean, loading: boolean }> {
+export class Login extends React.Component<{}, { initing: boolean, loading: boolean }> {
 
     state = {
         initing: false,

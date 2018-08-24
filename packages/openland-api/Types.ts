@@ -642,6 +642,10 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
       } | {
         __typename: "AnonymousConversation",
         id: string,
@@ -704,6 +708,10 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
       } | {
         __typename: "SharedConversation",
         id: string,
@@ -766,6 +774,10 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
       } | {
         __typename: "PrivateConversation",
         id: string,
@@ -828,6 +840,10 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
       } | {
         __typename: "GroupConversation",
         id: string,
@@ -890,6 +906,10 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
       }
     ) >,
     seq: number,
@@ -1626,6 +1646,10 @@ export interface ChatSearchTextQuery {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -1688,6 +1712,10 @@ export interface ChatSearchTextQuery {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "SharedConversation",
       id: string,
@@ -1750,6 +1778,10 @@ export interface ChatSearchTextQuery {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "PrivateConversation",
       id: string,
@@ -1812,6 +1844,10 @@ export interface ChatSearchTextQuery {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "GroupConversation",
       id: string,
@@ -1874,6 +1910,10 @@ export interface ChatSearchTextQuery {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     }
   ) >,
 };
@@ -1959,6 +1999,10 @@ export interface ChatSearchChannelQuery {
           } | null,
           date: string,
         } | null,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
         membersCount: number,
         featured: boolean,
         description: string,
@@ -6461,6 +6505,10 @@ export type ConversationShortFragment = ( {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -6523,6 +6571,10 @@ export type ConversationShortFragment = ( {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "SharedConversation",
       id: string,
@@ -6585,6 +6637,10 @@ export type ConversationShortFragment = ( {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "PrivateConversation",
       id: string,
@@ -6647,6 +6703,10 @@ export type ConversationShortFragment = ( {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     } | {
       __typename: "GroupConversation",
       id: string,
@@ -6709,6 +6769,10 @@ export type ConversationShortFragment = ( {
         } | null,
         date: string,
       } | null,
+      settings:  {
+        __typename: "ConversationSettings",
+        mute: boolean,
+      },
     }
   );
 

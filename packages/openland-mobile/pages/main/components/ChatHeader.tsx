@@ -5,8 +5,9 @@ import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { ZAppConfig } from '../../../components/ZAppConfig';
+import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 
-export class ChatHeader extends React.PureComponent<{ conversationId: string, navigation: NavigationScreenProp<NavigationState, any> }, { loading: boolean }> {
+export class ChatHeader extends React.PureComponent<{ conversationId: string, router: FastRouter }, { loading: boolean }> {
     state = {
         loading: false
     };
@@ -46,7 +47,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, na
 
                     if (isAndroid) {
                         return (
-                            <TouchableHighlight onPress={() => this.props.navigation.navigate('ConversationInfo', { id: this.props.conversationId })}>
+                            <TouchableHighlight onPress={() => this.props.router.push('ConversationInfo', { id: this.props.conversationId })}>
                                 <View flexDirection="row" alignSelf="flex-start" height={56} alignItems="center">
                                     <View flexDirection="column" marginTop={-6}>
                                         <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: ZAppConfig.titleColor, letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>

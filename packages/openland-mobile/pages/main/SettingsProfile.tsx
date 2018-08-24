@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { NavigationInjectedProps } from 'react-navigation';
-import { View, Button, Image } from 'react-native';
+import { View } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../components/ZListItemEdit';
 import { ZQuery } from '../../components/ZQuery';
@@ -14,14 +13,15 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
-import { ZHeaderButton } from '../../components/ZHeaderButton';
-import { ZHeader } from '../../components/ZHeader';
+import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
-class SettingsProfileComponent extends React.Component<NavigationInjectedProps, { loaded: boolean }> {
+class SettingsProfileComponent extends React.Component<PageProps, { loaded: boolean }> {
 
     private ref = React.createRef<ZForm>();
 
-    constructor(props: NavigationInjectedProps) {
+    constructor(props: PageProps) {
         super(props);
         this.state = {
             loaded: false
@@ -37,8 +37,8 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
     render() {
         return (
             <>
-                <ZHeader title="Edit profile" />
-                <ZHeaderButton title="Save" onPress={this.handleSave} />
+                <FastHeader title="Edit profile" />
+                <FastHeaderButton title="Save" onPress={this.handleSave} />
                 <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
                     {(save) => (
                         <ZQuery query={ProfileQuery} fetchPolicy="network-only">
@@ -47,7 +47,7 @@ class SettingsProfileComponent extends React.Component<NavigationInjectedProps, 
                                     action={async (args) => {
                                         await save({ variables: args });
                                     }}
-                                    onSuccess={() => this.props.navigation.goBack()}
+                                    onSuccess={() => this.props.router.back()}
                                     ref={this.ref}
                                     defaultData={{
                                         input: {

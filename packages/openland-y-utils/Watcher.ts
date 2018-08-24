@@ -18,6 +18,9 @@ export class Watcher<T> {
         };
     }
 
+    getState() {
+        return this._state;
+    }
     setState(state: T) {
         if (this._state !== state) {
             this._state = state;

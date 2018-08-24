@@ -107,7 +107,7 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.korshakov.testing.openland"
-        minSdkVersion 27
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 29
         versionName "1.0.27"
@@ -165,7 +165,6 @@ configurations.all {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.beust:klaxon:3.0.1'
-
     compile project(':react-native-share')
     compile project(':react-native-image-capinsets')
     implementation 'com.google.firebase:firebase-core:16.0.1'
@@ -193,7 +192,6 @@ dependencies {
     compile "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     compile "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
     compile "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
-
     implementation 'com.facebook.litho:litho-core:0.18.0'
     implementation 'com.facebook.litho:litho-widget:0.18.0'
     implementation 'com.facebook.litho:litho-fresco:0.18.0'

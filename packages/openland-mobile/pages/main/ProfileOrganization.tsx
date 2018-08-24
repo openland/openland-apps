@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
 import { OrganizationQuery } from 'openland-api';
@@ -7,19 +6,20 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { ZScrollView } from '../../components/ZScrollView';
-import { ZHeader } from '../../components/ZHeader';
+import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
-class ProfileOrganizationComponent extends React.Component<NavigationInjectedProps> {
+class ProfileOrganizationComponent extends React.Component<PageProps> {
 
     handleSend = () => {
-        this.props.navigation.navigate('Conversation', { 'id': this.props.navigation.getParam('id') });
+        this.props.router.push('Conversation', { 'id': this.props.router.params.id });
     }
 
     render() {
         return (
             <>
-                <ZHeader title="Info" />
-                <ZQuery query={OrganizationQuery} variables={{ organizationId: this.props.navigation.getParam('id') }}>
+                <FastHeader title="Info" />
+                <ZQuery query={OrganizationQuery} variables={{ organizationId: this.props.router.params.id }}>
                     {(resp) => (
                         <ZScrollView backgroundColor={'#fff'}>
                             <ZListItemHeader

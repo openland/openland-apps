@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface ZHeaderButtonDescription {
+export interface FastHeaderButtonDescription {
     id: string;
     render: () => React.ReactElement<{}>;
 }
