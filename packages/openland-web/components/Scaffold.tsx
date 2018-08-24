@@ -812,17 +812,15 @@ export const MessengerButton = withNotificationCounter((props) => {
     );
 });
 
-const CreateOrgInput = Glamorous(XInput)({
-    height: 40,
-    marginTop: 16,
-});
-
 export const CreateOrganization = withCreateOrganization((props) => {
+    let community = props.router.query.createOrganization === 'community';
+    let texts = community ? InitTexts.create_community_popper : InitTexts.create_organization_popper;
     return (
         <XModalForm
             targetQuery="createOrganization"
             useTopCloser={true}
-            title={InitTexts.create_organization_popper.title}
+            title={texts.title}
+            submitBtnText={texts.submit}
             defaultAction={async (data) => {
                 let res = await props.createOrganization({
                     variables:
@@ -830,6 +828,8 @@ export const CreateOrganization = withCreateOrganization((props) => {
                         input: {
                             personal: false,
                             name: data.input.name,
+                            about: data.input.about,
+                            isCommunity: community
                         }
                     }
                 });
@@ -843,22 +843,25 @@ export const CreateOrganization = withCreateOrganization((props) => {
                     photoRef: null
                 }
             }}
-            defaultLayout={false}
-            customFooter={null}
         >
 
             <XVertical separator="large">
                 <XFormLoadingContent>
-                    <XHorizontal>
-                        <CreateOrgInput
+                    <XVertical separator={8}>
+                        <XInput
+                            color="primary-sky-blue"
                             flexGrow={1}
                             field="input.name"
-                            size="medium"
-                            placeholder={InitTexts.create_organization_popper.namePlaceholder}
-                        // tooltipContent={<InputTooltip />}
+                            size="r-default"
+                            placeholder={texts.namePlaceholder}
                         />
-                        <XFormSubmit style="primary" text={InitTexts.create_organization_popper.submit} size="medium" alignSelf="flex-end" />
-                    </XHorizontal>
+                        <XTextArea
+                            placeholder={texts.descriptionPlaceholder}
+                            resize={false}
+                            size="small"
+                            valueStoreKey="fields.input.about"
+                        />
+                    </XVertical>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>

@@ -77,6 +77,14 @@ export const InitTexts = {
     create_organization_popper: {
         title: 'Create new organization',
         namePlaceholder: 'Organization name',
+        descriptionPlaceholder: 'Description',
+        submit: 'Create'
+    },
+
+    create_community_popper: {
+        title: 'Create new community',
+        namePlaceholder: 'Community name',
+        descriptionPlaceholder: 'Description',
         submit: 'Create'
     },
 

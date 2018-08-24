@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withExploreCommunities } from '../../../api/withExploreCommunities';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
+import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XIcon } from 'openland-x/XIcon';
@@ -15,7 +15,7 @@ import { SortPicker } from './sortPicker';
 import { CommunityCard } from './components/CommunityCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { 
+import {
     RootWrapper,
     Sidebar,
     SidebarHeader,
@@ -186,7 +186,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                         </SearchRow>
                         {(this.state.searchText.length <= 0) && (
                             <XSubHeader title="All communities">
-                                <XSubHeaderLink>
+                                <XSubHeaderLink query={{ field: 'createOrganization', value: 'community' }}>
                                     <XIcon icon="add" />
                                     New community
                                 </XSubHeaderLink>
@@ -215,6 +215,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                         </Results>
                     </ContentView>
                 </Container>
+                <CreateOrganization />
             </RootWrapper>
         );
     }

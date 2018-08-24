@@ -118,7 +118,7 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => (
     </XMutation>
 )) as React.ComponentType<{ organizationId: string, followed: boolean }>;
 
-const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
+export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
     <XButton
         text={(props as any).published ? 'Hide from search' : 'Publish'}
         style="flat"
