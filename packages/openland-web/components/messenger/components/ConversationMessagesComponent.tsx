@@ -86,13 +86,21 @@ const TypingComponent = (props: { chatId: string }) => (
     </TypingWrapper>
 );
 
-export class ConversationMessagesComponent extends React.PureComponent<{ conversation: ConversationEngine, conversationId: string }, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
+interface ConversationMessagesComponentProps {
+    conversation: ConversationEngine;
+    conversationId: string;
+    isChannelType: boolean;
+    inputHider: () => void;
+    inputShower: () => void;
+}
+
+export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
 
     messagesList = React.createRef<MessageListComponent>();
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
 
-    constructor(props: { conversation: ConversationEngine, conversationId: string }) {
+    constructor(props: ConversationMessagesComponentProps) {
         super(props);
         let convState = props.conversation.getState();
         this.state = {
@@ -138,7 +146,10 @@ export class ConversationMessagesComponent extends React.PureComponent<{ convers
                 <MessageListComponent
                     loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
+                    isChannelType={this.props.isChannelType}
                     messages={this.state.messages}
+                    inputHider={this.props.inputHider}
+                    inputShower={this.props.inputShower}
                     ref={this.messagesList}
                 />
                 <XLoader loading={!this.state.mounted || this.state.loading} />

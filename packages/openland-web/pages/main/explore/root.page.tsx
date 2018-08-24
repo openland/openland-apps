@@ -514,7 +514,7 @@ class ParcelCollection extends React.Component<XWithRouter & UserInfoComponentPr
         let query = this.buildquery();
 
         return (
-            <Scaffold noBoxShadow={true} sidebarBorderColor="rgba(220, 222, 228, 0.8)">
+            <Scaffold sidebarBorderColor="rgba(220, 222, 228, 0.8)">
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XMapContainer>
                         <XMapContainer2 noParcels={this.state.zoomToSmallForParcels}>

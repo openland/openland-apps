@@ -16,10 +16,12 @@ interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
+    isChannelType: boolean;
 }
 
 interface MessagesComponentState {
     mounted: boolean;
+    hideInput: boolean;
 }
 
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> {
@@ -32,6 +34,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation = this.props.messenger.getConversation(this.props.conversationId);
         this.state = {
             mounted: false,
+            hideInput: false
         };
     }
 
@@ -64,6 +67,18 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation.sendFile(new UplaodCareUploading(file));
     }
 
+    handleHideInput = () => {
+        this.setState({
+            hideInput: true
+        });
+    }
+
+    handleShowIput = () => {
+        this.setState({
+            hideInput: false
+        });
+    }
+
     // 
     // Rendering
     //
@@ -71,8 +86,21 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     render() {
         return (
             <ConversationContainer>
-                <ConversationMessagesComponent conversation={this.conversation} conversationId={this.props.conversationId} />
-                <MessageComposeComponent onChange={this.handleChange} onSend={this.handleSend} onSendFile={this.handleSendFile} enabled={this.state.mounted} />
+                <ConversationMessagesComponent
+                    conversation={this.conversation}
+                    conversationId={this.props.conversationId}
+                    isChannelType={this.props.isChannelType}
+                    inputHider={this.handleHideInput}
+                    inputShower={this.handleShowIput}
+                />
+                {this.state.hideInput === false && (
+                    <MessageComposeComponent
+                        onChange={this.handleChange}
+                        onSend={this.handleSend}
+                        onSendFile={this.handleSendFile}
+                        enabled={this.state.mounted}
+                    />
+                )}
             </ConversationContainer>
         );
     }
@@ -91,6 +119,7 @@ const Placeholder = withChatHistory(() => {
 
 interface MessengerRootComponentProps {
     conversationId: string;
+    isChannelType: boolean;
 }
 export class MessengerRootComponent extends React.Component<MessengerRootComponentProps> {
     render() {
@@ -105,6 +134,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
                         loading={false}
                         conversationId={this.props.conversationId}
                         messenger={messenger}
+                        isChannelType={this.props.isChannelType}
                     />
                 )}
             </MessengerContext.Consumer>
