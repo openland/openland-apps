@@ -4021,6 +4021,14 @@ export interface ExploreOrganizationsQuery {
         published: boolean,
         editorial: boolean,
         featured: boolean,
+        members:  Array< {
+          __typename: "OrganizationJoinedMember",
+          user:  {
+            __typename: "User",
+            name: string,
+            picture: string | null,
+          },
+        } >,
       },
       cursor: string,
     } >,
@@ -4060,6 +4068,14 @@ export interface ExploreComunityQuery {
         published: boolean,
         editorial: boolean,
         featured: boolean,
+        members:  Array< {
+          __typename: "OrganizationJoinedMember",
+          user:  {
+            __typename: "User",
+            name: string,
+            picture: string | null,
+          },
+        } >,
       },
       cursor: string,
     } >,
@@ -4322,6 +4338,14 @@ export interface OrganizationAlterPublishedMutation {
     published: boolean,
     editorial: boolean,
     featured: boolean,
+    members:  Array< {
+      __typename: "OrganizationJoinedMember",
+      user:  {
+        __typename: "User",
+        name: string,
+        picture: string | null,
+      },
+    } >,
   },
 };
 
@@ -4373,6 +4397,14 @@ export interface OrganizationByPrefixQuery {
     published: boolean,
     editorial: boolean,
     featured: boolean,
+    members:  Array< {
+      __typename: "OrganizationJoinedMember",
+      user:  {
+        __typename: "User",
+        name: string,
+        picture: string | null,
+      },
+    } >,
   } | null,
 };
 
@@ -7329,6 +7361,14 @@ export interface OrganizationSearchFragment {
   published: boolean,
   editorial: boolean,
   featured: boolean,
+  members:  Array< {
+    __typename: "OrganizationJoinedMember",
+    user:  {
+      __typename: "User",
+      name: string,
+      picture: string | null,
+    },
+  } >,
 };
 
 export interface OrganizationShortFragment {

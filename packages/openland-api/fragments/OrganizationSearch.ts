@@ -13,5 +13,11 @@ export const OrganizationSearch = gql`
         published: alphaPublished
         editorial: alphaEditorial
         featured: alphaFeatured
+        members: alphaOrganizationMembers{
+            user{
+               name
+               picture
+            }
+        }
     }
 `;

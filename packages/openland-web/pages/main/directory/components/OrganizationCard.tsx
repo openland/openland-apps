@@ -143,6 +143,12 @@ interface OrganizationCardProps {
         followed: boolean,
         published: boolean,
         editorial: boolean,
+        members: {
+            user: {
+                name: string,
+                picture: string | null,
+            }
+        }[]
     };
     onPick: (q: SearchCondition) => void;
 }
@@ -167,7 +173,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
         }
         return arr;
     }
-    
+
     constructor(props: OrganizationCardProps) {
         super(props);
         this.state = {
@@ -176,6 +182,8 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
     }
 
     render() {
+        console.warn(this.props.item.members);
+        let firstMember = this.props.item.members[0];
         return (
             <OrganizationCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
@@ -192,12 +200,13 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                     <OrganizationContentWrapper>
                         <OrganizationInfoWrapper>
                             <OrganizationTitle path={'/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
-                            <OrganizationMembers>
+                            {firstMember && <OrganizationMembers>
                                 <XAvatar
                                     size="x-small"
+                                    cloudImageUuid={firstMember.user.picture || undefined}
                                 />
-                                <span>Eula Hogan +2 more</span>
-                            </OrganizationMembers>
+                                <span>{firstMember.user.name + (this.props.item.members.length > 0 ? (' +' + this.props.item.members.length + ' more') : '')}</span>
+                            </OrganizationMembers>}
                             <OrganizationCardTypeWrapper separator={0}>
                                 {this.props.item.locations && (
                                     <XTag
