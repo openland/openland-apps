@@ -16,7 +16,7 @@ interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
-    isChannelType: boolean;
+    conversationType?: string;
 }
 
 interface MessagesComponentState {
@@ -34,7 +34,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation = this.props.messenger.getConversation(this.props.conversationId);
         this.state = {
             mounted: false,
-            hideInput: false
+            hideInput: this.props.conversationType === 'ChannelConversation'
         };
     }
 
@@ -43,7 +43,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     shouldComponentUpdate(nextProps: MessagesComponentProps, nextState: MessagesComponentState) {
-        return this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading;
+        return this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.hideInput !== nextState.hideInput;
     }
 
     componentDidMount() {
@@ -67,12 +67,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation.sendFile(new UplaodCareUploading(file));
     }
 
-    handleHideInput = () => {
-        this.setState({
-            hideInput: true
-        });
-    }
-
     handleShowIput = () => {
         this.setState({
             hideInput: false
@@ -89,8 +83,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 <ConversationMessagesComponent
                     conversation={this.conversation}
                     conversationId={this.props.conversationId}
-                    isChannelType={this.props.isChannelType}
-                    inputHider={this.handleHideInput}
+                    conversationType={this.props.conversationType}
                     inputShower={this.handleShowIput}
                 />
                 {this.state.hideInput === false && (
@@ -119,7 +112,7 @@ const Placeholder = withChatHistory(() => {
 
 interface MessengerRootComponentProps {
     conversationId: string;
-    isChannelType: boolean;
+    conversationType?: string;
 }
 export class MessengerRootComponent extends React.Component<MessengerRootComponentProps> {
     render() {
@@ -134,7 +127,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
                         loading={false}
                         conversationId={this.props.conversationId}
                         messenger={messenger}
-                        isChannelType={this.props.isChannelType}
+                        conversationType={this.props.conversationType}
                     />
                 )}
             </MessengerContext.Consumer>

@@ -89,9 +89,8 @@ const TypingComponent = (props: { chatId: string }) => (
 interface ConversationMessagesComponentProps {
     conversation: ConversationEngine;
     conversationId: string;
-    isChannelType: boolean;
-    inputHider: () => void;
-    inputShower: () => void;
+    conversationType?: string;
+    inputShower?: () => void;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
@@ -146,9 +145,8 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
                 <MessageListComponent
                     loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
-                    isChannelType={this.props.isChannelType}
+                    conversationType={this.props.conversationType}
                     messages={this.state.messages}
-                    inputHider={this.props.inputHider}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
                 />

@@ -11,6 +11,7 @@ import { XButton } from 'openland-x/XButton';
 import { SortPicker } from '../../pages/main/directory/sortPicker';
 import { XScrollView } from 'openland-x/XScrollView';
 import EmptyImage from './components/icons/channels-explore-empty.svg';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -40,7 +41,7 @@ const Avatar = Glamorous(XAvatar)({
     }
 });
 
-const ChannelItemWrapper = Glamorous(XHorizontal)({
+const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     height: 64,
     paddingLeft: 20,
     paddingRight: 24,
@@ -61,7 +62,7 @@ const ChannelItemWrapper = Glamorous(XHorizontal)({
         color: '#979EAA',
         border: '1px solid transparent'
     }
-});
+}));
 
 const ChannelName = Glamorous.div({
     fontSize: 14,
@@ -102,7 +103,7 @@ const Channels = withChatSearchChannels((props) => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + '/') : '') + channel.title;
                         return (
-                            <ChannelItemWrapper key={c.node.id} justifyContent="space-between" alignItems="center">
+                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
                                     <Avatar
                                         style="channel"

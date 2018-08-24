@@ -62,14 +62,14 @@ const TextSmall = Glamorous.div({
     color: '#5c6a81'
 });
 
-export const EmptyBlock = (props: { isChannelType: boolean, onClick?: () => void }) => (
+export const EmptyBlock = (props: { conversationType?: string, onClick?: () => void }) => (
     <EmptyRoot>
         <Reactangle />
         <EmptyContent>
             <ImageWrapper>
-                {props.isChannelType ? <EmptyChatImgChannel /> : <EmptyChatImg />}
+                {props.conversationType === 'ChannelConversation' ? <EmptyChatImgChannel /> : <EmptyChatImg />}
             </ImageWrapper>
-            {props.isChannelType && (
+            {props.conversationType === 'ChannelConversation' && (
                 <>
                     <TextSmall>The discussion hasn’t started yet</TextSmall>
                     <Text
@@ -87,7 +87,7 @@ export const EmptyBlock = (props: { isChannelType: boolean, onClick?: () => void
                     />
                 </>
             )}
-            {!props.isChannelType && <Text opacity={0.5} marginTop={8}>No messages yet</Text>}
+            {props.conversationType !== 'ChannelConversation' && <Text opacity={0.5} marginTop={8}>No messages yet</Text>}
         </EmptyContent>
     </EmptyRoot>
 );

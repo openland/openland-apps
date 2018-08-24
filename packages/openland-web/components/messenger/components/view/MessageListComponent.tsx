@@ -82,9 +82,8 @@ interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
     loadBefore: (id: string) => void;
-    isChannelType: boolean;
-    inputHider: () => void;
-    inputShower: () => void;
+    conversationType?: string;
+    inputShower?: () => void;
 }
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
@@ -177,10 +176,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             <XScrollViewReversed ref={this.scroller}>
                 <MessagesWrapper empty={messages.length <= 2}>
 
-                    {((messages.length <= 2) && this.props.isChannelType) ? this.props.inputHider() : null}
-
                     {(messages.length <= 2) && (
-                        <EmptyBlock isChannelType={this.props.isChannelType} onClick={this.props.inputShower}/>
+                        <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower}/>
                     )}
                     {(messages.length > 2) && messages}
                 </MessagesWrapper>
