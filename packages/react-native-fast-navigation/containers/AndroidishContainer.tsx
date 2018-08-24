@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FastHistoryRecord, HistoryWatcher, FastHistory } from '../FastHistory';
 import { ContainerProps } from './ContainerProps';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { View, Animated, Easing, Dimensions } from 'react-native';
+import { View, Animated, Easing, Dimensions, Platform } from 'react-native';
 import { FastRouterContext } from '../FastRouter';
 import { FastHeader } from '../header/FastHeader';
 import { FastHeaderConfig } from '../FastHeaderConfig';
@@ -19,14 +19,22 @@ class HistoryRecordHolder {
         this.record = record;
         this.progress = progress;
         let w = Dimensions.get('window').width;
-        this.progressTranslate = this.progress.interpolate({
-            inputRange: [-1, 0],
-            outputRange: [w + 200, 0],
-            extrapolate: 'clamp'
-        });
+        if (Platform.OS === 'ios') {
+            this.progressTranslate = this.progress.interpolate({
+                inputRange: [-1, 0, 1],
+                outputRange: [w + 200, 0, -w * 0.3],
+                extrapolate: 'clamp'
+            });
+        } else {
+            this.progressTranslate = this.progress.interpolate({
+                inputRange: [-1, 0],
+                outputRange: [w + 200, 0],
+                extrapolate: 'clamp'
+            });
+        }
         this.underlayOpacity = this.progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0.2, 0],
+            inputRange: [-1, 0],
+            outputRange: [0, 0.2],
             extrapolate: 'clamp'
         });
     }
@@ -34,6 +42,25 @@ class HistoryRecordHolder {
 
 function prepareInitialRecords(routes: FastHistoryRecord[]): HistoryRecordHolder[] {
     return routes.map((v, i) => new HistoryRecordHolder(v, new Animated.Value(i === routes.length - 1 ? 0 : 1)));
+}
+
+function animate(value: Animated.Value, to: number) {
+    if (Platform.OS === 'ios') {
+        return Animated.spring(value, {
+            toValue: to,
+            stiffness: 1000,
+            damping: 500,
+            mass: 3,
+            useNativeDriver: true,
+            overshootClamping: true
+        });
+    }
+    return Animated.timing(value, {
+        toValue: to,
+        duration: 260,
+        useNativeDriver: true,
+        easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
+    });
 }
 
 export class AndroidishContainer extends React.PureComponent<ContainerProps, { routes: HistoryRecordHolder[], mounted: string[], current: string }> implements HistoryWatcher {
@@ -76,19 +103,9 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
 
         // Start animation
         Animated.parallel([
-            Animated.timing(underlayHolder.progress, {
-                toValue: 1,
-                duration: 260,
-                useNativeDriver: true,
-                easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
-            }),
-            Animated.timing(progress, {
-                toValue: 0,
-                duration: 260,
-                useNativeDriver: true,
-                easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
-            })]
-        ).start(() => {
+            animate(underlayHolder.progress, 1),
+            animate(progress, 0),
+        ]).start(() => {
             // Unmount underlay when animation finished
             // Ignore if we are aborted transition
             if (this.removing.find((v) => v === record.key)) {
@@ -119,19 +136,9 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
             this.setState({ mounted: this.mounted, current: this.current });
 
             Animated.parallel([
-                Animated.timing(underlayHolder.progress, {
-                    toValue: 0,
-                    duration: 260,
-                    useNativeDriver: true,
-                    easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
-                }),
-                Animated.timing(holder.progress, {
-                    toValue: -1,
-                    duration: 260,
-                    useNativeDriver: true,
-                    easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
-                })]
-            ).start(() => {
+                animate(underlayHolder.progress, 0),
+                animate(holder.progress, -1)
+            ]).start(() => {
                 this.removing = this.removing.filter((v) => v !== record.key);
                 this.mounted = this.mounted.filter((v) => v !== record.key);
                 this.routes = this.routes.filter((v) => v.record.key !== record.key);
@@ -156,20 +163,21 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
                         let Component = v.record.component;
                         return (
                             <>
-                                {/* <Animated.View
-                                key={v.record.key + '-shadow'}
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    bottom: 0,
-                                    right: 0,
-                                    left: 0,
-                                    opacity: i !== 0 && (!!this.state.mounted.find((m) => v.record.key === m)) ? v.underlayOpacity : 0,
-                                    backgroundColor: '#000'
-                                }}
-                                flexDirection="column"
-                                alignItems="stretch"
-                            /> */}
+                                <Animated.View
+                                    key={v.record.key + '-shadow'}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        opacity: i !== 0 && (!!this.state.mounted.find((m) => v.record.key === m)) ? v.underlayOpacity : 0,
+                                        backgroundColor: '#000'
+                                    }}
+                                    flexDirection="column"
+                                    alignItems="stretch"
+                                    pointerEvents="none"
+                                />
                                 <Animated.View
                                     key={v.record.key + '-content'}
                                     style={{
