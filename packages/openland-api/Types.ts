@@ -1010,6 +1010,7 @@ export interface ChatInfoQuery {
       photos: Array< string >,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
@@ -1032,6 +1033,7 @@ export interface ChatInfoQuery {
       photos: Array< string >,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
@@ -1043,6 +1045,7 @@ export interface ChatInfoQuery {
       photos: Array< string >,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
@@ -1058,6 +1061,7 @@ export interface ChatInfoQuery {
       photos: Array< string >,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
@@ -1087,6 +1091,7 @@ export interface ChatInfoQuery {
       photos: Array< string >,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
@@ -2127,7 +2132,26 @@ export interface ChannelInviteMutationVariables {
 };
 
 export interface ChannelInviteMutation {
-  alphaChannelInvite: string,
+  alphaChannelInvite:  {
+    __typename: "ConversationUpdateResponse",
+    chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+      }
+    ),
+  },
 };
 
 export interface ConversationKickMutationVariables {
@@ -2166,6 +2190,7 @@ export interface ConversationSettingsUpdateMutationVariables {
 export interface ConversationSettingsUpdateMutation {
   alphaUpdateConversationSettings:  {
     __typename: "ConversationSettings",
+    id: string,
     mobileNotifications: NotificationMessages,
     mute: boolean,
   },
@@ -2176,7 +2201,26 @@ export interface ChannelJoinMutationVariables {
 };
 
 export interface ChannelJoinMutation {
-  join: string,
+  join:  {
+    __typename: "ConversationUpdateResponse",
+    chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+      }
+    ),
+  },
 };
 
 export interface ChannelInviteMembersMutationVariables {
