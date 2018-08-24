@@ -115,9 +115,14 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         this.checkEmptyState();
     }
 
+    isEmpty = () => {
+        return this.props.messages.filter(m => m.message && !((m as any).isServerMessage)).length < 2;
+    }
+
     checkEmptyState = () => {
+
         if (this.props.inputShower) {
-            this.props.inputShower(!((this.props.messages.length <= 2) && this.props.conversationType === 'ChannelConversation'));
+            this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
         }
     }
 
@@ -188,12 +193,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
         return (
             <XScrollViewReversed ref={this.scroller}>
-                <MessagesWrapper empty={messages.length <= 2}>
+                <MessagesWrapper empty={this.isEmpty()}>
 
-                    {(messages.length <= 2) && (
+                    {this.isEmpty() && (
                         <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower} />
                     )}
-                    {(messages.length > 2) && messages}
+                    {!this.isEmpty() && messages}
                 </MessagesWrapper>
             </XScrollViewReversed>
         );
