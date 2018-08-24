@@ -159,8 +159,10 @@ const renderConversation = (v: any) => (
         <XAvatar
             style={(v.__typename === 'SharedConversation'
                 ? 'organization'
-                : v.__typename === 'ChannelConversation'
-                    ? 'channel' : undefined
+                : v.__typename === 'GroupConversation'
+                    ? 'group'
+                    : v.__typename === 'ChannelConversation'
+                        ? 'channel' : undefined
             )}
             cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined}
         />

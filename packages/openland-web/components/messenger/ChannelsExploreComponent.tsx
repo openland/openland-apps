@@ -46,6 +46,7 @@ const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     paddingLeft: 20,
     paddingRight: 24,
     flexShrink: 0,
+    cursor: 'pointer',
     borderBottom: '1px solid rgba(220, 222, 228, 0.3)',
     '&:hover': {
         backgroundColor: '#f9fafb',

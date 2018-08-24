@@ -5,16 +5,10 @@ import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XCloudImage, XPhotoRef } from './XCloudImage';
-import PlaceholderOrg from './icons/avatar_org_large.svg';
-import PlaceholderOrgSmall from './icons/avatar_org_small.svg';
-import PlaceholderUser from './icons/avatar_user_large.svg';
-import PlaceholderUserSmall from './icons/avatar_user_small.svg';
-import PlaceholderChannel from './icons/avatar_community_large.svg';
-import PlaceholderChannelSmall from './icons/avatar_community_small.svg';
 import { XPImage } from 'openland-xp/XPImage';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 'medium' | 'default' | 'small' | 'x-small';
-export type XAvatarStyle = 'organization' | 'person' | 'channel' | undefined;
+export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
@@ -154,6 +148,32 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     border: 'none'
 })]);
 
+const AvatarStub = Glamorous.div({
+    width: '100%',
+    height: '100%',
+    backgroundImage: 'url(\'/static/img/avatars/user.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    '&.org-large': {
+        backgroundImage: 'url(\'/static/img/avatars/org-large.svg\')',
+    },
+    '&.org-small': {
+        backgroundImage: 'url(\'/static/img/avatars/org-small.svg\')',
+    },
+    '&.channel': {
+        backgroundImage: 'url(\'/static/img/avatars/community.svg\')',
+    },
+    '&.group': {
+        backgroundImage: 'url(\'/static/img/avatars/group.svg\')',
+    },
+    '&.user-large': {
+        backgroundImage: 'url(\'/static/img/avatars/user-large.svg\')',
+    },
+    '&.user': {
+        backgroundImage: 'url(\'/static/img/avatars/user.svg\')',
+    }
+});
+
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let avatarProps = {
@@ -189,9 +209,10 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
-                    {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderOrg /> : <PlaceholderOrgSmall />)}
-                    {props.style === 'channel' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderChannel /> : <PlaceholderChannelSmall />)}
-                    {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderUser /> : <PlaceholderUserSmall />)}
+                    {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="org-large" /> : <AvatarStub className="org-small" />)}
+                    {props.style === 'channel' && <AvatarStub className="channel" />}
+                    {props.style === 'group' && <AvatarStub className="group" />}
+                    {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
                 </StyledPlaceholder>
             )}
         </>
