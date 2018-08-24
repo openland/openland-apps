@@ -355,6 +355,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 )}
                 {(props.data.chat.__typename === 'ChannelConversation' && tab === 'members') && (
                     <ChannelMembersComponent
+                        channelTitle={title}
                         key={props.data.chat.id + '_members'}
                         variables={{ channelId: props.data.chat.id }}
                         {...{ isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine }}
