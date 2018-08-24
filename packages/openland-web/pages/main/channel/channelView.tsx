@@ -10,7 +10,6 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { ListingsComponent } from './components/listingsComponent';
-import { ChannelMembersComponent } from './components/membersComponent';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -140,7 +139,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <ChannelWrapper>
                 {(!isListingsTab && !isMembersTab) && (<MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />)}
                 {(isListingsTab && !isMembersTab) && (<ListingsComponent />)}
-                {(!isListingsTab && isMembersTab) && (<ChannelMembersComponent />)}
             </ChannelWrapper>
         </ChatRoot>
     );
