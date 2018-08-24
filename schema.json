@@ -2541,6 +2541,33 @@
               "deprecationReason": null
             },
             {
+              "name": "debugImagePreview",
+              "description": "",
+              "args": [
+                {
+                  "name": "uuid",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "settings",
               "description": "",
               "args": [],
@@ -7013,6 +7040,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "FileMetadata",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "filePreview",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,

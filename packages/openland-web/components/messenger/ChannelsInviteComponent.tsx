@@ -187,7 +187,7 @@ interface ChannelsInviteComponentProps {
 export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
     render() {
         console.warn(this.props);
-        let joinText = this.props.channel.myStatus === 'none' ? 'Rrequest invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
+        let joinText = this.props.channel.myStatus === 'none' ? 'Request invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
         return (
             <Root>
                 <Reactangle />

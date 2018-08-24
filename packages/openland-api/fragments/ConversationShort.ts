@@ -10,5 +10,8 @@ export const ConversationShort = gql`
         topMessage {
             ...MessageFull
         }
+        settings{
+            mute
+        }
     }
 `;
