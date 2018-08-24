@@ -66,6 +66,13 @@ export interface UpdateConversationSettingsInput {
   mute?: boolean | null,
 };
 
+export interface ChannelInviteRequest {
+  email: string,
+  emailText?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -2126,6 +2133,91 @@ export interface ChannelJoinMutationVariables {
 
 export interface ChannelJoinMutation {
   join: string,
+};
+
+export interface ChannelInviteMembersMutationVariables {
+  channelId: string,
+  inviteRequests: Array< ChannelInviteRequest >,
+};
+
+export interface ChannelInviteMembersMutation {
+  alphaChannelInviteMembers: string,
+};
+
+export interface ChannelJoinInviteMutationVariables {
+  invite: string,
+};
+
+export interface ChannelJoinInviteMutation {
+  alphaChannelJoinInvite: string,
+};
+
+export interface ChannelRenewInviteLinkMutationVariables {
+  channelId: string,
+};
+
+export interface ChannelRenewInviteLinkMutation {
+  link: string,
+};
+
+export interface ChannelInviteLinkQueryVariables {
+  channelId: string,
+};
+
+export interface ChannelInviteLinkQuery {
+  link: string,
+};
+
+export interface ChannelInviteInfoQueryVariables {
+  uuid: string,
+};
+
+export interface ChannelInviteInfoQuery {
+  invite:  {
+    __typename: "ChannelInvite",
+    channel:  {
+      __typename: "ChannelConversation",
+      id: string,
+      title: string,
+      photos: Array< string >,
+      isRoot: boolean,
+      featured: boolean,
+      description: string,
+      myStatus: ChannelMembershipStatus,
+      membersCount: number,
+      organization:  {
+        __typename: "Organization",
+        id: string,
+        isMine: boolean,
+        name: string,
+      } | null,
+    },
+    invitedByUser:  {
+      __typename: "User",
+      id: string,
+      name: string,
+      firstName: string,
+      lastName: string | null,
+      picture: string | null,
+      email: string | null,
+      primaryOrganization:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+      } | null,
+      role: string | null,
+      linkedin: string | null,
+      twitter: string | null,
+    },
+  } | null,
+};
+
+export interface ChannelJoinInviteLinkMutationVariables {
+  invite: string,
+};
+
+export interface ChannelJoinInviteLinkMutation {
+  cannelId: string,
 };
 
 export interface AllDealsQuery {

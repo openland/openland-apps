@@ -7,7 +7,8 @@ const SubHeaderWrapper = Glamorous.div({
     display: 'flex',
     background: '#f9fafb',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    padding: '18px 24px'
+    padding: '18px 24px',
+    position: 'relative',
 });
 
 const SubHeaderTitle = Glamorous.div({
@@ -28,6 +29,12 @@ const SubHeaderCounter = Glamorous.div({
     marginLeft: 3
 });
 
+export const XSubHeaderRight = Glamorous.div({
+    position: 'absolute',
+    top: 12,
+    right: 14
+});
+
 const SubHeaderLink = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
@@ -45,10 +52,18 @@ const SubHeaderLink = Glamorous(XLink)({
     '& svg *': {
         fill: '#5c6a81',
     },
+    '& i': {
+        fontSize: 20,
+        marginRight: 4,
+        color: '#5c6a81',
+    },
     '&:hover': {
         opacity: 1,
         color: '#5c6a81',
         '& svg *': {
+            opacity: 0.75,
+        },
+        '& i': {
             opacity: 0.75,
         },
     },
@@ -59,13 +74,17 @@ const SubHeaderLink = Glamorous(XLink)({
             opacity: 0.5,
             fill: '#1790ff',
         },
+        '& i': {
+            opacity: 0.5,
+            color: '#1790ff',
+        },
     }
 });
 
 export class XSubHeaderLink extends React.Component<XLinkProps> {
     render() {
         return (
-            <SubHeaderLink>
+            <SubHeaderLink {...this.props}>
                 {this.props.children}
             </SubHeaderLink>
         );

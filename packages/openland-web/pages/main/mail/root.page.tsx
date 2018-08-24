@@ -16,6 +16,10 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
+import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
+import { XLoader } from 'openland-x/XLoader';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -73,12 +77,19 @@ const Title = Glamorous.div({
     color: '#334562'
 });
 
+const ChannelInviteFromLink = withChannelInviteInfo((props) => {
+    return props.data && props.data.invite ?
+        props.data.invite.channel.myStatus === 'member' ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} /> : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite}/> :
+        <XLoader loading={true} />;
+});
+
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
     let isCompose = props.router.path.endsWith('/new');
     let isChannels = props.router.path.endsWith('/channels');
+    let isInvite = props.router.path.includes('joinChannel');
 
-    let tab: 'empty' | 'conversation' | 'compose' | 'channels' = 'empty';
+    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' = 'empty';
 
     if (isCompose && canUseDOM) {
         tab = 'compose';
@@ -91,7 +102,10 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
 
     if (!isCompose && props.router.routeQuery.conversationId) {
         tab = 'conversation';
+    }
 
+    if (isInvite) {
+        tab = 'invite';
     }
 
     if (isChannels) {
@@ -130,6 +144,9 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             )}
                             {tab === 'channels' && (
                                 <ChannelsExploreComponent />
+                            )}
+                            {tab === 'invite' && (
+                                <ChannelInviteFromLink />
                             )}
                         </ConversationContainer>
                     </ChatContainer>

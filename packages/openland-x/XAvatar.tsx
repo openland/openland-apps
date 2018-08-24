@@ -9,10 +9,12 @@ import PlaceholderOrg from './icons/avatar_org_large.svg';
 import PlaceholderOrgSmall from './icons/avatar_org_small.svg';
 import PlaceholderUser from './icons/avatar_user_large.svg';
 import PlaceholderUserSmall from './icons/avatar_user_small.svg';
+import PlaceholderChannel from './icons/avatar_community_large.svg';
+import PlaceholderChannelSmall from './icons/avatar_community_small.svg';
 import { XPImage } from 'openland-xp/XPImage';
 
-export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'medium' | 'default' | 'small';
-export type XAvatarStyle = 'organization' | 'person';
+export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 'medium' | 'default' | 'small' | 'x-small';
+export type XAvatarStyle = 'organization' | 'person' | 'channel' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
@@ -37,6 +39,10 @@ let sizeStyles = styleResolver({
         height: 100,
         width: 100,
     },
+    'x-medium': {
+        height: 86,
+        width: 86,
+    },
     'medium': {
         height: 46,
         width: 46,
@@ -48,6 +54,10 @@ let sizeStyles = styleResolver({
     'small': {
         height: 36,
         width: 36,
+    },
+    'x-small': {
+        height: 18,
+        width: 18,
     }
 });
 
@@ -70,6 +80,12 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 65 },
+    'x-medium': props.style === 'organization' ? {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+    } : { borderRadius: 43 },
     'medium': props.style === 'organization' ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
@@ -88,6 +104,12 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
     } : { borderRadius: 18 },
+    'x-small': props.style === 'organization' ? {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+    } : { borderRadius: 9 },
 }));
 
 interface StyledAvatarProps extends XFlexStyles {
@@ -168,6 +190,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
                     {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderOrg /> : <PlaceholderOrgSmall />)}
+                    {props.style === 'channel' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderChannel /> : <PlaceholderChannelSmall />)}
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <PlaceholderUser /> : <PlaceholderUserSmall />)}
                 </StyledPlaceholder>
             )}

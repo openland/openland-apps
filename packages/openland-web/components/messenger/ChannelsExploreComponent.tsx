@@ -11,6 +11,11 @@ import { XButton } from 'openland-x/XButton';
 import { SortPicker } from '../../pages/main/directory/sortPicker';
 import { XScrollView } from 'openland-x/XScrollView';
 import EmptyImage from './components/icons/channels-explore-empty.svg';
+import { makeNavigable } from 'openland-x/Navigable';
+
+const ChannelsListWrapper = Glamorous(XScrollView)({
+    flexGrow: 1
+});
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -36,15 +41,28 @@ const Avatar = Glamorous(XAvatar)({
     }
 });
 
-const ChannelItemWrapper = Glamorous(XHorizontal)({
+const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     height: 64,
     paddingLeft: 20,
     paddingRight: 24,
     flexShrink: 0,
+    borderBottom: '1px solid rgba(220, 222, 228, 0.3)',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#f9fafb',
+        '& .none': {
+            backgroundColor: '#1790ff',
+            color: '#fff',
+            '&:hover': {
+                backgroundColor: '#45a6ff'
+            }
+        },
+    },
+    '& .none': {
+        backgroundColor: 'rgba(238, 240, 242, 0.5)',
+        color: '#979EAA',
+        border: '1px solid transparent'
     }
-});
+}));
 
 const ChannelName = Glamorous.div({
     fontSize: 14,
@@ -58,16 +76,22 @@ const MembersText = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.29,
-    letterSpacing: -0.3,
+    letterSpacing: -0.4,
     color: '#99a2b0'
+});
+
+const EmptyContent = Glamorous(XVertical)({
+    paddingTop: 30,
+    paddingBottom: 30
 });
 
 const EmptyText = Glamorous.div({
     fontSize: 16,
     fontWeight: 600,
     lineHeight: 1.5,
-    letterSpacing: -0.2,
-    color: '#99a2b0'
+    letterSpacing: -0.3,
+    color: '#99a2b0',
+    marginTop: 44
 });
 
 const Channels = withChatSearchChannels((props) => {
@@ -79,9 +103,12 @@ const Channels = withChatSearchChannels((props) => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + '/') : '') + channel.title;
                         return (
-                            <ChannelItemWrapper key={c.node.id} justifyContent="space-between" alignItems="center">
+                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
-                                    <Avatar cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)} />
+                                    <Avatar
+                                        style="channel"
+                                        cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
+                                    />
                                     <XVertical separator={1}>
                                         <ChannelName>{title}</ChannelName>
                                         <MembersText>{channel.membersCount} {channel.membersCount === 1 ? 'member' : 'members'}</MembersText>
@@ -90,8 +117,9 @@ const Channels = withChatSearchChannels((props) => {
                                 <XButton
                                     text={StatusTitleMap[channel.myStatus]}
                                     path={'/mail/' + channel.id}
-                                    style="primary-sky-blue"
+                                    style="ghost"
                                     size="r-default"
+                                    className={channel.myStatus}
                                 />
                             </ChannelItemWrapper>
                         );
@@ -99,10 +127,10 @@ const Channels = withChatSearchChannels((props) => {
                 </>
             )
             : (
-                <XVertical separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
+                <EmptyContent separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
                     <EmptyImage />
-                    <EmptyText>No results</EmptyText>
-                </XVertical>
+                    <EmptyText>No channel matches your search</EmptyText>
+                </EmptyContent>
             )
             : (<XLoader loading={true} />)
     );
@@ -116,6 +144,12 @@ const SearchWrapper = Glamorous(XHorizontal)({
     '& > div': {
         height: 58,
         border: 'none',
+        fontSize: 16,
+        fontWeight: 500,
+        '& .icon': {
+            fontSize: 20,
+            top: 'calc(50% - 10px)'
+        },
         '&:focus-within': {
             boxShadow: 'none',
             border: 'none'
@@ -137,10 +171,6 @@ const CounterText = Glamorous.div({
     lineHeight: 1.14,
     letterSpacing: -0.2,
     color: '#5c6a81'
-});
-
-const ChannelsListWrapper = Glamorous(XScrollView)({
-    flexGrow: 1
 });
 
 export class ChannelsExploreComponent extends React.Component<{}, {
@@ -179,6 +209,7 @@ export class ChannelsExploreComponent extends React.Component<{}, {
                             flexGrow={1}
                             placeholder="Search channels"
                             icon="search"
+                            color="primary-sky-blue"
                         />
                         <XButton
                             text="Search"

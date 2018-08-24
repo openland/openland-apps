@@ -104,7 +104,7 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
     position: 'relative',
     zIndex: 0,
     overflow: 'hidden!important',
-    maxHeight: 'inherit',
+    // maxHeight: 'inherit',
     WebkitOverflowScrolling: 'touch', /* Trigger native scrolling for mobile, if not supported, plugin is used. */
 }, applyFlex]);
 

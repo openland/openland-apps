@@ -13,6 +13,8 @@ routes.add('/signin', '/init/signin');
 routes.add('/signin/', '/init/signin');
 routes.add('/signin/invite', '/init/signinvite');
 routes.add('/signin/invite/', '/init/signinvite');
+routes.add('/signin/channel', '/init/signChannelInvite');
+routes.add('/signin/channel/', '/init/signChannelInvite');
 routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
@@ -33,6 +35,8 @@ routes.add('/join/:inviteKey', '/init/join');
 routes.add('/join/:inviteKey/', '/init/join');
 routes.add('/invite/:inviteKey', '/init/invite');
 routes.add('/invite/:inviteKey/', '/init/invite');
+routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
+routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 routes.add('/404', '/404');
 
 //
@@ -80,8 +84,8 @@ routes.add('/home/', '/main/home/main');
 
 routes.add('/directory', '/main/directory/root');
 routes.add('/directory/', '/main/directory/root');
-routes.add('/directory/:organizationId', '/main/directory/root');
-routes.add('/directory/:organizationId/', '/main/directory/root');
+routes.add('/directory/communities', '/main/directory/communities');
+routes.add('/directory/communities/', '/main/directory/communities');
 
 //
 // Profiles
@@ -208,6 +212,8 @@ routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
+routes.add('/joinChannel/:uuid', '/main/mail/root');
+routes.add('/joinChannel/:uuid/', '/main/mail/root');
 
 //
 // Channel

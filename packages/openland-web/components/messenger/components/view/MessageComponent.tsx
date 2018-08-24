@@ -43,12 +43,14 @@ const Organization = Glamorous.div({
 });
 
 const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
+    flexShrink: 0,
     width: props.small ? 56 : 62,
     marginBottom: props.small ? undefined : -1,
     fontSize: 12,
     paddingTop: props.small ? 3 : undefined,
     fontWeight: 500,
     letterSpacing: -0.2,
+    whiteSpace: 'nowrap',
     opacity: 0.5,
     color: '#334562'
 }));

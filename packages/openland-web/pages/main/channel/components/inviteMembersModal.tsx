@@ -15,6 +15,12 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import PlusIcon from './icons/ic-add-small.svg';
 import LinkIcon from './icons/ic-link.svg';
 import EmailIcon from './icons/ic-email.svg';
+import { withChanneSendlnviteLink } from '../../../../api/withChanneSendlnviteLink';
+import { XRouter } from 'openland-x-routing/XRouter';
+import { XWithRouter } from 'openland-x-routing/withRouter';
+import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';
+import { XMutation } from 'openland-x/XMutation';
+import { XButton } from 'openland-x/XButton';
 
 const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>((props) => ({
     paddingBottom: props.bottomOfset ? 60 : undefined
@@ -55,31 +61,61 @@ const InviteText = Glamorous.div({
     color: '#99a2b0'
 });
 
-class OwnerLinkComponent extends React.Component<{ invite: boolean }> {
-    constructor(props: any) {
-        super(props);
+const LinkHolder = Glamorous(XVertical)({
+    '& > div:first-child': {
+        backgroundColor: '#f5f7f9',
+        borderColor: 'transparent',
+        color: '#5c6a81'
+    }
+});
+
+class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRouter> {
+    input?: any;
+
+    handleRef = (e: any) => {
+        if (e === null) {
+            return;
+        }
+        this.input = e;
+    }
+
+    copy = (e: any) => {
+        if (this.input && this.input.inputRef && this.input.inputRef) {
+            this.input.inputRef.inputRef.select();
+        }
+        document.execCommand('copy');
     }
 
     render() {
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {this.props.invite && (
-                    <XVertical separator={4}>
-                        <InviteLinkField>https://app.openland.com/invite/b3e29082-2726-463e-a8a3432fddsds</InviteLinkField>
+                    <LinkHolder separator={4}>
+                        <XInput
+                            size="r-default"
+                            color="primary-sky-blue"
+                            flexGrow={1}
+                            ref={this.handleRef}
+                            value={this.props.router.protocol + '://' + this.props.router.hostName + '/joinChannel/' + this.props.invite}
+                        />
                         <InviteText>Anyone with the link will be able to join</InviteText>
-                    </XVertical>
+                    </LinkHolder>
                 )}
             </XVertical>
         );
     }
 }
 
-const OwnerLink = (props: { innerRef: any }) => (
-    <OwnerLinkComponent
-        ref={props.innerRef}
-        invite={true}
-    />
-);
+const OwnerLink = withChannelnviteLink((props) => {
+    console.warn(props);
+    return (
+        <OwnerLinkComponent
+            ref={(props as any).innerRef}
+            invite={props.data.link}
+            router={props.router}
+        />
+    );
+}) as React.ComponentType<{ innerRef: any, variables: { channelId: string } }>;
 
 interface Invite {
     email?: string;
@@ -156,12 +192,9 @@ const AddButton = (props: XLinkProps & { title: string }) => (
     </AddButtonStyled>
 );
 
-const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
-    <InviteButtonStyles {...props}>
-        {props.icon}
-        <span>{props.title}</span>
-    </InviteButtonStyles>
-);
+const RenewButton = Glamorous(XButton)({
+    color: 'rgba(51,69,98, 0.45)'
+});
 
 const FooterWrap = Glamorous.div({
     display: 'flex',
@@ -182,7 +215,18 @@ interface InvitesMoadalRawState {
     showLink?: boolean;
 }
 
-class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoadalRawState> {
+const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
+    <InviteButtonStyles {...props}>
+        {props.icon}
+        <span>{props.title}</span>
+    </InviteButtonStyles>
+);
+
+const RenewInviteLinkButton = withChannelnviteLink((props) => (
+    <XMutation mutation={props.renew}><RenewButton text="Renew link" style="link" /></XMutation>
+)) as React.ComponentType<{ variables: { channelId: string }, refetchVars: { channelId: string } }>;
+
+class InviteMembersModalRaw extends React.Component<{ channelTitle: string, channelId: string, sendInviteMutation: any, target: any }, InvitesMoadalRawState> {
     linkComponent?: any;
 
     constructor(props: any) {
@@ -216,6 +260,12 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
         store.writeValue('fields.inviteRequests', invites);
     }
 
+    copyLink = () => {
+        if (this.linkComponent) {
+            this.linkComponent.copy();
+        }
+    }
+
     render() {
         let footer = (
             <FooterWrap>
@@ -245,8 +295,9 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
                 </XHorizontal>
                 {this.state.showLink && (
                     <XHorizontal alignItems="center">
-                        <InviteButton title="Renew link" />
+                        <RenewInviteLinkButton variables={{ channelId: this.props.channelId }} refetchVars={{ channelId: this.props.channelId }} />
                         <XFormSubmit
+                            succesText="Copied!"
                             key="link"
                             style="primary-sky-blue"
                             size="r-default"
@@ -268,10 +319,29 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
         );
         return (
             <XModalForm
-                {...this.props}
-                defaultAction={this.props.defaultAction}
+                autoClose={1500}
+                target={this.props.target}
+                defaultAction={async (data) => {
+                    if (!this.state.showLink) {
+                        let invites = data.inviteRequests.filter((invite: any) => (
+                            (invite.email || invite.firstName || invite.lastName))).map((invite: any) => (
+                                {
+                                    ...invite,
+                                    emailText: this.state.customTextAreaOpen ? data.customText : null
+                                }
+                            ));
+                        await this.props.sendInviteMutation({
+                            variables: {
+                                inviteRequests: invites,
+                                channelId: this.props.channelId,
+                            }
+                        });
+                    } else {
+                        this.copyLink();
+                    }
+                }}
                 title="Invite members to"
-                titleChildren={<ChannelName>Government incentives</ChannelName>}
+                titleChildren={<ChannelName>{this.props.channelTitle}</ChannelName>}
                 useTopCloser={true}
                 scrollableContent={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
@@ -333,6 +403,7 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
                     {this.state.showLink && (
                         <OwnerLink
                             innerRef={this.handleLinkComponentRef}
+                            variables={{ channelId: this.props.channelId }}
                         />
                     )}
                 </ModalContentWrapper>
@@ -341,6 +412,6 @@ class InviteMembersModalRaw extends React.Component<XModalFormProps, InvitesMoad
     }
 }
 
-export const InviteMembersModal = (props: XModalFormProps) => (
-    <InviteMembersModalRaw {...props} />
-);
+export const InviteMembersModal = withChanneSendlnviteLink((props) => (
+    <InviteMembersModalRaw channelTitle={(props as any).channelTitle} channelId={(props as any).channelId} sendInviteMutation={props.send} target={(props as any).target} />
+)) as React.ComponentType<{ channelTitle: string, channelId: string, target: any }>;

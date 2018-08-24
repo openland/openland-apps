@@ -13,10 +13,11 @@ import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XIcon } from 'openland-x/XIcon';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import EmptyImage from './components/icons/channels-search-empty.svg';
+import CircleIcon from './components/icons/circle-icon.svg';
+import ArrowIcon from './components/icons/ic-arrow-rignt.svg';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -155,7 +156,14 @@ let Item = makeNavigable((props) => (
 
 const renderConversation = (v: any) => (
     <Item path={'/mail/' + v.flexibleId} key={v.id}>
-        <XAvatar style={v.__typename === 'SharedConversation' ? 'organization' : 'person'} cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined} />
+        <XAvatar
+            style={(v.__typename === 'SharedConversation'
+                ? 'organization'
+                : v.__typename === 'ChannelConversation'
+                    ? 'channel' : undefined
+            )}
+            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined}
+        />
         <Header>
             <Main>
                 <Title className="title"><span>{v.title}</span></Title>
@@ -207,7 +215,7 @@ const SearchChats = withChatSearchText((props) => {
         )
         : (
             <NoResultWrapper separator={10} alignItems="center">
-                <EmptyImage/>
+                <EmptyImage />
                 <PlaceholderEmpty>No results</PlaceholderEmpty>
             </NoResultWrapper>
         )
@@ -221,7 +229,11 @@ const Search = Glamorous(XInput)({
 });
 
 const ExploreChannels = Glamorous(XMenuItem)({
-    backgroundColor: '#f2f4f5',
+    backgroundColor: '#F3F5F6',
+    '&:hover': {
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#334562'
+    }
 });
 
 class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, { query: string }> {
@@ -239,6 +251,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
         return (
             <XVertical separator={'none'}>
                 <Search
+                    value={this.state.query}
                     onChange={this.onInput}
                     size="r-default"
                     placeholder="Search"
@@ -246,9 +259,15 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     color="primary-sky-blue"
                     cleansable={true}
                 />
-                <XWithRole role={['software-developer', 'super-admin']}>
-                    <ExploreChannels path={'/mail/channels'}><XText>(/) Explore channels</XText></ExploreChannels>
-                </XWithRole>
+                <ExploreChannels path={'/mail/channels'}>
+                    <XHorizontal alignItems="center" justifyContent="space-between">
+                        <XHorizontal alignItems="center" separator={6}>
+                            <CircleIcon />
+                            <XText>Explore channels</XText>
+                        </XHorizontal>
+                        <ArrowIcon />
+                    </XHorizontal>
+                </ExploreChannels>
 
                 {search && <SearchChats variables={{ query: this.state.query!! }} />}
                 {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(renderConversation)}

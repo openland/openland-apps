@@ -36,6 +36,10 @@ export function graphqlRouted<TResult, TVars>(
                     if (options && options.throwOnError && results.data.error) {
                       throw results.data.error;
                     }
+                    if (results.error) {
+                      console.warn(preparedVariables);
+                      console.warn(results.error);
+                    }
                     return (<Component {...other} {...results} variables={preparedVariables} router={router!!} />);
                   }}
                 </Query>

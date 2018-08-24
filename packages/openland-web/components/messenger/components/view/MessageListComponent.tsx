@@ -7,12 +7,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFullFragment } from 'openland-api/Types';
-
-interface MessageListProps {
-    conversation: ConversationEngine;
-    messages: ModelMessage[];
-    loadBefore: (id: string) => void;
-}
+import { EmptyBlock } from './content/ChatEmptyComponent';
 
 let months = [
     'Jan',
@@ -71,18 +66,34 @@ const DateDivider = Glamorous.div({
     }
 });
 
-const MessagesWrapper = Glamorous.div({
+const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    paddingTop: 96,
-    paddingBottom: 40,
-    width: '100%'
-});
+    alignSelf: 'center',
+    flexGrow: props.empty ? 1 : undefined,
+    paddingTop: props.empty ? 20 : 96,
+    paddingBottom: props.empty ? 0 : 40,
+    width: '100%',
+    maxWidth: 1000
+}));
+
+interface MessageListProps {
+    conversation: ConversationEngine;
+    messages: ModelMessage[];
+    loadBefore: (id: string) => void;
+    conversationType?: string;
+    inputShower?: (show: boolean) => void;
+}
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
+
+    constructor(props: any) {
+        super(props);
+        this.checkEmptyState();
+    }
 
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
@@ -93,6 +104,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.updateDimensions();
             this.unshifted = true;
         }
+        this.checkEmptyState();
     }
 
     componentDidUpdate() {
@@ -100,9 +112,22 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.restorePreviousScroll();
             this.unshifted = false;
         }
+        this.checkEmptyState();
+    }
+
+    isEmpty = () => {
+        return this.props.messages.filter(m => m.message && !((m as any).isServerMessage)).length < 2;
+    }
+
+    checkEmptyState = () => {
+
+        if (this.props.inputShower) {
+            this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
+        }
     }
 
     render() {
+
         let messages: any[] = [];
         let prevDate: string | undefined;
         let prevMessageDate: number | undefined = undefined;
@@ -168,8 +193,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
         return (
             <XScrollViewReversed ref={this.scroller}>
-                <MessagesWrapper>
-                    {messages}
+                <MessagesWrapper empty={this.isEmpty()}>
+
+                    {this.isEmpty() && (
+                        <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower} />
+                    )}
+                    {!this.isEmpty() && messages}
                 </MessagesWrapper>
             </XScrollViewReversed>
         );

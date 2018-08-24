@@ -361,7 +361,6 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
         </Query>
         <InvitesToOrganizationMoadal targetQuery="invite" target={null} />
         <InvitesGlobalMoadal targetQuery="invite_global" target={null} />
-
     </XVertical>
 ));
 
@@ -369,7 +368,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 // Content
 //
 
-const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>((props) => ({
+const ContentView = Glamorous.div<{ marginLeft: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
@@ -381,7 +380,6 @@ const ContentView = Glamorous.div<{ noBoxShadow?: boolean, marginLeft: number }>
     order: 2,
     minWidth: 0,
     maxWidth: '100%',
-    boxShadow: props.noBoxShadow ? undefined : '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     position: 'relative',
     zIndex: 0,
     marginLeft: props.marginLeft
@@ -631,7 +629,6 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
 }
 
 interface ScaffoldProps {
-    noBoxShadow?: boolean;
     sidebarBorderColor?: string;
 }
 
@@ -1214,7 +1211,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                     {menu}
                 </NavigationWrapper>
                 <ContentView
-                    noBoxShadow={this.props.noBoxShadow}
                     marginLeft={menu !== undefined ? 350 : 72}
                     innerRef={this.handleContentRef}
                 >
