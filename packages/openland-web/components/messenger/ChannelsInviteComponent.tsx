@@ -94,8 +94,8 @@ const UserAvatar = Glamorous(XAvatar)({
     width: 20,
     height: 20,
     '& img': {
-        width: '100% !important',
-        height: '100% !important'
+        width: '20px !important',
+        height: '20px !important'
     }
 });
 
@@ -161,7 +161,30 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
     );
 }) as React.ComponentType<{ invite: string, refetchVars: { conversationId: string }, text: string }>;
 
-export class ChannelsInviteComponent extends React.Component<{ inviteLink?: string, signup?: string, channel: { myStatus: string, id: string, description: string, isRoot: boolean, title: string, membersCount: number, organization?: { name: string } | null }, invite?: { invitedByUser?: { name: string, picture?: string | null } } }> {
+interface ChannelsInviteComponentProps {
+    inviteLink?: string;
+    signup?: string;
+    channel: {
+        myStatus: string,
+        id: string,
+        description: string,
+        isRoot: boolean,
+        title: string,
+        membersCount: number,
+        organization?: {
+            name: string
+        } | null
+    };
+    invite?: {
+        invitedByUser?: {
+            name: string,
+            picture?: string | null
+        }
+    };
+    noLogin?: boolean;
+}
+
+export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
     render() {
         console.warn(this.props);
         let joinText = this.props.channel.myStatus === 'none' ? 'Rrequest invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
@@ -169,11 +192,13 @@ export class ChannelsInviteComponent extends React.Component<{ inviteLink?: stri
             <Root>
                 <Reactangle />
                 <MainContent>
-                    <XHorizontal justifyContent="flex-end">
-                        <Close path="/mail/channels">
-                            <CloseIcon />
-                        </Close>
-                    </XHorizontal>
+                    {!this.props.noLogin && (
+                        <XHorizontal justifyContent="flex-end">
+                            <Close path="/mail/channels">
+                                <CloseIcon />
+                            </Close>
+                        </XHorizontal>
+                    )}
                     {this.props.invite && this.props.invite.invitedByUser ?
                         <UserInfoWrapper separator={6} justifyContent="center">
                             <UserAvatar cloudImageUuid={this.props.invite.invitedByUser.picture || undefined} />
@@ -183,7 +208,9 @@ export class ChannelsInviteComponent extends React.Component<{ inviteLink?: stri
                     <InfoCardWrapper>
                         <XVertical separator={10} justifyContent="center">
                             <XVertical justifyContent="center">
-                                <ChannelTitle>{(!this.props.channel.isRoot ? this.props.channel.organization!!.name + '/' : '') + this.props.channel.title}</ChannelTitle>
+                                <ChannelTitle>
+                                    {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + '/' : '') + this.props.channel.title}
+                                </ChannelTitle>
                                 {this.props.channel.description && <Text width={354}>{this.props.channel.description}</Text>}
                             </XVertical>
                             <ChannelCounter>
