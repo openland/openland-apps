@@ -62,7 +62,7 @@ const TextSmall = Glamorous.div({
     color: '#5c6a81'
 });
 
-export const EmptyBlock = (props: { conversationType?: string, onClick?: () => void }) => (
+export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: boolean) => void }) => (
     <EmptyRoot>
         <Reactangle />
         <EmptyContent>
@@ -83,7 +83,7 @@ export const EmptyBlock = (props: { conversationType?: string, onClick?: () => v
                         text="Write to channel"
                         style="primary-sky-blue"
                         size="r-default"
-                        onClick={props.onClick}
+                        onClick={() => props.onClick ? props.onClick(true) : null}
                     />
                 </>
             )}

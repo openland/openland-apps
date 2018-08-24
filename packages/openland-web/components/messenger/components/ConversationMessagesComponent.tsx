@@ -90,7 +90,7 @@ interface ConversationMessagesComponentProps {
     conversation: ConversationEngine;
     conversationId: string;
     conversationType?: string;
-    inputShower?: () => void;
+    inputShower?: (show: boolean) => void;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {

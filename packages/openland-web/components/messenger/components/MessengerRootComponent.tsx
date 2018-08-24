@@ -34,7 +34,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation = this.props.messenger.getConversation(this.props.conversationId);
         this.state = {
             mounted: false,
-            hideInput: this.props.conversationType === 'ChannelConversation'
+            hideInput: false
         };
     }
 
@@ -67,9 +67,9 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.conversation.sendFile(new UplaodCareUploading(file));
     }
 
-    handleShowIput = () => {
+    handleShowIput = (show: boolean) => {
         this.setState({
-            hideInput: false
+            hideInput: !show
         });
     }
 

@@ -83,12 +83,17 @@ interface MessageListProps {
     messages: ModelMessage[];
     loadBefore: (id: string) => void;
     conversationType?: string;
-    inputShower?: () => void;
+    inputShower?: (show: boolean) => void;
 }
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
+
+    constructor(props: any) {
+        super(props);
+        this.checkEmptyState();
+    }
 
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
@@ -99,6 +104,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.updateDimensions();
             this.unshifted = true;
         }
+        this.checkEmptyState();
     }
 
     componentDidUpdate() {
@@ -106,9 +112,17 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.restorePreviousScroll();
             this.unshifted = false;
         }
+        this.checkEmptyState();
+    }
+
+    checkEmptyState = () => {
+        if (this.props.inputShower) {
+            this.props.inputShower(!((this.props.messages.length <= 2) && this.props.conversationType === 'ChannelConversation'));
+        }
     }
 
     render() {
+
         let messages: any[] = [];
         let prevDate: string | undefined;
         let prevMessageDate: number | undefined = undefined;
@@ -177,7 +191,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 <MessagesWrapper empty={messages.length <= 2}>
 
                     {(messages.length <= 2) && (
-                        <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower}/>
+                        <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower} />
                     )}
                     {(messages.length > 2) && messages}
                 </MessagesWrapper>
