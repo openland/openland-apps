@@ -10,15 +10,16 @@ import { FastHeaderTitle } from './FastHeaderTitle';
 
 const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
 
-interface Route {
+interface NormalizedRoute {
+    current: boolean;
+    mounted: boolean;
     record: FastHistoryRecord;
+    config: FastHeaderConfig;
     progress: Animated.Value;
 }
 
-interface Props {
-    routes: Route[];
-    mounted: string[];
-    current: string;
+interface FastHeaderProps {
+    routes: NormalizedRoute[];
 }
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
@@ -75,9 +76,8 @@ let styles = StyleSheet.create({
     } as ViewStyle,
 });
 
-export class FastHeader extends React.PureComponent<Props> {
+export class FastHeader extends React.PureComponent<FastHeaderProps> {
 
-    wasAnimaged = false;
     lastIndex = 0;
     // backButtonOpacity = this.props.position.interpolate({
     //     inputRange: [
@@ -97,34 +97,15 @@ export class FastHeader extends React.PureComponent<Props> {
         backgroundColor: Platform.OS === 'android' ? DeviceConfig.navigationBarBackgroundColor : undefined
     };
 
+    // Back Button
     handleBack = () => {
-        let currentRoute = this.props.routes.find((v) => v.record.key === this.props.current);
+        let currentRoute = this.props.routes.find((v) => v.current);
         if (currentRoute) {
             currentRoute.record.router.back();
         }
     }
 
-    componentWillMount() {
-
-        // Auto hide keyboard
-        // this.props.position.addListener((c) => {
-        //     if (c.value !== parseInt(c.value + '', 10)) {
-        //         if (this.wasAnimaged) {
-        //             // Only for back-swipe
-        //             if (c.value < this.lastIndex) {
-        //                 Keyboard.dismiss();
-        //             }
-        //             this.wasAnimaged = false;
-        //         }
-        //     } else {
-        //         this.lastIndex = c.value;
-        //         this.wasAnimaged = true;
-        //     }
-        // });
-    }
-
     render() {
-        console.log('header:render');
         // Build Offsets
         let filtered = this.props.routes;
         let offsets = filtered.map((v) => {
@@ -134,7 +115,7 @@ export class FastHeader extends React.PureComponent<Props> {
             // if (!config) {
             //     config = new ZHeaderConfig({});
             // }
-            let config = v.record.config;
+            let config = v.config;
 
             //
             // Resolving Settings
@@ -143,14 +124,6 @@ export class FastHeader extends React.PureComponent<Props> {
             let resolvedTitleSwitchTreshold = DeviceConfig.navigationBarHeightLarge - DeviceConfig.navigationBarHeight;
             let resolvedNavigationBarHeight = DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight;
             let resolvedNavigationBarHeightLarge = DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight;
-
-            // let config: ZHeaderConfig | undefined = v.descriptor.navigation.getParam('__z_header_config');
-            // if (!config) {
-            //     let parent = (v.descriptor.navigation as any).dangerouslyGetParent();
-            //     if (parent) {
-            //         //
-            //     }
-            // }
 
             // Calculate position offset
             let interpolated = v.progress.interpolate({

@@ -1,24 +1,22 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
 import { ExploreOrganizationsQuery } from 'openland-api';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZScrollView } from '../../components/ZScrollView';
-import { ZHeader } from '../../components/ZHeader';
 import { XPAvatar } from 'openland-xp/XPAvatar';
-import { FastRouterInjectedProps, withRouter } from 'react-native-fast-navigation/withRouter';
+import { PageProps } from '../../components/PageProps';
 
-class DirectoryComponent extends React.PureComponent<FastRouterInjectedProps> {
+class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
                 {/* <ZHeader title="Search" /> */}
                 <ZQuery query={ExploreOrganizationsQuery}>
                     {resp => (
-                        <ScrollView backgroundColor="#fff">
+                        <ZScrollView backgroundColor="#fff">
                             <ZListItemGroup>
                                 {resp.data.items.edges.map((v) => (
                                     <ZListItemBase separator={false} height={56} key={v.node.id} onPress={() => this.props.router.push('ProfileOrganization', { id: v.node.id })}>
@@ -31,7 +29,7 @@ class DirectoryComponent extends React.PureComponent<FastRouterInjectedProps> {
                                     </ZListItemBase>
                                 ))}
                             </ZListItemGroup>
-                        </ScrollView>
+                        </ZScrollView>
                     )}
                 </ZQuery>
             </>
@@ -39,4 +37,4 @@ class DirectoryComponent extends React.PureComponent<FastRouterInjectedProps> {
     }
 }
 
-export const Directory = withApp(withRouter(DirectoryComponent) as any);
+export const Directory = withApp(DirectoryComponent);

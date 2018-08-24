@@ -1,30 +1,24 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ChatHeader } from './components/ChatHeader';
 import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
-import { UploadCareDirectUploading } from '../../utils/UploadCareDirectUploading';
-import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { MessageFullFragment } from 'openland-api/Types';
 import { MessageInputBar } from './components/MessageInputBar';
-import { ZHeaderView } from '../../components/ZHeaderView';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 import { ConversationView } from './components/ConversationView';
 import { UploadManagerInstance, UploadState } from '../../files/UploadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { DownloadManagerInstance } from '../../files/DownloadManager';
-import { Modals } from './modals/Modals';
-import { withRouter, FastRouterInjectedProps } from 'react-native-fast-navigation/withRouter';
-import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
-import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
+import { FastHeaderView } from 'react-native-fast-navigation/FastHeaderView';
+import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+import { PageProps } from '../../components/PageProps';
 
-class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider, router: any, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
+class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, render: boolean, uploadState?: UploadState }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     watchSubscription?: WatchSubscription;
@@ -42,7 +36,7 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 
     componentDidMount() {
-        setTimeout(() => { this.setState({ render: true }); }, 200);
+        setTimeout(() => { this.setState({ render: true }); }, 20);
     }
 
     componentWillUnmount() {
@@ -109,12 +103,12 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
         }
         return (
             <>
-                {/* <ZHeaderView>
-                    <ChatHeader conversationId={this.engine.conversationId} navigation={this.props.router} />
-                </ZHeaderView>
-                <ZHeaderButton>
-                    <ChatRight conversationId={this.engine.conversationId} navigation={this.props.router} />
-                </ZHeaderButton> */}
+                <FastHeaderView>
+                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
+                </FastHeaderView>
+                <FastHeaderButton>
+                    <ChatRight conversationId={this.engine.conversationId} router={this.props.router} />
+                </FastHeaderButton>
                 <View style={{ height: '100%', flexDirection: 'column' }}>
                     <ConversationView
                         onPhotoPress={this.handlePhotoPress}
@@ -135,11 +129,10 @@ class ConversationRoot extends React.Component<{ provider: ZPictureModalProvider
     }
 }
 
-class ConversationComponent extends React.Component<FastRouterInjectedProps> {
+class ConversationComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <FastHeaderConfigRegistrator config={new FastHeaderConfig({ title: 'Messages' })} />
                 <View flexDirection={'column'} height="100%" width="100%">
                     <ZPictureModalContext.Consumer>
                         {modal => (
@@ -158,4 +151,4 @@ class ConversationComponent extends React.Component<FastRouterInjectedProps> {
     }
 }
 
-export const Conversation = withApp(withRouter(ConversationComponent) as any, { navigationAppearance: 'small' });
+export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small' });

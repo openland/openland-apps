@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, ViewStyle, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 

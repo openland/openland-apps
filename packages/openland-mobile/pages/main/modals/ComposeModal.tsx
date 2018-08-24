@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../../components/withApp';
 import { ZScrollView } from '../../../components/ZScrollView';
 import { View, LayoutChangeEvent } from 'react-native';
-import { ZHeader } from '../../../components/ZHeader';
 import { ZSafeAreaContext, ZSafeAreaProvider } from '../../../components/layout/ZSafeAreaContext';
 import { ZBlurredView } from '../../../components/ZBlurredView';
 import { AppStyles } from '../../../styles/AppStyles';
@@ -19,6 +17,8 @@ import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationView } from '../components/ConversationView';
+import { PageProps } from '../../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 interface ComposeModalState {
     message: string;
@@ -29,11 +29,11 @@ interface ComposeModalState {
     resolving: boolean;
 }
 
-class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps & { messenger: MessengerEngine }, ComposeModalState> {
+class ComposeModalComponent extends React.PureComponent<PageProps & { messenger: MessengerEngine }, ComposeModalState> {
 
     private generation = 0;
 
-    constructor(props: NavigationInjectedProps & { messenger: MessengerEngine }) {
+    constructor(props: PageProps & { messenger: MessengerEngine }) {
         super(props);
         this.state = {
             query: '',
@@ -55,12 +55,12 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
                     if (ids.length === 1) {
                         let id = await this.props.messenger.global.resolvePrivateConversation(ids[0]);
                         await this.props.messenger.sender.sendMessageAsync(id.id, msg);
-                        this.props.navigation.replace('Conversation', { id: id.id });
+                        // this.props.navigation.replace('Conversation', { id: id.id });
                     } else {
                         let id = await this.props.messenger.global.resolveGroup(ids);
                         if (id) {
                             await this.props.messenger.sender.sendMessageAsync(id.id, msg);
-                            this.props.navigation.replace('Conversation', { id: id.id });
+                            // this.props.navigation.replace('Conversation', { id: id.id });
                         } else {
                             let res = await this.props.messenger.client.client.mutate({
                                 mutation: ChatCreateGroupMutation.document,
@@ -69,7 +69,7 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
                                     members: ids
                                 }
                             });
-                            this.props.navigation.replace('Conversation', { id: (res.data as any).group.id });
+                            // this.props.navigation.replace('Conversation', { id: (res.data as any).group.id });
                         }
                     }
                 } finally {
@@ -135,7 +135,7 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
     render() {
         return (
             <>
-                <ZHeader title="New message" hairline="always" />
+                <FastHeader title="New message" hairline="always" />
                 <View style={{ height: '100%', flexDirection: 'column', alignItems: 'stretch', backgroundColor: '#fff' }}>
                     {/* <ZListItemEdit title="Search" /> */}
                     <View style={{ flexGrow: 1, flexBasis: 0, flexDirection: 'column' }}>
@@ -187,7 +187,7 @@ class ComposeModalComponent extends React.PureComponent<NavigationInjectedProps 
 }
 
 export const ComposeModal = withApp(
-    (props: NavigationInjectedProps) => (
+    (props: PageProps) => (
         <MessengerContext.Consumer>
             {engine => <ComposeModalComponent {...props} messenger={engine!!} />}
         </MessengerContext.Consumer>

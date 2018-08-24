@@ -1,7 +1,5 @@
-import { createStackNavigator } from 'react-navigation';
 import { Login } from './pages/auth/Login';
 import { Conversation } from './pages/main/Conversation';
-import { createZStackNavigator } from './components/ZNavigatorStack';
 import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
@@ -35,31 +33,6 @@ export const Routes = new FastRoutesBuilder()
   .addRoute('DevNavigation', Navigation)
   .addRoute('DevLoader', Loader)
   .build();
-
-//
-// App Routes
-//
-
-export const AppStack = createZStackNavigator({
-  Home: Home,
-  Conversation: Conversation,
-  ProfileUser: ProfileUser,
-  ProfileOrganization: ProfileOrganization,
-  ProfileGroup: ProfileGroup,
-  SettingsProfile: SettingsProfile,
-  SettingsNotifications: SettingsNotifications,
-
-  // Modals
-  UserPicker: UserPicker,
-  TextEditModal: TextEditModal,
-  ComposeModal: ComposeModal,
-  FilePreview: FilePreview,
-
-  DevTypography: Typography,
-  DevComponents: Components,
-  DevNavigation: Navigation,
-  DevLoader: Loader,
-});
 
 //
 // Authentication Routes

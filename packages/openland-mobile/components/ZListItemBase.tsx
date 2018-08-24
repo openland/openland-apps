@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { TouchableHighlight, View, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
-import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { isAndroid } from '../utils/isAndroid';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { RectButton } from 'react-native-gesture-handler';
 import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 import { withRouter } from 'react-native-fast-navigation/withRouter';

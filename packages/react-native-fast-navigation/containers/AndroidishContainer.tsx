@@ -7,20 +7,21 @@ import { FastRouterContext } from '../FastRouter';
 import { FastHeader } from '../header/FastHeader';
 import { FastHeaderConfig } from '../FastHeaderConfig';
 import { FastHeaderContextDirect } from '../FastHeaderContextDirect';
+import { FastHeaderGuard } from '../header/FastHeaderGuard';
+import { DeviceConfig } from '../DeviceConfig';
 
 class HistoryRecordHolder {
     readonly record: FastHistoryRecord;
     readonly progress: Animated.Value;
     readonly progressTranslate: Animated.AnimatedInterpolation;
     readonly underlayOpacity: Animated.AnimatedInterpolation;
-    readonly config: FastHeaderConfig;
-    constructor(record: FastHistoryRecord, progress: Animated.Value, config?: FastHeaderConfig) {
+    constructor(record: FastHistoryRecord, progress: Animated.Value) {
         this.record = record;
         this.progress = progress;
         let w = Dimensions.get('window').width;
         this.progressTranslate = this.progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, w + 200],
+            inputRange: [-1, 0],
+            outputRange: [w + 200, 0],
             extrapolate: 'clamp'
         });
         this.underlayOpacity = this.progress.interpolate({
@@ -28,16 +29,11 @@ class HistoryRecordHolder {
             outputRange: [0.2, 0],
             extrapolate: 'clamp'
         });
-        if (config) {
-            this.config = config;
-        } else {
-            this.config = new FastHeaderConfig({});
-        }
     }
 }
 
 function prepareInitialRecords(routes: FastHistoryRecord[]): HistoryRecordHolder[] {
-    return routes.map((v, i) => new HistoryRecordHolder(v, new Animated.Value(i === routes.length - 1 ? 0 : -1)));
+    return routes.map((v, i) => new HistoryRecordHolder(v, new Animated.Value(i === routes.length - 1 ? 0 : 1)));
 }
 
 export class AndroidishContainer extends React.PureComponent<ContainerProps, { routes: HistoryRecordHolder[], mounted: string[], current: string }> implements HistoryWatcher {
@@ -75,13 +71,13 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
 
         let underlay = history.history[history.history.length - 2].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
-        let progress = new Animated.Value(1);
+        let progress = new Animated.Value(-1);
         let newRecord = new HistoryRecordHolder(record, progress);
 
         // Start animation
         Animated.parallel([
             Animated.timing(underlayHolder.progress, {
-                toValue: -1,
+                toValue: 1,
                 duration: 260,
                 useNativeDriver: true,
                 easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
@@ -130,7 +126,7 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
                     easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
                 }),
                 Animated.timing(holder.progress, {
-                    toValue: 1,
+                    toValue: -1,
                     duration: 260,
                     useNativeDriver: true,
                     easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
@@ -154,12 +150,13 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
     render() {
         console.log('container:render');
         return (
-            <View width="100%" height="100%">
-                {this.state.routes.map((v, i) => {
-                    let Component = v.record.component;
-                    return (
-                        <>
-                            {/* <Animated.View
+            <View width="100%" height="100%" flexDirection="column">
+                <View width="100%" flexBasis={0} flexGrow={1} marginTop={DeviceConfig.navigationBarTransparent ? 0 : DeviceConfig.navigationBarHeight}>
+                    {this.state.routes.map((v, i) => {
+                        let Component = v.record.component;
+                        return (
+                            <>
+                                {/* <Animated.View
                                 key={v.record.key + '-shadow'}
                                 style={{
                                     position: 'absolute',
@@ -173,36 +170,37 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
                                 flexDirection="column"
                                 alignItems="stretch"
                             /> */}
-                            <Animated.View
-                                key={v.record.key + '-content'}
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    bottom: 0,
-                                    right: 0,
-                                    left: 0,
-                                    transform: [
-                                        {
-                                            translateX: v.progressTranslate
-                                        }
-                                    ]
-                                }}
-                                flexDirection="column"
-                                alignItems="stretch"
-                            >
-                                <FastRouterContext.Provider value={v.record.router}>
-                                    <View height="100%" opacity={!!this.state.mounted.find((m) => v.record.key === m) ? 1 : 0} flexDirection="row" alignItems="stretch">
-                                        <View backgroundColor="#fff" flexGrow={1} flexBasis={0}>
-                                            <FastHeaderContextDirect router={v.record.router}>
-                                                <Component />
-                                            </FastHeaderContextDirect>
+                                <Animated.View
+                                    key={v.record.key + '-content'}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        transform: [
+                                            {
+                                                translateX: v.progressTranslate
+                                            }
+                                        ]
+                                    }}
+                                    flexDirection="column"
+                                    alignItems="stretch"
+                                >
+                                    <FastRouterContext.Provider value={v.record.router}>
+                                        <View height="100%" opacity={!!this.state.mounted.find((m) => v.record.key === m) ? 1 : 0} flexDirection="row" alignItems="stretch">
+                                            <View backgroundColor="#fff" flexGrow={1} flexBasis={0}>
+                                                <FastHeaderContextDirect router={v.record.router}>
+                                                    <Component />
+                                                </FastHeaderContextDirect>
+                                            </View>
                                         </View>
-                                    </View>
-                                </FastRouterContext.Provider>
-                            </Animated.View>
-                        </>
-                    );
-                })}
+                                    </FastRouterContext.Provider>
+                                </Animated.View>
+                            </>
+                        );
+                    })}
+                </View>
                 <View
                     style={{
                         position: 'absolute',
@@ -213,7 +211,7 @@ export class AndroidishContainer extends React.PureComponent<ContainerProps, { r
                     }}
                     pointerEvents="box-none"
                 >
-                    <FastHeader routes={this.state.routes} mounted={this.state.mounted} current={this.state.current} />
+                    <FastHeaderGuard routes={this.state.routes} mounted={this.state.mounted} current={this.state.current} />
                 </View>
             </View>
         );

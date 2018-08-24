@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { NavigationInjectedProps } from 'react-navigation';
-import { ZHeaderButton } from '../../components/ZHeaderButton';
 import { ZScrollView } from '../../components/ZScrollView';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
-import { ZHeader } from '../../components/ZHeader';
+import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
-class SettingsNotifciationsComponent extends React.Component<NavigationInjectedProps> {
+class SettingsNotifciationsComponent extends React.Component<PageProps> {
 
     handleSave = () => {
         // if (this.ref.current) {
@@ -18,8 +18,8 @@ class SettingsNotifciationsComponent extends React.Component<NavigationInjectedP
     render() {
         return (
             <>
-                <ZHeader title="Notifications" />
-                <ZHeaderButton title="Save" onPress={this.handleSave} />
+                <FastHeader title="Notifications" />
+                <FastHeaderButton title="Save" onPress={this.handleSave} />
                 <ZScrollView>
                     <ZListItemGroup header="On mobile">
                         <ZListItem text="All new messages" />

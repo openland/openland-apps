@@ -1,7 +1,7 @@
 import { FastRouter } from './FastRouter';
 import { FastRoutes } from './FastRoutes';
 import UUID from 'uuid/v4';
-import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { WatchSubscription, Watcher } from 'openland-y-utils/Watcher';
 import { Animated } from 'react-native';
 import { FastHeaderConfig } from './FastHeaderConfig';
 
@@ -12,7 +12,7 @@ export interface FastHistoryRecord {
     readonly component: React.ComponentType<{}>;
     readonly router: FastRouter;
     readonly contentOffset: Animated.Value;
-    config: FastHeaderConfig;
+    readonly config: Watcher<FastHeaderConfig>;
 }
 
 export class FastHistory {
@@ -46,7 +46,9 @@ export class FastHistoryManager {
                 this.updateConfig(key, config);
             }
         } as FastRouter;
-        return { route: route, params, key, component, router, contentOffset: new Animated.Value(0), config: new FastHeaderConfig({}) };
+        let cfg = new Watcher<FastHeaderConfig>();
+        cfg.setState(new FastHeaderConfig({}));
+        return { route: route, params, key, component, router, contentOffset: new Animated.Value(0), config: cfg };
     }
 
     constructor(routes: FastRoutes) {
@@ -76,7 +78,7 @@ export class FastHistoryManager {
         console.log('update config');
         let r = this.history.history.find((v) => v.key === key);
         if (r) {
-            r.config = config;
+            r.config.setState(config);
         }
     }
 

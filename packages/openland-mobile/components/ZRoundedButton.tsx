@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { withRouter, FastRouterInjectedProps } from 'react-native-fast-navigation/withRouter';
 
 const styles = StyleSheet.create({

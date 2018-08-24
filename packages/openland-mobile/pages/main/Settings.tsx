@@ -6,11 +6,12 @@ import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/Up
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { AccountQuery } from 'openland-api/AccountQuery';
-import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZQuery } from '../../components/ZQuery';
-import { ZScrollView } from '../../components/ZScrollView';
-import { ZHeader } from '../../components/ZHeader';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
+import { ZListItemHeader } from '../../components/ZListItemHeader';
+import { ZScrollView } from '../../components/ZScrollView';
+import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -29,7 +30,7 @@ function convertStatus(status: UpdateStatus) {
     }
 }
 
-class SettingsComponent extends React.Component<NavigationInjectedProps, { status: UpdateStatus }> {
+class SettingsComponent extends React.Component<PageProps, { status: UpdateStatus }> {
 
     state = {
         status: AppUpdateTracker.status
@@ -67,20 +68,20 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
     render() {
         return (
             <>
-                {/* <ZHeader title="Settings" /> */}
-                <ScrollView>
+                <FastHeader title="Settings" />
+                <ZScrollView>
                     <ZQuery query={AccountQuery}>
                         {resp => {
                             return (
                                 <>
-                                    {/* <ZListItemHeader
+                                    <ZListItemHeader
                                         photo={resp.data!!.me!!.picture}
                                         id={resp.data!!.me!!.id}
                                         title={resp.data!!.me!!.name}
                                         subtitle={resp.data!!.organization!!.name}
                                         path="SettingsProfile"
                                         action="Edit profile"
-                                    /> */}
+                                    />
                                     <ZListItemGroup header="Settings">
                                         <ZListItem text="Notifications" path="SettingsNotifications" />
                                     </ZListItemGroup>
@@ -102,7 +103,7 @@ class SettingsComponent extends React.Component<NavigationInjectedProps, { statu
                             );
                         }}
                     </ZQuery>
-                </ScrollView>
+                </ZScrollView>
             </>
         );
     }

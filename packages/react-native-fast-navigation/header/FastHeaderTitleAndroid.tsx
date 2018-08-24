@@ -2,6 +2,9 @@ import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Animated, LayoutChangeEvent } from 'react-native';
 import { DeviceConfig } from '../DeviceConfig';
 import { FastHeaderTitleProps } from './FastHeaderTitle';
+import { ASView } from 'react-native-async-view/ASView';
+import { ASText } from 'react-native-async-view/ASText';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 
 const styles = StyleSheet.create({
     container: {
@@ -55,47 +58,33 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
             outputRange: [0, 1, 0],
             extrapolate: 'clamp'
         });
-        let faraway = this.props.progress.interpolate({
-            inputRange: [-1, -0.98, 0, 0.98, 1],
-            outputRange: [1, 0, 0, 0, 1],
-            extrapolate: 'clamp'
-        });
-        let progress = Animated.multiply(Animated.add(this.props.headerBaseHeight, -56), 1 / 40);
+        let heightDiff = Animated.add(this.props.headerBaseHeight, -56);
+        let progress = Animated.multiply(heightDiff, 1 / 40);
+        // let horizontal = this.props.index === 0 ? 0 : Animated.multiply(progress, -DeviceConfig.navigationBarBackWidth + 16);
         return (
-            <View style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none" flexDirection="row">
+            <Animated.View style={[styles.container, this.props.index === 0 && styles.containerFirst, { opacity }]} pointerEvents="box-none" renderToHardwareTextureAndroid={true}>
+                {/* <ASView style={{ flexDirection: 'row', flexGrow: 1, flexBasis: 0, height: 56 }}>
+                    <ASFlex flexDirection="row" width={300}>
+                        <ASText fontSize={32} color="#040404">{this.props.titleText}</ASText>
+                    </ASFlex>
+                </ASView> */}
+                {/* <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0} onLayout={this.handleLayout}>
+                    <Text>{this.props.titleText}</Text>
+                </View> */}
+
                 <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0}>
                     {this.props.titleView && (
-                        <Animated.View
-                            style={[
-                                styles.titleContainer,
-                                {
-                                    opacity: opacity,
-                                    transform: [{
-                                        translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000))
-                                    }, {
-                                        translateX: this.props.index === 0 ? 0 : Animated.multiply(progress, -DeviceConfig.navigationBarBackWidth + 16)
-                                    }]
-                                }]
-                            }
+                        <View
+                            style={styles.titleContainer}
                             onLayout={this.handleLayout}
                             pointerEvents="box-none"
-                            renderToHardwareTextureAndroid={true}
                         >
                             {this.props.titleView}
-                        </Animated.View>
+                        </View>
                     )}
                     {!this.props.titleView && (
-                        <Animated.View
-                            style={[
-                                styles.titleContainer,
-                                {
-                                    opacity: opacity,
-                                    transform: [{
-                                        translateX: this.props.index === 0 ? 0 : Animated.multiply(progress, -DeviceConfig.navigationBarBackWidth + 16)
-                                    }]
-                                }]
-                            }
-
+                        <View
+                            style={styles.titleContainer}
                             pointerEvents="box-none"
                             renderToHardwareTextureAndroid={true}
                         >
@@ -109,7 +98,7 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
                                             right: 0,
                                             opacity: progress,
                                             transform: [
-                                                { translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000)) },
+                                                { translateY: heightDiff },
                                                 { translateX: Animated.multiply(this.titleW, -0.5) },
                                                 // { translateY: -5 },
                                                 { translateY: 6 },
@@ -136,7 +125,7 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
                                             opacity: Animated.add(Animated.multiply(progress, -1), 1),
                                             // opacity: 0.7,
                                             transform: [
-                                                { translateY: Animated.add(Animated.multiply(progress, 40), Animated.multiply(faraway, 1000)) },
+                                                { translateY: heightDiff },
                                                 { translateX: Animated.multiply(this.title2W, -0.5) },
                                                 { translateY: 6 },
                                                 { scale: Animated.add(Animated.multiply(progress, 0.6), 1) },
@@ -151,13 +140,13 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
                                     <Text style={[styles.title, { fontSize: 20 }]}>{this.props.titleText}</Text>
                                 </Animated.View>
                             )}
-                        </Animated.View>
+                        </View>
                     )}
                 </View>
-                <Animated.View paddingRight={15} style={{ opacity: opacity }} pointerEvents="box-none" renderToHardwareTextureAndroid={true}>
+                <View paddingRight={15} pointerEvents="box-none" renderToHardwareTextureAndroid={true}>
                     {this.props.rightView}
-                </Animated.View>
-            </View >
+                </View>
+            </Animated.View>
         );
     }
 }

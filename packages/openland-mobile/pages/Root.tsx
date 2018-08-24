@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View, Platform, Dimensions } from 'react-native';
+import { AsyncStorage, View, Platform } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
