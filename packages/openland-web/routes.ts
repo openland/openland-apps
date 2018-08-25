@@ -292,6 +292,8 @@ routes.add('/ui/subscriptions', '/dev/ui/subscriptions');
 routes.add('/ui/subscriptions/', '/dev/ui/subscriptions');
 routes.add('/ui/menu-items', '/dev/ui/menu-items');
 routes.add('/ui/menu-items/', '/dev/ui/menu-items');
+routes.add('/ui/profile', '/dev/ui/profile');
+routes.add('/ui/profile/', '/dev/ui/profile');
 
 //
 // Dev Tools

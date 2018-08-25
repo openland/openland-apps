@@ -7,7 +7,8 @@ import { XFlexStyles } from './basics/Flex';
 interface XTagProps extends XFlexStyles {
     text?: string;
     icon?: string;
-    size?: 'large' | 'default';
+    iconLeft?: string;
+    size?: 'large' | 'default' | 'small';
     color?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
     rounded?: boolean;
     onIconClick?: () => void;
@@ -15,7 +16,7 @@ interface XTagProps extends XFlexStyles {
 }
 
 interface StyledXTagProps extends XFlexStyles {
-    tagSize?: 'large' | 'default';
+    tagSize?: 'large' | 'default' | 'small';
     tagColor?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
     pointer?: boolean;
     rounded?: boolean;
@@ -33,6 +34,33 @@ let iconsIndentation = styleResolver({
         lineHeight: '26px',
         marginLeft: 2,
         marginRight: -2,
+    },
+    'small': {
+        fontSize: 12,
+        lineHeight: '22px',
+        marginLeft: 2,
+        marginRight: -2,
+    },
+});
+
+let iconsLeftIndentation = styleResolver({
+    'large': {
+        fontSize: 16,
+        lineHeight: '32px',
+        marginRight: 2,
+        marginLeft: -2,
+    },
+    'default': {
+        fontSize: 16,
+        lineHeight: '26px',
+        marginRight: 2,
+        marginLeft: -2,
+    },
+    'small': {
+        fontSize: 13,
+        lineHeight: '22px',
+        marginRight: 4,
+        marginLeft: -3,
     },
 });
 
@@ -53,6 +81,14 @@ let sizeStyles = styleResolver({
         letterSpacing: 0.2,
         padding: '0 12px',
     },
+    'small': {
+        height: 22,
+        fontSize: 12,
+        fontWeight: 600,
+        lineHeight: '23px',
+        letterSpacing: -0.3,
+        padding: '0 11px',
+    },
 });
 
 let colorStyles = styleResolver({
@@ -69,8 +105,8 @@ let colorStyles = styleResolver({
         color: '#334562',
     },
     'green': {
-        backgroundColor: 'rgba(192, 235, 196, 0.45)',
-        color: '#4e8653',
+        backgroundColor: 'rgba(105, 208, 109, 0.18)',
+        color: '#66b969',
     },
     'gost': {
         backgroundColor: '#fff',
@@ -94,8 +130,8 @@ let crossColorStyles = styleResolver({
         opacity: 0.4
     },
     'green': {
-        color: '#4e8653',
-        opacity: 0.4
+        color: 'rgba(110, 197, 113, 0.5)',
+        opacity: 1
     },
     'gost': {
         color: '#334562',
@@ -125,7 +161,7 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
 ]);
 
 const XTagDeleteWrapper = Glamorous.div<StyledXTagProps>([
-    (props) => ({
+    {
         cursor: 'pointer',
         color: '#5641d1',
         opacity: 0.4,
@@ -137,12 +173,24 @@ const XTagDeleteWrapper = Glamorous.div<StyledXTagProps>([
         '&:active': {
             opacity: 1,
         }
-    }),
+    },
     (props) => crossColorStyles(props.tagColor)
 ]);
 
 const XTagDeleteIcon = Glamorous(XIcon)<StyledXTagProps>([
     (props) => iconsIndentation(props.tagSize)
+]);
+
+const XTagIconWrapper = Glamorous.div<StyledXTagProps>([
+    {
+        color: '#5641d1',
+        opacity: 0.4,
+    },
+    (props) => crossColorStyles(props.tagColor)
+]);
+
+const XTagIconLeft = Glamorous(XIcon)<StyledXTagProps>([
+    (props) => iconsLeftIndentation(props.tagSize)
 ]);
 
 export class XTag extends React.Component<XTagProps> {
@@ -155,6 +203,16 @@ export class XTag extends React.Component<XTagProps> {
                 pointer={this.props.onClick !== undefined}
                 rounded={this.props.rounded}
             >
+                {this.props.iconLeft && (
+                    <XTagIconWrapper
+                        tagColor={this.props.color}
+                    >
+                        <XTagIconLeft
+                            tagSize={this.props.size}
+                            icon={this.props.iconLeft}
+                        />
+                    </XTagIconWrapper>
+                )}
                 {this.props.text}
                 {this.props.icon && (
                     <XTagDeleteWrapper

@@ -8,7 +8,7 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | 'r-large' | 'r-default' | 'r-small' | 'r-tiny';
-export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
+export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'light-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
 export type XButtonTooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface XButtonStyleProps extends XFlexStyles {
@@ -503,6 +503,23 @@ let colorStyles = styleResolver({
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
+
+    'light-blue': {
+        backgroundColor: 'rgba(23, 144, 255, 0.08)',
+        color: '#1790ff',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            backgroundColor: 'rgba(23, 144, 255, 0.10)',
+            color: '#1790ff'
+        },
+        '&:active': {
+            backgroundColor: 'rgba(23, 144, 255, 0.15)',
+            color: '#1790ff'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        }
+    },
 });
 
 let colorDisabledStyles = styleResolver({
@@ -549,6 +566,8 @@ let colorDisabledStyles = styleResolver({
     },
     'success': {
     },
+    'light-blue': {
+    },
 });
 
 let colorPressedStyles = styleResolver({
@@ -593,6 +612,8 @@ let colorPressedStyles = styleResolver({
     },
     'success': {
     },
+    'light-blue': {
+    },
 });
 
 let colorResponsiveStyles = styleResolver({
@@ -625,6 +646,8 @@ let colorResponsiveStyles = styleResolver({
     },
     'success': {
     },
+    'light-blue': {
+    },
 });
 
 let loaderStyles = styleResolver({
@@ -654,6 +677,9 @@ let loaderStyles = styleResolver({
     },
     'success': {
         color: '#ffffff'
+    },
+    'light-blue': {
+        color: '#1790ff'
     }
 });
 
@@ -679,7 +705,7 @@ const StyledButtonContentWrapper = Glamorous.div({
     whiteSpace: 'nowrap',
     wordBreak: 'keep-all',
     position: 'relative',
-    outline: 'none'
+    outline: 'none',
 });
 
 const MainContent = Glamorous.div({
@@ -844,6 +870,9 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
             }
         }
     } || {}),
+    (props) => ({
+        '& svg': iconsIndentation(props.buttonSize)
+    }),
 ]);
 
 const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {

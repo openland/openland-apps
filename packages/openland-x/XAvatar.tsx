@@ -7,7 +7,7 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XCloudImage, XPhotoRef } from './XCloudImage';
 import { XPImage } from 'openland-xp/XPImage';
 
-export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 'medium' | 'default' | 'small' | 'x-small';
+export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'medium' | 'default' | 'small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
@@ -36,6 +36,10 @@ let sizeStyles = styleResolver({
     'x-medium': {
         height: 86,
         width: 86,
+    },
+    's-medium': {
+        height: 66,
+        width: 66,
     },
     'medium': {
         height: 46,
@@ -80,6 +84,12 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 43 },
+    's-medium': props.style === 'organization' ? {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+    } : { borderRadius: 33 },
     'medium': props.style === 'organization' ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
