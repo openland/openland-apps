@@ -1,6 +1,13 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export enum NotificationMessages {
+  ALL = "ALL",
+  DIRECT = "DIRECT",
+  NONE = "NONE",
+}
+
+
 export enum OrganizationMemberRole {
   MEMBER = "MEMBER",
   OWNER = "OWNER",
@@ -11,13 +18,6 @@ export enum EmailFrequency {
   HOUR_1 = "HOUR_1",
   MIN_15 = "MIN_15",
   NEVER = "NEVER",
-}
-
-
-export enum NotificationMessages {
-  ALL = "ALL",
-  DIRECT = "DIRECT",
-  NONE = "NONE",
 }
 
 
@@ -644,6 +644,8 @@ export interface ChatListQuery {
         } | null,
         settings:  {
           __typename: "ConversationSettings",
+          id: string,
+          mobileNotifications: NotificationMessages,
           mute: boolean,
         },
       } | {
@@ -710,6 +712,8 @@ export interface ChatListQuery {
         } | null,
         settings:  {
           __typename: "ConversationSettings",
+          id: string,
+          mobileNotifications: NotificationMessages,
           mute: boolean,
         },
       } | {
@@ -776,6 +780,8 @@ export interface ChatListQuery {
         } | null,
         settings:  {
           __typename: "ConversationSettings",
+          id: string,
+          mobileNotifications: NotificationMessages,
           mute: boolean,
         },
       } | {
@@ -842,6 +848,8 @@ export interface ChatListQuery {
         } | null,
         settings:  {
           __typename: "ConversationSettings",
+          id: string,
+          mobileNotifications: NotificationMessages,
           mute: boolean,
         },
       } | {
@@ -908,6 +916,8 @@ export interface ChatListQuery {
         } | null,
         settings:  {
           __typename: "ConversationSettings",
+          id: string,
+          mobileNotifications: NotificationMessages,
           mute: boolean,
         },
       }
@@ -1653,6 +1663,8 @@ export interface ChatSearchTextQuery {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -1719,6 +1731,8 @@ export interface ChatSearchTextQuery {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -1785,6 +1799,8 @@ export interface ChatSearchTextQuery {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -1851,6 +1867,8 @@ export interface ChatSearchTextQuery {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -1917,6 +1935,8 @@ export interface ChatSearchTextQuery {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     }
@@ -2006,6 +2026,8 @@ export interface ChatSearchChannelQuery {
         } | null,
         settings:  {
           __typename: "ConversationSettings",
+          id: string,
+          mobileNotifications: NotificationMessages,
           mute: boolean,
         },
         membersCount: number,
@@ -4025,6 +4047,7 @@ export interface ExploreOrganizationsQuery {
           __typename: "OrganizationJoinedMember",
           user:  {
             __typename: "User",
+            id: string,
             name: string,
             picture: string | null,
           },
@@ -4072,6 +4095,7 @@ export interface ExploreComunityQuery {
           __typename: "OrganizationJoinedMember",
           user:  {
             __typename: "User",
+            id: string,
             name: string,
             picture: string | null,
           },
@@ -4342,6 +4366,7 @@ export interface OrganizationAlterPublishedMutation {
       __typename: "OrganizationJoinedMember",
       user:  {
         __typename: "User",
+        id: string,
         name: string,
         picture: string | null,
       },
@@ -4401,6 +4426,7 @@ export interface OrganizationByPrefixQuery {
       __typename: "OrganizationJoinedMember",
       user:  {
         __typename: "User",
+        id: string,
         name: string,
         picture: string | null,
       },
@@ -6583,6 +6609,8 @@ export type ConversationShortFragment = ( {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -6649,6 +6677,8 @@ export type ConversationShortFragment = ( {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -6715,6 +6745,8 @@ export type ConversationShortFragment = ( {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -6781,6 +6813,8 @@ export type ConversationShortFragment = ( {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     } | {
@@ -6847,6 +6881,8 @@ export type ConversationShortFragment = ( {
       } | null,
       settings:  {
         __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
         mute: boolean,
       },
     }
@@ -7365,6 +7401,7 @@ export interface OrganizationSearchFragment {
     __typename: "OrganizationJoinedMember",
     user:  {
       __typename: "User",
+      id: string,
       name: string,
       picture: string | null,
     },

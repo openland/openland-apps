@@ -11,6 +11,8 @@ export const ConversationShort = gql`
             ...MessageFull
         }
         settings{
+            id
+            mobileNotifications
             mute
         }
     }

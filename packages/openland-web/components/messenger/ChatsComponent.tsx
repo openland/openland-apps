@@ -261,7 +261,10 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     color="primary-sky-blue"
                     cleansable={true}
                 />
-                <ExploreChannels path={'/mail/channels'}>
+
+
+                {search && <SearchChats variables={{ query: this.state.query!! }} />}
+                {!search && <ExploreChannels path={'/mail/channels'}>
                     <XHorizontal alignItems="center" justifyContent="space-between">
                         <XHorizontal alignItems="center" separator={6}>
                             <CircleIcon />
@@ -269,9 +272,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                         </XHorizontal>
                         <ArrowIcon />
                     </XHorizontal>
-                </ExploreChannels>
-
-                {search && <SearchChats variables={{ query: this.state.query!! }} />}
+                </ExploreChannels>}
                 {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(renderConversation)}
             </XVertical>
         );
