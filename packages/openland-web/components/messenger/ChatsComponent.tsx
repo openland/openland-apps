@@ -14,7 +14,6 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import EmptyImage from './components/icons/channels-search-empty.svg';
 import CircleIcon from './components/icons/circle-icon.svg';
 import ArrowIcon from './components/icons/ic-arrow-rignt.svg';
@@ -154,13 +153,15 @@ let Item = makeNavigable((props) => (
     </ItemContainer>
 ));
 
-const renderConversation = (v: any) => (
-    <Item path={'/mail/' + v.flexibleId} key={v.id}>
+const renderConversation = (v: any, onSelect?: () => void) => (
+    <Item path={'/mail/' + v.flexibleId} key={v.id} onClick={onSelect}>
         <XAvatar
             style={(v.__typename === 'SharedConversation'
                 ? 'organization'
-                : v.__typename === 'ChannelConversation'
-                    ? 'channel' : undefined
+                : v.__typename === 'GroupConversation'
+                    ? 'group'
+                    : v.__typename === 'ChannelConversation'
+                        ? 'channel' : undefined
             )}
             cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined}
         />
@@ -210,7 +211,7 @@ const SearchChats = withChatSearchText((props) => {
     return props.data && props.data.items ? items.length
         ? (
             <>
-                {items.map(renderConversation)}
+                {items.map(i => renderConversation(i, (props as any).onSelect))}
             </>
         )
         : (
@@ -220,7 +221,7 @@ const SearchChats = withChatSearchText((props) => {
             </NoResultWrapper>
         )
         : <PlaceholderLoader color="#334562" />;
-});
+}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void }>;
 
 const Search = Glamorous(XInput)({
     margin: 16,
@@ -246,6 +247,10 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
         this.setState({ query: q });
     }
 
+    onSelect = () => {
+        this.setState({ query: '' });
+    }
+
     render() {
         let search = this.state.query && this.state.query.length > 0;
         return (
@@ -259,7 +264,9 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     color="primary-sky-blue"
                     cleansable={true}
                 />
-                <ExploreChannels path={'/mail/channels'}>
+
+                {search && <SearchChats variables={{ query: this.state.query!! }} onSelect={this.onSelect} />}
+                {!search && <ExploreChannels path={'/mail/channels'}>
                     <XHorizontal alignItems="center" justifyContent="space-between">
                         <XHorizontal alignItems="center" separator={6}>
                             <CircleIcon />
@@ -267,10 +274,8 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                         </XHorizontal>
                         <ArrowIcon />
                     </XHorizontal>
-                </ExploreChannels>
-
-                {search && <SearchChats variables={{ query: this.state.query!! }} />}
-                {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(renderConversation)}
+                </ExploreChannels>}
+                {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(i => renderConversation(i))}
             </XVertical>
         );
     }

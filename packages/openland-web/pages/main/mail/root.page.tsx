@@ -20,12 +20,12 @@ import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
+import { OrganizationProfile } from '../profile/ProfileComponent';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#f9fafb',
-    boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     height: '100vh',
     width: '100%',
     flexGrow: 1,
@@ -77,19 +77,30 @@ const Title = Glamorous.div({
     color: '#334562'
 });
 
+const OrganizationProfilContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
+    flexShrink: 0
+});
+
 const ChannelInviteFromLink = withChannelInviteInfo((props) => {
     return props.data && props.data.invite ?
-        props.data.invite.channel.myStatus === 'member' ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} /> : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite}/> :
+        props.data.invite.channel.myStatus === 'member' ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} /> : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite} /> :
         <XLoader loading={true} />;
 });
+
+let returnPath: string | undefined = undefined;
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
     let isCompose = props.router.path.endsWith('/new');
     let isChannels = props.router.path.endsWith('/channels');
     let isInvite = props.router.path.includes('joinChannel');
+    let oid = props.router.routeQuery.organizationId;
 
-    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' = 'empty';
+    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' = 'empty';
 
     if (isCompose && canUseDOM) {
         tab = 'compose';
@@ -102,6 +113,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
 
     if (!isCompose && props.router.routeQuery.conversationId) {
         tab = 'conversation';
+        returnPath = props.router.path;
     }
 
     if (isInvite) {
@@ -112,6 +124,9 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
         tab = 'channels';
     }
 
+    if (oid) {
+        tab = 'organization';
+    }
     return (
         <>
             <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
@@ -147,6 +162,11 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             )}
                             {tab === 'invite' && (
                                 <ChannelInviteFromLink />
+                            )}
+                            {tab === 'organization' && (
+                                <OrganizationProfilContainer>
+                                    <OrganizationProfile organizationId={oid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
+                                </OrganizationProfilContainer>
                             )}
                         </ConversationContainer>
                     </ChatContainer>

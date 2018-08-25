@@ -86,6 +86,8 @@ routes.add('/directory', '/main/directory/root');
 routes.add('/directory/', '/main/directory/root');
 routes.add('/directory/communities', '/main/directory/communities');
 routes.add('/directory/communities/', '/main/directory/communities');
+routes.add('/directory/o/:organizationId', '/main/directory/root');
+routes.add('/directory/o/:organizationId/', '/main/directory/root');
 
 //
 // Profiles
@@ -214,6 +216,8 @@ routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/joinChannel/:uuid', '/main/mail/root');
 routes.add('/joinChannel/:uuid/', '/main/mail/root');
+routes.add('/mail/o/:organizationId', '/main/mail/root');
+routes.add('/mail/o/:organizationId/', '/main/mail/root');
 
 //
 // Channel
@@ -292,6 +296,8 @@ routes.add('/ui/subscriptions', '/dev/ui/subscriptions');
 routes.add('/ui/subscriptions/', '/dev/ui/subscriptions');
 routes.add('/ui/menu-items', '/dev/ui/menu-items');
 routes.add('/ui/menu-items/', '/dev/ui/menu-items');
+routes.add('/ui/profile', '/dev/ui/profile');
+routes.add('/ui/profile/', '/dev/ui/profile');
 
 //
 // Dev Tools

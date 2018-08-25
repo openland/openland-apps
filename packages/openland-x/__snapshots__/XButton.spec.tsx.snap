@@ -71,6 +71,11 @@ exports[`XButton should render correctly 1`] = `
   font-size: 16px;
 }
 
+.css-0 svg,
+[data-css-0] svg {
+  margin-right: 6px;
+}
+
 .css-4,
 [data-css-4] {
   width: 100%;

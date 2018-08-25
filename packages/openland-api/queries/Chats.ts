@@ -54,6 +54,7 @@ export const ChatInfoQuery = gql`
             title
             photos
             settings{
+                id
                 mobileNotifications
                 mute
             }
@@ -354,7 +355,11 @@ export const ChannelMembersQuery = gql`
 
 export const ChannelInviteMutation = gql`
     mutation ChannelInvite($channelId: ID!, $userId: ID!) {
-        alphaChannelInvite(channelId: $channelId, userId: $userId)
+        alphaChannelInvite(channelId: $channelId, userId: $userId){
+            chat{
+                id
+            }
+        }
     }
 `;
 
@@ -371,6 +376,7 @@ export const ConversationKickMutation = gql`
 export const ConversationSettingsUpdateMutation = gql`
     mutation ConversationSettingsUpdate($settings: UpdateConversationSettingsInput!, $conversationId: ID!) {
         alphaUpdateConversationSettings(settings: $settings, conversationId: $conversationId) {
+            id
             mobileNotifications
             mute
         }
@@ -379,7 +385,11 @@ export const ConversationSettingsUpdateMutation = gql`
 
 export const ChannelJoinMutation = gql`
     mutation ChannelJoin($channelId: ID!) {
-        join: alphaChannelJoin(channelId: $channelId)
+        join: alphaChannelJoin(channelId: $channelId){
+            chat{
+                id
+            }
+        }
     }
 `;
 

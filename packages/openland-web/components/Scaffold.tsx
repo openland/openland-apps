@@ -29,7 +29,7 @@ import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
-import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
+import DirecoryIcon from '../pages/main/directory/icons/directory.2.svg';
 import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
@@ -42,13 +42,11 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
 import { withCreateOrganization } from '../api/withCreateOrganization';
 import { delayForewer, delay } from 'openland-y-utils/timer';
-import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { InitTexts } from '../pages/init/_text';
 import { withCreateChannel } from '../api/withCreateChannel';
-import { PostChannelModal } from '../pages/main/channel/components/postChannelModal';
 import { XTextArea } from 'openland-x/XTextArea';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
 //
 // Root
@@ -640,6 +638,7 @@ const Home = withUserInfo((props) => {
                 showOnHoverContent={false}
                 showOnHover={true}
                 groupId="scaffold_tooltip"
+                style="dark"
                 content={(
                     <strong>{TextAppBar.items.home}</strong>
                 )}
@@ -701,7 +700,6 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                             </MenuItemWithIcon>
                         </XPopper>
                     </XWithRole>
-                    <MenuItem query={{ field: 'addListing', value: 'true' }}>{TextAppBar.items.addListing}</MenuItem>
                     <MenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</MenuItem>
                     <MenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</MenuItem>
                 </>
@@ -799,6 +797,7 @@ export const MessengerButton = withNotificationCounter((props) => {
             placement="right"
             showOnHoverContent={false}
             showOnHover={true}
+            style="dark"
             groupId="scaffold_tooltip"
             content={(
                 <strong>{TextAppBar.items.mail}</strong>
@@ -812,17 +811,15 @@ export const MessengerButton = withNotificationCounter((props) => {
     );
 });
 
-const CreateOrgInput = Glamorous(XInput)({
-    height: 40,
-    marginTop: 16,
-});
-
 export const CreateOrganization = withCreateOrganization((props) => {
+    let community = props.router.query.createOrganization === 'community';
+    let texts = community ? InitTexts.create_community_popper : InitTexts.create_organization_popper;
     return (
         <XModalForm
             targetQuery="createOrganization"
             useTopCloser={true}
-            title={InitTexts.create_organization_popper.title}
+            title={texts.title}
+            submitBtnText={texts.submit}
             defaultAction={async (data) => {
                 let res = await props.createOrganization({
                     variables:
@@ -830,6 +827,9 @@ export const CreateOrganization = withCreateOrganization((props) => {
                         input: {
                             personal: false,
                             name: data.input.name,
+                            about: data.input.about,
+                            isCommunity: community,
+                            photoRef: data.input.photoRef
                         }
                     }
                 });
@@ -843,21 +843,30 @@ export const CreateOrganization = withCreateOrganization((props) => {
                     photoRef: null
                 }
             }}
-            defaultLayout={false}
-            customFooter={null}
         >
 
             <XVertical separator="large">
                 <XFormLoadingContent>
                     <XHorizontal>
-                        <CreateOrgInput
+                        <XVertical
+                            separator={8}
                             flexGrow={1}
-                            field="input.name"
-                            size="medium"
-                            placeholder={InitTexts.create_organization_popper.namePlaceholder}
-                        // tooltipContent={<InputTooltip />}
-                        />
-                        <XFormSubmit style="primary" text={InitTexts.create_organization_popper.submit} size="medium" alignSelf="flex-end" />
+                        >
+                            <XInput
+                                color="primary-sky-blue"
+                                flexGrow={1}
+                                field="input.name"
+                                size="r-default"
+                                placeholder={texts.namePlaceholder}
+                            />
+                            <XTextArea
+                                placeholder={texts.descriptionPlaceholder}
+                                resize={false}
+                                size="small"
+                                valueStoreKey="fields.input.about"
+                            />
+                        </XVertical>
+                        <XAvatarUpload field="input.photoRef" placeholder={{add: texts.addPhoto, change: texts.changePhoto}}/>
                     </XHorizontal>
                 </XFormLoadingContent>
             </XVertical>
@@ -1016,51 +1025,13 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <AddMenu />
                             <NavigationDivider />
 
-                            <XWithRole role={['feature-marketplace']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.home}</strong>
-                                    )}
-                                >
-                                    <NavigatorItem path="/home">
-                                        <NavigatorIcon icon="home" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-                            <XWithRole role={['feature-marketplace']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.explore}</strong>
+                            <MessengerButton />
 
-                                    )}
-                                >
-                                    <NavigatorItem path="/marketplace">
-                                        <NavigatorIcon icon="explore" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-
-                            <XWithRole role={['software-developer']}>
-                                <ChannelButton />
-                            </XWithRole>
-
-                            <XWithRole role={['feature-marketplace']} negate={true}>
-                                <Home />
-                            </XWithRole>
-
-                            {/* <XWithRole role={['feature-directory']}> */}
                             <XPopper
                                 placement="right"
                                 showOnHoverContent={false}
                                 showOnHover={true}
+                                style="dark"
                                 groupId="scaffold_tooltip"
                                 content={(
                                     <strong>{TextAppBar.items.directory}</strong>
@@ -1071,11 +1042,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     <DirecoryIcon />
                                 </NavigatorItem>
                             </XPopper>
-                            {/* </XWithRole> */}
-
-                            <MessengerButton />
-
-                            <NavigationDivider />
 
                             <XWithRole role={['feature-search-global']}>
                                 <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
@@ -1083,25 +1049,29 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </NavigatorItem>
                             </XWithRole>
 
-                            <XPopper
-                                placement="right"
-                                showOnHoverContent={false}
-                                showOnHover={true}
-                                groupId="scaffold_tooltip"
-                                content={(
-                                    <strong>{TextAppBar.items.map}</strong>
-
-                                )}
-                            >
-                                <NavigatorItem path="/map">
-                                    <NavigatorIcon icon="map" />
-                                </NavigatorItem>
-                            </XPopper>
-                            <XWithRole role={['feature-customer-kassita']} negate={true}>
+                            <XWithRole role={['feature-map']}>
                                 <XPopper
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.map}</strong>
+
+                                    )}
+                                >
+                                    <NavigatorItem path="/map">
+                                        <NavigatorIcon icon="map" />
+                                    </NavigatorItem>
+                                </XPopper>
+                            </XWithRole>
+                            <XWithRole role={['feature-folders']}>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.folders}</strong>
@@ -1119,6 +1089,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.prospecting}</strong>
@@ -1152,6 +1123,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.reports}</strong>
@@ -1172,6 +1144,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.favorites}</strong>
@@ -1219,7 +1192,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                 <CreateOrganization />
                 <CreateChannel />
-                <PostChannelModal targetQuery="addListing" />
             </RootContainer>
         );
     }

@@ -15,18 +15,21 @@ interface TypingsWrapperProps {
 }
 
 class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, pictures?: (string | null)[] }> {
-    private destructor: () => void;
+    private destructor?: () => void;
     constructor(props: TypingsWrapperProps) {
         super(props);
-        this.destructor = props.engine.subcribe(this.onTyping);
         this.state = {};
     }
 
     onTyping = (typing?: string, pictures?: (string | null)[]) => {
-        this.setState({ 
+        this.setState({
             typing: typing,
             pictures: pictures
         });
+    }
+
+    componentDidMount() {
+        this.destructor = this.props.engine.subcribe(this.onTyping);
     }
 
     componentWillUnmount() {

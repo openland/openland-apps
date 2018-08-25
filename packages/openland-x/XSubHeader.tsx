@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
-import { XIcon } from 'openland-x/XIcon';
 
 const SubHeaderWrapper = Glamorous.div({
     display: 'flex',

@@ -268,8 +268,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 size="small"
                                 style={(props.data.chat.__typename === 'SharedConversation'
                                     ? 'organization'
-                                    : props.data.chat.__typename === 'ChannelConversation'
-                                        ? 'channel' : undefined
+                                    : props.data.chat.__typename === 'GroupConversation'
+                                        ? 'group'
+                                        : props.data.chat.__typename === 'ChannelConversation'
+                                            ? 'channel' : undefined
                                 )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : undefined}
                             />
@@ -353,6 +355,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 )}
                 {(props.data.chat.__typename === 'ChannelConversation' && tab === 'members') && (
                     <ChannelMembersComponent
+                        channelTitle={title}
                         key={props.data.chat.id + '_members'}
                         variables={{ channelId: props.data.chat.id }}
                         {...{ isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine }}

@@ -118,7 +118,7 @@ const OrganizationFollowBtn = withOrganizationFollow((props) => (
     </XMutation>
 )) as React.ComponentType<{ organizationId: string, followed: boolean }>;
 
-const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
+export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
     <XButton
         text={(props as any).published ? 'Hide from search' : 'Publish'}
         style="flat"
@@ -143,6 +143,12 @@ interface OrganizationCardProps {
         followed: boolean,
         published: boolean,
         editorial: boolean,
+        members: {
+            user: {
+                name: string,
+                picture: string | null,
+            }
+        }[]
     };
     onPick: (q: SearchCondition) => void;
 }
@@ -167,7 +173,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
         }
         return arr;
     }
-    
+
     constructor(props: OrganizationCardProps) {
         super(props);
         this.state = {
@@ -176,13 +182,15 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
     }
 
     render() {
+        console.warn(this.props.item.members);
+        let firstMember = this.props.item.members[0];
         return (
             <OrganizationCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal justifyContent="space-between" separator={12}>
-                    <XLink path={'/o/' + this.props.item.id}>
+                    <XLink path={'/directory/o/' + this.props.item.id}>
                         <OrganizationAvatar
                             cloudImageUuid={this.props.item.photo!!}
                             size="x-medium"
@@ -191,13 +199,14 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                     </XLink>
                     <OrganizationContentWrapper>
                         <OrganizationInfoWrapper>
-                            <OrganizationTitle path={'/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
-                            <OrganizationMembers>
+                            <OrganizationTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
+                            {firstMember && <OrganizationMembers>
                                 <XAvatar
                                     size="x-small"
+                                    cloudImageUuid={firstMember.user.picture || undefined}
                                 />
-                                <span>Eula Hogan +2 more</span>
-                            </OrganizationMembers>
+                                <span>{firstMember.user.name + (this.props.item.members.length > 0 ? (' +' + this.props.item.members.length + ' more') : '')}</span>
+                            </OrganizationMembers>}
                             <OrganizationCardTypeWrapper separator={0}>
                                 {this.props.item.locations && (
                                     <XTag
@@ -233,7 +242,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                 placement="bottom-end"
                                 content={(
                                     <>
-                                        <XMenuItem style="primary-sky-blue" href={'/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                                        <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
                                             <XWithRole role="admin" orgPermission={true}>

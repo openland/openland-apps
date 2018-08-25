@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"   width="100%" height="100%" viewBox="0 0 36 36">
+    <defs>
+        <path id="a" d="M0 0h36v36H0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#FFF" fill-rule="nonzero" xlink:href="#a"/>
+        <g fill-rule="nonzero" mask="url(#b)">
+            <g transform="translate(3 3.75)">
+                <ellipse cx="14.728" cy="15.956" fill="#4285F4" opacity=".082" rx="14.574" ry="14.606"/>
+                <path fill="#5F6C8E" d="M4.052.085l15.731 3.061v24.535H4.053z"/>
+                <path fill="#96C823" stroke="#FFF" stroke-linecap="square" stroke-width="1.543" d="M4.01 26.11a3.403 3.403 0 0 1-3.4-3.406c0-1.175.914-3.111 2.75-5.981l.65-1.017.65 1.017c1.835 2.87 2.75 4.806 2.75 5.98a3.403 3.403 0 0 1-3.4 3.407z"/>
+                <path stroke="#96C823" stroke-linecap="square" stroke-width="1.023" d="M4.052 27.586V22.89"/>
+                <path stroke="#FFF" stroke-width="1.763" d="M6.055 4.698h1.763M6.055 12.226h1.763M6.055 8.462h1.763M9.484 4.698h1.763M9.484 12.226h1.763M9.484 15.99h1.763M9.484 8.462h1.763M9.484 23.843h1.763M9.484 20.079h1.763M12.912 12.226h1.764M12.912 15.99h1.764M12.912 8.462h1.764M12.912 23.843h1.764M12.912 20.079h1.764"/>
+                <path fill="#5F6C8E" stroke="#FFF" stroke-linecap="round" stroke-width="1.543" d="M19.095 15.033v-2.135h5.881v2.135h2.301v13.325H16.794V15.033h2.301z"/>
+                <path fill="#FFF" d="M19.095 19.548v-1.757h5.881v1.757z"/>
+                <path stroke="#5F6C8E" stroke-width="1.543" d="M.774 28.102H29.06"/>
+                <path stroke="#FFF" stroke-width="1.763" d="M19.095 22.11h5.881"/>
+            </g>
+        </g>
+    </g>
+</svg>

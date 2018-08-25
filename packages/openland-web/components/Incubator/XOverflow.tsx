@@ -110,7 +110,8 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         };
     }
 
-    switch = () => {
+    switch = (e: any) => {
+        e.stopPropagation();
         this.setState({ show: !this.state.show });
     }
 

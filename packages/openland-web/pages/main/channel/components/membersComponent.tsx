@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XOverflow } from '../../../../components/Incubator/XOverflow';
+import { InviteMembersModal } from './inviteMembersModal';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XButton } from 'openland-x/XButton';
@@ -89,7 +90,7 @@ const InfoText = Glamorous.div({
     marginBottom: 32
 });
 
-const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean }) => (
+const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean, channelTitle: string, chatId: string }) => (
     <EmptyRoot>
         <Reactangle />
         <EmptyContent>
@@ -98,7 +99,13 @@ const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean }) => (
             </ImageWrapper>
             {props.aloneMember && <Text>You are alone</Text>}
             <InfoText>To grow the community, invite people to this channel</InfoText>
-            <XButton size="r-default" style="primary-sky-blue" text="Send invitations" />
+            <InviteMembersModal
+                channelTitle={props.channelTitle}
+                channelId={props.chatId}
+                target={
+                    <XButton size="r-default" style="primary-sky-blue" text="Send invitations" />
+                }
+            />
         </EmptyContent>
     </EmptyRoot>
 );
@@ -283,7 +290,7 @@ const RemoveMemberModal = withConversationKick((props) => {
     );
 }) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string }>;
 
-class ChannelMembersComponentInner extends React.Component<{ data: ChannelMembersQuery, channelId: string, isMyOrganization: boolean }> {
+class ChannelMembersComponentInner extends React.Component<{ data: ChannelMembersQuery, channelTitle: string, channelId: string, isMyOrganization: boolean }> {
     render() {
         if (!this.props.data || !this.props.data.members) {
             return <XLoader loading={true} />;
@@ -303,7 +310,7 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
                         <XSubHeader title="Requests" counter={requests.length} />
                         <MembersView>
                             {requests.map(m => (
-                                <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                                <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                             ))}
                         </MembersView>
                     </XWithRole>
@@ -311,13 +318,16 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
                     {(members.length > 1) && members.map(m => (
-                        <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                        <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                     ))}
                 </MembersView>
+                {console.log('chatTitle ---- ', (this.props as any).channelTitle)}
                 {(members.length <= 3) && (
                     <EmptyComponent
                         aloneMember={members.length === 1}
                         smaller={members.length >= 2}
+                        channelTitle={(this.props as any).channelTitle}
+                        chatId={this.props.channelId}
                     />
                 )}
                 <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
@@ -326,4 +336,11 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
     }
 }
 
-export const ChannelMembersComponent = withChannelMembers((props) => <ChannelMembersComponentInner data={props.data} channelId={(props.variables as any).channelId} isMyOrganization={(props as any).isMyOrganization} />);
+export const ChannelMembersComponent = withChannelMembers((props) => (
+    <ChannelMembersComponentInner
+        data={props.data}
+        channelTitle={(props as any).channelTitle}
+        channelId={(props.variables as any).channelId}
+        isMyOrganization={(props as any).isMyOrganization}
+    />
+)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string } }>;

@@ -75,9 +75,21 @@ export const InitTexts = {
     },
 
     create_organization_popper: {
-        title: 'Create new organization',
+        title: 'Create organization',
         namePlaceholder: 'Organization name',
-        submit: 'Create'
+        descriptionPlaceholder: 'Short description (optional)',
+        submit: 'Create',
+        addPhoto: <><p>Add photo</p> <p>(optional)</p></>,
+        changePhoto: 'Change photo',
+    },
+
+    create_community_popper: {
+        title: 'Create community',
+        namePlaceholder: 'Community name',
+        descriptionPlaceholder: 'Short description (optional)',
+        submit: 'Create',
+        addPhoto: <><p>Add photo</p> <p>(optional)</p></>,
+        changePhoto: 'Change photo',
     },
 
     pick_organization: {

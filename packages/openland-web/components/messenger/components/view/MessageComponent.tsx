@@ -14,6 +14,9 @@ import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XText } from 'openland-x/XText';
+import { XCloudImage } from 'openland-x/XCloudImage';
+import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
+import { makeNavigable } from 'openland-x/Navigable';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -32,15 +35,16 @@ const Name = Glamorous.div({
     color: '#334562'
 });
 
-const Organization = Glamorous.div({
+const Organization = makeNavigable(Glamorous.div({
     fontSize: 12,
     fontWeight: 500,
     opacity: 0.5,
     color: '#334562',
     letterSpacing: -0.2,
     alignSelf: 'flex-end',
-    marginBottom: -1
-});
+    marginBottom: -1,
+    cursor: 'pointer'
+}));
 
 const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     flexShrink: 0,
@@ -101,9 +105,14 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                     content.push(<MessageFileComponent key={'file'} file={this.props.message.file} fileName={name} fileSize={size} />);
                 }
             }
-            // if (this.props.message.urlAugmentation) {
-            //     content.push(<XText key="urlAugmentation">{JSON.stringify(this.props.message.urlAugmentation)}</XText>);
-            // }
+            if (this.props.message.urlAugmentation) {
+                if (this.props.message.urlAugmentation.url.startsWith('https://app.openland.com/o') && this.props.message.urlAugmentation.url.includes('listings#')) {
+                    content = [];
+                }
+                console.warn(this.props.message.urlAugmentation);
+                content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...this.props.message.urlAugmentation} />);
+
+            }
             date = <XDate value={this.props.message.date} format="time" />;
         } else {
             if (this.props.message.message && this.props.message.message.length > 0) {
@@ -153,7 +162,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         <XHorizontal separator={4}>
                             <XHorizontal separator={4} alignItems="center">
                                 <Name>{this.props.sender!!.name}</Name>
-                                {this.props.sender!!.primaryOrganization && <Organization>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                             </XHorizontal>
                             <DateComponent>{date}</DateComponent>
                         </XHorizontal>

@@ -17,6 +17,7 @@ import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XText } from 'openland-x/XText';
+import { XWithRouter } from 'openland-x-routing/withRouter';
 
 interface ImgButtonStylesProps {
     marginRight?: number;
@@ -79,12 +80,10 @@ const Channels = withUserChannels((props) => {
     );
 });
 
-class PostChannelModalRaw extends React.Component<Partial<XModalFormProps>, { val?: string, addPhoto?: boolean }> {
-    constructor(props: XModalFormProps) {
+class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWithRouter, { addPhoto?: boolean }> {
+    constructor(props: any) {
         super(props);
-        this.state = {
-            val: ''
-        };
+        this.state = {};
     }
 
     private handleAttach = () => {
@@ -115,6 +114,7 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps>, { va
                 />
             </FooterWrap>
         );
+        let cid = this.props.router.routeQuery.conversationId;
         return (
             <XModalForm
                 {...this.props}
@@ -126,6 +126,7 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps>, { va
                 defaultData={{
                     input: {
                         title: '',
+                        channels: [...cid ? [cid] : []]
                     },
                 }}
             >

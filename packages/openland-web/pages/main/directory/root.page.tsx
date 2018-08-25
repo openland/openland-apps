@@ -18,7 +18,7 @@ import { SearchSelect } from './components/SearchSelect';
 import { OrganizationCard } from './components/OrganizationCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { 
+import {
     RootWrapper,
     Sidebar,
     SidebarHeader,
@@ -37,6 +37,7 @@ import {
     OrganizationsSidebarItemHead,
     CommunitiesSidebarItemHead
 } from './components/Layout';
+import { OrganizationProfile } from '../profile/ProfileComponent';
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -346,6 +347,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     render() {
         const { searchText, conditions, orgCount } = this.state;
+        let oid = this.props.router.routeQuery.organizationId;
 
         return (
             <RootWrapper>
@@ -379,72 +381,74 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     </SidebarList>
                 </Sidebar>
                 <Container>
-                    <ContentView>
-                        <SearchRow>
-                            <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                <SearchFormContent separator={4} flexGrow={1}>
-                                    <SearchFormIcon icon="search" />
-                                    <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                                    <AutocompletePopper
-                                        target={
-                                            <SearchInput
-                                                onFocus={this.onSearchFocus}
-                                                value={searchText}
-                                                onChange={this.handleSearchChange}
-                                                placeholder={TextDirectory.searchInputPlaceholder}
-                                            />
-                                        }
-                                        onPick={this.addCondition}
-                                        query={searchText}
-                                        value={searchText}
-                                        onInputChange={this.handleSearchChange}
-                                    />
-                                </SearchFormContent>
-                                <XHorizontal separator={2}>
-                                    {this.state.conditions.length > 0 &&
-                                        <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
-                                    <XButton
-                                        text={TextDirectory.buttonSearch}
-                                        style="primary-sky-blue"
-                                        size="r-default"
-                                        enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
-                                        onClick={this.searchButtonHandler}
-                                    />
-                                </XHorizontal>
-                            </SearchFormWrapper>
-                        </SearchRow>
-                        {(this.state.conditions.length <= 0) && (
-                            <XSubHeader title="All organizations">
-                                <XSubHeaderLink query={{ field: 'createOrganization', value: 'true' }}>
-                                    <XIcon icon="add" />
-                                    New organization
+                    {!oid &&
+                        <ContentView>
+                            <SearchRow>
+                                <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
+                                    <SearchFormContent separator={4} flexGrow={1}>
+                                        <SearchFormIcon icon="search" />
+                                        <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
+                                        <AutocompletePopper
+                                            target={
+                                                <SearchInput
+                                                    onFocus={this.onSearchFocus}
+                                                    value={searchText}
+                                                    onChange={this.handleSearchChange}
+                                                    placeholder={TextDirectory.searchInputPlaceholder}
+                                                />
+                                            }
+                                            onPick={this.addCondition}
+                                            query={searchText}
+                                            value={searchText}
+                                            onInputChange={this.handleSearchChange}
+                                        />
+                                    </SearchFormContent>
+                                    <XHorizontal separator={2}>
+                                        {this.state.conditions.length > 0 &&
+                                            <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
+                                        <XButton
+                                            text={TextDirectory.buttonSearch}
+                                            style="primary-sky-blue"
+                                            size="r-default"
+                                            enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
+                                            onClick={this.searchButtonHandler}
+                                        />
+                                    </XHorizontal>
+                                </SearchFormWrapper>
+                            </SearchRow>
+                            {(this.state.conditions.length <= 0) && (
+                                <XSubHeader title="All organizations">
+                                    <XSubHeaderLink query={{ field: 'createOrganization', value: 'true' }}>
+                                        <XIcon icon="add" />
+                                        New organization
                                 </XSubHeaderLink>
-                                <XSubHeaderRight>
-                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                </XSubHeaderRight>
-                            </XSubHeader>
-                        )}
-                        {(this.state.conditions.length > 0) && (orgCount > 0) && (
-                            <XSubHeader title="Organizations" counter={orgCount}>
-                                <XSubHeaderRight>
-                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                </XSubHeaderRight>
-                            </XSubHeader>
-                        )}
-                        {(this.state.conditions.length > 0) && (orgCount <= 0) && (
-                            <XSubHeader title="No results" />
-                        )}
-                        <Results>
-                            <Organizations
-                                featuredFirst={this.state.sort.featured}
-                                orderBy={this.state.sort.orderBy}
-                                conditions={conditions}
-                                onPick={this.replaceConditions}
-                                onSearchReset={this.reset}
-                                tagsCount={this.tagsCount}
-                            />
-                        </Results>
-                    </ContentView>
+                                    <XSubHeaderRight>
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                    </XSubHeaderRight>
+                                </XSubHeader>
+                            )}
+                            {(this.state.conditions.length > 0) && (orgCount > 0) && (
+                                <XSubHeader title="Organizations" counter={orgCount}>
+                                    <XSubHeaderRight>
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                    </XSubHeaderRight>
+                                </XSubHeader>
+                            )}
+                            {(this.state.conditions.length > 0) && (orgCount <= 0) && (
+                                <XSubHeader title="No results" />
+                            )}
+                            <Results>
+                                <Organizations
+                                    featuredFirst={this.state.sort.featured}
+                                    orderBy={this.state.sort.orderBy}
+                                    conditions={conditions}
+                                    onPick={this.replaceConditions}
+                                    onSearchReset={this.reset}
+                                    tagsCount={this.tagsCount}
+                                />
+                            </Results>
+                        </ContentView>}
+                    {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} />}
                 </Container>
 
                 <CreateOrganization />
