@@ -172,7 +172,7 @@ class NotificationSettingsComponent extends React.Component<{ mutation: any, set
 
     render() {
         return (
-            <XVertical>
+            <XVertical separator={0}>
                 <XMenuItemWrapper key="mobile">
                     <XVertical>
                         <XCheckbox
@@ -291,7 +291,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     </NavChatLeftContentStyled>
                     <XHorizontal alignItems="center" separator={5}>
                         {props.data.chat.__typename === 'ChannelConversation' && (
-                            <>
+                            <XHorizontal separator={14}>
                                 <ChannelTabs>
                                     <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
                                     <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
@@ -300,10 +300,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     channelTitle={title}
                                     channelId={props.data.chat.id}
                                     target={
-                                        <XButton text="Invite" iconResponsive="add" icon="add" size="r-default" />
+                                        <XButton text="Invite" iconResponsive="add" icon="add" size="r-default" alignSelf="center" />
                                     }
                                 />
-                            </>
+                            </XHorizontal>
                         )}
 
                         <XOverflow

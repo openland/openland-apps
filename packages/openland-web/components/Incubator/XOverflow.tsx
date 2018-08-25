@@ -77,7 +77,6 @@ const NotificationButton = Glamorous.div<{ active: boolean }>((props) => ({
         }
     },
     '&:hover': {
-        border: 'solid 1px #dcdee4',
         '& svg': {
             '& > g > path:last-child': {
                 fill: '#1790ff'

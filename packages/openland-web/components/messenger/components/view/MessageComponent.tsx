@@ -50,7 +50,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     flexShrink: 0,
     width: props.small ? 56 : 62,
     marginBottom: props.small ? undefined : -1,
-    fontSize: 12,
+    fontSize: 11,
     paddingTop: props.small ? 3 : undefined,
     fontWeight: 500,
     letterSpacing: -0.2,
@@ -70,14 +70,14 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     width: '100%',
     marginTop: props.compact ? undefined : 20,
     // marginBottom: 12,
-    borderRadius: 2,
+    borderRadius: 6,
     '&:hover': {
         backgroundColor: 'rgba(242, 244, 245, 0.5)',
-        '& > .time': {
+        '& .time': {
             opacity: 0.5
         }
     },
-    '& > .time': {
+    '& .time': {
         opacity: 0
     }
 }));
@@ -164,7 +164,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                                 <Name>{this.props.sender!!.name}</Name>
                                 {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                             </XHorizontal>
-                            <DateComponent>{date}</DateComponent>
+                            <DateComponent className="time">{date}</DateComponent>
                         </XHorizontal>
                         {content}
                     </MessageWrapper>

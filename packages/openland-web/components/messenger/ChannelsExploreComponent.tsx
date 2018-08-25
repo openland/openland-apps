@@ -41,7 +41,7 @@ const Avatar = Glamorous(XAvatar)({
 });
 
 const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
-    height: 64,
+    height: 70,
     paddingLeft: 20,
     paddingRight: 24,
     flexShrink: 0,

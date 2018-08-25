@@ -30,7 +30,8 @@ const Reactangle = Glamorous.div({
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'bottom',
-    zIndex: 0
+    zIndex: 0,
+    pointerEvents: 'none'
 });
 
 const Image = Glamorous.div<{ isChannel: boolean }>(props => ({

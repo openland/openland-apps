@@ -53,6 +53,11 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
             fill: props.disable ? '#c1c7cf' : 'rgba(23, 144, 255, 0.5)'
         }
     },
+    '&.document-button:hover': {
+        '& > svg > g > g': {
+            fill: props.disable ? '#c1c7cf' : 'rgba(23, 144, 255, 0.5)'
+        }
+    },
     '& > svg': {
         flexShrink: 0,
         marginRight: 11
@@ -188,6 +193,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                                     onClick={this.props.enabled === false ? undefined : this.handleAttach}
                                     enabled={this.props.enabled === false}
                                     disable={this.props.enabled === false}
+                                    className="document-button"
                                 >
                                     <FileIcon />
                                     <span>Document</span>

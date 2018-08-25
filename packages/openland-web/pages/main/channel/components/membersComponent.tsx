@@ -148,6 +148,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                     <MemberTools separator={5}>
 
                         <XOverflow
+                            flat={true}
                             placement="bottom-end"
                             content={(
                                 <XMenuItem style="danger" query={{ field: 'remove', value: this.props.item.id }}>Remove from channel</XMenuItem>
