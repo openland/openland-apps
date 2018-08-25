@@ -640,6 +640,7 @@ const Home = withUserInfo((props) => {
                 showOnHoverContent={false}
                 showOnHover={true}
                 groupId="scaffold_tooltip"
+                style="dark"
                 content={(
                     <strong>{TextAppBar.items.home}</strong>
                 )}
@@ -798,6 +799,7 @@ export const MessengerButton = withNotificationCounter((props) => {
             placement="right"
             showOnHoverContent={false}
             showOnHover={true}
+            style="dark"
             groupId="scaffold_tooltip"
             content={(
                 <strong>{TextAppBar.items.mail}</strong>
@@ -1024,6 +1026,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 placement="right"
                                 showOnHoverContent={false}
                                 showOnHover={true}
+                                style="dark"
                                 groupId="scaffold_tooltip"
                                 content={(
                                     <strong>{TextAppBar.items.directory}</strong>
@@ -1034,7 +1037,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     <DirecoryIcon />
                                 </NavigatorItem>
                             </XPopper>
-
 
                             <XWithRole role={['feature-search-global']}>
                                 <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
@@ -1047,6 +1049,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.map}</strong>
@@ -1063,6 +1066,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.folders}</strong>
@@ -1080,6 +1084,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.prospecting}</strong>
@@ -1113,6 +1118,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.reports}</strong>
@@ -1133,6 +1139,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     placement="right"
                                     showOnHoverContent={false}
                                     showOnHover={true}
+                                    style="dark"
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.favorites}</strong>
