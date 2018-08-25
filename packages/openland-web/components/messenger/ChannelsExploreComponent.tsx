@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -10,8 +9,8 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { SortPicker } from '../../pages/main/directory/sortPicker';
 import { XScrollView } from 'openland-x/XScrollView';
-import EmptyImage from './components/icons/channels-explore-empty.svg';
 import { makeNavigable } from 'openland-x/Navigable';
+import { EmptyComponent } from './components/view/content/ChannelEmptyComponent';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -81,20 +80,6 @@ const MembersText = Glamorous.div({
     color: '#99a2b0'
 });
 
-const EmptyContent = Glamorous(XVertical)({
-    paddingTop: 30,
-    paddingBottom: 30
-});
-
-const EmptyText = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.5,
-    letterSpacing: -0.3,
-    color: '#99a2b0',
-    marginTop: 44
-});
-
 const Channels = withChatSearchChannels((props) => {
     return (
         props.data && props.data.channels ? props.data.channels.edges.length
@@ -128,10 +113,7 @@ const Channels = withChatSearchChannels((props) => {
                 </>
             )
             : (
-                <EmptyContent separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
-                    <EmptyImage />
-                    <EmptyText>No channel matches your search</EmptyText>
-                </EmptyContent>
+                <EmptyComponent/>
             )
             : (<XLoader loading={true} />)
     );

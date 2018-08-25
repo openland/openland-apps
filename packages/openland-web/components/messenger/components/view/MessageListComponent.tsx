@@ -1,4 +1,3 @@
-import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';

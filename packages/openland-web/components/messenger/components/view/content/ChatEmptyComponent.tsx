@@ -2,8 +2,6 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
-import EmptyChatImg from '../../icons/chat-empty.svg';
-import EmptyChatImgChannel from '../../icons/chat-channel-empty.svg';
 
 const EmptyRoot = Glamorous.div({
     position: 'relative',
@@ -23,16 +21,28 @@ const EmptyContent = Glamorous.div({
 });
 
 const Reactangle = Glamorous.div({
-    borderRadius: '100%',
     width: '100%',
-    height: '100%',
+    height: 600,
     position: 'absolute',
-    top: '10%',
-    left: '0%',
-    opacity: 0.1,
-    backgroundImage: 'linear-gradient(21deg, #ecf2fc, #b9cff7)',
+    top: 'calc(50% - 300px)',
+    left: 0,
+    backgroundImage: 'url(\'/static/img/messenger/reactangle.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'bottom',
     zIndex: 0
 });
+
+const Image = Glamorous.div<{ isChannel: boolean }>(props => ({
+    width: props.isChannel ? 434 : 391,
+    height: props.isChannel ? 352 :  380,
+    backgroundImage: props.isChannel
+        ? 'url(\'/static/img/messenger/chat-channel-empty.svg\')'
+        : 'url(\'/static/img/messenger/chat-empty.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
+}));
 
 const ImageWrapper = Glamorous.div({
     display: 'flex',
@@ -67,7 +77,7 @@ export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: 
         <Reactangle />
         <EmptyContent>
             <ImageWrapper>
-                {props.conversationType === 'ChannelConversation' ? <EmptyChatImgChannel /> : <EmptyChatImg />}
+                {props.conversationType === 'ChannelConversation' ? <Image isChannel={true} /> : <Image isChannel={false} />}
             </ImageWrapper>
             {props.conversationType === 'ChannelConversation' && (
                 <>
