@@ -116,7 +116,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     isEmpty = () => {
-        return this.props.messages.filter(m => m.message && !((m as any).isServerMessage)).length < 2;
+        return this.props.messages.filter(m => m.message && !((m as any).isServerMessage)).length < 1;
     }
 
     checkEmptyState = () => {
