@@ -92,6 +92,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         onSend={this.handleSend}
                         onSendFile={this.handleSendFile}
                         enabled={this.state.mounted}
+                        conversationType={this.props.conversationType}
+                        conversationId={this.props.conversationId}
                     />
                 )}
             </ConversationContainer>

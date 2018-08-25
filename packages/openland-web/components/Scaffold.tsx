@@ -701,7 +701,6 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                             </MenuItemWithIcon>
                         </XPopper>
                     </XWithRole>
-                    <MenuItem query={{ field: 'addListing', value: 'true' }}>{TextAppBar.items.addListing}</MenuItem>
                     <MenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</MenuItem>
                     <MenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</MenuItem>
                 </>
@@ -1222,7 +1221,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
                 <CreateOrganization />
                 <CreateChannel />
-                <PostChannelModal targetQuery="addListing" />
             </RootContainer>
         );
     }

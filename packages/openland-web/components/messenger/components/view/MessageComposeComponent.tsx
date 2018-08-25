@@ -10,6 +10,7 @@ import { XRichTextInput } from 'openland-x/XRichTextInput';
 import PhotoIcon from '../icons/ic-photo.svg';
 import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
+import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 
 const SendMessageWrapper = Glamorous(XHorizontal)({
     width: '100%',
@@ -80,6 +81,8 @@ const TextInputWrapper = Glamorous.div({
 });
 
 export interface MessageComposeComponentProps {
+    conversationType?: string;
+    conversationId?: string;
     enabled?: boolean;
     onSend?: (text: string) => void;
     onSendFile?: (file: UploadCare.File) => void;
@@ -173,15 +176,14 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                                     <PhotoIcon />
                                     <span>Photo</span>
                                 </AttachmentButton>
-                                <AttachmentButton
-                                    // onClick={this.props.enabled === false ? undefined : this.handleAttach}
+                                {this.props.conversationType === 'ChannelConversation' && this.props.conversationId && <AttachmentButton
+                                    query={{ field: 'addListing', value: 'true' }}
                                     // enabled={this.props.enabled === false}
                                     // disable={this.props.enabled === false}
-                                    disable={true}
                                 >
                                     <ListingIcon />
                                     <span>Listing</span>
-                                </AttachmentButton>
+                                </AttachmentButton>}
                                 <AttachmentButton
                                     onClick={this.props.enabled === false ? undefined : this.handleAttach}
                                     enabled={this.props.enabled === false}
@@ -202,6 +204,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                         </XHorizontal>
                     </XVertical>
                 </SendMessageContent>
+                <PostChannelModal targetQuery="addListing" />
             </SendMessageWrapper>
         );
     }
