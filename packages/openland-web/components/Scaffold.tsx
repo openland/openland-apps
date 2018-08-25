@@ -29,7 +29,7 @@ import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
-import DirecoryIcon from '../pages/main/directory/icons/directory.1.svg';
+import DirecoryIcon from '../pages/main/directory/icons/directory.2.svg';
 import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-1.svg';
