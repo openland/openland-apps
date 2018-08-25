@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StyleSheet, ViewStyle, Dimensions, Keyboard, Image, Platform } from 'react-native';
-import ViewOverflow from 'react-native-view-overflow';
+import { View, Animated, StyleSheet, ViewStyle, Dimensions, Image, Platform } from 'react-native';
 import { FastHeaderBackButton } from './FastHeaderBackButton';
 import { DeviceConfig } from '../DeviceConfig';
 import { FastHistoryRecord } from '../FastHistory';
@@ -8,14 +7,12 @@ import { FastBlurredView } from '../utils/FastBlurView';
 import { FastHeaderConfig } from '../FastHeaderConfig';
 import { FastHeaderTitle } from './FastHeaderTitle';
 
-const ViewOverflowAnimated = Animated.createAnimatedComponent(ViewOverflow);
-
 interface NormalizedRoute {
     current: boolean;
     mounted: boolean;
     record: FastHistoryRecord;
     config: FastHeaderConfig;
-    progress: Animated.Value;
+    progress: Animated.AnimatedInterpolation;
 }
 
 interface FastHeaderProps {
@@ -126,13 +123,13 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
             let resolvedNavigationBarHeightLarge = DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight;
 
             // Calculate position offset
+            let position = v.progress;
             let interpolated = v.progress.interpolate({
                 inputRange: [- 1, 0, 1],
                 outputRange: [0, 1, 0],
                 extrapolate: 'clamp'
             });
-            let position = v.progress;
-
+            
             // Small title opacity
             let titleOpacity: Animated.AnimatedInterpolation = interpolated;
 
@@ -296,8 +293,8 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                 </View>
 
                 {/* Background */}
-                <ViewOverflow style={styles.backgroundContainer} pointerEvents="box-none">
-                    <ViewOverflowAnimated
+                <View style={styles.backgroundContainer} pointerEvents="box-none">
+                    <Animated.View
                         style={{
                             position: 'absolute',
                             left: 0,
@@ -314,11 +311,11 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 width: '100%',
                             }}
                         />
-                    </ViewOverflowAnimated>
-                </ViewOverflow>
+                    </Animated.View>
+                </View>
 
                 {/* Hairline */}
-                <ViewOverflowAnimated
+                <Animated.View
                     style={[styles.hairline, {
                         transform: [{ translateY: hairlineOffset }],
                         opacity: Animated.multiply(hairlineOpacity, 0.3),
@@ -329,13 +326,13 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
 
         if (DeviceConfig.navigationBarTransparent) {
             return (
-                <ViewOverflow style={[styles.styleMainContainerTransparent, searchActive && styles.styleMainContainerTransparentSearch]}>
+                <View style={[styles.styleMainContainerTransparent, searchActive && styles.styleMainContainerTransparentSearch]}>
                     {content}
-                </ViewOverflow>
+                </View>
             );
         } else {
             return (
-                <ViewOverflow style={{ overflow: 'visible', flexDirection: 'row', height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight, backgroundColor: DeviceConfig.navigationBarBackgroundColor, paddingTop: DeviceConfig.statusBarHeight }}>
+                <View style={{ overflow: 'visible', flexDirection: 'row', height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight, backgroundColor: DeviceConfig.navigationBarBackgroundColor, paddingTop: DeviceConfig.statusBarHeight }}>
                     {content}
                     {Platform.OS === 'android' && (
                         <View style={{ position: 'absolute', top: 0, left: 0, zIndex: 1000 }}>
@@ -347,7 +344,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             <Image source={require('assets/corner_right.png')} />
                         </View>
                     )}
-                </ViewOverflow>
+                </View>
             );
         }
     }

@@ -131,7 +131,7 @@ const OrgByPrefix = withOrganizationByPrefix((props) => {
         return null;
     }
     return (
-        <OrgWrap path={'/o/' + props.data.organizationByPrefix.id}>
+        <OrgWrap path={'/o/directory/' + props.data.organizationByPrefix.id}>
             <DirecoryIcon />
             <OrgTitle>{props.data.organizationByPrefix.name}</OrgTitle>
         </OrgWrap>

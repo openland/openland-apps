@@ -26,6 +26,7 @@ import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import TwitterIcon from './icons/twitter-2.svg';
 import EmailIcon from './icons/email.svg';
+import { XScrollView } from 'openland-x/XScrollView';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -168,7 +169,7 @@ class Header extends React.Component<{ organizationQuery: OrganizationQuery } & 
     }
 }
 
-const SectionContent = Glamorous.div<{withTags?: boolean}>([
+const SectionContent = Glamorous.div<{ withTags?: boolean }>([
     {
         display: 'flex',
         padding: '18px 24px 32px',
@@ -423,7 +424,7 @@ const MemberCardTools = Glamorous(XHorizontal)({
 });
 
 class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> {
-    constructor(props: { item: any}) {
+    constructor(props: { item: any }) {
         super(props);
         this.state = {
             isHovered: false,
@@ -488,11 +489,13 @@ class Members extends React.Component<{ organizationQuery: OrganizationQuery }> 
                                 </XWithRole>
                             )}
                         </XSubHeader>
-                        {(organization.members || []).map((member, i) => {
-                            return (
-                                <MemberCard key={i} item={member} />
-                            );
-                        })}
+                        <XScrollView height="calc(100% - 216px)">
+                            {(organization.members || []).map((member, i) => {
+                                return (
+                                    <MemberCard key={i} item={member} />
+                                );
+                            })}
+                        </XScrollView>
                     </>
                 )}
                 <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
@@ -537,7 +540,7 @@ const ChannelCardTools = Glamorous(XHorizontal)({
 });
 
 class ChannelCard extends React.Component<{ item: any }, { isHovered: boolean }> {
-    constructor(props: { item: any}) {
+    constructor(props: { item: any }) {
         super(props);
         this.state = {
             isHovered: false,
