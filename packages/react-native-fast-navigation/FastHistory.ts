@@ -13,6 +13,7 @@ export interface FastHistoryRecord {
     readonly router: FastRouter;
     readonly contentOffset: Animated.Value;
     readonly config: Watcher<FastHeaderConfig>;
+    readonly prevKey?: string;
 }
 
 export class FastHistory {
@@ -32,7 +33,7 @@ export class FastHistoryManager {
     private history: FastHistory;
     private watchers: HistoryWatcher[] = [];
 
-    private createRecord(index: number, route: string, params?: any): FastHistoryRecord {
+    private createRecord(index: number, route: string, params?: any, prevKey?: string): FastHistoryRecord {
         let key = 'page-' + index + '-' + UUID();
         let component = this.routes.resolvePath(route);
         let router = {
@@ -44,7 +45,8 @@ export class FastHistoryManager {
             back: this.pop,
             updateConfig: (config) => {
                 this.updateConfig(key, config);
-            }
+            },
+            prevKey
         } as FastRouter;
         let cfg = new Watcher<FastHeaderConfig>();
         cfg.setState(new FastHeaderConfig({}));
@@ -75,7 +77,6 @@ export class FastHistoryManager {
     }
 
     updateConfig = (key: string, config: FastHeaderConfig) => {
-        console.log('update config');
         let r = this.history.history.find((v) => v.key === key);
         if (r) {
             r.config.setState(config);
@@ -83,7 +84,7 @@ export class FastHistoryManager {
     }
 
     push = (route: string, params?: any) => {
-        let record = this.createRecord(this.history.history.length, route, params);
+        let record = this.createRecord(this.history.history.length, route, params, this.history.history[this.history.history.length - 1].key);
         let nhistory = new FastHistory([...this.history.history, record]); // keep to avoid insonsistency if we will change routes in watchers
         this.history = nhistory;
         for (let w of this.watchers) {

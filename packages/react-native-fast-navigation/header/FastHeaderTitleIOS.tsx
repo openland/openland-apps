@@ -124,7 +124,9 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                 outputRange: [0, 1, 0],
                 extrapolate: 'clamp'
             });
-            this.translate = Animated.multiply(Animated.multiply(this.props.progress, this.containerWidth), -0.5);
+            this.translate = Animated.multiply(Animated.multiply(nextProps.progress, this.containerWidth), -0.5);
+            this.translateLarge = Animated.multiply(Animated.multiply(nextProps.progress, Dimensions.get('window').width), -1);
+            this.titleProgress = new Animated.Value(0);
         }
 
         // Resubscribe
