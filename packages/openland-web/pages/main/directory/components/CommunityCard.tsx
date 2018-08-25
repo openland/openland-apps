@@ -78,6 +78,7 @@ interface CommunityCardProps {
         followed: boolean,
         published: boolean,
         editorial: boolean,
+        channels: any[],
     };
     onPick: (q: SearchCondition) => void;
 }
@@ -91,6 +92,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
     }
 
     render() {
+        console.warn(this.props.item);
         return (
             <CommunityCardWrapper
                 path={'/o/' + this.props.item.id}
@@ -108,13 +110,13 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                     <CommunityContentWrapper>
                         <CommunityInfoWrapper>
                             <CommunityTitle path={'/o/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
-                            <CommunityCounter>154 channels</CommunityCounter>
+                            <CommunityCounter>{this.props.item.channels.length + (this.props.item.channels.length === 1 ? ' channel' : 'channels')}</CommunityCounter>
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper>
                             <XButton
                                 style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
                                 size="r-default"
-                                path={'/mail/' + this.props.item.id}
+                                path={'/o/' + this.props.item.id}
                                 text="View"
                             />
                             <XOverflow

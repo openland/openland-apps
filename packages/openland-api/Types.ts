@@ -4052,6 +4052,10 @@ export interface ExploreOrganizationsQuery {
             picture: string | null,
           },
         } >,
+        channels:  Array< {
+          __typename: "ChannelConversation",
+          id: string,
+        } | null >,
       },
       cursor: string,
     } >,
@@ -4100,6 +4104,10 @@ export interface ExploreComunityQuery {
             picture: string | null,
           },
         } >,
+        channels:  Array< {
+          __typename: "ChannelConversation",
+          id: string,
+        } | null >,
       },
       cursor: string,
     } >,
@@ -4371,6 +4379,10 @@ export interface OrganizationAlterPublishedMutation {
         picture: string | null,
       },
     } >,
+    channels:  Array< {
+      __typename: "ChannelConversation",
+      id: string,
+    } | null >,
   },
 };
 
@@ -4431,6 +4443,10 @@ export interface OrganizationByPrefixQuery {
         picture: string | null,
       },
     } >,
+    channels:  Array< {
+      __typename: "ChannelConversation",
+      id: string,
+    } | null >,
   } | null,
 };
 
@@ -7406,6 +7422,10 @@ export interface OrganizationSearchFragment {
       picture: string | null,
     },
   } >,
+  channels:  Array< {
+    __typename: "ChannelConversation",
+    id: string,
+  } | null >,
 };
 
 export interface OrganizationShortFragment {

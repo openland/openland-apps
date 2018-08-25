@@ -20,5 +20,8 @@ export const OrganizationSearch = gql`
                picture
             }
         }
+        channels: alphaCreatedChannels{
+            id
+        }
     }
 `;
