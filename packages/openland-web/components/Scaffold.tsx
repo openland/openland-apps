@@ -1018,47 +1018,8 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                             <AddMenu />
                             <NavigationDivider />
 
-                            <XWithRole role={['feature-marketplace']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.home}</strong>
-                                    )}
-                                >
-                                    <NavigatorItem path="/home">
-                                        <NavigatorIcon icon="home" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-                            <XWithRole role={['feature-marketplace']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.explore}</strong>
+                            <MessengerButton />
 
-                                    )}
-                                >
-                                    <NavigatorItem path="/marketplace">
-                                        <NavigatorIcon icon="explore" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-
-                            <XWithRole role={['software-developer']}>
-                                <ChannelButton />
-                            </XWithRole>
-
-                            <XWithRole role={['feature-marketplace']} negate={true}>
-                                <Home />
-                            </XWithRole>
-
-                            {/* <XWithRole role={['feature-directory']}> */}
                             <XPopper
                                 placement="right"
                                 showOnHoverContent={false}
@@ -1073,11 +1034,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     <DirecoryIcon />
                                 </NavigatorItem>
                             </XPopper>
-                            {/* </XWithRole> */}
 
-                            <MessengerButton />
-
-                            <NavigationDivider />
 
                             <XWithRole role={['feature-search-global']}>
                                 <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
@@ -1085,21 +1042,23 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 </NavigatorItem>
                             </XWithRole>
 
-                            <XPopper
-                                placement="right"
-                                showOnHoverContent={false}
-                                showOnHover={true}
-                                groupId="scaffold_tooltip"
-                                content={(
-                                    <strong>{TextAppBar.items.map}</strong>
+                            <XWithRole role={['feature-map']}>
+                                <XPopper
+                                    placement="right"
+                                    showOnHoverContent={false}
+                                    showOnHover={true}
+                                    groupId="scaffold_tooltip"
+                                    content={(
+                                        <strong>{TextAppBar.items.map}</strong>
 
-                                )}
-                            >
-                                <NavigatorItem path="/map">
-                                    <NavigatorIcon icon="map" />
-                                </NavigatorItem>
-                            </XPopper>
-                            <XWithRole role={['feature-customer-kassita']} negate={true}>
+                                    )}
+                                >
+                                    <NavigatorItem path="/map">
+                                        <NavigatorIcon icon="map" />
+                                    </NavigatorItem>
+                                </XPopper>
+                            </XWithRole>
+                            <XWithRole role={['feature-folders']}>
                                 <XPopper
                                     placement="right"
                                     showOnHoverContent={false}
