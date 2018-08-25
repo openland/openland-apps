@@ -14,6 +14,8 @@ import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XText } from 'openland-x/XText';
+import { XCloudImage } from 'openland-x/XCloudImage';
+import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -101,9 +103,14 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                     content.push(<MessageFileComponent key={'file'} file={this.props.message.file} fileName={name} fileSize={size} />);
                 }
             }
-            // if (this.props.message.urlAugmentation) {
-            //     content.push(<XText key="urlAugmentation">{JSON.stringify(this.props.message.urlAugmentation)}</XText>);
-            // }
+            if (this.props.message.urlAugmentation) {
+                if (this.props.message.urlAugmentation.url.startsWith('https://app.openland.com/o') && this.props.message.urlAugmentation.url.includes('listings#')) {
+                    content = [];
+                }
+                console.warn(this.props.message.urlAugmentation);
+                content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...this.props.message.urlAugmentation} />);
+
+            }
             date = <XDate value={this.props.message.date} format="time" />;
         } else {
             if (this.props.message.message && this.props.message.message.length > 0) {

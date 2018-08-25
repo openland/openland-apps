@@ -16,8 +16,8 @@ export let XText = Glamorous.div<{
     fontWeight?: number,
     letterSpacing?: number,
     color?: string,
-    fontSize?: number,
-    lineHeight?: number,
+    fontSize?: number | string,
+    lineHeight?: number | string,
 }>((props) => ({
     ...(props.textStyle === 'h900' ? XStyles.text.h900 :
         props.textStyle === 'h800' ? XStyles.text.h800 :
