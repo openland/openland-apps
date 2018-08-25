@@ -310,7 +310,7 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
                         <XSubHeader title="Requests" counter={requests.length} />
                         <MembersView>
                             {requests.map(m => (
-                                <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                                <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                             ))}
                         </MembersView>
                     </XWithRole>
@@ -318,7 +318,7 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
                     {(members.length > 1) && members.map(m => (
-                        <MemberItem item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                        <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                     ))}
                 </MembersView>
                 {console.log('chatTitle ---- ', (this.props as any).channelTitle)}
