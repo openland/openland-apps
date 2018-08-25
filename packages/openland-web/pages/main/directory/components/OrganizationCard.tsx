@@ -190,7 +190,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal justifyContent="space-between" separator={12}>
-                    <XLink path={'/o/' + this.props.item.id}>
+                    <XLink path={'/directory/o/' + this.props.item.id}>
                         <OrganizationAvatar
                             cloudImageUuid={this.props.item.photo!!}
                             size="x-medium"
@@ -199,7 +199,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                     </XLink>
                     <OrganizationContentWrapper>
                         <OrganizationInfoWrapper>
-                            <OrganizationTitle path={'/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
+                            <OrganizationTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
                             {firstMember && <OrganizationMembers>
                                 <XAvatar
                                     size="x-small"
@@ -242,7 +242,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                 placement="bottom-end"
                                 content={(
                                     <>
-                                        <XMenuItem style="primary-sky-blue" href={'/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                                        <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
                                             <XWithRole role="admin" orgPermission={true}>

@@ -86,6 +86,8 @@ routes.add('/directory', '/main/directory/root');
 routes.add('/directory/', '/main/directory/root');
 routes.add('/directory/communities', '/main/directory/communities');
 routes.add('/directory/communities/', '/main/directory/communities');
+routes.add('/directory/o/:organizationId', '/main/directory/root');
+routes.add('/directory/o/:organizationId/', '/main/directory/root');
 
 //
 // Profiles
@@ -214,6 +216,8 @@ routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/joinChannel/:uuid', '/main/mail/root');
 routes.add('/joinChannel/:uuid/', '/main/mail/root');
+routes.add('/mail/o/:organizationId', '/main/mail/root');
+routes.add('/mail/o/:organizationId/', '/main/mail/root');
 
 //
 // Channel

@@ -16,6 +16,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { XText } from 'openland-x/XText';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
+import { makeNavigable } from 'openland-x/Navigable';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -34,15 +35,16 @@ const Name = Glamorous.div({
     color: '#334562'
 });
 
-const Organization = Glamorous.div({
+const Organization = makeNavigable(Glamorous.div({
     fontSize: 12,
     fontWeight: 500,
     opacity: 0.5,
     color: '#334562',
     letterSpacing: -0.2,
     alignSelf: 'flex-end',
-    marginBottom: -1
-});
+    marginBottom: -1,
+    cursor: 'pointer'
+}));
 
 const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     flexShrink: 0,
@@ -160,7 +162,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         <XHorizontal separator={4}>
                             <XHorizontal separator={4} alignItems="center">
                                 <Name>{this.props.sender!!.name}</Name>
-                                {this.props.sender!!.primaryOrganization && <Organization>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                             </XHorizontal>
                             <DateComponent>{date}</DateComponent>
                         </XHorizontal>
