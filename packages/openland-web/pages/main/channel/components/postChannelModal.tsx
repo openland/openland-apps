@@ -80,12 +80,10 @@ const Channels = withUserChannels((props) => {
     );
 });
 
-class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWithRouter, { val?: string, addPhoto?: boolean }> {
-    constructor(props: XModalFormProps) {
+class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWithRouter, { addPhoto?: boolean }> {
+    constructor(props: any) {
         super(props);
-        this.state = {
-            val: ''
-        };
+        this.state = {};
     }
 
     private handleAttach = () => {
