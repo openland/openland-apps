@@ -42,13 +42,11 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
 import { withCreateOrganization } from '../api/withCreateOrganization';
 import { delayForewer, delay } from 'openland-y-utils/timer';
-import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { InitTexts } from '../pages/init/_text';
 import { withCreateChannel } from '../api/withCreateChannel';
-import { PostChannelModal } from '../pages/main/channel/components/postChannelModal';
 import { XTextArea } from 'openland-x/XTextArea';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
 //
 // Root
@@ -830,7 +828,8 @@ export const CreateOrganization = withCreateOrganization((props) => {
                             personal: false,
                             name: data.input.name,
                             about: data.input.about,
-                            isCommunity: community
+                            isCommunity: community,
+                            photoRef: data.input.photoRef
                         }
                     }
                 });
@@ -848,21 +847,27 @@ export const CreateOrganization = withCreateOrganization((props) => {
 
             <XVertical separator="large">
                 <XFormLoadingContent>
-                    <XVertical separator={8}>
-                        <XInput
-                            color="primary-sky-blue"
+                    <XHorizontal>
+                        <XVertical
+                            separator={8}
                             flexGrow={1}
-                            field="input.name"
-                            size="r-default"
-                            placeholder={texts.namePlaceholder}
-                        />
-                        <XTextArea
-                            placeholder={texts.descriptionPlaceholder}
-                            resize={false}
-                            size="small"
-                            valueStoreKey="fields.input.about"
-                        />
-                    </XVertical>
+                        >
+                            <XInput
+                                color="primary-sky-blue"
+                                flexGrow={1}
+                                field="input.name"
+                                size="r-default"
+                                placeholder={texts.namePlaceholder}
+                            />
+                            <XTextArea
+                                placeholder={texts.descriptionPlaceholder}
+                                resize={false}
+                                size="small"
+                                valueStoreKey="fields.input.about"
+                            />
+                        </XVertical>
+                        <XAvatarUpload field="input.photoRef" placeholder={{add: texts.addPhoto, change: texts.changePhoto}}/>
+                    </XHorizontal>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>
