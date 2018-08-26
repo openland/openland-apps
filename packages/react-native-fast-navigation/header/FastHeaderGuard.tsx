@@ -98,8 +98,14 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
             progress: props.swiping.enabled
                 ? (v.record.key === props.swiping.current
                     ? props.swipeProgress
-                    : (v.record.key === props.swiping.prev ? props.swipeProgressPrev : v.progress))
-                : v.progress
+                    : (v.record.key === props.swiping.prev ? props.swipeProgressPrev : v.progress.interpolate({
+                        inputRange: [-1, 0, 1],
+                        outputRange: [-1, 0, 1]
+                    })))
+                : v.progress.interpolate({
+                    inputRange: [-1, 0, 1],
+                    outputRange: [-1, 0, 1]
+                })
         }));
     }
 

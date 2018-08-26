@@ -36,15 +36,45 @@ const styles = StyleSheet.create({
 
 class HistoryRecordHolder {
     readonly record: FastHistoryRecord;
-    readonly progress: Animated.Value;
-    constructor(record: FastHistoryRecord, progress: Animated.Value) {
+    readonly progressValue: Animated.Value;
+    readonly progress: Animated.AnimatedInterpolation;
+    private readonly useProgress: Animated.Value = new Animated.Value(1);
+    private readonly useSwipe: Animated.Value = new Animated.Value(0);
+    private readonly useSwipePrev: Animated.Value = new Animated.Value(0);
+
+    constructor(record: FastHistoryRecord, progress: Animated.Value, swipe: Animated.AnimatedInterpolation, swipePrev: Animated.AnimatedInterpolation) {
         this.record = record;
-        this.progress = progress;
+        this.progressValue = progress;
+        this.progress = Animated.add(
+            Animated.add(
+                Animated.multiply(this.useProgress, progress),
+                Animated.multiply(this.useSwipe, swipe)
+            ),
+            Animated.multiply(this.useSwipePrev, swipePrev)
+        );
+    }
+
+    startSwipe() {
+        this.useProgress.setValue(0);
+        this.useSwipe.setValue(1);
+        this.useSwipePrev.setValue(0);
+    }
+
+    startSwipePRev() {
+        this.useProgress.setValue(0);
+        this.useSwipe.setValue(0);
+        this.useSwipePrev.setValue(1);
+    }
+
+    stopSwipe() {
+        this.useProgress.setValue(1);
+        this.useSwipe.setValue(0);
+        this.useSwipePrev.setValue(0);
     }
 }
 
-function prepareInitialRecords(routes: FastHistoryRecord[]): HistoryRecordHolder[] {
-    return routes.map((v, i) => new HistoryRecordHolder(v, new Animated.Value(i === routes.length - 1 ? 0 : 1)));
+function prepareInitialRecords(routes: FastHistoryRecord[], swipe: Animated.AnimatedInterpolation, swipePrev: Animated.AnimatedInterpolation): HistoryRecordHolder[] {
+    return routes.map((v, i) => new HistoryRecordHolder(v, new Animated.Value(i === routes.length - 1 ? 0 : 1), swipe, swipePrev));
 }
 
 function animate(value: Animated.Value, to: number) {
@@ -55,7 +85,8 @@ function animate(value: Animated.Value, to: number) {
             damping: 500,
             mass: 3,
             useNativeDriver: true,
-            overshootClamping: true
+            overshootClamping: true,
+            restDisplacementThreshold: 0.5
         });
     }
     return Animated.timing(value, {
@@ -106,13 +137,15 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     private pendingSwipe = false;
     private pendingSwipeOffset: number = 0;
     private pendingSwipeSpeed: number = 0;
+    private swipeCurrent?: HistoryRecordHolder;
+    private swipePrev?: HistoryRecordHolder;
 
     constructor(props: ContainerProps) {
         super(props);
 
         this.currentHistory = props.historyManager.getState();
         let h = this.currentHistory.history;
-        this.routes = prepareInitialRecords(h);
+        this.routes = prepareInitialRecords(h, this.panOffsetCurrent, this.panOffsetPrev);
         this.current = h[h.length - 1].key;
         this.mounted = [this.current];
         this.removing = [];
@@ -128,7 +161,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.subscription = this.props.historyManager.watch(this);
         if (this.currentHistory !== this.props.historyManager.getState()) {
             this.currentHistory = this.props.historyManager.getState();
-            this.routes = prepareInitialRecords(this.currentHistory.history);
+            this.routes = prepareInitialRecords(this.currentHistory.history, this.panOffsetCurrent, this.panOffsetPrev);
             this.current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             this.mounted = [this.current];
             this.setState({ routes: this.routes, mounted: this.mounted, current: this.current });
@@ -139,11 +172,12 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         let underlay = history.history[history.history.length - 2].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
         let progress = new Animated.Value(-1);
-        let newRecord = new HistoryRecordHolder(record, progress);
+        let newRecord = new HistoryRecordHolder(record, progress, this.panOffsetCurrent, this.panOffsetPrev);
 
         // Start animation
+        // underlayHolder.progress.setValue(0);
         Animated.parallel([
-            animate(underlayHolder.progress, 1),
+            animate(underlayHolder.progressValue, 1),
             animate(progress, 0),
         ]).start(() => {
             // Unmount underlay when animation finished
@@ -151,8 +185,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             if (this.removing.find((v) => v === record.key)) {
                 return;
             }
-            underlayHolder.progress.setValue(1);
-            progress.setValue(0);
+            // underlayHolder.progressValue.setValue(1);
+            // progress.setValue(0);
             this.mounted = this.mounted.filter((v) => v !== underlay);
             this.setState({ mounted: this.mounted, transitioning: false });
         });
@@ -164,95 +198,87 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.currentHistory = history;
         this.setState({ mounted: this.mounted, routes: this.routes, current: this.current, transitioning: true });
     }
-    onPopped = (record: FastHistoryRecord, history: FastHistory) => {
-        let holder = this.state.routes.find((v) => v.record.key === record.key);
-        if (holder) {
-            let alreadyRemoving = this.removing.find((v) => v === record.key);
-            if (alreadyRemoving) {
-                return;
-            }
-            let underlay = history.history[history.history.length - 1].key;
-            let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
-            this.current = history.history[history.history.length - 1].key;
-            this.currentHistory = history;
+    onPopped = (record: FastHistoryRecord, history: FastHistory, args?: { immediate?: boolean }) => {
+        let holder = this.routes.find((v) => v.record.key === record.key)!!;
+        let underlay = history.history[history.history.length - 1].key;
+        let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
+        this.current = history.history[history.history.length - 1].key;
+        this.currentHistory = history;
+
+        let alreadyRemoving = this.removing.find((v) => v === record.key);
+        if (!alreadyRemoving) {
             this.removing = [...this.removing, holder.record.key];
             this.mounted = [...this.mounted, history.history[history.history.length - 1].key];
-            let animations = [
-                animate(underlayHolder.progress, 0),
-                animate(holder.progress, -1)
-            ];
-            if (this.pendingSwipe) {
-                let progress = -this.pendingSwipeOffset / Dimensions.get('window').width;
-                let velocity = -this.pendingSwipeSpeed / (Dimensions.get('window').width);
-                console.log(progress);
-                console.log(velocity);
-                holder.progress.setValue(progress);
-                underlayHolder.progress.setValue(1 + progress);
-                animations = [
-                    Animated.spring(underlayHolder.progress, {
-                        toValue: 0,
-                        stiffness: 1000,
-                        damping: 500,
-                        mass: 3,
-                        useNativeDriver: true,
-                        overshootClamping: true,
-                        velocity: velocity
-                    }),
-                    Animated.spring(holder.progress, {
-                        toValue: -1,
-                        stiffness: 1000,
-                        damping: 500,
-                        mass: 3,
-                        useNativeDriver: true,
-                        overshootClamping: true,
-                        velocity: velocity
-                    })
-                ];
-            }
-
-            Animated.parallel(animations).start(() => {
-                underlayHolder.progress.setValue(0);
-                holder!!.progress.setValue(-1);
+            Animated.parallel([
+                animate(underlayHolder.progressValue, 0),
+                animate(holder.progressValue, -1)
+            ]).start(() => {
+                // underlayHolder.progress.setValue(0);
+                // holder!!.progress.setValue(-1);
                 this.removing = this.removing.filter((v) => v !== record.key);
                 this.mounted = this.mounted.filter((v) => v !== record.key);
                 this.routes = this.routes.filter((v) => v.record.key !== record.key);
                 this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
             });
-
-            this.setState({ mounted: this.mounted, current: this.current, transitioning: true, swiping: { enabled: false } });
+            this.setState({ mounted: this.mounted, current: this.current, transitioning: true });
         }
     }
     onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
         if (event.nativeEvent.state === State.ACTIVE) {
             if (this.currentHistory.history.length >= 2) {
+
+                let current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
+                let prev = this.currentHistory.history[this.currentHistory.history.length - 2].key;
+                this.swipeCurrent = this.routes.find((v) => v.record.key === current)!!;
+                this.swipePrev = this.routes.find((v) => v.record.key === prev)!!;
+                this.swipeCurrent.startSwipe();
+                this.swipePrev.startSwipePRev();
+
                 this.mounted = [...this.mounted, this.currentHistory.history[this.currentHistory.history.length - 2].key];
-                this.setState({
-                    swiping: {
-                        enabled: true,
-                        current: this.currentHistory.history[this.currentHistory.history.length - 1].key,
-                        prev: this.currentHistory.history[this.currentHistory.history.length - 2].key,
-                    },
-                    mounted: this.mounted
-                });
+                this.setState({ mounted: this.mounted });
             }
         } else if (event.nativeEvent.oldState === State.ACTIVE) {
+            let currentHolder = this.swipeCurrent!!;
+            let prevHolder = this.swipePrev!!;
+
             if (event.nativeEvent.state === State.END) {
-                // console.log(event.nativeEvent.velocityX);
                 if (event.nativeEvent.translationX > 100) {
-                    console.log(event.nativeEvent.translationX);
-                    this.pendingSwipeOffset = event.nativeEvent.translationX;
-                    this.pendingSwipeSpeed = event.nativeEvent.velocityX;
-                    this.pendingSwipe = true;
-                    this.props.historyManager.pop();
-                    this.pendingSwipe = false;
-                } else {
-                    this.setState({ swiping: { enabled: false } });
+                    this.removing = [...this.removing, currentHolder.record.key];
+                    let progress = -event.nativeEvent.translationX / Dimensions.get('window').width;
+                    let velocity = -event.nativeEvent.velocityX / Dimensions.get('window').width;
+                    currentHolder.progressValue.setValue(progress);
+                    prevHolder.progressValue.setValue(1 + progress);
+                    Animated.parallel([
+                        Animated.spring(currentHolder.progressValue, {
+                            toValue: -1,
+                            stiffness: 1000,
+                            damping: 500,
+                            mass: 3,
+                            useNativeDriver: true,
+                            overshootClamping: true,
+                            velocity: velocity
+                        }),
+                        Animated.spring(prevHolder.progressValue, {
+                            toValue: 0,
+                            stiffness: 1000,
+                            damping: 500,
+                            mass: 3,
+                            useNativeDriver: true,
+                            overshootClamping: true,
+                            velocity: velocity
+                        })
+                    ]).start(() => {
+                        this.props.historyManager.pop();
+                        this.removing = this.removing.filter((v) => v !== currentHolder.record.key);
+                        this.mounted = this.mounted.filter((v) => v !== currentHolder.record.key);
+                        this.routes = this.routes.filter((v) => v.record.key !== currentHolder.record.key);
+                        this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
+                    });
                 }
-            } else {
-                this.setState({ swiping: { enabled: false } });
-                // console.log('abort');
-                // TODO: Cancel
             }
+
+            currentHolder.stopSwipe();
+            prevHolder.stopSwipe();
         }
     }
 
@@ -264,8 +290,6 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     }
 
     render() {
-        console.log('render');
-        console.log(this.state.routes);
         return (
             <PanGestureHandler
                 onGestureEvent={this.panEvent}
@@ -287,8 +311,14 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                                         progress={this.state.swiping.enabled ? (
                                             this.state.swiping.current === v.record.key
                                                 ? this.panOffsetCurrent
-                                                : this.state.swiping.prev === v.record.key ? this.panOffsetPrev : v.progress
-                                        ) : v.progress}
+                                                : this.state.swiping.prev === v.record.key ? this.panOffsetPrev : v.progress.interpolate({
+                                                    inputRange: [-1, 0, 1],
+                                                    outputRange: [-1, 0, 1]
+                                                })
+                                        ) : v.progress.interpolate({
+                                            inputRange: [-1, 0, 1],
+                                            outputRange: [-1, 0, 1]
+                                        })}
                                         mounted={!!this.state.mounted.find((m) => v.record.key === m)}
                                     />
                                 </View>

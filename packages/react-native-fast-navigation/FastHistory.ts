@@ -25,7 +25,7 @@ export class FastHistory {
 
 export interface HistoryWatcher {
     onPushed(record: FastHistoryRecord, history: FastHistory): void;
-    onPopped(record: FastHistoryRecord, history: FastHistory): void;
+    onPopped(record: FastHistoryRecord, history: FastHistory, args?: { immediate?: boolean }): void;
 }
 
 export class FastHistoryManager {
@@ -91,7 +91,7 @@ export class FastHistoryManager {
             w.onPushed(record, nhistory);
         }
     }
-    pop = () => {
+    pop = (args?: { immediate?: boolean }) => {
         if (this.history.history.length <= 1) {
             return false;
         }
@@ -101,7 +101,7 @@ export class FastHistoryManager {
         let nhistory = new FastHistory(r);
         this.history = nhistory;
         for (let w of this.watchers) {
-            w.onPopped(removed, nhistory);
+            w.onPopped(removed, nhistory, args);
         }
         return true;
     }
