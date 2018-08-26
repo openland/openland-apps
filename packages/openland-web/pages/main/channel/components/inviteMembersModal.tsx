@@ -193,7 +193,10 @@ const AddButton = (props: XLinkProps & { title: string }) => (
 );
 
 const RenewButton = Glamorous(XButton)({
-    color: 'rgba(51,69,98, 0.45)'
+    color: 'rgba(51,69,98, 0.45)',
+    '&:hover': {
+        color: '#1790ff'
+    }
 });
 
 const FooterWrap = Glamorous.div({
@@ -386,15 +389,13 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                             )}
                             {this.state.customTextAreaOpen && (
                                 <XHorizontal flexGrow={1} width="100%" separator={6}>
-                                    <XFormField field="customText" title="Custom Message" flexGrow={1}>
-                                        <XTextArea
-                                            flexGrow={1}
-                                            valueStoreKey="fields.customText"
-                                            resize={false}
-                                            size="small"
-                                            placeholder="message..."
-                                        />
-                                    </XFormField>
+                                    <XTextArea
+                                        flexGrow={1}
+                                        valueStoreKey="fields.customText"
+                                        resize={false}
+                                        size="small"
+                                        placeholder="Custom Message"
+                                    />
                                     <XModalCloser onClick={() => this.setState({ customTextAreaOpen: false })} />
                                 </XHorizontal>
                             )}

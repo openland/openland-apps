@@ -3,23 +3,22 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XScrollView } from 'openland-x/XScrollView';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from './components/icons/ic-close.svg';
 import ProfileIcon from './components/icons/ic-profile.svg';
-import MainImage from './components/icons/channel-invite-pic.svg';
 import { withChannelJoin } from '../../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 
-const Root = Glamorous.div({
+const Root = Glamorous(XScrollView)({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     minWidth: '100%',
     height: '100%',
-    padding: 28,
     flexShrink: 0,
 });
 
@@ -27,7 +26,8 @@ const MainContent = Glamorous.div({
     zIndex: 1,
     display: 'flex',
     flexDirection: 'column',
-    flexShrink: 0
+    flexShrink: 0,
+    padding: 28
 });
 
 const Close = Glamorous(XLink)({
@@ -79,15 +79,17 @@ const ChannelTitle = Glamorous.div({
 });
 
 const Reactangle = Glamorous.div({
-    borderRadius: '100%',
-    width: '90%',
-    height: '90%',
+    width: '100%',
+    height: 600,
     position: 'absolute',
-    top: '20%',
-    left: '5%',
-    opacity: 0.1,
-    backgroundImage: 'linear-gradient(21deg, #ecf2fc, #b9cff7)',
-    zIndex: 0
+    top: 'calc(50% - 300px)',
+    left: 0,
+    backgroundImage: 'url(\'/static/img/messenger/reactangle.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'bottom',
+    zIndex: 0,
+    pointerEvents: 'none'
 });
 
 const UserAvatar = Glamorous(XAvatar)({
@@ -128,6 +130,15 @@ const ImageWrapper = Glamorous.div({
     justifyContent: 'center',
     marginTop: 64,
     alignSelf: 'center'
+});
+
+const Image = Glamorous.div({
+    width: 691,
+    height: 391,
+    backgroundImage: 'url(\'/static/img/messenger/channel-invite-pic.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
 });
 
 const JoinButton = withChannelJoin((props) => {
@@ -255,7 +266,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         />
                     )}
                     <ImageWrapper>
-                        <MainImage />
+                        <Image />
                     </ImageWrapper>
                 </MainContent>
             </Root>

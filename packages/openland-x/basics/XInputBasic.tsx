@@ -402,7 +402,7 @@ const RequireElement = Glamorous.span({
     height: 10,
     fontSize: 23,
     marginLeft: 6,
-    color: '#e26363',
+    color: '#1790ff',
     position: 'absolute',
     top: 'calc(50% - 5px)'
 });
@@ -525,7 +525,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                     innerRef={this.handleRef}
                     onKeyPress={this.handleKey}
                 />
-                {required && <RequireElement>*</RequireElement>}
+                {required && (v && v !== '' ? null : <RequireElement>*</RequireElement>)}
                 {tooltipContent && (
                     <XPopper
                         placement="bottom"

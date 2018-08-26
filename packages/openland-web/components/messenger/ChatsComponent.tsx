@@ -14,7 +14,6 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import EmptyImage from './components/icons/channels-search-empty.svg';
 import CircleIcon from './components/icons/circle-icon.svg';
 import ArrowIcon from './components/icons/ic-arrow-rignt.svg';
 
@@ -186,7 +185,6 @@ const renderConversation = (v: any, onSelect?: () => void) => (
 );
 
 const PlaceholderEmpty = Glamorous(XText)({
-    marginLeft: 16,
     opacity: 0.5
 });
 
@@ -196,6 +194,15 @@ const PlaceholderLoader = Glamorous(XLoadingCircular)({
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34
+});
+
+const Image = Glamorous.div({
+    width: 178,
+    height: 155,
+    backgroundImage: 'url(\'/static/img/messenger/channels-search-empty.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
 });
 
 const SearchChats = withChatSearchText((props) => {
@@ -216,7 +223,7 @@ const SearchChats = withChatSearchText((props) => {
         )
         : (
             <NoResultWrapper separator={10} alignItems="center">
-                <EmptyImage />
+                <Image />
                 <PlaceholderEmpty>No results</PlaceholderEmpty>
             </NoResultWrapper>
         )
@@ -233,7 +240,16 @@ const ExploreChannels = Glamorous(XMenuItem)({
     backgroundColor: '#F3F5F6',
     '&:hover': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        color: '#334562'
+        color: '#334562',
+        '& > div > div > div > svg > path': {
+            fill: 'rgba(23, 144, 255, 0.5)'
+        },
+        '& > div > div > div > div': {
+            color: '#1790ff'
+        },
+        '& > div > div > svg > g > path:last-child': {
+            fill: 'rgba(23, 144, 255, 0.5)'
+        }
     }
 });
 
@@ -266,15 +282,17 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                 />
 
                 {search && <SearchChats variables={{ query: this.state.query!! }} onSelect={this.onSelect} />}
-                {!search && <ExploreChannels path={'/mail/channels'}>
-                    <XHorizontal alignItems="center" justifyContent="space-between">
-                        <XHorizontal alignItems="center" separator={6}>
-                            <CircleIcon />
-                            <XText>Explore channels</XText>
+                {!search && (
+                    <ExploreChannels path={'/mail/channels'}>
+                        <XHorizontal alignItems="center" justifyContent="space-between">
+                            <XHorizontal alignItems="center" separator={6}>
+                                <CircleIcon />
+                                <XText>Explore channels</XText>
+                            </XHorizontal>
+                            <ArrowIcon />
                         </XHorizontal>
-                        <ArrowIcon />
-                    </XHorizontal>
-                </ExploreChannels>}
+                    </ExploreChannels>
+                )}
                 {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(i => renderConversation(i))}
             </XVertical>
         );
