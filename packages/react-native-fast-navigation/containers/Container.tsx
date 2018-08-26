@@ -192,7 +192,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 this.setState({ mounted: this.mounted, transitioning: false });
             });
         });
-        
+
         // Commit changes
         this.routes = [...this.routes, newRecord];
         this.mounted = [...this.mounted, newRecord.record.key];
@@ -243,19 +243,28 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             let currentHolder = this.swipeCurrent!!;
             let prevHolder = this.swipePrev!!;
 
+            let progress = Math.min(-event.nativeEvent.translationX / Dimensions.get('window').width, 0);
+            let velocity = Math.min(-event.nativeEvent.velocityX / Dimensions.get('window').width);
+            currentHolder.progressValue.setValue(progress);
+            prevHolder.progressValue.setValue(1 + progress);
+
+            var handled = false;
             if (event.nativeEvent.state === State.END) {
-                if (event.nativeEvent.translationX > 100) {
+                let shouldMoveBack = false;
+                if (event.nativeEvent.translationX > Dimensions.get('window').width / 2) {
+                    shouldMoveBack = true;
+                } else if (velocity < -0.5) {
+                    shouldMoveBack = true;
+                }
+                if (shouldMoveBack) {
+                    handled = true;
                     this.removing = [...this.removing, currentHolder.record.key];
-                    let progress = -event.nativeEvent.translationX / Dimensions.get('window').width;
-                    let velocity = -event.nativeEvent.velocityX / Dimensions.get('window').width;
-                    currentHolder.progressValue.setValue(progress);
-                    prevHolder.progressValue.setValue(1 + progress);
                     this.props.historyManager.pop();
                     Animated.parallel([
                         Animated.spring(currentHolder.progressValue, {
                             toValue: -1,
-                            stiffness: 1000,
-                            damping: 500,
+                            stiffness: 5000,
+                            damping: 600,
                             mass: 3,
                             useNativeDriver: true,
                             overshootClamping: true,
@@ -263,8 +272,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                         }),
                         Animated.spring(prevHolder.progressValue, {
                             toValue: 0,
-                            stiffness: 1000,
-                            damping: 500,
+                            stiffness: 5000,
+                            damping: 600,
                             mass: 3,
                             useNativeDriver: true,
                             overshootClamping: true,
@@ -277,6 +286,29 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                         this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
                     });
                 }
+            }
+
+            if (!handled) {
+                Animated.parallel([
+                    Animated.spring(currentHolder.progressValue, {
+                        toValue: 0,
+                        stiffness: 5000,
+                        damping: 600,
+                        mass: 3,
+                        useNativeDriver: true,
+                        overshootClamping: true,
+                        velocity: velocity
+                    }),
+                    Animated.spring(prevHolder.progressValue, {
+                        toValue: 1,
+                        stiffness: 5000,
+                        damping: 600,
+                        mass: 3,
+                        useNativeDriver: true,
+                        overshootClamping: true,
+                        velocity: velocity
+                    })
+                ]).start();
             }
 
             currentHolder.stopSwipe();
@@ -296,7 +328,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             <PanGestureHandler
                 onGestureEvent={this.panEvent}
                 onHandlerStateChange={this.onGestureChanged}
-                // minOffsetX={30}
+                minOffsetX={30}
                 // maxDeltaY={20}
                 // maxPointers={2}
                 // avgTouches={true}
