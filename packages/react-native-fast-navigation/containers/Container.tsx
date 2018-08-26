@@ -176,21 +176,23 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
 
         // Start animation
         // underlayHolder.progress.setValue(0);
-        Animated.parallel([
-            animate(underlayHolder.progressValue, 1),
-            animate(progress, 0),
-        ]).start(() => {
-            // Unmount underlay when animation finished
-            // Ignore if we are aborted transition
-            if (this.removing.find((v) => v === record.key)) {
-                return;
-            }
-            // underlayHolder.progressValue.setValue(1);
-            // progress.setValue(0);
-            this.mounted = this.mounted.filter((v) => v !== underlay);
-            this.setState({ mounted: this.mounted, transitioning: false });
+        underlayHolder.progressValue.stopAnimation(() => {
+            Animated.parallel([
+                animate(underlayHolder.progressValue, 1),
+                animate(progress, 0),
+            ]).start(() => {
+                // Unmount underlay when animation finished
+                // Ignore if we are aborted transition
+                if (this.removing.find((v) => v === record.key)) {
+                    return;
+                }
+                // underlayHolder.progressValue.setValue(1);
+                // progress.setValue(0);
+                this.mounted = this.mounted.filter((v) => v !== underlay);
+                this.setState({ mounted: this.mounted, transitioning: false });
+            });
         });
-
+        
         // Commit changes
         this.routes = [...this.routes, newRecord];
         this.mounted = [...this.mounted, newRecord.record.key];
@@ -248,6 +250,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                     let velocity = -event.nativeEvent.velocityX / Dimensions.get('window').width;
                     currentHolder.progressValue.setValue(progress);
                     prevHolder.progressValue.setValue(1 + progress);
+                    this.props.historyManager.pop();
                     Animated.parallel([
                         Animated.spring(currentHolder.progressValue, {
                             toValue: -1,
@@ -268,7 +271,6 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                             velocity: velocity
                         })
                     ]).start(() => {
-                        this.props.historyManager.pop();
                         this.removing = this.removing.filter((v) => v !== currentHolder.record.key);
                         this.mounted = this.mounted.filter((v) => v !== currentHolder.record.key);
                         this.routes = this.routes.filter((v) => v.record.key !== currentHolder.record.key);
