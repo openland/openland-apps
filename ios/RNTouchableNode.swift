@@ -29,9 +29,11 @@ class RNTouchableNode: ASControlNode {
   override var isHighlighted: Bool {
     willSet {
       if newValue {
-        self.backgroundColor = self.higlightColor
+          self.backgroundColor = self.higlightColor
       } else {
-        self.backgroundColor = UIColor.clear
+        UIView.animate(withDuration: 0.5) {
+          self.backgroundColor = UIColor.clear
+        }
       }
     }
   }

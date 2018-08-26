@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ListRenderItemInfo, View, Platform, FlatList, PixelRatio, Dimensions } from 'react-native';
+import { ListRenderItemInfo, View, Platform, FlatList, PixelRatio, Dimensions, Animated } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
@@ -137,9 +137,7 @@ class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortF
         }
         let showSenderName = this.props.item.topMessage && (!(this.props.item.topMessage.sender.id === this.props.engine.user.id && this.props.item.__typename === 'PrivateConversation'));
         return (
-            // <XPListItem onPress={this.handlePress} style={{ height: 80 }}>
-            // <ASView style={{ height: 80, width: '100%' }}>
-            <ASFlex height={80} width={Dimensions.get('window').width} flexDirection="row" onPress={this.handlePress} highlightColor="#ff0">
+            <ASFlex height={80} flexDirection="row" onPress={this.handlePress} highlightColor={XPStyles.colors.selectedListItem}>
                 <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
                     <ASAvatar
                         src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
@@ -173,7 +171,6 @@ class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortF
 }
 
 export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], loadingMore?: boolean, onPress?: (id: ConversationShortFragment) => void }> {
-
     handleItemClick = (id: ConversationShortFragment) => {
         if (this.props.onPress) {
             this.props.onPress(id);
@@ -232,7 +229,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
         return (
             <ASView style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                 <ASFlex flexDirection="column" alignItems="stretch">
-                    <ASListView flexGrow={1}>
+                    <ASListView flexGrow={1} contentPaddingTop={100} contentPaddingBottom={100} onScroll={new Animated.Value(10)}>
                         {this.props.dialogs.map((v) => (
                             <DialogItemViewAsync key={v.id} item={v} onPress={this.handleItemClick} engine={this.props.engine} />
                         ))}

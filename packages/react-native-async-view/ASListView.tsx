@@ -4,7 +4,9 @@ import { declareView } from './internals/declareView';
 import { ASViewStyle } from './ASViewStyle';
 
 export interface ASListViewProps extends ASViewStyle {
-    
+    contentPaddingTop?: number;
+    contentPaddingBottom?: number;
+    onScroll?: any;
 }
 
 class Fallback extends React.PureComponent<ASListViewProps> {

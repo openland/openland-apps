@@ -11,11 +11,16 @@ import Foundation
 class RNASyncList: ASDisplayNode, ASCollectionDataSource {
   let node: ASCollectionNode
   var data: [AsyncViewSpec]
+  let width = UIScreen.main.bounds.width
   
-  init(data: [AsyncViewSpec]) {
+  init(spec: AsyncListViewSpec, data: [AsyncViewSpec]) {
     let layout = UICollectionViewFlowLayout()
+    layout.minimumLineSpacing = 0.0
+    layout.minimumInteritemSpacing = 0.0
     layout.scrollDirection = UICollectionViewScrollDirection.vertical
     self.node = ASCollectionNode(collectionViewLayout: layout)
+    self.node.contentInset = UIEdgeInsets(top: CGFloat(spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.contentPaddingBottom), right: 0.0)
+    self.node.view.scrollIndicatorInsets = UIEdgeInsets(top: CGFloat(spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.contentPaddingBottom), right: 0.0)
     self.data = data
     super.init()
     addSubnode(node)
@@ -35,7 +40,12 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource {
     let d = self.data[indexPath.row]
     res.automaticallyManagesSubnodes = true
     res.layoutSpecBlock = { node, constrainedSize in
-      return resolveNode(spec: d) as! ASLayoutSpec
+      let res = ASStackLayoutSpec()
+      res.direction = ASStackLayoutDirection.vertical
+      res.alignItems = ASStackLayoutAlignItems.stretch
+      res.child = resolveNode(spec: d)
+      res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+      return res
     }
     return res
   }

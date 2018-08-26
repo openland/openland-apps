@@ -72,6 +72,8 @@ class AsyncListViewSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
   var children: [AsyncViewSpec]!
+  var contentPaddingTop: Float = 0.0
+  var contentPaddingBottom: Float = 0.0
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -247,6 +249,12 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.style = resolveStyle(src)
     res.key = src["key"].stringValue
     res.children = resolveChildren(src)
+    if let v = src["props"]["contentPaddingTop"].float {
+      res.contentPaddingTop = v
+    }
+    if let v = src["props"]["contentPaddingBottom"].float {
+      res.contentPaddingBottom = v
+    }
     return res
   }
   fatalError("Unknown view type:" + type)
