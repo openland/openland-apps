@@ -198,6 +198,12 @@ dependencies {
     compileOnly 'com.facebook.litho:litho-annotations:0.18.0'
     kapt 'com.facebook.litho:litho-processor:0.18.0'
     annotationProcessor 'com.facebook.litho:litho-processor:0.18.0'
+
+    implementation 'com.facebook.litho:litho-sections-core:0.18.0'
+    implementation 'com.facebook.litho:litho-sections-widget:0.18.0'
+    compileOnly 'com.facebook.litho:litho-sections-annotations:0.18.0'
+    kapt 'com.facebook.litho:litho-sections-processor:0.18.0'
+    annotationProcessor 'com.facebook.litho:litho-sections-processor:0.18.0'
 }
 
 // Run this once to be able to run the application with BUCK

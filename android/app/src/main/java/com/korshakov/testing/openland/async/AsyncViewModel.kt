@@ -76,6 +76,10 @@ class AsyncImageSpec(key: String, val url: String) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
 }
 
+class AsyncListSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncViewSpec(key) {
+    var style: AsyncViewStyle = AsyncViewStyle()
+}
+
 private fun resolveChildren(src: JsonObject): Array<AsyncViewSpec> {
     val res = src["children"] as JsonArray<JsonObject>?
     if (res == null || res.size == 0) {
@@ -193,6 +197,11 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
     } else if (type == "image") {
         val props = src["props"] as JsonObject
         val res = AsyncImageSpec(key, props["source"] as String)
+        resolveStyle(src, res.style)
+        return res
+    } else if (type =="list") {
+        val props = src["props"] as JsonObject
+        val res = AsyncListSpec(key, resolveChildren(src))
         resolveStyle(src, res.style)
         return res
     }

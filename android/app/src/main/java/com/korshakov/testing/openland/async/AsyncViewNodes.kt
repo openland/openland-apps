@@ -5,6 +5,10 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
+import com.facebook.litho.sections.SectionContext
+import com.facebook.litho.sections.common.DataDiffSection
+import com.facebook.litho.sections.common.SingleComponentSection
+import com.facebook.litho.sections.widget.RecyclerCollectionComponent
 import com.facebook.litho.widget.Image
 import com.facebook.litho.widget.SolidColor
 import com.facebook.litho.widget.Text
@@ -106,6 +110,12 @@ fun resolveNode(context: ComponentContext, src: AsyncViewSpec): Component {
         if (src.style.borderRadius != null) {
             res = res.roundingParams(RoundingParams.fromCornersRadius(Resources.getSystem().displayMetrics.density * src.style.borderRadius!!))
         }
+        resolveStyle(context, res, src.style)
+    } else if (src is AsyncListSpec) {
+        val res = RecyclerCollectionComponent.create(context)
+                .section(AsyncViewSection.create(SectionContext(context))
+                        .dataModel(src.children.toList()))
+
         resolveStyle(context, res, src.style)
     } else {
         error("Unsupported spec")
