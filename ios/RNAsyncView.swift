@@ -18,6 +18,34 @@ class RNAsyncViewManager: RCTViewManager {
   }
 }
 
+class AsyncViewEventEmitter {
+  public static var sharedInstance = AsyncViewEventEmitter()
+  private var nativeInstance: RNAsyncViewEventEmitter!
+  private init() { }
+  
+  // When React Native instantiates the emitter it is registered here.
+  func registerEventEmitter(eventEmitter: RNAsyncViewEventEmitter) {
+    self.nativeInstance = eventEmitter
+  }
+  
+  func dispatchOnPress(key: String) {
+    nativeInstance.sendEvent(withName: "onPress", body: key)
+  }
+}
+
+@objc(RNAsyncViewEventEmitter)
+class RNAsyncViewEventEmitter: RCTEventEmitter {
+  
+  override init() {
+    super.init()
+    AsyncViewEventEmitter.sharedInstance.registerEventEmitter(eventEmitter: self)
+  }
+  
+  override func supportedEvents() -> [String]! {
+    return ["onPress"]
+  }
+}
+
 @objc(RNAsyncView)
 class RNAsyncView: RCTView {
   

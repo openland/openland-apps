@@ -18,3 +18,7 @@ RCT_EXPORT_VIEW_PROPERTY(capInsets, UIEdgeInsets)
 @interface RCT_EXTERN_MODULE(RNAsyncViewManager, RCTViewManager)
 RCT_EXPORT_VIEW_PROPERTY(config, NSString)
 @end
+
+@interface RCT_EXTERN_MODULE(RNAsyncViewEventEmitter, RCTEventEmitter)
+RCT_EXTERN_METHOD(supportedEvents)
+@end

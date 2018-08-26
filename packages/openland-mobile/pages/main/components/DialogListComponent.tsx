@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationShortFragment } from 'openland-api/Types';
-import { ListRenderItemInfo, View, Platform, FlatList, PixelRatio } from 'react-native';
+import { ListRenderItemInfo, View, Platform, FlatList, PixelRatio, Dimensions } from 'react-native';
 import { ZFlatList } from '../../../components/ZFlatList';
 import { DialogItemView } from 'openland-shared/DialogItemView';
 import { AppStyles } from '../../../styles/AppStyles';
@@ -15,6 +15,7 @@ import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { ASImage } from 'react-native-async-view/ASImage';
+import { ASListView } from 'react-native-async-view/ASListView';
 
 class DialogListSeparator extends React.PureComponent {
     render() {
@@ -136,37 +137,37 @@ class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortF
         }
         let showSenderName = this.props.item.topMessage && (!(this.props.item.topMessage.sender.id === this.props.engine.user.id && this.props.item.__typename === 'PrivateConversation'));
         return (
-            <XPListItem onPress={this.handlePress} style={{ height: 80 }}>
-                <ASView style={{ height: 80, width: '100%' }}>
-                    <ASFlex height={80} flexDirection="row">
-                        <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
-                            <ASAvatar
-                                src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
-                                size={60}
-                                placeholderKey={this.props.item.flexibleId}
-                                placeholderTitle={this.props.item.title}
-                            />
-                        </ASFlex>
-                        <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                            <ASFlex height={18}>
-                                <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{this.props.item.title}</ASText>
-                                <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText>
-                            </ASFlex>
-                            <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
-                                <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                                    {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
-                                    <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
-                                </ASFlex>
-                                {this.props.item.unreadCount > 0 && (
-                                    <ASFlex marginTop={18} flexShrink={0}>
-                                        <ASCounter value={this.props.item.unreadCount} />
-                                    </ASFlex>
-                                )}
-                            </ASFlex>
-                        </ASFlex>
+            // <XPListItem onPress={this.handlePress} style={{ height: 80 }}>
+            // <ASView style={{ height: 80, width: '100%' }}>
+            <ASFlex height={80} width={Dimensions.get('window').width} flexDirection="row" onPress={this.handlePress} highlightColor="#ff0">
+                <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
+                    <ASAvatar
+                        src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                        size={60}
+                        placeholderKey={this.props.item.flexibleId}
+                        placeholderTitle={this.props.item.title}
+                    />
+                </ASFlex>
+                <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                    <ASFlex height={18}>
+                        <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{this.props.item.title}</ASText>
+                        <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText>
                     </ASFlex>
-                </ASView>
-            </XPListItem>
+                    <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
+                        <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                            {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
+                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText>
+                        </ASFlex>
+                        {this.props.item.unreadCount > 0 && (
+                            <ASFlex marginTop={18} flexShrink={0}>
+                                <ASCounter value={this.props.item.unreadCount} />
+                            </ASFlex>
+                        )}
+                    </ASFlex>
+                </ASFlex>
+            </ASFlex>
+            // </ASView>
+            // </XPListItem>
         );
     }
 }
@@ -213,31 +214,31 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
     }
 
     render() {
-        return (
-            <ZFlatList
-                ListHeaderComponent={this.renderHeader}
-                ListFooterComponent={this.renderFooter}
-                data={this.props.dialogs}
-                keyExtractor={this.keyExtractor}
-                renderItem={this.renderItem}
-                onEndReached={this.loadMore}
-                onEndReachedThreshold={1}
-                ItemSeparatorComponent={DialogListSeparator}
-                fixedHeight={80}
-                initialScrollIndex={0}
-                removeClippedSubviews={true}
-            />
-        );
         // return (
-        //     <ASView style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
-        //         <ASFlex flexDirection="column" alignItems="stretch">
-        //             <ASListView flexGrow={1}>
-        //                 {this.props.dialogs.map((v) => (
-        //                     <DialogItemViewAsync key={v.id} item={v} onPress={this.handleItemClick} engine={this.props.engine} />
-        //                 ))}
-        //             </ASListView>
-        //         </ASFlex>
-        //     </ASView>
+        //     <ZFlatList
+        //         ListHeaderComponent={this.renderHeader}
+        //         ListFooterComponent={this.renderFooter}
+        //         data={this.props.dialogs}
+        //         keyExtractor={this.keyExtractor}
+        //         renderItem={this.renderItem}
+        //         onEndReached={this.loadMore}
+        //         onEndReachedThreshold={1}
+        //         ItemSeparatorComponent={DialogListSeparator}
+        //         fixedHeight={80}
+        //         initialScrollIndex={0}
+        //         removeClippedSubviews={true}
+        //     />
         // );
+        return (
+            <ASView style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
+                <ASFlex flexDirection="column" alignItems="stretch">
+                    <ASListView flexGrow={1}>
+                        {this.props.dialogs.map((v) => (
+                            <DialogItemViewAsync key={v.id} item={v} onPress={this.handleItemClick} engine={this.props.engine} />
+                        ))}
+                    </ASListView>
+                </ASFlex>
+            </ASView>
+        );
     }
 }

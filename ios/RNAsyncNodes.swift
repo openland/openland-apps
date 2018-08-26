@@ -62,7 +62,12 @@ func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement]) ->
     }
   }()
   res.children = resolvedChildren
-  return resolveStyle(spec.style, res)
+  let res2 = resolveStyle(spec.style, res)
+  if (spec.touchableKey != nil) {
+    return ASBackgroundLayoutSpec(child: res2, background: RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor))
+  } else {
+    return res2
+  }
 }
 
 func createTextNode(spec: AsyncTextSpec) -> ASLayoutElement {

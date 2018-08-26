@@ -8,27 +8,29 @@
 
 import Foundation
 
-class RNASyncList: ASDisplayNode, ASTableDataSource {
-  let node: ASTableNode
+class RNASyncList: ASDisplayNode, ASCollectionDataSource {
+  let node: ASCollectionNode
   var data: [AsyncViewSpec]
   
   init(data: [AsyncViewSpec]) {
-    self.node = ASTableNode()
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = UICollectionViewScrollDirection.vertical
+    self.node = ASCollectionNode(collectionViewLayout: layout)
     self.data = data
     super.init()
     addSubnode(node)
     self.node.dataSource = self
   }
   
-  func numberOfSections(in tableNode: ASTableNode) -> Int {
+  func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
     return 1
   }
   
-  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
+  func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     return self.data.count
   }
   
-  func tableNode(_ tableNode: ASTableNode, nodeForRowAt indexPath: IndexPath) -> ASCellNode {
+  func collectionNode(_ collectionNode: ASCollectionNode, nodeForItemAt indexPath: IndexPath) -> ASCellNode {
     let res = ASCellNode()
     let d = self.data[indexPath.row]
     res.automaticallyManagesSubnodes = true
@@ -37,6 +39,25 @@ class RNASyncList: ASDisplayNode, ASTableDataSource {
     }
     return res
   }
+
+  
+//  func numberOfSections(in tableNode: ASTableNode) -> Int {
+//    return 1
+//  }
+//
+//  func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
+//    return self.data.count
+//  }
+//
+//  func tableNode(_ tableNode: ASTableNode, nodeForRowAt indexPath: IndexPath) -> ASCellNode {
+//    let res = ASCellNode()
+//    let d = self.data[indexPath.row]
+//    res.automaticallyManagesSubnodes = true
+//    res.layoutSpecBlock = { node, constrainedSize in
+//      return resolveNode(spec: d) as! ASLayoutSpec
+//    }
+//    return res
+//  }
   
 //  func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
 //    return 1

@@ -47,6 +47,8 @@ class AsyncFlexSpec: AsyncViewSpec {
   var spacing: Float = 0.0
   var alignItems: AsyncFlexAlignItems = AsyncFlexAlignItems.start
   var justifyContent: AsyncFlexJustifyContent = AsyncFlexJustifyContent.start
+  var touchableKey: String?
+  var highlightColor: UIColor = UIColor.clear
 }
 
 class AsyncTextSpec: AsyncViewSpec {
@@ -71,7 +73,6 @@ class AsyncListViewSpec: AsyncViewSpec {
   var key: String = ""
   var children: [AsyncViewSpec]!
 }
-
 
 class AsyncImageSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
@@ -192,6 +193,12 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     }
     if let v = src["props"]["spacing"].float {
       res.spacing = v;
+    }
+    if let v = src["props"]["touchableKey"].string {
+      res.touchableKey = v
+    }
+    if let v = src["props"]["highlightColor"].uInt64 {
+      res.highlightColor = resolveColorR(v)
     }
     res.children = resolveChildren(src)
     return res

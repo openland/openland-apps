@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -69,6 +70,7 @@
 		AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA90469F210F2F0F00F989BC /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; };
 		AA9046A0210F2F0F00F989BC /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */; };
 		AAA47D73212C45FA00E71A74 /* RNAsyncNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47D72212C45FA00E71A74 /* RNAsyncNodes.swift */; };
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
 		AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */; };
@@ -734,6 +736,7 @@
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		AA904699210F2EDB00F989BC /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNTouchableNode.swift; sourceTree = "<group>"; };
 		AAA47D72212C45FA00E71A74 /* RNAsyncNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncNodes.swift; sourceTree = "<group>"; };
 		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
 		AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncBackground.swift; sourceTree = "<group>"; };
@@ -1212,7 +1215,6 @@
 				9F5C2C7DD6684B668EDE8F57 /* libRNSuperEllipseMask.a */,
 				D1364232686B4C9CBE4687ED /* libRNGestureHandler.a */,
 				936CCCC339C043038F75626F /* libRNReactNativeHapticFeedback.a */,
-				7FC32C96C3024C058AFBF28A /* libRNRootViewBackground.a */,
 				7023E2C8438941E08C21ED1F /* libRNShare.a */,
 			);
 			name = "Recovered References";
@@ -1248,6 +1250,7 @@
 				AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */,
 				AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */,
 				AAA47DC4212CC70000E71A74 /* RNAsyncList.swift */,
+				AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */,
 			);
 			name = Nodes;
 			sourceTree = "<group>";
@@ -2315,6 +2318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,

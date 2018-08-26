@@ -4,7 +4,6 @@ import { processColor } from 'react-native';
 
 export function declareView<T>(name: string, fallback: React.ComponentType<T>, preprocessor?: (src: T) => any): React.ComponentType<T> {
 
-    const realName = 'AS' + name.substring(0, 1).toUpperCase + name.substring(1);
     const Fallaback = fallback;
 
     // class ASView extends React.PureComponent<T> {

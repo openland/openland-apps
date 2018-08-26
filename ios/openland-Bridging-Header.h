@@ -6,4 +6,6 @@
 
 #import <React/RCTView.h>
 #import <React/RCTViewManager.h>
+#import <React/RCTEventEmitter.h>
 #import <AsyncDisplayKit/AsyncDisplayKit.h>
+#import <AsyncDisplayKit/ASControlNode+Subclasses.h>
