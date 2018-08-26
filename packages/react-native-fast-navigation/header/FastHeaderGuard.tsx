@@ -14,9 +14,6 @@ export interface FastHeaderContainerProps {
     routes: Route[];
     mounted: string[];
     current: string;
-    swiping: { enabled: boolean, current?: string, prev?: string };
-    swipeProgress: Animated.AnimatedInterpolation;
-    swipeProgressPrev: Animated.AnimatedInterpolation;
 }
 
 interface NormalizedRoute {
@@ -95,17 +92,7 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
             mounted: !!props.mounted.find((m) => m === v.record.key),
             record: v.record,
             config: v.record.config.getState()!!,
-            progress: props.swiping.enabled
-                ? (v.record.key === props.swiping.current
-                    ? props.swipeProgress
-                    : (v.record.key === props.swiping.prev ? props.swipeProgressPrev : v.progress.interpolate({
-                        inputRange: [-1, 0, 1],
-                        outputRange: [-1, 0, 1]
-                    })))
-                : v.progress.interpolate({
-                    inputRange: [-1, 0, 1],
-                    outputRange: [-1, 0, 1]
-                })
+            progress: v.progress
         }));
     }
 

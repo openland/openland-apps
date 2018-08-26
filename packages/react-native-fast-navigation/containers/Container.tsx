@@ -102,7 +102,6 @@ interface ContainerState {
     mounted: string[];
     current: string;
     transitioning: boolean;
-    swiping: { enabled: boolean, current?: string, prev?: string };
 }
 
 export class Container extends React.PureComponent<ContainerProps, ContainerState> implements HistoryWatcher {
@@ -124,19 +123,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         outputRange: [1, 0],
         extrapolate: 'clamp'
     });
-    private panEvent = Animated.event(
-        [
-            {
-                nativeEvent: {
-                    translationX: this.panOffset,
-                },
-            },
-        ],
-        { useNativeDriver: true }
-    );
-    private pendingSwipe = false;
-    private pendingSwipeOffset: number = 0;
-    private pendingSwipeSpeed: number = 0;
+    private panEvent = Animated.event([{ nativeEvent: { translationX: this.panOffset } }], { useNativeDriver: true });
     private swipeCurrent?: HistoryRecordHolder;
     private swipePrev?: HistoryRecordHolder;
 
@@ -153,8 +140,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             routes: this.routes,
             mounted: this.mounted,
             current: this.current,
-            transitioning: false,
-            swiping: { enabled: false }
+            transitioning: false
         };
     }
     componentWillMount() {
@@ -175,7 +161,6 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         let newRecord = new HistoryRecordHolder(record, progress, this.panOffsetCurrent, this.panOffsetPrev);
 
         // Start animation
-        // underlayHolder.progress.setValue(0);
         underlayHolder.progressValue.stopAnimation(() => {
             Animated.parallel([
                 animate(underlayHolder.progressValue, 1),
@@ -186,8 +171,6 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 if (this.removing.find((v) => v === record.key)) {
                     return;
                 }
-                // underlayHolder.progressValue.setValue(1);
-                // progress.setValue(0);
                 this.mounted = this.mounted.filter((v) => v !== underlay);
                 this.setState({ mounted: this.mounted, transitioning: false });
             });
@@ -215,8 +198,6 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 animate(underlayHolder.progressValue, 0),
                 animate(holder.progressValue, -1)
             ]).start(() => {
-                // underlayHolder.progress.setValue(0);
-                // holder!!.progress.setValue(-1);
                 this.removing = this.removing.filter((v) => v !== record.key);
                 this.mounted = this.mounted.filter((v) => v !== record.key);
                 this.routes = this.routes.filter((v) => v.record.key !== record.key);
@@ -324,53 +305,48 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     }
 
     render() {
-        return (
-            <PanGestureHandler
-                onGestureEvent={this.panEvent}
-                onHandlerStateChange={this.onGestureChanged}
-                minOffsetX={30}
-                // maxDeltaY={20}
-                // maxPointers={2}
-                // avgTouches={true}
-                enabled={!this.state.transitioning}
-            >
-                <Animated.View style={styles.root}>
-                    <View style={styles.pages}>
-                        {this.state.routes.map((v, i) => {
-                            return (
-                                <View key={v.record.key} style={styles.page} pointerEvents="box-none">
-                                    <PageContainer
-                                        component={v.record.component}
-                                        router={v.record.router}
-                                        progress={this.state.swiping.enabled ? (
-                                            this.state.swiping.current === v.record.key
-                                                ? this.panOffsetCurrent
-                                                : this.state.swiping.prev === v.record.key ? this.panOffsetPrev : v.progress.interpolate({
-                                                    inputRange: [-1, 0, 1],
-                                                    outputRange: [-1, 0, 1]
-                                                })
-                                        ) : v.progress.interpolate({
-                                            inputRange: [-1, 0, 1],
-                                            outputRange: [-1, 0, 1]
-                                        })}
-                                        mounted={!!this.state.mounted.find((m) => v.record.key === m)}
-                                    />
-                                </View>
-                            );
-                        })}
-                    </View>
-                    <View style={styles.header} pointerEvents="box-none">
-                        <FastHeaderGuard
-                            routes={this.state.routes}
-                            mounted={this.state.mounted}
-                            current={this.state.current}
-                            swiping={this.state.swiping}
-                            swipeProgress={this.panOffsetCurrent}
-                            swipeProgressPrev={this.panOffsetPrev}
-                        />
-                    </View>
-                </Animated.View>
-            </PanGestureHandler>
+        let body = (
+            <Animated.View style={styles.root}>
+                <View style={styles.pages}>
+                    {this.state.routes.map((v, i) => {
+                        return (
+                            <View key={v.record.key} style={styles.page} pointerEvents="box-none">
+                                <PageContainer
+                                    component={v.record.component}
+                                    router={v.record.router}
+                                    progress={v.progress}
+                                    mounted={!!this.state.mounted.find((m) => v.record.key === m)}
+                                />
+                            </View>
+                        );
+                    })}
+                </View>
+                <View style={styles.header} pointerEvents="box-none">
+                    <FastHeaderGuard
+                        routes={this.state.routes}
+                        mounted={this.state.mounted}
+                        current={this.state.current}
+                    />
+                </View>
+            </Animated.View>
         );
+
+        if (Platform.OS === 'ios') {
+            return (
+                <PanGestureHandler
+                    onGestureEvent={this.panEvent}
+                    onHandlerStateChange={this.onGestureChanged}
+                    minOffsetX={10}
+                    // maxDeltaY={20}
+                    // maxPointers={2}
+                    // avgTouches={true}
+                    enabled={!this.state.transitioning}
+                >
+                    {body}
+                </PanGestureHandler>
+            );
+        } else {
+            return body;
+        }
     }
 }
