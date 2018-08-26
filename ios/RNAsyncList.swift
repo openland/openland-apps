@@ -21,7 +21,11 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource {
     self.node = ASCollectionNode(collectionViewLayout: layout)
     self.node.contentInset = UIEdgeInsets(top: CGFloat(spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.contentPaddingBottom), right: 0.0)
     self.node.view.scrollIndicatorInsets = UIEdgeInsets(top: CGFloat(spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.contentPaddingBottom), right: 0.0)
+    self.node.alwaysBounceVertical = true
+    self.node.inverted = spec.inverted
+    self.node.insetsLayoutMarginsFromSafeArea = false
     self.data = data
+    self.node.backgroundColor = UIColor.clear
     super.init()
     addSubnode(node)
     self.node.dataSource = self
@@ -35,19 +39,21 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource {
     return self.data.count
   }
   
-  func collectionNode(_ collectionNode: ASCollectionNode, nodeForItemAt indexPath: IndexPath) -> ASCellNode {
-    let res = ASCellNode()
+  func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     let d = self.data[indexPath.row]
-    res.automaticallyManagesSubnodes = true
-    res.layoutSpecBlock = { node, constrainedSize in
-      let res = ASStackLayoutSpec()
-      res.direction = ASStackLayoutDirection.vertical
-      res.alignItems = ASStackLayoutAlignItems.stretch
-      res.child = resolveNode(spec: d)
-      res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+    return { () -> ASCellNode in
+      let res = ASCellNode()
+      res.automaticallyManagesSubnodes = true
+      res.layoutSpecBlock = { node, constrainedSize in
+        let res = ASStackLayoutSpec()
+        res.direction = ASStackLayoutDirection.vertical
+        res.alignItems = ASStackLayoutAlignItems.stretch
+        res.child = resolveNode(spec: d)
+        res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+        return res
+      }
       return res
     }
-    return res
   }
 
   

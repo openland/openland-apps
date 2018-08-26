@@ -10,11 +10,30 @@ import Foundation
 
 @objc(RNAsyncViewManager)
 class RNAsyncViewManager: RCTViewManager {
+  
   override func view() -> UIView! {
     return RNAsyncView()
   }
+  
   static override func requiresMainQueueSetup() -> Bool {
-    return true
+    return false
+  }
+}
+
+var configsViews: [String: RNAsyncView] = [:]
+var configs: [String: AsyncViewSpec] = [:]
+
+@objc(RNAsyncConfigManager)
+class RNAsyncConfigManager: NSObject {
+  
+  @objc(setConfig:config:)
+  func setConfig(key: String, config: String) -> Void {
+    print(Thread.isMainThread)
+    let parsed = parseSpec(config)
+    configs[key] = parsed
+    if let v = configsViews[key] {
+      v.setConfig(config: parsed)
+    }
   }
 }
 
@@ -60,9 +79,16 @@ class RNAsyncView: RCTView {
     fatalError("init(coder:) has not been implemented");
   }
   
-  public func setConfig(_ config: String) {
-    let spec = parseSpec(config)
-    self.node.setConfig(spec: spec)
+  public func setConfig(config: AsyncViewSpec) {
+    self.node.setConfig(spec: config)
+  }
+  
+  public func setConfigKey(_ configKey: String) {
+    configsViews[configKey] = self
+    if let ex = configs[configKey] {
+      self.setConfig(config: ex)
+    }
+    // self.node.setConfig(spec: config)
   }
   
   override func reactSetFrame(_ frame: CGRect) {

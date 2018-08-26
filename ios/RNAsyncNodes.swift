@@ -132,7 +132,12 @@ func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement) -> ASLayout
       }
     }
   }
-  if let v = spec.backgroundGradient {
+  if let v = spec.backgroundPatch {
+    let g = ASImageNode()
+    let image = try! UIImage(data: Data(contentsOf: URL(string: v.source)!), scale: UIScreen.main.scale)
+    g.image = image?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(v.top), left: CGFloat(v.left), bottom: CGFloat(v.bottom), right: CGFloat(v.right)), resizingMode: UIImageResizingMode.stretch)
+    res = ASBackgroundLayoutSpec(child: res, background: g)
+  } else if let v = spec.backgroundGradient {
     let g = RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
     if let br = spec.borderRadius {
       g.willDisplayNodeContentWithRenderingContext = { context, drawParameters in

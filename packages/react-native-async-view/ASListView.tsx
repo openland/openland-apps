@@ -7,6 +7,7 @@ export interface ASListViewProps extends ASViewStyle {
     contentPaddingTop?: number;
     contentPaddingBottom?: number;
     onScroll?: any;
+    inverted?: boolean;
 }
 
 class Fallback extends React.PureComponent<ASListViewProps> {

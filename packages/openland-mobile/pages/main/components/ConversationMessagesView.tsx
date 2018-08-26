@@ -8,6 +8,10 @@ import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ModelMessage, extractKey } from 'openland-engines/messenger/types';
 import { MessageViewSingle } from 'openland-shared/MessageViewSingle';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
+import { ASView } from 'react-native-async-view/ASView';
+import { ASListView } from 'react-native-async-view/ASListView';
+import { AsyncMessageView } from './async/AsyncMessageView';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 
 let months = [
     'Jan',
@@ -170,29 +174,44 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
     }
 
     render() {
-        const messages = convertMessages(this.props.messages);
+        // const messages = convertMessages(this.props.messages);
+        let msgs: any[] = [];
+        for (let d of this.props.messages) {
+            for (let m of d.messages) {
+                for (let m2 of m.messages) {
+                    msgs.unshift(<AsyncMessageView message={m2} engine={this.props.engine} />);
+                }
+            }
+        }
         return (
-            <FlatList
-                data={messages}
-                renderItem={this.renderItem}
-                inverted={true}
-                flexBasis={0}
-                flexGrow={1}
-                onEndReachedThreshold={1}
-                onEndReached={this.handleEndReached}
-                ref={this.listRef}
-                initialNumToRender={0}
-                scrollIndicatorInsets={{
-                    bottom: this.props.topInset,
-                    top: this.props.bottomInset
-                }}
-                keyboardDismissMode="interactive"
-                removeClippedSubviews={true}
-                keyExtractor={this.extractKey}
-                extraData={this.props.bottomInset * 10000 + this.props.topInset}
-                windowSize={3}
-                maxToRenderPerBatch={3}
-            />
+            <ASView style={{ flexGrow: 1 }}>
+                <ASFlex flexDirection="column" alignItems="stretch">
+                    <ASListView flexGrow={1} inverted={true} contentPaddingTop={this.props.topInset} contentPaddingBottom={this.props.bottomInset}>
+                        {msgs}
+                    </ASListView>
+                </ASFlex>
+            </ASView>
+            // <FlatList
+            //     data={messages}
+            //     renderItem={this.renderItem}
+            //     inverted={true}
+            //     flexBasis={0}
+            //     flexGrow={1}
+            //     onEndReachedThreshold={1}
+            //     onEndReached={this.handleEndReached}
+            //     ref={this.listRef}
+            //     initialNumToRender={0}
+            //     scrollIndicatorInsets={{
+            //         bottom: this.props.topInset,
+            //         top: this.props.bottomInset
+            //     }}
+            //     keyboardDismissMode="interactive"
+            //     removeClippedSubviews={true}
+            //     keyExtractor={this.extractKey}
+            //     extraData={this.props.bottomInset * 10000 + this.props.topInset}
+            //     windowSize={3}
+            //     maxToRenderPerBatch={3}
+            // />
         );
     }
 }

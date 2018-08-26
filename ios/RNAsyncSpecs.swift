@@ -74,6 +74,7 @@ class AsyncListViewSpec: AsyncViewSpec {
   var children: [AsyncViewSpec]!
   var contentPaddingTop: Float = 0.0
   var contentPaddingBottom: Float = 0.0
+  var inverted: Bool = false
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -92,12 +93,28 @@ class AsyncStyleSpec {
   
   var backgroundGradient: [UIColor]?
   var backgroundColor: UIColor?
+  var backgroundPatch: AsyncPatch?
   var borderRadius: Float?
   
   var marginTop: Float?
   var marginBottom: Float?
   var marginRight: Float?
   var marginLeft: Float?
+}
+
+class AsyncPatch {
+  let source: String;
+  let top: Float;
+  let right: Float;
+  let bottom: Float;
+  let left: Float
+  init(source: String, top: Float, right: Float, bottom: Float, left: Float) {
+    self.source = source
+    self.top = top
+    self.right = right
+    self.bottom = bottom
+    self.left = left
+  }
 }
 
 private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
@@ -140,6 +157,14 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
   }
   if let v = src["props"]["backgroundGradient"].dictionary {
     res.backgroundGradient = [resolveColorR(v["start"]!.uInt64Value), resolveColorR(v["end"]!.uInt64Value)]
+  }
+  if let v = src["props"]["backgroundPatch"].dictionary {
+    let top = v["top"]!.floatValue
+    let bottom = v["bottom"]!.floatValue
+    let left = v["left"]!.floatValue
+    let right = v["right"]!.floatValue
+    let source = v["source"]!.stringValue
+    res.backgroundPatch = AsyncPatch(source: source, top: top, right: right, bottom: bottom, left: left)
   }
   return res
 }
@@ -254,6 +279,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     }
     if let v = src["props"]["contentPaddingBottom"].float {
       res.contentPaddingBottom = v
+    }
+    if let v = src["props"]["inverted"].bool {
+      res.inverted = v
     }
     return res
   }
