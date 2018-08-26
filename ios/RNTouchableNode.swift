@@ -19,6 +19,7 @@ class RNTouchableNode: ASControlNode {
     super.init()
     self.backgroundColor = UIColor.clear
     self.addTarget(self, action: #selector(self.handler), forControlEvents: ASControlNodeEvent.touchUpInside)
+    self.displaysAsynchronously = false
   }
   
   func handler() {
