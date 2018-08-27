@@ -14,7 +14,7 @@ const Reactangle = Glamorous.div({
     position: 'absolute',
     top: 'calc(50% - 300px)',
     left: 0,
-    backgroundImage: 'url(\'/static/img/messenger/reactangle.svg\')',
+    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'bottom',
@@ -35,7 +35,7 @@ const EmptyContent = Glamorous.div({
 const Image = Glamorous.div({
     width: 329,
     height: 329,
-    backgroundImage: 'url(\'/static/img/messenger/channels-explore-empty.svg\')',
+    backgroundImage: 'url(\'/static/X/messenger/channels-explore-empty.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
