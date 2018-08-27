@@ -19,8 +19,31 @@ const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string }>((prop
     color: props.color || '#ffffff'
 }));
 
-export const XCounter = (props: { count: number, color?: string, bgColor?: string }) => (
-    <XCounterStyled className="counter">
-        <span>{props.count}</span>
-    </XCounterStyled>
+const XCounterBig = Glamorous(XCounterStyled)<{ color?: string, bgColor?: string }>((props) => ({
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    fontSize: 12,
+    fontWeight: 600,
+    border: 'none',
+    textAlign: 'center',
+    backgroundColor: props.color || '#1790ff',
+    lineHeight: '10px'
+}));
+
+export const XCounter = (props: { count: number, color?: string, bgColor?: string, big?: boolean }) => (
+    !props.big ?
+        (
+            <XCounterStyled className="counter" color={props.color} bgColor={props.color}>
+                <span>{props.count}</span>
+            </XCounterStyled>
+        ) :
+        (
+            <XCounterBig className="counter" color={props.color} bgColor={props.color}>
+                <span>{props.count}</span>
+            </XCounterBig>
+        )
 );

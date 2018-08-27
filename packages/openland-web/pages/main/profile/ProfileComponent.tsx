@@ -27,6 +27,7 @@ import LinkedinIcon from './icons/linkedin-2.svg';
 import TwitterIcon from './icons/twitter-2.svg';
 import EmailIcon from './icons/email.svg';
 import { XScrollView } from 'openland-x/XScrollView';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -516,14 +517,15 @@ class Members extends React.Component<{ organizationQuery: OrganizationQuery }> 
     }
 }
 
-const ChannelCardWrapper = Glamorous.div({
+const ChannelCardWrapper = makeNavigable(Glamorous.div({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
     '&:hover': {
         backgroundColor: '#f9fafb'
-    }
-});
+    },
+    cursor: 'pointer'
+}));
 
 const ChannelCardInfo = Glamorous.div({
     flex: 1,
@@ -550,8 +552,8 @@ const ChannelCardTools = Glamorous(XHorizontal)({
     padding: '4px 10px 0'
 });
 
-class ChannelCard extends React.Component<{ item: any }, { isHovered: boolean }> {
-    constructor(props: { item: any }) {
+class ChannelCard extends React.Component<{ item: any, organization: { isOwner?: boolean } }, { isHovered: boolean }> {
+    constructor(props: any) {
         super(props);
         this.state = {
             isHovered: false,
@@ -560,15 +562,20 @@ class ChannelCard extends React.Component<{ item: any }, { isHovered: boolean }>
 
     render() {
         let channel = this.props.item;
+        let organization = this.props.organization;
+        console.warn(channel.organization);
 
+        let membersCountText =  channel!!.membersCount + ' ' + ((channel!!.membersCount + channel!!.membersCount) > 1 ? 'members' : 'member');
+        let requesetsCountText =  (organization && organization.isOwner && channel!!.memberRequestsCount > 0) ? '• ' + (channel!!.memberRequestsCount + ' ' + (channel!!.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
         return (
             <ChannelCardWrapper
+                path={'/mail/' + this.props.item.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <ChannelCardInfo>
                     <ChannelCardTitle>{(channel!!.isRoot ? '' : '/') + channel!!.title}</ChannelCardTitle>
-                    <ChannelCardRole>{channel!!.membersCount} {channel!!.membersCount > 1 ? 'members' : 'member'}</ChannelCardRole>
+                    <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>
                 </ChannelCardInfo>
                 <ChannelCardTools separator={3}>
                     <XButton
@@ -601,7 +608,7 @@ class OrganizationProfileInner extends React.Component<{ organizationQuery: Orga
                 <Back callback={this.props.onBack} />
                 <Header organizationQuery={this.props.organizationQuery} router={this.props.router} />
                 {channelsTab && this.props.organizationQuery.organization.channels.map((c, i) => (
-                    <ChannelCard key={i} item={c} />
+                    <ChannelCard key={i} item={c} organization={this.props.organizationQuery.organization} />
                 ))}
                 {aboutTab && <About organizationQuery={this.props.organizationQuery} />}
                 {membersTab && <Members organizationQuery={this.props.organizationQuery} />}

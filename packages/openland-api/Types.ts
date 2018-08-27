@@ -1029,10 +1029,12 @@ export interface ChatInfoQuery {
       description: string,
       myStatus: ChannelMembershipStatus,
       membersCount: number,
+      memberRequestsCount: number,
       organization:  {
         __typename: "Organization",
         id: string,
         isMine: boolean,
+        isOwner: boolean,
         name: string,
       } | null,
     } | {
@@ -2902,6 +2904,7 @@ export interface MyOrganizationQuery {
     __typename: "Organization",
     id: string,
     isMine: boolean,
+    isOwner: boolean,
     editorial: boolean,
     featured: boolean,
     isCommunity: boolean,
@@ -2959,6 +2962,7 @@ export interface MyOrganizationQuery {
       title: string,
       photos: Array< string >,
       membersCount: number,
+      memberRequestsCount: number,
     } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
@@ -3569,6 +3573,7 @@ export interface OrganizationQuery {
     __typename: "Organization",
     id: string,
     isMine: boolean,
+    isOwner: boolean,
     editorial: boolean,
     featured: boolean,
     isCommunity: boolean,
@@ -3626,6 +3631,7 @@ export interface OrganizationQuery {
       title: string,
       photos: Array< string >,
       membersCount: number,
+      memberRequestsCount: number,
     } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
@@ -6970,6 +6976,7 @@ export interface OrganizationFullFragment {
   __typename: "Organization",
   id: string,
   isMine: boolean,
+  isOwner: boolean,
   editorial: boolean,
   featured: boolean,
   isCommunity: boolean,
@@ -7027,6 +7034,7 @@ export interface OrganizationFullFragment {
     title: string,
     photos: Array< string >,
     membersCount: number,
+    memberRequestsCount: number,
   } | null >,
   posts:  Array< {
     __typename: "AlphaDummyPost",
