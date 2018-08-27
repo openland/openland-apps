@@ -4,7 +4,6 @@ import { XLink } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
-import { XButton } from 'openland-x/XButton';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 
@@ -100,7 +99,8 @@ export const SidebarItemBody = Glamorous.div({
 
 export const Container = Glamorous.div({
     flex: 1,
-    height: '100%'
+    height: '100%',
+    position: 'relative',
 });
 
 export const SearchRow = Glamorous.div({
