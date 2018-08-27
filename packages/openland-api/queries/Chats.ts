@@ -71,8 +71,28 @@ export const ChatInfoQuery = gql`
             }
             ... on GroupConversation {
                 membersCount
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
             }
             ... on ChannelConversation {
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
                 isRoot
                 featured
                 description
@@ -98,6 +118,11 @@ export const ChatFullInfoQuery = gql`
             flexibleId
             title
             photos
+            settings{
+                id
+                mobileNotifications
+                mute
+            }
             ... on PrivateConversation {
                 user {
                     ...UserShort
@@ -106,6 +131,31 @@ export const ChatFullInfoQuery = gql`
             ... on GroupConversation {
                 members {
                     ...UserShort
+                }
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+            }
+            ... on ChannelConversation {
+                members {
+                    ...UserShort
+                }
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
                 }
             }
             ... on SharedConversation {
@@ -126,6 +176,7 @@ export const GroupChatFullInfoQuery = gql`
             flexibleId
             title
             photos
+            
         }
         members: alphaGroupConversationMembers(conversationId: $conversationId) {
             user {
@@ -448,5 +499,16 @@ export const ChannelInviteInfoQuery = gql`
 export const ChannelJoinInviteLinkMutation = gql`
     mutation ChannelJoinInviteLink($invite: String!) {
         cannelId: alphaChannelJoinInvite(invite: $invite)
+    }
+`;
+
+export const ChatUpdateGroupMutation = gql`
+    mutation ChatUpdateGroup($conversationId: ID!, $input: UpdateGroupInput!) {
+        event: alphaChatUpdateGroup(conversationId: $conversationId, input: $input){
+            chat{
+                id
+            }
+            curSeq
+        }
     }
 `;

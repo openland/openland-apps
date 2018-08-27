@@ -118,6 +118,7 @@ class AvatarRender extends React.PureComponent<
                 hasImage={hasImage}
                 onClick={this.props.doUpload}
                 avatarSize={this.props.size}
+                className={(this.props as any).className}
             >
                 {hasImage && <AvatarImage
                     width={this.props.size === 'large' ? 241 : 159}
@@ -150,7 +151,7 @@ export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicPr
                 cropParams={this.props.cropParams || '1:1'}
                 component={(rp) => {
                     return (
-                        <AvatarRender {...rp} placeholder={this.props.placeholder} size={this.props.size} />
+                        <AvatarRender {...rp} placeholder={this.props.placeholder} size={this.props.size} {...{ className: (this.props as any).className }} />
                     );
                 }}
             />

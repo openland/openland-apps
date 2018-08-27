@@ -109,7 +109,6 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                 if (this.props.message.urlAugmentation.url.startsWith('https://app.openland.com/o') && this.props.message.urlAugmentation.url.includes('listings#')) {
                     content = [];
                 }
-                console.warn(this.props.message.urlAugmentation);
                 content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...this.props.message.urlAugmentation} />);
 
             }

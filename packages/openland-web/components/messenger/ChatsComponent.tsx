@@ -151,7 +151,7 @@ const renderConversation = (v: any, onSelect?: () => void) => (
                     : v.__typename === 'ChannelConversation'
                         ? 'channel' : undefined
             )}
-            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined}
+            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : (v as any).photo}
         />
         <Header>
             <Main>
