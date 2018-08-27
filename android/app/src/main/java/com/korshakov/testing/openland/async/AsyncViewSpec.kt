@@ -55,6 +55,7 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
     var direction: AsyncFlexDirection = AsyncFlexDirection.row
     var alignItems: AsyncFlexAlignItems = AsyncFlexAlignItems.start
     var justifyContent: AsyncFlexJustifyContent = AsyncFlexJustifyContent.start
+    var touchableKey: String? = null
 }
 
 class AsyncTextSpec(key: String, val text: String) : AsyncViewSpec(key) {
@@ -184,6 +185,17 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
             else -> res.justifyContent
         }
 
+        if (props["touchableKey"] is String) {
+            res.touchableKey = props["touchableKey"] as String
+        }
+
+//        if let v = src["props"]["touchableKey"].string {
+//            res.touchableKey = v
+//        }
+//        if let v = src["props"]["highlightColor"].uInt64 {
+//            res.highlightColor = resolveColorR(v)
+//        }
+
         return res
     } else if (type == "text") {
         val props = src["props"] as JsonObject
@@ -199,7 +211,7 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
         val res = AsyncImageSpec(key, props["source"] as String)
         resolveStyle(src, res.style)
         return res
-    } else if (type =="list") {
+    } else if (type == "list") {
         val props = src["props"] as JsonObject
         val res = AsyncListSpec(key, resolveChildren(src))
         resolveStyle(src, res.style)

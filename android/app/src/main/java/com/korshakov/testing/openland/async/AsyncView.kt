@@ -1,32 +1,21 @@
 package com.korshakov.testing.openland.async
 
-import android.content.Context
-import android.graphics.Color
-import android.os.Looper
 import android.widget.FrameLayout
-import com.facebook.litho.widget.Text
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewManager
-import android.support.v4.view.accessibility.AccessibilityRecordCompat.setSource
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import com.facebook.litho.*
 import com.facebook.litho.config.ComponentsConfiguration
-import com.facebook.litho.widget.Image
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.*
 import com.facebook.react.uimanager.ReactShadowNode
-import com.facebook.react.views.image.ReactImageView
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.views.view.ReactViewGroup
-import com.korshakov.testing.openland.R
 
 val specs = mutableMapOf<String, AsyncViewSpec>()
 val specViews = mutableMapOf<String, AsyncView>()
 
-class AsyncView(context: Context?) : FrameLayout(context) {
+class AsyncView(context: ReactContext) : FrameLayout(context) {
     private val asyncContext = ComponentContext(context)
     private val lithoView = LithoView(context)
 
@@ -45,7 +34,7 @@ class AsyncView(context: Context?) : FrameLayout(context) {
     }
 
     fun setConfig(config: AsyncViewSpec) {
-        this.lithoView.setComponent(resolveNode(this.asyncContext, config))
+        this.lithoView.setComponent(resolveNode(this.asyncContext, config, context as ReactContext))
     }
 }
 
@@ -55,7 +44,7 @@ class AsyncViewManager : SimpleViewManager<AsyncView>() {
         return "RNAsyncView"
     }
 
-    override fun createViewInstance(reactContext: ThemedReactContext?): AsyncView {
+    override fun createViewInstance(reactContext: ThemedReactContext): AsyncView {
         return AsyncView(reactContext)
     }
 

@@ -6,15 +6,15 @@ import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
 import com.facebook.litho.sections.SectionContext
-import com.facebook.litho.sections.common.DataDiffSection
-import com.facebook.litho.sections.common.SingleComponentSection
 import com.facebook.litho.sections.widget.RecyclerCollectionComponent
-import com.facebook.litho.widget.Image
-import com.facebook.litho.widget.SolidColor
 import com.facebook.litho.widget.Text
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContext
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
-import com.facebook.yoga.YogaJustify
+import com.korshakov.testing.openland.async.views.BackgroundSolidColorDrawable
+import com.korshakov.testing.openland.async.views.LithoFlex
+import com.korshakov.testing.openland.async.views.LithoSection
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
     var res = component
@@ -53,71 +53,45 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
     return res.build()
 }
 
-fun resolveNode(context: ComponentContext, src: AsyncViewSpec): Component {
-    return if (src is AsyncFlexSpec) {
-        val alignItems: YogaAlign = when (src.alignItems) {
-            AsyncFlexAlignItems.start -> YogaAlign.FLEX_START
-            AsyncFlexAlignItems.end -> YogaAlign.FLEX_END
-            AsyncFlexAlignItems.center -> YogaAlign.CENTER
-            AsyncFlexAlignItems.stretch -> YogaAlign.STRETCH
-        }
-
-        val justifyContent: YogaJustify = when (src.justifyContent) {
-            AsyncFlexJustifyContent.start -> YogaJustify.FLEX_START
-            AsyncFlexJustifyContent.end -> YogaJustify.FLEX_END
-            AsyncFlexJustifyContent.center -> YogaJustify.CENTER
-        }
-
-        if (src.direction == AsyncFlexDirection.row) {
-            val res = Row.create(context)
-                    .key(src.key)
-                    .alignItems(alignItems)
-                    .justifyContent(justifyContent)
-
-            for (c in src.children) {
-                res.child(resolveNode(context, c))
-            }
-            resolveStyle(context, res, src.style)
-        } else {
-            val res = Column.create(context)
-                    .key(src.key)
-                    .alignItems(alignItems)
-                    .justifyContent(justifyContent)
-            for (c in src.children) {
-                res.child(resolveNode(context, c))
-            }
-            resolveStyle(context, res, src.style)
-        }
-    } else if (src is AsyncTextSpec) {
-        val res = Text.create(context)
-                .key(src.key)
-                .text(src.text)
-                .textSizeDip(src.fontSize)
-                .textColor(src.color)
-                .shouldIncludeFontPadding(false)
-
-        // TODO: Handle styles
-        resolveStyle(context, res, src.style)
-    } else if (src is AsyncImageSpec) {
-        val controller = Fresco.newDraweeControllerBuilder()
-                .setUri(src.url)
+fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: ReactContext): Component {
+    return when (spec) {
+        is AsyncFlexSpec -> return LithoFlex.create(context)
+                .spec(spec)
+                .reactContext(reactContext)
                 .build()
+        is AsyncTextSpec -> {
+            val res = Text.create(context)
+                    .key(spec.key)
+                    .text(spec.text)
+                    .textSizeDip(spec.fontSize)
+                    .textColor(spec.color)
+                    .shouldIncludeFontPadding(false)
 
-        var res = FrescoImage.create(context)
-                .controller(controller)
-                .fadeDuration(0)
-
-        if (src.style.borderRadius != null) {
-            res = res.roundingParams(RoundingParams.fromCornersRadius(Resources.getSystem().displayMetrics.density * src.style.borderRadius!!))
+            // TODO: Handle styles
+            resolveStyle(context, res, spec.style)
         }
-        resolveStyle(context, res, src.style)
-    } else if (src is AsyncListSpec) {
-        val res = RecyclerCollectionComponent.create(context)
-                .section(AsyncViewSection.create(SectionContext(context))
-                        .dataModel(src.children.toList()))
+        is AsyncImageSpec -> {
+            val controller = Fresco.newDraweeControllerBuilder()
+                    .setUri(spec.url)
+                    .build()
 
-        resolveStyle(context, res, src.style)
-    } else {
-        error("Unsupported spec")
+            var res = FrescoImage.create(context)
+                    .controller(controller)
+                    .fadeDuration(0)
+
+            if (spec.style.borderRadius != null) {
+                res = res.roundingParams(RoundingParams.fromCornersRadius(Resources.getSystem().displayMetrics.density * spec.style.borderRadius!!))
+            }
+            resolveStyle(context, res, spec.style)
+        }
+        is AsyncListSpec -> {
+            val res = RecyclerCollectionComponent.create(context)
+                    .disablePTR(true)
+                    .section(LithoSection.create(SectionContext(context))
+                            .dataModel(spec.children.toList())
+                            .reactContext(reactContext))
+            resolveStyle(context, res, spec.style)
+        }
+        else -> error("Unsupported spec")
     }
 }

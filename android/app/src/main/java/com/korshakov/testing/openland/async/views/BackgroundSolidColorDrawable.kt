@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.async
+package com.korshakov.testing.openland.async.views
 
 import android.graphics.Canvas
 import android.graphics.ColorFilter
