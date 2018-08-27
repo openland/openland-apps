@@ -236,7 +236,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} isMine={this.props.channel.organization && this.props.channel.organization.isMine} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
+                            {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} isMine={!!(this.props.channel.organization && this.props.channel.organization.isMine)} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
                             {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: this.props.channel.id }} text="Accept invite" />}
                             {this.props.channel.myStatus === 'requested' && (
                                 <XButton
