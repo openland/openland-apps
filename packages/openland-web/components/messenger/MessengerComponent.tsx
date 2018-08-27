@@ -25,6 +25,11 @@ import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XCounter } from 'openland-x/XCounter';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XInput } from 'openland-x/XInput';
+import { withAlterChat } from '../../api/withAlterChat';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -241,6 +246,38 @@ const ChannelTab = Glamorous(XLink)({
     }
 });
 
+const AvatarUpload = Glamorous(XAvatarUpload)({
+    width: 84,
+    height: 84,
+});
+export const ChatEditComponent = withAlterChat((props) => (
+    <XModalForm
+        targetQuery="editChat"
+        title="Group settings"
+        defaultAction={(data) => {
+            props.alter({
+                variables: {
+                    input: {
+                        title: data.input.title,
+                        photoRef: data.input.photoRef
+                    }
+                }
+            });
+        }}
+        defaultData={{
+            input: {
+                title: (props as any).title || '',
+                photoRef: sanitizeIamgeRef((props as any).photoRef)
+            }
+        }}
+    >
+        <XHorizontal>
+            <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+            <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default"/>
+        </XHorizontal>
+    </XModalForm>
+)) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' = 'chat';
     if (props.router.query.tab === 'members') {
@@ -253,12 +290,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let title = props.data.chat.__typename === 'ChannelConversation' ?
         ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + '/' : '') + props.data.chat.title) :
         props.data.chat.title;
+    console.warn(props.data.chat);
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
                         path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
+                        query={props.data.chat.__typename !== 'SharedConversation' ? { field: 'editChat', value: 'true' } : undefined}
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
@@ -274,7 +313,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         : props.data.chat.__typename === 'ChannelConversation'
                                             ? 'channel' : undefined
                                 )}
-                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : undefined}
+                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
                             />
                             <XHorizontal alignItems="center" separator={6}>
                                 <Title>{title}</Title>
@@ -366,6 +405,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 )}
             </XHorizontal>
+            <ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
         </XVertical>
     );
 }));

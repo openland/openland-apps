@@ -67,6 +67,7 @@ export const ChannelRenewInviteLinkMutation = typedMutation<Types.ChannelRenewIn
 export const ChannelInviteLinkQuery = typedQuery<Types.ChannelInviteLinkQuery, Types.ChannelInviteLinkQueryVariables>(Chats.ChannelInviteLinkQuery);
 export const ChannelInviteInfoQuery = typedQuery<Types.ChannelInviteInfoQuery, Types.ChannelInviteInfoQueryVariables>(Chats.ChannelInviteInfoQuery);
 export const ChannelJoinInviteLinkMutation = typedMutation<Types.ChannelJoinInviteLinkMutation, Types.ChannelJoinInviteLinkMutationVariables>(Chats.ChannelJoinInviteLinkMutation);
+export const ChatUpdateGroupMutation = typedMutation<Types.ChatUpdateGroupMutation, Types.ChatUpdateGroupMutationVariables>(Chats.ChatUpdateGroupMutation);
 export const AllDealsQuery = typedQuery<Types.AllDealsQuery, {}>(Deals.AllDealsQuery);
 export const AllDealsMapQuery = typedQuery<Types.AllDealsMapQuery, {}>(Deals.AllDealsMapQuery);
 export const DealQuery = typedQuery<Types.DealQuery, Types.DealQueryVariables>(Deals.DealQuery);

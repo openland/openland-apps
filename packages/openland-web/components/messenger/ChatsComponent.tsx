@@ -151,7 +151,7 @@ const renderConversation = (v: any, onSelect?: () => void) => (
                     : v.__typename === 'ChannelConversation'
                         ? 'channel' : undefined
             )}
-            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : undefined}
+            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : (v as any).photo}
         />
         <Header>
             <Main>
@@ -188,7 +188,7 @@ const NoResultWrapper = Glamorous(XVertical)({
 const Image = Glamorous.div({
     width: 178,
     height: 155,
-    backgroundImage: 'url(\'/static/img/messenger/channels-search-empty.svg\')',
+    backgroundImage: 'url(\'/static/X/messenger/channels-search-empty.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',

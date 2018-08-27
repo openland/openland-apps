@@ -73,6 +73,11 @@ export interface ChannelInviteRequest {
   lastName?: string | null,
 };
 
+export interface UpdateGroupInput {
+  title?: string | null,
+  photoRef?: ImageRefInput | null,
+};
+
 export enum DealStatus {
   ACTIVE = "ACTIVE",
   CLOSED = "CLOSED",
@@ -648,6 +653,18 @@ export interface ChatListQuery {
           mobileNotifications: NotificationMessages,
           mute: boolean,
         },
+        photo: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
       } | {
         __typename: "AnonymousConversation",
         id: string,
@@ -920,6 +937,18 @@ export interface ChatListQuery {
           mobileNotifications: NotificationMessages,
           mute: boolean,
         },
+        photo: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
       }
     ) >,
     seq: number,
@@ -1024,6 +1053,18 @@ export interface ChatInfoQuery {
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
       isRoot: boolean,
       featured: boolean,
       description: string,
@@ -1108,6 +1149,18 @@ export interface ChatInfoQuery {
         mute: boolean,
       },
       membersCount: number,
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     }
   ),
 };
@@ -1123,18 +1176,65 @@ export interface ChatFullInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
+      members:  Array< {
+        __typename: "User",
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          id: string,
+          name: string,
+        } | null,
+        role: string | null,
+        linkedin: string | null,
+        twitter: string | null,
+      } >,
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     } | {
       __typename: "AnonymousConversation",
       id: string,
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
     } | {
       __typename: "SharedConversation",
       id: string,
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       organizations:  Array< {
         __typename: "Organization",
         id: string,
@@ -1147,6 +1247,12 @@ export interface ChatFullInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       user:  {
         __typename: "User",
         id: string,
@@ -1170,6 +1276,12 @@ export interface ChatFullInfoQuery {
       flexibleId: string,
       title: string,
       photos: Array< string >,
+      settings:  {
+        __typename: "ConversationSettings",
+        id: string,
+        mobileNotifications: NotificationMessages,
+        mute: boolean,
+      },
       members:  Array< {
         __typename: "User",
         id: string,
@@ -1187,6 +1299,18 @@ export interface ChatFullInfoQuery {
         linkedin: string | null,
         twitter: string | null,
       } >,
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     }
   ),
 };
@@ -1669,6 +1793,18 @@ export interface ChatSearchTextQuery {
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -1941,6 +2077,18 @@ export interface ChatSearchTextQuery {
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     }
   ) >,
 };
@@ -2032,6 +2180,18 @@ export interface ChatSearchChannelQuery {
           mobileNotifications: NotificationMessages,
           mute: boolean,
         },
+        photo: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
         membersCount: number,
         featured: boolean,
         description: string,
@@ -2330,6 +2490,35 @@ export interface ChannelJoinInviteLinkMutationVariables {
 
 export interface ChannelJoinInviteLinkMutation {
   cannelId: string,
+};
+
+export interface ChatUpdateGroupMutationVariables {
+  conversationId: string,
+  input: UpdateGroupInput,
+};
+
+export interface ChatUpdateGroupMutation {
+  event:  {
+    __typename: "ConversationUpdateResponse",
+    chat: ( {
+        __typename: "ChannelConversation",
+        id: string,
+      } | {
+        __typename: "AnonymousConversation",
+        id: string,
+      } | {
+        __typename: "SharedConversation",
+        id: string,
+      } | {
+        __typename: "PrivateConversation",
+        id: string,
+      } | {
+        __typename: "GroupConversation",
+        id: string,
+      }
+    ),
+    curSeq: number,
+  },
 };
 
 export interface AllDealsQuery {
@@ -6635,6 +6824,18 @@ export type ConversationShortFragment = ( {
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     } | {
       __typename: "AnonymousConversation",
       id: string,
@@ -6907,6 +7108,18 @@ export type ConversationShortFragment = ( {
         mobileNotifications: NotificationMessages,
         mute: boolean,
       },
+      photo: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     }
   );
 

@@ -15,5 +15,29 @@ export const ConversationShort = gql`
             mobileNotifications
             mute
         }
+        ... on GroupConversation {
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+        }
+        ... on ChannelConversation {
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+        }
     }
 `;

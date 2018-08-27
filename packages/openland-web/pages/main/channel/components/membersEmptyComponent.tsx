@@ -27,7 +27,7 @@ const Reactangle = Glamorous.div({
     position: 'absolute',
     top: 'calc(50% - 300px)',
     left: 0,
-    backgroundImage: 'url(\'/static/img/messenger/reactangle.svg\')',
+    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'bottom',
@@ -46,7 +46,7 @@ const ImageWrapper = Glamorous.div({
 const Image = Glamorous.div<{ smaller: boolean }>(props => ({
     width: props.smaller ? 350 : 466,
     height: props.smaller ? 200 : 314,
-    backgroundImage: 'url(\'/static/img/messenger/channel-members.svg\')',
+    backgroundImage: 'url(\'/static/X/messenger/channel-members.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',

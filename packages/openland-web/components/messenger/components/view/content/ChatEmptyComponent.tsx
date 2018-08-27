@@ -26,7 +26,7 @@ const Reactangle = Glamorous.div({
     position: 'absolute',
     top: 'calc(50% - 300px)',
     left: 0,
-    backgroundImage: 'url(\'/static/img/messenger/reactangle.svg\')',
+    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'bottom',
@@ -38,8 +38,8 @@ const Image = Glamorous.div<{ isChannel: boolean }>(props => ({
     width: props.isChannel ? 434 : 391,
     height: props.isChannel ? 352 :  380,
     backgroundImage: props.isChannel
-        ? 'url(\'/static/img/messenger/chat-channel-empty.svg\')'
-        : 'url(\'/static/img/messenger/chat-empty.svg\')',
+        ? 'url(\'/static/X/messenger/chat-channel-empty.svg\')'
+        : 'url(\'/static/X/messenger/chat-empty.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
