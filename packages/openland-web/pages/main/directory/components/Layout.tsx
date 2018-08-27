@@ -4,7 +4,6 @@ import { XLink } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
-import { XButton } from 'openland-x/XButton';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 
@@ -36,14 +35,10 @@ export const SidebarList = Glamorous.div({
 
 export const SidebarItem = Glamorous.div<{ active?: boolean }>([
     {
-        '&:first-child': {
-            borderTop: 'none!important'
-        }
+        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     },
     (props) => (props.active) ? {
         background: 'rgba(245, 246, 247, 0.42)',
-        borderTop: '1px solid rgba(220, 222, 228, 0.45)',
-        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     } : {}
 ]);
 
@@ -84,6 +79,7 @@ export const SidebarItemHead = Glamorous(XLink)({
 
     '&:hover': {
         color: '#1790ff',
+        background: 'rgba(23, 144, 255, 0.05)',
 
         '& svg > *': {
             opacity: 0.5,
@@ -103,7 +99,8 @@ export const SidebarItemBody = Glamorous.div({
 
 export const Container = Glamorous.div({
     flex: 1,
-    height: '100%'
+    height: '100%',
+    position: 'relative',
 });
 
 export const SearchRow = Glamorous.div({
@@ -153,8 +150,21 @@ export const SearchInput = Glamorous.input({
     }
 });
 
-export const ResetButton = Glamorous(XButton)({
-    color: '#99a2b0'
+export const ResetButton = Glamorous.div({
+    color: '#99a2b0',
+    height: 32,
+    lineHeight: '32px',
+    fontSize: 14,
+    letterSpacing: -0.2,
+    fontWeight: 500,
+    padding: '0 14px',
+    cursor: 'pointer',
+    '&:hover': {
+        color: '#334562',
+    },
+    '&:active': {
+        color: '#1790ff',
+    },
 });
 
 export class OrganizationsSidebarItemHead extends React.Component {

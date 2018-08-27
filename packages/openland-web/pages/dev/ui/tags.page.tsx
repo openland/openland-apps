@@ -28,21 +28,25 @@ export default withApp('UI Framework - Tags', 'viewer', (props) => {
                         <XTag text="default" />
                         <XTag color="gray" text="gray" />
                         <XTag color="green" text="green" />
-                        <XTag color="gost" text="gost" />
+                        <XTag color="ghost" text="gost" />
                     </XHorizontal>
                     <XHorizontal>
                         <XTag rounded={true} color="primary" text="primary" />
                         <XTag rounded={true} text="default" />
                         <XTag rounded={true} color="gray" text="gray" />
                         <XTag rounded={true} color="green" text="green" />
-                        <XTag rounded={true} color="gost" text="gost" />
+                        <XTag rounded={true} color="ghost" text="gost" />
                     </XHorizontal>
                     <XTitle>With Icon</XTitle>
                     <XHorizontal>
+                        <XTag size="large" text="Automotive" iconLeft="star" />
+                        <XTag text="primary" iconLeft="star" />
                         <XTag size="large" text="Automotive" icon="close" />
                         <XTag text="primary" icon="close" />
                     </XHorizontal>
                     <XHorizontal>
+                        <XTag rounded={true} size="large" text="Automotive" iconLeft="star" />
+                        <XTag rounded={true} text="primary" iconLeft="star" />
                         <XTag rounded={true} size="large" text="Automotive" icon="close" />
                         <XTag rounded={true} text="primary" icon="close" />
                     </XHorizontal>

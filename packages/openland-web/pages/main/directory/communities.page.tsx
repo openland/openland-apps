@@ -173,8 +173,9 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     />
                                 </SearchFormContent>
                                 <XHorizontal separator={2}>
-                                    {this.state.searchText.length > 0 &&
-                                        <ResetButton text={TextDirectory.buttonReset} style="flat" onClick={this.reset} />}
+                                    {this.state.searchText.length > 0 && (
+                                        <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
+                                    )}
                                     <XButton
                                         text={TextDirectory.buttonSearch}
                                         style="primary-sky-blue"

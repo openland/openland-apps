@@ -179,7 +179,7 @@ export const TextOrganizationProfile = {
     placeholderAboutModalAboutTitle: 'About',
 
     placeholderSocial: 'Add links',
-    placeholderSocialModalTitle: 'Add links',
+    placeholderSocialModalTitle: 'Edit links',
     placeholderSocialModal: 'Add social links',
     placeholderSocialModalWeb: 'Website',
     placeholderSocialModalTwitter: 'Twitter',

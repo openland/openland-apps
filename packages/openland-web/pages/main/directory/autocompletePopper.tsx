@@ -106,7 +106,7 @@ const EntryComponent = (props: EntryProps) => (
         <XTag
             text={props.entry.label + ' ' + (props.sugestion ? '' : props.entry.type === 'organizationType' ? 'category' : props.entry.type === 'interest' ? 'intereset' : props.entry.type === 'location' ? 'location' : '')}
             size="large"
-            color="primary"
+            rounded={true}
             onClick={() => props.onPick(props.entry)}
         />
     </TagWrap>
@@ -131,7 +131,7 @@ const OrgByPrefix = withOrganizationByPrefix((props) => {
         return null;
     }
     return (
-        <OrgWrap path={'/o/directory/' + props.data.organizationByPrefix.id}>
+        <OrgWrap path={'/directory/o/' + props.data.organizationByPrefix.id}>
             <DirecoryIcon />
             <OrgTitle>{props.data.organizationByPrefix.name}</OrgTitle>
         </OrgWrap>

@@ -24,6 +24,7 @@ import { InviteMembersModal } from '../../pages/main/channel/components/inviteMe
 import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { XCounter } from 'openland-x/XCounter';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -257,14 +258,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
-                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
+                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
                     >
                         <XHorizontal alignItems="center" separator={6}>
                             <XAvatar
-                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
+                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
                                 style={(props.data.chat.__typename === 'SharedConversation'
                                     ? 'organization'
@@ -294,7 +295,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             <XHorizontal separator={14}>
                                 <ChannelTabs>
                                     <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
-                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
+                                    <XHorizontal separator={4} alignItems="center">
+                                        <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
+                                        {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && <XCounter big={true} count={props.data.chat.memberRequestsCount} />}
+                                    </XHorizontal>
                                 </ChannelTabs>
                                 <InviteMembersModal
                                     channelTitle={title}

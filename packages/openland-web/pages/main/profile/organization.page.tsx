@@ -599,7 +599,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         arrow={null}
                                                         content={
                                                             <XVerticalStyled padding={2} scrollable={true} maxHeight={254} separator={4} >
-                                                                {organization.locations!!.filter((l, i) => i !== 0).map((l, i) => <XTag size="large" color="gost" key={l + i} text={l} />)}
+                                                                {organization.locations!!.filter((l, i) => i !== 0).map((l, i) => <XTag size="large" color="ghost" key={l + i} text={l} />)}
                                                             </XVerticalStyled>}
                                                     >
                                                         <Text opacity={0.5} bold={true}>{' • More locations'}</Text>

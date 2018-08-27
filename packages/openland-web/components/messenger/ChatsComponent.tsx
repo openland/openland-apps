@@ -108,18 +108,7 @@ const Date = Glamorous.div({
 const Content = Glamorous.div<{ counterColor?: string }>(props => ({
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    '& .counter': {
-        minWidth: 18,
-        height: 18,
-        borderRadius: 9,
-        fontSize: 12,
-        fontWeight: 600,
-        border: 'none',
-        textAlign: 'center',
-        backgroundColor: props.counterColor || '#1790ff',
-        lineHeight: '10px'
-    }
+    alignItems: 'center'
 }));
 
 const ContentText = Glamorous.div({
@@ -169,7 +158,7 @@ const renderConversation = (v: any, onSelect?: () => void) => (
                 <Title className="title"><span>{v.title}</span></Title>
                 {v.topMessage && <Date className="date"><XDate value={v.topMessage!!.date} format="datetime_short" /></Date>}
             </Main>
-            <Content counterColor={v.settings.mute ? '#9f9f9f' : undefined}>
+            <Content>
                 <ContentText className="content">
                     {v.topMessage && v.topMessage.message && (
                         <span>{v.topMessage.sender.firstName}: {v.topMessage.message}</span>
@@ -178,7 +167,7 @@ const renderConversation = (v: any, onSelect?: () => void) => (
                         <span>{v.topMessage.sender.firstName}: File</span>
                     )}
                 </ContentText>
-                {v.unreadCount > 0 && <XCounter count={v.unreadCount} />}
+                {v.unreadCount > 0 && <XCounter big={true} count={v.unreadCount} bgColor={v.settings.mute ? '#9f9f9f' : undefined} />}
             </Content>
         </Header>
     </Item>

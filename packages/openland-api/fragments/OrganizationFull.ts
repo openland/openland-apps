@@ -5,6 +5,7 @@ export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
         id
         isMine
+        isOwner: alphaIsOwner
         editorial: alphaEditorial
         featured: alphaFeatured
         isCommunity: alphaIsCommunity
@@ -48,6 +49,7 @@ export const OrganizationFull = gql`
             title
             photos
             membersCount
+            memberRequestsCount
         }
 
         posts: alphaDummyPosts{

@@ -2,14 +2,10 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withOrganizationFollow } from '../../../../api/withOrganizationFollow';
-import { XMutation } from 'openland-x/XMutation';
-import { withOrganizationPublishedAlter } from '../../../../api/withOrganizationPublishedAlter';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../../components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
-import { XTag } from 'openland-x/XTag';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { makeNavigable } from 'openland-x/Navigable';
@@ -100,7 +96,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal justifyContent="space-between" separator={12}>
-                    <XLink path={'/o/' + this.props.item.id}>
+                    <XLink path={'/directory/o/' + this.props.item.id}>
                         <CommunityAvatar
                             cloudImageUuid={this.props.item.photo!!}
                             size="small"
@@ -109,21 +105,21 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                     </XLink>
                     <CommunityContentWrapper>
                         <CommunityInfoWrapper>
-                            <CommunityTitle path={'/o/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
+                            <CommunityTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
                             <CommunityCounter>{this.props.item.channels.length + (this.props.item.channels.length === 1 ? ' channel' : 'channels')}</CommunityCounter>
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper>
                             <XButton
                                 style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
                                 size="r-default"
-                                path={'/o/' + this.props.item.id}
+                                path={'/directory/o/' + this.props.item.id}
                                 text="View"
                             />
                             <XOverflow
                                 placement="bottom-end"
                                 content={(
                                     <>
-                                        <XMenuItem style="primary-sky-blue" href={'/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                                        <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
                                             <XWithRole role="admin" orgPermission={true}>

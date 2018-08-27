@@ -9,7 +9,7 @@ interface XTagProps extends XFlexStyles {
     icon?: string;
     iconLeft?: string;
     size?: 'large' | 'default' | 'small';
-    color?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
+    color?: 'primary' | 'default' | 'gray' | 'green' | 'ghost';
     rounded?: boolean;
     onIconClick?: () => void;
     onClick?: React.MouseEventHandler<any>;
@@ -17,7 +17,7 @@ interface XTagProps extends XFlexStyles {
 
 interface StyledXTagProps extends XFlexStyles {
     tagSize?: 'large' | 'default' | 'small';
-    tagColor?: 'primary' | 'default' | 'gray' | 'green' | 'gost';
+    tagColor?: 'primary' | 'default' | 'gray' | 'green' | 'ghost';
     pointer?: boolean;
     rounded?: boolean;
 }
@@ -108,11 +108,11 @@ let colorStyles = styleResolver({
         backgroundColor: 'rgba(105, 208, 109, 0.18)',
         color: '#66b969',
     },
-    'gost': {
+    'ghost': {
         backgroundColor: '#fff',
         color: '#334562',
         opacity: 0.5,
-        border: '1px solid #dedede'
+        boxShadow: 'inset 0 0 0 1px #dedede'
     },
 });
 
@@ -133,7 +133,7 @@ let crossColorStyles = styleResolver({
         color: 'rgba(110, 197, 113, 0.5)',
         opacity: 1
     },
-    'gost': {
+    'ghost': {
         color: '#334562',
         opacity: 0.5
     },

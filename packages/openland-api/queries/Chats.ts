@@ -78,9 +78,11 @@ export const ChatInfoQuery = gql`
                 description
                 myStatus
                 membersCount
+                memberRequestsCount
                 organization{
                     id
                     isMine
+                    isOwner: alphaIsOwner
                     name
                 }
             }

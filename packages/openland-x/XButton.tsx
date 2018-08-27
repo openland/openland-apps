@@ -455,9 +455,9 @@ let colorStyles = styleResolver({
             border: 'solid 1px #dcdee4'
         },
         '&:active': {
-            backgroundColor: '#eeecfa',
+            backgroundColor: '#EDF7FF',
             border: 'solid 1px transparent',
-            color: '#5640d6'
+            color: '#1790ff',
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
