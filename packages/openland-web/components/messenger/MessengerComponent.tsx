@@ -257,14 +257,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
-                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
+                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
                     >
                         <XHorizontal alignItems="center" separator={6}>
                             <XAvatar
-                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/o/' + props.data.chat.organization.id : undefined}
+                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
                                 style={(props.data.chat.__typename === 'SharedConversation'
                                     ? 'organization'

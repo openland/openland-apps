@@ -67,7 +67,7 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts(w
                             <XTable.Cell>
                                 <XHorizontal justifyContent="flex-end">
                                     <XButton path={'/super/orgs/' + v.id} style="ghost" text="Settings" />
-                                    <XButton path={'/o/' + v.orgId} style="ghost" text="Profile" />
+                                    <XButton path={'/directory/o/' + v.orgId} style="ghost" text="Profile" />
                                 </XHorizontal>
                             </XTable.Cell>
                         </XTable.Row>

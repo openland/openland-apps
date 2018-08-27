@@ -18,7 +18,7 @@ export default withApp('Marketplace', 'viewer', withExploreOrganizations(withQue
                     <XTable>
                         <XTable.Body>
                             {props.data.items!!.edges.map((v) => (
-                                <XTable.Row path={'/o/' + v.node.id}>
+                                <XTable.Row path={'/directory/o/' + v.node.id}>
                                     <XTable.Cell>{v.node.name}</XTable.Cell>
                                     <XTable.Cell><XButton path={'/mail/o/' + v.node.id} text="Connect" /></XTable.Cell>
                                 </XTable.Row>

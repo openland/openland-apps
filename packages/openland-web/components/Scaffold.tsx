@@ -308,8 +308,8 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                         <XVertical separator="none">
                             {this.props.organizationId && (
                                 <>
-                                    <OrganizationTitleContainer path={'/o/' + this.props.organizationId} autoClose={true}>
-                                        <XAvatar path={'/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
+                                    <OrganizationTitleContainer path={'/directory/o/' + this.props.organizationId} autoClose={true}>
+                                        <XAvatar path={'/directory/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
                                         <XVertical separator={1}>
                                             <ProfileTitle >{this.props.organizationName}</ProfileTitle>
                                             <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
@@ -643,7 +643,7 @@ const Home = withUserInfo((props) => {
                     <strong>{TextAppBar.items.home}</strong>
                 )}
             >
-                <NavigatorItem path={'/o/' + props.organization!!.id}>
+                <NavigatorItem path={'/directory/o/' + props.organization!!.id}>
                     <HomeIcon />
                 </NavigatorItem>
             </XPopper>
