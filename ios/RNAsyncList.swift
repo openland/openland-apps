@@ -8,12 +8,13 @@
 
 import Foundation
 
-class RNASyncList: ASDisplayNode, ASCollectionDataSource {
+class RNASyncList: ASDisplayNode, ASCollectionDataSource, RNAsyncDataViewDelegate {
   let node: ASCollectionNode
-  var data: [AsyncViewSpec]
+  var data: [RNAsyncDataViewItem]
+  let dataView: RNAsyncDataView
   let width = UIScreen.main.bounds.width
   
-  init(spec: AsyncListViewSpec, data: [AsyncViewSpec]) {
+  init(spec: AsyncListViewSpec) {
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 0.0
     layout.minimumInteritemSpacing = 0.0
@@ -24,11 +25,60 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource {
     self.node.alwaysBounceVertical = true
     self.node.inverted = spec.inverted
     self.node.insetsLayoutMarginsFromSafeArea = false
-    self.data = data
     self.node.backgroundColor = UIColor.clear
+    self.dataView = RNAsyncDataView.getDataView(key: spec.dataViewKey)
+    self.data = self.dataView.items
+    // self.node.reloadData()
     super.init()
     addSubnode(node)
+    
     self.node.dataSource = self
+    self.dataView.watch(delegate: self)
+  }
+  
+//  func onUpdated(items: [RNAsyncDataViewItem]) {
+//    DispatchQueue.main.async {
+//      self.node.performBatchUpdates({
+//        self.data = items
+//        // self.node.reloadData()
+//      }, completion: { (completed) in
+//        //
+//      })
+//    }
+//  }
+
+  func onInited(items: [RNAsyncDataViewItem]) {
+    DispatchQueue.main.async {
+      self.data = items
+      self.node.reloadData()
+    }
+  }
+  
+  func onAdded(index: Int, items: [RNAsyncDataViewItem]) {
+    DispatchQueue.main.async {
+      self.node.performBatchUpdates({
+        self.data = items
+        self.node.insertItems(at: [IndexPath(row: index, section: 0)])
+      }, completion: nil)
+    }
+  }
+  
+  func onMoved(from: Int, to: Int, items: [RNAsyncDataViewItem]) {
+    DispatchQueue.main.async {
+      self.node.performBatchUpdates({
+        self.data = items
+        self.node.moveItem(at: IndexPath(item: from, section: 0), to: IndexPath(item: to, section: 0))
+      }, completion: nil)
+    }
+  }
+  
+  func onUpdated(index: Int, items: [RNAsyncDataViewItem]) {
+    DispatchQueue.main.async {
+      self.node.performBatchUpdates({
+        self.data = items
+        self.node.reloadItems(at: [IndexPath(item: index, section: 0)])
+      }, completion: nil)
+    }
   }
   
   func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
@@ -48,7 +98,7 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource {
         let res = ASStackLayoutSpec()
         res.direction = ASStackLayoutDirection.vertical
         res.alignItems = ASStackLayoutAlignItems.stretch
-        res.child = resolveNode(spec: d)
+        res.child = resolveNode(spec: d.config)
         res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
         return res
       }

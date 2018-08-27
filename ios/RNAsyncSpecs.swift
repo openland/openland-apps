@@ -71,10 +71,10 @@ class AsyncScrollViewSpec: AsyncViewSpec {
 class AsyncListViewSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
-  var children: [AsyncViewSpec]!
   var contentPaddingTop: Float = 0.0
   var contentPaddingBottom: Float = 0.0
   var inverted: Bool = false
+  var dataViewKey: String = ""
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -273,7 +273,7 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     let res = AsyncListViewSpec()
     res.style = resolveStyle(src)
     res.key = src["key"].stringValue
-    res.children = resolveChildren(src)
+    res.dataViewKey = src["props"]["dataViewKey"].stringValue
     if let v = src["props"]["contentPaddingTop"].float {
       res.contentPaddingTop = v
     }

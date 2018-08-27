@@ -2,12 +2,13 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { declareView } from './internals/declareView';
 import { ASViewStyle } from './ASViewStyle';
+import { ASDataView } from './ASDataView';
 
 export interface ASListViewProps extends ASViewStyle {
     contentPaddingTop?: number;
     contentPaddingBottom?: number;
-    onScroll?: any;
     inverted?: boolean;
+    dataView: ASDataView<any>;
 }
 
 class Fallback extends React.PureComponent<ASListViewProps> {
@@ -20,4 +21,7 @@ class Fallback extends React.PureComponent<ASListViewProps> {
     }
 }
 
-export const ASListView = declareView('list', Fallback);
+export const ASListView = declareView('list', Fallback, (src) => {
+    let { dataView, ...other } = src;
+    return { ...other, dataViewKey: dataView.key };
+});

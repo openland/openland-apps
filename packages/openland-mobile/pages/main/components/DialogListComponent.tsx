@@ -16,6 +16,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASListView } from 'react-native-async-view/ASListView';
+import { ASDataView } from 'react-native-async-view/ASDataView';
 
 class DialogListSeparator extends React.PureComponent {
     render() {
@@ -170,7 +171,38 @@ class DialogItemViewAsync extends React.PureComponent<{ item: ConversationShortF
     }
 }
 
-export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, dialogs: ConversationShortFragment[], loadingMore?: boolean, onPress?: (id: ConversationShortFragment) => void }> {
+export class DialogListComponent extends React.PureComponent<{ engine: MessengerEngine, loadingMore?: boolean, onPress?: (id: ConversationShortFragment) => void }> {
+
+    private dv = new ASDataView(this.props.engine.dialogList.dataSource, (item) => (
+        <ASFlex height={80} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem}>
+            <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
+                <ASAvatar
+                    src={item.photo}
+                    size={60}
+                    placeholderKey={item.key}
+                    placeholderTitle={item.title}
+                />
+            </ASFlex>
+            <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                <ASFlex height={18}>
+                    <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{item.title}</ASText>
+                    {/* <ASText fontSize={13} height={18} color="#aaaaaa">{messageDate}</ASText> */}
+                </ASFlex>
+                <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
+                    <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                        {/* {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{messageSender}</ASText>)}
+                        <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{messageText}</ASText> */}
+                    </ASFlex>
+                    {item.unread > 0 && (
+                        <ASFlex marginTop={18} flexShrink={0}>
+                            <ASCounter value={item.unread} />
+                        </ASFlex>
+                    )}
+                </ASFlex>
+            </ASFlex>
+        </ASFlex>
+    ));
+
     handleItemClick = (id: ConversationShortFragment) => {
         if (this.props.onPress) {
             this.props.onPress(id);
@@ -229,11 +261,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: Messenger
         return (
             <ASView style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                 <ASFlex flexDirection="column" alignItems="stretch">
-                    <ASListView flexGrow={1} contentPaddingTop={100} contentPaddingBottom={100} onScroll={new Animated.Value(10)}>
-                        {this.props.dialogs.map((v) => (
-                            <DialogItemViewAsync key={v.id} item={v} onPress={this.handleItemClick} engine={this.props.engine} />
-                        ))}
-                    </ASListView>
+                    <ASListView flexGrow={1} contentPaddingTop={100} contentPaddingBottom={100} dataView={this.dv} />
                 </ASFlex>
             </ASView>
         );

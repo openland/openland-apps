@@ -76,6 +76,7 @@
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
 		AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */; };
 		AAA47DC5212CC70000E71A74 /* RNAsyncList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC4212CC70000E71A74 /* RNAsyncList.swift */; };
+		AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
@@ -743,6 +744,7 @@
 		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
 		AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncBackground.swift; sourceTree = "<group>"; };
 		AAA47DC4212CC70000E71A74 /* RNAsyncList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncList.swift; sourceTree = "<group>"; };
+		AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncDataView.swift; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
 		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
@@ -949,6 +951,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
 			);
 			name = openland;
 			sourceTree = "<group>";
@@ -1291,6 +1294,9 @@
 				AAE10482212C29E30034DA0F /* RNAsyncView.swift */,
 				AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */,
 				AAA47D72212C45FA00E71A74 /* RNAsyncNodes.swift */,
+				AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */,
+				AAE56DC32129FA25003706B3 /* Bridge.h */,
+				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 			);
 			name = RNAsyncView;
 			sourceTree = "<group>";
@@ -1316,9 +1322,6 @@
 			isa = PBXGroup;
 			children = (
 				AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */,
-				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
-				AAE56DC32129FA25003706B3 /* Bridge.h */,
-				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 			);
 			name = hacks;
 			sourceTree = "<group>";
@@ -2325,6 +2328,7 @@
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,

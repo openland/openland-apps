@@ -106,7 +106,7 @@ func createScrollNode(spec: AsyncScrollViewSpec) -> ASLayoutElement {
 }
 
 func createListNode(spec: AsyncListViewSpec) -> ASLayoutElement {
-  let res = RNASyncList(spec: spec, data: spec.children)
+  let res = RNASyncList(spec: spec)
   return resolveStyle(spec.style, res)
 }
 

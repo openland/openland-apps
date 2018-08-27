@@ -6,19 +6,16 @@ import { DialogListComponent } from './components/DialogListComponent';
 import { ConversationShortFragment } from 'openland-api/Types';
 import { ZQuery } from '../../components/ZQuery';
 import { ChatListQuery } from 'openland-api';
-import { ZSafeAreaProvider } from '../../components/layout/ZSafeAreaContext';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { PageProps } from '../../components/PageProps';
 
 class ConversationsListener extends React.PureComponent<{ engine: MessengerEngine, onItemClick: (item: ConversationShortFragment) => void }> {
-
     render() {
         return (
             <ZQuery query={ChatListQuery}>
                 {r => (
                     <DialogListComponent
-                        dialogs={r.data.chats.conversations}
                         engine={this.props.engine}
                         onPress={this.props.onItemClick}
                         loadingMore={r.data.chats.next !== null}

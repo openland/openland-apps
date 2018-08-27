@@ -175,20 +175,20 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
 
     render() {
         // const messages = convertMessages(this.props.messages);
-        let msgs: any[] = [];
-        for (let d of this.props.messages) {
-            for (let m of d.messages) {
-                for (let m2 of m.messages) {
-                    msgs.unshift(<AsyncMessageView message={m2} engine={this.props.engine} />);
-                }
-            }
-        }
+        // let msgs: any[] = [];
+        // for (let d of this.props.messages) {
+        //     for (let m of d.messages) {
+        //         for (let m2 of m.messages) {
+        //             msgs.unshift(<AsyncMessageView message={m2} engine={this.props.engine} />);
+        //         }
+        //     }
+        // }
         return (
             <ASView style={{ flexGrow: 1 }}>
                 <ASFlex flexDirection="column" alignItems="stretch">
-                    <ASListView flexGrow={1} inverted={true} contentPaddingTop={this.props.topInset} contentPaddingBottom={this.props.bottomInset}>
+                    {/* <ASListView flexGrow={1} inverted={true} contentPaddingTop={this.props.topInset} contentPaddingBottom={this.props.bottomInset}>
                         {msgs}
-                    </ASListView>
+                    </ASListView> */}
                 </ASFlex>
             </ASView>
             // <FlatList
