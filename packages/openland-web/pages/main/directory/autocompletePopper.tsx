@@ -106,7 +106,7 @@ const EntryComponent = (props: EntryProps) => (
         <XTag
             text={props.entry.label + ' ' + (props.sugestion ? '' : props.entry.type === 'organizationType' ? 'category' : props.entry.type === 'interest' ? 'intereset' : props.entry.type === 'location' ? 'location' : '')}
             size="large"
-            color="primary"
+            rounded={true}
             onClick={() => props.onPick(props.entry)}
         />
     </TagWrap>

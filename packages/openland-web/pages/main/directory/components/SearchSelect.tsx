@@ -16,6 +16,7 @@ interface PickerProps {
     query?: string;
     onPick: (q: { label: string, value: string }) => void;
     title?: string;
+    noResultsText: string;
 }
 
 interface PickerState {
@@ -28,15 +29,12 @@ const filterOptions = (options: { label: string, value: string }[], q: string) =
 };
 
 const HelpText = Glamorous.div({
-    paddingLeft: 24,
-    paddingRight: 24,
+    padding: '20px 24px',
     fontSize: 15,
     fontWeight: 500,
     lineHeight: 1.27,
     letterSpacing: -0.1,
     color: '#334562',
-    marginBottom: '24px !important',
-    marginTop: 10
 });
 
 const TagsWrapper = Glamorous.div({
@@ -74,10 +72,29 @@ class Picker extends React.Component<PickerProps, PickerState> {
         this.setState({ empty: count === 0, filteredOptions: fOptions });
     }
 
+    keydownHandler = (e: any) => {
+        if (e.code === 'Enter') {
+            e.preventDefault();
+            if (!this.state.empty) {
+                this.props.onPick(this.state.filteredOptions[0]);
+            } else {
+                this.props.onPick({ label: this.props.query || '', value: this.props.query || '' });
+            }
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
     render() {
         return (
             <>
-                {this.state.empty && <HelpText>{'Press Enter to add "' + this.props.query + '" location'}</HelpText>}
+                {this.state.empty && <HelpText>{this.props.noResultsText.replace('{0}', this.props.query || '')}</HelpText>}
                 {!this.state.empty && (
                     <TagsWrapper>
                         {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
@@ -146,6 +163,7 @@ interface SearchSelectProps {
     options: { label: string, value: string }[];
     shown: boolean;
     onShow: () => void;
+    noResultsText: string;
 }
 
 export class SearchSelect extends React.Component<SearchSelectProps, { query: string }> {
@@ -170,13 +188,6 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
         this.setState({ query: '' });
     }
 
-    onEnter = () => {
-        if (this.state.query.length === 0) {
-            return;
-        }
-        this.onPick({ label: this.state.query, value: this.state.query });
-    }
-
     render() {
         return (
             <SearchSelectBox>
@@ -196,7 +207,6 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
                                 placeholder={this.props.title}
                                 value={this.state.query}
                                 onChange={this.handleChange}
-                                onEnter={this.onEnter}
                                 autofocus={true}
                             />
                         </SearchSelectInputWrapper>
@@ -205,6 +215,7 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
                                 options={this.props.options}
                                 onPick={this.onPick}
                                 query={this.state.query}
+                                noResultsText={this.props.noResultsText}
                             />
                         </SearchSelectBody>
                     </>

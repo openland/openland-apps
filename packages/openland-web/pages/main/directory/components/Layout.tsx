@@ -36,14 +36,10 @@ export const SidebarList = Glamorous.div({
 
 export const SidebarItem = Glamorous.div<{ active?: boolean }>([
     {
-        '&:first-child': {
-            borderTop: 'none!important'
-        }
+        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     },
     (props) => (props.active) ? {
         background: 'rgba(245, 246, 247, 0.42)',
-        borderTop: '1px solid rgba(220, 222, 228, 0.45)',
-        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     } : {}
 ]);
 
@@ -84,6 +80,7 @@ export const SidebarItemHead = Glamorous(XLink)({
 
     '&:hover': {
         color: '#1790ff',
+        background: 'rgba(23, 144, 255, 0.05)',
 
         '& svg > *': {
             opacity: 0.5,

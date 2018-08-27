@@ -182,7 +182,6 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
     }
 
     render() {
-        console.warn(this.props.item.members);
         let firstMember = this.props.item.members[0];
         return (
             <OrganizationCardWrapper

@@ -364,6 +364,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     options={CategoryOptions}
                                     onShow={() => this.setState({ shownSelect: 1 })}
                                     shown={this.state.shownSelect === 1}
+                                    noResultsText={'Press Enter to add "{0}" category'}
                                 />
                                 <SearchSelect
                                     title="Location"
@@ -372,6 +373,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     options={LocationOptions}
                                     onShow={() => this.setState({ shownSelect: 2 })}
                                     shown={this.state.shownSelect === 2}
+                                    noResultsText={'Press Enter to add "{0}" location'}
                                 />
                             </SidebarItemBody>
                         </SidebarItem>
