@@ -161,9 +161,17 @@ class Header extends React.Component<{ organizationQuery: OrganizationQuery } & 
                         <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
                     </HeaderTabs>
                 </HeaderInfo>
-                <HeaderTools>
-                    <XButton size="r-default" text="Edit profile" />
-                </HeaderTools>
+                {org.isMine && (
+                    <XWithRole role="admin" orgPermission={true}>
+                        <HeaderTools>
+                            <XButton
+                                size="r-default"
+                                text="Edit profile"
+                                path="/settings/organization"
+                            />
+                        </HeaderTools>
+                    </XWithRole>
+                )}
             </HeaderWrapper>
         );
     }
