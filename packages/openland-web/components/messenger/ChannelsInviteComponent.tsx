@@ -151,10 +151,13 @@ const JoinButton = withChannelJoin((props) => {
             flexShrink={0}
             action={async () => {
                 await props.join({ variables: { channelId: (props as any).channelId } });
+                if ((props as any).isMine) {
+                    await delayForewer();
+                }
             }}
         />
     );
-}) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string }>;
+}) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string, isMine: boolean }>;
 
 const JoinLinkButton = withChannelJoinInviteLink((props) => {
     return (
@@ -183,7 +186,8 @@ interface ChannelsInviteComponentProps {
         title: string,
         membersCount: number,
         organization?: {
-            name: string
+            name: string,
+            isMine: boolean
         } | null
     };
     invite?: {
@@ -198,7 +202,7 @@ interface ChannelsInviteComponentProps {
 export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
     render() {
         console.warn(this.props);
-        let joinText = this.props.channel.myStatus === 'none' ? 'Request invite' : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
+        let joinText = this.props.channel.myStatus === 'none' ? (this.props.channel.organization && this.props.channel.organization.isMine ? 'Join channel' : 'Request invite') : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
         return (
             <Root>
                 <Reactangle />
@@ -232,7 +236,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
+                            {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} isMine={this.props.channel.organization && this.props.channel.organization.isMine} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
                             {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: this.props.channel.id }} text="Accept invite" />}
                             {this.props.channel.myStatus === 'requested' && (
                                 <XButton
