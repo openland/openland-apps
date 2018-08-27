@@ -174,6 +174,9 @@ const SectionContent = Glamorous.div<{ withTags?: boolean }>([
         display: 'flex',
         padding: '18px 24px 32px',
         borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+        '&:last-child': {
+            borderBottom: 'none'
+        }
     },
     (props) => (props.withTags) ? {
         padding: '10px 12px 22px 24px',
