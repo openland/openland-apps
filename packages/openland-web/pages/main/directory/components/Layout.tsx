@@ -150,8 +150,21 @@ export const SearchInput = Glamorous.input({
     }
 });
 
-export const ResetButton = Glamorous(XButton)({
-    color: '#99a2b0'
+export const ResetButton = Glamorous.div({
+    color: '#99a2b0',
+    height: 32,
+    lineHeight: '32px',
+    fontSize: 14,
+    letterSpacing: -0.2,
+    fontWeight: 500,
+    padding: '0 14px',
+    cursor: 'pointer',
+    '&:hover': {
+        color: '#334562',
+    },
+    '&:active': {
+        color: '#1790ff',
+    },
 });
 
 export class OrganizationsSidebarItemHead extends React.Component {
