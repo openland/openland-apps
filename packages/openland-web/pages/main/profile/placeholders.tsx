@@ -418,11 +418,13 @@ export const AboutPlaceholder = withMyOrganizationProfile((props) => {
             target={(props as any).target || (
                 <XButton text="About" iconRight="add" />
             )}
+            title={TextOrganizationProfile.placeholderAboutModalAboutTitle}
+            useTopCloser={true}
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField title={TextOrganizationProfile.placeholderAboutModalAboutTitle} field="fields.input.about">
-                        <XTextArea valueStoreKey="fields.input.about" />
+                    <XFormField field="fields.input.about">
+                        <XTextArea valueStoreKey="fields.input.about" placeholder="Description" />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
@@ -438,6 +440,7 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
     return (
         <XModalForm
             title={TextOrganizationProfile.placeholderSocialModalTitle}
+            useTopCloser={true}
             defaultData={{
                 input: {
                     website: props.data.organizationProfile!!.website,
@@ -462,27 +465,25 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                 <XButton text="Links" iconRight="add" />
             )}
         >
-            <ModalFormContentWrapper>
                 <XFormLoadingContent>
                     <XVertical flexGrow={1} separator={8}>
-                        <XFormField field="input.website" title={TextOrganizationProfile.placeholderSocialModalWeb}>
+                        <XFormField field="input.website">
                             <XHorizontal separator={7}>
-                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="medium" />
-                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="medium" />
+                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialModalWeb} field="input.website" size="r-default" />
+                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="r-default" />
                             </XHorizontal>
                         </XFormField>
-                        <XFormField field="input.twitter" title={TextOrganizationProfile.placeholderSocialModalTwitter}>
-                            <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.twitter" size="medium" />
+                        <XFormField field="input.twitter">
+                            <XInput placeholder={TextOrganizationProfile.placeholderSocialModalTwitter} field="input.twitter" size="r-default" />
                         </XFormField>
-                        <XFormField field="input.facebook" title={TextOrganizationProfile.placeholderSocialModalFacebook}>
-                            <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.facebook" size="medium" />
+                        <XFormField field="input.facebook">
+                            <XInput placeholder={TextOrganizationProfile.placeholderSocialModalFacebook} field="input.facebook" size="r-default" />
                         </XFormField>
-                        <XFormField field="input.linkedin" title={TextOrganizationProfile.placeholderSocialModalLinkedIn}>
-                            <XInput placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.linkedin" size="medium" />
+                        <XFormField field="input.linkedin">
+                            <XInput placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn} field="input.linkedin" size="r-default" />
                         </XFormField>
                     </XVertical>
                 </XFormLoadingContent>
-            </ModalFormContentWrapper>
         </XModalForm>
 
     );
@@ -658,8 +659,8 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
-            title="Add locations"
-            size="large"
+            title="Edit locations"
+            useTopCloser={true}
             defaultData={{
                 input: {
                     locations: props.data.organizationProfile!!.locations,
@@ -682,7 +683,7 @@ export const LocationPlaceholder = withMyOrganizationProfile((props) => {
                 <XSelect
                     creatable={true}
                     multi={true}
-                    render={<XSelectCustomInputRender popper={true} />}
+                    render={<XSelectCustomInputRender rounded={true} popper={true} />}
                     field="input.locations"
                     options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
                 />
@@ -697,7 +698,8 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
     }
     return (
         <XModalForm
-            title="Add categories"
+            title="Edit categories"
+            useTopCloser={true}
             defaultData={{
                 input: {
                     organizationType: props.data.organizationProfile!!.organizationType,
@@ -716,17 +718,15 @@ export const CategoriesPlaceholder = withMyOrganizationProfile((props) => {
                 <XButton text="Categories" icon="add" />
             )}
         >
-            <ModalFormContentWrapper>
-                <XFormLoadingContent>
-                    <XSelect
-                        creatable={true}
-                        multi={true}
-                        field="input.organizationType"
-                        render={<XSelectCustomInputRender popper={true} />}
-                        options={TextDirectoryData.categoryPicker.categories}
-                    />
-                </XFormLoadingContent>
-            </ModalFormContentWrapper>
+            <XFormLoadingContent>
+                <XSelect
+                    creatable={true}
+                    multi={true}
+                    field="input.organizationType"
+                    render={<XSelectCustomInputRender rounded={true} popper={true} />}
+                    options={TextDirectoryData.categoryPicker.categories}
+                />
+            </XFormLoadingContent>
         </XModalForm>
 
     );

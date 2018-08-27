@@ -36,7 +36,7 @@ const XFormFieldDescription = Glamorous.div<{ invalid?: boolean }>((props) => ({
 
 interface XFormFieldProps extends XFlexStyles {
     field?: string;
-    title: string;
+    title?: string;
     description?: string;
     invalid?: boolean;
     optional?: boolean;
@@ -70,7 +70,7 @@ export function XFormField(props: XFormFieldProps) {
                     let invalided = errors && errors.length !== 0;
                     return (
                         <XVertical className={(props as any).className} {...other} separator={separator !== undefined ? separator : 4}>
-                            <XFormFieldTitle invalid={invalided}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>
+                            {title && (<XFormFieldTitle invalid={invalided}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>)}
                             <XFormFieldChildren>
                                 <XVertical>
                                     {children}
