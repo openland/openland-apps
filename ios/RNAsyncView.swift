@@ -50,6 +50,10 @@ class AsyncViewEventEmitter {
   func dispatchOnPress(key: String) {
     nativeInstance.sendEvent(withName: "onPress", body: key)
   }
+  
+  func dispatchOnLoadMore(key: String) {
+    nativeInstance.sendEvent(withName: "onLoadMore", body: key)
+  }
 }
 
 @objc(RNAsyncViewEventEmitter)
@@ -61,7 +65,29 @@ class RNAsyncViewEventEmitter: RCTEventEmitter {
   }
   
   override func supportedEvents() -> [String]! {
-    return ["onPress"]
+    return ["onPress", "onLoadMore"]
+  }
+}
+
+func lock(_ obj: AnyObject, blk:() -> ()) {
+  objc_sync_enter(obj)
+  blk()
+  objc_sync_exit(obj)
+}
+
+class RNAsyncViewContext {
+  private var cache = NSMapTable<NSString, AnyObject>(keyOptions: NSPointerFunctions.Options.strongMemory, valueOptions: NSPointerFunctions.Options.weakMemory)
+  
+  func fetchCached<T>(key: String, builder: () -> T) -> T {
+    var res: T? = nil
+    lock(self.cache) {
+      res = self.cache.object(forKey: NSString(string: key)) as? T
+      if res == nil {
+        res = builder()
+        self.cache.setObject(res as! AnyObject, forKey: NSString(string: key))
+      }
+    }
+    return res!
   }
 }
 
@@ -99,6 +125,7 @@ class RNAsyncView: RCTView {
 
 class RNAsyncViewNode: ASDisplayNode {
   
+  let context = RNAsyncViewContext()
   var spec: AsyncViewSpec? = nil
   var pendingFrame: CGRect? = nil
   
@@ -126,6 +153,6 @@ class RNAsyncViewNode: ASDisplayNode {
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return resolveNode(spec: self.spec!) as! ASLayoutSpec
+    return resolveNode(spec: self.spec!, context: self.context) as! ASLayoutSpec
   }
 }

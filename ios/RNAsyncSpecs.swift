@@ -75,6 +75,7 @@ class AsyncListViewSpec: AsyncViewSpec {
   var contentPaddingBottom: Float = 0.0
   var inverted: Bool = false
   var dataViewKey: String = ""
+  var loading: Bool? = nil
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -282,6 +283,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     }
     if let v = src["props"]["inverted"].bool {
       res.inverted = v
+    }
+    if let v = src["props"]["loading"].bool {
+      res.loading = v
     }
     return res
   }

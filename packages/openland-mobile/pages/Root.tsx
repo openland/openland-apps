@@ -15,6 +15,8 @@ import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { NativeModules } from 'react-native';
 import { FastRouterProvider } from 'react-native-fast-navigation/FastRouterProvider';
+import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
+import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
     constructor(props: NavigationInjectedProps) {
         super(props);
@@ -42,7 +44,8 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                     userToken = undefined;
                 } else {
                     let messenger = buildMessenger(client, res.data.me);
-                    setMessenger(messenger);
+                    let history = new FastHistoryManager(Routes);
+                    setMessenger(new MobileMessenger(messenger, history));
                     saveClient(client);
                     await messenger.awaitLoading();
 
@@ -70,15 +73,17 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
             return (
                 <YApolloProvider client={getClient()}>
                     <PushManager client={getClient()} />
-                    <MessengerContext.Provider value={getMessenger()}>
-                        <ZSafeAreaRoot>
-                            <View style={{ width: '100%', height: '100%' }}>
-                                <ZPictureModal>
-                                    <FastRouterProvider routes={Routes} />
-                                </ZPictureModal>
-                            </View>
-                        </ZSafeAreaRoot>
-                    </MessengerContext.Provider>
+                    <MobileMessengerContext.Provider value={getMessenger()}>
+                        <MessengerContext.Provider value={getMessenger().engine}>
+                            <ZSafeAreaRoot>
+                                <View style={{ width: '100%', height: '100%' }}>
+                                    <ZPictureModal>
+                                        <FastRouterProvider history={getMessenger().history} />
+                                    </ZPictureModal>
+                                </View>
+                            </ZSafeAreaRoot>
+                        </MessengerContext.Provider>
+                    </MobileMessengerContext.Provider>
                 </YApolloProvider>
             );
         } else if (this.state.state === 'auth') {

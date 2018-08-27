@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Easing, Dimensions, Platform, StyleSheet, ViewStyle } from 'react-native';
+import { View, Animated, Easing, Dimensions, Platform, StyleSheet, ViewStyle, Keyboard } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerStateChangeEvent, State } from 'react-native-gesture-handler';
 import { FastHistoryRecord, HistoryWatcher, FastHistory } from '../FastHistory';
 import { ContainerProps } from './ContainerProps';
@@ -155,6 +155,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     }
 
     onPushed = (record: FastHistoryRecord, history: FastHistory) => {
+        Keyboard.dismiss();
+        
         let underlay = history.history[history.history.length - 2].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
         let progress = new Animated.Value(-1);
@@ -184,6 +186,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.setState({ mounted: this.mounted, routes: this.routes, current: this.current, transitioning: true });
     }
     onPopped = (record: FastHistoryRecord, history: FastHistory, args?: { immediate?: boolean }) => {
+        Keyboard.dismiss();
+
         let holder = this.routes.find((v) => v.record.key === record.key)!!;
         let underlay = history.history[history.history.length - 1].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
@@ -208,6 +212,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     }
     onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
         if (event.nativeEvent.state === State.ACTIVE) {
+            Keyboard.dismiss();
             if (this.currentHistory.history.length >= 2) {
 
                 let current = this.currentHistory.history[this.currentHistory.history.length - 1].key;

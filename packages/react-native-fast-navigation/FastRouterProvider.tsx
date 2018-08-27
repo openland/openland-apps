@@ -6,7 +6,7 @@ import UUID from 'uuid/v4';
 import { Container } from './containers/Container';
 
 export interface FastRouterProviderProps {
-    routes: FastRoutes;
+    history: FastHistoryManager;
 }
 
 export class FastRouterProvider extends React.PureComponent<FastRouterProviderProps> {
@@ -16,7 +16,7 @@ export class FastRouterProvider extends React.PureComponent<FastRouterProviderPr
     constructor(props: FastRouterProviderProps) {
         super(props);
 
-        this.history = new FastHistoryManager(props.routes);
+        this.history = props.history;
     }
 
     componentDidMount() {

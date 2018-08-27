@@ -4,11 +4,18 @@ const ASNativeEmitter = new NativeEventEmitter(NativeModules.RNAsyncViewEventEmi
 
 export class ASEventEmitterHolder {
     private onPress = new Map<string, () => void>();
+    private onLoadMore = new Map<string, () => void>();
 
     constructor() {
         if (Platform.OS === 'ios') {
             ASNativeEmitter.addListener('onPress', (key: string) => {
                 let p = this.onPress.get(key);
+                if (p) {
+                    p();
+                }
+            });
+            ASNativeEmitter.addListener('onLoadMore', (key: string) => {
+                let p = this.onLoadMore.get(key);
                 if (p) {
                     p();
                 }
@@ -28,6 +35,13 @@ export class ASEventEmitterHolder {
     }
     unregisterOnPress = (key: string) => {
         this.onPress.delete(key);
+    }
+
+    registerOnLoadMore = (key: string, handler: () => void) => {
+        this.onLoadMore.set(key, handler);
+    }
+    unregisterOnLoadMore = (key: string) => {
+        this.onLoadMore.delete(key);
     }
 }
 

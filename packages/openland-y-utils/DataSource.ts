@@ -5,11 +5,13 @@ export interface DataSourceItem {
 }
 
 export interface DataSourceWatcher<T extends DataSourceItem> {
-    onDataSourceInited(data: T[]): void;
+    onDataSourceInited(data: T[], completed: boolean): void;
     onDataSourceItemAdded(item: T, index: number): void;
     onDataSourceItemUpdated(item: T, index: number): void;
     onDataSourceItemRemoved(item: T, index: number): void;
     onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number): void;
+    onDataSourceLoadedMore(data: T[], completed: boolean): void;
+    onDataSourceCompleted(): void;
 }
 
 export class DataSource<T extends DataSourceItem> {
@@ -18,6 +20,18 @@ export class DataSource<T extends DataSourceItem> {
     private dataByKey = new Map<string, T>();
     private inited: boolean = false;
     private destroyed: boolean = false;
+    private needMoreCallback: () => void;
+    private completed: boolean = false;
+
+    constructor(needMoreCallback: () => void) {
+        this.needMoreCallback = needMoreCallback;
+    }
+
+    needMore() {
+        if (!this.completed) {
+            this.needMoreCallback();
+        }
+    }
 
     hasItem(key: string) {
         return this.dataByKey.has(key);
@@ -30,24 +44,28 @@ export class DataSource<T extends DataSourceItem> {
         return this.data.length;
     }
 
-    initialize(data: T[]) {
+    initialize(data: T[], completed: boolean) {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
         if (this.inited) {
             this.inited = false;
         }
+        this.completed = completed;
         this.data = data;
         for (let d of data) {
             this.dataByKey.set(d.key, d);
         }
         for (let w of this.watchers) {
-            w.onDataSourceInited(data);
+            w.onDataSourceInited(data, completed);
         }
         this.inited = true;
     }
 
     addItem(item: T, index: number) {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
         if (index > this.data.length) {
             throw Error('Invalid Index');
         }
@@ -66,6 +84,9 @@ export class DataSource<T extends DataSourceItem> {
         }
     }
     updateItem(item: T) {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
         let i = this.data.findIndex((v) => v.key === item.key);
         if (i >= 0) {
             this.data[i] = item;
@@ -78,6 +99,9 @@ export class DataSource<T extends DataSourceItem> {
         }
     }
     removeItem(key: string) {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
         let i = this.data.findIndex((v) => v.key === key);
         if (i >= 0) {
             let removed = this.data[i];
@@ -93,6 +117,9 @@ export class DataSource<T extends DataSourceItem> {
         }
     }
     moveItem(key: string, index: number) {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
         let i = this.data.findIndex((v) => v.key === key);
         if (i >= 0) {
             if (i === index) {
@@ -117,10 +144,35 @@ export class DataSource<T extends DataSourceItem> {
         }
     }
 
+    loadedMore(items: T[], completed: boolean) {
+        let filtered = items.filter((v) => !this.hasItem(v.key));
+        for (let v of filtered) {
+            this.dataByKey.set(v.key, v);
+        }
+        this.data = [...this.data, ...filtered];
+        this.completed = completed;
+        for (let w of this.watchers) {
+            w.onDataSourceLoadedMore(filtered, completed);
+        }
+    }
+
+    complete() {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
+        if (this.completed) {
+            return;
+        }
+        this.completed = true;
+        for (let w of this.watchers) {
+            w.onDataSourceCompleted();
+        }
+    }
+
     watch(handler: DataSourceWatcher<T>): WatchSubscription {
         this.watchers.push(handler);
         if (this.inited) {
-            handler.onDataSourceInited(this.data);
+            handler.onDataSourceInited(this.data, this.completed);
         }
         return () => {
             let index = this.watchers.indexOf(handler);
@@ -134,7 +186,7 @@ export class DataSource<T extends DataSourceItem> {
 
     destroy() {
         if (this.destroyed) {
-            throw Error('Datasource is not inited yet');
+            throw Error('Datasource already destroyed');
         }
         this.destroyed = true;
     }

@@ -7,14 +7,39 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 export interface DialogDataSourceItem {
+    key: string;
     title: string;
     type: string;
     photo?: string;
     unread: number;
+
     date: number;
-    key: string;
+    message: string;
+    sender: string;
+    isOut: boolean;
 }
 
+function formatMessage(message: any): string {
+    if (message.message) {
+        return message.message;
+    } else if (message.file) {
+        if (message.fileMetadata) {
+            if (message.fileMetadata.isImage) {
+                if (message.fileMetadata.imageFormat === 'GIF') {
+                    return 'GIF';
+                } else {
+                    return 'Photo';
+                }
+            } else {
+                return message.fileMetadata.name;
+            }
+        } else {
+            return 'Document';
+        }
+    } else {
+        return '';
+    }
+}
 export class DialogListEngine {
 
     readonly engine: MessengerEngine;
@@ -25,7 +50,9 @@ export class DialogListEngine {
     private loading: boolean = true;
     constructor(engine: MessengerEngine) {
         this.engine = engine;
-        this.dataSource = new DataSource<DialogDataSourceItem>();
+        this.dataSource = new DataSource<DialogDataSourceItem>(() => {
+            this.loadNext();
+        });
         this.dataSourceLogger = new DataSourceLogger<DialogDataSourceItem>('[DIALOGS]', this.dataSource);
     }
 
@@ -43,14 +70,19 @@ export class DialogListEngine {
         }
 
         // Update data source
-        this.dataSource.initialize(this.conversations.map((c) => ({
-            key: c.id,
-            type: c.__typename,
-            title: c.title,
-            photo: c.photos.length > 0 ? c.photos[0] : undefined,
-            unread: c.unreadCount,
-            date: parseInt(c.topMessage!!.date, 10)
-        })));
+        this.dataSource.initialize(
+            this.conversations.map((c) => ({
+                key: c.id,
+                type: c.__typename,
+                title: c.title,
+                photo: c.photos.length > 0 ? c.photos[0] : undefined,
+                unread: c.unreadCount,
+                isOut: c.topMessage!!.sender.id === this.engine.user.id,
+                sender: c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name,
+                message: formatMessage(c.topMessage),
+                date: parseInt(c.topMessage!!.date, 10)
+            })),
+            next === null);
 
         // Start engine
         this.loading = false;
@@ -84,10 +116,15 @@ export class DialogListEngine {
 
         // Write message to datasource
         let res = this.dataSource.getItem(conversationId);
+        let isOut = event.message.sender.id === this.engine.user.id;
+        let sender = isOut ? 'You' : event.message.sender.name;
         if (res) {
             this.dataSource.updateItem({
                 ...res,
                 unread: (!visible || res.unread > unreadCount) ? unreadCount : res.unread,
+                isOut: isOut,
+                sender: sender,
+                message: formatMessage(event.message),
                 date: parseInt(event.message.date, 10)
             });
             this.dataSource.moveItem(res.key, 0);
@@ -99,6 +136,9 @@ export class DialogListEngine {
                     title: conversation.title,
                     photo: conversation.photos.length > 0 ? conversation.photos[0] : undefined,
                     unread: unreadCount,
+                    isOut: isOut,
+                    sender: sender,
+                    message: formatMessage(event.message),
                     date: parseInt(event.message.date, 10)
                 },
                 0);
@@ -121,13 +161,27 @@ export class DialogListEngine {
                 }
             });
 
+            // Write to storage
             this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShortFragment) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
             this.next = initialDialogs.data.chats.next;
-
             this.engine.client.client.writeQuery({
                 query: ChatListQuery.document,
                 data: { ...initialDialogs, chats: { ...initialDialogs.data.chats, conversations: [...this.conversations] } },
             });
+
+            // Write to datasource
+            let converted = initialDialogs.data.chats.conversations.map((c: any) => ({
+                key: c.id,
+                type: c.__typename,
+                title: c.title,
+                photo: c.photos.length > 0 ? c.photos[0] : undefined,
+                unread: c.unreadCount,
+                isOut: c.topMessage!!.sender.id === this.engine.user.id,
+                sender: c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name,
+                message: formatMessage(c.topMessage),
+                date: parseInt(c.topMessage!!.date, 10)
+            }));
+            this.dataSource.loadedMore(converted, !this.next);
 
             this.loading = false;
         }

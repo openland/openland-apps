@@ -11,8 +11,8 @@ export class DataSourceLogger<T extends DataSourceItem> implements DataSourceWat
         this.dataSource.watch(this);
     }
 
-    onDataSourceInited = (data: T[]) => {
-        console.log(this.tag, 'Inited with data', data);
+    onDataSourceInited = (data: T[], completed: boolean) => {
+        console.log(this.tag, 'Inited with data (completed=' + completed + ')', data);
     }
 
     onDataSourceItemAdded = (item: T, index: number) => {
@@ -26,5 +26,11 @@ export class DataSourceLogger<T extends DataSourceItem> implements DataSourceWat
     }
     onDataSourceItemMoved = (item: T, fromIndex: number, toIndex: number) => {
         console.log(this.tag, 'Item moved from ' + fromIndex + ' to ' + toIndex, item);
+    }
+    onDataSourceLoadedMore = (items: T[], completed: boolean) => {
+        console.log(this.tag, 'Loaded more with data (completed=' + completed + ')', items);
+    }
+    onDataSourceCompleted = () => {
+        console.log(this.tag, 'Data source completed');
     }
 }

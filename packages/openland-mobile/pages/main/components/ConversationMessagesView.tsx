@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Day, MessageGroup } from 'openland-engines/messenger/ConversationState';
+import { Day } from 'openland-engines/messenger/ConversationState';
 import { MessageFullFragment } from 'openland-api/Types';
-import { View, Text, ListRenderItemInfo, Platform, FlatList, LayoutAnimation } from 'react-native';
+import { View, Text, ListRenderItemInfo, FlatList, LayoutAnimation } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ModelMessage, extractKey } from 'openland-engines/messenger/types';
 import { MessageViewSingle } from 'openland-shared/MessageViewSingle';
@@ -12,6 +12,8 @@ import { ASView } from 'react-native-async-view/ASView';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { AsyncMessageView } from './async/AsyncMessageView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASDataView } from 'react-native-async-view/ASDataView';
+import { MobileMessenger, MobileMessengerContext } from '../../../messenger/MobileMessenger';
 
 let months = [
     'Jan',
@@ -104,114 +106,43 @@ export interface ConversationMessagesViewProps {
 }
 
 class ConversationMessagesViewComponent extends React.PureComponent<ConversationMessagesViewProps & { topInset: number, bottomInset: number }> {
-    private listRef = React.createRef<FlatList<any>>();
-
-    private renderItem = (src: ListRenderItemInfo<MessageListItem>) => {
-        const itm = src.item;
-        if (itm.type === 'header') {
-            return (
-                <View height={this.props.topInset + 48}>
-                    <ZLoader appearance="small" transparent={true} enabled={!this.props.loaded && this.props.messages.length !== 0} />
-                </View>
-            );
-        } else if (itm.type === 'footer') {
-            return (<View height={this.props.bottomInset} />);
-        } else if (itm.type === 'date') {
-            return (<DateSeparator day={itm.day} month={itm.month} year={itm.year} />);
-        } else if (itm.type === 'message') {
-            return (
-                <MessageViewSingle
-                    onPhotoPress={this.props.onPhotoPress}
-                    onAvatarPress={this.props.onAvatarPress}
-                    onDocumentPress={this.props.onDocumentPress}
-                    message={itm.message}
-                    engine={this.props.engine}
-                    attach={itm.attach}
-                    downloadManager={DownloadManagerInstance}
-                />
-            );
-        } else {
-            throw Error('Unexpected item');
-        }
-    }
-
-    private extractKey = (itm: MessageListItem) => {
-        if (itm.type === 'header') {
-            return 'header';
-        } else if (itm.type === 'footer') {
-            return 'footer';
-        } else if (itm.type === 'date') {
-            return 'date-' + itm.day + '-' + itm.month + '-' + itm.year;
-        } else if (itm.type === 'message') {
-            return extractKey(itm.message);
-        } else {
-            throw Error('Unexpected item');
-        }
-    }
-
-    private handleEndReached = () => {
-        this.props.onEndReached();
-    }
 
     scrollToStart = () => {
-        if (this.listRef.current) {
-            console.log(LayoutAnimation.Presets.spring);
-            LayoutAnimation.configureNext({
-                duration: 700,
-                update: {
-                    type: 'spring',
-                    springDamping: 0.4
-                },
-                create: {
-                    type: 'easeInEaseOut',
-                    property: 'opacity',
-                    duration: 300
-                }
-            });
+        // if (this.listRef.current) {
+        //     LayoutAnimation.configureNext({
+        //         duration: 700,
+        //         update: {
+        //             type: 'spring',
+        //             springDamping: 0.4
+        //         },
+        //         create: {
+        //             type: 'easeInEaseOut',
+        //             property: 'opacity',
+        //             duration: 300
+        //         }
+        //     });
 
-            this.listRef.current.scrollToIndex({ index: 0, animated: false });
-        }
+        //     this.listRef.current.scrollToIndex({ index: 0, animated: false });
+        // }
     }
 
     render() {
-        // const messages = convertMessages(this.props.messages);
-        // let msgs: any[] = [];
-        // for (let d of this.props.messages) {
-        //     for (let m of d.messages) {
-        //         for (let m2 of m.messages) {
-        //             msgs.unshift(<AsyncMessageView message={m2} engine={this.props.engine} />);
-        //         }
-        //     }
-        // }
         return (
-            <ASView style={{ flexGrow: 1 }}>
-                <ASFlex flexDirection="column" alignItems="stretch">
-                    {/* <ASListView flexGrow={1} inverted={true} contentPaddingTop={this.props.topInset} contentPaddingBottom={this.props.bottomInset}>
-                        {msgs}
-                    </ASListView> */}
-                </ASFlex>
-            </ASView>
-            // <FlatList
-            //     data={messages}
-            //     renderItem={this.renderItem}
-            //     inverted={true}
-            //     flexBasis={0}
-            //     flexGrow={1}
-            //     onEndReachedThreshold={1}
-            //     onEndReached={this.handleEndReached}
-            //     ref={this.listRef}
-            //     initialNumToRender={0}
-            //     scrollIndicatorInsets={{
-            //         bottom: this.props.topInset,
-            //         top: this.props.bottomInset
-            //     }}
-            //     keyboardDismissMode="interactive"
-            //     removeClippedSubviews={true}
-            //     keyExtractor={this.extractKey}
-            //     extraData={this.props.bottomInset * 10000 + this.props.topInset}
-            //     windowSize={3}
-            //     maxToRenderPerBatch={3}
-            // />
+            <MobileMessengerContext.Consumer>
+                {engine => (
+                    <ASView style={{ flexGrow: 1 }}>
+                        <ASFlex flexDirection="column" alignItems="stretch">
+                            <ASListView
+                                dataView={engine.getConversation(this.props.engine.conversationId)}
+                                inverted={true}
+                                flexGrow={1}
+                                contentPaddingTop={this.props.topInset}
+                                contentPaddingBottom={this.props.bottomInset}
+                            />
+                        </ASFlex>
+                    </ASView>
+                )}
+            </MobileMessengerContext.Consumer>
         );
     }
 }

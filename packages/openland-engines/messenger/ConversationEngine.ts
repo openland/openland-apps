@@ -10,6 +10,7 @@ import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { func } from '../../../node_modules/@types/prop-types';
+import { DataSource } from 'openland-y-utils/DataSource';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
@@ -33,9 +34,18 @@ export interface ConversationStateHandler {
 
 const CONVERSATION_PAGE_SIZE = 30;
 
+export interface DataSourceMessageItem {
+    key: string;
+    date: number;
+    isOut: boolean;
+    senderName?: string;
+    senderPhoto?: string;
+    message?: string;
+}
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
+    readonly dataSource: DataSource<DataSourceMessageItem>;
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
@@ -51,6 +61,9 @@ export class ConversationEngine implements MessageSendHandler {
         this.engine = engine;
         this.conversationId = conversationId;
         this.state = new ConversationState(true, [], [], undefined, false, false);
+        this.dataSource = new DataSource(() => {
+            this.loadBefore();
+        });
     }
 
     start = async () => {
@@ -77,6 +90,16 @@ export class ConversationEngine implements MessageSendHandler {
         }
         this.messages = [...(initialChat.data as any).messages.messages];
         this.messages.reverse();
+
+        let dsItems = ((initialChat.data as any).messages.messages as MessageFullFragment[]).map((v) => ({
+            key: v.id,
+            isOut: v.sender.id === this.engine.user.id,
+            senderName: v.sender.name,
+            senderPhoto: v.sender.picture,
+            message: v.message ? v.message : undefined
+        } as DataSourceMessageItem));
+        this.dataSource.initialize(dsItems, true);
+
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         let seq = (initialChat.data as any).messages.seq as number;

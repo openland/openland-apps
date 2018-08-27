@@ -9,6 +9,7 @@ export interface ASListViewProps extends ASViewStyle {
     contentPaddingBottom?: number;
     inverted?: boolean;
     dataView: ASDataView<any>;
+    loading?: boolean;
 }
 
 class Fallback extends React.PureComponent<ASListViewProps> {

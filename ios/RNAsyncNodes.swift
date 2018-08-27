@@ -12,17 +12,17 @@ import Foundation
 // Root Resolvers
 //
 
-func resolveNode(spec: AsyncViewSpec) -> ASLayoutElement {
+func resolveNode(spec: AsyncViewSpec, context: RNAsyncViewContext) -> ASLayoutElement {
   if let flexSpec = spec as? AsyncFlexSpec {
-    return createFlexNode(spec: flexSpec, resolvedChildren: resolveNodes(flexSpec.children))
+    return createFlexNode(spec: flexSpec, resolvedChildren: resolveNodes(flexSpec.children, context), context: context)
   } else if let textSpec = spec as? AsyncTextSpec {
-    return createTextNode(spec: textSpec)
+    return createTextNode(spec: textSpec, context: context)
   } else if let imageSpec = spec as? AsyncImageSpec {
-    return createImageNode(spec: imageSpec)
+    return createImageNode(spec: imageSpec, context: context)
   } else if let scrollSpec = spec as? AsyncScrollViewSpec {
-    return createScrollNode(spec: scrollSpec)
+    return createScrollNode(spec: scrollSpec, context: context)
   } else if let listSpec = spec as? AsyncListViewSpec {
-    return createListNode(spec: listSpec)
+    return createListNode(spec: listSpec, context: context)
   }
   
   fatalError("Unknown view spec")
@@ -32,7 +32,7 @@ func resolveNode(spec: AsyncViewSpec) -> ASLayoutElement {
 // View Resolvers
 //
 
-func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement]) -> ASLayoutElement {
+func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement], context: RNAsyncViewContext) -> ASLayoutElement {
   let res = ASStackLayoutSpec()
   if (spec.direction == AsyncFlexDirection.row) {
     res.direction = ASStackLayoutDirection.horizontal
@@ -62,7 +62,7 @@ func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement]) ->
     }
   }()
   res.children = resolvedChildren
-  let res2 = resolveStyle(spec.style, res)
+  let res2 = resolveStyle(spec.style, res, context)
   if (spec.touchableKey != nil) {
     return ASBackgroundLayoutSpec(child: res2, background: RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor))
   } else {
@@ -70,7 +70,7 @@ func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement]) ->
   }
 }
 
-func createTextNode(spec: AsyncTextSpec) -> ASLayoutElement {
+func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayoutElement {
   let res = ASTextNode()
   var attributes: [String: Any] = [:]
   attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize), weight: spec.fontWeight)
@@ -85,36 +85,43 @@ func createTextNode(spec: AsyncTextSpec) -> ASLayoutElement {
   if let v = spec.numberOfLines {
     res.maximumNumberOfLines = UInt(v)
   }
-  return resolveStyle(spec.style, res)
+  return resolveStyle(spec.style, res, context)
 }
 
-func createImageNode(spec: AsyncImageSpec) -> ASLayoutElement {
-  let res = ASNetworkImageNode()
+func createImageNode(spec: AsyncImageSpec, context: RNAsyncViewContext) -> ASLayoutElement {
+  let res = context.fetchCached(key: spec.key) { () -> ASNetworkImageNode in
+    return ASNetworkImageNode()
+  }
   res.shouldCacheImage = false; // It doesn't work otherwise
-  res.url = URL(string: spec.url)
-  return resolveStyle(spec.style, res)
+  if res.url?.absoluteString != spec.url {
+      res.url = URL(string: spec.url)
+  }
+  return resolveStyle(spec.style, res, context)
 }
 
-func createScrollNode(spec: AsyncScrollViewSpec) -> ASLayoutElement {
+func createScrollNode(spec: AsyncScrollViewSpec, context: RNAsyncViewContext) -> ASLayoutElement {
   let res = ASScrollNode()
   res.automaticallyManagesContentSize = true
   res.automaticallyManagesSubnodes = true
   res.layoutSpecBlock = { node, constrainedSize in
-    return resolveNode(spec: spec.children) as! ASLayoutSpec
+    return resolveNode(spec: spec.children, context: context) as! ASLayoutSpec
   }
-  return resolveStyle(spec.style, res)
+  return resolveStyle(spec.style, res, context)
 }
 
-func createListNode(spec: AsyncListViewSpec) -> ASLayoutElement {
-  let res = RNASyncList(spec: spec)
-  return resolveStyle(spec.style, res)
+func createListNode(spec: AsyncListViewSpec, context: RNAsyncViewContext) -> ASLayoutElement {
+  let res = context.fetchCached(key: spec.key) { () -> RNASyncList in
+    return RNASyncList(context: context)
+  }
+  res.setSpec(spec: spec)
+  return resolveStyle(spec.style, res, context)
 }
 
 //
 // Helpers
 //
 
-func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement) -> ASLayoutElement {
+func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement, _ context: RNAsyncViewContext) -> ASLayoutElement {
   var res = source
   
   // Apply basic styles
@@ -134,8 +141,16 @@ func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement) -> ASLayout
   }
   if let v = spec.backgroundPatch {
     let g = ASImageNode()
-    let image = try! UIImage(data: Data(contentsOf: URL(string: v.source)!), scale: UIScreen.main.scale)
-    g.image = image?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(v.top), left: CGFloat(v.left), bottom: CGFloat(v.bottom), right: CGFloat(v.right)), resizingMode: UIImageResizingMode.stretch)
+    var _baseImage: UIImage? = nil
+    if let val = cache[v.source] {
+      _baseImage = val
+    } else {
+      _baseImage = try! UIImage(data: Data(contentsOf: URL(string: v.source)!), scale: UIScreen.main.scale)
+      if _baseImage != nil {
+        cache[v.source] = _baseImage
+      }
+    }
+    g.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(v.top), left: CGFloat(v.left), bottom: CGFloat(v.bottom), right: CGFloat(v.right)), resizingMode: UIImageResizingMode.stretch)
     res = ASBackgroundLayoutSpec(child: res, background: g)
   } else if let v = spec.backgroundGradient {
     let g = RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
@@ -180,6 +195,10 @@ func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement) -> ASLayout
   return res
 }
 
-func resolveNodes(_ specs: [AsyncViewSpec]) -> [ASLayoutElement] {
-  return specs.map(resolveNode)
+func resolveNodes(_ specs: [AsyncViewSpec], _ context: RNAsyncViewContext) -> [ASLayoutElement] {
+  return specs.map {
+    return resolveNode(spec: $0, context: context)
+  }
 }
+
+var cache = [String : UIImage]()

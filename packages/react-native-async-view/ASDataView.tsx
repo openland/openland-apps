@@ -3,6 +3,7 @@ import { DataSourceItem, DataSource, DataSourceWatcher } from 'openland-y-utils/
 import { NativeDataView } from './platform/NativeDataView';
 import { AsyncRenderer } from './internals/renderer';
 import UUID from 'uuid/v4';
+import { ASEventEmitter } from './platform/ASEventEmitter';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
@@ -37,9 +38,12 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         this.render = render;
         this.dataSource = dataSource;
         this.dataSource.watch(this);
+
+        // Register for load more events
+        ASEventEmitter.registerOnLoadMore(this.key, () => { this.dataSource.needMore(); });
     }
 
-    onDataSourceInited = (data: T[]) => {
+    onDataSourceInited = (data: T[], completed: boolean) => {
         // Create initial items
         this.items = data.map((v) => new ItemRenderHolder(v, this.render));
 
@@ -48,7 +52,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
             key: v.item.key,
             config: JSON.stringify(v.currentState)
         })));
-        NativeDataView.dataViewInit(this.key, config);
+        NativeDataView.dataViewInit(this.key, config, completed);
     }
     onDataSourceItemAdded = (item: T, index: number) => {
         let holder = new ItemRenderHolder(item, this.render);
@@ -88,5 +92,21 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
 
         // Forward to native
         NativeDataView.dataViewMoveItem(this.key, item.key, fromIndex, toIndex);
+    }
+
+    onDataSourceLoadedMore = (items: T[], completed: boolean) => {
+        let added = items.map((v) => new ItemRenderHolder(v, this.render));
+        this.items = [...this.items, ...added];
+
+        // Forward initial state to native
+        let config = JSON.stringify(added.map((v) => ({
+            key: v.item.key,
+            config: JSON.stringify(v.currentState)
+        })));
+        NativeDataView.dataViewLoadedMore(this.key, config, completed);
+    } 
+
+    onDataSourceCompleted = () => {
+        //
     }
 }
