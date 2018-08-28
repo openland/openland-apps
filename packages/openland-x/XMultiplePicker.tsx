@@ -1,9 +1,10 @@
 
-import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import Glamorous from 'glamorous';
+import { XTag } from 'openland-x/XTag';
 
 const EntryScrollable = Glamorous(XVertical)({
     overflowY: 'scroll',
@@ -35,10 +36,10 @@ const EntryWrapper = Glamorous(XVertical)({
 export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((props) => ({
     display: 'flex',
     alignItems: 'center',
-    height: 40,
+    height: 34,
     flexShrink: 0,
-    paddingLeft: 24,
-    paddingRight: 24,
+    paddingLeft: 16,
+    paddingRight: 16,
     opacity: 0.8,
     fontSize: 15,
     lineHeight: 1.33,
@@ -124,7 +125,10 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                                 onClick={() => this.props.onPick({ value: e.value, label: e.label })}
                                 key={e + '_' + i}
                             >
-                                {e.label}
+                                <XTag
+                                    text={e.label}
+                                    rounded={true}
+                                />
                             </EntryItem>
                         </div>
                     ))}
