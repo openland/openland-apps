@@ -181,6 +181,7 @@ class Header extends React.Component<{ organizationQuery: OrganizationQuery } & 
 const SectionContent = Glamorous.div<{ withTags?: boolean }>([
     {
         display: 'flex',
+        flexWrap: 'wrap',
         padding: '18px 24px 32px',
         borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
         '&:last-child': {
@@ -225,6 +226,23 @@ const AddSectionText = Glamorous.div({
     lineHeight: '20px',
     letterSpacing: -0.4,
     color: '#5c6a81'
+});
+
+const EditButton = Glamorous.div({
+    color: '#99a2b0',
+    height: 32,
+    lineHeight: '32px',
+    fontSize: 14,
+    letterSpacing: -0.2,
+    fontWeight: 500,
+    padding: '0 14px',
+    cursor: 'pointer',
+    '&:hover': {
+        color: '#334562',
+    },
+    '&:active': {
+        color: '#1790ff',
+    },
 });
 
 class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
@@ -276,7 +294,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <AboutPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -292,7 +310,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <SocialPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -333,7 +351,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <CategoriesPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <CategoriesPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -356,7 +374,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <LocationPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <LocationPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
