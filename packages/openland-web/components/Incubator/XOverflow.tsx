@@ -47,7 +47,7 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>((props) 
                 : 'solid 1px #dcdee4',
             
         '& > div': {
-            backgroundColor: (props.flat && props.active) ? '#1790ff' : props.active ? '#fff' : '#bcc3cc'
+            backgroundColor: (props.flat) ? '#1790ff' : undefined
         }
     },
     '& > div': {
