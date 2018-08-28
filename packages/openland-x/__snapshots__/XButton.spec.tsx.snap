@@ -51,8 +51,8 @@ exports[`XButton should render correctly 1`] = `
 
 .css-0:active,
 [data-css-0]:active {
-  background-color: #eeecfa;
-  color: #5640d6;
+  background-color: #117fe4;
+  color: #fff;
 }
 
 .css-0:focus,
@@ -66,8 +66,8 @@ exports[`XButton should render correctly 1`] = `
   padding-right: 14px;
 }
 
-.css-0 .icon,
-[data-css-0] .icon {
+.css-0 .icon.material,
+[data-css-0] .icon.material {
   font-size: 16px;
 }
 
