@@ -50,7 +50,7 @@ export class UploadManager {
 
                 (async () => {
                     try {
-                        await getMessenger().sender.sendFileDirect(q.conversationId, s.uuid!!);
+                        await getMessenger().engine.sender.sendFileDirect(q.conversationId, s.uuid!!);
                         if (this._queue.length > 0) {
                             this.startUpload();
                         } else {
