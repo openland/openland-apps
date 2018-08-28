@@ -16,7 +16,7 @@ import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { AboutPlaceholder, SocialPlaceholder, LocationPlaceholder, CategoriesPlaceholder } from './placeholders';
 import { XLoader } from 'openland-x/XLoader';
-import { InvitesToOrganizationMoadal } from '../settings/invites';
+import { InvitesToOrganizationModal } from '../settings/invites';
 import { PermissionsModal, RemoveJoinedModal } from '../settings/members.page';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
@@ -181,6 +181,7 @@ class Header extends React.Component<{ organizationQuery: OrganizationQuery } & 
 const SectionContent = Glamorous.div<{ withTags?: boolean }>([
     {
         display: 'flex',
+        flexWrap: 'wrap',
         padding: '18px 24px 32px',
         borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
         '&:last-child': {
@@ -225,6 +226,23 @@ const AddSectionText = Glamorous.div({
     lineHeight: '20px',
     letterSpacing: -0.4,
     color: '#5c6a81'
+});
+
+const EditButton = Glamorous.div({
+    color: '#99a2b0',
+    height: 32,
+    lineHeight: '32px',
+    fontSize: 14,
+    letterSpacing: -0.2,
+    fontWeight: 500,
+    padding: '0 14px',
+    cursor: 'pointer',
+    '&:hover': {
+        color: '#334562',
+    },
+    '&:active': {
+        color: '#1790ff',
+    },
 });
 
 class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
@@ -276,7 +294,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <AboutPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -292,7 +310,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <SocialPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -333,7 +351,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <CategoriesPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <CategoriesPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -356,7 +374,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                             {org.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <LocationPlaceholder target={<XButton text="Edit" style="flat" />} />
+                                        <LocationPlaceholder target={<EditButton>Edit</EditButton>} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -463,7 +481,7 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                     </MemberCardTitleWrapper>
                     <MemberCardRole>{member.role}</MemberCardRole>
                 </MemberCardInfo>
-                <MemberCardTools separator={4}>
+                <MemberCardTools separator={5}>
                     <XButton
                         text="Message"
                         size="r-default"
@@ -472,10 +490,11 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                     />
                     <XOverflow
                         placement="bottom-end"
+                        flat={true}
                         content={
                             <>
-                                <XMenuItem query={{ field: 'changeRole', value: member.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
-                                <XMenuItem query={{ field: 'remove', value: member.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: member.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: member.user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
                             </>
                         }
                     />
@@ -496,7 +515,7 @@ class Members extends React.Component<{ organizationQuery: OrganizationQuery }> 
                             {organization.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <InvitesToOrganizationMoadal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
+                                        <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}
@@ -577,7 +596,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                     <ChannelCardTitle>{(channel!!.isRoot ? '' : '/') + channel!!.title}</ChannelCardTitle>
                     <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>
                 </ChannelCardInfo>
-                <ChannelCardTools separator={3}>
+                <ChannelCardTools separator={5}>
                     <XButton
                         text="View"
                         size="r-default"
@@ -586,6 +605,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                     />
                     <XOverflow
                         placement="bottom-end"
+                        flat={true}
                         content={
                             <>
                                 <XMenuItem>Menu</XMenuItem>

@@ -137,11 +137,11 @@ const InviteComponent = (props: InviteComponentProps) => (
             <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
         </XInputGroup>
         {props.useRoles !== false &&
-            <RoleSelectWrapper width={126}>
-                <XWithRole role="super-admin">
+            <XWithRole role="super-admin">
+                <RoleSelectWrapper width={126}>
                     <XSelect field={'inviteRequests.' + props.index + '.role'} searchable={false} clearable={false} options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]} />
-                </XWithRole>
-            </RoleSelectWrapper>
+                </RoleSelectWrapper>
+            </XWithRole>
         }
         {!props.single && (
             <XModalCloser onClick={() => props.handleRemove(props.index)} />
@@ -227,18 +227,18 @@ const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) =>
     <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
-interface InvitesMoadalRawProps {
+interface InvitesModalRawProps {
     mutation: any;
     useRoles?: boolean;
     organization: boolean;
 }
 
-interface InvitesMoadalRawState {
+interface InvitesModalRawState {
     customTextAreaOpen?: boolean;
     showLink?: boolean;
 }
 
-class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<XModalFormProps>, InvitesMoadalRawState> {
+class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XModalFormProps>, InvitesModalRawState> {
     linkComponent?: any;
     constructor(props: any) {
         super(props);
@@ -359,7 +359,7 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
                 customFooter={footer}
                 {...modalFormProps}
             >
-                <ModalContentWrapper alignItems="center" bottomOfset={this.state.showLink !== true}>
+                <ModalContentWrapper alignItems="center">
                     {!this.state.showLink && (
                         <XVertical flexGrow={1} width={'100%'}>
                             <XStoreContext.Consumer>
@@ -422,8 +422,8 @@ class InvitesMoadalRaw extends React.Component<InvitesMoadalRawProps & Partial<X
     }
 }
 
-export const InvitesToOrganizationMoadal = withOrganizationInviteMembers((props) => (
-    <InvitesMoadalRaw
+export const InvitesToOrganizationModal = withOrganizationInviteMembers((props) => (
+    <InvitesModalRaw
         mutation={props.sendInvite}
         targetQuery={(props as any).targetQuery}
         target={(props as any).target}
@@ -433,8 +433,8 @@ export const InvitesToOrganizationMoadal = withOrganizationInviteMembers((props)
     />
 )) as React.ComponentType<{ targetQuery?: string, target?: any, refetchVars?: { orgId: string } }>;
 
-export const InvitesGlobalMoadal = withOrganizationInviteOrganization((props) => (
-    <InvitesMoadalRaw
+export const InvitesGlobalModal = withOrganizationInviteOrganization((props) => (
+    <InvitesModalRaw
         mutation={props.sendInvite}
         targetQuery={(props as any).targetQuery}
         target={(props as any).target}

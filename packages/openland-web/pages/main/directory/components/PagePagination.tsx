@@ -25,12 +25,12 @@ const PaginationButton = Glamorous(XLink)<{ current?: boolean, disable?: boolean
     letterSpacing: -0.2,
     textAlign: 'center',
     color: props.current ? '#fff' : '#5c6a81',
-    backgroundColor: props.current ? '#5c6a81' : '#f3f3f5',
+    backgroundColor: props.current ? '#1790ff' : '#f3f3f5',
     cursor: (props.disable || props.current) ? 'default' : undefined,
     pointerEvents: (props.disable || props.current) ? 'none' : undefined,
     '&:hover': {
-        backgroundColor: '#654bfa',
-        color: '#fff'
+        backgroundColor: 'rgba(23, 144, 255, 0.08)',
+        color: '#1790ff'
     },
     '& > i': {
         fontSize: 20,

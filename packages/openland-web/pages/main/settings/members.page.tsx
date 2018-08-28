@@ -25,7 +25,7 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { DateFormater } from 'openland-x-format/XDateLegacy';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { InvitesToOrganizationMoadal } from './invites';
+import { InvitesToOrganizationModal } from './invites';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withAlterFolderMutation } from '../../../api/withAlterFolderMutation';
@@ -399,7 +399,7 @@ export default withApp('Members', 'viewer', withQueryLoader(withUserInfo((props)
             <Content>
                 <XVertical alignItems="flex-start">
                     {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
-                    <InvitesToOrganizationMoadal target={<XButton size="medium" style="primary" text={TextInvites.membersMgmt.inviteButton} />} />
+                    <InvitesToOrganizationModal target={<XButton size="medium" style="primary" text={TextInvites.membersMgmt.inviteButton} />} />
                 </XVertical>
             </Content>
         </Navigation>

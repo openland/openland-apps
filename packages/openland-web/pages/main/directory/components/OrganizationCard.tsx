@@ -46,7 +46,10 @@ const OrganizationTitle = Glamorous(XLink)({
     lineHeight: '20px',
     fontWeight: 500,
     letterSpacing: -0.5,
-    color: '#5c6a81'
+    color: '#5c6a81',
+    '&:hover': {
+        color: '#1790ff',
+    }
 });
 
 const OrganizationMembers = Glamorous.div({
@@ -204,7 +207,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                     size="x-small"
                                     cloudImageUuid={firstMember.user.picture || undefined}
                                 />
-                                <span>{firstMember.user.name + (this.props.item.members.length > 0 ? (' +' + this.props.item.members.length + ' more') : '')}</span>
+                                <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
                             </OrganizationMembers>}
                             <OrganizationCardTypeWrapper separator={0}>
                                 {this.props.item.locations && (
@@ -220,7 +223,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                 )}
                             </OrganizationCardTypeWrapper>
                         </OrganizationInfoWrapper>
-                        <OrganizationToolsWrapper>
+                        <OrganizationToolsWrapper separator={5}>
                             {this.props.item.isMine && (
                                 <XButton
                                     style="ghost"
@@ -239,6 +242,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             )}
                             <XOverflow
                                 placement="bottom-end"
+                                flat={true}
                                 content={(
                                     <>
                                         <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
