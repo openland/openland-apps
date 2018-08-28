@@ -110,16 +110,18 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
         return
       }
       self.keyboardHiding = true
-      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
-      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
-    
-      UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
-        self.node.view.contentInset.top = CGFloat(self.bottomInset)
-        self.node.view.scrollIndicatorInsets.top = CGFloat(self.bottomInset)
-      }, completion: { (b) in
-        self.keyboardVisible = false
-        self.keyboardShown = false
-      })
+//      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
+//      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
+      self.node.view.scrollIndicatorInsets.top = CGFloat(self.bottomInset)
+      self.node.view.contentInset.top = CGFloat(self.bottomInset)
+      self.keyboardVisible = false
+      self.keyboardShown = false
+//      UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
+//        self.node.view.contentInset.top = CGFloat(self.bottomInset)
+//      }, completion: { (b) in
+//        self.keyboardVisible = false
+//        self.keyboardShown = false
+//      })
       // }
     }
   }
@@ -232,11 +234,13 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
       self.node.performBatchUpdates({
         let wasCompleted = self.state.completed
         self.state = state
-        var paths: [IndexPath] = []
-        for i in from...from+count-1 {
-          paths.append(IndexPath(item: i, section: 0))
+        if count > 0 {
+          var paths: [IndexPath] = []
+          for i in from...from+count-1 {
+            paths.append(IndexPath(item: i, section: 0))
+          }
+          self.node.insertItems(at: paths)
         }
-        self.node.insertItems(at: paths)
         if wasCompleted != state.completed {
           self.node.reloadSections(IndexSet(integer: 1))
         }
@@ -266,6 +270,7 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, willBeginBatchFetchWith context: ASBatchContext) {
+    self.batchContext = context
     AsyncViewEventEmitter.sharedInstance.dispatchOnLoadMore(key: self.dataView!.dataSourceKey)
   }
   

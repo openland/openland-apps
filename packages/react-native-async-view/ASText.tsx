@@ -8,6 +8,7 @@ export interface ASTextProps extends ASViewStyle {
     fontSize?: number;
     fontWeight?: string;
     lineHeight?: number;
+    letterSpacing?: number;
     numberOfLines?: number;
 }
 

@@ -10,7 +10,8 @@ import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { func } from '../../../node_modules/@types/prop-types';
-import { DataSource } from 'openland-y-utils/DataSource';
+import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
+import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
@@ -40,12 +41,43 @@ export interface DataSourceMessageItem {
     isOut: boolean;
     senderName?: string;
     senderPhoto?: string;
-    message?: string;
+    text?: string;
+    file?: {
+        fileName: string,
+        fileId: string,
+        fileSize: number,
+        isImage: boolean,
+        isGif: boolean,
+        imageSize?: { width: number, height: number }
+    };
+    isSending: boolean;
 }
+
+export function convertMessage(src: MessageFullFragment, engine: MessengerEngine): DataSourceMessageItem {
+    return {
+        key: src.repeatKey || src.id,
+        date: parseInt(src.date, 10),
+        isOut: src.sender.id === engine.user.id,
+        senderName: src.sender.name,
+        senderPhoto: src.sender.picture ? src.sender.picture : undefined,
+        text: src.message ? src.message : undefined,
+        file: src.file ? {
+            fileName: src.fileMetadata!!.name,
+            fileId: src.file,
+            fileSize: src.fileMetadata!!.size,
+            isImage: src.fileMetadata!!.isImage,
+            isGif: src.fileMetadata!!.isImage && src.fileMetadata!!.imageFormat === 'GIF',
+            imageSize: src.fileMetadata!!.isImage ? { width: src.fileMetadata!!.imageWidth!!, height: src.fileMetadata!!.imageHeight!! } : undefined
+        } : undefined,
+        isSending: false
+    };
+}
+
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
     readonly dataSource: DataSource<DataSourceMessageItem>;
+    private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem>;
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
@@ -64,6 +96,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.dataSource = new DataSource(() => {
             this.loadBefore();
         });
+        this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
     }
 
     start = async () => {
@@ -91,21 +124,16 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages = [...(initialChat.data as any).messages.messages];
         this.messages.reverse();
 
-        let dsItems = ((initialChat.data as any).messages.messages as MessageFullFragment[]).map((v) => ({
-            key: v.id,
-            isOut: v.sender.id === this.engine.user.id,
-            senderName: v.sender.name,
-            senderPhoto: v.sender.picture,
-            message: v.message ? v.message : undefined
-        } as DataSourceMessageItem));
-        this.dataSource.initialize(dsItems, true);
-
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         let seq = (initialChat.data as any).messages.seq as number;
         console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
         this.watcher = new SequenceWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, seq, { conversationId: this.conversationId }, this.updateHandler, this.engine.client);
         this.onMessagesUpdated();
+
+        // Update Data Source
+        let dsItems = ((initialChat.data as any).messages.messages as MessageFullFragment[]).map((v) => convertMessage(v, this.engine));
+        this.dataSource.initialize(dsItems, this.historyFullyLoaded);
     }
 
     onOpen = () => {
@@ -150,6 +178,10 @@ export class ConversationEngine implements MessageSendHandler {
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
             this.onMessagesUpdated();
             this.loadingHistory = undefined;
+
+            // Data Source
+            let dsItems = ((loaded.data as any).messages.messages as MessageFullFragment[]).map((v) => convertMessage(v, this.engine));
+            this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
         }
 
     }
@@ -162,6 +194,19 @@ export class ConversationEngine implements MessageSendHandler {
             this.messages = [...this.messages, { date, key, message, progress: 0, file: null, failed: false } as PendingMessage];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
+
+            // Data Source
+            this.dataSource.addItem(
+                {
+                    key: key,
+                    date: parseInt(date, 10),
+                    senderName: this.engine.user.name,
+                    senderPhoto: this.engine.user.picture ? this.engine.user.picture : undefined,
+                    isOut: true,
+                    isSending: true,
+                    text: text
+                },
+                0);
             for (let l of this.listeners) {
                 l.onMessageSend();
             }
@@ -341,6 +386,9 @@ export class ConversationEngine implements MessageSendHandler {
             }
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
+
+            // Add to datasource
+            this.dataSource.addItem(convertMessage(event.message, this.engine), 0);
         } else {
             console.warn('Received unknown message');
             if (event.seq) {

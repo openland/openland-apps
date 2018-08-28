@@ -81,6 +81,9 @@ func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayou
     style.maximumLineHeight = CGFloat(v)
   }
   attributes[NSParagraphStyleAttributeName] = style
+  if let v = spec.letterSpacing {
+    attributes[NSKernAttributeName] = CGFloat(v)
+  }
   res.attributedText = NSAttributedString(string: spec.text, attributes: attributes)
   if let v = spec.numberOfLines {
     res.maximumNumberOfLines = UInt(v)
