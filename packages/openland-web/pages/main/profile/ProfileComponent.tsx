@@ -475,7 +475,7 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                 <MemberCardInfo>
                     <MemberCardTitleWrapper>
                         <MemberCardTitle>{member.user.name}</MemberCardTitle>
-                        {member.user.email && (<MemberCardSocial href="mailto:member.user.email"><EmailIcon /></MemberCardSocial>)}
+                        {member.user.email && (<MemberCardSocial href={'mailto:' + member.user.email}><EmailIcon /></MemberCardSocial>)}
                         {member.user.linkedin && (<MemberCardSocial href={member.user.linkedin}><LinkedinIcon /></MemberCardSocial>)}
                         {member.user.twitter && (<MemberCardSocial href={member.user.twitter}><TwitterIcon /></MemberCardSocial>)}
                     </MemberCardTitleWrapper>

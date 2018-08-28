@@ -16,8 +16,8 @@ export interface XInputBasicProps extends XFlexStyles {
     pattern?: string;
     placeholder?: string;
     value?: string;
-    icon?: string;
-    iconRight?: string;
+    icon?: string | any;
+    iconRight?: string | any;
     required?: boolean;
     invalid?: boolean;
     disabled?: boolean;
@@ -195,7 +195,7 @@ let NonIconPaddingStyles = styleResolver({
         paddingLeft: 8
     },
     'r-default': {
-        paddingLeft: 20
+        paddingLeft: 16
     },
     'r-small': {
         paddingLeft: 16
@@ -291,10 +291,10 @@ let borderRadiusStyles = styleResolverWithProps((props: { attach?: XInputAttach 
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
     },
     'r-default': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 22,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 22,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 22,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 22,
     },
     'r-small': {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
@@ -397,15 +397,22 @@ const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
     (props) => NonIconRightPaddingStyles(props.format, !props.iconRight),
 ]);
 
-const RequireElement = Glamorous.span({
-    width: 10,
-    height: 10,
-    fontSize: 23,
-    marginLeft: 6,
-    color: '#1790ff',
-    position: 'absolute',
-    top: 'calc(50% - 5px)'
-});
+const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize }>([
+    () => ({
+        display: 'flex',
+        alignItems: 'center',
+        whiteSpace: 'nowrap',
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        color: '#9d9d9d',
+        pointerEvents: 'none'
+    }),
+    (props) => IconPaddingStyles(props.format, !!props.icon),
+    (props) => NonIconPaddingStyles(props.format, !props.icon),
+]);
 
 const PopperPlaceholder = Glamorous.div({
     position: 'absolute',
@@ -416,6 +423,15 @@ const PopperPlaceholder = Glamorous.div({
         fontSize: 18,
         // color: '#8A80E7'
     }
+});
+
+const RequireElement = Glamorous.span({
+    width: 10,
+    height: 10,
+    fontSize: 23,
+    marginLeft: 3,
+    marginTop: -5,
+    color: '#1790ff'
 });
 
 const ClearButton = Glamorous.a({
@@ -430,11 +446,15 @@ const ClearButton = Glamorous.a({
     cursor: 'pointer'
 });
 
-export class XInputBasic extends React.PureComponent<XInputBasicProps> {
+export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: string }> {
     inputRef: any | null = null;
 
     constructor(props: XInputBasicProps) {
         super(props);
+
+        this.state = {
+            value: this.props.value || ''
+        };
     }
 
     handleRef = (e: any) => {
@@ -453,12 +473,20 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
         if (this.props.onChange) {
             this.props.onChange(e.target.value);
         }
+
+        this.setState({
+            value: e.target.value
+        });
     }
 
     handleClear = () => {
         if (this.props.onChange) {
             this.props.onChange('');
         }
+
+        this.setState({
+            value: ''
+        });
     }
 
     handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -495,7 +523,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
             ...other
         } = this.props;
 
-        let v = this.props.value;
+        let v = this.state.value;
         if (v === null) {
             v = '';
         }
@@ -508,14 +536,21 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                 invalid={invalid}
                 disabled={disabled}
             >
-                {icon && <XIcon icon={icon} className="icon" />}
-                {iconRight && <XIcon icon={iconRight} className="icon icon-right" />}
+                {icon && (
+                    typeof (icon) === 'string'
+                        ? <XIcon icon={icon} className="icon" />
+                        : <i className="icon">{icon}</i>
+                )}
+                {iconRight && (
+                    typeof (iconRight) === 'string'
+                        ? <XIcon icon={iconRight} className="icon icon-right" />
+                        : <i className="icon icon-right">iconRight</i>
+                )}
                 <Input
                     disabled={disabled}
                     icon={icon}
                     format={size}
                     required={required}
-                    placeholder={placeholder}
                     type={type}
                     pattern={pattern}
                     value={v}
@@ -525,7 +560,16 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps> {
                     innerRef={this.handleRef}
                     onKeyPress={this.handleKey}
                 />
-                {required && (v && v !== '' ? null : <RequireElement>*</RequireElement>)}
+                {(placeholder && (!v || v === '')) && (
+                    <InputPlaceholder
+                        className="input-placeholder"
+                        icon={icon}
+                        format={size}
+                    >
+                        <span>{placeholder}</span>
+                        {required && <RequireElement className="required-star">*</RequireElement>}
+                    </InputPlaceholder>
+                )}
                 {tooltipContent && (
                     <XPopper
                         placement="bottom"

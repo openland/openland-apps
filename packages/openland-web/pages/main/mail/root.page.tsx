@@ -21,6 +21,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import PlusIcon from '../../../components/icons/ic-add-medium.svg';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -91,6 +92,15 @@ const ChannelInviteFromLink = withChannelInviteInfo((props) => {
         <XLoader loading={true} />;
 });
 
+const AddButton = Glamorous(XButton)({
+    '& svg > g > path': {
+        transition: 'all .2s'
+    },
+    '&:active svg > g > path:last-child': {
+        fill: '#fff'
+    }
+});
+
 let returnPath: string | undefined = undefined;
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
@@ -136,10 +146,10 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                         <ChatListContainer>
                             <Header alignItems="center" justifyContent="space-between">
                                 <Title>Messenger</Title>
-                                <XButton
+                                <AddButton
                                     path="/mail/new"
                                     text="New chat"
-                                    icon="add"
+                                    icon={<PlusIcon/>}
                                     size="r-small"
                                 />
                             </Header>

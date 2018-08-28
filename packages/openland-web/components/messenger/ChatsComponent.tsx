@@ -16,6 +16,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import CircleIcon from './components/icons/circle-icon.svg';
 import ArrowIcon from './components/icons/ic-arrow-rignt.svg';
+import SearchIcon from '../icons/ic-search-small.svg';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -222,7 +223,10 @@ const SearchChats = withChatSearchText((props) => {
 const Search = Glamorous(XInput)({
     margin: 16,
     marginTop: 4,
-    height: 36
+    height: 36,
+    '&:focus-within svg > g > path:last-child': {
+        fill: 'rgba(23, 144, 255, 0.5)'
+    }
 });
 
 const ExploreChannels = Glamorous(XMenuItem)({
@@ -265,7 +269,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     onChange={this.onInput}
                     size="r-default"
                     placeholder="Search"
-                    icon="search"
+                    icon={<SearchIcon />}
                     color="primary-sky-blue"
                     cleansable={true}
                 />

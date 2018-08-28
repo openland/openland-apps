@@ -22,10 +22,6 @@ import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';
 import { XMutation } from 'openland-x/XMutation';
 import { XButton } from 'openland-x/XButton';
 
-const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>((props) => ({
-    paddingBottom: props.bottomOfset ? 60 : undefined
-}));
-
 const ChannelName = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
@@ -353,7 +349,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                     inviteRequests: [{ email: '' }, { email: '' }]
                 }}
             >
-                <ModalContentWrapper bottomOfset={this.state.showLink !== true}>
+                <XVertical>
                     {!this.state.showLink && (
                         <>
                             <XStoreContext.Consumer>
@@ -407,7 +403,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                             variables={{ channelId: this.props.channelId }}
                         />
                     )}
-                </ModalContentWrapper>
+                </XVertical>
             </XModalForm>
         );
     }

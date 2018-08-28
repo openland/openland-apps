@@ -8,7 +8,8 @@ const EmptyRoot = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 'auto'
 });
 
 const EmptyContent = Glamorous.div({

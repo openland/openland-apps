@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XButton, XButtonStyleProps } from 'openland-x/XButton';
 import { XFormContext, XFormContextValue } from './XFormContext';
 import { delay } from 'openland-y-utils/timer';
+import CheckIcon from './icons/ic-check.svg';
 
 class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormContextValue }, { loading: boolean, success: boolean }> {
     state = {
@@ -50,7 +51,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
                 enabled={this.state.loading || formEnabled}
                 loading={this.state.loading}
                 style={this.state.success ? 'success' : other.style}
-                icon={this.state.success ? 'check' : other.icon}
+                icon={this.state.success ? <CheckIcon/> : other.icon}
             />
         );
     }
