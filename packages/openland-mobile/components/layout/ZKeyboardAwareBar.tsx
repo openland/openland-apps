@@ -17,6 +17,12 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
         }
     }
 
+    componentWillUnmount() {
+        if (Platform.OS === 'ios' && this.props.context) {
+            this.props.context.updateSize(0);
+        }
+    }
+
     render() {
         if (Platform.OS === 'ios') {
             return (

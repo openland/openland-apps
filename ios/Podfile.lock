@@ -1,4 +1,5 @@
 PODS:
+  - BouncyLayout (2.1.0)
   - ComponentKit (0.23):
     - Yoga (~> 1.6)
   - PINCache (3.0.1-beta.6):
@@ -27,12 +28,14 @@ PODS:
   - Yoga (1.9.0)
 
 DEPENDENCIES:
+  - BouncyLayout
   - ComponentKit (~> 0.23)
   - SwiftyJSON (~> 4.0)
   - Texture
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - BouncyLayout
     - ComponentKit
     - PINCache
     - PINOperation
@@ -42,6 +45,7 @@ SPEC REPOS:
     - Yoga
 
 SPEC CHECKSUMS:
+  BouncyLayout: a7955879861375cc4e88bb64d42bcf622cd2694c
   ComponentKit: bf8b4c4e7448bd15b3a8e5a71174ea7aa6cea98d
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
   PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
@@ -50,6 +54,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: aaae8abea68951f60bee05f6277d3eed90bb91bb
 
-PODFILE CHECKSUM: 502a67ed88f5b51d6acc8e2bb48ec026ebfd0d4e
+PODFILE CHECKSUM: cf37e9285b3935f271b7ad4f7a7212357f44cfc5
 
 COCOAPODS: 1.5.3

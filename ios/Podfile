@@ -5,6 +5,7 @@ target 'openland' do
   pod 'Texture'
   pod 'ComponentKit', '~> 0.23'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'BouncyLayout'
 end
 
 post_install do |installer|

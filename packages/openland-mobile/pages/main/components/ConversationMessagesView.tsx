@@ -138,6 +138,7 @@ class ConversationMessagesViewComponent extends React.PureComponent<Conversation
                                 flexGrow={1}
                                 contentPaddingTop={this.props.topInset}
                                 contentPaddingBottom={this.props.bottomInset}
+                                fluid={true}
                             />
                         </ASFlex>
                     </ASView>

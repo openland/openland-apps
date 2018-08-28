@@ -7,32 +7,143 @@
 //
 
 import Foundation
+import BouncyLayout
 
 class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate {
   
   let width = UIScreen.main.bounds.width // Screen width
   let context: RNAsyncViewContext
-  let node: ASCollectionNode
+  var node: ASCollectionNode!
   
   var state: RNAsyncDataViewState!
   var isLoading: Bool? = nil
   var dataView: RNAsyncDataView!
   
   var batchContext: ASBatchContext? = nil
+  var keyboardVisible = false
+  var bottomInset: Float = 0.0
   
   init(context: RNAsyncViewContext) {
     self.context = context
-    let layout = UICollectionViewFlowLayout()
-    layout.minimumLineSpacing = 0.0
-    layout.minimumInteritemSpacing = 0.0
-    layout.scrollDirection = UICollectionViewScrollDirection.vertical
-    self.node = ASCollectionNode(collectionViewLayout: layout)
-    self.node.alwaysBounceVertical = true
-    self.node.backgroundColor = UIColor.clear
     super.init()
-    addSubnode(node)
-    self.node.dataSource = self
-    self.node.delegate = self
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+  }
+  
+  var keyboardShown = false
+  var keyboardHiding = false
+  
+  func keyboardWillShow(aNotification: Notification) {
+    if self.node.inverted {
+      if self.keyboardVisible {
+        return
+      }
+//      if self.keyboardShown {
+//        self.keyboardShown = false
+//        return
+//      }
+      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
+      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
+      let r = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
+      let r2 = aNotification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! CGRect
+      self.keyboardVisible = true
+      self.keyboardHiding = false
+      // self.keyboardShown = true
+      let delta = self.node.contentInset.top - r.height
+      self.node.contentInset.top = r.height
+      UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
+        self.node.view.scrollIndicatorInsets.top = r.height
+        let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y + delta)
+        self.node.setContentOffset(offset, animated: false)
+      }, completion: { (bool) in
+        self.keyboardShown = true
+      }  )
+    }
+  }
+  
+  func keyboardDidShow(aNotification: Notification) {
+//    if self.node.inverted {
+//      print("didShow")
+//      if !self.keyboardVisible {
+//        return
+//      }
+//      self.keyboardShown = true
+//    }
+  }
+  
+  func keyboardWillChangeFrame(aNotification: Notification) {
+    if self.node.inverted {
+      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
+      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
+      let r = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
+      let r2 = aNotification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! CGRect
+      
+      if self.keyboardShown && self.keyboardVisible {
+        let delta = self.node.contentInset.top - r.height
+        self.node.contentInset.top = r.height
+        if delta < 0 {
+          UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
+            self.node.view.scrollIndicatorInsets.top = r.height
+            let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y + delta)
+            self.node.setContentOffset(offset, animated: false)
+          }, completion: nil)
+        } else {
+          let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y + delta)
+          self.node.setContentOffset(offset, animated: false)
+          UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
+            self.node.view.scrollIndicatorInsets.top = r.height
+            let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y - delta)
+            self.node.setContentOffset(offset, animated: false)
+          }, completion: nil)
+        }
+      }
+    }
+  }
+  
+  func keyboardWillHide(aNotification: Notification) {
+    if self.node.inverted {
+      if self.keyboardHiding {
+        return
+      }
+      self.keyboardHiding = true
+      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
+      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
+    
+      
+      let delta = self.node.view.contentInset.top - CGFloat(self.bottomInset)
+      
+//      let source = self.node.view.contentOffset.y
+//      let offset = CGPoint(x: 0, y: source - delta)
+//      self.node.view.setContentOffset(offset, animated: false)
+      // if delta < 0 {
+      
+      UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
+        self.node.view.contentInset.top = CGFloat(self.bottomInset)
+        self.node.view.scrollIndicatorInsets.top = CGFloat(self.bottomInset)
+        
+        self.node.view.panGestureRecognizer.isEnabled = false;
+        self.node.view.panGestureRecognizer.isEnabled = true;
+        self.node.view.setContentOffset(CGPoint(x: self.node.view.contentOffset.x, y: self.node.view.contentOffset.y+1), animated: false)
+        self.node.view.setContentOffset(CGPoint(x: self.node.view.contentOffset.x, y: self.node.view.contentOffset.y-1), animated: false)
+        // let offset = CGPoint(x: 0, y: source)
+        // self.node.view.setContentOffset(offset, animated: false)
+      }, completion: { (b) in
+        self.keyboardVisible = false
+        self.keyboardShown = false
+      })
+      // }
+    }
+  }
+  
+  func keyboardDidHide(aNotification: Notification) {
+    if self.node.inverted {
+      self.keyboardVisible = false
+      self.keyboardShown = false
+    }
   }
   
   func setSpec(spec: AsyncListViewSpec) {
@@ -44,15 +155,6 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
       }
     }
     
-    // Update styles
-    let insets = UIEdgeInsets(top: CGFloat(spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.contentPaddingBottom), right: 0.0)
-    self.node.contentInset = insets
-    self.node.view.scrollIndicatorInsets = insets
-    if #available(iOS 11.0, *) {
-      self.node.view.contentInsetAdjustmentBehavior = .never
-    }
-    self.node.inverted = spec.inverted
-    
     // Create Data View if needed
     if self.dataView == nil {
       self.dataView = RNAsyncDataView.getDataView(key: spec.dataViewKey)
@@ -62,7 +164,44 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
       // after constructor invocation
       
       self.isLoading = spec.loading
+      
+      let layout: UICollectionViewFlowLayout
+      if spec.fluid {
+        let b = BouncyLayout()
+        layout = b
+      } else {
+        layout = UICollectionViewFlowLayout()
+      }
+      layout.minimumLineSpacing = 0.0
+      layout.minimumInteritemSpacing = 0.0
+      layout.scrollDirection = UICollectionViewScrollDirection.vertical
+      self.node = ASCollectionNode(collectionViewLayout: layout)
+      self.node.alwaysBounceVertical = true
+      self.node.backgroundColor = UIColor.clear
+      self.node.view.keyboardDismissMode = .interactive
+      if #available(iOS 11.0, *) {
+        self.node.view.contentInsetAdjustmentBehavior = .never
+      }
+      addSubnode(node)
+      self.node.dataSource = self
+      self.node.delegate = self
     }
+    
+    // Update styles
+    self.node.inverted = spec.inverted
+    
+    // Update insets if keyboard is not handled
+    self.bottomInset = spec.contentPaddingBottom
+    if !self.keyboardVisible {
+      let insets = UIEdgeInsets(top: CGFloat(spec.inverted ? (self.keyboardVisible ? 0 : spec.contentPaddingBottom) : spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.inverted ? spec.contentPaddingTop: (self.keyboardVisible ? 0 : spec.contentPaddingBottom)), right: 0.0)
+      self.node.view.scrollIndicatorInsets = insets
+      self.node.view.contentInset = insets
+      self.node.setNeedsLayout()
+    }
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
   }
   
   //

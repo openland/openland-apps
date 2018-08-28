@@ -2,62 +2,120 @@ import * as React from 'react';
 import { Platform, EmitterSubscription, Keyboard, LayoutAnimation, Dimensions } from 'react-native';
 
 export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: number, children: (height: number) => React.ReactNode }, { height: number }> {
-    private subscription: EmitterSubscription | null = null;
-    private _eventId = 0;
+    private subscriptions: EmitterSubscription[] = [];
+    private keyboardVisible = false;
+    private keyboardShown = false;
+    private keybardHiding = false;
 
     state = {
         height: 0
     };
 
-    _relativeKeyboardHeight = (keyboardFrame: any) => {
+    private _relativeKeyboardHeight = (keyboardFrame: any) => {
         return Math.max(Dimensions.get('window').height - (keyboardFrame.screenY as number) - this.props.bottomOffset, 0);
     }
 
-    keyboardChangeHandler = (src: any) => {
-        if (!src) {
-            this._eventId = 0;
-            this.setState({ height: 0 });
+    keyboardWillHideHandler = (src: any) => {
+        console.log('willHide');
+        console.log(src);
+        if (this.keybardHiding) {
             return;
         }
-        const height = this._relativeKeyboardHeight(src.endCoordinates);
-        if (height === 0) {
-            this._eventId = 0;
-        } else {
-            this._eventId++;
-        }
+        this.keybardHiding = true;
 
-        // We are ignoring second event since it ususally is incorrect and excludes Acessory View height on iOS
-        if (this._eventId === 2) {
-            return;
-        }
-
-        if (this.state.height === height) {
-            return;
-        }
-
-        if (src.duration && src.easing) {
-            LayoutAnimation.configureNext({
-                duration: src.duration,
-                update: {
+        if (this.state.height !== 0) {
+            if (src.duration && src.easing) {
+                LayoutAnimation.configureNext({
                     duration: src.duration,
-                    type: LayoutAnimation.Types[src.easing] || 'keyboard',
-                },
-            });
+                    update: {
+                        duration: src.duration,
+                        type: LayoutAnimation.Types[src.easing] || 'keyboard',
+                    },
+                });
+            }
+            this.setState({ height: 0 });
         }
-        this.setState({ height: height });
+        setTimeout(
+            () => {
+                if (this.keyboardVisible) {
+                    this.keyboardVisible = false;
+                    this.keyboardShown = false;
+                }
+                if (this.keybardHiding) {
+                    this.keybardHiding = false;
+                }
+            },
+            src.duration || 250);
+    }
+
+    keyboardChangeFrame = (src: any) => {
+        console.log('changeFrame');
+        console.log(src);
+        if (!this.keyboardVisible || !this.keyboardShown) {
+            return;
+        }
+
+        const height = this._relativeKeyboardHeight(src.endCoordinates);
+        if (this.state.height !== height) {
+            if (src.duration && src.easing) {
+                LayoutAnimation.configureNext({
+                    duration: src.duration,
+                    update: {
+                        duration: src.duration,
+                        type: LayoutAnimation.Types[src.easing] || 'keyboard',
+                    },
+                });
+            }
+            this.setState({ height: height });
+        }
+    }
+
+    keyboardWillShowHandler = (src: any) => {
+        console.log('willShow');
+        console.log(src);
+        if (this.keyboardVisible) {
+            return;
+        }
+        this.keyboardVisible = true;
+        this.keyboardShown = false;
+        this.keybardHiding = false;
+
+        const height = this._relativeKeyboardHeight(src.endCoordinates);
+        if (this.state.height !== height) {
+            if (src.duration && src.easing) {
+                LayoutAnimation.configureNext({
+                    duration: src.duration,
+                    update: {
+                        duration: src.duration,
+                        type: LayoutAnimation.Types[src.easing] || 'keyboard',
+                    },
+                });
+            }
+            this.setState({ height: height });
+        }
+        setTimeout(
+            () => {
+                if (this.keyboardVisible) {
+                    this.keyboardShown = true;
+                }
+            },
+            src.duration || 250);
     }
 
     componentDidMount() {
         if (Platform.OS === 'ios') {
-            this.subscription = Keyboard.addListener('keyboardWillChangeFrame', this.keyboardChangeHandler);
+            this.subscriptions.push(Keyboard.addListener('keyboardWillShow', this.keyboardWillShowHandler));
+            this.subscriptions.push(Keyboard.addListener('keyboardWillHide', this.keyboardWillHideHandler));
+            this.subscriptions.push(Keyboard.addListener('keyboardWillChangeFrame', this.keyboardChangeFrame));
         }
     }
     componentWillUnmount() {
-        if (this.subscription) {
-            this.subscription.remove();
+        for (let s of this.subscriptions) {
+            s.remove();
         }
     }
     render() {
+        console.log(this.state.height);
         return this.props.children(this.state.height);
     }
 }
