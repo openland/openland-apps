@@ -20,6 +20,7 @@ interface DottedMenuButtonStyleProps {
     active?: boolean;
     horizontal?: boolean;
     flat?: boolean;
+    noBorder?: boolean;
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>((props) => ({
@@ -37,17 +38,21 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>((props) 
         : props.active
             ? '#654bfa'
             : 'transparent',
-    border: 'solid 1px transparent',
+    border: props.noBorder ? 'none!important' : 'solid 1px transparent',
     transition: 'background-color .2s',
     '&:hover': {
         border: props.flat
             ? 'solid 1px #dcdee4'
             : props.active
                 ? 'solid 1px transparent'
-                : 'solid 1px #dcdee4'
+                : 'solid 1px #dcdee4',
+            
+        '& > div': {
+            backgroundColor: '#bcc3cc'
+        }
     },
     '& > div': {
-        backgroundColor: (props.flat && props.active) ? '#1790ff' : props.active ? '#fff' : '#abbacb',
+        backgroundColor: (props.flat && props.active) ? '#1790ff' : props.active ? '#fff' : 'rgba(188, 195, 204, 0.5)',
         width: 4,
         height: 4,
         borderRadius: 100,
@@ -94,6 +99,7 @@ interface XOverflowProps {
     shadow?: boolean;
     horizontal?: boolean;
     flat?: boolean;
+    noBorder?: boolean;
     notificationStyle?: boolean;
 }
 
@@ -163,6 +169,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                                     innerRef={this.createRef}
                                     horizontal={this.props.horizontal}
                                     flat={this.props.flat}
+                                    noBorder={this.props.noBorder}
                                 >
                                     <div />
                                     <div />

@@ -46,7 +46,10 @@ const OrganizationTitle = Glamorous(XLink)({
     lineHeight: '20px',
     fontWeight: 500,
     letterSpacing: -0.5,
-    color: '#5c6a81'
+    color: '#5c6a81',
+    '&:hover': {
+        color: '#1790ff',
+    }
 });
 
 const OrganizationMembers = Glamorous.div({
@@ -239,6 +242,8 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             )}
                             <XOverflow
                                 placement="bottom-end"
+                                flat={true}
+                                noBorder={true}
                                 content={(
                                     <>
                                         <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
