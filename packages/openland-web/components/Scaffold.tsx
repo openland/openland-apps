@@ -26,7 +26,7 @@ import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
-import { InvitesToOrganizationMoadal, InvitesGlobalMoadal } from '../pages/main/settings/invites';
+import { InvitesToOrganizationModal, InvitesGlobalModal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { TextInvites } from 'openland-text/TextInvites';
 import DirecoryIcon from '../pages/main/directory/icons/directory.2.svg';
@@ -357,8 +357,8 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
                 />
             }
         </Query>
-        <InvitesToOrganizationMoadal targetQuery="invite" target={null} />
-        <InvitesGlobalMoadal targetQuery="invite_global" target={null} />
+        <InvitesToOrganizationModal targetQuery="invite" target={null} />
+        <InvitesGlobalModal targetQuery="invite_global" target={null} />
     </XVertical>
 ));
 

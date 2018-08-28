@@ -16,7 +16,7 @@ import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { AboutPlaceholder, SocialPlaceholder, LocationPlaceholder, CategoriesPlaceholder } from './placeholders';
 import { XLoader } from 'openland-x/XLoader';
-import { InvitesToOrganizationMoadal } from '../settings/invites';
+import { InvitesToOrganizationModal } from '../settings/invites';
 import { PermissionsModal, RemoveJoinedModal } from '../settings/members.page';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
@@ -497,7 +497,7 @@ class Members extends React.Component<{ organizationQuery: OrganizationQuery }> 
                             {organization.isMine && (
                                 <XWithRole role="admin" orgPermission={true}>
                                     <XSubHeaderRight>
-                                        <InvitesToOrganizationMoadal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
+                                        <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
                                     </XSubHeaderRight>
                                 </XWithRole>
                             )}

@@ -10,7 +10,7 @@ import { XHeader } from 'openland-x/XHeader';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { InvitesGlobalMoadal } from './invites';
+import { InvitesGlobalModal } from './invites';
 
 const Content = Glamorous(XVertical)({
     paddingLeft: 24,
@@ -23,7 +23,7 @@ export default withApp('Invites History', 'viewer', withQueryLoader(withMyOrgani
             <XHeader text="Invites" />
             <Content>
                 <InvitesHistory />
-                <InvitesGlobalMoadal target={<XButton alignSelf="flex-start" size="medium" style="primary" text="Send invites"/>}/>
+                <InvitesGlobalModal target={<XButton alignSelf="flex-start" size="medium" style="primary" text="Send invites"/>}/>
             </Content>
         </Navigation>
     );
