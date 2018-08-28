@@ -291,10 +291,10 @@ let borderRadiusStyles = styleResolverWithProps((props: { attach?: XInputAttach 
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
     },
     'r-default': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 22,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 22,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 22,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 22,
     },
     'r-small': {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
