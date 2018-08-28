@@ -113,24 +113,9 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
       let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
       let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
     
-      
-      let delta = self.node.view.contentInset.top - CGFloat(self.bottomInset)
-      
-//      let source = self.node.view.contentOffset.y
-//      let offset = CGPoint(x: 0, y: source - delta)
-//      self.node.view.setContentOffset(offset, animated: false)
-      // if delta < 0 {
-      
       UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
         self.node.view.contentInset.top = CGFloat(self.bottomInset)
         self.node.view.scrollIndicatorInsets.top = CGFloat(self.bottomInset)
-        
-        self.node.view.panGestureRecognizer.isEnabled = false;
-        self.node.view.panGestureRecognizer.isEnabled = true;
-        self.node.view.setContentOffset(CGPoint(x: self.node.view.contentOffset.x, y: self.node.view.contentOffset.y+1), animated: false)
-        self.node.view.setContentOffset(CGPoint(x: self.node.view.contentOffset.x, y: self.node.view.contentOffset.y-1), animated: false)
-        // let offset = CGPoint(x: 0, y: source)
-        // self.node.view.setContentOffset(offset, animated: false)
       }, completion: { (b) in
         self.keyboardVisible = false
         self.keyboardShown = false
