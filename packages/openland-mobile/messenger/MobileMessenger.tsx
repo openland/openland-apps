@@ -156,7 +156,7 @@ export class MobileMessenger {
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
-                return (<AsyncMessageView message={item} engine={eng} />);
+                return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} />);
             }));
         }
         return this.conversations.get(id)!!;
@@ -164,5 +164,8 @@ export class MobileMessenger {
 
     private handleDialogClick = (id: string) => {
         this.history.push('Conversation', { id });
+    }
+    private handleAvatarClick = (id: string) => {
+        this.history.push('ProfileUser', { id });
     }
 }

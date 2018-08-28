@@ -39,7 +39,8 @@ export interface DataSourceMessageItem {
     key: string;
     date: number;
     isOut: boolean;
-    senderName?: string;
+    senderId: string;
+    senderName: string;
     senderPhoto?: string;
     text?: string;
     file?: {
@@ -58,6 +59,7 @@ export function convertMessage(src: MessageFullFragment, engine: MessengerEngine
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
+        senderId: src.sender.id,
         senderName: src.sender.name,
         senderPhoto: src.sender.picture ? src.sender.picture : undefined,
         text: src.message ? src.message : undefined,
@@ -200,6 +202,7 @@ export class ConversationEngine implements MessageSendHandler {
                 {
                     key: key,
                     date: parseInt(date, 10),
+                    senderId: this.engine.user.id,
                     senderName: this.engine.user.name,
                     senderPhoto: this.engine.user.picture ? this.engine.user.picture : undefined,
                     isOut: true,

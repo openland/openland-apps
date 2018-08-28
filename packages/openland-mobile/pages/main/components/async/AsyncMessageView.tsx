@@ -65,17 +65,21 @@ export class AsyncMessageImageView extends React.PureComponent<{ message: DataSo
         );
     }
 }
-export class AsyncMessageView extends React.PureComponent<{ message: DataSourceMessageItem, engine: ConversationEngine }> {
+export class AsyncMessageView extends React.PureComponent<{ message: DataSourceMessageItem, engine: ConversationEngine, onAvatarPress: (id: string) => void }> {
+
+    private handlePress = () => {
+        this.props.onAvatarPress(this.props.message.senderId);
+    }
 
     render() {
         return (
             <ASFlex flexDirection="row" marginLeft={4} marginRight={4} alignItems="flex-end">
                 {!this.props.message.isOut &&
-                    <ASFlex marginBottom={4} marginRight={-4} marginLeft={4}>
+                    <ASFlex marginBottom={4} marginRight={-4} marginLeft={4} onPress={this.handlePress}>
                         <AsyncAvatar
                             size={28}
                             src={this.props.message.senderPhoto}
-                            // placeholderKey={sender.id}
+                            placeholderKey={this.props.message.senderId}
                             placeholderTitle={this.props.message.senderName}
                         />
                     </ASFlex>
