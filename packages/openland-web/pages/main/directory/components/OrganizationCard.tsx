@@ -223,7 +223,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                 )}
                             </OrganizationCardTypeWrapper>
                         </OrganizationInfoWrapper>
-                        <OrganizationToolsWrapper>
+                        <OrganizationToolsWrapper separator={5}>
                             {this.props.item.isMine && (
                                 <XButton
                                     style="ghost"

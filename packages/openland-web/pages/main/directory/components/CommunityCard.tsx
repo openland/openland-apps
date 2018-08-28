@@ -108,7 +108,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                             <CommunityTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
                             <CommunityCounter>{this.props.item.channels.length + (this.props.item.channels.length === 1 ? ' channel' : 'channels')}</CommunityCounter>
                         </CommunityInfoWrapper>
-                        <CommunityToolsWrapper>
+                        <CommunityToolsWrapper separator={5}>
                             <XButton
                                 style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
                                 size="r-default"
@@ -117,6 +117,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                             />
                             <XOverflow
                                 placement="bottom-end"
+                                flat={true}
                                 content={(
                                     <>
                                         <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>

@@ -463,7 +463,7 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                     </MemberCardTitleWrapper>
                     <MemberCardRole>{member.role}</MemberCardRole>
                 </MemberCardInfo>
-                <MemberCardTools separator={4}>
+                <MemberCardTools separator={5}>
                     <XButton
                         text="Message"
                         size="r-default"
@@ -472,10 +472,11 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                     />
                     <XOverflow
                         placement="bottom-end"
+                        flat={true}
                         content={
                             <>
-                                <XMenuItem query={{ field: 'changeRole', value: member.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
-                                <XMenuItem query={{ field: 'remove', value: member.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: member.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: member.user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
                             </>
                         }
                     />
@@ -577,7 +578,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                     <ChannelCardTitle>{(channel!!.isRoot ? '' : '/') + channel!!.title}</ChannelCardTitle>
                     <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>
                 </ChannelCardInfo>
-                <ChannelCardTools separator={3}>
+                <ChannelCardTools separator={5}>
                     <XButton
                         text="View"
                         size="r-default"
@@ -586,6 +587,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                     />
                     <XOverflow
                         placement="bottom-end"
+                        flat={true}
                         content={
                             <>
                                 <XMenuItem>Menu</XMenuItem>
