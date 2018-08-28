@@ -204,7 +204,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                     size="x-small"
                                     cloudImageUuid={firstMember.user.picture || undefined}
                                 />
-                                <span>{firstMember.user.name + (this.props.item.members.length > 0 ? (' +' + this.props.item.members.length + ' more') : '')}</span>
+                                <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
                             </OrganizationMembers>}
                             <OrganizationCardTypeWrapper separator={0}>
                                 {this.props.item.locations && (
