@@ -30,6 +30,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { withAlterChat } from '../../api/withAlterChat';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
+import PlusIcon from '../icons/ic-add-medium.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -44,7 +45,7 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
     alignItems: 'center',
-    maxWidth: '100%',
+    maxWidth: 990,
     width: '100%',
     flexBasis: '100%'
 });
@@ -273,10 +274,19 @@ export const ChatEditComponent = withAlterChat((props) => (
     >
         <XHorizontal>
             <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-            <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default"/>
+            <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default" />
         </XHorizontal>
     </XModalForm>
 )) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
+
+const AddButton = Glamorous(XButton)({
+    '& svg > g > path': {
+        transition: 'all .2s'
+    },
+    '&:active svg > g > path:last-child': {
+        fill: '#fff'
+    }
+});
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' = 'chat';
@@ -334,16 +344,26 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             <XHorizontal separator={14}>
                                 <ChannelTabs>
                                     <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
-                                    <XHorizontal separator={4} alignItems="center">
-                                        <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
-                                        {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && <XCounter big={true} count={props.data.chat.memberRequestsCount} />}
-                                    </XHorizontal>
+                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>
+                                        <XHorizontal separator={4} alignItems="center">
+                                            <span>Members</span>
+                                            {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
+                                                <XCounter big={true} count={props.data.chat.memberRequestsCount} />
+                                            )}
+                                        </XHorizontal>
+                                    </ChannelTab>
                                 </ChannelTabs>
                                 <InviteMembersModal
                                     channelTitle={title}
                                     channelId={props.data.chat.id}
                                     target={
-                                        <XButton text="Invite" iconResponsive="add" icon="add" size="r-default" alignSelf="center" />
+                                        <AddButton
+                                            text="Invite"
+                                            iconResponsive={<PlusIcon/>}
+                                            icon={<PlusIcon/>}
+                                            size="r-default"
+                                            alignSelf="center"
+                                        />
                                     }
                                 />
                             </XHorizontal>

@@ -168,7 +168,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 32,
             paddingRight: 32
         },
-        '& .icon': {
+        '& .icon.material': {
             width: 32,
             fontSize: 28,
             lineHeight: '56px',
@@ -191,7 +191,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 26,
             paddingRight: 26
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 24
         },
         '& .loading-icon': {
@@ -212,7 +212,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 20,
             paddingRight: 20
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 20
         },
         '& .loading-icon': {
@@ -233,7 +233,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 14,
             paddingRight: 14
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 16
         },
         '& .loading-icon': {
@@ -254,7 +254,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 10,
             paddingRight: 10
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 14
         },
         '& .loading-icon': {
@@ -276,7 +276,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 20,
             paddingRight: 20
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 24
         },
         '& .loading-icon': {
@@ -297,7 +297,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 16,
             paddingRight: 16
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 20
         },
         '& .loading-icon': {
@@ -318,7 +318,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 12,
             paddingRight: 12
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 16
         },
         '& .loading-icon': {
@@ -339,7 +339,7 @@ let sizeStyles = styleResolver({
             paddingLeft: 8,
             paddingRight: 8
         },
-        '& .icon': {
+        '& .icon.material': {
             fontSize: 12
         },
         '& .loading-icon': {
@@ -362,8 +362,8 @@ let colorStyles = styleResolver({
             color: '#334562'
         },
         '&:active': {
-            backgroundColor: '#eeecfa',
-            color: '#5640d6'
+            backgroundColor: '#117fe4',
+            color: '#fff'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -424,8 +424,8 @@ let colorStyles = styleResolver({
             color: '#334562'
         },
         '&:active': {
-            backgroundColor: '#eeecfa',
-            color: '#5640d6'
+            backgroundColor: '#117fe4',
+            color: '#fff'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -439,8 +439,9 @@ let colorStyles = styleResolver({
             backgroundColor: 'rgba(238, 236, 250, 0.39)',
         },
         '&:active': {
-            backgroundColor: '#eeecfa',
+            backgroundColor: '#117fe4',
             border: 'solid 1px transparent',
+            color: '#fff'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -572,9 +573,9 @@ let colorDisabledStyles = styleResolver({
 
 let colorPressedStyles = styleResolver({
     'default': {
-        backgroundColor: '#eeecfa !important',
+        backgroundColor: '#117fe4 !important',
         border: 'solid 1px transparent !important',
-        color: '#5640d6 !important'
+        color: '#fff !important'
     },
     'primary': {
         backgroundColor: '#5640d6 !important',
@@ -587,19 +588,19 @@ let colorPressedStyles = styleResolver({
         color: '#ffffff !important'
     },
     'ghost': {
-        backgroundColor: '#eeecfa !important',
+        backgroundColor: '#117fe4 !important',
         border: 'solid 1px transparent !important',
-        color: '#5640d6 !important'
+        color: '#fff !important'
     },
     'electric': {
-        backgroundColor: '#eeecfa !important',
+        backgroundColor: '#117fe4 !important',
         border: 'solid 1px transparent !important',
-        color: '#5640d6 !important'
+        color: '#fff !important'
     },
     'flat': {
-        backgroundColor: '#eeecfa !important',
+        backgroundColor: '#117fe4 !important',
         border: 'solid 1px transparent !important',
-        color: '#5640d6 !important'
+        color: '#fff !important'
     },
     'link': {
     },
@@ -900,13 +901,13 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                 <MainContent className="main-content">
                     {props.iconResponsive && (
                         typeof(props.iconResponsive) === 'string'
-                        ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive" />
-                        : props.iconResponsive
+                        ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive material" />
+                        : <i className="icon icon-responsive">{props.iconResponsive}</i>
                     )}
                     {props.icon && (
                         typeof(props.icon) === 'string'
-                        ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon" />
-                        : props.icon
+                        ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon material" />
+                        : <i className="icon">{props.icon}</i>
                     )}
                     <ButtonText
                         responsive={props.iconResponsive ? true : false}
@@ -917,8 +918,8 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                     </ButtonText>
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
-                        ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon" />
-                        : props.iconRight
+                        ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon material" />
+                        : <i className="icon">{props.iconRight}</i>
                     )}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
