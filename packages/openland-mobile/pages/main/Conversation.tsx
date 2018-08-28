@@ -98,9 +98,9 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
     }
 
     render() {
-        if (!this.state.render) {
-            return <View />;
-        }
+        // if (!this.state.render) {
+        //     return <View />;
+        // }
         return (
             <>
                 <FastHeaderView>
