@@ -68,6 +68,7 @@ const DateDivider = Glamorous.div({
 const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: props.empty ? 'center' : undefined,
     alignItems: 'stretch',
     alignSelf: 'center',
     flexGrow: props.empty ? 1 : undefined,
