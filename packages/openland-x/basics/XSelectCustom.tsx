@@ -66,6 +66,14 @@ interface XSelectCustomProps extends XSelectProps, XFlexStyles {
     rounded?: boolean;
 }
 
+const CustomContentDiv = Glamorous(XPopper.Content)({
+    boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingTop: 8,
+    paddingBottom: 8
+});
+
 export class XSelectCustomInputRender extends React.Component<XSelectCustomProps, XSelectCustomState> {
     input?: any;
     constructor(props: XSelectCustomProps) {
@@ -229,6 +237,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         zIndex={999}
                         show={this.state.inputVal.length > 0 || this.state.focus}
                         onClickOutside={this.focusOutHandler}
+                        contentContainer={(
+                            <CustomContentDiv />
+                        )}
                         content={
                             <MultiplePicker
                                 query={this.state.inputVal}
