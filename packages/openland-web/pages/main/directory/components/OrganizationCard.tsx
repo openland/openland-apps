@@ -243,7 +243,6 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
-                                noBorder={true}
                                 content={(
                                     <>
                                         <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
