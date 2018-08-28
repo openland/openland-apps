@@ -147,9 +147,9 @@ const NavigatorItem = Glamorous(XLink)({
     },
 
     '.is-active': {
-        color: '#654bfa',
+        color: '#1790ff',
         '& > svg *': {
-            fill: '#654bfa',
+            fill: '#1790ff',
         },
         '& > .reports .hover': {
             display: 'block'
@@ -159,9 +159,9 @@ const NavigatorItem = Glamorous(XLink)({
         },
     },
     '&:hover': {
-        color: '#654bfa',
+        color: '#1790ff',
         '& > svg *': {
-            fill: '#654bfa',
+            fill: '#1790ff',
             fillRule: 'nonzero'
         },
         '& > .reports .hover': {
@@ -224,10 +224,11 @@ const ProfileSubTitle = Glamorous(XLink)({
 const ProfileTitleContainer = Glamorous(XHorizontal)({
     padding: '16px 18px 12px',
     ':hover': {
-        background: '#f8f8fb',
+        background: '#f3f9ff',
         '& > div': {
             '& > a': {
-                color: '#654bfa'
+                color: '#1790ff',
+                opacity: 1,
             }
         }
     }
@@ -239,26 +240,6 @@ const ProfileNaviTitleContainer = makeNavigable((props) => {
 
 const OrganizationTitleContainer = makeNavigable((props) => {
     return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
-});
-
-const MenuItem = Glamorous(XMenuItem)({
-    color: 'rgba(51, 69, 98, 0.8)!important',
-    height: 40,
-    lineHeight: '38px'
-});
-
-const MenuItemWithIcon = Glamorous(XMenuItem)({
-    position: 'relative',
-    color: 'rgba(51, 69, 98, 0.8)!important',
-});
-
-const MenuItemIcon = Glamorous(XIcon)({
-    position: 'absolute',
-    top: 0,
-    right: 9,
-    fontSize: 20,
-    lineHeight: '42px',
-    color: '#c1c7cf',
 });
 
 class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
@@ -315,11 +296,11 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                             <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
                                         </XVertical>
                                     </OrganizationTitleContainer>
-                                    <MenuItem path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</MenuItem>
+                                    <XMenuItem style="primary-sky-blue" path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
                                     <XWithRole role={['super-admin', 'software-developer']}>
-                                        <MenuItem query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</MenuItem>
+                                        <XMenuItem style="primary-sky-blue" query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
                                     </XWithRole>
-                                    {this.props.hasMultipleOrganizations && <MenuItem query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</MenuItem>}
+                                    {this.props.hasMultipleOrganizations && <XMenuItem style="primary-sky-blue" query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>}
 
                                     <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 12 }} />
                                 </>
@@ -332,7 +313,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     <ProfileSubTitle>{TextGlobal.settings}</ProfileSubTitle>
                                 </XVertical>
                             </ProfileNaviTitleContainer>
-                            <MenuItem path="/auth/logout">{TextGlobal.signOut}</MenuItem>
+                            <XMenuItem style="primary-sky-blue" path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
                         </XVertical>
                     </XModalContext.Provider>
                 )}
@@ -639,6 +620,7 @@ const Home = withUserInfo((props) => {
                 showOnHover={true}
                 groupId="scaffold_tooltip"
                 style="dark"
+                padding={-2}
                 content={(
                     <strong>{TextAppBar.items.home}</strong>
                 )}
@@ -679,7 +661,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo((props) => {
             return (
                 <>
-                    <MenuItem path="/mail/new">{TextGlobal.startChat}</MenuItem>
+                    <XMenuItem style="primary-sky-blue" path="/mail/new">{TextGlobal.startChat}</XMenuItem>
                     <XWithRole role={['super-admin', 'software-developer']}>
                         <XPopper
                             contentContainer={<XMenuVertical />}
@@ -689,19 +671,16 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                             marginTop={-8}
                             content={(
                                 <div ref={this.onInner}>
-                                    <MenuItem query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</MenuItem>
-                                    <MenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</MenuItem>
+                                    <XMenuItem style="primary-sky-blue" query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</XMenuItem>
+                                    <XMenuItem style="primary-sky-blue" query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
                                 </div>
                             )}
                         >
-                            <MenuItemWithIcon>
-                                {TextGlobal.sendInvites}
-                                <MenuItemIcon icon="chevron_right" />
-                            </MenuItemWithIcon>
+                            <XMenuItem style="primary-sky-blue" iconRight="chevron_right">{TextGlobal.sendInvites}</XMenuItem>
                         </XPopper>
                     </XWithRole>
-                    <MenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</MenuItem>
-                    <MenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</MenuItem>
+                    <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
+                    <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</XMenuItem>
                 </>
             );
         });
@@ -745,8 +724,8 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo((props) => {
             return (
                 <>
-                    <MenuItem path="/super">{TextAppBar.items.adminMenu}</MenuItem>
-                    <MenuItem path="/ui">{TextAppBar.items.xFramework}</MenuItem>
+                    <XMenuItem style="primary-sky-blue" path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
+                    <XMenuItem style="primary-sky-blue" path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
                 </>
             );
         });
@@ -778,7 +757,7 @@ export const ChannelButton = withNotificationCounter((props) => {
             showOnHover={true}
             groupId="scaffold_tooltip"
             style="dark"
-            padding={-10}
+            padding={-2}
             content={(
                 <strong>{TextAppBar.items.channel}</strong>
             )}
@@ -798,6 +777,7 @@ export const MessengerButton = withNotificationCounter((props) => {
             showOnHoverContent={false}
             showOnHover={true}
             style="dark"
+            padding={-2}
             groupId="scaffold_tooltip"
             content={(
                 <strong>{TextAppBar.items.mail}</strong>
@@ -1032,6 +1012,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                 showOnHoverContent={false}
                                 showOnHover={true}
                                 style="dark"
+                                padding={-2}
                                 groupId="scaffold_tooltip"
                                 content={(
                                     <strong>{TextAppBar.items.directory}</strong>
@@ -1055,6 +1036,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     showOnHoverContent={false}
                                     showOnHover={true}
                                     style="dark"
+                                    padding={-2}
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.map}</strong>
@@ -1072,6 +1054,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     showOnHoverContent={false}
                                     showOnHover={true}
                                     style="dark"
+                                    padding={-2}
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.folders}</strong>
@@ -1090,6 +1073,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     showOnHoverContent={false}
                                     showOnHover={true}
                                     style="dark"
+                                    padding={-2}
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.prospecting}</strong>
@@ -1108,9 +1092,10 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     showOnHoverContent={false}
                                     showOnHover={true}
                                     groupId="scaffold_tooltip"
+                                    style="dark"
+                                    padding={-2}
                                     content={(
                                         <strong>{TextAppBar.items.deals}</strong>
-
                                     )}
                                 >
                                     <NavigatorItem path="/deals" activateForSubpaths={true}>
@@ -1124,6 +1109,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     showOnHoverContent={false}
                                     showOnHover={true}
                                     style="dark"
+                                    padding={-2}
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.reports}</strong>
@@ -1145,6 +1131,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                                     showOnHoverContent={false}
                                     showOnHover={true}
                                     style="dark"
+                                    padding={-2}
                                     groupId="scaffold_tooltip"
                                     content={(
                                         <strong>{TextAppBar.items.favorites}</strong>
