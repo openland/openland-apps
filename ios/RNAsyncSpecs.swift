@@ -40,6 +40,7 @@ protocol AsyncViewSpec {
 }
 
 class AsyncFlexSpec: AsyncViewSpec {
+  var overlay: Bool = false
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
   var children: [AsyncViewSpec] = []
@@ -229,6 +230,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     }
     if let v = src["props"]["highlightColor"].uInt64 {
       res.highlightColor = resolveColorR(v)
+    }
+    if let v = src["props"]["overlay"].bool {
+      res.overlay = v
     }
     res.children = resolveChildren(src)
     return res

@@ -14,7 +14,7 @@ import Foundation
 
 func resolveNode(spec: AsyncViewSpec, context: RNAsyncViewContext) -> ASLayoutElement {
   if let flexSpec = spec as? AsyncFlexSpec {
-    return createFlexNode(spec: flexSpec, resolvedChildren: resolveNodes(flexSpec.children, context), context: context)
+    return createFlexNode(spec: flexSpec, context: context)
   } else if let textSpec = spec as? AsyncTextSpec {
     return createTextNode(spec: textSpec, context: context)
   } else if let imageSpec = spec as? AsyncImageSpec {
@@ -32,7 +32,13 @@ func resolveNode(spec: AsyncViewSpec, context: RNAsyncViewContext) -> ASLayoutEl
 // View Resolvers
 //
 
-func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement], context: RNAsyncViewContext) -> ASLayoutElement {
+func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayoutElement {
+  let direct = spec.children.filter({ (s) -> Bool in
+    return !(s is AsyncFlexSpec) || !(s as! AsyncFlexSpec).overlay
+  })
+  let overlay = spec.children.filter({ (s) -> Bool in
+    return (s is AsyncFlexSpec) && (s as! AsyncFlexSpec).overlay
+  })
   let res = ASStackLayoutSpec()
   if (spec.direction == AsyncFlexDirection.row) {
     res.direction = ASStackLayoutDirection.horizontal
@@ -61,13 +67,22 @@ func createFlexNode(spec: AsyncFlexSpec, resolvedChildren: [ASLayoutElement], co
       return ASStackLayoutJustifyContent.end
     }
   }()
-  res.children = resolvedChildren
-  let res2 = resolveStyle(spec.style, res, context)
+  res.children = resolveNodes(direct, context)
+
+  var res2: ASLayoutElement = res
+  res2 = resolveStyle(spec.style, res, context)
   if (spec.touchableKey != nil) {
-    return ASBackgroundLayoutSpec(child: res2, background: RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor))
-  } else {
-    return res2
+    res2 = ASBackgroundLayoutSpec(child: res2, background: RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor))
   }
+  
+  if overlay.count > 1 {
+    fatalError("Only one overlay supported")
+  }
+  if overlay.count == 1 {
+    res2 = ASOverlayLayoutSpec(child: res2, overlay: resolveNode(spec: overlay[0], context: context))
+  }
+  
+  return res2
 }
 
 func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayoutElement {

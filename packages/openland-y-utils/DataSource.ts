@@ -76,7 +76,7 @@ export class DataSource<T extends DataSourceItem> {
             throw Error('Item already exists');
         }
         let r = [...this.data];
-        r.splice(index, 1, item);
+        r.splice(index, 0, item);
         this.data = r;
         this.dataByKey.set(item.key, item);
         for (let w of this.watchers) {

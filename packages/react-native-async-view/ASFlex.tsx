@@ -10,6 +10,7 @@ export interface ASFlexProps extends ASViewStyle {
     justifyContent?: 'flex-start' | 'flex-end' | 'center';
     onPress?: () => void;
     highlightColor?: string;
+    overlay?: boolean;
 }
 
 class ASFlexFallback extends React.PureComponent<ASFlexProps> {

@@ -4,6 +4,8 @@ import { AsyncBubbleView } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { AsyncAvatar } from './AsyncAvatar';
 import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { ASImage } from 'react-native-async-view/ASImage';
+import { formatTime } from '../../../../utils/formatTime';
 
 export class AsyncMessageView extends React.PureComponent<{ message: DataSourceMessageItem, engine: ConversationEngine }> {
 
@@ -36,6 +38,17 @@ export class AsyncMessageView extends React.PureComponent<{ message: DataSourceM
                                 {this.props.message.text}
                                 {this.props.message.isOut ? this.paddedTextOut : this.paddedText}
                             </ASText>
+                        </ASFlex>
+                        <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end" marginRight={14} marginBottom={12}>
+                            <ASFlex flexDirection="row" height={15}>
+                                <ASText backgroundColor="#f00" fontSize={13} lineHeight={15} color={this.props.message.isOut ? '#fff' : '#8a8a8f'}>{formatTime(this.props.message.date)}</ASText>
+                                {this.props.message.isOut && (
+                                    <ASFlex width={18} height={13} marginLeft={2} justifyContent="center" alignItems="flex-start">
+                                        {this.props.message.isSending && <ASImage source={require('assets/ic-sending.png')} width={13} height={13} />}
+                                        {!this.props.message.isSending && <ASImage source={require('assets/ic-sent.png')} width={9} height={8} marginTop={2} />}
+                                    </ASFlex>
+                                )}
+                            </ASFlex>
                         </ASFlex>
                     </AsyncBubbleView>
                 </ASFlex>
