@@ -16,7 +16,7 @@ const paddedTextOut = ' ' + '\u00A0'.repeat(12);
 export class AsyncMessageTextView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
         return (
-            <AsyncBubbleView isOut={this.props.message.isOut} compact={false}>
+            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.compact}>
                 <ASFlex
                     marginLeft={14}
                     marginRight={14}
@@ -82,7 +82,7 @@ export class AsyncMessageImageView extends React.PureComponent<{ message: DataSo
             url += '-/scale_crop/' + optimalSize.width + 'x' + optimalSize.height + '/';
         }
         return (
-            <AsyncBubbleView isOut={this.props.message.isOut} compact={false} appearance="media">
+            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.compact} appearance="media">
                 <ASImage
                     source={{ uri: url }}
                     width={layout.width}
@@ -116,7 +116,7 @@ export class AsyncMessageImageView extends React.PureComponent<{ message: DataSo
 export class AsyncDocumentView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
         return (
-            <AsyncBubbleView isOut={this.props.message.isOut} compact={false}>
+            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.compact}>
                 <ASFlex height={60} flexDirection="row">
                     <ASFlex
                         width={40}

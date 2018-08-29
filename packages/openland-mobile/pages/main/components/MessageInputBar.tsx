@@ -72,7 +72,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             multiline={true}
                         />
                         <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
-                            <View alignItems="center" justifyContent="center" width={48} height={50}>
+                            <View alignItems="center" justifyContent="center" width={50} height={50}>
                                 <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && this.props.enabled !== false ? AppStyles.primaryColor : '#C8C7CC' }} />
                             </View>
                         </TouchableOpacity>

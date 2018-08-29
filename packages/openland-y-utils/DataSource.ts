@@ -62,6 +62,19 @@ export class DataSource<T extends DataSourceItem> {
         this.inited = true;
     }
 
+    getAt(index: number) {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
+        if (index > this.data.length) {
+            throw Error('Invalid Index');
+        }
+        if (index < 0) {
+            throw Error('Invalid Index');
+        }
+        return this.data[index];
+    }
+
     addItem(item: T, index: number) {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
