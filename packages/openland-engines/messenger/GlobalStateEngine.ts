@@ -25,6 +25,11 @@ let GLOBAL_SUBSCRIPTION = gql`
                     flexibleId
                     title
                     photos
+                    unreadCount
+                    settings{
+                        id
+                        mute
+                    }
                 }
                 message {
                     ...MessageFull

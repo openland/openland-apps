@@ -6,9 +6,10 @@ import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XCloudImage, XPhotoRef } from './XCloudImage';
 import { XPImage } from 'openland-xp/XPImage';
+import { doSimpleHash } from 'openland-y-utils/hash';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'medium' | 'default' | 'small' | 'x-small';
-export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | undefined;
+export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
@@ -16,6 +17,8 @@ export interface XAvatarStyleProps extends XFlexStyles {
     border?: string;
     style?: XAvatarStyle;
     attach?: 'left' | 'right' | 'both';
+    userId?: string;
+    userName?: string;
 }
 
 export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string, photoRef?: XPhotoRef }>>;
@@ -184,6 +187,28 @@ const AvatarStub = Glamorous.div({
     }
 });
 
+const ColorusArr = [
+    'linear-gradient(138deg, #ffb600, #ff8d00)',
+    'linear-gradient(138deg, #ff655d, #ff3d33)',
+    'linear-gradient(138deg, #59d23c, #21ac00)',
+    'linear-gradient(138deg, #11b2ff, #1970ff)',
+    'linear-gradient(138deg, #00d1d4, #00afc8)',
+    'linear-gradient(138deg, #aa22ff, #8e00e6)'
+];
+
+const ColorusStub = Glamorous.div<{ backgroundImage: string }>(props => ({
+    width: '100%',
+    height: '100%',
+    backgroundImage: props.backgroundImage,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 16,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#fff'
+}));
+
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let avatarProps = {
@@ -207,6 +232,8 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
 
+    let initials = props.userName && props.userName.split(' ').reduce((x, c) => x + c[0], '');
+    console.warn(props.style, initials);
     return (
         <>
             {props.src && (
@@ -223,6 +250,13 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     {props.style === 'channel' && <AvatarStub className="channel" />}
                     {props.style === 'group' && <AvatarStub className="group" />}
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
+                    {props.style === 'colorus' && (
+                        <ColorusStub
+                            backgroundImage={props.userId && ColorusArr[Math.abs(doSimpleHash(props.userId)) % ColorusArr.length] || ColorusArr[1]}
+                        >
+                            {initials}
+                        </ColorusStub>
+                    )}
                 </StyledPlaceholder>
             )}
         </>

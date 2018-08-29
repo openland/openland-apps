@@ -138,6 +138,9 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
             >
                 <MemberAvatar
                     cloudImageUuid={item.picture || undefined}
+                    userId={item.id}
+                    style="colorus"
+                    userName={item.name}
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
@@ -193,7 +196,13 @@ const RemoveMemberModal = withConversationKick((props) => {
             }}
         >
             <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} />
+                <XAvatar
+                    size="medium"
+                    style="colorus"
+                    cloudImageUuid={member.user.picture || undefined}
+                    userId={member.user.id}
+                    userName={member.user.name}
+                />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>
                     {member.primaryOrganization && <XText opacity={0.5} >{member.primaryOrganization.name}</XText>}
@@ -234,7 +243,6 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
                         <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                     ))}
                 </MembersView>
-                {console.log('chatTitle ---- ', (this.props as any).channelTitle)}
                 {(members.length <= 3) && (
                     <EmptyComponent
                         aloneMember={members.length === 1}

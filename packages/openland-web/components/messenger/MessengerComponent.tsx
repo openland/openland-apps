@@ -301,6 +301,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + '/' : '') + props.data.chat.title) :
         props.data.chat.title;
     console.warn(props.data.chat);
+
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
             <ChatHeaderWrapper>
@@ -321,9 +322,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     : props.data.chat.__typename === 'GroupConversation'
                                         ? 'group'
                                         : props.data.chat.__typename === 'ChannelConversation'
-                                            ? 'channel' : undefined
+                                            ? 'channel' : 'colorus'
                                 )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
+                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
+                                userId={props.data.chat.id}
                             />
                             <XHorizontal alignItems="center" separator={6}>
                                 <Title>{title}</Title>
@@ -359,8 +362,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     target={
                                         <AddButton
                                             text="Invite"
-                                            iconResponsive={<PlusIcon/>}
-                                            icon={<PlusIcon/>}
+                                            iconResponsive={<PlusIcon />}
+                                            icon={<PlusIcon />}
                                             size="r-default"
                                             alignSelf="center"
                                         />

@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
 interface DialogComponentProps {
     selected?: boolean;
     engine: MessengerEngine;
-    item: ConversationShortFragment;
-    onPress: (id: ConversationShortFragment) => void;
+    item: any;
+    onPress: (id: any) => void;
 }
 export class DialogItemView extends React.PureComponent<DialogComponentProps> {
 
@@ -91,7 +91,7 @@ export class DialogItemView extends React.PureComponent<DialogComponentProps> {
             <XPListItem onPress={this.handlePress} style={{ height: 80 }} selected={this.props.selected}>
                 <View width={80} height={80} alignItems="center" justifyContent="center">
                     <XPAvatar
-                        src={this.props.item.photos.length > 0 ? this.props.item.photos[0] : undefined}
+                        src={this.props.item.photos!!.length > 0 ? this.props.item.photos!![0] : undefined}
                         size={60}
                         placeholderKey={this.props.item.flexibleId}
                         placeholderTitle={this.props.item.title}
@@ -114,9 +114,9 @@ export class DialogItemView extends React.PureComponent<DialogComponentProps> {
                                 </>
                             )}
                         </View>
-                        {this.props.item.unreadCount > 0 && (
+                        {this.props.item.unreadCount!! > 0 && (
                             <View alignSelf="flex-end" marginBottom={2}>
-                                <XPCounter value={this.props.item.unreadCount} />
+                                <XPCounter value={this.props.item.unreadCount!!} />
                             </View>
                         )}
                     </View>

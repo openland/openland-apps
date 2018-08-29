@@ -79,7 +79,7 @@
 		"query-string": "^5.0.1",
 		"rc-slider": "^8.6.0",
 		"react": "16.4.1",
-		"react-apollo": "2.1.8",
+		"react-apollo": "2.1.11",
 		"react-burger-menu": "^2.2.3",
 		"react-chartjs-2": "^2.6.4",
 		"react-custom-scrollbars": "^4.2.1",

@@ -73,7 +73,7 @@ class Picker extends React.Component<PickerProps, PickerState> {
     }
 
     keydownHandler = (e: any) => {
-        if (e.code === 'Enter') {
+        if (e.code === 'Enter' && this.props.query && this.props.query.length > 0) {
             e.preventDefault();
             if (!this.state.empty) {
                 this.props.onPick(this.state.filteredOptions[0]);
@@ -145,10 +145,17 @@ const SearchSelectInputWrapper = Glamorous.div({
     }
 });
 
-const SearchSelectBody = Glamorous(XScrollView)({
-    borderTop: '1px solid rgba(0, 0, 0, 0.08)',
-    maxHeight: 200
-});
+const SearchSelectBody = Glamorous(XScrollView)<{ hidden: boolean }>([
+    {
+        borderTop: '1px solid transparent',
+        transition: 'height .2s',
+        height: 0
+    },
+    (props) => (!props.hidden) ? {
+        borderTopColor: 'rgba(0, 0, 0, 0.08)',
+        height: 180
+    } : {}
+]);
 
 const SearchSelectInput = Glamorous(XInput)({
     background: 'none!important',
@@ -166,12 +173,13 @@ interface SearchSelectProps {
     noResultsText: string;
 }
 
-export class SearchSelect extends React.Component<SearchSelectProps, { query: string }> {
+export class SearchSelect extends React.Component<SearchSelectProps, { query: string, showFilters: boolean }> {
     constructor(props: any) {
         super(props);
 
         this.state = {
             query: '',
+            showFilters: false,
         };
     }
 
@@ -200,26 +208,24 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
                     </SearchSelectHead>
                 )}
                 {this.props.shown && (
-                    <>
-                        <SearchSelectInputWrapper>
-                            <SearchSelectInput
-                                icon="search"
-                                placeholder={this.props.title}
-                                value={this.state.query}
-                                onChange={this.handleChange}
-                                autofocus={true}
-                            />
-                        </SearchSelectInputWrapper>
-                        <SearchSelectBody>
-                            <Picker
-                                options={this.props.options}
-                                onPick={this.onPick}
-                                query={this.state.query}
-                                noResultsText={this.props.noResultsText}
-                            />
-                        </SearchSelectBody>
-                    </>
+                    <SearchSelectInputWrapper>
+                        <SearchSelectInput
+                            icon="search"
+                            placeholder={this.props.title}
+                            value={this.state.query}
+                            onChange={this.handleChange}
+                            autofocus={true}
+                        />
+                    </SearchSelectInputWrapper>
                 )}
+                <SearchSelectBody hidden={!this.props.shown}>
+                    <Picker
+                        options={this.props.options}
+                        onPick={this.onPick}
+                        query={this.state.query}
+                        noResultsText={this.props.noResultsText}
+                    />
+                </SearchSelectBody>
             </SearchSelectBox>
         );
     }
