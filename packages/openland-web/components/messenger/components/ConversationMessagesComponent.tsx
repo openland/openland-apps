@@ -15,8 +15,6 @@ const TypingWrapper = Glamorous.div({
     alignItems: 'flex-start',
     width: '100%',
     flexShrink: 0,
-    paddingLeft: 4,
-    paddingRight: 4,
     position: 'absolute',
     bottom: 0,
     left: 0
@@ -24,7 +22,11 @@ const TypingWrapper = Glamorous.div({
 
 const TypingContent = Glamorous(XHorizontal)({
     backgroundColor: '#fff',
-    maxHeight: 33
+    maxHeight: 33,
+    maxWidth: 1000,
+    paddingLeft: 50,
+    paddingRight: 50,
+    margin: 'auto',
 });
 
 const TypingString = Glamorous.div({
@@ -66,7 +68,7 @@ const TypingComponent = (props: { chatId: string }) => (
         <TypignsComponent conversatonId={props.chatId}>
             <TypingContext.Consumer>
                 {typing => (
-                    <TypingContent separator={2} alignItems="center" flexGrow={1}>
+                    <TypingContent separator={5} alignItems="center" flexGrow={1}>
                         {typing.pictures && (
                             <TypingAvatarWrapper>
                                 {typing.pictures.map((i, j) => (
