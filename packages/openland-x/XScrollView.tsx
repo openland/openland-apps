@@ -36,7 +36,7 @@ css.global('.simplebar-track', {
 css.global('.simplebar-scrollbar', {
     position: 'absolute',
     right: 0,
-    width: 7,
+    width: 4,
     minHeight: 10
 });
 
@@ -85,7 +85,7 @@ css.global('.simplebar-track.horizontal .simplebar-scrollbar:before', {
 css.global('.horizontal.simplebar-track .simplebar-scrollbar', {
     right: 'auto',
     top: 2,
-    height: 7,
+    height: 4,
     minHeight: 0,
     minWidth: 10,
     width: 'auto'
