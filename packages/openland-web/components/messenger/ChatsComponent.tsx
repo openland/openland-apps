@@ -15,7 +15,7 @@ import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import CircleIcon from './components/icons/circle-icon.svg';
-import ArrowIcon from './components/icons/ic-arrow-rignt.svg';
+import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
 
 const ItemContainer = Glamorous.a({
@@ -242,7 +242,7 @@ const ExploreChannels = Glamorous(XMenuItem)({
         '& > div > div > div > div': {
             color: '#1790ff'
         },
-        '& > div > div > svg > g > path:last-child': {
+        '& > div > div > svg > path': {
             fill: 'rgba(23, 144, 255, 0.5)'
         }
     }
