@@ -94,7 +94,8 @@ export const SidebarItemHead = Glamorous(XLink)({
 });
 
 export const SidebarItemBody = Glamorous.div({
-    padding: '3px 16px 16px 15px'
+    padding: '3px 16px 16px 15px',
+    height: 291
 });
 
 export const Container = Glamorous.div({
