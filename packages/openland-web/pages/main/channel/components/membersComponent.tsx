@@ -131,8 +131,6 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
     render() {
         let item = this.props.item;
 
-        let userShortName = item.name.match(/\b(\w)/g)!.join(''); // [ts] Возможно, объект равен null. BugMark
-
         return (
             <Member
                 onMouseEnter={() => this.setState({ isHovered: true })}
@@ -142,7 +140,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                     cloudImageUuid={item.picture || undefined}
                     userId={item.id}
                     style="colorus"
-                    userName={userShortName}
+                    userName={item.name}
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
@@ -203,7 +201,7 @@ const RemoveMemberModal = withConversationKick((props) => {
                     style="colorus"
                     cloudImageUuid={member.user.picture || undefined}
                     userId={member.user.id}
-                    userName={member.user.name.match(/\b(\w)/g).join('')}
+                    userName={member.user.name}
                 />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>

@@ -152,7 +152,7 @@ const renderConversation = (v: any, onSelect?: () => void) => (
                     : v.__typename === 'ChannelConversation'
                         ? 'channel' : 'colorus'
             )}
-            userName={v.title.match(/\b(\w)/g).join('')}
+            userName={v.title}
             userId={v.id}
             cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : (v as any).photo}
         />

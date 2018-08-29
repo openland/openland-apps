@@ -232,6 +232,8 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
 
+    let initials = props.userName && props.userName.split(' ').reduce((x, c) => x + c[0], '');
+    console.warn(props.style, initials);
     return (
         <>
             {props.src && (
@@ -252,7 +254,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                         <ColorusStub
                             backgroundImage={props.userId && ColorusArr[Math.abs(doSimpleHash(props.userId)) % ColorusArr.length] || ColorusArr[1]}
                         >
-                            {props.userName}
+                            {initials}
                         </ColorusStub>
                     )}
                 </StyledPlaceholder>
