@@ -107,8 +107,7 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export class XRichTextInput extends React.Component<{ onChange?: (value: string) => void, onSubmit?: () => void, placeholder?: string } & XFlexStyles, { editorState: EditorState }> {
-
+export class XRichTextInput extends React.PureComponent<{ onChange?: (value: string) => void, onSubmit?: () => void, placeholder?: string } & XFlexStyles, { editorState: EditorState }> {
     private editorRef = React.createRef<Editor>();
     state = {
         editorState: EditorState.createEmpty()
