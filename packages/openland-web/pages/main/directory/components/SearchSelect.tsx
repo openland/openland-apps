@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XInput } from 'openland-x/XInput';
 import { XTag } from 'openland-x/XTag';
-import { XIcon } from 'openland-x/XIcon';
 import DownIcon from '../icons/ic-arrow-down.svg';
 import SearchIcon from '../icons/ic-search-small2.svg';
 
@@ -144,6 +143,12 @@ const SearchSelectInputWrapper = Glamorous.div({
     paddingLeft: 18,
     '& > div': {
         flexGrow: 1
+    },
+    '&:focus-within': {
+        '& svg path': {
+            fill: '#1790ff',
+            opacity: 0.5
+        }
     }
 });
 
