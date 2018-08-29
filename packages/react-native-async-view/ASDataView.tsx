@@ -7,20 +7,29 @@ import { ASEventEmitter } from './platform/ASEventEmitter';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
-    currentState: any;
+    currentState: string;
     private container: AsyncRenderer;
     private render: (src: T) => React.ReactElement<{}>;
+    private dataView: ASDataView<T>;
 
-    constructor(initial: T, render: (src: T) => React.ReactElement<{}>) {
+    constructor(dataView: ASDataView<T>, initial: T, render: (src: T) => React.ReactElement<{}>) {
+        this.dataView = dataView;
         this.item = initial;
         this.render = render;
-        this.container = new AsyncRenderer(() => { /* Do nothing for now */ }, render(initial));
-        this.currentState = this.container.getState();
+        this.container = new AsyncRenderer(
+            () => {
+                let st = JSON.stringify(this.container.getState());
+                if (this.currentState !== st) {
+                    this.currentState = st;
+                    dataView.onDataSourceItemRenderUpdated(this.item.key);
+                }
+            },
+            render(initial));
+        this.currentState = JSON.stringify(this.container.getState());
     }
 
     updateItem(item: T) {
         this.container.render(this.render(item));
-        this.currentState = this.container.getState();
     }
 
     destroy() {
@@ -45,17 +54,17 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
 
     onDataSourceInited = (data: T[], completed: boolean) => {
         // Create initial items
-        this.items = data.map((v) => new ItemRenderHolder(v, this.render));
+        this.items = data.map((v) => new ItemRenderHolder(this, v, this.render));
 
         // Forward initial state to native
         let config = JSON.stringify(this.items.map((v) => ({
             key: v.item.key,
-            config: JSON.stringify(v.currentState)
+            config: v.currentState
         })));
         NativeDataView.dataViewInit(this.key, config, completed);
     }
     onDataSourceItemAdded = (item: T, index: number) => {
-        let holder = new ItemRenderHolder(item, this.render);
+        let holder = new ItemRenderHolder(this, item, this.render);
 
         // Insert item
         let itms = [...this.items];
@@ -63,7 +72,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         this.items = itms;
 
         // Forward to native
-        NativeDataView.dataViewAddItem(this.key, item.key, JSON.stringify(holder.currentState), index);
+        NativeDataView.dataViewAddItem(this.key, item.key, holder.currentState, index);
     }
     onDataSourceItemRemoved = (item: T, index: number) => {
         // Remove item
@@ -78,9 +87,6 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
     onDataSourceItemUpdated = (item: T, index: number) => {
         // Update item
         this.items[index].updateItem(item);
-
-        // Forward to native
-        NativeDataView.dataViewUpdateItem(this.key, item.key, JSON.stringify(this.items[index].currentState), index);
     }
     onDataSourceItemMoved = (item: T, fromIndex: number, toIndex: number) => {
         // Move item
@@ -95,18 +101,23 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
     }
 
     onDataSourceLoadedMore = (items: T[], completed: boolean) => {
-        let added = items.map((v) => new ItemRenderHolder(v, this.render));
+        let added = items.map((v) => new ItemRenderHolder(this, v, this.render));
         this.items = [...this.items, ...added];
 
         // Forward initial state to native
         let config = JSON.stringify(added.map((v) => ({
             key: v.item.key,
-            config: JSON.stringify(v.currentState)
+            config: v.currentState
         })));
         NativeDataView.dataViewLoadedMore(this.key, config, completed);
-    } 
+    }
 
     onDataSourceCompleted = () => {
         //
+    }
+
+    onDataSourceItemRenderUpdated = (key: string) => {
+        let index = this.items.findIndex((v) => v.item.key === key);
+        NativeDataView.dataViewUpdateItem(this.key, key, this.items[index].currentState, index);
     }
 }

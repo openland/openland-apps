@@ -13,23 +13,20 @@ let image = (inverted: boolean) => Platform.OS === 'android' ?
                 height: 24,
                 width: 24,
                 margin: 3,
-                // marginLeft: 16,
-                // marginRight: 16,
-                // marginVertical: 16,
                 resizeMode: 'center',
-                tintColor: inverted ? '#fff' : '#000'// AppStyles.primaryColor
+                tintColor: inverted ? '#fff' : undefined
             }}
         />
     ) : (
         <Image
-            source={require('assets/back-icon.png')}
+            source={require('assets/ic-back.png')}
             style={{
                 height: 21,
                 width: 13,
                 marginLeft: 9,
                 marginVertical: 12,
                 resizeMode: 'contain',
-                tintColor: inverted ? '#fff' : '#000' // AppStyles.primaryColor
+                tintColor: inverted ? '#fff' : undefined
             }}
         />
     );

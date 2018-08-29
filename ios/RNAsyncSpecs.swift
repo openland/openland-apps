@@ -104,6 +104,8 @@ class AsyncStyleSpec {
   var marginBottom: Float?
   var marginRight: Float?
   var marginLeft: Float?
+  
+  var opacity: Float?
 }
 
 class AsyncPatch {
@@ -169,6 +171,9 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
     let right = v["right"]!.floatValue
     let source = v["source"]!.stringValue
     res.backgroundPatch = AsyncPatch(source: source, top: top, right: right, bottom: bottom, left: left)
+  }
+  if let v = src["props"]["opacity"].float {
+    res.opacity = v
   }
   return res
 }
