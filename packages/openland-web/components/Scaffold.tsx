@@ -242,7 +242,7 @@ const OrganizationTitleContainer = makeNavigable((props) => {
     return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
 });
 
-class UserPopper extends React.Component<{ picture: string | null, name?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
+class UserPopper extends React.Component<{ picture: string | null, name?: string, id?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
     constructor(props: { picture: string | null, name?: string, hasMultipleOrganizations: boolean }) {
         super(props);
         this.state = { show: false };
@@ -307,7 +307,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                             )}
 
                             <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
-                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} />
+                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" userName={this.props.name} userId={this.props.id}/>
                                 <XVertical separator={1}>
                                     <ProfileTitle >{this.props.name}</ProfileTitle>
                                     <ProfileSubTitle>{TextGlobal.settings}</ProfileSubTitle>
@@ -318,7 +318,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                     </XModalContext.Provider>
                 )}
             >
-                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} />
+                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} style="colorus" userName={this.props.name} userId={this.props.id}/>
             </XPopper>
         );
     }
@@ -331,6 +331,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
                 <UserPopper
                     picture={props.user!!.picture}
                     name={props.user!!.name}
+                    id={props.user!!.id}
                     logo={props.organization ? props.organization.photo : undefined}
                     organizationName={props.organization ? props.organization.name : undefined}
                     organizationId={props.organization ? props.organization.id : undefined}

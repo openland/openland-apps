@@ -156,7 +156,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         return (
             <MessageContainer className="full-message" compact={false}>
                 <XHorizontal alignSelf="stretch">
-                    <XAvatar cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
+                    <XAvatar style="colorus" userName={this.props.sender!!.name} userId={this.props.sender!!.id} cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/' + this.props.sender!!.id} />
                     <MessageWrapper separator={2} flexGrow={1}>
                         <XHorizontal separator={4}>
                             <XHorizontal separator={4} alignItems="center">

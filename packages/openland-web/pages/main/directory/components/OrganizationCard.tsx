@@ -148,6 +148,7 @@ interface OrganizationCardProps {
         editorial: boolean,
         members: {
             user: {
+                id: string,
                 name: string,
                 picture: string | null,
             }
@@ -204,6 +205,8 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             <OrganizationTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
                             {firstMember && <OrganizationMembers>
                                 <XAvatar
+                                    userName={firstMember.user.name}
+                                    userId={firstMember.user.id}
                                     size="x-small"
                                     cloudImageUuid={firstMember.user.picture || undefined}
                                 />

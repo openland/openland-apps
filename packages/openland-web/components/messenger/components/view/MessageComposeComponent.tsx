@@ -29,8 +29,8 @@ const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
     maxWidth: 1000,
     flexBasis: '100%',
-    paddingLeft: 60,
-    paddingRight: 60
+    paddingLeft: 44,
+    paddingRight: 44
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({

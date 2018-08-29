@@ -470,7 +470,7 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <MemberCardAvatar>
-                    <XAvatar cloudImageUuid={member.user.picture || undefined} />
+                    <XAvatar cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} />
                 </MemberCardAvatar>
                 <MemberCardInfo>
                     <MemberCardTitleWrapper>
@@ -584,8 +584,8 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
         let organization = this.props.organization;
         console.warn(channel.organization);
 
-        let membersCountText =  channel!!.membersCount + ' ' + ((channel!!.membersCount + channel!!.membersCount) > 1 ? 'members' : 'member');
-        let requesetsCountText =  (organization && organization.isOwner && channel!!.memberRequestsCount > 0) ? '• ' + (channel!!.memberRequestsCount + ' ' + (channel!!.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
+        let membersCountText = channel!!.membersCount + ' ' + ((channel!!.membersCount + channel!!.membersCount) > 1 ? 'members' : 'member');
+        let requesetsCountText = (organization && organization.isOwner && channel!!.memberRequestsCount > 0) ? '• ' + (channel!!.memberRequestsCount + ' ' + (channel!!.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
         return (
             <ChannelCardWrapper
                 path={'/mail/' + this.props.item.id}

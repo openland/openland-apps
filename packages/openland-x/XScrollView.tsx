@@ -30,21 +30,21 @@ css.global('.simplebar-track', {
     position: 'absolute',
     right: 0,
     bottom: 0,
-    width: '11px'
+    width: 11
 });
 
 css.global('.simplebar-scrollbar', {
     position: 'absolute',
-    right: '2px',
-    width: '7px',
-    minHeight: '10px'
+    right: 0,
+    width: 7,
+    minHeight: 10
 });
 
 css.global('.simplebar-scrollbar:before', {
     position: 'absolute',
     content: '""',
-    background: 'black',
-    borderRadius: '7px',
+    background: '#bcc3cc',
+    borderRadius: 2,
     left: 0,
     right: 0,
     opacity: 0,
@@ -52,12 +52,12 @@ css.global('.simplebar-scrollbar:before', {
 });
 
 css.global('.simplebar-track:hover .simplebar-scrollbar:before', {
-    opacity: 0.5,
+    opacity: 0.38,
     transition: 'opacity 0 linear'
 });
 
 css.global('.simplebar-track .simplebar-scrollbar.visible:before', {
-    opacity: 0.5,
+    opacity: 0.38,
     transition: 'opacity 0 linear'
 });
 
@@ -73,7 +73,7 @@ css.global('.simplebar-track.vertical .simplebar-scrollbar:before', {
 css.global('.simplebar-track.horizontal', {
     left: 0,
     width: 'auto',
-    height: '11px'
+    height: 11
 });
 
 css.global('.simplebar-track.horizontal .simplebar-scrollbar:before', {

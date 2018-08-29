@@ -200,7 +200,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
             }}
         >
             <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} />
+                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>
                     {member.email && <XText opacity={0.5} >{member.email}</XText>}
@@ -317,7 +317,8 @@ const OrgMembers = withOrganizationMembers((props) => {
                         <Row>
                             <XTable.Cell>
                                 <XHorizontal separator={7} alignItems="center">
-                                    <XAvatar size="small" cloudImageUuid={(m.__typename === 'OrganizationJoinedMember' && m.user.picture) || undefined} />
+                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={( m.user.picture) || undefined} userName={m.user.name} userId={m.user.id}/>}
+                                    {m.__typename === 'OrganizationIvitedMember' && <XAvatar size="small" cloudImageUuid={undefined} />}
                                     <XVertical separator={1} justifyContent="center">
                                         <Title>{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</Title>
                                         {m.email && <Text>{m.email}</Text>}
@@ -364,7 +365,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                                 <>
                                                     <XMenuItem query={{ field: 'changeRole', value: m.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
                                                     <XMenuItem query={{ field: 'remove', value: m.user.id }} style="danger" >{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
-                                                    <SwitchMemberIsContact showInContacts={m.showInContacts} orgId={(props.variables as any).orgId} memberId={m.user.id} refetchVars={{orgId: (props.variables as any).orgId}} />
+                                                    <SwitchMemberIsContact showInContacts={m.showInContacts} orgId={(props.variables as any).orgId} memberId={m.user.id} refetchVars={{ orgId: (props.variables as any).orgId }} />
                                                 </>
                                             ) : (
                                                     <XMenuItem query={{ field: 'remove', value: m.inviteId }} style="danger" >{TextInvites.membersMgmt.menuCancelInvite}</XMenuItem>
