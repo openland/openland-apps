@@ -15,6 +15,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { ChannelSetFeatured, ChannelSetHidden } from './MessengerComponent';
+import SearchIcon from '../icons/ic-search-small.svg';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -140,19 +141,20 @@ const SearchWrapper = Glamorous(XHorizontal)({
     height: 60,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     paddingRight: 24,
-    paddingLeft: 10,
-    '& > div': {
+    paddingLeft: 20,
+    '& > div > div': {
         height: 58,
         border: 'none',
         fontSize: 16,
         fontWeight: 500,
-        '& .icon': {
-            fontSize: 20,
-            top: 'calc(50% - 10px)'
-        },
         '&:focus-within': {
             boxShadow: 'none',
             border: 'none'
+        }
+    },
+    '& > div:focus-within': {
+        '& svg > g > path:last-child': {
+            fill: 'rgba(23, 144, 255, 0.5)'
         }
     }
 });
@@ -203,14 +205,16 @@ export class ChannelsExploreComponent extends React.Component<{}, {
             <Root>
                 <XVertical separator={0} flexShrink={0}>
                     <SearchWrapper justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <XInput
-                            value={this.state.query}
-                            onChange={this.onQueryChange}
-                            flexGrow={1}
-                            placeholder="Search channels"
-                            icon="search"
-                            color="primary-sky-blue"
-                        />
+                        <XHorizontal separator={0} alignItems="center" flexGrow={1}>
+                            <SearchIcon />
+                            <XInput
+                                value={this.state.query}
+                                onChange={this.onQueryChange}
+                                flexGrow={1}
+                                placeholder="Search channels"
+                                color="primary-sky-blue"
+                            />
+                        </XHorizontal>
                         <XButton
                             text="Search"
                             style="primary-sky-blue"

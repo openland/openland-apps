@@ -233,16 +233,12 @@ const Search = Glamorous(XInput)({
 
 const ExploreChannels = Glamorous(XMenuItem)({
     backgroundColor: '#F3F5F6',
+    color: '#5c6a81',
+    fontWeight: 600,
     '&:hover': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        color: '#334562',
-        '& > div > div > div > svg > path': {
-            fill: 'rgba(23, 144, 255, 0.5)'
-        },
-        '& > div > div > div > div': {
-            color: '#1790ff'
-        },
-        '& > div > div > svg > path': {
+        color: '#1790ff',
+        '& svg > path': {
             fill: 'rgba(23, 144, 255, 0.5)'
         }
     }

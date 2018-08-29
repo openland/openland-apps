@@ -133,8 +133,9 @@ export const SearchInput = Glamorous.input({
     paddingLeft: 9,
     lineHeight: 1.43,
     flexGrow: 1,
+    fontSize: 16,
+    fontWeight: 500,
     '::placeholder': {
-        fontWeight: 500,
         color: '#99A2B0'
     }
 });
