@@ -27,6 +27,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import PlusIcon from './icons/ic-add-small.svg';
 import LinkIcon from './icons/ic-link.svg';
 import EmailIcon from './icons/ic-email.svg';
+import CloseIcon from './icons/ic-close-1.svg';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,
@@ -129,23 +130,49 @@ const InviteText = Glamorous.div({
     color: '#99a2b0'
 });
 
+const RemovewInputGroup = Glamorous.div({
+    width: 40,
+    height: 40,
+    flex: 'initial',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid rgba(220, 222, 228, 0.6)',
+    borderLeft: 'none',
+    borderRadius: '0 20px 20px 0',
+    paddingRight: 1,
+    background: 'rgba(239, 240, 243, 0.2)',
+    cursor: 'pointer',
+    zIndex: 1,
+
+    '&:hover': {
+        background: '#fdf6f6',
+
+        '& svg *': {
+            fill: 'rgba(215, 84, 85, 0.5)'
+        }
+    }
+});
+
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
         <XInputGroup flexGrow={1}>
             <XInput size="r-default" color="primary-sky-blue" autofocus={props.first} required={true} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
             <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
             <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
-        </XInputGroup>
-        {props.useRoles !== false &&
-            <XWithRole role="super-admin">
-                <RoleSelectWrapper width={126}>
+
+            {props.useRoles !== false &&
+                <XWithRole role="super-admin">
                     <XSelect field={'inviteRequests.' + props.index + '.role'} searchable={false} clearable={false} options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]} />
-                </RoleSelectWrapper>
-            </XWithRole>
-        }
-        {!props.single && (
-            <XModalCloser onClick={() => props.handleRemove(props.index)} />
-        )}
+                </XWithRole>
+            }
+
+            {!props.single && (
+                <RemovewInputGroup onClick={() => props.handleRemove(props.index)}>
+                    <CloseIcon />
+                </RemovewInputGroup>
+            )}
+        </XInputGroup>
     </XHorizontal>
 );
 
@@ -367,7 +394,7 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                                     let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
                                     return (
                                         <XVertical separator={8}>
-                                            <XVertical separator={6}>
+                                            <XVertical separator={8}>
                                                 {invites.map((invite: Invite, i: number) => (
                                                     <InviteComponent
                                                         first={i === 0}
