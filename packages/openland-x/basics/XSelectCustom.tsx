@@ -222,7 +222,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                 {((this.state.lastValue as Option<string>[]) || []).map(v => (
                     <XTag
                         key={v.value}
-                        icon="close"
+                        icon="x-close"
                         size={rounded ? 'default' : 'large'}
                         text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
                         rounded={rounded}

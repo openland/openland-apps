@@ -190,7 +190,7 @@ class ConditionsRender extends React.Component<{ conditions: SearchCondition[], 
                         size="large"
                         rounded={true}
                         color={condition.type === 'name' ? 'gray' : 'default'}
-                        icon="close"
+                        icon="x-close"
                         onIconClick={() => this.props.removeCallback(condition)}
                     />
                 ))}
