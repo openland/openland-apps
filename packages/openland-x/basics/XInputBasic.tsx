@@ -457,6 +457,10 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
         };
     }
 
+    componentWillReceiveProps(props: XInputBasicProps) {
+        this.setState({ value: props.value || '' });
+    }
+
     handleRef = (e: any) => {
         if (e && this.props.autofocus) {
             e.focus();

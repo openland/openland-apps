@@ -73,7 +73,7 @@ class Picker extends React.Component<PickerProps, PickerState> {
     }
 
     keydownHandler = (e: any) => {
-        if (e.code === 'Enter') {
+        if (e.code === 'Enter' && this.props.query && this.props.query.length > 0) {
             e.preventDefault();
             if (!this.state.empty) {
                 this.props.onPick(this.state.filteredOptions[0]);
