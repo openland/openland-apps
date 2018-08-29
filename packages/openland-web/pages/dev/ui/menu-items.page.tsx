@@ -21,6 +21,7 @@ export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
                             <XMenuItemSeporator />
                             <XMenuItem icon="chat">With icon</XMenuItem>
                             <XMenuItem iconRight="chevron_right">With right icon</XMenuItem>
+                            <XMenuItem iconRight="x-right">With custom right icon</XMenuItem>
                             <XMenuItemSeporator />
                             <XMenuItem icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>
                             <XMenuItem style="danger" icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>

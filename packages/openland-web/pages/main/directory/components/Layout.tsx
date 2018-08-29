@@ -80,7 +80,7 @@ export const SidebarItemLink = Glamorous(XLink)({
 
 export const SidebarItemBody = Glamorous.div({
     padding: '3px 16px 16px 15px',
-    height: 291
+    height: 291 // ugly way to fix content jumping
 });
 
 export const Container = Glamorous.div({

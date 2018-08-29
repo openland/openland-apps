@@ -91,6 +91,11 @@ func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayou
   attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize), weight: spec.fontWeight)
   attributes[NSForegroundColorAttributeName] = spec.color
   let style = NSMutableParagraphStyle();
+  style.headIndent = 0.0
+  style.tailIndent = 0.0
+  style.paragraphSpacing = 0.0
+  style.paragraphSpacingBefore = 0.0
+  style.lineSpacing = 0.0
   if let v = spec.lineHeight {
     style.minimumLineHeight = CGFloat(v)
     style.maximumLineHeight = CGFloat(v)
@@ -102,6 +107,11 @@ func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayou
   res.attributedText = NSAttributedString(string: spec.text, attributes: attributes)
   if let v = spec.numberOfLines {
     res.maximumNumberOfLines = UInt(v)
+  }
+  if let v = spec.style.opacity {
+    res.alpha = CGFloat(v)
+  } else {
+    res.alpha = CGFloat(1)
   }
   return resolveStyle(spec.style, res, context)
 }
@@ -157,6 +167,7 @@ func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement, _ context: 
       }
     }
   }
+  
   if let v = spec.backgroundPatch {
     let g = ASImageNode()
     var _baseImage: UIImage? = nil

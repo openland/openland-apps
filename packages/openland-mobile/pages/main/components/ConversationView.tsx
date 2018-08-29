@@ -12,9 +12,6 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 
 export interface MessagesListProps {
-    onAvatarPress: (userId: string) => void;
-    onPhotoPress: (message: MessageFullFragment) => void;
-    onDocumentPress: (message: MessageFullFragment) => void;
     engine: ConversationEngine;
 }
 
@@ -80,12 +77,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 </ASView>
                 <ConversationMessagesView
                     ref={this.listRef}
-                    messages={this.state.conversation.messagesPrepprocessed}
                     loaded={this.state.conversation.historyFullyLoaded}
-                    onAvatarPress={this.props.onAvatarPress}
-                    onPhotoPress={this.props.onPhotoPress}
-                    onDocumentPress={this.props.onDocumentPress}
-                    onEndReached={this.onEndReached}
                     engine={this.props.engine}
                 />
                 {!this.state.conversation.loading && this.state.conversation.messages.length === 0 && (

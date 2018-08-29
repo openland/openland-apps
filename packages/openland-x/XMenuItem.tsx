@@ -4,13 +4,14 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import RightIcon from './icons/ic-right-1.svg';
 
 type XMenuItemStyle = 'danger' | 'primary-sky-blue' | 'default';
 
 interface XMenuItemProps extends XLinkProps {
     style?: XMenuItemStyle;
-    icon?: string | any;
-    iconRight?: string | any;
+    icon?: string;
+    iconRight?: string;
 }
 
 let XMenuItemColorStyles = styleResolver({
@@ -19,11 +20,17 @@ let XMenuItemColorStyles = styleResolver({
         '& i': {
             color: '#bcc3cc'
         },
+        '& svg *': {
+            fill: '#bcc3cc'
+        },
         ':hover': {
             color: '#6b50ff',
             backgroundColor: '#f8f8fb',
             '& i': {
                 color: 'rgba(107, 80, 255, 0.5)'
+            },
+            '& svg *': {
+                fill: 'rgba(107, 80, 255, 0.5)'
             }
         }
     },
@@ -32,11 +39,17 @@ let XMenuItemColorStyles = styleResolver({
         '& i': {
             color: '#bcc3cc'
         },
+        '& svg *': {
+            fill: '#bcc3cc'
+        },
         ':hover': {
             color: '#1790ff',
             backgroundColor: '#f3f9ff',
             '& i': {
                 color: 'rgba(23, 144, 255, 0.5)'
+            },
+            '& svg *': {
+                fill: 'rgba(23, 144, 255, 0.5)'
             }
         }
     },
@@ -45,23 +58,30 @@ let XMenuItemColorStyles = styleResolver({
         '& i': {
             color: '#d75454'
         },
+        '& svg *': {
+            fill: '#d75454'
+        },
         ':hover': {
             color: '#d75454',
             backgroundColor: '#fdf6f6',
             '& i': {
                 color: '#d75454'
+            },
+            '& svg *': {
+                fill: '#d75454'
             }
         }
     }
 });
 
 const XMenuItemStyled = Glamorous(XLink)<{ colorTheme?: XMenuItemStyle }>([
-    (props) => ({
+    {
         height: 40,
         flexShrink: 0,
         padding: '0 16px',
         display: 'flex',
-    }),
+        alignItems: 'center',
+    },
     (props) => XMenuItemColorStyles(props.colorTheme)
 ]);
 
@@ -90,24 +110,39 @@ const XMenuItemText = Glamorous.div({
 });
 
 export class XMenuItem extends React.Component<XMenuItemProps> {
+    CustomIcons = ['x-right'];
+
+    getCustomIcon (i: string) {
+        switch (i) {
+            case this.CustomIcons[0]:
+                return <RightIcon />;
+            default:
+                return undefined;
+        }
+    }
+
+    isCustomIcon (i: string) {
+        return (this.CustomIcons.indexOf(i) > -1);
+    }
+
     render() {
         return (
             <XMenuItemStyled
                 {...this.props}
                 colorTheme={this.props.style}
             >
-                {this.props.icon && (
-                    typeof(this.props.icon) === 'string'
-                    ? <XMenuItemIcon icon={this.props.icon} className="icon icon-left" />
-                    : this.props.icon
+                {this.props.icon && this.isCustomIcon(this.props.icon) && this.getCustomIcon(this.props.icon)}
+                {this.props.icon && !this.isCustomIcon(this.props.icon) && (
+                    <XMenuItemIcon icon={this.props.icon} className="icon icon-left" />
                 )}
+
                 <XMenuItemText>
                     {this.props.children}
                 </XMenuItemText>
-                {this.props.iconRight && (
-                    typeof(this.props.iconRight) === 'string'
-                    ? <XMenuItemIcon icon={this.props.iconRight} className="icon icon-right" />
-                    : this.props.iconRight
+
+                {this.props.iconRight && this.isCustomIcon(this.props.iconRight) && this.getCustomIcon(this.props.iconRight)}
+                {this.props.iconRight && !this.isCustomIcon(this.props.iconRight) && (
+                    <XMenuItemIcon icon={this.props.iconRight} className="icon icon-right" />
                 )}
             </XMenuItemStyled>
         );

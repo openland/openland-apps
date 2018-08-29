@@ -112,7 +112,7 @@ export const XInputGroup = Glamorous.div<XFlexStyles>([
 
         '& > *': {
             flex: 1,
-            zIndex: 1,
+            zIndex: 2,
             marginRight: -1,
 
             '&:first-child': {
@@ -130,7 +130,7 @@ export const XInputGroup = Glamorous.div<XFlexStyles>([
             },
 
             '&:focus-within': {
-                zIndex: 2
+                zIndex: 3
             }
         }
     }),

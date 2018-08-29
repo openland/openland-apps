@@ -1,19 +1,13 @@
 import * as React from 'react';
 import { Day } from 'openland-engines/messenger/ConversationState';
-import { MessageFullFragment } from 'openland-api/Types';
-import { View, Text, ListRenderItemInfo, FlatList, LayoutAnimation } from 'react-native';
-import { ZLoader } from '../../../components/ZLoader';
-import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { View, Text } from 'react-native';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
-import { ModelMessage, extractKey } from 'openland-engines/messenger/types';
-import { MessageViewSingle } from 'openland-shared/MessageViewSingle';
-import { DownloadManagerInstance } from '../../../files/DownloadManager';
+import { ModelMessage } from 'openland-engines/messenger/types';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASListView } from 'react-native-async-view/ASListView';
-import { AsyncMessageView } from './async/AsyncMessageView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASDataView } from 'react-native-async-view/ASDataView';
-import { MobileMessenger, MobileMessengerContext } from '../../../messenger/MobileMessenger';
+import { MobileMessengerContext } from '../../../messenger/MobileMessenger';
 
 let months = [
     'Jan',
@@ -96,70 +90,38 @@ function convertMessages(days: Day[]) {
 }
 
 export interface ConversationMessagesViewProps {
-    onEndReached: () => void;
     loaded: boolean;
-    messages: Day[];
     engine: ConversationEngine;
-    onAvatarPress?: (userId: string) => void;
-    onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
-    onDocumentPress?: (message: MessageFullFragment) => void;
 }
 
-class ConversationMessagesViewComponent extends React.PureComponent<ConversationMessagesViewProps & { topInset: number, bottomInset: number }> {
+export class ConversationMessagesView extends React.PureComponent<ConversationMessagesViewProps> {
 
     scrollToStart = () => {
-        // if (this.listRef.current) {
-        //     LayoutAnimation.configureNext({
-        //         duration: 700,
-        //         update: {
-        //             type: 'spring',
-        //             springDamping: 0.4
-        //         },
-        //         create: {
-        //             type: 'easeInEaseOut',
-        //             property: 'opacity',
-        //             duration: 300
-        //         }
-        //     });
-
-        //     this.listRef.current.scrollToIndex({ index: 0, animated: false });
+        // TODO: Implement
+        // if (this.ref.current) {
+        //     this.ref.current.scrollToStart();
         // }
     }
 
     render() {
         return (
-            <MobileMessengerContext.Consumer>
-                {engine => (
-                    <ASView style={{ flexGrow: 1 }}>
-                        <ASFlex flexDirection="column" alignItems="stretch">
-                            <ASListView
-                                dataView={engine.getConversation(this.props.engine.conversationId)}
-                                inverted={true}
-                                flexGrow={1}
-                                contentPaddingTop={this.props.topInset}
-                                contentPaddingBottom={this.props.bottomInset}
-                            />
-                        </ASFlex>
-                    </ASView>
-                )}
-            </MobileMessengerContext.Consumer>
-        );
-    }
-}
-
-export class ConversationMessagesView extends React.PureComponent<ConversationMessagesViewProps> {
-    ref = React.createRef<ConversationMessagesViewComponent>();
-
-    scrollToStart = () => {
-        if (this.ref.current) {
-            this.ref.current.scrollToStart();
-        }
-    }
-
-    render() {
-        return (
             <ZSafeAreaContext.Consumer>
-                {area => (<ConversationMessagesViewComponent ref={this.ref} {...this.props} bottomInset={area.bottom} topInset={area.top} />)}
+                {area => (<MobileMessengerContext.Consumer>
+                    {engine => (
+                        <ASView style={{ flexGrow: 1 }}>
+                            <ASFlex flexDirection="column" alignItems="stretch">
+                                <ASListView
+                                    dataView={engine.getConversation(this.props.engine.conversationId)}
+                                    inverted={true}
+                                    flexGrow={1}
+                                    contentPaddingTop={area.top}
+                                    contentPaddingBottom={area.bottom}
+                                />
+                            </ASFlex>
+                        </ASView>
+                    )}
+                </MobileMessengerContext.Consumer>)
+                }
             </ZSafeAreaContext.Consumer>
         );
     }

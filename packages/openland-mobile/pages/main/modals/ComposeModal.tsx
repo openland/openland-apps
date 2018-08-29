@@ -150,7 +150,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                                 </ZQuery>
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.conversationId) && (
-                                <ConversationView key={this.state.conversationId} onAvatarPress={this.handleAvatarPress} onPhotoPress={this.handlePhotoPress} onDocumentPress={this.handleDocumentPress} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
+                                <ConversationView key={this.state.conversationId} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.resolving) && (
                                 <ZSafeAreaView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
