@@ -6,6 +6,8 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XIcon } from 'openland-x/XIcon';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
+import RightIcon from '../icons/ic-arrow-rignt.svg';
+import { XVertical } from 'openland-x-layout/XVertical';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
@@ -29,11 +31,7 @@ export const SidebarHeader = Glamorous.div({
     padding: '16px 16px 20px'
 });
 
-export const SidebarList = Glamorous.div({
-    
-});
-
-export const SidebarItem = Glamorous.div<{ active?: boolean }>([
+export const SidebarItemWrapper = Glamorous.div<{ active?: boolean }>([
     {
         borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     },
@@ -42,26 +40,15 @@ export const SidebarItem = Glamorous.div<{ active?: boolean }>([
     } : {}
 ]);
 
-export const SidebarItemHead = Glamorous(XLink)({
+export const SidebarItemLink = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
-    padding: '14px 11px 13px 14px',
+    justifyContent: 'space-between',
     color: '#5c6a81',
-
-    '& i:first-child': {
-        fontSize: 20,
-        marginRight: 12,
-        color: '#bcc3cc'
-    },
-
-    '& svg': {
-        width: 20,
-        marginRight: 10,
-
-        '& > *': {
-            fill: '#bcc3cc'
-        }
-    },
+    paddingTop: 14,
+    paddingRight: 15,
+    paddingBottom: 13,
+    paddingLeft: 17,
 
     '& span': {
         flex: 1,
@@ -71,26 +58,24 @@ export const SidebarItemHead = Glamorous(XLink)({
         fontWeight: 500,
     },
 
-    '& i:last-child': {
-        fontSize: 16,
-        marginLeft: 12,
-        color: '#bcc3cc'
-    },
-
-    '&:hover': {
+    '&:not(.is-active):hover': {
         color: '#1790ff',
         background: 'rgba(23, 144, 255, 0.05)',
+        cursor: 'pointer !important',
 
-        '& svg > *': {
+        '& > div > svg > *': {
             opacity: 0.5,
             fill: '#1790ff',
         },
-
-        '& i': {
+        '& > svg > g > path:last-child': {
             opacity: 0.5,
-            color: '#1790ff',
+            fill: '#1790ff',
         },
     },
+    '&:hover': {
+        color: '#5c6a81',
+        cursor: 'default !important'
+    }
 });
 
 export const SidebarItemBody = Glamorous.div({
@@ -112,10 +97,6 @@ export const Results = Glamorous(XScrollView)({
     height: 'calc(100vh - 118px)'
 });
 
-export const ContentView = Glamorous.div({
-    
-});
-
 export const SearchFormWrapper = Glamorous(XHorizontal)({
     paddingLeft: 14,
     paddingRight: 14,
@@ -130,7 +111,14 @@ export const SearchFormContent = Glamorous(XHorizontal)({
     flexWrap: 'wrap',
     alignItems: 'center',
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingLeft: 5,
+    '&:focus-within': {
+        '& > svg > g > path:last-child': {
+            fill: '#1790ff',
+            opacity: 0.5
+        },
+    }
 });
 
 export const SearchFormIcon = Glamorous(XIcon)({
@@ -142,7 +130,7 @@ export const SearchFormIcon = Glamorous(XIcon)({
 export const SearchInput = Glamorous.input({
     height: '100%',
     minHeight: 40,
-    paddingLeft: 5,
+    paddingLeft: 9,
     lineHeight: 1.43,
     flexGrow: 1,
     '::placeholder': {
@@ -168,26 +156,12 @@ export const ResetButton = Glamorous.div({
     },
 });
 
-export class OrganizationsSidebarItemHead extends React.Component {
-    render() {
-        return (
-            <SidebarItemHead path="/directory">
-                <OrganizationsIcon />
-                <span>Organizations</span>
-                <XIcon icon="chevron_right" />
-            </SidebarItemHead>
-        );
-    }
-}
-
-export class CommunitiesSidebarItemHead extends React.Component {
-    render() {
-        return (
-            <SidebarItemHead path="/directory/communities">
-                <CommunityIcon />
-                <span>Communities</span>
-                <XIcon icon="chevron_right" />
-            </SidebarItemHead>
-        );
-    }
-}
+export const SidebarItemHeadLink = (props: { isCommunity: boolean }) => (
+    <SidebarItemLink path={props.isCommunity ? '/directory/communities' : '/directory'}>
+        <XHorizontal separator={7} alignItems="center">
+            {props.isCommunity ? <CommunityIcon /> : <OrganizationsIcon />}
+            <span>{props.isCommunity ? 'Communities' : 'Organizations'}</span>
+        </XHorizontal>
+        <RightIcon />
+    </SidebarItemLink>
+);

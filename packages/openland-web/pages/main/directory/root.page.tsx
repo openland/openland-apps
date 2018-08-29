@@ -6,6 +6,7 @@ import { withExploreOrganizations } from '../../../api/withExploreOrganizations'
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
@@ -18,24 +19,22 @@ import { SearchSelect } from './components/SearchSelect';
 import { OrganizationCard } from './components/OrganizationCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
+import SearchIcon from './icons/ic-search-small.svg';
 import {
     RootWrapper,
     Sidebar,
     SidebarHeader,
-    SidebarList,
-    SidebarItem,
+    SidebarItemWrapper,
     SidebarItemBody,
     Container,
     SearchRow,
     Results,
-    ContentView,
     SearchFormWrapper,
     SearchFormContent,
     SearchFormIcon,
     SearchInput,
     ResetButton,
-    OrganizationsSidebarItemHead,
-    CommunitiesSidebarItemHead
+    SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
 
@@ -353,9 +352,9 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             <RootWrapper>
                 <Sidebar>
                     <SidebarHeader>Directory</SidebarHeader>
-                    <SidebarList>
-                        <SidebarItem active={true}>
-                            <OrganizationsSidebarItemHead />
+                    <XVertical separator={0}>
+                        <SidebarItemWrapper active={true}>
+                            <SidebarItemHeadLink isCommunity={false} />
                             <SidebarItemBody>
                                 <SearchSelect
                                     title="Category"
@@ -376,19 +375,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     noResultsText={'Press Enter to add "{0}" location'}
                                 />
                             </SidebarItemBody>
-                        </SidebarItem>
-                        <SidebarItem>
-                            <CommunitiesSidebarItemHead />
-                        </SidebarItem>
-                    </SidebarList>
+                        </SidebarItemWrapper>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink isCommunity={true} />
+                        </SidebarItemWrapper>
+                    </XVertical>
                 </Sidebar>
                 <Container>
                     {!oid &&
-                        <ContentView>
+                        <XVertical separator={0}>
                             <SearchRow>
                                 <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
                                     <SearchFormContent separator={4} flexGrow={1}>
-                                        <SearchFormIcon icon="search" />
+                                        <SearchIcon />
                                         <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
                                         <AutocompletePopper
                                             target={
@@ -450,7 +449,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     tagsCount={this.tagsCount}
                                 />
                             </Results>
-                        </ContentView>}
+                        </XVertical>}
                     {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} />}
                 </Container>
 
