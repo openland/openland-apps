@@ -3,7 +3,8 @@ import Glamorous from 'glamorous';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XInput } from 'openland-x/XInput';
 import { XTag } from 'openland-x/XTag';
-import { XIcon } from 'openland-x/XIcon';
+import DownIcon from '../icons/ic-arrow-down.svg';
+import SearchIcon from '../icons/ic-search-small2.svg';
 
 interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -128,20 +129,26 @@ const SearchSelectBox = Glamorous.div({
 
 const SearchSelectHead = Glamorous.div({
     cursor: 'pointer',
-    padding: '9px 9px 10px 16px',
+    padding: '10px 15px 10px 16px',
     display: 'flex',
+    alignItems: 'center',
     '& span': {
         flex: 1
-    },
-    '& i': {
-        fontSize: 20,
-        color: '#c1c7cf'
     }
 });
 
 const SearchSelectInputWrapper = Glamorous.div({
-    '& i': {
-        color: '#c1c7cf!important'
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 18,
+    '& > div': {
+        flexGrow: 1
+    },
+    '&:focus-within': {
+        '& svg path': {
+            fill: '#1790ff',
+            opacity: 0.5
+        }
     }
 });
 
@@ -204,13 +211,13 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
                         onClick={this.props.onShow}
                     >
                         <span>{this.props.title}</span>
-                        <XIcon icon="expand_more" />
+                        <DownIcon />
                     </SearchSelectHead>
                 )}
                 {this.props.shown && (
                     <SearchSelectInputWrapper>
+                        <SearchIcon/>
                         <SearchSelectInput
-                            icon="search"
                             placeholder={this.props.title}
                             value={this.state.query}
                             onChange={this.handleChange}

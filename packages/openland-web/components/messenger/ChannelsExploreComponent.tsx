@@ -11,6 +11,11 @@ import { SortPicker } from '../../pages/main/directory/sortPicker';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
 import { EmptyComponent } from './components/view/content/ChannelEmptyComponent';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XOverflow } from '../Incubator/XOverflow';
+import { XMenuTitle } from 'openland-x/XMenuItem';
+import { ChannelSetFeatured, ChannelSetHidden } from './MessengerComponent';
+import SearchIcon from '../icons/ic-search-small.svg';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -89,8 +94,8 @@ const Channels = withChatSearchChannels((props) => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + '/') : '') + channel.title;
                         return (
-                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} justifyContent="space-between" alignItems="center">
-                                <XHorizontal separator={6} alignItems="center">
+                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} alignItems="center">
+                                <XHorizontal separator={6} alignItems="center" flexGrow={1}>
                                     <Avatar
                                         style="channel"
                                         cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
@@ -107,13 +112,26 @@ const Channels = withChatSearchChannels((props) => {
                                     size="r-default"
                                     className={channel.myStatus}
                                 />
+                                <XWithRole role={['super-admin', 'editor']}>
+                                    <XOverflow
+                                        flat={true}
+                                        placement="bottom-end"
+                                        content={(
+                                            <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
+                                                <XMenuTitle>Super admin</XMenuTitle>
+                                                <ChannelSetFeatured conversationId={channel.id} val={channel.featured} />
+                                                <ChannelSetHidden conversationId={channel.id} val={channel.hidden} />
+                                            </div>
+                                        )}
+                                    />
+                                </XWithRole>
                             </ChannelItemWrapper>
                         );
                     })}
                 </>
             )
             : (
-                <EmptyComponent/>
+                <EmptyComponent />
             )
             : (<XLoader loading={true} />)
     );
@@ -123,19 +141,20 @@ const SearchWrapper = Glamorous(XHorizontal)({
     height: 60,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     paddingRight: 24,
-    paddingLeft: 10,
-    '& > div': {
+    paddingLeft: 20,
+    '& > div > div': {
         height: 58,
         border: 'none',
         fontSize: 16,
         fontWeight: 500,
-        '& .icon': {
-            fontSize: 20,
-            top: 'calc(50% - 10px)'
-        },
         '&:focus-within': {
             boxShadow: 'none',
             border: 'none'
+        }
+    },
+    '& > div:focus-within': {
+        '& svg > g > path:last-child': {
+            fill: 'rgba(23, 144, 255, 0.5)'
         }
     }
 });
@@ -186,14 +205,16 @@ export class ChannelsExploreComponent extends React.Component<{}, {
             <Root>
                 <XVertical separator={0} flexShrink={0}>
                     <SearchWrapper justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <XInput
-                            value={this.state.query}
-                            onChange={this.onQueryChange}
-                            flexGrow={1}
-                            placeholder="Search channels"
-                            icon="search"
-                            color="primary-sky-blue"
-                        />
+                        <XHorizontal separator={0} alignItems="center" flexGrow={1}>
+                            <SearchIcon />
+                            <XInput
+                                value={this.state.query}
+                                onChange={this.onQueryChange}
+                                flexGrow={1}
+                                placeholder="Search channels"
+                                color="primary-sky-blue"
+                            />
+                        </XHorizontal>
                         <XButton
                             text="Search"
                             style="primary-sky-blue"

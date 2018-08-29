@@ -47,8 +47,8 @@ export default withApp('UI Framework - Tags', 'viewer', (props) => {
                     <XHorizontal>
                         <XTag rounded={true} size="large" text="Automotive" iconLeft="star" />
                         <XTag rounded={true} text="primary" iconLeft="star" />
-                        <XTag rounded={true} size="large" text="Automotive" icon="close" />
-                        <XTag rounded={true} text="primary" icon="close" />
+                        <XTag rounded={true} size="large" text="Automotive" icon="x-close" />
+                        <XTag rounded={true} text="primary" icon="x-close" />
                     </XHorizontal>
                 </XVertical>
             </XContent>

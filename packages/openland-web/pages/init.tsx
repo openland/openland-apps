@@ -53,7 +53,7 @@ css.global('a', {
     textDecoration: 'none',
 });
 css.global('a:hover', {
-    color: '#6B50FF'
+    color: '#1790ff'
 });
 css.global('sub, sup', {
     fontSize: '75%',

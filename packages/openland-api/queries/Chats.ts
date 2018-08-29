@@ -17,6 +17,12 @@ export const ChatListQuery = gql`
                     id
                     mute
                 }
+                ... on GroupConversation{
+                    photo
+                }
+                ... on ChannelConversation{
+                    photo
+                }
                 topMessage{
                     ...MessageFull
                 }
@@ -104,6 +110,7 @@ export const ChatInfoQuery = gql`
                 }
                 isRoot
                 featured
+                hidden
                 description
                 myStatus
                 membersCount
@@ -352,6 +359,7 @@ export const ChatSearchChannelQuery = gql`
                     ...ConversationShort
                     membersCount
                     featured
+                    hidden
                     description
                     myStatus
                     organization{
@@ -387,8 +395,24 @@ export const CreateChannelMutation = gql`
 
 export const ChannelSetFeaturedMutation = gql`
     mutation ChannelSetFeatured($channelId: ID!, $featured: Boolean!) {
-        alphaChannelSetFeatured(channelId: $channelId, featured: $featured)
+        alphaChannelSetFeatured(channelId: $channelId, featured: $featured){
+            ... ConversationShort
+        }
     }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
+`;
+
+export const ChannelSetHiddenMutation = gql`
+    mutation ChannelSetHidden($channelId: ID!, $hidden: Boolean!) {
+        alphaChannelHideFromSearch(channelId: $channelId, hidden: $hidden){
+            ... ConversationShort
+        }
+    }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
 `;
 
 export const UserChannelsQuery = gql`

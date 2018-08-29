@@ -28,6 +28,8 @@ export const ConversationShort = gql`
                 }
         }
         ... on ChannelConversation {
+                featured
+                hidden
                 photo
                 photoRef{
                     uuid

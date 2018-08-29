@@ -75,7 +75,9 @@ const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
     paddingTop: props.empty ? 20 : 96,
     paddingBottom: props.empty ? 0 : 40,
     width: '100%',
-    maxWidth: 1000
+    maxWidth: 1000,
+    transform: 'translate3d(0, 0, 0)',
+
 }));
 
 interface MessageListProps {

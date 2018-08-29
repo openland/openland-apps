@@ -6,6 +6,7 @@ import { withExploreCommunities } from '../../../api/withExploreCommunities';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XIcon } from 'openland-x/XIcon';
 import { TextDirectory } from 'openland-text/TextDirectory';
@@ -19,19 +20,16 @@ import {
     RootWrapper,
     Sidebar,
     SidebarHeader,
-    SidebarList,
-    SidebarItem,
+    SidebarItemWrapper,
     Container,
     SearchRow,
     Results,
-    ContentView,
     SearchFormWrapper,
     SearchFormContent,
     SearchFormIcon,
     SearchInput,
     ResetButton,
-    OrganizationsSidebarItemHead,
-    CommunitiesSidebarItemHead
+    SidebarItemHeadLink
 } from './components/Layout';
 
 interface CommunitiesCardsProps {
@@ -151,17 +149,17 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             <RootWrapper>
                 <Sidebar>
                     <SidebarHeader>Directory</SidebarHeader>
-                    <SidebarList>
-                        <SidebarItem>
-                            <OrganizationsSidebarItemHead />
-                        </SidebarItem>
-                        <SidebarItem active={true}>
-                            <CommunitiesSidebarItemHead />
-                        </SidebarItem>
-                    </SidebarList>
+                    <XVertical separator={0}>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink isCommunity={false} />
+                        </SidebarItemWrapper>
+                        <SidebarItemWrapper active={true}>
+                            <SidebarItemHeadLink isCommunity={true} />
+                        </SidebarItemWrapper>
+                    </XVertical>
                 </Sidebar>
                 <Container>
-                    <ContentView>
+                    <XVertical separator={0}>
                         <SearchRow>
                             <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
                                 <SearchFormContent separator={4} flexGrow={1}>
@@ -214,7 +212,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 tagsCount={this.tagsCount}
                             />
                         </Results>
-                    </ContentView>
+                    </XVertical>
                 </Container>
                 <CreateOrganization />
             </RootWrapper>

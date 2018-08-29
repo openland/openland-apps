@@ -9,6 +9,7 @@ import DirecoryIcon from './icons/directory.1.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withOrganizationByPrefix } from '../../../api/withOrganizationByPrefix';
 import { makeNavigable } from 'openland-x/Navigable';
+import SearchIcon from './icons/ic-search-small.svg';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
     padding: 0
@@ -27,7 +28,8 @@ const TagWrap = Glamorous.div<{ selected: boolean }>(props => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: props.selected ? '#f8f8fb' : undefined
+    cursor: 'pointer',
+    backgroundColor: props.selected ? '#f9fafb' : undefined
 }));
 
 const InputWrap = Glamorous.div({
@@ -36,22 +38,21 @@ const InputWrap = Glamorous.div({
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 4,
-    '& > i': {
-        fontSize: 21,
-        color: 'rgba(51, 69, 98, 0.3)',
-        width: 24,
-        height: 24,
-        overflow: 'hidden',
-        marginTop: 6
-    },
     '& > input': {
         height: 40,
-        paddingLeft: 8,
+        paddingLeft: 15,
+        paddingBottom: 4,
         fontSize: 14,
         fontWeight: 500,
         lineHeight: 1.43,
         letterSpacing: -0.2,
         color: '#334562'
+    },
+    '&:focus-within': {
+        '& > svg > g > path:last-child': {
+            fill: '#1790ff',
+            opacity: 0.5
+        },
     }
 });
 
@@ -70,6 +71,7 @@ const OrgWrap = makeNavigable(Glamorous.div(props => ({
     paddingTop: 4,
     borderTop: '1px solid #f1f2f5',
     cursor: 'pointer',
+    color: '#5c6a81',
     '& > svg': {
         width: 15,
         height: 15,
@@ -78,8 +80,16 @@ const OrgWrap = makeNavigable(Glamorous.div(props => ({
         }
     },
     ':hover': {
-        color: '#6b50ff',
-        backgroundColor: '#f8f8fb'
+        color: '#1790ff',
+        backgroundColor: '#f9fafb',
+        '& > svg': {
+            width: 15,
+            height: 15,
+            '> g': {
+                fill: '#1790ff',
+                opacity: 0.5
+            }
+        },
     }
 })));
 
@@ -89,7 +99,6 @@ const OrgTitle = Glamorous.div({
     lineHeight: 1.43,
     letterSpacing: -0.2,
     marginLeft: 10,
-    color: '#5c6a81'
 });
 
 interface EntryProps {
@@ -209,7 +218,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
             dy = 1;
         }
 
-        if (e.code === 'Enter') {
+        if (e.code === 'Enter' && this.props.query.length > 0) {
             e.preventDefault();
             if (this.state.select === -1) {
                 this.props.onPick({ type: 'name', value: this.props.query, label: this.props.query });
@@ -235,7 +244,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         let content = (
             <ContentValue>
                 <InputWrap>
-                    <XIcon icon="search" />
+                    <SearchIcon/>
                     <input value={inputValue} onChange={this.handleSearchChange} />
                 </InputWrap>
                 {this.state.entries && this.state.entries.length > 0 && (
