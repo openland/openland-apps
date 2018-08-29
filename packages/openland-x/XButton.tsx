@@ -59,7 +59,7 @@ let iconsIndentation = styleResolver({
     },
     'r-tiny': {
         marginLeft: -2,
-        marginRight: 2
+        marginRight: 4
     }
 });
 
@@ -83,19 +83,19 @@ let iconsIndentationRight = styleResolver({
 
     'r-large': {
         marginRight: -4,
-        marginLeft: 4
+        marginLeft: 8
     },
     'r-default': {
         marginRight: -2,
-        marginLeft: 4
+        marginLeft: 8
     },
     'r-small': {
         marginRight: -2,
-        marginLeft: 4
+        marginLeft: 8
     },
     'r-tiny': {
         marginRight: -2,
-        marginLeft: 2
+        marginLeft: 8
     }
 });
 
