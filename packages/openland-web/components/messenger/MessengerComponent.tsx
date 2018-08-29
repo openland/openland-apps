@@ -71,7 +71,7 @@ const SubTitle = Glamorous.div({
 const NavChatLeftContent = makeNavigable(XHorizontal);
 
 const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftContent)(props => ({
-    cursor: props.path ? 'pointer' : undefined
+    cursor: props.path || props.query ? 'pointer' : undefined
 }));
 
 const XButtonMargin = Glamorous(XButton)({
@@ -251,33 +251,41 @@ const AvatarUpload = Glamorous(XAvatarUpload)({
     width: 84,
     height: 84,
 });
-export const ChatEditComponent = withAlterChat((props) => (
-    <XModalForm
-        targetQuery="editChat"
-        title="Group settings"
-        defaultAction={(data) => {
-            props.alter({
-                variables: {
-                    input: {
-                        title: data.input.title,
-                        photoRef: data.input.photoRef
+
+export const ChatEditComponent = withAlterChat((props) => {
+    let editTitle = (props as any).title;
+    let editPhotoRef = (props as any).photoRef;
+    return (
+        <XModalForm
+            targetQuery="editChat"
+            title="Group settings"
+            defaultAction={(data) => {
+                let newTitle = data.input.title;
+                let newPhoto = data.input.photoRef;
+
+                props.alter({
+                    variables: {
+                        input: {
+                            ...newTitle !== editTitle ? { title: newTitle } : {},
+                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {}
+                        }
                     }
+                });
+            }}
+            defaultData={{
+                input: {
+                    title: (props as any).title || '',
+                    photoRef: sanitizeIamgeRef((props as any).photoRef)
                 }
-            });
-        }}
-        defaultData={{
-            input: {
-                title: (props as any).title || '',
-                photoRef: sanitizeIamgeRef((props as any).photoRef)
-            }
-        }}
-    >
-        <XHorizontal>
-            <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-            <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default" />
-        </XHorizontal>
-    </XModalForm>
-)) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
+            }}
+        >
+            <XHorizontal>
+                <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default" />
+            </XHorizontal>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -308,7 +316,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
                         path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
-                        query={props.data.chat.__typename !== 'SharedConversation' ? { field: 'editChat', value: 'true' } : undefined}
+                        query={props.data.chat.__typename === 'ChannelConversation' || props.data.chat.__typename === 'GroupConversation' ? { field: 'editChat', value: 'true' } : undefined}
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
@@ -428,7 +436,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 )}
             </XHorizontal>
-            <ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
+            {<ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
         </XVertical>
     );
 }));

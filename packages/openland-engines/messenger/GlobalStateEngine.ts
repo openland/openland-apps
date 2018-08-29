@@ -30,6 +30,12 @@ let GLOBAL_SUBSCRIPTION = gql`
                         id
                         mute
                     }
+                    ... on GroupConversation{
+                        photo
+                    }
+                    ... on ChannelConversation{
+                        photo
+                    }
                 }
                 message {
                     ...MessageFull

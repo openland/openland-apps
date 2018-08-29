@@ -17,6 +17,12 @@ export const ChatListQuery = gql`
                     id
                     mute
                 }
+                ... on GroupConversation{
+                    photo
+                }
+                ... on ChannelConversation{
+                    photo
+                }
                 topMessage{
                     ...MessageFull
                 }
@@ -387,8 +393,11 @@ export const CreateChannelMutation = gql`
 
 export const ChannelSetFeaturedMutation = gql`
     mutation ChannelSetFeatured($channelId: ID!, $featured: Boolean!) {
-        alphaChannelSetFeatured(channelId: $channelId, featured: $featured)
+        alphaChannelSetFeatured(channelId: $channelId, featured: $featured){
+            ... ConversationShort
+        }
     }
+    ${ConversationShort}
 `;
 
 export const UserChannelsQuery = gql`

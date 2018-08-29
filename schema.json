@@ -6953,6 +6953,22 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "hidden",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "description",
               "type": {
                 "kind": "NON_NULL",
@@ -7513,6 +7529,11 @@
               "kind": "OBJECT",
               "name": "TitleChangeServiceMetadata",
               "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "PhotoChangeServiceMetadata",
+              "ofType": null
             }
           ]
         },
@@ -7631,6 +7652,41 @@
           "interfaces": [],
           "kind": "OBJECT",
           "name": "TitleChangeServiceMetadata",
+          "possibleTypes": null
+        },
+        {
+          "description": "",
+          "enumValues": null,
+          "fields": [
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "photo",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "photoRef",
+              "type": {
+                "kind": "OBJECT",
+                "name": "ImageRef",
+                "ofType": null
+              }
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "kind": "OBJECT",
+          "name": "PhotoChangeServiceMetadata",
           "possibleTypes": null
         },
         {
@@ -18798,8 +18854,53 @@
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
+                  "kind": "INTERFACE",
+                  "name": "Conversation",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "channelId",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "hidden",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Boolean",
+                      "ofType": null
+                    }
+                  }
+                }
+              ],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "alphaChannelHideFromSearch",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INTERFACE",
+                  "name": "Conversation",
                   "ofType": null
                 }
               }
@@ -26327,41 +26428,6 @@
           ],
           "kind": "OBJECT",
           "name": "GroupConversation",
-          "possibleTypes": null
-        },
-        {
-          "description": "",
-          "enumValues": null,
-          "fields": [
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "photo",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "photoRef",
-              "type": {
-                "kind": "OBJECT",
-                "name": "ImageRef",
-                "ofType": null
-              }
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "kind": "OBJECT",
-          "name": "PhotoChangeServiceMetadata",
           "possibleTypes": null
         },
         {
