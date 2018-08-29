@@ -11,17 +11,17 @@ import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { formatBytes } from '../../../../utils/formatBytes';
 
 const paddedText = ' ' + '\u00A0'.repeat(10);
-const paddedTextOut = ' ' + '\u00A0'.repeat(12);
+const paddedTextOut = ' ' + '\u00A0'.repeat(13);
 
 export class AsyncMessageTextView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.compact}>
                 <ASFlex
-                    marginLeft={14}
-                    marginRight={14}
+                    marginLeft={10}
+                    marginRight={10}
                     marginTop={7}
-                    marginBottom={11}
+                    marginBottom={8}
                     flexDirection="column"
                 >
                     <ASText
@@ -39,8 +39,8 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                     overlay={true}
                     alignItems="flex-end"
                     justifyContent="flex-end"
-                    marginRight={this.props.message.isOut ? 10 : 12}
-                    marginBottom={10}
+                    marginRight={this.props.message.isOut ? 4 : 8}
+                    marginBottom={6}
                 >
                     <ASFlex
                         flexDirection="row"
@@ -207,9 +207,9 @@ export class AsyncMessageView extends React.PureComponent<{ message: DataSourceM
 
     render() {
         return (
-            <ASFlex flexDirection="row" marginLeft={4} marginRight={4} alignItems="flex-end">
-                {!this.props.message.isOut &&
-                    <ASFlex marginBottom={4} marginRight={-4} marginLeft={4} onPress={this.handlePress}>
+            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.compact ? 33 : 4} marginRight={4} marginTop={2} marginBottom={this.props.message.compact ? 2 : 14} alignItems="flex-end">
+                {!this.props.message.isOut && !this.props.message.compact &&
+                    <ASFlex marginBottom={0} marginRight={-1} marginLeft={4} onPress={this.handlePress}>
                         <AsyncAvatar
                             size={28}
                             src={this.props.message.senderPhoto}
