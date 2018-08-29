@@ -11,6 +11,10 @@ import { SortPicker } from '../../pages/main/directory/sortPicker';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
 import { EmptyComponent } from './components/view/content/ChannelEmptyComponent';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XOverflow } from '../Incubator/XOverflow';
+import { XMenuTitle } from 'openland-x/XMenuItem';
+import { ChannelSetFeatured, ChannelSetHidden } from './MessengerComponent';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -89,8 +93,8 @@ const Channels = withChatSearchChannels((props) => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + '/') : '') + channel.title;
                         return (
-                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} justifyContent="space-between" alignItems="center">
-                                <XHorizontal separator={6} alignItems="center">
+                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} alignItems="center">
+                                <XHorizontal separator={6} alignItems="center" flexGrow={1}>
                                     <Avatar
                                         style="channel"
                                         cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
@@ -107,13 +111,26 @@ const Channels = withChatSearchChannels((props) => {
                                     size="r-default"
                                     className={channel.myStatus}
                                 />
+                                <XWithRole role={['super-admin', 'editor']}>
+                                    <XOverflow
+                                        flat={true}
+                                        placement="bottom-end"
+                                        content={(
+                                            <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
+                                                <XMenuTitle>Super admin</XMenuTitle>
+                                                <ChannelSetFeatured conversationId={channel.id} val={channel.featured} />
+                                                <ChannelSetHidden conversationId={channel.id} val={channel.hidden} />
+                                            </div>
+                                        )}
+                                    />
+                                </XWithRole>
                             </ChannelItemWrapper>
                         );
                     })}
                 </>
             )
             : (
-                <EmptyComponent/>
+                <EmptyComponent />
             )
             : (<XLoader loading={true} />)
     );

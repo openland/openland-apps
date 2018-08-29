@@ -9,10 +9,9 @@ import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper } from 'openland-x/XMenuItem';
-import { XCheckbox, XCheckboxBasic } from 'openland-x/XCheckbox';
+import { XCheckbox } from 'openland-x/XCheckbox';
 import { XButton } from 'openland-x/XButton';
 import { withBlockUser } from '../../api/withBlockUser';
-import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
@@ -21,9 +20,6 @@ import { ChannelMembersComponent } from '../../pages/main/channel/components/mem
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { ChannelsInviteComponent } from './ChannelsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
-import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
-import { XLoader } from 'openland-x/XLoader';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XCounter } from 'openland-x/XCounter';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -31,6 +27,7 @@ import { XInput } from 'openland-x/XInput';
 import { withAlterChat } from '../../api/withAlterChat';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import PlusIcon from '../icons/ic-add-medium.svg';
+import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -122,10 +119,10 @@ const BlockButton = withBlockUser((props) => (
     <BlockSwitcherComponent block={props.block} unblock={props.unblock} blocked={(props as any).blocked} userId={(props as any).userId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ blocked: boolean, userId: string, refetchVars: { conversationId: string } }>;
 
-class ChannelSetFeaturedComponent extends React.Component<{ mutation: any, conversationId: string, featured: boolean, refetchVars: { conversationId: string } }, { featured: boolean }> {
+class SwitchComponent extends React.Component<{ mutation: any, conversationId: string, val: boolean, fieldName: string, refetchVars: { conversationId: string } }, { val: boolean }> {
     constructor(props: any) {
         super(props);
-        this.state = { featured: props.featured };
+        this.state = { val: props.val };
     }
 
     render() {
@@ -133,18 +130,18 @@ class ChannelSetFeaturedComponent extends React.Component<{ mutation: any, conve
             <XMenuItemWrapper>
                 <XVertical>
                     <XCheckbox
-                        label="Featured"
-                        value={this.state.featured ? 'featured' : 'unfeatured'}
+                        label={this.props.fieldName}
+                        value={this.state.val ? 'featured' : 'unfeatured'}
                         trueValue="featured"
                         onChange={() => {
                             this.props.mutation({
                                 variables: {
                                     channelId: this.props.conversationId,
-                                    featured: !this.props.featured
+                                    [this.props.fieldName]: !this.props.val
                                 }
                             });
                             this.setState({
-                                featured: !this.state.featured
+                                val: !this.state.val
                             });
                         }
                         }
@@ -155,9 +152,13 @@ class ChannelSetFeaturedComponent extends React.Component<{ mutation: any, conve
     }
 }
 
-const ChannelSetFeatured = withChannelSetFeatured((props) => (
-    <ChannelSetFeaturedComponent mutation={props.setFeatured} featured={(props as any).featured} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
-)) as React.ComponentType<{ featured: boolean, conversationId: string, refetchVars: { conversationId: string } }>;
+export const ChannelSetFeatured = withChannelSetFeatured((props) => (
+    <SwitchComponent mutation={props.setFeatured} val={(props as any).val} fieldName={'featured'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
+)) as React.ComponentType<{ val: boolean, conversationId: string }>;
+
+export const ChannelSetHidden = withChannelSetHidden((props) => (
+    <SwitchComponent mutation={props.setHidden} val={(props as any).val} fieldName={'hidden'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
+)) as React.ComponentType<{ val: boolean, conversationId: string }>;
 
 class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mobileNotifications: string, mute: boolean }, conversationId: string }, { settings: { mobileNotifications: string, mute: boolean } }> {
     constructor(props: any) {
@@ -406,7 +407,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 content={(
                                     <div style={{ width: 160 }}>
                                         <XMenuTitle>Super admin</XMenuTitle>
-                                        <ChannelSetFeatured conversationId={props.data.chat.id} featured={props.data.chat.featured} refetchVars={{ conversationId: props.data.chat.id }} />
+                                        <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
+                                        <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
                                     </div>
                                 )}
                             />

@@ -110,6 +110,7 @@ export const ChatInfoQuery = gql`
                 }
                 isRoot
                 featured
+                hidden
                 description
                 myStatus
                 membersCount
@@ -358,6 +359,7 @@ export const ChatSearchChannelQuery = gql`
                     ...ConversationShort
                     membersCount
                     featured
+                    hidden
                     description
                     myStatus
                     organization{
@@ -398,6 +400,19 @@ export const ChannelSetFeaturedMutation = gql`
         }
     }
     ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
+`;
+
+export const ChannelSetHiddenMutation = gql`
+    mutation ChannelSetHidden($channelId: ID!, $hidden: Boolean!) {
+        alphaChannelHideFromSearch(channelId: $channelId, hidden: $hidden){
+            ... ConversationShort
+        }
+    }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
 `;
 
 export const UserChannelsQuery = gql`
