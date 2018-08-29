@@ -11,7 +11,7 @@ export class ZSafeAreaRoot extends React.PureComponent {
                 {(height) => (
                     <ZSafeAreaContext.Consumer>
                         {area => (
-                            <ZSafeAreaContext.Provider value={{ top: ZAppConfig.navigationBarContentInsetSmall + area.top, bottom: ZAppConfig.bottomNavigationBarInset + area.bottom + height, hasKeyboard: height > 0 }}>
+                            <ZSafeAreaContext.Provider value={{ top: ZAppConfig.navigationBarContentInsetSmall + area.top, bottom: ZAppConfig.bottomNavigationBarInset + area.bottom + height, keyboardHeight: height }}>
                                 <ZKeyboardAwareContainer>
                                     {this.props.children}
                                 </ZKeyboardAwareContainer>

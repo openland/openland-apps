@@ -64,23 +64,6 @@ class AsyncTextSpec: AsyncViewSpec {
   var numberOfLines: Int?
 }
 
-class AsyncScrollViewSpec: AsyncViewSpec {
-  var style: AsyncStyleSpec = AsyncStyleSpec()
-  var key: String = ""
-  var children: AsyncViewSpec!
-}
-
-class AsyncListViewSpec: AsyncViewSpec {
-  var style: AsyncStyleSpec = AsyncStyleSpec()
-  var key: String = ""
-  var contentPaddingTop: Float = 0.0
-  var contentPaddingBottom: Float = 0.0
-  var inverted: Bool = false
-  var dataViewKey: String = ""
-  var loading: Bool? = nil
-  var fluid: Bool = false
-}
-
 class AsyncImageSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
@@ -293,33 +276,6 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.style = resolveStyle(src)
     res.key = src["key"].stringValue
     res.url = src["props"]["source"].stringValue
-    return res
-  } else if type == "scroll" {
-    let res = AsyncScrollViewSpec()
-    res.style = resolveStyle(src)
-    res.key = src["key"].stringValue
-    res.children = resolveSingleChildren(src)
-    return res
-  } else if type == "list" {
-    let res = AsyncListViewSpec()
-    res.style = resolveStyle(src)
-    res.key = src["key"].stringValue
-    res.dataViewKey = src["props"]["dataViewKey"].stringValue
-    if let v = src["props"]["contentPaddingTop"].float {
-      res.contentPaddingTop = v
-    }
-    if let v = src["props"]["contentPaddingBottom"].float {
-      res.contentPaddingBottom = v
-    }
-    if let v = src["props"]["inverted"].bool {
-      res.inverted = v
-    }
-    if let v = src["props"]["loading"].bool {
-      res.loading = v
-    }
-    if let v = src["props"]["fluid"].bool {
-      res.fluid = v
-    }
     return res
   }
   fatalError("Unknown view type:" + type)

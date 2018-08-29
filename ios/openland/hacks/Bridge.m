@@ -19,6 +19,14 @@ RCT_EXPORT_VIEW_PROPERTY(capInsets, UIEdgeInsets)
 RCT_EXPORT_VIEW_PROPERTY(configKey, NSString)
 @end
 
+@interface RCT_EXTERN_MODULE(RNAsyncListViewManager, RCTViewManager)
+RCT_EXPORT_VIEW_PROPERTY(dataViewKey, NSString)
+RCT_EXPORT_VIEW_PROPERTY(contentPaddingTop, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(contentPaddingBottom, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(inverted, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
+@end
+
 @interface RCT_EXTERN_MODULE(RNAsyncConfigManager, NSObject)
 RCT_EXTERN_METHOD(setConfig:(NSString *)key config:(NSString *)config)
 @end

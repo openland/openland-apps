@@ -9,23 +9,39 @@
 import Foundation
 import BouncyLayout
 
-class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate {
+class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate {
   
   let width = UIScreen.main.bounds.width // Screen width
-  let context: RNAsyncViewContext
+  let context: RNAsyncViewContext = RNAsyncViewContext()
+  weak var parent: RNAsyncListView!
   var node: ASCollectionNode!
   
   var state: RNAsyncDataViewState!
-  var isLoading: Bool? = nil
   var dataView: RNAsyncDataView!
   
   var batchContext: ASBatchContext? = nil
   var keyboardVisible = false
   var bottomInset: Float = 0.0
+  var topInset: Float = 0.0
+  var onScrollCallback: RCTDirectEventBlock? = nil
   
-  init(context: RNAsyncViewContext) {
-    self.context = context
+  init(parent: RNAsyncListView) {
+    self.parent = parent
+    let layout = UICollectionViewFlowLayout()
+    layout.minimumLineSpacing = 0.0
+    layout.minimumInteritemSpacing = 0.0
+    layout.scrollDirection = UICollectionViewScrollDirection.vertical
+    self.node = ASCollectionNode(collectionViewLayout: layout)
+    self.node.alwaysBounceVertical = true
+    self.node.backgroundColor = UIColor.clear
+    self.node.view.keyboardDismissMode = .interactive
+    if #available(iOS 11.0, *) {
+      self.node.view.contentInsetAdjustmentBehavior = .never
+    }
     super.init()
+    addSubnode(node)
+    self.node.dataSource = self
+    self.node.delegate = self
     
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -133,57 +149,59 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
     }
   }
   
-  func setSpec(spec: AsyncListViewSpec) {
+  func setDataView(dataView: RNAsyncDataView) {
+    self.dataView = dataView
+    self.state = self.dataView!.state
+    // TODO: UNSUBSCRIBE
+    self.dataView.watch(delegate: self)
+  }
+  
+  func setInverted(inverted: Bool) {
+    self.node.inverted = inverted
+  }
+  
+  func setContentPaddingTop(value: Float) {
+    self.topInset = value
+    self.updateContentPadding()
+  }
+  
+  func setContentPaddingBottom(value: Float) {
+    self.bottomInset = value
+    self.updateContentPadding()
+  }
+  
+  func setOnScroll(callback: RCTDirectEventBlock?) {
+    self.onScrollCallback = callback
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     
-    // DataView can't be changed
-    if self.dataView != nil {
-      if self.dataView.dataSourceKey != spec.dataViewKey {
-        fatalError()
-      }
+    let offsetX = scrollView.contentOffset.x
+    let offsetY = scrollView.contentOffset.y + CGFloat(self.topInset)
+    
+    if self.onScrollCallback != nil {
+      let contentOffset = NSMutableDictionary()
+      contentOffset.setValue(offsetY, forKey: "y")
+      contentOffset.setValue(offsetX, forKey: "x")
+      let body = NSMutableDictionary()
+      body.setValue(contentOffset, forKey: "contentOffset")
+      self.onScrollCallback!(body as! [AnyHashable : Any])
     }
     
-    // Create Data View if needed
-    if self.dataView == nil {
-      self.dataView = RNAsyncDataView.getDataView(key: spec.dataViewKey)
-      self.state = self.dataView!.state
-      self.dataView.watch(delegate: self)
-      // WARNING: There are no call self.node.reloadData() since we are expect setSpec to be called right
-      // after constructor invocation
-      
-      self.isLoading = spec.loading
-      
-      let layout: UICollectionViewFlowLayout
-      if spec.fluid {
-        let b = BouncyLayout()
-        layout = b
-      } else {
-        layout = UICollectionViewFlowLayout()
-      }
-      layout.minimumLineSpacing = 0.0
-      layout.minimumInteritemSpacing = 0.0
-      layout.scrollDirection = UICollectionViewScrollDirection.vertical
-      self.node = ASCollectionNode(collectionViewLayout: layout)
-      self.node.alwaysBounceVertical = true
-      self.node.backgroundColor = UIColor.clear
-      self.node.view.keyboardDismissMode = .interactive
-      if #available(iOS 11.0, *) {
-        self.node.view.contentInsetAdjustmentBehavior = .never
-      }
-      addSubnode(node)
-      self.node.dataSource = self
-      self.node.delegate = self
+    let strongParent = self.parent
+    if strongParent != nil {
+      strongParent!.eventDispatcher.send(RNListNodeScrollEvent(
+        viewTag: strongParent!.reactTag,
+        offsetX: offsetX,
+        offsetY: offsetY))
     }
-    
-    // Update styles
-    self.node.inverted = spec.inverted
-    
-    // Update insets if keyboard is not handled
-    self.bottomInset = spec.contentPaddingBottom
-    if !self.keyboardVisible {
-      let insets = UIEdgeInsets(top: CGFloat(spec.inverted ? (self.keyboardVisible ? 0 : spec.contentPaddingBottom) : spec.contentPaddingTop), left: 0.0, bottom: CGFloat(spec.inverted ? spec.contentPaddingTop: (self.keyboardVisible ? 0 : spec.contentPaddingBottom)), right: 0.0)
-      self.node.view.scrollIndicatorInsets = insets
-      self.node.view.contentInset = insets
-      self.node.setNeedsLayout()
+  }
+  
+  private func updateContentPadding() {
+      if !self.keyboardVisible {
+        let insets = UIEdgeInsets(top: CGFloat(self.node.inverted ? (self.keyboardVisible ? 0 : self.bottomInset) : self.topInset), left: 0.0, bottom: CGFloat(self.node.inverted ? self.topInset: (self.keyboardVisible ? 0 : self.bottomInset)), right: 0.0)
+        self.node.view.scrollIndicatorInsets = insets
+        self.node.contentInset = insets
     }
   }
   
@@ -342,5 +360,42 @@ class RNASyncList: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, 
       fatalError()
     }
     return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: self.node)
+  }
+}
+
+class RNListNodeScrollEvent:NSObject, RCTEvent {
+  var viewTag: NSNumber
+  var offsetX: CGFloat
+  var offsetY: CGFloat
+  
+  var eventName: String = "onScroll"
+  var coalescingKey: UInt16 = 0
+  
+  init(viewTag: NSNumber, offsetX: CGFloat, offsetY: CGFloat) {
+    self.viewTag = viewTag
+    self.offsetX = offsetX
+    self.offsetY = offsetY
+    super.init()
+  }
+  
+  func canCoalesce() -> Bool {
+    return true
+  }
+  
+  func coalesce(with newEvent: RCTEvent!) -> RCTEvent! {
+    return newEvent
+  }
+  
+  static func moduleDotMethod() -> String! {
+    return "RCTEventEmitter.receiveEvent"
+  }
+  
+  func arguments() -> [Any]! {
+    let contentOffset = NSMutableDictionary()
+    contentOffset.setValue(self.offsetY, forKey: "y")
+    contentOffset.setValue(self.offsetX, forKey: "x")
+    let body = NSMutableDictionary()
+    body.setValue(contentOffset, forKey: "contentOffset")
+    return [self.viewTag, RCTNormalizeInputEventName(self.eventName), body]
   }
 }

@@ -1,28 +1,29 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { declareView } from './internals/declareView';
-import { ASViewStyle } from './ASViewStyle';
+import { ViewStyle, StyleProp, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { ASDataView } from './ASDataView';
+import { ASViewListRender } from './platform/ASViewRender';
 
-export interface ASListViewProps extends ASViewStyle {
+export interface ASListViewProps {
+    style?: StyleProp<ViewStyle>;
     contentPaddingTop?: number;
     contentPaddingBottom?: number;
     inverted?: boolean;
     dataView: ASDataView<any>;
     fluid?: boolean;
+    children?: any;
+    onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
-
-class Fallback extends React.PureComponent<ASListViewProps> {
+export class ASListView extends React.PureComponent<ASListViewProps> {
     render() {
         return (
-            <View>
-                {this.props}
-            </View>
+            <ASViewListRender
+                style={this.props.style}
+                dataViewKey={this.props.dataView.key}
+                contentPaddingTop={this.props.contentPaddingTop}
+                contentPaddingBottom={this.props.contentPaddingBottom}
+                inverted={this.props.inverted}
+                onScroll={this.props.onScroll}
+            />
         );
     }
 }
-
-export const ASListView = declareView('list', Fallback, (src) => {
-    let { dataView, ...other } = src;
-    return { ...other, dataViewKey: dataView.key };
-});

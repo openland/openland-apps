@@ -108,17 +108,13 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
             <ZSafeAreaContext.Consumer>
                 {area => (<MobileMessengerContext.Consumer>
                     {engine => (
-                        <ASView style={{ flexGrow: 1 }}>
-                            <ASFlex flexDirection="column" alignItems="stretch">
-                                <ASListView
-                                    dataView={engine.getConversation(this.props.engine.conversationId)}
-                                    inverted={true}
-                                    flexGrow={1}
-                                    contentPaddingTop={area.top}
-                                    contentPaddingBottom={area.bottom}
-                                />
-                            </ASFlex>
-                        </ASView>
+                        <ASListView
+                            dataView={engine.getConversation(this.props.engine.conversationId)}
+                            inverted={true}
+                            contentPaddingTop={area.top}
+                            contentPaddingBottom={area.bottom}
+                            style={{ flexGrow: 1 }}
+                        />
                     )}
                 </MobileMessengerContext.Consumer>)
                 }

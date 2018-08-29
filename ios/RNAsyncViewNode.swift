@@ -1,0 +1,43 @@
+//
+//  RNAsyncViewNode.swift
+//  openland
+//
+//  Created by Steve Kite on 8/29/18.
+//  Copyright © 2018 Facebook. All rights reserved.
+//
+
+import Foundation
+
+class RNAsyncViewNode: ASDisplayNode {
+  
+  let context = RNAsyncViewContext()
+  var spec: AsyncViewSpec? = nil
+  var pendingFrame: CGRect? = nil
+  
+  required override init() {
+    super.init()
+    self.automaticallyManagesSubnodes = true
+  }
+  
+  public func setConfig(spec: AsyncViewSpec) {
+    self.spec = spec;
+    if (self.pendingFrame != nil) {
+      self.frame = self.pendingFrame!
+      setNeedsDisplay()
+      setNeedsLayout()
+    }
+  }
+  
+  public func setFrame(frame: CGRect) {
+    self.pendingFrame = frame;
+    if (self.spec != nil) {
+      self.frame = self.pendingFrame!
+      setNeedsDisplay()
+      setNeedsLayout()
+    }
+  }
+  
+  override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    return resolveNode(spec: self.spec!, context: self.context) as! ASLayoutSpec
+  }
+}

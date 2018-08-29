@@ -18,7 +18,7 @@ export class ZKeyboardAwareContainer extends React.PureComponent<{}, { height: n
             <ZKeyboardAwareBarContext.Provider value={this}>
                 <ZSafeAreaContext.Consumer>
                     {area => (
-                        <ZSafeAreaContext.Provider value={{ bottom: area.bottom + (area.hasKeyboard ? 0 : this.state.height), top: area.top, hasKeyboard: area.hasKeyboard }}>
+                        <ZSafeAreaContext.Provider value={{ bottom: area.bottom + (area.keyboardHeight > 0 ? 0 : this.state.height), top: area.top, keyboardHeight: area.keyboardHeight }}>
                             {this.props.children}
                         </ZSafeAreaContext.Provider>
                     )}

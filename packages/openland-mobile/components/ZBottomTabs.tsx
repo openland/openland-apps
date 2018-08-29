@@ -39,7 +39,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                             marginLeft: 5
                         }}
                     >
-                        <Ionicons name={'ios-search'} size={25} color={this.props.selected === 0 ? '#fff' : '#C8C8F9'} />
+                        <Ionicons name={'ios-flame'} size={25} color={this.props.selected === 0 ? '#fff' : '#C8C8F9'} />
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress2} delayPressIn={0}>
