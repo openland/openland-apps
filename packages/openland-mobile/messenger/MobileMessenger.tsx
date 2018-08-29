@@ -129,6 +129,9 @@ class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceIt
                         )}
                     </ASFlex>
                 </ASFlex>
+                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={80} backgroundColor={XPStyles.colors.selectedListItem} />
+                </ASFlex>
             </ASFlex>
         );
     }

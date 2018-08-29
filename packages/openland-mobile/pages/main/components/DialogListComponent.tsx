@@ -20,18 +20,10 @@ export class DialogListComponent extends React.PureComponent<{ engine: MobileMes
                         <>
                             <FastHeaderConfigRegistrator config={new FastHeaderConfig({ contentOffset: this.contentOffset })} />
                             <ASListView
-                                // style={[other.style, {
-                                //     // Work-around for freezing navive animation driver
-                                //     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
-                                //     backgroundColor: '#fff'
-                                // }]}
                                 contentPaddingTop={area.top + 4}
                                 contentPaddingBottom={area.bottom + 4}
                                 dataView={this.props.engine.dialogs}
-                                style={{
-                                    flexGrow: 1,
-                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
-                                } as any}
+                                style={{ flexGrow: 1 }}
                                 onScroll={this.contentOffsetEvent}
                             />
                         </>
