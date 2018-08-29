@@ -233,7 +233,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
 
     let initials = props.userName && props.userName.split(' ').reduce((x, c) => x + c[0], '');
-    console.warn(props.style, initials);
     return (
         <>
             {props.src && (

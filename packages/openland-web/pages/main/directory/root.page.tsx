@@ -244,7 +244,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         let val = (e.target as any).value as string;
-        this.resetPage();
         this.setState({
             searchText: val
         });

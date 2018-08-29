@@ -218,7 +218,7 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
             dy = 1;
         }
 
-        if (e.code === 'Enter') {
+        if (e.code === 'Enter' && this.props.query.length > 0) {
             e.preventDefault();
             if (this.state.select === -1) {
                 this.props.onPick({ type: 'name', value: this.props.query, label: this.props.query });
