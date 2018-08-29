@@ -132,7 +132,7 @@ const InviteText = Glamorous.div({
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
         <XInputGroup flexGrow={1}>
-            <XInput size="r-default" color="primary-sky-blue" autofocus={props.first} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
+            <XInput size="r-default" color="primary-sky-blue" autofocus={props.first} required={true} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
             <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
             <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
         </XInputGroup>
