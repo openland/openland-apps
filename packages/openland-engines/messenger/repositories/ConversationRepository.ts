@@ -1,6 +1,7 @@
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import gql from 'graphql-tag';
 import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
+import { ChatListQuery } from 'openland-api/queries/Chats';
 
 let SHARED_CONVERSATION_TINY = gql`
     fragment SharedConversationTiny on SharedConversation {

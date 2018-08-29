@@ -3,13 +3,23 @@ import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
 import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { SettingsFull } from '../fragments/SettingsFragment';
 
 export const ChatListQuery = gql`
     query ChatList($after: String) {
         chats: alphaChats(first: 20, after: $after) {
             conversations {
-                ...ConversationShort
+                id
+                flexibleId
+                title
+                photos
+                unreadCount
+                settings{
+                    id
+                    mute
+                }
+                topMessage{
+                    ...MessageFull
+                }
             }
             seq
             next
@@ -19,7 +29,6 @@ export const ChatListQuery = gql`
             unreadCount
         }
     }
-    ${ConversationShort}
     ${MessageFull}
     ${UserShort}
 `;

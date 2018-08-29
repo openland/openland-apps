@@ -588,10 +588,14 @@ export interface ChatListQuery {
     conversations:  Array<( {
         __typename: "ChannelConversation",
         id: string,
-        title: string,
         flexibleId: string,
-        unreadCount: number,
+        title: string,
         photos: Array< string >,
+        unreadCount: number,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
         topMessage:  {
           __typename: "ConversationMessage",
           id: string,
@@ -646,32 +650,18 @@ export interface ChatListQuery {
             } | null,
           } | null,
           date: string,
-        } | null,
-        settings:  {
-          __typename: "ConversationSettings",
-          id: string,
-          mobileNotifications: NotificationMessages,
-          mute: boolean,
-        },
-        photo: string | null,
-        photoRef:  {
-          __typename: "ImageRef",
-          uuid: string,
-          crop:  {
-            __typename: "ImageCrop",
-            x: number,
-            y: number,
-            w: number,
-            h: number,
-          } | null,
         } | null,
       } | {
         __typename: "AnonymousConversation",
         id: string,
-        title: string,
         flexibleId: string,
-        unreadCount: number,
+        title: string,
         photos: Array< string >,
+        unreadCount: number,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
         topMessage:  {
           __typename: "ConversationMessage",
           id: string,
@@ -727,19 +717,17 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
-        settings:  {
-          __typename: "ConversationSettings",
-          id: string,
-          mobileNotifications: NotificationMessages,
-          mute: boolean,
-        },
       } | {
         __typename: "SharedConversation",
         id: string,
-        title: string,
         flexibleId: string,
-        unreadCount: number,
+        title: string,
         photos: Array< string >,
+        unreadCount: number,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
         topMessage:  {
           __typename: "ConversationMessage",
           id: string,
@@ -795,19 +783,17 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
-        settings:  {
-          __typename: "ConversationSettings",
-          id: string,
-          mobileNotifications: NotificationMessages,
-          mute: boolean,
-        },
       } | {
         __typename: "PrivateConversation",
         id: string,
-        title: string,
         flexibleId: string,
-        unreadCount: number,
+        title: string,
         photos: Array< string >,
+        unreadCount: number,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
         topMessage:  {
           __typename: "ConversationMessage",
           id: string,
@@ -863,19 +849,17 @@ export interface ChatListQuery {
           } | null,
           date: string,
         } | null,
-        settings:  {
-          __typename: "ConversationSettings",
-          id: string,
-          mobileNotifications: NotificationMessages,
-          mute: boolean,
-        },
       } | {
         __typename: "GroupConversation",
         id: string,
-        title: string,
         flexibleId: string,
-        unreadCount: number,
+        title: string,
         photos: Array< string >,
+        unreadCount: number,
+        settings:  {
+          __typename: "ConversationSettings",
+          mute: boolean,
+        },
         topMessage:  {
           __typename: "ConversationMessage",
           id: string,
@@ -930,24 +914,6 @@ export interface ChatListQuery {
             } | null,
           } | null,
           date: string,
-        } | null,
-        settings:  {
-          __typename: "ConversationSettings",
-          id: string,
-          mobileNotifications: NotificationMessages,
-          mute: boolean,
-        },
-        photo: string | null,
-        photoRef:  {
-          __typename: "ImageRef",
-          uuid: string,
-          crop:  {
-            __typename: "ImageCrop",
-            x: number,
-            y: number,
-            w: number,
-            h: number,
-          } | null,
         } | null,
       }
     ) >,
