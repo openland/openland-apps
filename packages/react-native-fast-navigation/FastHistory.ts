@@ -14,6 +14,7 @@ export interface FastHistoryRecord {
     readonly contentOffset: Animated.Value;
     readonly config: Watcher<FastHeaderConfig>;
     readonly prevKey?: string;
+    readonly startIndex: number;
 }
 
 export class FastHistory {
@@ -50,7 +51,7 @@ export class FastHistoryManager {
         } as FastRouter;
         let cfg = new Watcher<FastHeaderConfig>();
         cfg.setState(new FastHeaderConfig({}));
-        return { route: route, params, key, component, router, contentOffset: new Animated.Value(0), config: cfg };
+        return { route: route, params, key, component, router, contentOffset: new Animated.Value(0), config: cfg, startIndex: index };
     }
 
     constructor(routes: FastRoutes) {

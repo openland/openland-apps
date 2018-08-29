@@ -76,23 +76,6 @@ let styles = StyleSheet.create({
 export class FastHeader extends React.PureComponent<FastHeaderProps> {
 
     lastIndex = 0;
-    // backButtonOpacity = this.props.position.interpolate({
-    //     inputRange: [
-    //         0,
-    //         1],
-    //     outputRange: [0, 1]
-    // });
-    backButtonOpacity = new Animated.Value(1);
-    backStyle = {
-        height: DeviceConfig.navigationBarHeight,
-        position: 'absolute',
-        left: 0,
-        top: DeviceConfig.statusBarHeight,
-        width: DeviceConfig.navigationBarBackWidth,
-        opacity: this.backButtonOpacity,
-        zIndex: 3,
-        backgroundColor: Platform.OS === 'android' ? DeviceConfig.navigationBarBackgroundColor : undefined
-    };
 
     // Back Button
     handleBack = () => {
@@ -129,7 +112,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                 outputRange: [0, 1, 0],
                 extrapolate: 'clamp'
             });
-            
+
             // Small title opacity
             let titleOpacity: Animated.AnimatedInterpolation = interpolated;
 
@@ -241,6 +224,16 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
             hairlineOpacity = Animated.add(Animated.multiply(f.position, f.hairlineOpacity), hairlineOpacity);
         }
 
+        let backOpacity: Animated.AnimatedInterpolation = new Animated.Value(0);
+        let first = offsets.find((v) => v.scene.record.startIndex === 0);
+        if (first) {
+            backOpacity = first.position.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0],
+                extrapolate: 'clamp'
+            });
+        }
+
         //
         // Rendering Titles
         //
@@ -283,7 +276,18 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
         let content = (
             <>
                 {/* Back button */}
-                <Animated.View style={this.backStyle}>
+                <Animated.View
+                    style={{
+                        height: DeviceConfig.navigationBarHeight,
+                        position: 'absolute',
+                        left: 0,
+                        top: DeviceConfig.statusBarHeight,
+                        width: DeviceConfig.navigationBarBackWidth,
+                        opacity: backOpacity,
+                        zIndex: 3,
+                        backgroundColor: Platform.OS === 'android' ? DeviceConfig.navigationBarBackgroundColor : undefined
+                    }}
+                >
                     <FastHeaderBackButton onPress={this.handleBack} />
                 </Animated.View>
 
