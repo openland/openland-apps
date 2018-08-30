@@ -91,12 +91,12 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
         let channelsCount = this.props.item.channels.filter(c => c && !c.hidden).length;
         return (
             <CommunityCardWrapper
-                path={'/directory/o/' + this.props.item.id}
+                path={'/directory/c/' + this.props.item.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal justifyContent="space-between" separator={12}>
-                    <XLink path={'/directory/o/' + this.props.item.id}>
+                    <XLink path={'/directory/c/' + this.props.item.id}>
                         <CommunityAvatar
                             cloudImageUuid={this.props.item.photo!!}
                             size="small"
@@ -105,7 +105,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                     </XLink>
                     <CommunityContentWrapper>
                         <CommunityInfoWrapper>
-                            <CommunityTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
+                            <CommunityTitle path={'/directory/c/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
                             <CommunityCounter>{channelsCount + (channelsCount === 1 ? ' channel' : ' channels')}</CommunityCounter>
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper separator={5}>
@@ -120,7 +120,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                                        <XMenuItem style="primary-sky-blue" href={'/directory/c/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
                                             <XWithRole role="admin" orgPermission={true}>

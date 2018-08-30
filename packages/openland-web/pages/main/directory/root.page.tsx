@@ -381,7 +381,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     </XVertical>
                 </Sidebar>
                 <Container>
-                    {!oid &&
+                    {!oid && (
                         <XVertical separator={0}>
                             <SearchRow>
                                 <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
@@ -448,7 +448,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     tagsCount={this.tagsCount}
                                 />
                             </Results>
-                        </XVertical>}
+                        </XVertical>
+                    )}
                     {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} />}
                 </Container>
 

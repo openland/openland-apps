@@ -86,6 +86,8 @@ routes.add('/directory/communities', '/main/directory/communities');
 routes.add('/directory/communities/', '/main/directory/communities');
 routes.add('/directory/o/:organizationId', '/main/directory/root');
 routes.add('/directory/o/:organizationId/', '/main/directory/root');
+routes.add('/directory/c/:organizationId', '/main/directory/communities');
+routes.add('/directory/c/:organizationId/', '/main/directory/communities');
 
 //
 // Profiles

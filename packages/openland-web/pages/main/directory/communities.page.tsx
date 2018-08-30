@@ -31,6 +31,7 @@ import {
     ResetButton,
     SidebarItemHeadLink
 } from './components/Layout';
+import { OrganizationProfile } from '../profile/ProfileComponent';
 
 interface CommunitiesCardsProps {
     variables: { query?: string, sort?: string };
@@ -144,6 +145,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     render() {
         const { orgCount } = this.state;
+        let oid = this.props.router.routeQuery.organizationId;
 
         return (
             <RootWrapper>
@@ -159,61 +161,65 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     </XVertical>
                 </Sidebar>
                 <Container>
-                    <XVertical separator={0}>
-                        <SearchRow>
-                            <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                <SearchFormContent separator={4} flexGrow={1}>
-                                    <SearchFormIcon icon="search" />
-                                    <SearchInput
-                                        value={this.state.searchText}
-                                        onChange={this.handleSearchChange}
-                                        placeholder="Search communities"
-                                    />
-                                </SearchFormContent>
-                                <XHorizontal separator={2}>
-                                    {this.state.searchText.length > 0 && (
-                                        <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
-                                    )}
-                                    <XButton
-                                        text={TextDirectory.buttonSearch}
-                                        style="primary-sky-blue"
-                                        size="r-default"
-                                        enabled={!!this.state.searchText}
-                                    />
-                                </XHorizontal>
-                            </SearchFormWrapper>
-                        </SearchRow>
-                        {(this.state.searchText.length <= 0) && (
-                            <XSubHeader title="All communities">
-                                <XSubHeaderLink query={{ field: 'createOrganization', value: 'community' }}>
-                                    <XIcon icon="add" />
-                                    New community
-                                </XSubHeaderLink>
-                                <XSubHeaderRight>
-                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                </XSubHeaderRight>
-                            </XSubHeader>
-                        )}
-                        {(this.state.searchText.length > 0) && (orgCount > 0) && (
-                            <XSubHeader title="Communities" counter={orgCount}>
-                                <XSubHeaderRight>
-                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                </XSubHeaderRight>
-                            </XSubHeader>
-                        )}
-                        {(this.state.searchText.length > 0) && (orgCount <= 0) && (
-                            <XSubHeader title="No results" />
-                        )}
-                        <Results>
-                            <Communities
-                                featuredFirst={this.state.sort.featured}
-                                searchText={this.state.searchText}
-                                orderBy={this.state.sort.orderBy}
-                                tagsCount={this.tagsCount}
-                            />
-                        </Results>
-                    </XVertical>
+                    {!oid && (
+                        <XVertical separator={0}>
+                            <SearchRow>
+                                <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
+                                    <SearchFormContent separator={4} flexGrow={1}>
+                                        <SearchFormIcon icon="search" />
+                                        <SearchInput
+                                            value={this.state.searchText}
+                                            onChange={this.handleSearchChange}
+                                            placeholder="Search communities"
+                                        />
+                                    </SearchFormContent>
+                                    <XHorizontal separator={2}>
+                                        {this.state.searchText.length > 0 && (
+                                            <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
+                                        )}
+                                        <XButton
+                                            text={TextDirectory.buttonSearch}
+                                            style="primary-sky-blue"
+                                            size="r-default"
+                                            enabled={!!this.state.searchText}
+                                        />
+                                    </XHorizontal>
+                                </SearchFormWrapper>
+                            </SearchRow>
+                            {(this.state.searchText.length <= 0) && (
+                                <XSubHeader title="All communities">
+                                    <XSubHeaderLink query={{ field: 'createOrganization', value: 'community' }}>
+                                        <XIcon icon="add" />
+                                        New community
+                                    </XSubHeaderLink>
+                                    <XSubHeaderRight>
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                    </XSubHeaderRight>
+                                </XSubHeader>
+                            )}
+                            {(this.state.searchText.length > 0) && (orgCount > 0) && (
+                                <XSubHeader title="Communities" counter={orgCount}>
+                                    <XSubHeaderRight>
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                    </XSubHeaderRight>
+                                </XSubHeader>
+                            )}
+                            {(this.state.searchText.length > 0) && (orgCount <= 0) && (
+                                <XSubHeader title="No results" />
+                            )}
+                            <Results>
+                                <Communities
+                                    featuredFirst={this.state.sort.featured}
+                                    searchText={this.state.searchText}
+                                    orderBy={this.state.sort.orderBy}
+                                    tagsCount={this.tagsCount}
+                                />
+                            </Results>
+                        </XVertical>
+                    )}
+                    {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory/communities')} />}
                 </Container>
+
                 <CreateOrganization />
             </RootWrapper>
         );
