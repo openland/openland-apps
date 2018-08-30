@@ -7,6 +7,7 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XCloudImage, XPhotoRef } from './XCloudImage';
 import { XPImage } from 'openland-xp/XPImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'medium' | 'default' | 'small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | undefined;
@@ -242,7 +243,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
     let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
 
-    let initials = props.userName && props.userName.split(' ').reduce((x, c) => x + c[0], '');
+    let initials = props.userName && extractPlaceholder(props.userName);
     return (
         <>
             {props.src && (
