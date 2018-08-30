@@ -3872,6 +3872,7 @@ export interface MyOrganizationQuery {
       photos: Array< string >,
       membersCount: number,
       memberRequestsCount: number,
+      hidden: boolean,
     } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
@@ -4541,6 +4542,7 @@ export interface OrganizationQuery {
       photos: Array< string >,
       membersCount: number,
       memberRequestsCount: number,
+      hidden: boolean,
     } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
@@ -7970,6 +7972,7 @@ export interface OrganizationFullFragment {
     photos: Array< string >,
     membersCount: number,
     memberRequestsCount: number,
+    hidden: boolean,
   } | null >,
   posts:  Array< {
     __typename: "AlphaDummyPost",

@@ -123,9 +123,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     checkEmptyState = () => {
 
-        if (this.props.inputShower) {
-            this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
-        }
+        // if (this.props.inputShower) {
+        //     this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
+        // }
     }
 
     render() {

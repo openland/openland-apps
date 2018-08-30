@@ -453,8 +453,8 @@ const MemberCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
-class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> {
-    constructor(props: { item: any }) {
+class MemberCard extends React.Component<{ item: any, iAmOwner: boolean }, { isHovered: boolean }> {
+    constructor(props: any) {
         super(props);
         this.state = {
             isHovered: false,
@@ -463,14 +463,13 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
 
     render() {
         let member = this.props.item;
-
         return (
             <MemberCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <MemberCardAvatar>
-                    <XAvatar cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} />
+                    <XAvatar cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} style="colorus"/>
                 </MemberCardAvatar>
                 <MemberCardInfo>
                     <MemberCardTitleWrapper>
@@ -488,7 +487,7 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                         style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
                         path={'/mail/' + member.user.id}
                     />
-                    <XOverflow
+                    {this.props.iAmOwner && <XOverflow
                         placement="bottom-end"
                         flat={true}
                         content={
@@ -497,7 +496,7 @@ class MemberCard extends React.Component<{ item: any }, { isHovered: boolean }> 
                                 <XMenuItem style="danger" query={{ field: 'remove', value: member.user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
                             </>
                         }
-                    />
+                    />}
                 </MemberCardTools>
             </MemberCardWrapper>
         );
@@ -523,7 +522,7 @@ class Members extends React.Component<{ organizationQuery: OrganizationQuery }> 
                         <XScrollView height="calc(100% - 216px)">
                             {(organization.members || []).map((member, i) => {
                                 return (
-                                    <MemberCard key={i} item={member} />
+                                    <MemberCard key={i} item={member} iAmOwner={organization.isOwner}/>
                                 );
                             })}
                         </XScrollView>
@@ -584,7 +583,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
         let organization = this.props.organization;
         console.warn(channel.organization);
 
-        let membersCountText = channel!!.membersCount + ' ' + ((channel!!.membersCount + channel!!.membersCount) > 1 ? 'members' : 'member');
+        let membersCountText = channel!!.membersCount + ' ' + ((channel!!.membersCountx) > 1 ? 'members' : 'member');
         let requesetsCountText = (organization && organization.isOwner && channel!!.memberRequestsCount > 0) ? '• ' + (channel!!.memberRequestsCount + ' ' + (channel!!.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
         return (
             <ChannelCardWrapper
@@ -627,7 +626,7 @@ class OrganizationProfileInner extends React.Component<{ organizationQuery: Orga
             <>
                 <Back callback={this.props.onBack} />
                 <Header organizationQuery={this.props.organizationQuery} router={this.props.router} />
-                {channelsTab && this.props.organizationQuery.organization.channels.map((c, i) => (
+                {channelsTab && this.props.organizationQuery.organization.channels.filter(c => c && !c.hidden).map((c, i) => (
                     <ChannelCard key={i} item={c} organization={this.props.organizationQuery.organization} />
                 ))}
                 {aboutTab && <About organizationQuery={this.props.organizationQuery} />}

@@ -4,7 +4,7 @@ export const TextDirectory = {
 
     headerButtonAddOrganization: 'Add an organization',
 
-    searchInputPlaceholder: 'Add a keyword or tag',
+    searchInputPlaceholder: 'Search organization',
     searchConditionAll: 'All organizations',
 
     buttonSearch: 'Search',

@@ -8,7 +8,8 @@ const EmptyRoot = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: -100
 });
 
 const EmptyContent = Glamorous.div({
@@ -90,12 +91,12 @@ export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: 
                     >
                         To get things going, describe what you are looking for and how you can help others
                     </Text>
-                    <XButton
+                    {/* <XButton
                         text="Write to channel"
                         style="primary-sky-blue"
                         size="r-default"
                         onClick={() => props.onClick ? props.onClick(true) : null}
-                    />
+                    /> */}
                 </>
             )}
             {props.conversationType !== 'ChannelConversation' && <Text opacity={0.5} marginTop={8}>No messages yet</Text>}

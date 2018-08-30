@@ -50,6 +50,7 @@ export const OrganizationFull = gql`
             photos
             membersCount
             memberRequestsCount
+            hidden
         }
 
         posts: alphaDummyPosts{

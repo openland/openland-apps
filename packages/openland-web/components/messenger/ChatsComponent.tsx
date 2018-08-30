@@ -79,6 +79,7 @@ const Title = Glamorous.div({
     flexGrow: 1,
     flexBasis: '0px',
     fontSize: 14,
+    height: 16,
     fontWeight: 600,
     lineHeight: 1.14,
     color: '#5c6a81',
@@ -110,6 +111,7 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
+    
 }));
 
 const ContentText = Glamorous.div({
@@ -117,6 +119,7 @@ const ContentText = Glamorous.div({
     flexDirection: 'row',
     flexGrow: 1,
     flexBasis: '0px',
+    height: 16,
     fontSize: 14,
     lineHeight: 1.14,
     opacity: 0.5,

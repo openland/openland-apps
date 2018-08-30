@@ -27,38 +27,47 @@ let sizeStyles = styleResolver({
     'x-large': {
         height: 152,
         width: 152,
+        fontSize: 16
     },
     'large': {
         height: 130,
         width: 130,
+        fontSize: 16
     },
     's-large': {
         height: 100,
         width: 100,
+        fontSize: 16
     },
     'x-medium': {
         height: 86,
         width: 86,
+        fontSize: 16
     },
     's-medium': {
         height: 66,
         width: 66,
+        fontSize: 16
     },
     'medium': {
         height: 46,
         width: 46,
+        fontSize: 16
     },
     'default': {
         height: 40,
         width: 40,
+        fontSize: 16
     },
     'small': {
         height: 36,
         width: 36,
+        fontSize: 10
     },
     'x-small': {
         height: 18,
         width: 18,
+        fontSize: 8
     }
 });
 
@@ -196,14 +205,14 @@ const ColorusArr = [
     'linear-gradient(138deg, #aa22ff, #8e00e6)'
 ];
 
-const ColorusStub = Glamorous.div<{ backgroundImage: string }>(props => ({
+const ColorusStub = Glamorous.div<{ backgroundImage: string, fontSize: number }>(props => ({
     width: '100%',
     height: '100%',
     backgroundImage: props.backgroundImage,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 16,
+    fontSize: props.fontSize,
     fontWeight: 500,
     letterSpacing: -0.2,
     color: '#fff'
@@ -231,6 +240,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
+    let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
 
     let initials = props.userName && props.userName.split(' ').reduce((x, c) => x + c[0], '');
     return (
@@ -251,6 +261,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
                     {props.style === 'colorus' && (
                         <ColorusStub
+                            fontSize={fontSize}
                             backgroundImage={props.userId && ColorusArr[Math.abs(doSimpleHash(props.userId)) % ColorusArr.length] || ColorusArr[1]}
                         >
                             {initials}
