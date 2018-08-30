@@ -602,7 +602,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                         style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
                         path={'/mail/' + channel!!.id}
                     />
-                    <XOverflow
+                    {/* <XOverflow
                         placement="bottom-end"
                         flat={true}
                         content={
@@ -610,7 +610,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                                 <XMenuItem>Menu</XMenuItem>
                             </>
                         }
-                    />
+                    /> */}
                 </ChannelCardTools>
             </ChannelCardWrapper>
         );
