@@ -273,7 +273,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                                     )}
                                     {!hasCategories && (
                                         <AddSection>
-                                            <AddSectionText>Add organization categories</AddSectionText>
+                                            <AddSectionText>Add categories</AddSectionText>
                                             <CategoriesPlaceholder target={<XButton text="Categories" style="light-blue" size="r-default" icon="add" />} />
                                         </AddSection>
                                     )}

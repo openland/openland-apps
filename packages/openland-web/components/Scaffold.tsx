@@ -681,6 +681,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                         </XPopper>
                     </XWithRole>
                     <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
+                    <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'community' }}>{TextGlobal.addCommunity}</XMenuItem>
                     <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</XMenuItem>
                 </>
             );

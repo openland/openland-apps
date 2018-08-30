@@ -8,6 +8,7 @@ export const TextGlobal = {
     invite: 'Invite colleagues',
     inviteGlobal: 'Invite other organization',
     addOrganization: 'Create organization',
+    addCommunity: 'Create community',
     addChannel: 'Create channel',
     signOut: 'Sign out',
     viewProfile: 'View profile',
@@ -16,5 +17,5 @@ export const TextGlobal = {
     invitePeopleTo: 'Invite people to',
     joinYourOrganization: 'Invite people to your organization',
     joinOpenland: 'Invite other organizations',
-    startChat: 'Start chat',
+    startChat: 'New chat',
 };
