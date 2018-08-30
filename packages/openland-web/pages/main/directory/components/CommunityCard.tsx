@@ -88,7 +88,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
     }
 
     render() {
-        console.warn(this.props.item);
+        let channelsCount = this.props.item.channels.filter(c => c && !c.hidden).length;
         return (
             <CommunityCardWrapper
                 path={'/directory/o/' + this.props.item.id}
@@ -106,7 +106,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                     <CommunityContentWrapper>
                         <CommunityInfoWrapper>
                             <CommunityTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
-                            <CommunityCounter>{this.props.item.channels.length + (this.props.item.channels.length === 1 ? ' channel' : 'channels')}</CommunityCounter>
+                            <CommunityCounter>{channelsCount + (channelsCount === 1 ? ' channel' : ' channels')}</CommunityCounter>
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper separator={5}>
                             <XButton

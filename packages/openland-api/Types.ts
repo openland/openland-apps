@@ -5024,6 +5024,7 @@ export interface ExploreComunityQuery {
         channels:  Array< {
           __typename: "ChannelConversation",
           id: string,
+          hidden: boolean,
         } | null >,
       },
       cursor: string,

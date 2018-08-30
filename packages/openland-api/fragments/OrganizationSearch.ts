@@ -22,6 +22,7 @@ export const OrganizationSearch = gql`
         }
         channels: alphaCreatedChannels{
             id
+            hidden
         }
     }
 `;
