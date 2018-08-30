@@ -16,6 +16,7 @@ interface ModalRenderProps {
     closeOnClick?: boolean;
     onCloseRequest: () => void;
     transparent?: boolean;
+    noTransformContainer?: boolean;
 }
 
 class ModalRender extends React.PureComponent<ModalRenderProps> {
@@ -57,10 +58,18 @@ class ModalRender extends React.PureComponent<ModalRenderProps> {
                         // Sizes
                         width: this.props.size !== 'x-large' ? width : 'calc(100% - 128px)',
                         top: (this.props.size !== 'x-large' && !this.props.scrollableContent) ? 96 : 64,
-                        left: this.props.size !== 'x-large' ? '50%' : 64,
+                        left: this.props.size !== 'x-large'
+                            ? (this.props.noTransformContainer === true)
+                                ? 'calc(50% - 285px)'
+                                : '50%'
+                            : 64,
                         right: this.props.size !== 'x-large' ? 'auto' : 64,
                         bottom: this.props.size !== 'x-large' ? 'auto' : 64,
-                        transform: this.props.size !== 'x-large' ? 'translate(-50%, 0%)' : undefined,
+                        transform: this.props.noTransformContainer === true
+                            ? undefined
+                            : this.props.size !== 'x-large'
+                                ? 'translate(-50%, 0%)'
+                                : undefined,
                     }
                 }}
             >
@@ -162,6 +171,7 @@ interface ModalContentRenderProps {
     footer?: any;
     customContent?: boolean;
     scrollableContent?: boolean;
+    noTransformContainer?: boolean;
 }
 
 class ModalContentRender extends React.Component<ModalContentRenderProps> {
@@ -269,6 +279,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                         size={size}
                         closeOnClick={this.props.closeOnClick}
                         transparent={this.props.transparent}
+                        noTransformContainer={this.props.noTransformContainer}
                     >
                         <ModalContentRender
                             scrollableContent={this.props.scrollableContent}

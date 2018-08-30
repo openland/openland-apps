@@ -13,23 +13,20 @@ const ModalCloser = Glamorous(XLink)({
     width: 36,
     height: 36,
     borderRadius: 5,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'transparent',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0,
-    '&:hover': {
-        opacity: 1
-    }
+    alignItems: 'center'
 });
 
 const ModalBody = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    '&:hover ~ .closer': {
-        opacity: 1
-    }
+    // maxWidth: 570,
+    // margin: 'auto',
+    // paddingTop: 40,
+    // paddingBottom: 40,
 });
 
 const ModalPic = Glamorous.img({
@@ -45,8 +42,8 @@ export class MessageImageComponent extends React.PureComponent<{ file: string, f
         return (
             <XModal
                 useTopCloser={true}
+                noTransformContainer={true}
                 heading={(
-
                     <ModalBody>
                         <ModalPic
                             src={'https://ucarecdn.com/' + this.props.file + '/'}
