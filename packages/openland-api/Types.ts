@@ -4543,6 +4543,7 @@ export interface OrganizationQuery {
       membersCount: number,
       memberRequestsCount: number,
       hidden: boolean,
+      featured: boolean,
     } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",

@@ -18,7 +18,7 @@ import { AboutPlaceholder, SocialPlaceholder, LocationPlaceholder, CategoriesPla
 import { XLoader } from 'openland-x/XLoader';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { PermissionsModal, RemoveJoinedModal } from '../settings/membersTable';
-import { XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuTitle } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XLink } from 'openland-x/XLink';
@@ -28,6 +28,7 @@ import TwitterIcon from './icons/twitter-2.svg';
 import EmailIcon from './icons/email.svg';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
+import { ChannelSetFeatured, ChannelSetHidden } from '../../../components/messenger/MessengerComponent';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -567,7 +568,7 @@ const ChannelCardRole = Glamorous.div({
 });
 
 const ChannelCardTools = Glamorous(XHorizontal)({
-    padding: '4px 10px 0'
+    padding: '4px 18px 0'
 });
 
 class ChannelCard extends React.Component<{ item: any, organization: { isOwner?: boolean } }, { isHovered: boolean }> {
@@ -581,10 +582,9 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
     render() {
         let channel = this.props.item;
         let organization = this.props.organization;
-        console.warn(channel.organization);
-
         let membersCountText = channel!!.membersCount + ' ' + ((channel!!.membersCountx) > 1 ? 'members' : 'member');
         let requesetsCountText = (organization && organization.isOwner && channel!!.memberRequestsCount > 0) ? '• ' + (channel!!.memberRequestsCount + ' ' + (channel!!.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
+
         return (
             <ChannelCardWrapper
                 path={'/mail/' + this.props.item.id}
@@ -602,15 +602,19 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                         style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
                         path={'/mail/' + channel!!.id}
                     />
-                    {/* <XOverflow
-                        placement="bottom-end"
-                        flat={true}
-                        content={
-                            <>
-                                <XMenuItem>Menu</XMenuItem>
-                            </>
-                        }
-                    /> */}
+                    <XWithRole role={['super-admin', 'editor']}>
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={(
+                                <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
+                                    <XMenuTitle>Super admin</XMenuTitle>
+                                    <ChannelSetFeatured conversationId={channel.id} val={channel.featured} />
+                                    <ChannelSetHidden conversationId={channel.id} val={channel.hidden} />
+                                </div>
+                            )}
+                        />
+                    </XWithRole>
                 </ChannelCardTools>
             </ChannelCardWrapper>
         );
