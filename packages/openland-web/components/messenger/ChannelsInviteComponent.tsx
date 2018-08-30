@@ -218,7 +218,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         <UserInfoWrapper separator={6} justifyContent="center">
                             <UserAvatar cloudImageUuid={this.props.invite.invitedByUser.picture || undefined} />
                             <Text><b>{this.props.invite.invitedByUser.name}</b> has invited you</Text>
-                        </UserInfoWrapper> : <div style={{ height: 120 }} />
+                        </UserInfoWrapper> : <div style={{ height: 50 }} />
                     }
                     <InfoCardWrapper>
                         <XVertical separator={10} justifyContent="center">

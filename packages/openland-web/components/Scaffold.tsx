@@ -548,11 +548,14 @@ const MenuView = Glamorous(XScrollView)({
     // top: 0,
     // left: 72,
     height: '100vh',
+    
     '& > .simplebar-scroll-content': {
         '& > .simplebar-content': {
             overflowX: 'hidden'
         }
-    }
+    },
+    borderRight: '1px solid rgba(216, 218, 229, 0.7)'
+
 });
 
 //

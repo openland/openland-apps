@@ -177,7 +177,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                 {props.data.profile && (
                                     <CardText>
                                         {!props.data.profile.invitedBy && <span>Self-registered</span>}
-                                        {props.data.profile.invitedBy && <span>Invited by <span className="bold person">{(props.data.profile.invitedBy || 'John Doe')}</span></span>}
+                                        {props.data.profile.invitedBy && <span>Invited by <span className="bold person">{(props.data.profile.invitedBy.name || 'John Doe')}</span></span>}
 
                                     </CardText>
                                 )}
