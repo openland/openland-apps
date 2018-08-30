@@ -5,10 +5,9 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XFormField } from 'openland-x-forms/XFormField';
 import { Navigation } from './_navigation';
 import { XForm } from 'openland-x-forms/XForm2';
-import { XInput } from 'openland-x/XInput';
+import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XContent } from 'openland-x-layout/XContent';
@@ -24,15 +23,16 @@ import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
 import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
+import { MembersTable } from './membersTable';
 
 const Content = Glamorous(XContent)({
-    paddingTop: 30
+    paddingTop: 20
 });
 
 const CategoryTitle = Glamorous.div({
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 0.5,
+    letterSpacing: -0.2,
     color: '#1f3449'
 });
 
@@ -44,7 +44,7 @@ let shiftArray = (array: any[]) => {
 
 const SACreatedBlock = Glamorous.div({
     padding: 16,
-    borderRadius: 5,
+    borderRadius: 10,
     border: 'solid 1px rgba(220, 222, 228, 0.45)',
     alignSelf: 'flex-start'
 });
@@ -58,7 +58,7 @@ const SACreatedText = Glamorous.div({
         fontWeight: 600
     },
     '& .author': {
-        color: '#654bfa'
+        color: '#1790ff'
     }
 });
 
@@ -102,14 +102,14 @@ const AdminTools = withSuperAccountActions(props => {
                 defaultLayout={false}
             >
 
-                <XVertical separator={24}>
+                <XVertical separator={4}>
                     <XFormLoadingContent>
                         <XCheckbox label="Activated" trueValue="ACTIVATED" falseValue="PENDING" field="input.activated" />
                         <XCheckbox label="Published" trueValue="published" falseValue="unpublished" field="input.published" />
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
                         <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!"/>
+                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
                 </XVertical>
             </XForm>
         </XVertical>
@@ -120,16 +120,16 @@ const Separator = Glamorous.div({
     width: '100%',
     height: 1,
     backgroundColor: 'rgba(220, 222, 228, 0.45)',
-    marginTop: '22px !important',
-    marginBottom: '26px !important',
+    marginTop: '24px !important',
+    marginBottom: '24px !important',
 });
 
 export const OrganizationSettigs = ((props: any) => {
     return (
         <Navigation title="Organization profile">
             <Content>
-                <XVertical alignSelf="stretch" separator={21}>
-                    <XVertical separator={18}>
+                <XVertical alignSelf="stretch" separator={30}>
+                    <XVertical separator={12}>
                         <CategoryTitle id="general">General</CategoryTitle>
                         <XForm
                             defaultData={{
@@ -168,39 +168,71 @@ export const OrganizationSettigs = ((props: any) => {
                                 <XFormLoadingContent>
                                     <XHorizontal separator={12}>
                                         <XVertical flexGrow={1} maxWidth={480}>
-
-                                            <XFormField title="Organization name" field="input.name">
-                                                <XInput field="input.name" />
-                                            </XFormField>
-
+                                            <XInput field="input.name" size="r-default" color="primary-sky-blue" placeholder="Organization name" />
                                             <Separator />
-
-                                            <XFormField title="Primary location" field="input.primaryLocation" optional={true}>
-                                                <XSelect creatable={true} multi={true} field="input.primaryLocation" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
-                                            </XFormField>
-                                            <XFormField title="More locations" field="input.locations" optional={true}>
-                                                <XSelect large={true} creatable={true} multi={true} field="input.locations" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
-                                            </XFormField>
-
-                                            <XFormField title="Categories" field="input.organizationType" optional={true}>
-                                                <XSelect large={true} options={OrgCategoties} multi={true} field="input.organizationType" />
-                                            </XFormField>
-                                            <XFormField title="Interests" field="input.interests" optional={true}>
-                                                <XSelect large={true} creatable={true} multi={true} field="input.interests" options={TextDirectoryData.interestPicker} />
-                                            </XFormField>
+                                            <XSelect
+                                                creatable={true}
+                                                multi={true}
+                                                field="input.primaryLocation"
+                                                options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                                                render={
+                                                    <XSelectCustomInputRender
+                                                        popper={true}
+                                                        placeholder="Primary location"
+                                                        rounded={true}
+                                                    />
+                                                }
+                                            />
+                                            <XSelect
+                                                creatable={true}
+                                                multi={true}
+                                                field="input.locations"
+                                                options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                                                render={
+                                                    <XSelectCustomInputRender
+                                                        popper={true}
+                                                        placeholder="More locations"
+                                                        rounded={true}
+                                                    />
+                                                }
+                                            />
+                                            <XSelect
+                                                options={OrgCategoties}
+                                                multi={true}
+                                                field="input.organizationType"
+                                                render={
+                                                    <XSelectCustomInputRender
+                                                        popper={true}
+                                                        placeholder="Categories"
+                                                        rounded={true}
+                                                    />
+                                                }
+                                            />
+                                            <XSelect
+                                                large={true}
+                                                creatable={true}
+                                                multi={true}
+                                                field="input.interests"
+                                                options={TextDirectoryData.interestPicker}
+                                                render={
+                                                    <XSelectCustomInputRender
+                                                        popper={true}
+                                                        placeholder="Interests"
+                                                        rounded={true}
+                                                    />
+                                                }
+                                            />
 
                                         </XVertical>
-                                        <XFormField title="Logo" field="input.photoRef" optional={true}>
-                                            <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
-                                        </XFormField>
+                                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
                                     </XHorizontal>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!"/>
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
                             </XVertical>
                         </XForm>
                     </XVertical>
 
-                    <XVertical separator={18}>
+                    <XVertical separator={12}>
                         <CategoryTitle id="links">Links</CategoryTitle>
                         <XForm
                             defaultData={{
@@ -228,33 +260,29 @@ export const OrganizationSettigs = ((props: any) => {
                             <XVertical separator={12}>
                                 <XFormLoadingContent>
                                     <XVertical flexGrow={1} maxWidth={480}>
-                                        <XFormField title="Website" field="input.website" optional={true}>
-                                            <XHorizontal separator={7}>
-                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" />
-                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" />
-                                            </XHorizontal>
-                                        </XFormField>
-
-                                        <XFormField title="Twitter" field="input.twitter" optional={true}>
-                                            <XInput field="input.twitter" />
-                                        </XFormField>
-                                        <XFormField title="Facebook" field="input.facebook" optional={true}>
-                                            <XInput field="input.facebook" />
-                                        </XFormField>
-                                        <XFormField title="LinkedIn" field="input.linkedin" optional={true}>
-                                            <XInput field="input.linkedin" />
-                                        </XFormField>
+                                        <XInputGroup>
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="r-default" color="primary-sky-blue" />
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="r-default" color="primary-sky-blue" />
+                                        </XInputGroup>
+                                        <XInput field="input.twitter" placeholder="Twitter" size="r-default" color="primary-sky-blue" />
+                                        <XInput field="input.facebook" placeholder="Facebook" size="r-default" color="primary-sky-blue" />
+                                        <XInput field="input.linkedin" placeholder="LinkedIn" size="r-default" color="primary-sky-blue" />
                                     </XVertical>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!"/>
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
                             </XVertical>
                         </XForm>
+                    </XVertical>
+
+                    <XVertical separator={12}>
+                        <CategoryTitle id="members">Members</CategoryTitle>
+                        <MembersTable/>
                     </XVertical>
 
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>
                         <XVertical separator={36}>
-                            <XVertical separator={18}>
+                            <XVertical separator={12}>
                                 <CategoryTitle id="super-admin">Super admin</CategoryTitle>
                                 <AdminTools
                                     variables={{ accountId: props.data.organizationProfile!!.id, viaOrgId: true }}

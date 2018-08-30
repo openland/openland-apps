@@ -11,7 +11,7 @@ function neutralLight(alpha: number) {
 const color = {
     neutralDark: neutral(1.0),
     neutralLight: neutralLight(1.0),
-    accent: '#522BFF'
+    accent: '#1790ff'
 };
 
 const paddings = {

@@ -114,6 +114,7 @@ export const XInputGroup = Glamorous.div<XFlexStyles>([
             flex: 1,
             zIndex: 2,
             marginRight: -1,
+            // borderRightColor: 'transparent !important',
 
             '&:first-child': {
                 borderTopRightRadius: 0,
@@ -127,11 +128,16 @@ export const XInputGroup = Glamorous.div<XFlexStyles>([
             '&:last-child': {
                 borderTopLeftRadius: 0,
                 borderBottomLeftRadius: 0,
+                // borderRightColor: 'rgba(220, 222, 228, 0.6) !important'
             },
 
             '&:focus-within': {
                 zIndex: 3
-            }
+            },
+
+            '& .Select-menu-outer': {
+                width: 'calc(100% - 1px) !important'
+            },
         }
     }),
     (props) => applyFlex(props),

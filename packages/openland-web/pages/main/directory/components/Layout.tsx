@@ -7,7 +7,6 @@ import { XIcon } from 'openland-x/XIcon';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 import RightIcon from '../icons/ic-arrow-rignt.svg';
-import { XVertical } from 'openland-x-layout/XVertical';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',

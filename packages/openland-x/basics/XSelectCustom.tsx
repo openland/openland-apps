@@ -11,14 +11,14 @@ import { delay } from 'openland-y-utils/timer';
 
 const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
     (props) => ({
-        minHeight: props.rounded ? 42 : 48,
+        minHeight: props.rounded ? 40 : 48,
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
         cursor: 'text',
         borderRadius: props.rounded ? 24 : 5,
-        paddingTop: 3,
-        paddingBottom: 3,
+        paddingTop: 2,
+        paddingBottom: 1,
         paddingLeft: 8,
         paddingRight: 8,
         border: 'solid 1px rgba(220, 222, 228, 0.45)',
@@ -37,9 +37,9 @@ const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
 );
 
 const Input = Glamorous.input<{ rounded?: boolean }>((props) => ({
-    height: props.rounded ? 40 : 46,
+    height: props.rounded ? 38 : 46,
     flexGrow: 1,
-    marginTop: -4,
+    marginTop: -2,
     marginBottom: -4,
     marginRight: -8,
     marginLeft: -8,

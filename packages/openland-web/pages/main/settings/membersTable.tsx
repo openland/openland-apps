@@ -2,13 +2,9 @@ import '../../init';
 import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withApp } from '../../../components/withApp';
 import { withUserInfo } from '../../../components/UserInfo';
-import { Navigation } from './_navigation';
 import { XTable } from 'openland-x/XTable';
-import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
-import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withOrganizationMembers } from '../../../api/withOrganizationMembers';
@@ -28,7 +24,6 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { InvitesToOrganizationModal } from './invites';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withAlterFolderMutation } from '../../../api/withAlterFolderMutation';
 import { withAlterMemberIsContact } from '../../../api/withAlterMemberShowInContacts';
 
 const TableTag = Glamorous.div<{ green?: boolean, purple?: boolean }>((props) => ({
@@ -317,7 +312,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                         <Row>
                             <XTable.Cell>
                                 <XHorizontal separator={7} alignItems="center">
-                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={( m.user.picture) || undefined} userName={m.user.name} userId={m.user.id}/>}
+                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={(m.user.picture) || undefined} userName={m.user.name} userId={m.user.id} />}
                                     {m.__typename === 'OrganizationIvitedMember' && <XAvatar size="small" cloudImageUuid={undefined} />}
                                     <XVertical separator={1} justifyContent="center">
                                         <Title>{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</Title>
@@ -393,16 +388,9 @@ const OrgMembers = withOrganizationMembers((props) => {
     );
 });
 
-export default withApp('Members', 'viewer', withQueryLoader(withUserInfo((props) => {
-    return (
-        <Navigation title="Members">
-            <XHeader text="Members" />
-            <Content>
-                <XVertical alignItems="flex-start">
-                    {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
-                    <InvitesToOrganizationModal target={<XButton size="medium" style="primary" text={TextInvites.membersMgmt.inviteButton} />} />
-                </XVertical>
-            </Content>
-        </Navigation>
-    );
-})));
+export const MembersTable = withUserInfo(props => (
+    <XVertical alignItems="flex-start">
+        {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
+        <InvitesToOrganizationModal target={<XButton style="primary-sky-blue" size="r-default" text={TextInvites.membersMgmt.inviteButton} />} />
+    </XVertical>
+));

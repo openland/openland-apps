@@ -17,7 +17,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { AboutPlaceholder, SocialPlaceholder, LocationPlaceholder, CategoriesPlaceholder } from './placeholders';
 import { XLoader } from 'openland-x/XLoader';
 import { InvitesToOrganizationModal } from '../settings/invites';
-import { PermissionsModal, RemoveJoinedModal } from '../settings/members.page';
+import { PermissionsModal, RemoveJoinedModal } from '../settings/membersTable';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { TextInvites } from 'openland-text/TextInvites';

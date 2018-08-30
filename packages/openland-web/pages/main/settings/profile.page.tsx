@@ -12,7 +12,6 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormField } from 'openland-x-forms/XFormField';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withQueryLoader } from '../../../components/withQueryLoader';
@@ -25,13 +24,13 @@ import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 
 const Content = Glamorous(XContent)({
-    paddingTop: 30
+    paddingTop: 20
 });
 
 const HeadTitle = Glamorous.div({
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 0.5,
+    letterSpacing: -0.2,
     color: '#1f3449'
 });
 
@@ -39,7 +38,7 @@ const CardText = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    borderRadius: 5,
+    borderRadius: 10,
     border: 'solid 1px rgba(220, 222, 228, 0.45)',
     padding: 16,
 
@@ -51,7 +50,7 @@ const CardText = Glamorous.div({
         fontWeight: 600
     },
     '& .person': {
-        color: '#6c42ff'
+        color: '#1790ff'
     }
 });
 
@@ -62,7 +61,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                 <XVertical separator={21}>
                     <Query query={MyOrganizationsQuery.document}>
                         {(orgsData) => (
-                            <XVertical separator={22}>
+                            <XVertical separator={30}>
                                 <XForm
                                     defaultData={{
                                         input: {
@@ -91,32 +90,28 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     }}
                                     defaultLayout={false}
                                 >
-                                    <XVertical separator={18}>
+                                    <XVertical separator={12}>
                                         <HeadTitle>User</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical separator={12}>
                                             <XFormLoadingContent>
                                                 <XHorizontal separator={12}>
                                                     <XVertical flexGrow={1} maxWidth={480}>
-                                                        <XFormField field="input.firstName" title="First name">
-                                                            <XInput field="input.firstName" />
-                                                        </XFormField>
-                                                        <XFormField field="input.lastName" title="Last name">
-                                                            <XInput field="input.lastName" />
-                                                        </XFormField>
-                                                        <XFormField field="input.primaryOrganizationId" title="Primary organization">
-                                                            <XSelect field="input.primaryOrganizationId" searchable={false} clearable={false} options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))} />
-                                                        </XFormField>
-                                                        <XFormField field="input.role" title="Role">
-                                                            <XInput field="input.role" />
-                                                        </XFormField>
+                                                        <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
+                                                        <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                                                        <XSelect
+                                                            rounded={true}
+                                                            field="input.primaryOrganizationId"
+                                                            searchable={false}
+                                                            clearable={false}
+                                                            options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))}
+                                                        />
+                                                        <XInput field="input.role" size="r-default" color="primary-sky-blue" placeholder="Role" />
                                                     </XVertical>
-                                                    <XFormField field="input.photoRef" title="Photo">
-                                                        <XAvatarUpload field="input.photoRef" />
-                                                    </XFormField>
+                                                    <XAvatarUpload field="input.photoRef" />
                                                 </XHorizontal>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" succesText="Changes saved!"/>
+                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
                                         </XVertical>
                                     </XVertical>
                                 </XForm>
@@ -146,30 +141,24 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     }}
                                     defaultLayout={false}
                                 >
-                                    <XVertical separator={18}>
+                                    <XVertical separator={12}>
                                         <HeadTitle>Contacts</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical maxWidth={480} separator={12}>
                                             <XFormLoadingContent>
                                                 <XVertical>
-                                                    <XFormField field="input.phone" title="Phone number" >
-                                                        <XInput field="input.phone" />
-                                                    </XFormField>
-                                                    <XFormField field="input.email" title="Email" >
-                                                        <XInput field="input.email" />
-                                                    </XFormField>
-                                                    <XFormField field="input.website" title="Website" >
-                                                        <XInput field="input.website" />
-                                                    </XFormField>
-                                                    <XFormField field="input.linkedin" title="LinkedIn" >
-                                                        <XInput field="input.linkedin" />
-                                                    </XFormField>
-                                                    <XFormField field="input.location" title="Location" >
-                                                        <XSelect field="input.location" options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))} />
-                                                    </XFormField>
+                                                    <XInput field="input.phone" size="r-default" color="primary-sky-blue" placeholder="Phone number" />
+                                                    <XInput field="input.email" size="r-default" color="primary-sky-blue" placeholder="Email" />
+                                                    <XInput field="input.website" size="r-default" color="primary-sky-blue" placeholder="Website" />
+                                                    <XInput field="input.linkedin" size="r-default" color="primary-sky-blue" placeholder="LinkedIn" />
+                                                    <XSelect
+                                                        rounded={true}
+                                                        field="input.location"
+                                                        options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
+                                                    />
                                                 </XVertical>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" succesText="Changes saved!"/>
+                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
                                         </XVertical>
                                     </XVertical>
                                 </XForm>

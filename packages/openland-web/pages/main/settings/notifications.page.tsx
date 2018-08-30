@@ -19,19 +19,19 @@ import { XText } from 'openland-x/XText';
 import TooltipIcon from './icons/ic-info.svg';
 
 const Content = Glamorous(XContent)({
-    paddingTop: 30
+    paddingTop: 20
 });
 
 const MainTitle = Glamorous.div({
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 0.5,
+    letterSpacing: -0.2,
     color: '#1f3449'
 });
 
 const SettingCard = Glamorous(XVertical)({
     padding: 16,
-    borderRadius: 5,
+    borderRadius: 10,
     border: 'solid 1px rgba(220, 222, 228, 0.45)'
 });
 
@@ -85,7 +85,7 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                         }}
                         defaultLayout={false}
                     >
-                        <XVertical separator={18}>
+                        <XVertical separator={12}>
                             <XFormError onlyGeneralErrors={true} />
                             <XFormLoadingContent>
                                 <XVertical flexGrow={1} maxWidth={300} separator={13}>
@@ -128,7 +128,7 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     </XVertical>
                                 </XVertical>
                             </XFormLoadingContent>
-                            <XFormSubmit text="Save changes" style="primary" alignSelf="flex-start" />
+                            <XFormSubmit text="Save changes" style="primary-sky-blue" size="r-default" alignSelf="flex-start" />
                         </XVertical>
                     </XForm>
                 </XVertical>

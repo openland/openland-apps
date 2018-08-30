@@ -117,12 +117,6 @@ interface InviteComponentProps {
     first: boolean;
 }
 
-const RoleSelectWrapper = Glamorous(XHorizontal)({
-    '& > div': {
-        width: '100%'
-    }
-});
-
 const InviteText = Glamorous.div({
     fontSize: 12,
     fontWeight: 500,
@@ -133,6 +127,7 @@ const InviteText = Glamorous.div({
 const RemovewInputGroup = Glamorous.div({
     width: 40,
     height: 40,
+    flexShrink: 0,
     flex: 'initial',
     display: 'flex',
     alignItems: 'center',
@@ -163,7 +158,14 @@ const InviteComponent = (props: InviteComponentProps) => (
 
             {props.useRoles !== false &&
                 <XWithRole role="super-admin">
-                    <XSelect field={'inviteRequests.' + props.index + '.role'} searchable={false} clearable={false} options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]} />
+                    <XSelect
+                        attach="both"
+                        rounded={true}
+                        field={'inviteRequests.' + props.index + '.role'}
+                        searchable={false} 
+                        clearable={false}
+                        options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]}
+                    />
                 </XWithRole>
             }
 
