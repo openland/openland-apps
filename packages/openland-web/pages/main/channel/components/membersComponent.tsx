@@ -21,6 +21,7 @@ import { XText } from 'openland-x/XText';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
+import CloseIcon from './icons/ic-close-1.svg';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
@@ -80,9 +81,8 @@ const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
         justifyContent: 'center',
         opacity: .5,
 
-        '& i': {
-            fontSize: 16,
-            color: '#bcc3cc'
+        '& svg': {
+            fill: '#bcc3cc'
         }
     },
     (props) => (props.isHoveredWrapper ? {
@@ -101,7 +101,7 @@ class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean, userId
                 padding={1}
             >
                 <DeclineButtonWrapper isHoveredWrapper={this.props.isHoveredWrapper} query={{ field: 'remove', value: this.props.userId }}>
-                    <XIcon icon="close" />
+                    <CloseIcon />
                 </DeclineButtonWrapper>
             </XPopper>
         );
