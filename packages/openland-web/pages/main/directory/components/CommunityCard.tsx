@@ -91,7 +91,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
         console.warn(this.props.item);
         return (
             <CommunityCardWrapper
-                path={'/o/' + this.props.item.id}
+                path={'/directory/o/' + this.props.item.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
