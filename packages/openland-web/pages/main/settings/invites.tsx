@@ -124,7 +124,7 @@ const InviteText = Glamorous.div({
     color: '#99a2b0'
 });
 
-const RemovewInputGroup = Glamorous.div({
+const RemoverInputGroup = Glamorous.div({
     width: 40,
     height: 40,
     flexShrink: 0,
@@ -170,9 +170,9 @@ const InviteComponent = (props: InviteComponentProps) => (
             }
 
             {!props.single && (
-                <RemovewInputGroup onClick={() => props.handleRemove(props.index)}>
+                <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
                     <CloseIcon />
-                </RemovewInputGroup>
+                </RemoverInputGroup>
             )}
         </XInputGroup>
     </XHorizontal>

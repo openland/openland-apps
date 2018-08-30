@@ -7,7 +7,6 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XFormField } from 'openland-x-forms/XFormField';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -16,11 +15,11 @@ import PlusIcon from './icons/ic-add-small.svg';
 import LinkIcon from './icons/ic-link.svg';
 import EmailIcon from './icons/ic-email.svg';
 import { withChanneSendlnviteLink } from '../../../../api/withChanneSendlnviteLink';
-import { XRouter } from 'openland-x-routing/XRouter';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';
 import { XMutation } from 'openland-x/XMutation';
 import { XButton } from 'openland-x/XButton';
+import CloseIcon from './icons/ic-close-1.svg';
 
 const ChannelName = Glamorous.div({
     display: 'flex',
@@ -128,16 +127,43 @@ interface InviteComponentProps {
     first: boolean;
 }
 
+const RemoverInputGroup = Glamorous.div({
+    width: 40,
+    height: 40,
+    flexShrink: 0,
+    flex: 'initial',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid rgba(220, 222, 228, 0.6)',
+    borderLeft: 'none',
+    borderRadius: '0 20px 20px 0',
+    paddingRight: 1,
+    background: 'rgba(239, 240, 243, 0.2)',
+    cursor: 'pointer',
+    zIndex: 1,
+
+    '&:hover': {
+        background: '#fdf6f6',
+
+        '& svg *': {
+            fill: 'rgba(215, 84, 85, 0.5)'
+        }
+    }
+});
+
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={2} alignItems="center" flexGrow={1} justifyContent="space-between">
         <XInputGroup flexGrow={1}>
             <XInput size="r-default" color="primary-sky-blue" placeholder="Email" required={true} field={'inviteRequests.' + props.index + '.email'} />
             <XInput size="r-default" color="primary-sky-blue" placeholder="First name" field={'inviteRequests.' + props.index + '.firstName'} />
             <XInput size="r-default" color="primary-sky-blue" placeholder="Last name" field={'inviteRequests.' + props.index + '.lastName'} />
+            {!props.single && (
+                <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
+                    <CloseIcon />
+                </RemoverInputGroup>
+            )}
         </XInputGroup>
-        {!props.single && (
-            <XModalCloser onClick={() => props.handleRemove(props.index)} />
-        )}
     </XHorizontal>
 );
 
