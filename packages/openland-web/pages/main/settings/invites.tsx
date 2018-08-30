@@ -162,7 +162,7 @@ const InviteComponent = (props: InviteComponentProps) => (
                         attach="both"
                         rounded={true}
                         field={'inviteRequests.' + props.index + '.role'}
-                        searchable={false} 
+                        searchable={false}
                         clearable={false}
                         options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]}
                     />
@@ -194,6 +194,7 @@ interface OwnerLinkComponentProps {
     } | null;
     createMutation: any;
     deleteMutation: any;
+    organization: boolean;
 }
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWithRouter> {
@@ -226,7 +227,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                             color="primary-sky-blue"
                             flexGrow={1}
                             ref={this.handleRef}
-                            value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.invite ? '/invite/' : '/join/') + this.props.invite.key}
+                            value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.organization ? '/invite/' : '/join/') + this.props.invite.key}
                         />
                         <InviteText>Anyone with the link will be able to join</InviteText>
                     </LinkHolder>
@@ -249,11 +250,11 @@ const RenewGlobalInviteLinkButton = withPublicInviteOrganization((props) => (
 ));
 
 const OwnerLink = withPublicInvite(withRouter((props) => (
-    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
+    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} organization={false} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
 const OwnerLinkOrganization = withPublicInviteOrganization(withRouter((props) => (
-    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
+    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} organization={true} createMutation={props.createPublicInvite} deleteMutation={props.deletePublicInvite} />
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
 interface InvitesModalRawProps {
