@@ -78,7 +78,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
         }
     },
     '& .time': {
-        opacity: 0
+        opacity: props.compact ? 0 : 0.5
     }
 }));
 

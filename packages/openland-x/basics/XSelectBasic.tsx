@@ -66,7 +66,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
         fontSize: props.large === true ? 15 : 14,
         color: '#334562',
-        fontWeight: 500,
+        fontWeight: props.rounded === true ? 'normal' : 500,
         verticalAlign: 'middle'
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
@@ -143,7 +143,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         left: 0,
         // lineHeight: '30px',
         lineHeight: 'normal',
-        paddingLeft: 10,
+        paddingLeft: props.rounded === true ? 16 : 10,
         paddingRight: 10,
         position: 'absolute',
         right: 0,
