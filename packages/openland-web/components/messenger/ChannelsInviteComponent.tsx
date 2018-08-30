@@ -224,7 +224,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         <XVertical separator={10} justifyContent="center">
                             <XVertical justifyContent="center">
                                 <ChannelTitle>
-                                    {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + '/' : '') + this.props.channel.title}
+                                    {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + ' /' : '') + this.props.channel.title}
                                 </ChannelTitle>
                                 {this.props.channel.description && <Text width={354}>{this.props.channel.description}</Text>}
                             </XVertical>

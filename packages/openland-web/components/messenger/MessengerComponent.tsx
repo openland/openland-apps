@@ -307,7 +307,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         return <ChannelsInviteComponent channel={props.data.chat} />;
     }
     let title = props.data.chat.__typename === 'ChannelConversation' ?
-        ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + '/' : '') + props.data.chat.title) :
+        ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' /' : '') + props.data.chat.title) :
         props.data.chat.title;
     console.warn(props.data.chat);
 
