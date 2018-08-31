@@ -22,7 +22,7 @@ export interface XAvatarStyleProps extends XFlexStyles {
     userName?: string;
 }
 
-export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string, photoRef?: XPhotoRef }>>;
+export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string | null, photoRef?: XPhotoRef }>>;
 
 let sizeStyles = styleResolver({
     'x-large': {

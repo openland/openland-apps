@@ -111,7 +111,7 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
-    
+
 }));
 
 const ContentText = Glamorous.div({
@@ -145,35 +145,56 @@ let Item = makeNavigable((props) => (
     </ItemContainer>
 ));
 
-const renderConversation = (v: any, onSelect?: () => void) => (
-    <Item path={'/mail/' + v.flexibleId} key={v.id} onClick={onSelect}>
+interface ConversationComponentProps {
+    onSelect?: () => void;
+    id: string;
+    flexibleId: string;
+    typename: 'ChannelConversation' | 'AnonymousConversation' | 'SharedConversation' | 'PrivateConversation' | 'GroupConversation';
+    title: string;
+    photos: string[];
+    photo?: string | null;
+    topMessage: {
+        date: string,
+        message: string | null,
+        sender: {
+            firstName: string
+        }
+    } | null;
+    unreadCount: number;
+    settings: {
+        mute: boolean
+    };
+}
+
+const ConversationComponent = (props: ConversationComponentProps) => (
+    <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect}>
         <XAvatar
-            style={(v.__typename === 'SharedConversation'
+            style={(props.typename === 'SharedConversation'
                 ? 'organization'
-                : v.__typename === 'GroupConversation'
+                : props.typename === 'GroupConversation'
                     ? 'group'
-                    : v.__typename === 'ChannelConversation'
+                    : props.typename === 'ChannelConversation'
                         ? 'channel' : 'colorus'
             )}
-            userName={v.title}
-            userId={v.id}
-            cloudImageUuid={(v.photos || []).length > 0 ? v.photos[0] : (v as any).photo}
+            userName={props.title}
+            userId={props.id}
+            cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
         />
         <Header>
             <Main>
-                <Title className="title"><span>{v.title}</span></Title>
-                {v.topMessage && <Date className="date"><XDate value={v.topMessage!!.date} format="datetime_short" /></Date>}
+                <Title className="title"><span>{props.title}</span></Title>
+                {props.topMessage && <Date className="date"><XDate value={props.topMessage!!.date} format="datetime_short" /></Date>}
             </Main>
             <Content>
                 <ContentText className="content">
-                    {v.topMessage && v.topMessage.message && (
-                        <span>{v.topMessage.sender.firstName}: {v.topMessage.message}</span>
+                    {props.topMessage && props.topMessage.message && (
+                        <span>{props.topMessage.sender.firstName}: {props.topMessage.message}</span>
                     )}
-                    {v.topMessage && !v.topMessage.message && (
-                        <span>{v.topMessage.sender.firstName}: File</span>
+                    {props.topMessage && !props.topMessage.message && (
+                        <span>{props.topMessage.sender.firstName}: File</span>
                     )}
                 </ContentText>
-                {v.unreadCount > 0 && <XCounter big={true} count={v.unreadCount} bgColor={v.settings.mute ? '#9f9f9f' : undefined} />}
+                {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
             </Content>
         </Header>
     </Item>
@@ -210,18 +231,33 @@ const SearchChats = withChatSearchText((props) => {
         },
         [] as any[]
     );
-    return props.data && props.data.items ? items.length
-        ? (
-            <>
-                {items.map(i => renderConversation(i, (props as any).onSelect))}
-            </>
-        )
-        : (
-            <NoResultWrapper separator={10} alignItems="center">
-                <Image />
-                <PlaceholderEmpty>No results</PlaceholderEmpty>
-            </NoResultWrapper>
-        )
+    return props.data && props.data.items
+        ? items.length
+            ? (
+                <>
+                    {items.map(i => (
+                        <ConversationComponent
+                            key={i.id}
+                            id={i.id}
+                            onSelect={(props as any).onSelect}
+                            flexibleId={i.flexibleId}
+                            typename={i.__typename}
+                            title={i.title}
+                            photos={i.photos}
+                            photo={i.photo}
+                            topMessage={i.topMessage}
+                            unreadCount={i.unreadCount}
+                            settings={i.settings}
+                        />
+                    ))}
+                </>
+            )
+            : (
+                <NoResultWrapper separator={10} alignItems="center">
+                    <Image />
+                    <PlaceholderEmpty>No results</PlaceholderEmpty>
+                </NoResultWrapper>
+            )
         : <PlaceholderLoader color="#334562" />;
 }) as React.ComponentType<{ variables: { query: string }, onSelect: () => void }>;
 
@@ -287,7 +323,22 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                         </XHorizontal>
                     </ExploreChannels>
                 )}
-                {!search && this.props.data && this.props.data.chats && this.props.data.chats.conversations.map(i => renderConversation(i))}
+                {!search && this.props.data && this.props.data.chats &&
+                    this.props.data.chats.conversations.map(i => (
+                        <ConversationComponent
+                            key={i.id}
+                            id={i.id}
+                            onSelect={this.onSelect}
+                            flexibleId={i.flexibleId}
+                            typename={i.__typename}
+                            title={i.title}
+                            photos={i.photos}
+                            topMessage={i.topMessage}
+                            unreadCount={i.unreadCount}
+                            settings={i.settings}
+                        />
+                    ))
+                }
             </XVertical>
         );
     }
