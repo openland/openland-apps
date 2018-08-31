@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { withChatsAll } from '../../api/withChatsAll';
 import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
@@ -41,7 +42,7 @@ const ItemContainer = Glamorous.a({
             opacity: '1 !important'
         }
     },
-    '&:hover': {
+    '&:hover, &:focus': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
         '&:hover': {
             backgroundColor: 'rgba(23, 144, 255, 0.05)',
@@ -140,10 +141,12 @@ let Item = makeNavigable((props) => (
         target={props.hrefTarget}
         onClick={props.onClick}
         className={props.active ? 'is-active' : undefined}
+        innerRef={(props as any).ref}
+        tabIndex={0}
     >
         {props.children}
     </ItemContainer>
-));
+)) as React.ComponentType<{ ref: (e: any) => void, path: string, onClick?: () => void }>;
 
 interface ConversationComponentProps {
     onSelect?: () => void;
@@ -164,41 +167,74 @@ interface ConversationComponentProps {
     settings: {
         mute: boolean
     };
+    selectedItem?: boolean;
 }
 
-const ConversationComponent = (props: ConversationComponentProps) => (
-    <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect}>
-        <XAvatar
-            style={(props.typename === 'SharedConversation'
-                ? 'organization'
-                : props.typename === 'GroupConversation'
-                    ? 'group'
-                    : props.typename === 'ChannelConversation'
-                        ? 'channel' : 'colorus'
-            )}
-            userName={props.title}
-            userId={props.id}
-            cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
-        />
-        <Header>
-            <Main>
-                <Title className="title"><span>{props.title}</span></Title>
-                {props.topMessage && <Date className="date"><XDate value={props.topMessage!!.date} format="datetime_short" /></Date>}
-            </Main>
-            <Content>
-                <ContentText className="content">
-                    {props.topMessage && props.topMessage.message && (
-                        <span>{props.topMessage.sender.firstName}: {props.topMessage.message}</span>
+class ConversationComponent extends React.Component<ConversationComponentProps> {
+    refComponent: any;
+
+    componentWillReceiveProps(nextProps: ConversationComponentProps) {
+        if (nextProps.selectedItem === true) {
+            this.reactDom(this.refComponent);
+        }
+    }
+
+    handleRef = (e: any) => {
+        if (e === null) {
+            return;
+        }
+        this.refComponent = e;
+    }
+
+    reactDom = (el: any) => {
+        if (ReactDOM.findDOMNode(el) !== null) {
+            this.setFocus(ReactDOM.findDOMNode(el));
+        }
+    }
+
+    setFocus = (el: any) => {
+        el.focus();
+    }
+
+    render() {
+
+        let { props } = this;
+
+        return (
+            <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect} ref={this.handleRef}>
+                <XAvatar
+                    style={(props.typename === 'SharedConversation'
+                        ? 'organization'
+                        : props.typename === 'GroupConversation'
+                            ? 'group'
+                            : props.typename === 'ChannelConversation'
+                                ? 'channel' : 'colorus'
                     )}
-                    {props.topMessage && !props.topMessage.message && (
-                        <span>{props.topMessage.sender.firstName}: File</span>
-                    )}
-                </ContentText>
-                {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
-            </Content>
-        </Header>
-    </Item>
-);
+                    userName={props.title}
+                    userId={props.id}
+                    cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
+                />
+                <Header>
+                    <Main>
+                        <Title className="title"><span>{props.title}</span></Title>
+                        {props.topMessage && <Date className="date"><XDate value={props.topMessage!!.date} format="datetime_short" /></Date>}
+                    </Main>
+                    <Content>
+                        <ContentText className="content">
+                            {props.topMessage && props.topMessage.message && (
+                                <span>{props.topMessage.sender.firstName}: {props.topMessage.message}</span>
+                            )}
+                            {props.topMessage && !props.topMessage.message && (
+                                <span>{props.topMessage.sender.firstName}: File</span>
+                            )}
+                        </ContentText>
+                        {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
+                    </Content>
+                </Header>
+            </Item>
+        );
+    }
+}
 
 const PlaceholderEmpty = Glamorous(XText)({
     opacity: 0.5
@@ -231,35 +267,43 @@ const SearchChats = withChatSearchText((props) => {
         },
         [] as any[]
     );
-    return props.data && props.data.items
-        ? items.length
-            ? (
-                <>
-                    {items.map(i => (
-                        <ConversationComponent
-                            key={i.id}
-                            id={i.id}
-                            onSelect={(props as any).onSelect}
-                            flexibleId={i.flexibleId}
-                            typename={i.__typename}
-                            title={i.title}
-                            photos={i.photos}
-                            photo={i.photo}
-                            topMessage={i.topMessage}
-                            unreadCount={i.unreadCount}
-                            settings={i.settings}
-                        />
-                    ))}
-                </>
-            )
-            : (
-                <NoResultWrapper separator={10} alignItems="center">
-                    <Image />
-                    <PlaceholderEmpty>No results</PlaceholderEmpty>
-                </NoResultWrapper>
-            )
-        : <PlaceholderLoader color="#334562" />;
-}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void }>;
+
+    if (props.data && props.data.items && items) {
+        (props as any).itemsCount(items.length);
+    }
+
+    return (
+        props.data && props.data.items
+            ? items.length
+                ? (
+                    <>
+                        {items.map((i, j) => (
+                            <ConversationComponent
+                                key={i.id}
+                                id={i.id}
+                                onSelect={(props as any).onSelect}
+                                flexibleId={i.flexibleId}
+                                typename={i.__typename}
+                                title={i.title}
+                                photos={i.photos}
+                                photo={i.photo}
+                                topMessage={i.topMessage}
+                                unreadCount={i.unreadCount}
+                                settings={i.settings}
+                                selectedItem={(props as any).selectedItem === j}
+                            />
+                        ))}
+                    </>
+                )
+                : (
+                    <NoResultWrapper separator={10} alignItems="center">
+                        <Image />
+                        <PlaceholderEmpty>No results</PlaceholderEmpty>
+                    </NoResultWrapper>
+                )
+            : <PlaceholderLoader color="#334562" />
+    );
+}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number }>;
 
 const Search = Glamorous(XInput)({
     margin: 16,
@@ -283,10 +327,17 @@ const ExploreChannels = Glamorous(XMenuItem)({
     }
 });
 
-class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, { query: string }> {
-    constructor(props: { data: ChatListQuery }) {
+class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emptyState: boolean }, { query: string, select: number, chatsLength: number; }> {
+    inputRef: any;
+
+    constructor(props: { data: ChatListQuery, emptyState: boolean }) {
         super(props);
-        this.state = { query: '' };
+
+        this.state = {
+            query: '',
+            select: -1,
+            chatsLength: 0
+        };
     }
 
     onInput = (q: string) => {
@@ -295,6 +346,58 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
 
     onSelect = () => {
         this.setState({ query: '' });
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+        if (this.props.data && this.props.data.chats) {
+            this.setState({
+                chatsLength: this.props.data.chats.conversations.length
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    keydownHandler = (e: any) => {
+        if (!this.props.emptyState) {
+            return;
+        }
+
+        let dy = 0;
+        if (e.code === 'ArrowUp') {
+            e.preventDefault();
+            dy = -1;
+        }
+        if (e.code === 'ArrowDown') {
+            e.preventDefault();
+            dy = 1;
+        }
+
+        let y = this.state.select + dy;
+
+        y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
+
+        if (y === -1) {
+            this.inputRef.focus();
+        }
+
+        this.setState({ select: y });
+    }
+
+    itemsCount = (items: number) => {
+        this.setState({
+            chatsLength: items
+        });
+    }
+
+    handleRef = (e: any) => {
+        if (e === null) {
+            return;
+        }
+        this.inputRef = e;
     }
 
     render() {
@@ -309,9 +412,17 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     icon={<SearchIcon />}
                     color="primary-sky-blue"
                     cleansable={true}
+                    innerRef={this.handleRef}
                 />
 
-                {search && <SearchChats variables={{ query: this.state.query!! }} onSelect={this.onSelect} />}
+                {search && (
+                    <SearchChats
+                        variables={{ query: this.state.query!! }}
+                        onSelect={this.onSelect}
+                        itemsCount={this.itemsCount}
+                        selectedItem={this.state.select}
+                    />
+                )}
                 {!search && (
                     <ExploreChannels path={'/mail/channels'}>
                         <XHorizontal alignItems="center" justifyContent="space-between">
@@ -324,7 +435,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                     </ExploreChannels>
                 )}
                 {!search && this.props.data && this.props.data.chats &&
-                    this.props.data.chats.conversations.map(i => (
+                    this.props.data.chats.conversations.map((i, j) => (
                         <ConversationComponent
                             key={i.id}
                             id={i.id}
@@ -336,6 +447,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
                             topMessage={i.topMessage}
                             unreadCount={i.unreadCount}
                             settings={i.settings}
+                            selectedItem={this.state.select === j}
                         />
                     ))
                 }
@@ -347,7 +459,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery }, {
 export const ChatsComponent = withChatsAll((props) => {
     return (
         <XScrollView height="100%">
-            <ChatsComponentInner data={props.data} />
+            <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} />
         </XScrollView>
     );
-});
+}) as React.ComponentType<{ emptyState: boolean }>;

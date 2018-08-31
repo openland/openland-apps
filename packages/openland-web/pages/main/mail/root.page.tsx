@@ -153,7 +153,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                                     size="r-small"
                                 />
                             </Header>
-                            <ChatsComponent />
+                            <ChatsComponent emptyState={tab === 'empty'} />
                         </ChatListContainer>
                         <ConversationContainer>
                             {tab === 'compose' && (
