@@ -214,7 +214,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                 <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
                             </OrganizationMembers>}
                             <OrganizationCardTypeWrapper separator={0}>
-                                {this.props.item.locations && (
+                                {this.props.item.locations && (this.props.item.locations.length > 0) && (
                                     <XTag
                                         color="gray"
                                         rounded={true}
