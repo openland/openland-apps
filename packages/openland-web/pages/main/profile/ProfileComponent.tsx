@@ -247,6 +247,11 @@ const EditButton = Glamorous.div({
     },
 });
 
+const SocialIconWrapper = Glamorous.div({
+    margin: '-1px 2px 1px 0',
+    display: 'flex'
+});
+
 class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
     render() {
         let org = this.props.organizationQuery.organization;
@@ -322,7 +327,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                                 {org.website && (
                                     <XButton
                                         href={org.website}
-                                        icon={<WebsiteIcon />}
+                                        icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
                                         size="r-default"
                                         text="Website"
                                     />
@@ -330,7 +335,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                                 {org.linkedin && (
                                     <XButton
                                         href={org.linkedin}
-                                        icon={<LinkedinIcon />}
+                                        icon={<SocialIconWrapper><LinkedinIcon /></SocialIconWrapper>}
                                         size="r-default"
                                         text="Linkedin"
                                     />
@@ -338,7 +343,7 @@ class About extends React.Component<{ organizationQuery: OrganizationQuery }> {
                                 {org.twitter && (
                                     <XButton
                                         href={org.twitter}
-                                        icon={<TwitterIcon />}
+                                        icon={<SocialIconWrapper><TwitterIcon /></SocialIconWrapper>}
                                         size="r-default"
                                         text="Twitter"
                                     />

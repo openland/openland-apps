@@ -872,6 +872,9 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         }
     } || {}),
     (props) => ({
+        '& i.icon-svg': {
+            display: 'flex'
+        },
         '& svg': iconsIndentation(props.buttonSize)
     }),
 ]);
@@ -907,7 +910,7 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                     {props.icon && (
                         typeof(props.icon) === 'string'
                         ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon material" />
-                        : <i className="icon">{props.icon}</i>
+                        : <i className="icon icon-svg">{props.icon}</i>
                     )}
                     <ButtonText
                         responsive={props.iconResponsive ? true : false}
@@ -919,7 +922,7 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                     {props.iconRight && (
                         typeof(props.iconRight) === 'string'
                         ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon material" />
-                        : <i className="icon">{props.iconRight}</i>
+                        : <i className="icon icon-svg">{props.iconRight}</i>
                     )}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
