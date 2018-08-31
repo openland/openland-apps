@@ -130,9 +130,10 @@ const HeaderTools = Glamorous.div({
     padding: 24
 });
 
-class Header extends React.Component<{ organizationQuery: OrganizationQuery } & XWithRouter> {
+class Header extends React.Component<{ organizationQuery: OrganizationQuery, tabs: string[] } & XWithRouter> {
     render() {
         let org = this.props.organizationQuery.organization;
+
         return (
             <HeaderWrapper>
                 <HeaderAvatar>
@@ -158,8 +159,8 @@ class Header extends React.Component<{ organizationQuery: OrganizationQuery } & 
                         )}
                     </HeaderBox>
                     <HeaderTabs>
-                        <XSwitcher.Item query={{ field: 'orgTab' }}>Channels</XSwitcher.Item>
-                        <XSwitcher.Item query={{ field: 'orgTab', value: 'about' }}>About</XSwitcher.Item>
+                        {(this.props.tabs.indexOf('channels') > -1) && <XSwitcher.Item query={{ field: 'orgTab' }}>Channels</XSwitcher.Item>}
+                        {(this.props.tabs.indexOf('about') > -1) && <XSwitcher.Item query={{ field: 'orgTab', value: 'about' }}>About</XSwitcher.Item>}
                         <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
                     </HeaderTabs>
                 </HeaderInfo>
@@ -626,12 +627,46 @@ class OrganizationProfileInner extends React.Component<{ organizationQuery: Orga
         let channelsTab = this.props.router.query.orgTab === undefined;
         let aboutTab = this.props.router.query.orgTab === 'about';
         let membersTab = this.props.router.query.orgTab === 'members';
+
+        let org = this.props.organizationQuery.organization;
+
+        // check isEmptyChannels
+        let isEmptyChannels = org.channels.filter(c => c && !c.hidden).length <= 0;
+
+        // check isEmptyAbout
+        let hasLinks = (org.linkedin || org.twitter || org.website);
+        let hasCategories = (org.organizationType || []).length > 0;
+        let hasLocations = (org.locations || []).length > 0;
+        let isEmptyAbout = !org.isMine && !org.about && !hasLinks && !hasLocations && !hasCategories;
+
+        let headerTabs = ['members'];
+
+        if (!isEmptyChannels) {
+            headerTabs.push('channels');
+        }
+
+        if (!isEmptyAbout) {
+            headerTabs.push('about');
+        }
+
+        if (channelsTab && isEmptyChannels && !isEmptyAbout) {
+            this.props.router.pushQuery('orgTab', 'about');
+        }
+
+        if (channelsTab && isEmptyChannels && isEmptyAbout) {
+            this.props.router.pushQuery('orgTab', 'members');
+        }
+
         return (
             <>
                 <Back callback={this.props.onBack} />
-                <Header organizationQuery={this.props.organizationQuery} router={this.props.router} />
-                {channelsTab && this.props.organizationQuery.organization.channels.filter(c => c && !c.hidden).map((c, i) => (
-                    <ChannelCard key={i} item={c} organization={this.props.organizationQuery.organization} />
+                <Header
+                    organizationQuery={this.props.organizationQuery}
+                    router={this.props.router}
+                    tabs={headerTabs}
+                />
+                {channelsTab && org.channels.filter(c => c && !c.hidden).map((c, i) => (
+                    <ChannelCard key={i} item={c} organization={org} />
                 ))}
                 {aboutTab && <About organizationQuery={this.props.organizationQuery} />}
                 {membersTab && <Members organizationQuery={this.props.organizationQuery} />}
