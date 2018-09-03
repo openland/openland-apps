@@ -9,8 +9,7 @@ import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
-import { func } from '../../../node_modules/@types/prop-types';
-import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
+import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 const CHAT_SUBSCRIPTION = gql`
@@ -36,6 +35,7 @@ export interface ConversationStateHandler {
 const CONVERSATION_PAGE_SIZE = 30;
 
 export interface DataSourceMessageItem {
+    type: 'message';
     key: string;
     date: number;
     isOut: boolean;
@@ -52,11 +52,21 @@ export interface DataSourceMessageItem {
         imageSize?: { width: number, height: number }
     };
     isSending: boolean;
-    compact: boolean;
+    attachTop: boolean;
+    attachBottom: boolean;
 }
 
-export function convertMessage(src: MessageFullFragment, engine: MessengerEngine, next?: DataSourceMessageItem): DataSourceMessageItem {
+export interface DataSourceDateItem {
+    type: 'date';
+    key: string;
+    date: number;
+    month: number;
+    year: number;
+}
+
+export function convertMessage(src: MessageFullFragment, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
     return {
+        type: 'message',
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
@@ -73,15 +83,24 @@ export function convertMessage(src: MessageFullFragment, engine: MessengerEngine
             imageSize: src.fileMetadata!!.isImage ? { width: src.fileMetadata!!.imageWidth!!, height: src.fileMetadata!!.imageHeight!! } : undefined
         } : undefined,
         isSending: false,
-        compact: next ? next.senderId === src.sender.id : false
+        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) : false,
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) : false
     };
+}
+
+function isSameDate(a: string, b: string) {
+    let a1 = parseInt(a, 10);
+    let b1 = parseInt(b, 10);
+    let a2 = new Date(a1);
+    let b2 = new Date(b1);
+    return (a2.getFullYear() === b2.getFullYear() && a2.getMonth() === b2.getMonth() && a2.getDate() === b2.getDate());
 }
 
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
-    readonly dataSource: DataSource<DataSourceMessageItem>;
-    private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem>;
+    readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem>;
+    private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem>;
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
@@ -136,14 +155,38 @@ export class ConversationEngine implements MessageSendHandler {
         this.onMessagesUpdated();
 
         // Update Data Source
-        let dsItems: DataSourceMessageItem[] = [];
-        let next: DataSourceMessageItem | undefined;
+        let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
         let sourceFragments = [...(initialChat.data as any).messages.messages as MessageFullFragment[]];
-        for (let v of sourceFragments) {
-            let conv = convertMessage(v, this.engine, next);
-            dsItems.push(conv);
-            next = conv;
+        let prevDate: string | undefined;
+        for (let i = 0; i < sourceFragments.length; i++) {
+
+            // Append new date if needed
+            if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+                let d = new Date(parseInt(prevDate, 10));
+                dsItems.push({
+                    type: 'date',
+                    key: 'date-' + d.getFullYear() + d.getMonth() + d.getDay(),
+                    date: d.getDate(),
+                    month: d.getMonth(),
+                    year: d.getFullYear()
+                });
+            }
+
+            dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
+            prevDate = sourceFragments[i].date;
         }
+
+        if (this.historyFullyLoaded && prevDate) {
+            let d = new Date(parseInt(prevDate, 10));
+            dsItems.push({
+                type: 'date',
+                key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
+                date: d.getDate(),
+                month: d.getMonth(),
+                year: d.getFullYear()
+            });
+        }
+
         this.dataSource.initialize(dsItems, this.historyFullyLoaded);
     }
 
@@ -191,13 +234,36 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadingHistory = undefined;
 
             // Data Source
-            let dsItems: DataSourceMessageItem[] = [];
-            let next: DataSourceMessageItem | undefined;
+            let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
+            let prevDate: string | undefined;
+            if (this.dataSource.getSize() > 0) {
+                prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
+            }
             let sourceFragments = [...(loaded.data as any).messages.messages as MessageFullFragment[]];
-            for (let v of sourceFragments) {
-                let conv = convertMessage(v, this.engine, next);
-                dsItems.push(conv);
-                next = conv;
+            for (let i = 0; i < sourceFragments.length; i++) {
+                if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+                    let d = new Date(parseInt(prevDate, 10));
+                    dsItems.push({
+                        type: 'date',
+                        key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
+                        date: d.getDate(),
+                        month: d.getMonth(),
+                        year: d.getFullYear()
+                    });
+                }
+
+                dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
+                prevDate = sourceFragments[i].date;
+            }
+            if (this.historyFullyLoaded && prevDate) {
+                let d = new Date(parseInt(prevDate, 10));
+                dsItems.push({
+                    type: 'date',
+                    key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
+                    date: d.getDate(),
+                    month: d.getMonth(),
+                    year: d.getFullYear()
+                });
             }
             this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
         }
@@ -412,15 +478,17 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private appendMessage = (src: ModelMessage) => {
-        let prev: DataSourceMessageItem | undefined;
+        let prev: DataSourceMessageItem | DataSourceDateItem | undefined;
         if (this.dataSource.getSize() > 0) {
             prev = this.dataSource.getAt(0);
         }
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.engine, undefined);
+            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
         } else {
             conv = {
+                type: 'message',
                 key: src.key,
                 date: parseInt(src.date, 10),
                 senderId: this.engine.user.id,
@@ -429,23 +497,26 @@ export class ConversationEngine implements MessageSendHandler {
                 isOut: true,
                 isSending: true,
                 text: src.message ? src.message : undefined,
-                compact: false
+                attachBottom: false,
+                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id : false
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
-            let ex = this.dataSource.getItem(conv.key);
+            let ex = this.dataSource.getItem(conv.key) as DataSourceMessageItem;
             let converted = {
                 ...conv,
-                compact: ex!!.compact // Do not update compact value
+                attachBottom: ex!!.attachBottom, // Do not update compact value
+                attachTop: ex!!.attachTop // Do not update compact value
             };
             this.dataSource.updateItem(converted);
         } else {
-            if (prev && prev.compact === false && prev.senderId === conv.senderId) {
-                this.dataSource.updateItem({ ...prev!!, compact: true });
+            if (prev && prev.type === 'message' && prev.senderId === conv.senderId) {
+                this.dataSource.updateItem({ ...prev!!, attachBottom: true });
                 this.dataSource.addItem(conv, 0);
             } else {
                 this.dataSource.addItem(conv, 0);
             }
+            // this.dataSource.addItem(conv, 0);
         }
     }
 

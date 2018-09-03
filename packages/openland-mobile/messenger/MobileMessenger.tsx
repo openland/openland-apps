@@ -10,8 +10,9 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncMessageView } from '../pages/main/components/async/AsyncMessageView';
+import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 
 interface ASAvatarProps {
     size: number;
@@ -143,7 +144,7 @@ export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: FastHistoryManager;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
-    private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem>>();
+    private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
 
     constructor(engine: MessengerEngine, history: FastHistoryManager) {
         this.engine = engine;
@@ -159,7 +160,11 @@ export class MobileMessenger {
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
-                return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} />);
+                if (item.type === 'message') {
+                    return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} />);
+                } else {
+                    return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
+                }
             }));
         }
         return this.conversations.get(id)!!;
