@@ -81,11 +81,29 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
   return res2
 }
 
+func createAttributedText(spec: AsyncTextSpec, context: RNAsyncViewContext, attributes: [String: Any]) -> NSAttributedString {
+  let res = NSMutableAttributedString(string: "", attributes: attributes)
+  
+  var innerAttributes = attributes
+  if spec.color != nil {
+    innerAttributes[NSForegroundColorAttributeName] = spec.color
+  }
+  
+  for v in spec.children {
+    if let s = v as? String {
+      res.append(NSAttributedString(string: s, attributes: innerAttributes))
+    } else if let s = v as? AsyncTextSpec {
+      res.append(createAttributedText(spec: s, context: context, attributes: innerAttributes))
+    }
+  }
+  return res
+}
+
 func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayoutElement {
   let res = ASTextNode()
   var attributes: [String: Any] = [:]
-  attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize), weight: spec.fontWeight)
-  attributes[NSForegroundColorAttributeName] = spec.color
+  attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
+  attributes[NSForegroundColorAttributeName] = spec.color != nil ? spec.color : UIColor.black
   let style = NSMutableParagraphStyle();
   style.headIndent = 0.0
   style.tailIndent = 0.0
@@ -100,7 +118,7 @@ func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayou
   if let v = spec.letterSpacing {
     attributes[NSKernAttributeName] = CGFloat(v)
   }
-  res.attributedText = NSAttributedString(string: spec.text, attributes: attributes)
+  res.attributedText = createAttributedText(spec: spec, context: context, attributes: attributes)
   if let v = spec.numberOfLines {
     res.maximumNumberOfLines = UInt(v)
   }

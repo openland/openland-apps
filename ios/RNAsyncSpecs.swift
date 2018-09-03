@@ -55,12 +55,12 @@ class AsyncFlexSpec: AsyncViewSpec {
 class AsyncTextSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
-  var text: String = ""
-  var fontSize: Float = 12
+  var children: [Any] = []
+  var fontSize: Float? = nil
   var lineHeight: Float?
   var letterSpacing: Float?
-  var fontWeight: UIFontWeight = UIFontWeightRegular
-  var color: UIColor = UIColor.black
+  var fontWeight: UIFontWeight? = nil
+  var color: UIColor? = nil
   var numberOfLines: Int?
 }
 
@@ -178,13 +178,13 @@ private func resolveChildren(_ src: JSON) -> [AsyncViewSpec] {
   return src["children"].arrayValue.map(resolveSpec)
 }
 
-private func resolveTextChildren(_ src: JSON) -> String {
-  var res = ""
+private func resolveTextChildren(_ src: JSON) -> [Any] {
+  var res: [Any] = []
   for item in src["children"].arrayValue {
     if (item["type"] == "value") {
-      res = res + item["value"].stringValue
-    } else {
-      fatalError("Non-text value in text node")
+      res.append(item["value"].stringValue)
+    } else if item["type"] == "text" {
+      res.append(resolveSpec(item))
     }
   }
   return res;
@@ -228,7 +228,7 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
   } else if (type == "text") {
     let res = AsyncTextSpec()
     res.style = resolveStyle(src)
-    res.text = resolveTextChildren(src)
+    res.children = resolveTextChildren(src)
     res.key = src["key"].stringValue
     if let v = src["props"]["fontSize"].float {
       res.fontSize = v
