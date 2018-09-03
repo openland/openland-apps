@@ -27,7 +27,7 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
     }
 
     fun setConfig(config: AsyncViewSpec) {
-        this.lithoView.setComponent(resolveNode(this.asyncContext, config, context as ReactContext))
+        this.lithoView.setComponentAsync(resolveNode(this.asyncContext, config, context as ReactContext))
     }
 }
 

@@ -55,7 +55,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .reactContext(context as ReactContext))
                 .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
                 .build()
-        lithoView.setComponent(recycler)
+        lithoView.setComponentAsync(recycler)
     }
 
     fun dispose() {
