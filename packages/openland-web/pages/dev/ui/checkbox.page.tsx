@@ -20,6 +20,10 @@ export default withApp('UI Framework - Checkboxes', 'viewer', (props) => {
                         <XCheckbox label="Disabled" disabled={true} />
                         <XCheckbox label="Disabled checked" disabled={true} checked={true} />
                     </XHorizontal>
+                    <XTitle>Loading</XTitle>
+                    <XHorizontal>
+                        <XCheckbox label="Default" loading={true} />
+                    </XHorizontal>
                     <XTitle>Switchers</XTitle>
                     <XHorizontal>
                         <XCheckbox label="Default" switcher={true} />
