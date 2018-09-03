@@ -78,7 +78,11 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
     input?: any;
     constructor(props: XSelectCustomProps) {
         super(props);
-        this.state = { inputVal: '', lastValue: (props.value as Option<string>[] || []) };
+
+        this.state = { 
+            inputVal: '', 
+            lastValue: (props.value as Option<string>[] || []) 
+        };
     }
 
     handleRef = (e: any) => {
@@ -235,6 +239,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         placement="bottom-start"
                         arrow={null}
                         zIndex={999}
+                        animation={null}
                         show={this.state.inputVal.length > 0 || this.state.focus}
                         onClickOutside={this.focusOutHandler}
                         contentContainer={(

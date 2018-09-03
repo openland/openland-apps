@@ -3,6 +3,8 @@ import XStyles from './XStyles';
 import Glamorous from 'glamorous';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { makeActionable, ActionableParentProps } from './Actionable';
+import { XLoadingCircular } from './XLoadingCircular';
 
 const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, marginBottom?: number }>([
     (props) => ({
@@ -10,6 +12,7 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
         flexDirection: 'row',
         alignItems: 'center',
         userSelect: 'none',
+        position: 'relative',
         marginBottom: props.marginBottom !== undefined ? props.marginBottom : 14,
         '> input': {
             display: 'none'
@@ -39,6 +42,14 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
                 letterSpacing: - 0.1,
                 color: '#1f3449'
             }
+        },
+        '& .loading-icon': {
+            width: 32,
+            height: 32,
+            position: 'absolute',
+            top: '50%',
+            left: '30px',
+            transform: 'translate(0, -50%)'
         }
     }),
     (props) => (props.disabled && {
@@ -113,6 +124,7 @@ interface XCheckboxBasicProps {
     disabled?: boolean;
     hint?: string;
     square?: boolean;
+    loading?: boolean;
 }
 
 export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChecked: boolean }> {
@@ -147,7 +159,7 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
 
     render() {
         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
-        console.warn(this.state.isChecked);
+        console.warn(this.props.loading);
         return (
             <CheckboxInputDiv disabled={this.props.disabled} active={this.state.isChecked} marginBottom={this.props.marginBottom}>
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
@@ -159,7 +171,8 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
                             </CheckSwitcher>
                         )}
                         {!this.props.switcher && (<CheckIcon active={this.state.isChecked} square={this.props.square} />)}
-                        <span>{this.props.label}</span>
+                        <span style={{ opacity: this.props.loading ? 0 : 1 }}>{this.props.label}</span>
+                        {this.props.loading && <XLoadingCircular className="loading-icon" color="#1790ff" />}
                     </div>
                     {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}
                 </label>
@@ -242,13 +255,12 @@ class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XSto
     }
 }
 
-export interface XCheckboxProps extends XCheckboxBasicProps {
+export type XCheckboxProps = ActionableParentProps<XCheckboxBasicProps & {
     field?: string;
     valueStoreKey?: string;
-}
+}>;
 
-export class XCheckbox extends React.PureComponent<XCheckboxProps> {
-
+class XCheckboxRaw extends React.PureComponent<XCheckboxProps> {
     render() {
         if (this.props.field || this.props.valueStoreKey) {
             let { valueStoreKey, field, ...other } = this.props;
@@ -276,3 +288,9 @@ export class XCheckbox extends React.PureComponent<XCheckboxProps> {
         return <XCheckboxBasic {...this.props} />;
     }
 }
+
+export const XCheckbox = makeActionable<XCheckboxProps>((props) => {
+    return (
+        <XCheckboxRaw {...props} />
+    );
+});
