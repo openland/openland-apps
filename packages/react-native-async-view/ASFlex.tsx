@@ -10,6 +10,7 @@ export interface ASFlexProps extends ASViewStyle {
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     justifyContent?: 'flex-start' | 'flex-end' | 'center';
     onPress?: (event: ASPressEvent) => void;
+    onLongPress?: (event: ASPressEvent) => void;
     highlightColor?: string;
     overlay?: boolean;
 }
@@ -22,6 +23,9 @@ export class ASFlex extends React.Component<ASFlexProps> {
         if (this.props.onPress) {
             ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
         }
+        if (this.props.onLongPress) {
+            ASEventEmitter.registerOnLongPress(this.tag, this.handleOnLongPress);
+        }
     }
 
     componentWillReceiveProps(nextProps: ASFlexProps) {
@@ -32,11 +36,22 @@ export class ASFlex extends React.Component<ASFlexProps> {
                 ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
             }
         }
+        if (!!nextProps.onLongPress !== !!this.props.onLongPress) {
+            if (this.props.onLongPress) {
+                ASEventEmitter.unregisterOnLongPress(this.tag);
+            } else {
+                ASEventEmitter.registerOnLongPress(this.tag, this.handleOnLongPress);
+            }
+        }
     }
 
     componentWillUnmount() {
         if (this.props.onPress) {
             ASEventEmitter.unregisterOnPress(this.tag);
+        }
+
+        if (this.props.onLongPress) {
+            ASEventEmitter.unregisterOnLongPress(this.tag);
         }
     }
 
@@ -46,13 +61,19 @@ export class ASFlex extends React.Component<ASFlexProps> {
         }
     }
 
+    private handleOnLongPress = (event: ASPressEvent) => {
+        if (this.props.onLongPress) {
+            this.props.onLongPress(event);
+        }
+    }
+
     render() {
         let { children, highlightColor, onPress, ...other } = this.props;
         let realProps = other;
         realProps = {
             ...realProps,
-            touchableKey: this.props.onPress && this.tag,
-            highlightColor: this.props.onPress && (highlightColor ? processColor(highlightColor) : undefined),
+            touchableKey: (this.props.onPress || this.props.onLongPress) && this.tag,
+            highlightColor: (this.props.onPress || this.props.onLongPress) && (highlightColor ? processColor(highlightColor) : undefined),
             backgroundColor: realProps.backgroundColor ? processColor(realProps.backgroundColor) : undefined,
             backgroundGradient: realProps.backgroundGradient ? {
                 start: processColor(realProps.backgroundGradient.start),

@@ -16,6 +16,8 @@ import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
+import { Clipboard } from 'react-native';
+import { ActionSheetBuilder } from '../components/ActionSheet';
 
 interface ASAvatarProps {
     size: number;
@@ -166,7 +168,7 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} />);
+                    return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessagePress={this.handleMessageLongPress} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
@@ -209,5 +211,21 @@ export class MobileMessenger {
     }
     private handleAvatarClick = (id: string) => {
         this.history.push('ProfileUser', { id });
+    }
+
+    private handleMessageLongPress = (message: DataSourceMessageItem) => {
+        let builder = new ActionSheetBuilder();
+        if (message.text) {
+            builder.action('Copy', () => {
+                Clipboard.setString(message.text!!);
+            });
+            builder.action('Edit', () => {
+                // Clipboard.setString(message.text!!);
+            });
+        }
+        builder.action('Delete', () => {
+            //
+        });
+        builder.show();
     }
 }

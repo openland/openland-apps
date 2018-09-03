@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RNTouchableNode: ASControlNode {
+class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   
   let key: String;
   let higlightColor: UIColor;
@@ -18,12 +18,37 @@ class RNTouchableNode: ASControlNode {
     self.higlightColor = higlightColor;
     super.init()
     self.backgroundColor = UIColor.clear
-    self.addTarget(self, action: #selector(self.handler), forControlEvents: ASControlNodeEvent.touchUpInside)
+    self.isLayerBacked = false
+    self.isUserInteractionEnabled = true
+  }
+  
+  override func didLoad() {
+    super.didLoad()
+    
+    let longTap = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressHandler))
+    longTap.delegate = self
+    longTap.minimumPressDuration = 1.0
+    view.addGestureRecognizer(longTap)
+    let singleTap = UITapGestureRecognizer(target: self, action: #selector(self.handler))
+    singleTap.require(toFail: longTap)
+    singleTap.delegate = self
+    view.addGestureRecognizer(singleTap)
+  }
+  
+  func longPressHandler(sender: UILongPressGestureRecognizer) {
+    if sender.state == .began {
+      let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
+      AsyncViewEventEmitter.sharedInstance.dispatchOnLongPress(key: self.key, frame: res, instanceKey: nil)
+    }
   }
   
   func handler() {
     let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.key, frame: res, instanceKey: nil)
+  }
+  
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
   
   override var isHighlighted: Bool {

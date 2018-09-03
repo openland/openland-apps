@@ -160,6 +160,7 @@ export class AsyncDocumentView extends React.PureComponent<{ message: DataSource
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
+    onMessagePress: (message: DataSourceMessageItem) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
@@ -171,9 +172,13 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         this.props.onAvatarPress(this.props.message.senderId);
     }
 
+    private handleLongPress = () => {
+        this.props.onMessagePress(this.props.message);
+    }
+
     render() {
         return (
-            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end">
+            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
                     <ASFlex marginBottom={0} marginRight={-1} marginLeft={4} onPress={this.handlePress}>
                         <AsyncAvatar
