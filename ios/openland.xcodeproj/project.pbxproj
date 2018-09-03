@@ -82,6 +82,8 @@
 		AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF88213719DB00FBCB75 /* RNAsyncViewNode.swift */; };
 		AAB0EF8B21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8A21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift */; };
 		AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8C21371A8B00FBCB75 /* RNAsyncListView.swift */; };
+		AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */; };
+		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
@@ -755,6 +757,8 @@
 		AAB0EF88213719DB00FBCB75 /* RNAsyncViewNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncViewNode.swift; sourceTree = "<group>"; };
 		AAB0EF8A21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncViewEventEmitter.swift; sourceTree = "<group>"; };
 		AAB0EF8C21371A8B00FBCB75 /* RNAsyncListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListView.swift; sourceTree = "<group>"; };
+		AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNImageNode.swift; sourceTree = "<group>"; };
+		AAB0EF90213D8CF500FBCB75 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
 		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
@@ -1269,6 +1273,7 @@
 				AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */,
 				AAB0EEA221349F8000FBCB75 /* RNAsyncLoadingIndicator.swift */,
 				AAB0EF88213719DB00FBCB75 /* RNAsyncViewNode.swift */,
+				AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */,
 			);
 			name = Nodes;
 			sourceTree = "<group>";
@@ -1312,6 +1317,7 @@
 				AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
 				AAE56DC42129FA3C003706B3 /* Bridge.m */,
+				AAB0EF90213D8CF500FBCB75 /* Utils.swift */,
 			);
 			name = RNAsyncView;
 			sourceTree = "<group>";
@@ -2342,6 +2348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAB0EF8B21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift in Sources */,
+				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
@@ -2355,6 +2362,7 @@
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */,
 				AAB0EF87213719B300FBCB75 /* RNAsyncViewContext.swift in Sources */,
+				AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */,
 				AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,

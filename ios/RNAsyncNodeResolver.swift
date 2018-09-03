@@ -113,13 +113,11 @@ func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayou
 }
 
 func createImageNode(spec: AsyncImageSpec, context: RNAsyncViewContext) -> ASLayoutElement {
-  let res = context.fetchCached(key: spec.key) { () -> ASNetworkImageNode in
-    return ASNetworkImageNode()
+  let res = context.fetchCached(key: spec.key) { () -> RNImageNode in
+    return RNImageNode(key: spec.key)
   }
-  res.shouldCacheImage = false; // It doesn't work otherwise
-  if res.url?.absoluteString != spec.url {
-      res.url = URL(string: spec.url)
-  }
+
+  res.setSpec(spec: spec)
   return resolveStyle(spec.style, res, context)
 }
 

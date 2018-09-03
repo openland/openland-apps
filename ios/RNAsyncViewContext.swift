@@ -8,12 +8,6 @@
 
 import Foundation
 
-private func lock(_ obj: AnyObject, blk:() -> ()) {
-  objc_sync_enter(obj)
-  blk()
-  objc_sync_exit(obj)
-}
-
 class RNAsyncViewContext {
   private var cache = NSMapTable<NSString, AnyObject>(keyOptions: NSPointerFunctions.Options.strongMemory, valueOptions: NSPointerFunctions.Options.weakMemory)
   

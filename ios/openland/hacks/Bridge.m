@@ -29,6 +29,7 @@ RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 
 @interface RCT_EXTERN_MODULE(RNAsyncConfigManager, NSObject)
 RCT_EXTERN_METHOD(setConfig:(NSString *)key config:(NSString *)config)
+RCT_EXTERN_METHOD(setSuspended:(NSString *)key suspended:(nonnull BOOL)suspended)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncViewEventEmitter, RCTEventEmitter)

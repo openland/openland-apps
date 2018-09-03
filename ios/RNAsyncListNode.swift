@@ -161,13 +161,17 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func setContentPaddingTop(value: Float) {
-    self.topInset = value
-    self.updateContentPadding()
+    if self.topInset != value {
+      self.topInset = value
+      self.updateContentPadding()
+    }
   }
   
   func setContentPaddingBottom(value: Float) {
-    self.bottomInset = value
-    self.updateContentPadding()
+    if self.bottomInset != value {
+      self.bottomInset = value
+      self.updateContentPadding()
+    }
   }
   
   func setOnScroll(callback: RCTDirectEventBlock?) {

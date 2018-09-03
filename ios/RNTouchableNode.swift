@@ -19,11 +19,11 @@ class RNTouchableNode: ASControlNode {
     super.init()
     self.backgroundColor = UIColor.clear
     self.addTarget(self, action: #selector(self.handler), forControlEvents: ASControlNodeEvent.touchUpInside)
-    self.displaysAsynchronously = false
   }
   
   func handler() {
-    AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.key)
+    let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
+    AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.key, frame: res, instanceKey: nil)
   }
   
   override var isHighlighted: Bool {

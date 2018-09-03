@@ -11,8 +11,11 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
 import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { AsyncMessageView } from '../pages/main/components/async/AsyncMessageView';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
+import { ZPictureModal } from '../components/modal/ZPictureModal';
+import { AsyncMessageView } from './components/AsyncMessageView';
+import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
+import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
 
 interface ASAvatarProps {
     size: number;
@@ -145,10 +148,12 @@ export class MobileMessenger {
     readonly history: FastHistoryManager;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
+    private readonly modal: React.RefObject<ZPictureModal>;
 
-    constructor(engine: MessengerEngine, history: FastHistoryManager) {
+    constructor(engine: MessengerEngine, history: FastHistoryManager, modal: React.RefObject<ZPictureModal>) {
         this.engine = engine;
         this.history = history;
+        this.modal = modal;
         this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
             return (
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
@@ -161,13 +166,42 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} />);
+                    return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
             }));
         }
         return this.conversations.get(id)!!;
+    }
+
+    private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
+        if (this.modal.current) {
+            this.modal.current!!.showModal({
+                url: event.path,
+                width: document.file!!.imageSize!!.width,
+                height: document.file!!.imageSize!!.height,
+                isGif: false,
+                animate: {
+                    x: event.x,
+                    y: event.y,
+                    width: event.w,
+                    height: event.h,
+                    borderRadius: 10
+                },
+                onBegin: () => {
+                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
+                },
+                onEnd: () => {
+                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
+                }
+            });
+        }
+        //
+    }
+
+    private handleDocumentClick = (document: DataSourceMessageItem) => {
+        this.history.push('FilePreview', { config: { uuid: document.file!!.fileId } });
     }
 
     private handleDialogClick = (id: string) => {

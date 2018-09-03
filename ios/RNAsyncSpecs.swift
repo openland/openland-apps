@@ -68,6 +68,7 @@ class AsyncImageSpec: AsyncViewSpec {
   var style: AsyncStyleSpec = AsyncStyleSpec()
   var key: String = ""
   var url: String = ""
+  var touchableKey: String?
 }
 
 class AsyncStyleSpec {
@@ -276,6 +277,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.style = resolveStyle(src)
     res.key = src["key"].stringValue
     res.url = src["props"]["source"].stringValue
+    if let v = src["props"]["touchableKey"].string {
+      res.touchableKey = v
+    }
     return res
   }
   fatalError("Unknown view type:" + type)

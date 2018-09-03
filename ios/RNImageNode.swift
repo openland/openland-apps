@@ -1,0 +1,61 @@
+//
+//  RNImageNode.swift
+//  openland
+//
+//  Created by Steve Kite on 9/3/18.
+//  Copyright © 2018 Facebook. All rights reserved.
+//
+
+import Foundation
+
+
+
+class RNImageNode: ASDisplayNode {
+  let instanceKey: String = randomKey()
+  let key: String
+  var touchableKey: String? = nil
+  let node: ASNetworkImageNode
+  
+  init(key: String) {
+    self.node = ASNetworkImageNode()
+    self.key = key
+    super.init()
+    
+    self.node.shouldCacheImage = false; // It doesn't work otherwise
+    self.addSubnode(self.node)
+    
+    self.node.addTarget(self, action: #selector(self.handleTouch), forControlEvents: .touchUpInside)
+    
+    RNAsyncConfigManager.instances.set(key: self.instanceKey, value: self)
+  }
+  
+  func handleTouch() {
+    let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
+    AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.touchableKey!, frame: res, instanceKey: self.instanceKey)
+  }
+
+  func setSpec(spec: AsyncImageSpec) {
+    if self.node.url?.absoluteString != spec.url {
+      self.node.url = URL(string: spec.url)
+    }
+    if let v = spec.style.borderRadius {
+      self.node.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
+        let bounds = context.boundingBoxOfClipPath
+        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(v) * UIScreen.main.scale).addClip()
+      }
+    }
+    
+    self.touchableKey = spec.touchableKey
+    if spec.touchableKey != nil {
+      self.isUserInteractionEnabled = true
+      self.node.isUserInteractionEnabled = true
+    } else {
+      self.isUserInteractionEnabled = false
+      self.node.isUserInteractionEnabled = false
+    }
+  }
+  
+  override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: self.node)
+  }
+}

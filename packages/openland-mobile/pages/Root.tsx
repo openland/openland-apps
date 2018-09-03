@@ -18,6 +18,9 @@ import { FastRouterProvider } from 'react-native-fast-navigation/FastRouterProvi
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
 import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
+
+    private ref = React.createRef<ZPictureModal>();
+
     constructor(props: NavigationInjectedProps) {
         super(props);
         this.state = {
@@ -45,10 +48,9 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                 } else {
                     let messenger = buildMessenger(client, res.data.me);
                     let history = new FastHistoryManager(Routes);
-                    setMessenger(new MobileMessenger(messenger, history));
+                    setMessenger(new MobileMessenger(messenger, history, this.ref));
                     saveClient(client);
                     await messenger.awaitLoading();
-
                 }
             }
 
@@ -77,7 +79,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                         <MessengerContext.Provider value={getMessenger().engine}>
                             <ZSafeAreaRoot>
                                 <View style={{ width: '100%', height: '100%' }}>
-                                    <ZPictureModal>
+                                    <ZPictureModal ref={this.ref}>
                                         <FastRouterProvider history={getMessenger().history} />
                                     </ZPictureModal>
                                 </View>

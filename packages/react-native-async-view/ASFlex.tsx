@@ -3,24 +3,15 @@ import { View, processColor } from 'react-native';
 import { ASViewStyle } from './ASViewStyle';
 import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
+import { ASPressEvent } from './ASPressEvent';
 
 export interface ASFlexProps extends ASViewStyle {
     flexDirection?: 'row' | 'column';
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     justifyContent?: 'flex-start' | 'flex-end' | 'center';
-    onPress?: () => void;
+    onPress?: (event: ASPressEvent) => void;
     highlightColor?: string;
     overlay?: boolean;
-}
-
-class ASFlexFallback extends React.PureComponent<ASFlexProps> {
-    render() {
-        return (
-            <View flexDirection={this.props.flexDirection} alignItems={this.props.alignItems} justifyContent={this.props.justifyContent}>
-                {this.props.children}
-            </View>
-        );
-    }
 }
 
 export class ASFlex extends React.Component<ASFlexProps> {
@@ -49,9 +40,9 @@ export class ASFlex extends React.Component<ASFlexProps> {
         }
     }
 
-    private handleOnPress = () => {
+    private handleOnPress = (event: ASPressEvent) => {
         if (this.props.onPress) {
-            this.props.onPress();
+            this.props.onPress(event);
         }
     }
 

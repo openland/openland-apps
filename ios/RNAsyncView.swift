@@ -39,11 +39,10 @@ class RNAsyncView: RCTView {
   }
   
   public func setConfigKey(_ configKey: String) {
-    configsViews[configKey] = self
-    if let ex = configs[configKey] {
+    RNAsyncConfigManager.views.set(key: configKey, value: self)
+    if let ex = RNAsyncConfigManager.configs[configKey] {
       self.setConfig(config: ex)
     }
-    // self.node.setConfig(spec: config)
   }
   
   override func reactSetFrame(_ frame: CGRect) {

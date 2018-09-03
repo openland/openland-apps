@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { StyleProp, ViewStyle, View, NativeModules } from 'react-native';
+import { StyleProp, ViewStyle, View, } from 'react-native';
 import { supportsAsyncRendering } from './platform/config';
 import { ASViewRender } from './platform/ASViewRender';
 import { AsyncRenderer } from './internals/renderer';
 import UUID from 'uuid/v4';
-
-const RNAsyncConfigManager = NativeModules.RNAsyncConfigManager;
+import { RNAsyncConfigManager } from './platform/ASConfigManager';
 
 export interface ASViewProps {
     style?: StyleProp<ViewStyle>;
