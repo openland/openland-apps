@@ -46,7 +46,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
             );
         }
         return (
-            <View position="absolute" left={0} bottom={0} right={0}>
+            <View>
                 <View flexDirection="column" alignItems="stretch" onLayout={this.handleLayout}>
                     <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
                     <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: ZAppConfig.bottomNavigationBarInset }}>

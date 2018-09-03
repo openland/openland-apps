@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { ZBottomTabs } from '../../components/ZBottomTabs';
 import { Directory } from './Directory';
 import { Dialogs } from './Dialogs';
@@ -26,7 +26,7 @@ export class Home extends React.PureComponent<{}, { tab: number }> {
     render() {
         return (
             <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
-                <ZSafeAreaProvider bottom={54}>
+                <ZSafeAreaProvider bottom={Platform.OS === 'ios' ? 54 : 0}>
                     <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 0 ? 1 : 0 }} pointerEvents={this.state.tab === 0 ? 'box-none' : 'none'}>
                             <FastHeaderContextChild enabled={this.state.tab === 0}>
@@ -47,7 +47,7 @@ export class Home extends React.PureComponent<{}, { tab: number }> {
                 </ZSafeAreaProvider>
                 <YQuery query={GlobalCounterQuery}>
                     {resp => (
-                        <View style={{ position: 'absolute', bottom: ZAppConfig.bottomNavigationBarInset, left: 0, right: 0 }}>
+                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: ZAppConfig.bottomNavigationBarInset, left: 0, right: 0 }}>
                             <ZBottomTabs counter={resp.data && resp.data.counter.unreadCount || 0} selected={this.state.tab} onPress={this.handleTabChange} />
                         </View>
                     )}

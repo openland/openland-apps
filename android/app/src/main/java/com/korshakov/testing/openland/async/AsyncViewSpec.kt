@@ -1,9 +1,23 @@
 package com.korshakov.testing.openland.async
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
+import java.io.IOException
+import java.net.URL
+
+class AsyncPatch {
+    var source: Bitmap? = null
+    var sourceUrl: String? = null
+    var top: Float = 0.0f
+    var right: Float = 0.0f
+    var bottom: Float = 0.0f
+    var left: Float = 0.0f
+}
 
 class AsyncViewStyle {
     var height: Float? = null
@@ -20,6 +34,7 @@ class AsyncViewStyle {
 
     var backgroundColor: Int? = null
     var borderRadius: Float? = null
+    var backgroundPatch: AsyncPatch? = null
 //    var backgroundGradient: [UIColor]?
 }
 
@@ -56,6 +71,8 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
     var alignItems: AsyncFlexAlignItems = AsyncFlexAlignItems.start
     var justifyContent: AsyncFlexJustifyContent = AsyncFlexJustifyContent.start
     var touchableKey: String? = null
+    var highlightColor: Int? = null
+    var overlay: Boolean = false
 }
 
 class AsyncTextSpec(key: String, val text: String) : AsyncViewSpec(key) {
@@ -73,12 +90,9 @@ class AsyncTextSpec(key: String, val text: String) : AsyncViewSpec(key) {
 //    var numberOfLines: Int?
 }
 
-class AsyncImageSpec(key: String, val url: String) : AsyncViewSpec(key) {
+class AsyncImageSpec(key: String, val url: String?) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
-}
-
-class AsyncListSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncViewSpec(key) {
-    var style: AsyncViewStyle = AsyncViewStyle()
+    var touchableKey: String? = null
 }
 
 private fun resolveChildren(src: JsonObject): Array<AsyncViewSpec> {
@@ -151,6 +165,27 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle) {
     (props["backgroundColor"] as? Number)?.let {
         res.backgroundColor = it.toInt()
     }
+    (props["backgroundPatch"] as? JsonObject)?.let {
+        val patch = AsyncPatch()
+        var bitmap: Bitmap? = null
+
+        try {
+            val loaded = URL(it["source"] as String).openStream()
+            bitmap = BitmapFactory.decodeStream(loaded)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        patch.sourceUrl = it["source"] as String
+        patch.source = bitmap
+        // res.background(BitmapDrawable(context.resources, bitmap))
+        // patch.source = it["source"] as String
+        patch.left = (it["left"] as Number).toFloat()
+        patch.top = (it["top"] as Number).toFloat()
+        patch.right = (it["right"] as Number).toFloat()
+        patch.bottom = (it["bottom"] as Number).toFloat()
+        res.backgroundPatch = patch
+    }
 }
 
 private fun resolveSpec(src: JsonObject): AsyncViewSpec {
@@ -196,6 +231,14 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
 //            res.highlightColor = resolveColorR(v)
 //        }
 
+        if (props["overlay"] is Boolean) {
+            res.overlay = props["overlay"] as Boolean
+        }
+
+        if (props["highlightColor"] is Number) {
+            res.highlightColor = (props["highlightColor"] as Number).toInt()
+        }
+
         return res
     } else if (type == "text") {
         val props = src["props"] as JsonObject
@@ -208,12 +251,10 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
         return res
     } else if (type == "image") {
         val props = src["props"] as JsonObject
-        val res = AsyncImageSpec(key, props["source"] as String)
-        resolveStyle(src, res.style)
-        return res
-    } else if (type == "list") {
-        val props = src["props"] as JsonObject
-        val res = AsyncListSpec(key, resolveChildren(src))
+        val res = AsyncImageSpec(key, props["source"] as? String?)
+        if (props["touchableKey"] is String) {
+            res.touchableKey = props["touchableKey"] as String
+        }
         resolveStyle(src, res.style)
         return res
     }

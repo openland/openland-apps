@@ -21,11 +21,11 @@ export class ASEventEmitterHolder {
                 }
             });
         } else {
-            DeviceEventEmitter.addListener('async_on_press', (args: { key: string }) => {
-                // let p = this.onPress.get(args.key);
-                // if (p) {
-                //     p();
-                // }
+            DeviceEventEmitter.addListener('async_on_press', (args: { key: string, x: number, y: number, w: number, h: number }) => {
+                let p = this.onPress.get(args.key);
+                if (p) {
+                    p(args);
+                }
             });
         }
     }

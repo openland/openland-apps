@@ -1,5 +1,7 @@
 package com.korshakov.testing.openland.async.views
 
+import com.facebook.litho.Column
+import com.facebook.litho.Row
 import com.facebook.litho.annotations.FromEvent
 import com.facebook.litho.annotations.OnEvent
 import com.facebook.litho.annotations.Prop
@@ -12,6 +14,8 @@ import com.facebook.litho.sections.common.RenderEvent
 import com.facebook.litho.widget.ComponentRenderInfo
 import com.facebook.litho.widget.RenderInfo
 import com.facebook.react.bridge.ReactContext
+import com.facebook.yoga.YogaAlign
+import com.korshakov.testing.openland.async.AsyncDataViewItem
 import com.korshakov.testing.openland.async.AsyncViewSpec
 import com.korshakov.testing.openland.async.resolveNode
 
@@ -19,9 +23,9 @@ import com.korshakov.testing.openland.async.resolveNode
 object LithoSectionSpec {
 
     @OnCreateChildren
-    internal fun onCreateChildren(c: SectionContext, @Prop dataModel: List<AsyncViewSpec>, @Prop reactContext: ReactContext): Children {
+    internal fun onCreateChildren(c: SectionContext, @Prop dataModel: List<AsyncDataViewItem>, @Prop reactContext: ReactContext): Children {
         return Children.create()
-                .child(DataDiffSection.create<AsyncViewSpec>(c)
+                .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
                         .renderEventHandler(LithoSection.onRenderEdge(c)))
                 .build()
@@ -29,9 +33,12 @@ object LithoSectionSpec {
 
     @OnEvent(RenderEvent::class)
     @JvmName("onRenderEdge")
-    internal fun onRenderEdge(c: SectionContext, @FromEvent model: AsyncViewSpec, @Prop reactContext: ReactContext): RenderInfo {
+    internal fun onRenderEdge(c: SectionContext, @FromEvent model: AsyncDataViewItem, @Prop reactContext: ReactContext): RenderInfo {
         return ComponentRenderInfo.create()
-                .component(resolveNode(c, model, reactContext))
+                .component(Column.create(c)
+                        .child(resolveNode(c, model.spec, reactContext))
+                        .alignItems(YogaAlign.STRETCH)
+                        .widthPercent(100.0f))
                 .build()
     }
 }

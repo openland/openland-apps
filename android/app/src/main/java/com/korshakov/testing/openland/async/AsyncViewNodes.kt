@@ -5,16 +5,13 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
-import com.facebook.litho.sections.SectionContext
-import com.facebook.litho.sections.widget.RecyclerCollectionComponent
 import com.facebook.litho.widget.Text
-import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
 import com.korshakov.testing.openland.async.views.BackgroundSolidColorDrawable
 import com.korshakov.testing.openland.async.views.LithoFlex
-import com.korshakov.testing.openland.async.views.LithoSection
+import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
     var res = component
@@ -42,11 +39,22 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
 //        res = res.border(Border.create(context).radiusDip(it).build())
 //    }
 
-    style.backgroundColor?.let {
-        if (style.borderRadius != null) {
-            res.background(BackgroundSolidColorDrawable(it, Resources.getSystem().displayMetrics.density * style.borderRadius!!))
-        } else {
-            res.backgroundColor(it)
+    if (style.backgroundPatch != null) {
+        res.background(NinePatchBitmapFactory.createNinePathWithCapInsets(
+                context.resources,
+                style.backgroundPatch!!.source,
+                style.backgroundPatch!!.top.toInt(),
+                style.backgroundPatch!!.left.toInt(),
+                style.backgroundPatch!!.source!!.height - style.backgroundPatch!!.bottom.toInt(),
+                style.backgroundPatch!!.source!!.width - style.backgroundPatch!!.right.toInt(),
+                null))
+    } else {
+        style.backgroundColor?.let {
+            if (style.borderRadius != null) {
+                res.background(BackgroundSolidColorDrawable(it, Resources.getSystem().displayMetrics.density * style.borderRadius!!))
+            } else {
+                res.backgroundColor(it)
+            }
         }
     }
 
@@ -84,14 +92,14 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
             }
             resolveStyle(context, res, spec.style)
         }
-        is AsyncListSpec -> {
-            val res = RecyclerCollectionComponent.create(context)
-                    .disablePTR(true)
-                    .section(LithoSection.create(SectionContext(context))
-                            .dataModel(spec.children.toList())
-                            .reactContext(reactContext))
-            resolveStyle(context, res, spec.style)
-        }
+//        is AsyncListSpec -> {
+//            val res = RecyclerCollectionComponent.create(context)
+//                    .disablePTR(true)
+//                    .section(LithoSection.create(SectionContext(context))
+//                            .dataModel(spec.children.toList())
+//                            .reactContext(reactContext))
+//            resolveStyle(context, res, spec.style)
+//        }
         else -> error("Unsupported spec")
     }
 }

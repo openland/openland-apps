@@ -17,6 +17,13 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
     }
     render() {
 
+        let selectedColor = '#fff';
+        let unselectedColor = '#C8C8F9';
+        if (Platform.OS !== 'ios') {
+            selectedColor = AppStyles.primaryColor;
+            unselectedColor = '#C8C8F9';
+        }
+
         let content = (
             <View
                 style={{
@@ -39,7 +46,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                             marginLeft: 5
                         }}
                     >
-                        <Ionicons name={'ios-flame'} size={25} color={this.props.selected === 0 ? '#fff' : '#C8C8F9'} />
+                        <Ionicons name={'ios-flame'} size={25} color={this.props.selected === 0 ? selectedColor : unselectedColor} />
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress2} delayPressIn={0}>
@@ -52,7 +59,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                         }}
                     >
                         <View style={{ width: 48, height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                            <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? '#fff' : '#C8C8F9'} />
+                            <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? selectedColor : unselectedColor} />
                             <View
                                 style={{
                                     position: 'absolute',
@@ -75,7 +82,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                             marginRight: 5
                         }}
                     >
-                        <Ionicons name={'ios-cog'} size={25} color={this.props.selected === 2 ? '#fff' : '#C8C8F9'} />
+                        <Ionicons name={'ios-cog'} size={25} color={this.props.selected === 2 ? selectedColor : unselectedColor} />
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -106,11 +113,11 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
         return (
             <View
                 style={{
-                    marginBottom: 5,
-                    marginLeft: 10,
-                    marginRight: 10,
-                    backgroundColor: AppStyles.primaryColor,
-                    borderRadius: 24,
+                    // marginBottom: 5,
+                    // marginLeft: 10,
+                    // marginRight: 10,
+                    backgroundColor: '#fff',
+                    // borderRadius: 24,
                     height: 48,
                 }}
             >
