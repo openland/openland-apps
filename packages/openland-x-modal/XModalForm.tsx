@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XModal, XModalFooter, XModalHeader, XModalBody, XModalHeaderEmpty } from './XModal';
+import { XModal, XModalFooter, XModalHeader, XModalBody } from './XModal';
 import { XForm, XFormActionProps, XFormAction } from 'openland-x-forms/XForm';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from 'openland-x/XButton';
@@ -55,7 +55,6 @@ export class XModalForm extends React.Component<XModalFormProps> {
         return (
             <XModal {...other} customContent={true}>
                 {this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
-                {!this.props.title && <XModalHeaderEmpty />}
                 <XForm submitMutation={submitMutation} mutationDirect={mutationDirect} onSubmit={onSubmit} prepare={prepare} fillValues={fillValues} defaultValues={defaultValues} autoClose={true}>
                     <XModalBody>
                         {this.props.children}

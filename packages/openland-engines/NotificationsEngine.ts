@@ -29,23 +29,25 @@ export class NotificationsEngine {
             }
         }
 
-        let conversationId = msg.conversation.flexibleId;
-        if (msg.message.message) {
-            AppNotifications.displayNotification({
-                title: 'New Message',
-                body: msg.message.sender.name + ': ' + msg.message.message,
-                path: '/mail/' + conversationId,
-                image: msg.message.sender.picture,
-                id: doSimpleHash(msg.conversation.id).toString(),
-            });
-        } else {
-            AppNotifications.displayNotification({
-                title: 'New Message',
-                body: msg.message.sender.name + ': <file>',
-                path: '/mail/' + conversationId,
-                image: msg.message.sender.picture,
-                id: doSimpleHash(msg.conversation.id).toString(),
-            });
+        if (!msg.conversation.settings.mute) {
+            let conversationId = msg.conversation.flexibleId;
+            if (msg.message.message) {
+                AppNotifications.displayNotification({
+                    title: 'New Message',
+                    body: msg.message.sender.name + ': ' + msg.message.message,
+                    path: '/mail/' + conversationId,
+                    image: msg.message.sender.picture,
+                    id: doSimpleHash(msg.conversation.id).toString(),
+                });
+            } else {
+                AppNotifications.displayNotification({
+                    title: 'New Message',
+                    body: msg.message.sender.name + ': <file>',
+                    path: '/mail/' + conversationId,
+                    image: msg.message.sender.picture,
+                    id: doSimpleHash(msg.conversation.id).toString(),
+                });
+            }
         }
     }
 }

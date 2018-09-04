@@ -16,7 +16,6 @@ interface ModalRenderProps {
     closeOnClick?: boolean;
     onCloseRequest: () => void;
     transparent?: boolean;
-    noTransformContainer?: boolean;
 }
 
 class ModalRender extends React.PureComponent<ModalRenderProps> {
@@ -59,17 +58,10 @@ class ModalRender extends React.PureComponent<ModalRenderProps> {
                         width: this.props.size !== 'x-large' ? width : 'calc(100% - 128px)',
                         top: (this.props.size !== 'x-large' && !this.props.scrollableContent) ? 96 : 64,
                         left: this.props.size !== 'x-large'
-                            ? (this.props.noTransformContainer === true)
-                                ? 'calc(50% - 285px)'
-                                : '50%'
+                            ? `calc(50% - ${width / 2}px)`
                             : 64,
                         right: this.props.size !== 'x-large' ? 'auto' : 64,
-                        bottom: this.props.size !== 'x-large' ? 'auto' : 64,
-                        transform: this.props.noTransformContainer === true
-                            ? undefined
-                            : this.props.size !== 'x-large'
-                                ? 'translate(-50%, 0%)'
-                                : undefined,
+                        bottom: this.props.size !== 'x-large' ? 'auto' : 64
                     }
                 }}
             >
@@ -108,14 +100,6 @@ export const XModalHeader = Glamorous(XHorizontal)({
     paddingLeft: 24,
     paddingRight: 24,
     height: 64
-});
-
-export const XModalHeaderEmpty = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    paddingLeft: 24,
-    paddingRight: 24,
-    height: 24
 });
 
 export const XModalFooter = Glamorous.div({
@@ -171,7 +155,6 @@ interface ModalContentRenderProps {
     footer?: any;
     customContent?: boolean;
     scrollableContent?: boolean;
-    noTransformContainer?: boolean;
 }
 
 class ModalContentRender extends React.Component<ModalContentRenderProps> {
@@ -210,7 +193,6 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
                         {this.props.useTopCloser && <XModalCloser autoClose={true} />}
                     </XModalHeader>
                 )}
-                {this.props.heading === undefined && !this.props.title && <XModalHeaderEmpty />}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
                 {this.props.footer === undefined && !this.props.useTopCloser && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>}
@@ -279,7 +261,6 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                         size={size}
                         closeOnClick={this.props.closeOnClick}
                         transparent={this.props.transparent}
-                        noTransformContainer={this.props.noTransformContainer}
                     >
                         <ModalContentRender
                             scrollableContent={this.props.scrollableContent}
