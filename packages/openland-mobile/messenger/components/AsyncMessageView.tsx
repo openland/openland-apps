@@ -10,10 +10,10 @@ import { formatBytes } from '../../utils/formatBytes';
 import { AsyncMessageMediaView } from './AsyndMessageMediaView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { preprocessText } from '../../utils/TextProcessor';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 
-const paddedText = ' ' + '\u00A0'.repeat(10);
-const paddedTextOut = ' ' + '\u00A0'.repeat(13);
+const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
+const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
 
 export class AsyncMessageTextView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
@@ -27,11 +27,15 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                 return <ASText key={'text-' + i}>{v.text}</ASText>;
             }
         });
+        let marginHorizontal = Platform.select({
+            default: 8,
+            ios: 10
+        });
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex
-                    marginLeft={10}
-                    marginRight={10}
+                    marginLeft={marginHorizontal}
+                    marginRight={marginHorizontal}
                     marginTop={7}
                     marginBottom={8}
                     flexDirection="column"

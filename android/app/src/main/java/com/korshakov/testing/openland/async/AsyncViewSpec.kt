@@ -12,7 +12,7 @@ import java.net.URL
 
 class AsyncPatch {
     var source: Bitmap? = null
-    var sourceUrl: String? = null
+    var scale: Float = 1.0f
     var top: Float = 0.0f
     var right: Float = 0.0f
     var bottom: Float = 0.0f
@@ -75,7 +75,7 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
     var overlay: Boolean = false
 }
 
-class AsyncTextSpec(key: String, val text: String) : AsyncViewSpec(key) {
+class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
 
     var fontSize: Float = 12.0f
@@ -103,13 +103,13 @@ private fun resolveChildren(src: JsonObject): Array<AsyncViewSpec> {
     return res.map { resolveSpec(it) }.toTypedArray()
 }
 
-private fun resolveTextChildren(src: JsonObject): String {
-    var res = ""
+private fun resolveTextChildren(src: JsonObject): List<Any> {
+    val res = mutableListOf<Any>()
     for (item in src["children"] as JsonArray<JsonObject>) {
-        if (item["type"] == "value") {
-            res += item["value"] as String
-        } else {
-            error("Non-text value in text node")
+        when {
+            item["type"] == "value" -> res.add(item["value"] as String)
+            item["type"] =="text" -> res.add(resolveSpec(item))
+            else -> error("Non-text value in text node")
         }
     }
     return res;
@@ -176,7 +176,7 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle) {
             e.printStackTrace()
         }
 
-        patch.sourceUrl = it["source"] as String
+        patch.scale = (it["scale"] as Number).toFloat()
         patch.source = bitmap
         // res.background(BitmapDrawable(context.resources, bitmap))
         // patch.source = it["source"] as String
@@ -247,7 +247,7 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
 
         (props["fontSize"] as? Number)?.let { res.fontSize = it.toFloat() }
         (props["color"] as? Number)?.let { res.color = it.toInt() }
-
+        (props["lineHeight"] as? Number)?.let { res.lineHeight = it.toFloat() }
         return res
     } else if (type == "image") {
         val props = src["props"] as JsonObject

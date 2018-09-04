@@ -1,15 +1,22 @@
 package com.korshakov.testing.openland.async
 
 import android.content.res.Resources
+import android.text.Layout
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextUtils
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
 import com.facebook.litho.widget.Text
+import com.facebook.litho.widget.VerticalGravity
 import com.facebook.react.bridge.ReactContext
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
 import com.korshakov.testing.openland.async.views.BackgroundSolidColorDrawable
+import com.korshakov.testing.openland.async.views.CustomLineHeightSpan
 import com.korshakov.testing.openland.async.views.LithoFlex
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 
@@ -40,13 +47,14 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
 //    }
 
     if (style.backgroundPatch != null) {
+        val scale = style.backgroundPatch!!.scale
         res.background(NinePatchBitmapFactory.createNinePathWithCapInsets(
                 context.resources,
                 style.backgroundPatch!!.source,
-                style.backgroundPatch!!.top.toInt(),
-                style.backgroundPatch!!.left.toInt(),
-                style.backgroundPatch!!.source!!.height - style.backgroundPatch!!.bottom.toInt(),
-                style.backgroundPatch!!.source!!.width - style.backgroundPatch!!.right.toInt(),
+                (scale * style.backgroundPatch!!.top).toInt(),
+                (scale * style.backgroundPatch!!.left).toInt(),
+                style.backgroundPatch!!.source!!.height - (scale * style.backgroundPatch!!.bottom).toInt(),
+                style.backgroundPatch!!.source!!.width - (scale * style.backgroundPatch!!.right).toInt(),
                 null))
     } else {
         style.backgroundColor?.let {
@@ -61,6 +69,18 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
     return res.build()
 }
 
+fun resolveText(spec: AsyncTextSpec): String {
+    var res = ""
+    for (s in spec.children) {
+        if (s is String) {
+            res += s
+        } else if (s is AsyncTextSpec) {
+            res += resolveText(s)
+        }
+    }
+    return res
+}
+
 fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: ReactContext): Component {
     return when (spec) {
         is AsyncFlexSpec -> return LithoFlex.create(context)
@@ -70,10 +90,21 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
         is AsyncTextSpec -> {
             val res = Text.create(context)
                     .key(spec.key)
-                    .text(spec.text)
                     .textSizeDip(spec.fontSize)
                     .textColor(spec.color)
                     .shouldIncludeFontPadding(false)
+
+            if (spec.numberOfLines != null) {
+                res.maxLines(spec.numberOfLines!!)
+                res.ellipsize(TextUtils.TruncateAt.END)
+            }
+
+            // Fix line height
+            val text = SpannableString(resolveText(spec))
+            var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else spec.fontSize * 1.6f
+            actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
+            text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            res.text(text)
 
             // TODO: Handle styles
             resolveStyle(context, res, spec.style)

@@ -6,7 +6,7 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 
 class BackgroundSolidColorDrawable(val color: Int, val radius: Float) : Drawable() {
-    private val paint = Paint()
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         this.paint.color = color
