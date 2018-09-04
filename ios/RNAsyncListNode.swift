@@ -244,7 +244,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
     DispatchQueue.main.async {
-      self.node.performBatchUpdates({
+      self.node.performBatch(animated: false, updates: {
         self.state = state
         self.node.reloadItems(at: [IndexPath(item: index, section: 0)])
       }, completion: nil)

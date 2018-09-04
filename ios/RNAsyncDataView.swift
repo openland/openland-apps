@@ -157,6 +157,8 @@ class RNAsyncDataViewManager: NSObject {
   func dataViewUpdateItem(dataSourceKey: String, key: String, config: String, index: NSNumber) -> Void {
     let configSpec = parseSpec(config)
     let item = RNAsyncDataViewItem(key: key, config: configSpec)
+    print(key)
+    print(config)
     RNAsyncDataView.getDataView(key: dataSourceKey).handleUpdated(item: item, index: Int(index))
   }
   

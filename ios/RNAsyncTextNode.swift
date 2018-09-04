@@ -40,18 +40,13 @@ private func createAttributedText(spec: AsyncTextSpec, attributes: [String: Any]
   return res
 }
 
-class RNAsyncTextNode: ASDisplayNode, ASTextNodeDelegate {
-  
-  let node: ASTextNode
+class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
   
   override init() {
-    self.node = ASTextNode()
     super.init()
-    self.node.delegate = self
-    self.node.linkAttributeNames = ["RNClickableText"]
-    self.node.passthroughNonlinkTouches = true
-    self.node.isUserInteractionEnabled = true
-    self.addSubnode(self.node)
+    self.delegate = self
+    self.linkAttributeNames = ["RNClickableText"]
+    self.passthroughNonlinkTouches = true
     self.isUserInteractionEnabled = true
   }
   
@@ -77,20 +72,26 @@ class RNAsyncTextNode: ASDisplayNode, ASTextNodeDelegate {
     }
     
     // Set text
-    self.node.attributedText = createAttributedText(spec: spec, attributes: attributes)
-    
+    if (self.attributedText == nil) {
+      self.attributedText = createAttributedText(spec: spec, attributes: attributes)
+    } else {
+      let n = createAttributedText(spec: spec, attributes: attributes)
+      if n.string != self.attributedText!.string {
+        self.attributedText = n
+      }
+    }
 
     // Some basic styles
     if let v = spec.numberOfLines {
-      self.node.maximumNumberOfLines = UInt(v)
+      self.maximumNumberOfLines = UInt(v)
     } else {
-      self.node.maximumNumberOfLines = 0
+      self.maximumNumberOfLines = 0
     }
     
     if let v = spec.style.opacity {
-      self.node.alpha = CGFloat(v)
+      self.alpha = CGFloat(v)
     } else {
-      self.node.alpha = CGFloat(1)
+      self.alpha = CGFloat(1)
     }
   }
   
@@ -100,14 +101,5 @@ class RNAsyncTextNode: ASDisplayNode, ASTextNodeDelegate {
   
   func textNode(_ textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: Any!, at point: CGPoint, textRange: NSRange) {
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: value as! String, frame: CGRect.zero, instanceKey: nil)
-  }
-  
-  override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: self.node)
-  }
-  
-  // Pass-through clicks
-  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-    return self.node.point(inside: point, with: event)
   }
 }
