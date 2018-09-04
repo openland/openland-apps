@@ -168,14 +168,15 @@ interface ConversationComponentProps {
     settings: {
         mute: boolean
     };
-    selectedItem?: boolean;
+    selectedItem: boolean;
+    allowSelection: boolean;
 }
 
 class ConversationComponent extends React.Component<ConversationComponentProps> {
     refComponent: any;
 
     componentWillReceiveProps(nextProps: ConversationComponentProps) {
-        if (nextProps.selectedItem === true) {
+        if (nextProps.selectedItem === true && nextProps.allowSelection) {
             this.reactDom(this.refComponent);
         }
     }
@@ -292,6 +293,7 @@ const SearchChats = withChatSearchText((props) => {
                                 unreadCount={i.unreadCount}
                                 settings={i.settings}
                                 selectedItem={(props as any).selectedItem === j}
+                                allowSelection={(props as any).allowSelection}
                             />
                         ))}
                     </>
@@ -304,7 +306,7 @@ const SearchChats = withChatSearchText((props) => {
                 )
             : <PlaceholderLoader color="#334562" />
     );
-}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number }>;
+}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number, allowSelection: boolean }>;
 
 const Search = Glamorous(XInput)({
     margin: 16,
@@ -350,7 +352,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             query: '',
             select: -1,
             chatsLength: 0,
-            searchInputFocus: false
+            searchInputFocus: this.props.emptyState
         };
     }
 
@@ -378,9 +380,11 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     }
 
     mouseHandler = (e: any) => {
-        this.setState({
-            searchInputFocus: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
-        });
+        if (!this.props.emptyState) {
+            this.setState({
+                searchInputFocus: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
+            });
+        }
     }
 
     keydownHandler = (e: any) => {
@@ -458,6 +462,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                         onSelect={this.onSelect}
                         itemsCount={this.itemsCount}
                         selectedItem={this.state.select}
+                        allowSelection={this.state.searchInputFocus}
                     />
                 )}
                 {!search && (
@@ -485,6 +490,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                             unreadCount={i.unreadCount}
                             settings={i.settings}
                             selectedItem={this.state.select === j}
+                            allowSelection={this.state.searchInputFocus}
                         />
                     ))
                 }
