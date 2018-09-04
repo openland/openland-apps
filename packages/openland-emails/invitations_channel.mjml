@@ -12,6 +12,9 @@
                 </mj-text>
                 <mj-text mj-class="text">
                     <strong>{{firstName}} {{lastName}}</strong> is inviting you to join <strong>{{channelName}}</strong> discussion channel at Openland. Join the conversation to connect with industry insiders, exchange market data, and discover new opportunities.
+                    <br/> <br/>
+                    {{customText}}
+                    <br/> <br/>
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">Accept invitation</mj-button>
             </mj-column>
