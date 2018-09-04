@@ -156,14 +156,15 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
 
     onPushed = (record: FastHistoryRecord, history: FastHistory) => {
         Keyboard.dismiss();
-        
+
         let underlay = history.history[history.history.length - 2].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
         let progress = new Animated.Value(-1);
         let newRecord = new HistoryRecordHolder(record, progress, this.panOffsetCurrent, this.panOffsetPrev);
 
         // Start animation
-        underlayHolder.progressValue.stopAnimation(() => {
+        underlayHolder.progressValue.stopAnimation((v2: number) => {
+            console.log(v2);
             Animated.parallel([
                 animate(underlayHolder.progressValue, 1),
                 animate(progress, 0),
@@ -173,6 +174,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 if (this.removing.find((v) => v === record.key)) {
                     return;
                 }
+                underlayHolder.progressValue.setValue(1);
+                progress.setValue(0);
                 this.mounted = this.mounted.filter((v) => v !== underlay);
                 this.setState({ mounted: this.mounted, transitioning: false });
             });
@@ -202,6 +205,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 animate(underlayHolder.progressValue, 0),
                 animate(holder.progressValue, -1)
             ]).start(() => {
+                underlayHolder.progressValue.setValue(0);
+                holder.progressValue.setValue(-1);
                 this.removing = this.removing.filter((v) => v !== record.key);
                 this.mounted = this.mounted.filter((v) => v !== record.key);
                 this.routes = this.routes.filter((v) => v.record.key !== record.key);
@@ -211,20 +216,20 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         }
     }
     onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
+        if (this.currentHistory.history.length < 2) {
+            return;
+        }
         if (event.nativeEvent.state === State.ACTIVE) {
             Keyboard.dismiss();
-            if (this.currentHistory.history.length >= 2) {
+            let current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
+            let prev = this.currentHistory.history[this.currentHistory.history.length - 2].key;
+            this.swipeCurrent = this.routes.find((v) => v.record.key === current)!!;
+            this.swipePrev = this.routes.find((v) => v.record.key === prev)!!;
+            this.swipeCurrent.startSwipe();
+            this.swipePrev.startSwipePRev();
 
-                let current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
-                let prev = this.currentHistory.history[this.currentHistory.history.length - 2].key;
-                this.swipeCurrent = this.routes.find((v) => v.record.key === current)!!;
-                this.swipePrev = this.routes.find((v) => v.record.key === prev)!!;
-                this.swipeCurrent.startSwipe();
-                this.swipePrev.startSwipePRev();
-
-                this.mounted = [...this.mounted, this.currentHistory.history[this.currentHistory.history.length - 2].key];
-                this.setState({ mounted: this.mounted });
-            }
+            this.mounted = [...this.mounted, this.currentHistory.history[this.currentHistory.history.length - 2].key];
+            this.setState({ mounted: this.mounted });
         } else if (event.nativeEvent.oldState === State.ACTIVE) {
             let currentHolder = this.swipeCurrent!!;
             let prevHolder = this.swipePrev!!;

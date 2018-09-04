@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import UUID from 'uuid/v4';
 import { FastHeaderContext, FastHeaderContextProvider } from './FastHeaderContext';
 import { FastHeaderConfig, mergeConfigs, isConfigEquals } from './FastHeaderConfig';

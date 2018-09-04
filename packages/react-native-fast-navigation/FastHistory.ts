@@ -42,8 +42,12 @@ export class FastHistoryManager {
             index,
             key,
             params: params || {},
-            push: this.push,
-            back: this.pop,
+            push: (destRoute: string, destParams?: any) => {
+                this.push(destRoute, destParams, key);
+            },
+            back: (args?: { immediate?: boolean }) => {
+                return this.pop(args, key);
+            },
             updateConfig: (config) => {
                 this.updateConfig(key, config);
             },
@@ -84,7 +88,12 @@ export class FastHistoryManager {
         }
     }
 
-    push = (route: string, params?: any) => {
+    push = (route: string, params?: any, current?: String) => {
+        if (current) {
+            if (this.history.history[this.history.history.length - 1].key !== current) {
+                return;
+            }
+        }
         let record = this.createRecord(this.history.history.length, route, params, this.history.history[this.history.history.length - 1].key);
         let nhistory = new FastHistory([...this.history.history, record]); // keep to avoid insonsistency if we will change routes in watchers
         this.history = nhistory;
@@ -92,7 +101,12 @@ export class FastHistoryManager {
             w.onPushed(record, nhistory);
         }
     }
-    pop = (args?: { immediate?: boolean }) => {
+    pop = (args?: { immediate?: boolean }, current?: String) => {
+        if (current) {
+            if (this.history.history[this.history.history.length - 1].key !== current) {
+                return false;
+            }
+        }
         if (this.history.history.length <= 1) {
             return false;
         }
