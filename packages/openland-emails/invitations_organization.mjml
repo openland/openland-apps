@@ -12,6 +12,9 @@
                 </mj-text>
                 <mj-text mj-class="text">
                     <strong>{{firstName}} {{lastName}}</strong> invites you to join <strong>{{organizationName}}</strong> at Openland, a new messaging app for real estate industry. There you can participate in insider discussions, source and qualify opportunities, and collaborate on deals with other organizations.
+                    <br/> <br/>
+                    {{customText}}
+                    <br/> <br/> 
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">Accept invitation</mj-button>
             </mj-column>
