@@ -30,6 +30,7 @@ export interface XInputBasicProps extends XFlexStyles {
     onChange?: (value: string) => void;
     onEnter?: () => void;
     cleansable?: boolean;
+    onFocus?: () => void;
 }
 
 let sizeStyles = styleResolver({
@@ -524,6 +525,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
             tooltipContent,
             color,
             cleansable,
+            onFocus,
             ...other
         } = this.props;
 
@@ -563,6 +565,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
                     autoSelect={autoSelect}
                     innerRef={this.handleRef}
                     onKeyPress={this.handleKey}
+                    onFocus={onFocus}
                 />
                 {(placeholder && (!v || v === '')) && (
                     <InputPlaceholder

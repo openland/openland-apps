@@ -18,6 +18,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import CircleIcon from './components/icons/circle-icon.svg';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
+import { SearchFormWrapper } from '../../pages/main/directory/components/Layout';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -327,16 +328,29 @@ const ExploreChannels = Glamorous(XMenuItem)({
     }
 });
 
-class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emptyState: boolean }, { query: string, select: number, chatsLength: number; }> {
+interface ChatsComponentInnerProps {
+    data: ChatListQuery;
+    emptyState: boolean;
+}
+
+interface ChatsComponentInnerState {
+    query: string;
+    select: number;
+    chatsLength: number;
+    searchInputFocus: boolean;
+}
+
+class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
     inputRef: any;
 
-    constructor(props: { data: ChatListQuery, emptyState: boolean }) {
+    constructor(props: ChatsComponentInnerProps) {
         super(props);
 
         this.state = {
             query: '',
             select: -1,
-            chatsLength: 0
+            chatsLength: 0,
+            searchInputFocus: false
         };
     }
 
@@ -350,6 +364,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
+        document.addEventListener('click', this.mouseHandler);
         if (this.props.data && this.props.data.chats) {
             this.setState({
                 chatsLength: this.props.data.chats.conversations.length
@@ -359,32 +374,46 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
+        document.removeEventListener('click', this.mouseHandler);
+    }
+
+    mouseHandler = (e: any) => {
+        this.setState({
+            searchInputFocus: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
+        });
     }
 
     keydownHandler = (e: any) => {
-        if (!this.props.emptyState) {
+
+        let { searchInputFocus } = this.state;
+
+        if (!searchInputFocus && !this.props.emptyState) {
             return;
         }
 
-        let dy = 0;
-        if (e.code === 'ArrowUp') {
-            e.preventDefault();
-            dy = -1;
+        if (this.props.emptyState || searchInputFocus) {
+            let dy = 0;
+            if (e.code === 'ArrowUp') {
+                e.preventDefault();
+                dy = -1;
+            }
+            if (e.code === 'ArrowDown') {
+                e.preventDefault();
+                dy = 1;
+            }
+
+            let y = this.state.select + dy;
+
+            y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
+
+            if (y === -1) {
+                this.inputRef.focus();
+            }
+
+            this.setState({
+                select: y
+            });
         }
-        if (e.code === 'ArrowDown') {
-            e.preventDefault();
-            dy = 1;
-        }
-
-        let y = this.state.select + dy;
-
-        y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
-
-        if (y === -1) {
-            this.inputRef.focus();
-        }
-
-        this.setState({ select: y });
     }
 
     itemsCount = (items: number) => {
@@ -400,6 +429,13 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
         this.inputRef = e;
     }
 
+    inputFocusHandler = () => {
+        this.setState({
+            select: -1,
+            searchInputFocus: true
+        });
+    }
+
     render() {
         let search = this.state.query && this.state.query.length > 0;
         return (
@@ -413,6 +449,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
                     color="primary-sky-blue"
                     cleansable={true}
                     innerRef={this.handleRef}
+                    onFocus={this.inputFocusHandler}
                 />
 
                 {search && (
