@@ -70,7 +70,7 @@ export const FollowOrganizationMutation = gql`
 
 export const ExploreOrganizationsQuery = gql`
     query ExploreOrganizations($query: String, $sort: String, $page: Int) {
-        items: alphaOrganizations(query: $query, sort: $sort, page: $page, first: 10) {
+        items: alphaOrganizations(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
                     ...OrganizationSearch
@@ -92,7 +92,7 @@ export const ExploreOrganizationsQuery = gql`
 
 export const ExploreComunityQuery = gql`
     query ExploreComunity($query: String, $sort: String, $page: Int) {
-        items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 10) {
+        items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
                     ...OrganizationSearch

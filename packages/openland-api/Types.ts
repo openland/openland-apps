@@ -4973,6 +4973,7 @@ export interface ExploreOrganizationsQuery {
         channels:  Array< {
           __typename: "ChannelConversation",
           id: string,
+          hidden: boolean,
         } | null >,
       },
       cursor: string,
@@ -5301,6 +5302,7 @@ export interface OrganizationAlterPublishedMutation {
     channels:  Array< {
       __typename: "ChannelConversation",
       id: string,
+      hidden: boolean,
     } | null >,
   },
 };
@@ -5365,6 +5367,7 @@ export interface OrganizationByPrefixQuery {
     channels:  Array< {
       __typename: "ChannelConversation",
       id: string,
+      hidden: boolean,
     } | null >,
   } | null,
 };
@@ -8373,6 +8376,7 @@ export interface OrganizationSearchFragment {
   channels:  Array< {
     __typename: "ChannelConversation",
     id: string,
+    hidden: boolean,
   } | null >,
 };
 

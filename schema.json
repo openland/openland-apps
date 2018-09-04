@@ -17055,6 +17055,16 @@
                       "ofType": null
                     }
                   }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "platform",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "Platform",
+                    "ofType": null
+                  }
                 }
               ],
               "deprecationReason": null,
@@ -21189,6 +21199,35 @@
           "interfaces": null,
           "kind": "INPUT_OBJECT",
           "name": "UpdateProfileInput",
+          "possibleTypes": null
+        },
+        {
+          "description": "",
+          "enumValues": [
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "WEB"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "IOS"
+            },
+            {
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "ANDROID"
+            }
+          ],
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "ENUM",
+          "name": "Platform",
           "possibleTypes": null
         },
         {

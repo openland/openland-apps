@@ -5,5 +5,7 @@ export const TextChannel = {
     recommended: 'Recommended',
 
     buttonRequestInvite: 'Request invite',
-    buttonCreateChannel: 'Create channel'
+    buttonCreateChannel: 'Create channel',
+
+    descriptionPlaceholder: 'Invitation-only channel to connect with industry insiders, share market data, and discover opportunities.'
 };

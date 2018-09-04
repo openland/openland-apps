@@ -92,7 +92,7 @@ const Channels = withChatSearchChannels((props) => {
                 <>
                     {props.data.channels.edges.map(c => {
                         let channel = c.node;
-                        let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' /') : '') + channel.title;
+                        let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' / ') : '') + channel.title;
                         return (
                             <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} alignItems="center">
                                 <XHorizontal separator={6} alignItems="center" flexGrow={1}>
