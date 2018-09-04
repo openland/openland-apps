@@ -106,7 +106,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.korshakov.testing.openland"
+        applicationId "com.openland.app"
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 33
