@@ -125,9 +125,12 @@ class RNAsyncDataView {
     }
   }
   
-  func watch(delegate: RNAsyncDataViewDelegate) {
+  func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
     watchers[key] = delegate
+    return {
+      self.watchers[key] = nil
+    }
   }
 }
 

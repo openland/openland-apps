@@ -26,7 +26,6 @@ class RNAsyncListView: RCTView {
   var eventDispatcher: RCTEventDispatcher
   private var datatViewKey: String?
   private var node: RNASyncListNode!
-  private var dataSourceKey: String!
   
   init(eventDispatcher: RCTEventDispatcher) {
     self.eventDispatcher = eventDispatcher
@@ -37,6 +36,11 @@ class RNAsyncListView: RCTView {
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
+  }
+  
+  deinit {
+    self.node.destroy()
+    self.node = nil
   }
   
   public func setDataViewKey(_ key: String) {

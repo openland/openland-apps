@@ -11,22 +11,27 @@ import BouncyLayout
 
 class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate {
   
-  let width = UIScreen.main.bounds.width // Screen width
-  let context: RNAsyncViewContext = RNAsyncViewContext()
   weak var parent: RNAsyncListView!
-  var node: ASCollectionNode!
+  private let width = UIScreen.main.bounds.width // Screen width
+  private let context: RNAsyncViewContext = RNAsyncViewContext()
+  private var node: ASCollectionNode!
   
-  var state: RNAsyncDataViewState!
-  var headerPadding: Float = 0.0
-  var dataView: RNAsyncDataView!
+  private var state: RNAsyncDataViewState!
+  private var headerPadding: Float = 0.0
+  private var dataView: RNAsyncDataView!
+  private var dataViewUnsubscribe: (()->Void)? = nil
   
-  var batchContext: ASBatchContext? = nil
-  var keyboardVisible = false
-  var bottomInset: Float = 0.0
-  var topInset: Float = 0.0
-  var onScrollCallback: RCTDirectEventBlock? = nil
+  private var batchContext: ASBatchContext? = nil
+  private var keyboardVisible = false
+  private var bottomInset: Float = 0.0
+  private var topInset: Float = 0.0
+  private var onScrollCallback: RCTDirectEventBlock? = nil
+  
+  private var keyboardShown = false
+  private var keyboardHiding = false
   
   init(parent: RNAsyncListView) {
+    print("create list")
     self.parent = parent
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 0.0
@@ -51,8 +56,13 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
   }
   
-  var keyboardShown = false
-  var keyboardHiding = false
+  func destroy() {
+    NotificationCenter.default.removeObserver(self)
+    if self.dataViewUnsubscribe != nil {
+      self.dataViewUnsubscribe!()
+      self.dataViewUnsubscribe = nil
+    }
+  }
   
   func keyboardWillShow(aNotification: Notification) {
     if self.node.inverted {
@@ -153,8 +163,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func setDataView(dataView: RNAsyncDataView) {
     self.dataView = dataView
     self.state = self.dataView!.state
-    // TODO: UNSUBSCRIBE
-    self.dataView.watch(delegate: self)
+    self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
   }
   
   func setInverted(inverted: Bool) {
@@ -217,10 +226,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.node.view.scrollIndicatorInsets = insets
         self.node.contentInset = insets
     }
-  }
-  
-  deinit {
-    NotificationCenter.default.removeObserver(self)
   }
   
   //
@@ -330,6 +335,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
     if indexPath.section == 1 {
       let d = self.state.items[indexPath.row]
+      let w = self.width
+      let c = self.context
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.automaticallyManagesSubnodes = true
@@ -337,14 +344,15 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           let res = ASStackLayoutSpec()
           res.direction = ASStackLayoutDirection.vertical
           res.alignItems = ASStackLayoutAlignItems.stretch
-          res.child = resolveNode(spec: d.config, context: self.context)
-          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+          res.child = resolveNode(spec: d.config, context: c)
+          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
           return res
         }
         return res
       }
     } else if indexPath.section == 2 {
       let isCompleted = self.state.completed
+      let w = self.width
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.automaticallyManagesSubnodes = true
@@ -356,7 +364,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           if !isCompleted {
             res.child = RNAsyncLoadingIndicator()
           }
-          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: 64.0)
           return res
         }
@@ -364,6 +372,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
     } else if indexPath.section == 0 {
       let padding = self.headerPadding
+      let w = self.width
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.automaticallyManagesSubnodes = true
@@ -372,7 +381,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.direction = ASStackLayoutDirection.vertical
           res.alignItems = ASStackLayoutAlignItems.center
           res.justifyContent = ASStackLayoutJustifyContent.center
-          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
           return res
         }

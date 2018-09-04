@@ -6,6 +6,7 @@ import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
+import com.facebook.litho.sections.common.SingleComponentSection
 import com.facebook.litho.sections.widget.*
 import com.facebook.react.bridge.*
 import com.facebook.react.uimanager.annotations.ReactProp
@@ -20,6 +21,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var state: AsyncDataViewState? = null
     private var dataViewSibscription: (() -> Unit)? = null
     private var inverted: Boolean = false
+    private var headerPadding: Float = 0.0f
 
     init {
         this.addView(this.lithoView,
@@ -47,9 +49,18 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         }
     }
 
+    fun setHeaderPadding(value: Float) {
+        this.headerPadding = value
+        if (inited) {
+            updateData()
+        }
+    }
+
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .disablePTR(true)
+                .section(SingleComponentSection.create(SectionContext(asyncContext))
+                        .component(Row.create(asyncContext).heightDip(this.headerPadding)))
                 .section(LithoSection.create(SectionContext(asyncContext))
                         .dataModel(this.state!!.items)
                         .reactContext(context as ReactContext))
@@ -87,5 +98,10 @@ class AsyncListViewManager : SimpleViewManager<AsyncListView>() {
     @ReactProp(name = "inverted")
     fun setInverted(view: AsyncListView, inverted: Boolean) {
         view.setInverted(inverted)
+    }
+
+    @ReactProp(name = "headerPadding")
+    fun setHeaderPadding(view: AsyncListView, value: Float) {
+        view.setHeaderPadding(value)
     }
 }
