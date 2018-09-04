@@ -78,33 +78,35 @@ function niceBytes(x: number | undefined) {
     return (x.toFixed(x >= 10 || l < 1 ? 0 : 1) + ' ' + units[l]);
 }
 
-export class MessageFileComponent extends React.PureComponent<{ file?: string, fileName?: string, fileSize?: number }> {
-    render() {
-        return (
-            <>
-                {this.props.file && (
-                    <FileButton
-                        href={'https://ucarecdn.com/' + this.props.file + '/' + (this.props.fileName ? this.props.fileName!! : '')}
-                    >
-                        <FileImage />
-                        <FileText>
-                            <Title className="title">{this.props.fileName ? this.props.fileName!! : 'file'}</Title>
-                            <Size className="size">{niceBytes(this.props.fileSize)}</Size>
-                        </FileText>
-                    </FileButton>
-                )}
-                {!this.props.file && (
-                    <FileButton
-                        enabled={false}
-                    >
-                        <FileImage />
-                        <FileText>
-                            <Title className="title">{this.props.fileName ? this.props.fileName!! : 'file'}</Title>
-                            <Size className="size">{niceBytes(this.props.fileSize)}</Size>
-                        </FileText>
-                    </FileButton>
-                )}
-            </>
-        );
-    }
+interface MessageFileComponentProps {
+    file?: string;
+    fileName?: string;
+    fileSize?: number;
 }
+
+export const MessageFileComponent = (props: MessageFileComponentProps) => (
+    <>
+        {props.file && (
+            <FileButton
+                href={'https://ucarecdn.com/' + props.file + '/' + (props.fileName ? props.fileName!! : '')}
+            >
+                <FileImage />
+                <FileText>
+                    <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
+                    <Size className="size">{niceBytes(props.fileSize)}</Size>
+                </FileText>
+            </FileButton>
+        )}
+        {props.file && (
+            <FileButton
+                enabled={false}
+            >
+                <FileImage />
+                <FileText>
+                    <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
+                    <Size className="size">{niceBytes(props.fileSize)}</Size>
+                </FileText>
+            </FileButton>
+        )}
+    </>
+);

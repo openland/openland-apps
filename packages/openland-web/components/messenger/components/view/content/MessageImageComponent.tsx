@@ -47,47 +47,52 @@ const ModalBody = Glamorous.div({
 const ModalPic = Glamorous.img({
     objectFit: 'contain',
     maxHeight: '100%',
+    width: '100%',
     maxWidth: '100%',
     borderRadius: 8
 });
 
-export class MessageImageComponent extends React.PureComponent<{ file: string, fileName?: string, width: number, height: number }> {
-    render() {
-        let dimensions = layoutMedia(this.props.width, this.props.height);
-        return (
-            <XModal
-                useTopCloser={true}
-                noTransformContainer={true}
-                heading={(
-                    <ModalBody>
-                        <ModalPic
-                            src={'https://ucarecdn.com/' + this.props.file + '/'}
-                        />
-                        <ImgDownload
-                            className="download-button"
-                            href={'https://ucarecdn.com/' + this.props.file + '/-/preview/-/inline/no/'}
-                        >
-                            <DownloadButtonIcon />
-                        </ImgDownload>
-                    </ModalBody>
-                )}
-                transparent={true}
-                body={(
+interface MessageImageComponentProps {
+    file: string;
+    fileName?: string;
+    width: number;
+    height: number;
+}
+
+export const MessageImageComponent = (props: MessageImageComponentProps) => {
+    let dimensions = layoutMedia(props.width, props.height);
+    return (
+        <XModal
+            useTopCloser={true}
+            size="large"
+            heading={null}
+            transparent={true}
+            body={(
+                <ModalBody>
                     <ModalCloser autoClose={true} className="closer">
                         <ModalCloseIcon />
                     </ModalCloser>
-                )}
-                target={(
-                    <XLink>
-                        <XCloudImage
-                            srcCloud={'https://ucarecdn.com/' + this.props.file + '/'}
-                            resize={'fill'}
-                            width={dimensions.width}
-                            height={dimensions.height}
-                        />
-                    </XLink>
-                )}
-            />
-        );
-    }
-}
+                    <ModalPic
+                        src={'https://ucarecdn.com/' + props.file + '/'}
+                    />
+                    <ImgDownload
+                        className="download-button"
+                        href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
+                    >
+                        <DownloadButtonIcon />
+                    </ImgDownload>
+                </ModalBody>
+            )}
+            target={(
+                <XLink>
+                    <XCloudImage
+                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                        resize={'fill'}
+                        width={dimensions.width}
+                        height={dimensions.height}
+                    />
+                </XLink>
+            )}
+        />
+    );
+};
