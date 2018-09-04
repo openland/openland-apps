@@ -76,6 +76,7 @@ class AsyncImageSpec: AsyncViewSpec {
   var key: String = ""
   var url: String = ""
   var touchableKey: String?
+  var isGif: Bool = false
 }
 
 class AsyncStyleSpec {
@@ -292,6 +293,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.url = src["props"]["source"].stringValue
     if let v = src["props"]["touchableKey"].string {
       res.touchableKey = v
+    }
+    if let v = src["props"]["isGif"].bool {
+      res.isGif = v
     }
     return res
   }

@@ -59,6 +59,7 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
                     width={layout.width}
                     height={layout.height}
                     borderRadius={10}
+                    isGif={this.props.message.file!!.isGif}
                 />
             </AsyncBubbleView>
         );

@@ -8,6 +8,7 @@ import { baseStyleProcessor } from './internals/baseStyleProcessor';
 
 export interface ASImageProps extends ASViewStyle {
     source: any;
+    isGif?: boolean;
     onPress?: (event: ASPressEvent) => void;
 }
 

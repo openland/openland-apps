@@ -41,9 +41,11 @@ class RNImageNode: ASDisplayNode {
       self.url = spec.url
     }
     if let v = spec.style.borderRadius {
-      self.node.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
-        let bounds = context.boundingBoxOfClipPath
-        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(v) * UIScreen.main.scale).addClip()
+      self.node.cornerRadius = CGFloat(v)
+      if spec.isGif {
+        self.node.cornerRoundingType = .defaultSlowCALayer
+      } else {
+        self.node.cornerRoundingType = .precomposited
       }
     }
     
