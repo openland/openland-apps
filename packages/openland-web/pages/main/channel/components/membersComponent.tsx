@@ -245,7 +245,7 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
                 </MembersView>
                 {(members.length <= 3) && (
                     <EmptyComponent
-                        aloneMember={members.length === 1}
+                        aloneMember={(members.length + requests.length) === 1}
                         smaller={members.length >= 2}
                         channelTitle={(this.props as any).channelTitle}
                         chatId={this.props.channelId}

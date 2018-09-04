@@ -12,6 +12,7 @@ import ProfileIcon from './components/icons/ic-profile.svg';
 import { withChannelJoin } from '../../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
+import { TextChannel } from 'openland-text/TextChannel';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -224,9 +225,9 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         <XVertical separator={10} justifyContent="center">
                             <XVertical justifyContent="center">
                                 <ChannelTitle>
-                                    {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + ' /' : '') + this.props.channel.title}
+                                    {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + ' / ' : '') + this.props.channel.title}
                                 </ChannelTitle>
-                                {this.props.channel.description && <Text width={354}>{this.props.channel.description}</Text>}
+                                <Text width={354}>{this.props.channel.description || TextChannel.descriptionPlaceholder}</Text>
                             </XVertical>
                             <ChannelCounter>
                                 <ProfileIcon />

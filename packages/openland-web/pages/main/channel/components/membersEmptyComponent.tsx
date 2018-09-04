@@ -79,7 +79,7 @@ export const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean, 
             <ImageWrapper>
                 <Image smaller={props.smaller} />
             </ImageWrapper>
-            {props.aloneMember && <Text>You are alone</Text>}
+            {props.aloneMember && <Text>Grow this channel</Text>}
             <InfoText>To grow the community, invite people to this channel</InfoText>
             <InviteMembersModal
                 channelTitle={props.channelTitle}

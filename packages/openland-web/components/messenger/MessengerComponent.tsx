@@ -57,13 +57,14 @@ const Title = Glamorous.div({
     textOverflow: 'ellipsis'
 });
 
-const SubTitle = Glamorous.div({
+const SubTitle = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     fontSize: 14,
     fontWeight: 500,
     letterSpacing: -0.1,
     color: '#5c6a81',
-    opacity: 0.5
-});
+    opacity: 0.5,
+    cursor: props.href ? 'pointer' : undefined
+})));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
 
@@ -307,9 +308,24 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         return <ChannelsInviteComponent channel={props.data.chat} />;
     }
     let title = props.data.chat.__typename === 'ChannelConversation' ?
-        ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' /' : '') + props.data.chat.title) :
+        ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' / ' : '') + props.data.chat.title) :
         props.data.chat.title;
-    console.warn(props.data.chat);
+
+    let subtitle = '';
+    let subtitlePath = undefined;
+    if (props.data.chat.__typename === 'SharedConversation') {
+        subtitle = 'Organization';
+    } else if (props.data.chat.__typename === 'GroupConversation') {
+        subtitle = 'GroupConversation';
+    } else if (props.data.chat.__typename === 'ChannelConversation') {
+        subtitle = 'GroupConversation';
+    } else if (props.data.chat.__typename === 'PrivateConversation') {
+        subtitle = 'Persion';
+        if (props.data.chat.user.primaryOrganization) {
+            subtitle = props.data.chat.user.primaryOrganization.name;
+            subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
+        }
+    }
 
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
@@ -335,19 +351,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
                                 userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
-                                userId={props.data.chat.id}
+                                userId={props.data.chat.flexibleId}
                             />
                             <XHorizontal alignItems="center" separator={6}>
                                 <Title>{title}</Title>
-                                <SubTitle>
-                                    {(props.data.chat.__typename === 'SharedConversation'
-                                        ? 'Organization'
-                                        : props.data.chat.__typename === 'GroupConversation'
-                                            ? 'Group'
-                                            : props.data.chat.__typename === 'ChannelConversation'
-                                                ? 'Channel' : 'Person'
-                                    )}
-                                </SubTitle>
+                                <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             </XHorizontal>
                         </XHorizontal>
                     </NavChatLeftContentStyled>

@@ -63,7 +63,7 @@ let sizeStyles = styleResolver({
     'small': {
         height: 36,
         width: 36,
-        fontSize: 10
+        fontSize: 14
     },
     'x-small': {
         height: 18,
