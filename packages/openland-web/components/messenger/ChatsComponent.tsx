@@ -18,7 +18,6 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import CircleIcon from './components/icons/circle-icon.svg';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
-import { SearchFormWrapper } from '../../pages/main/directory/components/Layout';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -377,6 +376,14 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
         document.removeEventListener('click', this.mouseHandler);
+    }
+
+    componentWillReceiveProps(nextProps: ChatsComponentInnerProps) {
+        if (nextProps.emptyState) {
+            this.setState({
+                searchInputFocus: true
+            });
+        }
     }
 
     mouseHandler = (e: any) => {
