@@ -15,7 +15,7 @@ export default withAppBase('Root', withUserInfo((props) => {
             <XDocumentHead title={InitTexts.rootPageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Root">
                 {props.organization && (
-                    <XPageRedirect path={'/directory/o/' + props.organization!!.id} />
+                    <XPageRedirect path={'/mail'} />
                 )}
                 {!props.organization && (
                     <XPageRedirect path={'/pickOrganization'} />

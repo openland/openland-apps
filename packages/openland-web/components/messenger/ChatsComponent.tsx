@@ -167,14 +167,15 @@ interface ConversationComponentProps {
     settings: {
         mute: boolean
     };
-    selectedItem?: boolean;
+    selectedItem: boolean;
+    allowSelection: boolean;
 }
 
 class ConversationComponent extends React.Component<ConversationComponentProps> {
     refComponent: any;
 
     componentWillReceiveProps(nextProps: ConversationComponentProps) {
-        if (nextProps.selectedItem === true) {
+        if (nextProps.selectedItem === true && nextProps.allowSelection) {
             this.reactDom(this.refComponent);
         }
     }
@@ -291,6 +292,7 @@ const SearchChats = withChatSearchText((props) => {
                                 unreadCount={i.unreadCount}
                                 settings={i.settings}
                                 selectedItem={(props as any).selectedItem === j}
+                                allowSelection={(props as any).allowSelection}
                             />
                         ))}
                     </>
@@ -303,7 +305,7 @@ const SearchChats = withChatSearchText((props) => {
                 )
             : <PlaceholderLoader color="#334562" />
     );
-}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number }>;
+}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number, allowSelection: boolean }>;
 
 const Search = Glamorous(XInput)({
     margin: 16,
@@ -327,16 +329,29 @@ const ExploreChannels = Glamorous(XMenuItem)({
     }
 });
 
-class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emptyState: boolean }, { query: string, select: number, chatsLength: number; }> {
+interface ChatsComponentInnerProps {
+    data: ChatListQuery;
+    emptyState: boolean;
+}
+
+interface ChatsComponentInnerState {
+    query: string;
+    select: number;
+    chatsLength: number;
+    searchInputFocus: boolean;
+}
+
+class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
     inputRef: any;
 
-    constructor(props: { data: ChatListQuery, emptyState: boolean }) {
+    constructor(props: ChatsComponentInnerProps) {
         super(props);
 
         this.state = {
             query: '',
             select: -1,
-            chatsLength: 0
+            chatsLength: 0,
+            searchInputFocus: this.props.emptyState
         };
     }
 
@@ -350,6 +365,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
+        document.addEventListener('click', this.mouseHandler);
         if (this.props.data && this.props.data.chats) {
             this.setState({
                 chatsLength: this.props.data.chats.conversations.length
@@ -359,32 +375,56 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
+        document.removeEventListener('click', this.mouseHandler);
+    }
+
+    componentWillReceiveProps(nextProps: ChatsComponentInnerProps) {
+        if (nextProps.emptyState) {
+            this.setState({
+                searchInputFocus: true
+            });
+        }
+    }
+
+    mouseHandler = (e: any) => {
+        if (!this.props.emptyState) {
+            this.setState({
+                searchInputFocus: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
+            });
+        }
     }
 
     keydownHandler = (e: any) => {
-        if (!this.props.emptyState) {
+
+        let { searchInputFocus } = this.state;
+
+        if (!searchInputFocus && !this.props.emptyState) {
             return;
         }
 
-        let dy = 0;
-        if (e.code === 'ArrowUp') {
-            e.preventDefault();
-            dy = -1;
+        if (this.props.emptyState || searchInputFocus) {
+            let dy = 0;
+            if (e.code === 'ArrowUp') {
+                e.preventDefault();
+                dy = -1;
+            }
+            if (e.code === 'ArrowDown') {
+                e.preventDefault();
+                dy = 1;
+            }
+
+            let y = this.state.select + dy;
+
+            y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
+
+            if (y === -1) {
+                this.inputRef.focus();
+            }
+
+            this.setState({
+                select: y
+            });
         }
-        if (e.code === 'ArrowDown') {
-            e.preventDefault();
-            dy = 1;
-        }
-
-        let y = this.state.select + dy;
-
-        y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
-
-        if (y === -1) {
-            this.inputRef.focus();
-        }
-
-        this.setState({ select: y });
     }
 
     itemsCount = (items: number) => {
@@ -400,6 +440,13 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
         this.inputRef = e;
     }
 
+    inputFocusHandler = () => {
+        this.setState({
+            select: -1,
+            searchInputFocus: true
+        });
+    }
+
     render() {
         let search = this.state.query && this.state.query.length > 0;
         return (
@@ -413,6 +460,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
                     color="primary-sky-blue"
                     cleansable={true}
                     innerRef={this.handleRef}
+                    onFocus={this.inputFocusHandler}
                 />
 
                 {search && (
@@ -421,6 +469,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
                         onSelect={this.onSelect}
                         itemsCount={this.itemsCount}
                         selectedItem={this.state.select}
+                        allowSelection={this.state.searchInputFocus}
                     />
                 )}
                 {!search && (
@@ -448,6 +497,7 @@ class ChatsComponentInner extends React.PureComponent<{ data: ChatListQuery, emp
                             unreadCount={i.unreadCount}
                             settings={i.settings}
                             selectedItem={this.state.select === j}
+                            allowSelection={this.state.searchInputFocus}
                         />
                     ))
                 }
