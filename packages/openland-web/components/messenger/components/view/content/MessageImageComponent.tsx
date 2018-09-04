@@ -65,9 +65,7 @@ export class MessageImageComponent extends React.PureComponent<{ file: string, f
                         />
                         <ImgDownload
                             className="download-button"
-                            download
-                            target="_blank"
-                            href={'https://ucarecdn.com/' + this.props.file + '/'}
+                            href={'https://ucarecdn.com/' + this.props.file + '/-/preview/-/inline/no/'}
                         >
                             <DownloadButtonIcon />
                         </ImgDownload>
