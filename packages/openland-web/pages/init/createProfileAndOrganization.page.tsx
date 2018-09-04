@@ -26,6 +26,7 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withCreateUserProfileAndOrganization } from '../../api/withCreateUserProfileAndOrganization';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 
 const Footer = Glamorous.div({
     position: 'absolute',
@@ -92,7 +93,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                                 organization: {
                                     name: data.input.name,
                                     website: '',
-                                    photoRef: null,
+                                    photoRef: sanitizeIamgeRef(data.input.photoRef),
                                     personal: false,
                                 }
                             }
