@@ -17,6 +17,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   var node: ASCollectionNode!
   
   var state: RNAsyncDataViewState!
+  var headerPadding: Float = 0.0
   var dataView: RNAsyncDataView!
   
   var batchContext: ASBatchContext? = nil
@@ -201,6 +202,15 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
+  func setHeaderPadding(padding: Float) {
+    DispatchQueue.main.async {
+      self.node.performBatch(animated: false, updates: {
+        self.headerPadding = padding
+        self.node.reloadSections(IndexSet(integer: 0))
+      }, completion: nil)
+    }
+  }
+  
   private func updateContentPadding() {
       if !self.keyboardVisible {
         let insets = UIEdgeInsets(top: CGFloat(self.node.inverted ? (self.keyboardVisible ? 0 : self.bottomInset) : self.topInset), left: 0.0, bottom: CGFloat(self.node.inverted ? self.topInset: (self.keyboardVisible ? 0 : self.bottomInset)), right: 0.0)
@@ -228,7 +238,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     DispatchQueue.main.async {
       self.node.performBatchUpdates({
         self.state = state
-        self.node.insertItems(at: [IndexPath(row: index, section: 0)])
+        self.node.insertItems(at: [IndexPath(row: index, section: 1)])
       }, completion: nil)
     }
   }
@@ -237,7 +247,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     DispatchQueue.main.async {
       self.node.performBatchUpdates({
         self.state = state
-        self.node.moveItem(at: IndexPath(item: from, section: 0), to: IndexPath(item: to, section: 0))
+        self.node.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
       }, completion: nil)
     }
   }
@@ -246,25 +256,25 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     DispatchQueue.main.async {
       self.node.performBatch(animated: false, updates: {
         self.state = state
-        self.node.reloadItems(at: [IndexPath(item: index, section: 0)])
+        self.node.reloadItems(at: [IndexPath(item: index, section: 1)])
       }, completion: nil)
     }
   }
   
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState) {
     DispatchQueue.main.async {
-      self.node.performBatchUpdates({
+      self.node.performBatch(animated: false, updates: {
         let wasCompleted = self.state.completed
         self.state = state
         if count > 0 {
           var paths: [IndexPath] = []
           for i in from...from+count-1 {
-            paths.append(IndexPath(item: i, section: 0))
+            paths.append(IndexPath(item: i, section: 1))
           }
           self.node.insertItems(at: paths)
         }
         if wasCompleted != state.completed {
-          self.node.reloadSections(IndexSet(integer: 1))
+          self.node.reloadSections(IndexSet(integer: 2))
         }
         self.batchContext?.completeBatchFetching(true)
         self.batchContext = nil
@@ -274,12 +284,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onCompleted(state: RNAsyncDataViewState) {
     DispatchQueue.main.async {
-      self.node.performBatchUpdates({
+      self.node.performBatch(animated: false, updates: {
         self.state = state
-        self.node.reloadSections(IndexSet(integer: 1))
+        self.node.reloadSections(IndexSet(integer: 2))
         self.batchContext?.completeBatchFetching(true)
         self.batchContext = nil
-      })
+      }, completion: nil)
     }
   }
   
@@ -300,14 +310,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if self.dataView == nil {
       fatalError()
     }
-    return 2
+    return 3
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
     if self.dataView == nil {
       fatalError()
     }
-    if section == 0 {
+    if section == 1 {
       return self.state.items.count
     } else {
       return 1
@@ -318,7 +328,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if self.dataView == nil {
       fatalError()
     }
-    if indexPath.section == 0 {
+    if indexPath.section == 1 {
       let d = self.state.items[indexPath.row]
       return { () -> ASCellNode in
         let res = ASCellNode()
@@ -333,7 +343,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         }
         return res
       }
-    } else {
+    } else if indexPath.section == 2 {
       let isCompleted = self.state.completed
       return { () -> ASCellNode in
         let res = ASCellNode()
@@ -352,6 +362,24 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         }
         return res
       }
+    } else if indexPath.section == 0 {
+      let padding = self.headerPadding
+      return { () -> ASCellNode in
+        let res = ASCellNode()
+        res.automaticallyManagesSubnodes = true
+        res.layoutSpecBlock = { node, constrainedSize in
+          let res = ASStackLayoutSpec()
+          res.direction = ASStackLayoutDirection.vertical
+          res.alignItems = ASStackLayoutAlignItems.center
+          res.justifyContent = ASStackLayoutJustifyContent.center
+          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: self.width)
+          res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
+          return res
+        }
+        return res
+      }
+    } else {
+      fatalError()
     }
   }
   

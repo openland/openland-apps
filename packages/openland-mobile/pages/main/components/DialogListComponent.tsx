@@ -20,11 +20,12 @@ export class DialogListComponent extends React.PureComponent<{ engine: MobileMes
                         <>
                             <FastHeaderConfigRegistrator config={new FastHeaderConfig({ contentOffset: this.contentOffset })} />
                             <ASListView
-                                contentPaddingTop={area.top + 4}
-                                contentPaddingBottom={area.bottom + 4}
+                                contentPaddingTop={area.top}
+                                contentPaddingBottom={area.bottom}
                                 dataView={this.props.engine.dialogs}
                                 style={{ flexGrow: 1 }}
                                 onScroll={this.contentOffsetEvent}
+                                headerPadding={4}
                             />
                         </>
                     );

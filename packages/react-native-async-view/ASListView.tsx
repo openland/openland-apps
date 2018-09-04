@@ -11,6 +11,7 @@ export interface ASListViewProps {
     dataView: ASDataView<any>;
     fluid?: boolean;
     children?: any;
+    headerPadding?: number;
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 export class ASListView extends React.PureComponent<ASListViewProps> {
@@ -21,6 +22,7 @@ export class ASListView extends React.PureComponent<ASListViewProps> {
                 dataViewKey={this.props.dataView.key}
                 contentPaddingTop={this.props.contentPaddingTop}
                 contentPaddingBottom={this.props.contentPaddingBottom}
+                headerPadding={this.props.headerPadding}
                 inverted={this.props.inverted}
                 onScroll={this.props.onScroll}
             />

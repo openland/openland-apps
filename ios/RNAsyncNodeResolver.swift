@@ -82,9 +82,10 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
 }
 
 func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayoutElement {
-  let res = context.fetchCached(key: spec.key) { () -> RNAsyncTextNode in
-    return RNAsyncTextNode()
-  }
+//  let res = context.fetchCached(key: spec.key) { () -> RNAsyncTextNode in
+//    return RNAsyncTextNode()
+//  }
+  let res = RNAsyncTextNode()
   res.setSpec(spec: spec)
   return resolveStyle(spec.style, res, context)
 }

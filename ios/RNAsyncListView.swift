@@ -54,6 +54,10 @@ class RNAsyncListView: RCTView {
     self.node.setContentPaddingBottom(value: Float(padding))
   }
   
+  public func setHeaderPadding(_ padding: NSNumber) {
+    self.node.setHeaderPadding(padding: Float(padding))
+  }
+  
   public func setContentPaddingTop(_ padding: NSNumber) {
     self.node.setContentPaddingTop(value: Float(padding))
   }
