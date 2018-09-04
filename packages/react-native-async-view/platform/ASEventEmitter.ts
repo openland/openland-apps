@@ -35,6 +35,13 @@ export class ASEventEmitterHolder {
                     p(args);
                 }
             });
+
+            DeviceEventEmitter.addListener('async_on_load_more', (args: { key: string }) => {
+                let p = this.onLoadMore.get(args.key);
+                if (p) {
+                    p();
+                }
+            });
         }
     }
 

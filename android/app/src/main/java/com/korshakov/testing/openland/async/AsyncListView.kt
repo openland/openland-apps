@@ -1,5 +1,6 @@
 package com.korshakov.testing.openland.async
 
+import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.FrameLayout
 import com.facebook.react.uimanager.SimpleViewManager
@@ -8,6 +9,7 @@ import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.common.SingleComponentSection
 import com.facebook.litho.sections.widget.*
+import com.facebook.litho.widget.SolidColor
 import com.facebook.react.bridge.*
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.korshakov.testing.openland.async.views.LithoSection
@@ -18,6 +20,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private val lithoView = LithoView(context)
     private var inited = false
     private var dataView: AsyncDataView? = null
+    private var dataViewKey: String? = null
     private var state: AsyncDataViewState? = null
     private var dataViewSibscription: (() -> Unit)? = null
     private var inverted: Boolean = false
@@ -39,7 +42,9 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
 
     fun setDataViewKey(key: String) {
         if (!inited) {
-            this.dataView = AsyncDataViewManager.getDataView(key)
+            inited = true
+            this.dataView = AsyncDataViewManager.getDataView(key, this.context as ReactContext)
+            this.dataViewKey = key
             this.state = this.dataView!!.state
             this.dataViewSibscription = this.dataView!!.watch {
                 this.state = it
@@ -59,14 +64,15 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .disablePTR(true)
-                .section(SingleComponentSection.create(SectionContext(asyncContext))
-                        .component(Row.create(asyncContext).heightDip(this.headerPadding)))
                 .section(LithoSection.create(SectionContext(asyncContext))
                         .dataModel(this.state!!.items)
-                        .reactContext(context as ReactContext))
+                        .headerPadding(this.headerPadding)
+                        .reactContext(context as ReactContext)
+                        .loading(!this.state!!.competed)
+                        .dataViewKey(this.dataViewKey!!))
                 .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
                 .build()
-        lithoView.setComponentAsync(recycler)
+        lithoView.setComponent(recycler)
     }
 
     fun dispose() {
