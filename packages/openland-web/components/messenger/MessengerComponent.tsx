@@ -316,9 +316,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     if (props.data.chat.__typename === 'SharedConversation') {
         subtitle = 'Organization';
     } else if (props.data.chat.__typename === 'GroupConversation') {
-        subtitle = 'GroupConversation';
+        subtitle = 'Group';
     } else if (props.data.chat.__typename === 'ChannelConversation') {
-        subtitle = 'GroupConversation';
+        subtitle = 'Channel';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
         subtitle = 'Persion';
         if (props.data.chat.user.primaryOrganization) {
