@@ -84,6 +84,7 @@
 		AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8C21371A8B00FBCB75 /* RNAsyncListView.swift */; };
 		AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */; };
 		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
+		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
@@ -759,6 +760,7 @@
 		AAB0EF8C21371A8B00FBCB75 /* RNAsyncListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListView.swift; sourceTree = "<group>"; };
 		AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNImageNode.swift; sourceTree = "<group>"; };
 		AAB0EF90213D8CF500FBCB75 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
 		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
@@ -1274,6 +1276,7 @@
 				AAB0EEA221349F8000FBCB75 /* RNAsyncLoadingIndicator.swift */,
 				AAB0EF88213719DB00FBCB75 /* RNAsyncViewNode.swift */,
 				AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */,
+				AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */,
 			);
 			name = Nodes;
 			sourceTree = "<group>";
@@ -2353,6 +2356,7 @@
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
+				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */,
 				AAB0EF852137197B00FBCB75 /* RNAsyncConfigManager.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,

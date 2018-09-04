@@ -15,6 +15,7 @@ class RNImageNode: ASDisplayNode {
   let key: String
   var touchableKey: String? = nil
   let node: ASNetworkImageNode
+  private var url: String? = nil
   
   init(key: String) {
     self.node = ASNetworkImageNode()
@@ -35,8 +36,9 @@ class RNImageNode: ASDisplayNode {
   }
 
   func setSpec(spec: AsyncImageSpec) {
-    if self.node.url?.absoluteString != spec.url {
+    if self.url != spec.url {
       self.node.url = URL(string: spec.url)
+      self.url = spec.url
     }
     if let v = spec.style.borderRadius {
       self.node.willDisplayNodeContentWithRenderingContext = { context, drawParameters in

@@ -4,6 +4,7 @@ import { ASViewStyle } from './ASViewStyle';
 import { ASPressEvent } from './ASPressEvent';
 import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
+import { baseStyleProcessor } from './internals/baseStyleProcessor';
 
 export interface ASImageProps extends ASViewStyle {
     source: any;
@@ -45,19 +46,10 @@ export class ASImage extends React.PureComponent<ASImageProps> {
         let { children, onPress, source, ...other } = this.props;
         let realProps = other;
         realProps = {
-            ...realProps,
+            ...baseStyleProcessor(other),
             touchableKey: this.props.onPress && this.tag,
             source: Image.resolveAssetSource(source).uri,
-            backgroundColor: realProps.backgroundColor ? processColor(realProps.backgroundColor) : undefined,
-            backgroundGradient: realProps.backgroundGradient ? {
-                start: processColor(realProps.backgroundGradient.start),
-                end: processColor(realProps.backgroundGradient.end)
-            } : undefined
         } as any;
         return <asyncview asyncViewName="image" {...realProps}>{children}</asyncview>;
     }
 }
-
-// export const ASImage = declareView('image', ASImageFallback, (src) => {
-//     return { ...src, source: Image.resolveAssetSource(src.source).uri };
-// });

@@ -81,52 +81,11 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
   return res2
 }
 
-func createAttributedText(spec: AsyncTextSpec, context: RNAsyncViewContext, attributes: [String: Any]) -> NSAttributedString {
-  let res = NSMutableAttributedString(string: "", attributes: attributes)
-  
-  var innerAttributes = attributes
-  if spec.color != nil {
-    innerAttributes[NSForegroundColorAttributeName] = spec.color
-  }
-  
-  for v in spec.children {
-    if let s = v as? String {
-      res.append(NSAttributedString(string: s, attributes: innerAttributes))
-    } else if let s = v as? AsyncTextSpec {
-      res.append(createAttributedText(spec: s, context: context, attributes: innerAttributes))
-    }
-  }
-  return res
-}
-
 func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayoutElement {
-  let res = ASTextNode()
-  var attributes: [String: Any] = [:]
-  attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
-  attributes[NSForegroundColorAttributeName] = spec.color != nil ? spec.color : UIColor.black
-  let style = NSMutableParagraphStyle();
-  style.headIndent = 0.0
-  style.tailIndent = 0.0
-  style.paragraphSpacing = 0.0
-  style.paragraphSpacingBefore = 0.0
-  style.lineSpacing = 0.0
-  if let v = spec.lineHeight {
-    style.minimumLineHeight = CGFloat(v)
-    style.maximumLineHeight = CGFloat(v)
+  let res = context.fetchCached(key: spec.key) { () -> RNAsyncTextNode in
+    return RNAsyncTextNode()
   }
-  attributes[NSParagraphStyleAttributeName] = style
-  if let v = spec.letterSpacing {
-    attributes[NSKernAttributeName] = CGFloat(v)
-  }
-  res.attributedText = createAttributedText(spec: spec, context: context, attributes: attributes)
-  if let v = spec.numberOfLines {
-    res.maximumNumberOfLines = UInt(v)
-  }
-  if let v = spec.style.opacity {
-    res.alpha = CGFloat(v)
-  } else {
-    res.alpha = CGFloat(1)
-  }
+  res.setSpec(spec: spec)
   return resolveStyle(spec.style, res, context)
 }
 

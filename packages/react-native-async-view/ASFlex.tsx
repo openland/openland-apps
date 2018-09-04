@@ -4,6 +4,7 @@ import { ASViewStyle } from './ASViewStyle';
 import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { ASPressEvent } from './ASPressEvent';
+import { baseStyleProcessor } from './internals/baseStyleProcessor';
 
 export interface ASFlexProps extends ASViewStyle {
     flexDirection?: 'row' | 'column';
@@ -71,14 +72,9 @@ export class ASFlex extends React.Component<ASFlexProps> {
         let { children, highlightColor, onPress, ...other } = this.props;
         let realProps = other;
         realProps = {
-            ...realProps,
+            ...baseStyleProcessor(other),
             touchableKey: (this.props.onPress || this.props.onLongPress) && this.tag,
             highlightColor: (this.props.onPress || this.props.onLongPress) && (highlightColor ? processColor(highlightColor) : undefined),
-            backgroundColor: realProps.backgroundColor ? processColor(realProps.backgroundColor) : undefined,
-            backgroundGradient: realProps.backgroundGradient ? {
-                start: processColor(realProps.backgroundGradient.start),
-                end: processColor(realProps.backgroundGradient.end)
-            } : undefined
         } as any;
         return <asyncview asyncViewName="flex" {...realProps}>{children}</asyncview>;
     }

@@ -34,6 +34,11 @@ enum AsyncFlexJustifyContent: String {
   case center  = "center"
 }
 
+enum AsyncTextDecorationLine: String {
+  case none      = "none"
+  case underline = "underline"
+}
+
 protocol AsyncViewSpec {
   var style: AsyncStyleSpec {get}
   var key: String {get}
@@ -62,6 +67,8 @@ class AsyncTextSpec: AsyncViewSpec {
   var fontWeight: UIFontWeight? = nil
   var color: UIColor? = nil
   var numberOfLines: Int?
+  var textDecorationLine: AsyncTextDecorationLine? = nil
+  var touchableKey: String?
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -270,6 +277,12 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     }
     if let v = src["props"]["numberOfLines"].int {
       res.numberOfLines = v
+    }
+    if let v = src["props"]["textDecorationLine"].string {
+      res.textDecorationLine = AsyncTextDecorationLine(rawValue: v)!
+    }
+    if let v = src["props"]["touchableKey"].string {
+      res.touchableKey = v
     }
     return res
   } else if (type == "image") {

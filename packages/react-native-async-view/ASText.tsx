@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { Text, processColor } from 'react-native';
-import { declareView } from './internals/declareView';
 import { ASViewStyle } from './ASViewStyle';
+import UUID from 'uuid/v4';
+import { ASEventEmitter } from './platform/ASEventEmitter';
+import { ASPressEvent } from './ASPressEvent';
+import { baseStyleProcessor } from './internals/baseStyleProcessor';
+import { processColor } from 'react-native';
 
 export interface ASTextProps extends ASViewStyle {
     color?: string;
@@ -10,16 +13,48 @@ export interface ASTextProps extends ASViewStyle {
     lineHeight?: number;
     letterSpacing?: number;
     numberOfLines?: number;
+    textDecorationLine?: 'none' | 'underline';
+    onPress?: (event: ASPressEvent) => void;
 }
 
-class ASTextFallback extends React.PureComponent<ASTextProps> {
+export class ASText extends React.PureComponent<ASTextProps> {
+    private tag = UUID();
+
+    componentWillMount() {
+        if (this.props.onPress) {
+            ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
+        }
+    }
+
+    componentWillReceiveProps(nextProps: ASTextProps) {
+        if (!!nextProps.onPress !== !!this.props.onPress) {
+            if (this.props.onPress) {
+                ASEventEmitter.unregisterOnPress(this.tag);
+            } else {
+                ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.onPress) {
+            ASEventEmitter.unregisterOnPress(this.tag);
+        }
+    }
+
+    private handleOnPress = (event: ASPressEvent) => {
+        if (this.props.onPress) {
+            this.props.onPress(event);
+        }
+    }
     render() {
-        return (
-            <Text>{this.props} </Text>
-        );
+        let { children, onPress, color, ...other } = this.props;
+        let realProps = other;
+        realProps = {
+            ...baseStyleProcessor(other),
+            color: color ? processColor(color) : undefined,
+            touchableKey: this.props.onPress && this.tag
+        } as any;
+        return <asynctext {...realProps}>{children}</asynctext>;
     }
 }
-
-export const ASText = declareView('text', ASTextFallback, (src) => {
-    return { ...src, color: src.color ? processColor(src.color) : undefined };
-});

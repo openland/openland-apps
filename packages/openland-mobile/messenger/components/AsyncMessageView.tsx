@@ -9,12 +9,24 @@ import { formatTime } from '../../utils/formatTime';
 import { formatBytes } from '../../utils/formatBytes';
 import { AsyncMessageMediaView } from './AsyndMessageMediaView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
+import { preprocessText } from '../../utils/TextProcessor';
+import { Linking } from 'react-native';
 
 const paddedText = ' ' + '\u00A0'.repeat(10);
 const paddedTextOut = ' ' + '\u00A0'.repeat(13);
 
 export class AsyncMessageTextView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
+        let preprocessed = preprocessText(this.props.message.text!);
+        let parts = preprocessed.map((v, i) => {
+            if (v.type === 'new_line') {
+                return <ASText key={'br-' + i} >{'\n'}</ASText>;
+            } else if (v.type === 'link') {
+                return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={() => Linking.openURL(v.link!)} textDecorationLine="underline">{v.text}</ASText>;
+            } else {
+                return <ASText key={'text-' + i}>{v.text}</ASText>;
+            }
+        });
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex
@@ -31,7 +43,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                         fontSize={16}
                         fontWeight="400"
                     >
-                        {this.props.message.text}
+                        {parts}
                         {this.props.message.isOut ? paddedTextOut : paddedText}
                     </ASText>
                 </ASFlex>
@@ -47,7 +59,6 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                         height={14}
                     >
                         <ASText
-                            backgroundColor="#f00"
                             fontSize={11}
                             lineHeight={13}
                             color={this.props.message.isOut ? '#fff' : '#8a8a8f'}
