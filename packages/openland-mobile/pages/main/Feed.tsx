@@ -26,7 +26,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                                     {}
                                 </ASFlex>
                                 <ASFlex flexDirection="column" flexGrow={1} marginLeft={30} marginRight={30} alignItems="stretch" justifyContent="center">
-                                    <ASText textAlign="center" fontSize={24} color="#fff" fontWeight="600">Learn How To Motivate Yourself</ASText>
+                                    <ASText textAlign="center" fontSize={24} color="#fff" fontWeight="600">Looking to connect with residential brokers in Staten Island. Asking for a syndicate of non-US investors.</ASText>
                                 </ASFlex>
                                 <ASFlex flexDirection="row" height={64} marginLeft={15} marginRight={15} marginTop={15}>
                                     {}
@@ -42,7 +42,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                                     {}
                                 </ASFlex>
                                 <ASFlex flexDirection="column" flexGrow={1} marginLeft={30} marginRight={30} alignItems="stretch" justifyContent="center">
-                                    <ASText textAlign="center" fontSize={24} color="#fff" fontWeight="600">Break Through Self Doubt And Fear</ASText>
+                                    <ASText textAlign="center" fontSize={24} color="#fff" fontWeight="600">Making investor intros for cool Proptech startups</ASText>
                                 </ASFlex>
                                 <ASFlex flexDirection="row" height={64} marginLeft={15} marginRight={15} marginTop={15}>
                                     {}
