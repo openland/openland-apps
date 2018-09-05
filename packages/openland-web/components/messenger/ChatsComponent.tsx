@@ -200,7 +200,7 @@ class ConversationComponent extends React.Component<ConversationComponentProps> 
     render() {
 
         let { props } = this;
-        
+
         return (
             <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect} ref={this.handleRef}>
                 <XAvatar
@@ -462,9 +462,11 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     }
 
     itemsCount = (items: number) => {
-        this.setState({
-            chatsLength: items
-        });
+        if (items !== this.state.chatsLength) {
+            this.setState({
+                chatsLength: items
+            });
+        }
     }
 
     handleRef = (e: any) => {
