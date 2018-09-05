@@ -398,12 +398,14 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
         let { searchInputFocus } = this.state;
 
-        if (!searchInputFocus && !this.props.emptyState) {
+        if (!searchInputFocus) {
             return;
         }
 
-        if (this.props.emptyState || searchInputFocus) {
+        if (searchInputFocus && (e.code === 'ArrowUp' || e.code === 'ArrowDown')) {
+            
             let dy = 0;
+
             if (e.code === 'ArrowUp') {
                 e.preventDefault();
                 dy = -1;
@@ -418,7 +420,8 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
 
             if (y === -1) {
-                this.inputRef.focus();
+                this.inputFocusHandler(y);
+                return;
             }
 
             this.setState({
@@ -440,9 +443,10 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         this.inputRef = e;
     }
 
-    inputFocusHandler = () => {
+    inputFocusHandler = (y: number) => {
+        this.inputRef.focus();
         this.setState({
-            select: -1,
+            select: y,
             searchInputFocus: true
         });
     }
@@ -460,7 +464,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     color="primary-sky-blue"
                     cleansable={true}
                     innerRef={this.handleRef}
-                    onFocus={this.inputFocusHandler}
+                    onFocus={() => this.inputFocusHandler(-1)}
                 />
 
                 {search && (
