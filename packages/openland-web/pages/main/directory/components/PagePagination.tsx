@@ -85,8 +85,8 @@ export class PagePagination extends React.Component<PagePaginationProps> {
             if (l) {
                 if (i - l === 2) {
                     rangeWithDots.push(
-                        <PaginationButton key={'pag1_' + i + left} current={(i + 1) === currentPage} path={'/directory?page=' + (i + 1).toString() + '#'}>
-                            {i + 1}
+                        <PaginationButton key={'pag1_' + l + left} current={(l + 1) === currentPage} path={'/directory?page=' + (l + 1).toString() + '#'}>
+                            {l + 1}
                         </PaginationButton>
                     );
                 } else if (i - l !== 1) {
@@ -123,7 +123,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                 >
                     <XIcon icon="keyboard_arrow_left" />
                 </PaginationButton>
-                {this.PaginationFunc(pagesCount + 1, currentPage)}
+                {this.PaginationFunc(pagesCount, currentPage)}
                 <PaginationButton
                     className="arrow right"
                     path={'/directory?page=' + (currentPage + 1).toString() + '#'}
