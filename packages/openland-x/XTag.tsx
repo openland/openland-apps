@@ -148,7 +148,7 @@ let crossColorStyles = styleResolver({
         opacity: 1,
 
         '& svg *': {
-            fill: 'rgba(110, 197, 113, 0.5'
+            fill: 'rgba(110, 197, 113, 0.5)'
         }
     },
     'ghost': {
