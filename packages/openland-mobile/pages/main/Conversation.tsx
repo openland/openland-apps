@@ -14,6 +14,8 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { FastHeaderView } from 'react-native-fast-navigation/FastHeaderView';
 import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { PageProps } from '../../components/PageProps';
+import { ZQuery } from '../../components/ZQuery';
+import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -120,7 +122,12 @@ class ConversationComponent extends React.Component<PageProps> {
                             <MessengerContext.Consumer>
                                 {messenger => {
                                     return (
-                                        <ConversationRoot provider={modal!!} key={this.props.router.params.id} router={this.props.router} engine={messenger!!} conversationId={this.props.router.params.id} />
+                                        <ZQuery query={ChatInfoQuery} variables={{conversationId: this.props.router.params.id}}>
+                                            {resp => (
+                                                <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />
+                                            )}
+
+                                        </ZQuery>
                                     );
                                 }}
                             </MessengerContext.Consumer>
