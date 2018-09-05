@@ -21,6 +21,7 @@ import * as SuperCity from './queries/SuperCity';
 import * as User from './queries/User';
 
 export const AccountQuery = typedQuery<Types.AccountQuery, {}>(Account.AccountQuery);
+export const AccountSettingsQuery = typedQuery<Types.AccountSettingsQuery, {}>(Account.AccountSettingsQuery);
 export const CreateOrganizationMutation = typedMutation<Types.CreateOrganizationMutation, Types.CreateOrganizationMutationVariables>(Account.CreateOrganizationMutation);
 export const AccountInviteInfoQuery = typedQuery<Types.AccountInviteInfoQuery, Types.AccountInviteInfoQueryVariables>(Account.AccountInviteInfoQuery);
 export const AccountInviteJoinMutation = typedMutation<Types.AccountInviteJoinMutation, Types.AccountInviteJoinMutationVariables>(Account.AccountInviteJoinMutation);

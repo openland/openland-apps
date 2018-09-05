@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { AsyncStorage, ScrollView } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { withApp } from '../../components/withApp';
-import { NavigationInjectedProps } from 'react-navigation';
 import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { AccountQuery } from 'openland-api/AccountQuery';
 import { ZQuery } from '../../components/ZQuery';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZScrollView } from '../../components/ZScrollView';
 import { PageProps } from '../../components/PageProps';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -70,19 +69,31 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
             <>
                 <FastHeader title="Settings" />
                 <ZScrollView>
-                    <ZQuery query={AccountQuery}>
+                    <ZQuery query={AccountSettingsQuery}>
                         {resp => {
+                            let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;
+                            let secondary = resp.data.organizations.filter((v) => v.id !== primary.id);
+                            secondary.sort((a, b) => a.name.localeCompare(b.name));
+                            let secondaryFiltered = [];
+                            for (let i = 0; i < secondary.length && i < 2; i++) {
+                                secondaryFiltered.push(secondary[i]);
+                            }
                             return (
                                 <>
                                     <ZListItemHeader
                                         photo={resp.data!!.me!!.picture}
                                         id={resp.data!!.me!!.id}
                                         title={resp.data!!.me!!.name}
-                                        subtitle={resp.data!!.organization!!.name}
+                                        subtitle={primary.name}
                                         path="SettingsProfile"
                                         action="Edit profile"
                                     />
-                                    <ZListItemGroup header="Settings">
+                                    <ZListItemGroup header="Organizations">
+                                        <ZListItem text={primary.name} description="Primary" />
+                                        {secondaryFiltered.map((v) => (<ZListItem text={v.name} />))}
+                                        {secondaryFiltered.length < secondary.length && <ZListItem text="More" path="SettingsOrganizations" />}
+                                    </ZListItemGroup>
+                                    <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
                                         <ZListItem text="Notifications" path="SettingsNotifications" />
                                     </ZListItemGroup>
                                     <ZListItemGroup header="Application">
@@ -90,7 +101,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                         {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
                                         {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
                                     </ZListItemGroup>
-                                    <ZListItemGroup header="Dev Tools">
+                                    {/* <ZListItemGroup header="Dev Tools">
                                         <ZListItem text="Typography" path="DevTypography" />
                                         <ZListItem text="Components" path="DevComponents" />
                                         <ZListItem text="Navigation" path="DevNavigation" />
@@ -98,6 +109,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                         <ZListItem text="Reboot" onPress={this.handleReboot} />
                                         <ZListItem text="Log out" onPress={this.handleLogout} />
                                     </ZListItemGroup>
+                                    <ZListItemFooter /> */}
                                     <ZListItemFooter />
                                 </>
                             );

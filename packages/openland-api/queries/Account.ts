@@ -15,6 +15,18 @@ export const AccountQuery = gql`
     ${OrganizationShort}
 `;
 
+export const AccountSettingsQuery = gql`
+    query AccountSettings {
+        me: me { ...UserShort }
+        primaryOrganization: myOrganization { id }
+        organizations: myOrganizations {
+            ...OrganizationShort
+        }
+    }
+    ${UserShort}
+    ${OrganizationShort}
+`;
+
 export const CreateOrganizationMutation = gql`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
         createOrganization(input: $input) {

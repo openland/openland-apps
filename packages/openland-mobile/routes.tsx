@@ -15,6 +15,7 @@ import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { FilePreview } from './pages/main/modals/FilePreview';
 import { FastRoutesBuilder } from 'react-native-fast-navigation/FastRoutes';
+import { SettingsOrganizations } from './pages/main/SettingsOrganizations';
 
 export const Routes = new FastRoutesBuilder()
   .addRoute('Home', Home)
@@ -24,6 +25,7 @@ export const Routes = new FastRoutesBuilder()
   .addRoute('ProfileGroup', ProfileGroup)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)
+  .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('UserPicker', UserPicker)
   .addRoute('TextEditModal', TextEditModal)
   .addRoute('ComposeModal', ComposeModal)

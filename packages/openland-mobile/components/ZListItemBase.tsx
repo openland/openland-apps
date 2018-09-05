@@ -14,6 +14,7 @@ export interface ZListItemBaseProps {
     path?: string;
     navigationIcon?: boolean;
     backgroundColor?: string;
+    enabled?: boolean;
 }
 
 class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: FastRouter }> {
@@ -44,7 +45,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
 
         if (!!this.props.onPress || !!this.props.path) {
             return (
-                <RectButton onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                <RectButton enabled={this.props.enabled} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                     {content}
                 </RectButton>
             );

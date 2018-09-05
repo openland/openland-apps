@@ -418,6 +418,36 @@ export interface AccountQuery {
   },
 };
 
+export interface AccountSettingsQuery {
+  me:  {
+    __typename: "User",
+    id: string,
+    name: string,
+    firstName: string,
+    lastName: string | null,
+    picture: string | null,
+    email: string | null,
+    primaryOrganization:  {
+      __typename: "Organization",
+      id: string,
+      name: string,
+    } | null,
+    role: string | null,
+    linkedin: string | null,
+    twitter: string | null,
+  } | null,
+  primaryOrganization:  {
+    __typename: "Organization",
+    id: string,
+  } | null,
+  organizations:  Array< {
+    __typename: "Organization",
+    id: string,
+    name: string,
+    photo: string | null,
+  } >,
+};
+
 export interface CreateOrganizationMutationVariables {
   input: CreateOrganizationInput,
 };
@@ -3873,6 +3903,7 @@ export interface MyOrganizationQuery {
       membersCount: number,
       memberRequestsCount: number,
       hidden: boolean,
+      featured: boolean,
     } | null >,
     posts:  Array< {
       __typename: "AlphaDummyPost",
@@ -6465,6 +6496,7 @@ export interface SettingsQuery {
     primaryEmail: string,
     emailFrequency: EmailFrequency,
     desktopNotifications: NotificationMessages,
+    mobileNotifications: NotificationMessages | null,
   },
 };
 
@@ -6479,6 +6511,7 @@ export interface SettingsUpdateMutation {
     primaryEmail: string,
     emailFrequency: EmailFrequency,
     desktopNotifications: NotificationMessages,
+    mobileNotifications: NotificationMessages | null,
   },
 };
 
@@ -7978,6 +8011,7 @@ export interface OrganizationFullFragment {
     membersCount: number,
     memberRequestsCount: number,
     hidden: boolean,
+    featured: boolean,
   } | null >,
   posts:  Array< {
     __typename: "AlphaDummyPost",
@@ -8415,6 +8449,7 @@ export interface SettingsFullFragment {
   primaryEmail: string,
   emailFrequency: EmailFrequency,
   desktopNotifications: NotificationMessages,
+  mobileNotifications: NotificationMessages | null,
 };
 
 export interface UserShortFragment {

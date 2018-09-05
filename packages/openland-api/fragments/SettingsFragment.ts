@@ -6,5 +6,6 @@ export const SettingsFull = gql`
         primaryEmail
         emailFrequency
         desktopNotifications
+        mobileNotifications
     }
 `;
