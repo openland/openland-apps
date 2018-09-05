@@ -402,8 +402,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
     return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: self.node)
   }
-  
-  shouldsy
 }
 
 class RNListNodeScrollEvent:NSObject, RCTEvent {
