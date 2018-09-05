@@ -429,9 +429,9 @@ const PopperPlaceholder = Glamorous.div({
 const RequireElement = Glamorous.span({
     width: 10,
     height: 10,
-    fontSize: 23,
-    marginLeft: 3,
-    marginTop: -5,
+    fontSize: 14,
+    marginLeft: 1,
+    marginTop: -10,
     color: '#1790ff'
 });
 
