@@ -5,8 +5,10 @@ import { AppStyles } from '../styles/AppStyles';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { XPAvatar } from 'openland-xp/XPAvatar';
 
 export interface ZListItemProps {
+    leftAvatar?: { photo?: string | null, key: string, title: string };
     leftIcon?: any | null;
     separator?: boolean | null;
     title?: string | null;
@@ -49,6 +51,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                     <View flexDirection="row" alignItems="center">
                         {this.props.leftIcon && <Image source={this.props.leftIcon} />}
+                        {this.props.leftAvatar && <View paddingRight={8}><XPAvatar size={24} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                         <ZText style={{ fontSize: 16, color: this.props.appearance === 'action' ? AppStyles.primaryColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
                         {this.props.description && (
                             <ZText style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />

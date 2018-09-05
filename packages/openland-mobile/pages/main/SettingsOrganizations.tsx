@@ -23,8 +23,19 @@ class SettingsOrganizatonsComponent extends React.Component<PageProps> {
                             return (
                                 <>
                                     <ZListItemGroup>
-                                        <ZListItem text={primary.name} description="Primary" onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })} />
-                                        {secondary.map((v) => (<ZListItem text={v.name} onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })} />))}
+                                        <ZListItem
+                                            text={primary.name}
+                                            leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
+                                            description="Primary"
+                                            onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })}
+                                        />
+                                        {secondary.map((v) => (
+                                            <ZListItem
+                                                text={v.name}
+                                                leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
+                                                onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })}
+                                            />
+                                        ))}
                                     </ZListItemGroup>
                                     <ZListItemFooter />
                                 </>

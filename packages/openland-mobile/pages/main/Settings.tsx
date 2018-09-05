@@ -89,8 +89,19 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                         action="Edit profile"
                                     />
                                     <ZListItemGroup header="Organizations">
-                                        <ZListItem text={primary.name} description="Primary" onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })}  />
-                                        {secondaryFiltered.map((v) => (<ZListItem text={v.name} onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })}  />))}
+                                        <ZListItem
+                                            text={primary.name}
+                                            leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
+                                            description="Primary"
+                                            onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })}
+                                        />
+                                        {secondaryFiltered.map((v) => (
+                                            <ZListItem
+                                                text={v.name}
+                                                leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
+                                                onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })}
+                                            />
+                                        ))}
                                         {secondaryFiltered.length < secondary.length && <ZListItem text="More" path="SettingsOrganizations" />}
                                     </ZListItemGroup>
                                     <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">

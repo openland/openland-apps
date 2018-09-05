@@ -7,6 +7,7 @@ import { XPLinearGradient } from './XPLinearGradient';
 import { XPStyles } from './XPStyles';
 import { XPRoundedMask } from './XPRoundedMask';
 import { AndroidAliaser } from './AndroidAliaser';
+import { createInterpolator } from 'openland-y-utils/createInterpolator';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -22,6 +23,11 @@ export interface XPAvatarProps {
     placeholderKey?: string | null;
     placeholderTitle?: string | null;
 }
+
+const placeholderSizeInterpolator = createInterpolator(
+    [22, 28, 30, 36, 40, 56, 96],
+    [12, 12, 13, 14, 16, 26, 28]
+);
 export class XPAvatar extends React.PureComponent<XPAvatarProps> {
     render() {
         if (this.props.src) {
@@ -47,29 +53,7 @@ export class XPAvatar extends React.PureComponent<XPAvatarProps> {
         if (this.props.placeholderTitle) {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
         }
-        let textSize = 28;
-        if (this.props.size === 40) {
-            textSize = 16;
-        }
-        if (this.props.size === 32) {
-            textSize = 14;
-        }
-        if (this.props.size === 28) {
-            textSize = 12;
-        }
-        if (this.props.size === 30) {
-            textSize = 13;
-        }
-        if (this.props.size === 56) {
-            textSize = 26;
-        }
-        if (this.props.size === 96) {
-            textSize = 28;
-        }
-        if (this.props.size === 36) {
-            textSize = 14;
-        }
-
+        let textSize = Math.round(placeholderSizeInterpolator(this.props.size));
         return (
             <AndroidAliaser
                 width={this.props.size}
