@@ -7,7 +7,7 @@ export class ZSafeAreaView extends React.PureComponent<ViewProps> {
         return (
             <ZSafeAreaContext.Consumer>
                 {context => (
-                    <View {...this.props} style={[this.props.style, { top: context.top, bottom: context.bottom }]}>
+                    <View {...this.props} style={[this.props.style, { paddingTop: context.top, paddingBottom: context.bottom }]}>
                         {this.props.children}
                     </View>
                 )}

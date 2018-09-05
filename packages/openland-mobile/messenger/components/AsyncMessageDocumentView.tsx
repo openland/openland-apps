@@ -6,6 +6,10 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { ASText } from 'react-native-async-view/ASText';
 import { formatBytes } from '../../utils/formatBytes';
 import { formatTime } from '../../utils/formatTime';
+import { Platform } from 'react-native';
+
+const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
+const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
 
 export class AsyncMessageDocumentView extends React.PureComponent<{ message: DataSourceMessageItem, onPress: (document: DataSourceMessageItem) => void }> {
     private handlePress = () => {
@@ -48,7 +52,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                             lineHeight={18}
                             numberOfLines={1}
                         >
-                            {this.props.message.file!!.fileName}
+                            {this.props.message.file!!.fileName}{this.props.message.isOut ? paddedTextOut : paddedText}
                         </ASText>
                         <ASText
                             color={this.props.message.isOut ? '#ffffff' : '#8a8a8f'}

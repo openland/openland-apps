@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { View, WebView, Text, WebViewUriSource } from 'react-native';
-import { ZQuery } from '../../../components/ZQuery';
-import { DocumentFetchPreviewLinkQuery } from 'openland-api/DocumentFetchPreviewLinkQuery';
-import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
+import { View, Text, Image, StyleSheet, TextStyle } from 'react-native';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
@@ -12,7 +9,25 @@ import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { PageProps } from '../../../components/PageProps';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+import { formatBytes } from 'openland-shared/utils/formatBytes';
 
+const styles = StyleSheet.create({
+    name: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#000000',
+        marginTop: 20,
+        marginHorizontal: 64,
+        textAlign: 'center'
+    } as TextStyle,
+    size: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#000',
+        opacity: 0.8,
+        marginTop: 2
+    } as TextStyle
+});
 class FilePreviewComponent extends React.PureComponent<PageProps> {
 
     private handlePress = () => {
@@ -45,30 +60,14 @@ class FilePreviewComponent extends React.PureComponent<PageProps> {
         const config = this.props.router.params.config;
         return (
             <>
-                <FastHeader title="File" />
-                <FastHeaderButton title="Open" onPress={this.handlePress} />
+                <FastHeader title="Document" />
+                <FastHeaderButton title="Share" icon={require('assets/ic-export.png')} onPress={this.handlePress} />
                 <View backgroundColor="#fff" flexGrow={1}>
-                    <ZQuery query={DocumentFetchPreviewLinkQuery} variables={{ file: config.uuid }} fetchPolicy="network-only">
-                        {resp => {
-                            if (!resp) {
-                                return (
-                                    <ZSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text>Preview is not available</Text>
-                                    </ZSafeAreaView>);
-                            }
-                            return (
-                                <ZSafeAreaContext.Consumer>
-                                    {area => (
-                                        <WebView
-                                            contentInset={{ top: area.top }}
-                                            style={{ width: '100%', height: '100%' }}
-                                            source={{ uri: resp.data.previewLink } as WebViewUriSource}
-                                        />
-                                    )}
-                                </ZSafeAreaContext.Consumer>
-                            );
-                        }}
-                    </ZQuery>
+                    <ZSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                        <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
+                        <Text style={styles.name}>{config.name}</Text>
+                        <Text style={styles.size}>{formatBytes(config.size)}</Text>
+                    </ZSafeAreaView>
                 </View>
             </>
         );

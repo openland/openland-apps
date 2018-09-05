@@ -203,7 +203,8 @@ export class MobileMessenger {
     }
 
     private handleDocumentClick = (document: DataSourceMessageItem) => {
-        this.history.push('FilePreview', { config: { uuid: document.file!!.fileId } });
+        // { config: { uuid, name, size }
+        this.history.push('FilePreview', { config: { uuid: document.file!!.fileId, name: document.file!!.fileName, size: document.file!!.fileSize } });
     }
 
     private handleDialogClick = (id: string) => {
