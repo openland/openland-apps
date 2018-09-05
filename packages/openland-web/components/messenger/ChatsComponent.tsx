@@ -200,7 +200,7 @@ class ConversationComponent extends React.Component<ConversationComponentProps> 
     render() {
 
         let { props } = this;
-
+        
         return (
             <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect} ref={this.handleRef}>
                 <XAvatar
@@ -525,6 +525,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                             typename={i.__typename}
                             title={i.title}
                             photos={i.photos}
+                            photo={(i as any).photo}
                             topMessage={i.topMessage}
                             unreadCount={i.unreadCount}
                             settings={i.settings}
