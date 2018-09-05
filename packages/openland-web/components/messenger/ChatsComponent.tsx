@@ -372,6 +372,11 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
 
     onInput = (q: string) => {
         this.setState({ query: q });
+        if (q === '' && this.props.data && this.props.data.chats) {
+            this.setState({
+                chatsLength: this.props.data.chats.conversations.length
+            });
+        }
     }
 
     onSelect = () => {
@@ -417,7 +422,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
             switch (String.fromCharCode(e.which).toLowerCase()) {
                 case 's':
                     e.preventDefault();
-                    this.inputFocusHandler(-1);
+                    this.inputFocusHandler();
                     break;
                 default: {
                     return;
@@ -451,7 +456,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
             y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
 
             if (y === -1) {
-                this.inputFocusHandler(y);
+                this.inputFocusHandler();
                 return;
             }
 
@@ -462,7 +467,9 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     }
 
     itemsCount = (items: number) => {
-        if (items !== this.state.chatsLength) {
+        let { chatsLength, query } = this.state;
+
+        if (items !== chatsLength && query !== '') {
             this.setState({
                 chatsLength: items
             });
@@ -476,10 +483,10 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
         this.inputRef = e;
     }
 
-    inputFocusHandler = (y: number) => {
+    inputFocusHandler = () => {
         this.inputRef.focus();
         this.setState({
-            select: y,
+            select: -1,
             allowShortKeys: true
         });
     }
@@ -497,7 +504,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     color="primary-sky-blue"
                     cleansable={true}
                     innerRef={this.handleRef}
-                    onFocus={() => this.inputFocusHandler(-1)}
+                    onFocus={this.inputFocusHandler}
                 />
 
                 {search && (
