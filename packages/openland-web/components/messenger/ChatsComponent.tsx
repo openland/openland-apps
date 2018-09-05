@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { withChatsAll } from '../../api/withChatsAll';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -343,7 +344,7 @@ const ExploreChannels = Glamorous(XMenuItem)({
     }
 });
 
-interface ChatsComponentInnerProps {
+interface ChatsComponentInnerProps extends XWithRouter {
     data: ChatListQuery;
     emptyState: boolean;
 }
@@ -355,7 +356,7 @@ interface ChatsComponentInnerState {
     allowShortKeys: boolean;
 }
 
-class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
+class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, ChatsComponentInnerState> {
     inputRef: any;
 
     constructor(props: ChatsComponentInnerProps) {
@@ -411,6 +412,22 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     keydownHandler = (e: any) => {
 
         let { allowShortKeys } = this.state;
+
+        if (e.ctrlKey) {
+            switch (String.fromCharCode(e.which).toLowerCase()) {
+                case 's':
+                    e.preventDefault();
+                    this.inputFocusHandler(-1);
+                    break;
+                default: {
+                    return;
+                }
+            }
+        }
+
+        if (!this.props.emptyState && e.code === 'Escape') {
+            this.props.router.replace('/mail');
+        }
 
         if (!allowShortKeys) {
             return;
@@ -521,10 +538,10 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     }
 }
 
-export const ChatsComponent = withChatsAll((props) => {
+export const ChatsComponent = withChatsAll(withRouter((props) => {
     return (
         <XScrollView height="100%">
-            <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} />
+            <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} router={props.router} />
         </XScrollView>
     );
-}) as React.ComponentType<{ emptyState: boolean }>;
+})) as React.ComponentType<{ emptyState: boolean }>;
