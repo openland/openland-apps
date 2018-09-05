@@ -31,13 +31,11 @@ import {
     Results,
     SearchFormWrapper,
     SearchFormContent,
-    SearchFormIcon,
     SearchInput,
     ResetButton,
     SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
-import { delay } from 'openland-y-utils/timer';
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -283,7 +281,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         this.resetPage();
         this.setState({ conditions: res, searchText: '' });
 
-        this.props.router.replaceQueryParams({ clauses: JSON.stringify(res) });
+        this.props.router.replaceQueryParams({ clauses: JSON.stringify(res), page: undefined });
     }
 
     replaceConditions = (condition: SearchCondition) => {
