@@ -26,7 +26,7 @@ class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSea
                 </ASFlex>
                 <ASText fontSize={16} height={56} lineHeight={38} color="#181818" numberOfLines={1}>{this.props.item.name}</ASText>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={80} backgroundColor={XPStyles.colors.selectedListItem} />
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.selectedListItem} />
                 </ASFlex>
             </ASFlex>
         );
