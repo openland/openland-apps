@@ -15,7 +15,6 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import CircleIcon from './components/icons/circle-icon.svg';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
 
@@ -308,8 +307,10 @@ const SearchChats = withChatSearchText((props) => {
 }) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number, allowSelection: boolean }>;
 
 const Search = Glamorous(XInput)({
-    margin: 16,
-    marginTop: 4,
+    marginLeft: 12,
+    marginRight: 12,
+    marginTop: 5,
+    marginBottom: 16,
     height: 36,
     '&:focus-within svg > g > path:last-child': {
         fill: 'rgba(23, 144, 255, 0.5)'
@@ -317,9 +318,22 @@ const Search = Glamorous(XInput)({
 });
 
 const ExploreChannels = Glamorous(XMenuItem)({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 36,
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 12,
+    borderRadius: 20,
+    paddingLeft: 16,
+    paddingRight: 13,
+    paddingTop: 1,
+    paddingBottom: 0,
     backgroundColor: '#F3F5F6',
     color: '#5c6a81',
     fontWeight: 600,
+    letterSpacing: -0.1,
     '&:hover': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
         color: '#1790ff',
@@ -338,7 +352,7 @@ interface ChatsComponentInnerState {
     query: string;
     select: number;
     chatsLength: number;
-    searchInputFocus: boolean;
+    allowShortKeys: boolean;
 }
 
 class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
@@ -351,7 +365,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             query: '',
             select: -1,
             chatsLength: 0,
-            searchInputFocus: this.props.emptyState
+            allowShortKeys: this.props.emptyState
         };
     }
 
@@ -381,7 +395,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     componentWillReceiveProps(nextProps: ChatsComponentInnerProps) {
         if (nextProps.emptyState) {
             this.setState({
-                searchInputFocus: true
+                allowShortKeys: true
             });
         }
     }
@@ -389,21 +403,21 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     mouseHandler = (e: any) => {
         if (!this.props.emptyState) {
             this.setState({
-                searchInputFocus: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
+                allowShortKeys: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
             });
         }
     }
 
     keydownHandler = (e: any) => {
 
-        let { searchInputFocus } = this.state;
+        let { allowShortKeys } = this.state;
 
-        if (!searchInputFocus) {
+        if (!allowShortKeys) {
             return;
         }
 
-        if (searchInputFocus && (e.code === 'ArrowUp' || e.code === 'ArrowDown')) {
-            
+        if (allowShortKeys && (e.code === 'ArrowUp' || e.code === 'ArrowDown')) {
+
             let dy = 0;
 
             if (e.code === 'ArrowUp') {
@@ -447,7 +461,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         this.inputRef.focus();
         this.setState({
             select: y,
-            searchInputFocus: true
+            allowShortKeys: true
         });
     }
 
@@ -473,16 +487,13 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                         onSelect={this.onSelect}
                         itemsCount={this.itemsCount}
                         selectedItem={this.state.select}
-                        allowSelection={this.state.searchInputFocus}
+                        allowSelection={this.state.allowShortKeys}
                     />
                 )}
                 {!search && (
                     <ExploreChannels path={'/mail/channels'}>
                         <XHorizontal alignItems="center" justifyContent="space-between">
-                            <XHorizontal alignItems="center" separator={6}>
-                                <CircleIcon />
-                                <XText>Explore channels</XText>
-                            </XHorizontal>
+                            <XText>Explore channels</XText>
                             <ArrowIcon />
                         </XHorizontal>
                     </ExploreChannels>
@@ -501,7 +512,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                             unreadCount={i.unreadCount}
                             settings={i.settings}
                             selectedItem={this.state.select === j}
-                            allowSelection={this.state.searchInputFocus}
+                            allowSelection={this.state.allowShortKeys}
                         />
                     ))
                 }

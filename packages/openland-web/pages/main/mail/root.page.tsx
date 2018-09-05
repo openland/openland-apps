@@ -65,8 +65,8 @@ let ConversationContainer = Glamorous.div({
 const Header = Glamorous(XHorizontal)({
     height: 48,
     paddingLeft: 16,
-    paddingRight: 16,
-    marginTop: 6,
+    paddingRight: 12,
+    marginTop: 5,
     marginBottom: 6,
 });
 
@@ -93,6 +93,7 @@ const ChannelInviteFromLink = withChannelInviteInfo((props) => {
 });
 
 const AddButton = Glamorous(XButton)({
+    marginTop: 5,
     '& svg > g > path': {
         transition: 'all .2s'
     },
@@ -118,7 +119,6 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
 
     if (!isCompose && !props.router.routeQuery.conversationId) {
         tab = 'empty';
-
     }
 
     if (!isCompose && props.router.routeQuery.conversationId) {

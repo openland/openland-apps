@@ -312,7 +312,7 @@ let sizeStyles = styleResolver({
         height: 28,
         lineHeight: '26px',
         fontSize: 14,
-        letterSpacing: 0.4,
+        letterSpacing: -0.4,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 12,
