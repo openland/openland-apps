@@ -29,7 +29,7 @@ class RNAsyncViewNode: ASDisplayNode {
   }
   
   public func setFrame(frame: CGRect) {
-    self.pendingFrame = frame;
+    self.pendingFrame = CGRect(origin: CGPoint.zero, size: frame.size)
     if (self.spec != nil) {
       self.frame = self.pendingFrame!
       setNeedsDisplay()

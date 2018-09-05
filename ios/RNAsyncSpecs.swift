@@ -39,6 +39,12 @@ enum AsyncTextDecorationLine: String {
   case underline = "underline"
 }
 
+enum AsyncTextAlignment: String {
+  case center = "center"
+  case left = "left"
+  case right = "right"
+}
+
 protocol AsyncViewSpec {
   var style: AsyncStyleSpec {get}
   var key: String {get}
@@ -69,6 +75,7 @@ class AsyncTextSpec: AsyncViewSpec {
   var numberOfLines: Int?
   var textDecorationLine: AsyncTextDecorationLine? = nil
   var touchableKey: String?
+  var alignment: AsyncTextAlignment?
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -266,6 +273,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
           return UIFontWeightRegular
         }
       }()
+    }
+    if let v = src["props"]["textAlign"].string {
+      res.alignment = AsyncTextAlignment(rawValue: v)
     }
     if let v = src["props"]["color"].uInt64 {
       res.color = resolveColorR(v)

@@ -140,7 +140,7 @@ func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement, _ context: 
     if let br = spec.borderRadius {
       g.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
         let bounds = context.boundingBoxOfClipPath
-        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(br) * UIScreen.main.scale).addClip()
+        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(br)).addClip()
       }
     }
     res = ASBackgroundLayoutSpec(child: res, background: g)
@@ -149,7 +149,7 @@ func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement, _ context: 
     if let br = spec.borderRadius {
       g.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
         let bounds = context.boundingBoxOfClipPath
-        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(br) * UIScreen.main.scale).addClip()
+        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(br)).addClip()
       }
     }
     res = ASBackgroundLayoutSpec(child: res, background: g)

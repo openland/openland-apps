@@ -62,6 +62,16 @@ class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
     style.paragraphSpacing = 0.0
     style.paragraphSpacingBefore = 0.0
     style.lineSpacing = 0.0
+    style.lineBreakMode = .byWordWrapping
+    if let v = spec.alignment {
+      if v == .center {
+        style.alignment = .center
+      } else if v == .left {
+        style.alignment = .left
+      } else if v == .right {
+        style.alignment = .right
+      }
+    }
     if let v = spec.lineHeight {
       style.minimumLineHeight = CGFloat(v)
       style.maximumLineHeight = CGFloat(v)

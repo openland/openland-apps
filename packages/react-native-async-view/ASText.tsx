@@ -14,6 +14,7 @@ export interface ASTextProps extends ASViewStyle {
     letterSpacing?: number;
     numberOfLines?: number;
     textDecorationLine?: 'none' | 'underline';
+    textAlign?: 'center' | 'right' | 'left';
     onPress?: (event: ASPressEvent) => void;
 }
 
