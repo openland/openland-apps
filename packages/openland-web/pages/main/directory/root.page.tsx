@@ -37,6 +37,7 @@ import {
     SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { delay } from 'openland-y-utils/timer';
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -46,6 +47,7 @@ export interface SearchCondition {
 
 interface OrganizationCardsProps {
     onPick: (q: SearchCondition) => void;
+    onPageChange: (q: SearchCondition) => void;
     variables: { query?: string, sort?: string };
     onSearchReset?: React.MouseEventHandler<any>;
     tagsCount: (n: number) => void;
@@ -63,7 +65,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
                     {props.data.items.edges.map((i, j) => (
                         <OrganizationCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
                     }
-                    <PagePagination pageInfo={props.data.items.pageInfo} />
+                    <PagePagination pageInfo={props.data.items.pageInfo} onPageChange={(props as any).onPageChange} />
                 </>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
@@ -84,6 +86,7 @@ interface OrganizationsProps {
 
 class Organizations extends React.PureComponent<OrganizationsProps> {
     queryhash?: number;
+    scrollRef?: any;
     buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
         if (clauses.length === 0) {
             return undefined;
@@ -108,6 +111,16 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
 
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
+    }
+
+    handleScrollRef = (el: any) => {
+        this.scrollRef = el;
+    }
+
+    scrolTop = () => {
+        if (this.scrollRef && this.scrollRef.node) {
+            this.scrollRef.node.scrollTop();
+        }
     }
 
     render() {
@@ -165,15 +178,19 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
         }
 
         return (
-            <OrganizationCards
-                onPick={this.props.onPick}
-                onSearchReset={this.props.onSearchReset}
-                tagsCount={this.tagsCount}
-                variables={{
-                    query: q ? JSON.stringify(q) : undefined,
-                    sort: JSON.stringify(sort),
-                }}
-            />
+            <Results innerRef={this.handleScrollRef}>
+                <OrganizationCards
+                    onPick={this.props.onPick}
+                    onSearchReset={this.props.onSearchReset}
+                    tagsCount={this.tagsCount}
+                    variables={{
+                        query: q ? JSON.stringify(q) : undefined,
+                        sort: JSON.stringify(sort),
+                    }}
+                    onPageChange={this.scrolTop}
+                />
+            </Results>
+
         );
     }
 }
@@ -438,16 +455,14 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             {(this.state.conditions.length > 0) && (orgCount <= 0) && (
                                 <XSubHeader title="No results" />
                             )}
-                            <Results>
-                                <Organizations
-                                    featuredFirst={this.state.sort.featured}
-                                    orderBy={this.state.sort.orderBy}
-                                    conditions={conditions}
-                                    onPick={this.replaceConditions}
-                                    onSearchReset={this.reset}
-                                    tagsCount={this.tagsCount}
-                                />
-                            </Results>
+                            <Organizations
+                                featuredFirst={this.state.sort.featured}
+                                orderBy={this.state.sort.orderBy}
+                                conditions={conditions}
+                                onPick={this.replaceConditions}
+                                onSearchReset={this.reset}
+                                tagsCount={this.tagsCount}
+                            />
                         </XVertical>
                     )}
                     {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} />}
