@@ -8,12 +8,13 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { ZScrollView } from '../../components/ZScrollView';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
+import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                {/* <ZHeader title="Search" /> */}
+                <FastHeader title="Organizations" />
                 <ZQuery query={ExploreOrganizationsQuery}>
                     {resp => (
                         <ZScrollView backgroundColor="#fff">
