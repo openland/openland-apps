@@ -73,32 +73,21 @@ const OrganizationToolsWrapper = Glamorous(XHorizontal)({
 
 class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q: SearchCondition) => void }> {
     render() {
-        [...this.props.orgTypes.filter((e, i) => i <= 2),
-        ...(this.props.orgTypes.length > 3
-            ? ['+ ' + String(this.props.orgTypes.length - 3) + ' more']
-            : [])].join(' • ');
-        let elements = [];
-        let key = 0;
-        for (let orgType of this.props.orgTypes.filter((e, i) => i <= 2)) {
-            key++;
-            elements.push(
-                <XTag
-                    color="gray"
-                    rounded={true}
-                    key={'_org_type_text_' + key}
-                    onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}
-                    text={orgType}
-                />
-            );
-        }
-        elements.pop();
+        let elements = this.props.orgTypes.filter((e, i) => i <= 2).map((orgType, i) => (
+            <XTag
+                color="gray"
+                rounded={true}
+                key={'_org_type_text_' + i}
+                onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}
+                text={orgType}
+            />
+        ));
         if (this.props.orgTypes.length > 3) {
-            key++;
             elements.push(
                 <XTag
                     color="gray"
                     rounded={true}
-                    key={'_org_type_text_' + key + 1}
+                    key={'_org_type_text_more'}
                     text={'+ ' + String(this.props.orgTypes.length - 3) + ' more'}
                 />
             );

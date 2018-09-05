@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { css } from 'glamor';
 import { XFlexStyles, extractFlexProps, applyFlex } from './basics/Flex';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import * as ReactDOM from 'react-dom';
 
 //
 // Styles
@@ -110,13 +111,14 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
 
 export class XScrollView extends React.Component<XScrollViewProps> {
     Simplebar = canUseDOM ? require('simplebar') : null;
-
+    node: any = undefined;
     handleRef = (el: any) => {
         if (canUseDOM && el) {
             let isSafari = (window as any).safari !== undefined;
             if (!isSafari || this.props.optimize !== true) {
                 // tslint:disable
                 new this.Simplebar(el);
+                this.node = ReactDOM.findDOMNode(el);
                 // tslint:enable
             }
         }

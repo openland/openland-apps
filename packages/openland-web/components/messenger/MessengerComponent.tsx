@@ -380,7 +380,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         <AddButton
                                             text="Invite"
                                             iconResponsive={<PlusIcon />}
-                                            icon={<PlusIcon />}
+                                            icon={<PlusIcon className="icon"/>}
                                             size="r-default"
                                             alignSelf="center"
                                         />
