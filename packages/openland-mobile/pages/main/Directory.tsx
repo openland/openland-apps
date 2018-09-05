@@ -9,13 +9,44 @@ import { ZScrollView } from '../../components/ZScrollView';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
+import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASText } from 'react-native-async-view/ASText';
+import { OrganizationSearchFragment } from 'openland-api/Types';
+import { XPStyles } from 'openland-xp/XPStyles';
+import { FastRouter } from 'react-native-fast-navigation/FastRouter';
+import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 
+class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearchFragment, router: FastRouter }> {
+    render() {
+        return (
+            <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('ProfileOrganization', { id: this.props.item.id })}>
+                <ASFlex marginLeft={15} marginRight={15}>
+                    <AsyncAvatar size={32} placeholderKey={this.props.item.id} placeholderTitle={this.props.item.name} src={this.props.item.photo} />
+                </ASFlex>
+                <ASText fontSize={16} height={56} lineHeight={38} color="#181818" numberOfLines={1}>{this.props.item.name}</ASText>
+                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={80} backgroundColor={XPStyles.colors.selectedListItem} />
+                </ASFlex>
+            </ASFlex>
+        );
+    }
+}
 class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
                 <FastHeader title="Organizations" />
-                <ZQuery query={ExploreOrganizationsQuery}>
+                <ZAsyncRoutedList
+                    style={{ flexGrow: 1 }}
+                    query={ExploreOrganizationsQuery}
+                    renderItem={(item) => {
+                        return (
+                            <DirectoryItemComponent item={item} router={this.props.router} />
+                        );
+                    }}
+                />
+                {/* <ZQuery query={ExploreOrganizationsQuery} variables={{ sort: '[{"featured":{"order":"desc"}},{"createdAt":{"order":"desc"}}]' }}>
                     {resp => (
                         <ZScrollView backgroundColor="#fff">
                             <ZListItemGroup>
@@ -32,7 +63,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
                             </ZListItemGroup>
                         </ZScrollView>
                     )}
-                </ZQuery>
+                </ZQuery> */}
             </>
         );
     }

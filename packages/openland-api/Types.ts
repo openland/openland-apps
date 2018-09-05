@@ -4972,6 +4972,7 @@ export interface ExploreOrganizationsQueryVariables {
   query?: string | null,
   sort?: string | null,
   page?: number | null,
+  after?: string | null,
 };
 
 export interface ExploreOrganizationsQuery {

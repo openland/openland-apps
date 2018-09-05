@@ -49,7 +49,12 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
 
                                     <ZListItemGroup header="Members">
                                         {resp.data.organization.members.map((v) => (
-                                            <ZListItem key={v.user.id} text={v.user.name} onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })} />
+                                            <ZListItem
+                                                key={v.user.id}
+                                                text={v.user.name}
+                                                leftAvatar={{ photo: v.user.picture, title: v.user.name, key: v.user.id }}
+                                                onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })}
+                                            />
                                         ))}
                                     </ZListItemGroup>
                                 </ZScrollView>

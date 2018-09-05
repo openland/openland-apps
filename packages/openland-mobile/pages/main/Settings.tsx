@@ -68,51 +68,50 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
         return (
             <>
                 <FastHeader title="Settings" />
-                <ZScrollView>
-                    <ZQuery query={AccountSettingsQuery}>
-                        {resp => {
-                            let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;
-                            let secondary = resp.data.organizations.filter((v) => v.id !== primary.id);
-                            secondary.sort((a, b) => a.name.localeCompare(b.name));
-                            let secondaryFiltered = [];
-                            for (let i = 0; i < secondary.length && i < 2; i++) {
-                                secondaryFiltered.push(secondary[i]);
-                            }
-                            return (
-                                <>
-                                    <ZListItemHeader
-                                        photo={resp.data!!.me!!.picture}
-                                        id={resp.data!!.me!!.id}
-                                        title={resp.data!!.me!!.name}
-                                        subtitle={primary.name}
-                                        path="SettingsProfile"
-                                        action="Edit profile"
+                <ZQuery query={AccountSettingsQuery}>
+                    {resp => {
+                        let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;
+                        let secondary = resp.data.organizations.filter((v) => v.id !== primary.id);
+                        secondary.sort((a, b) => a.name.localeCompare(b.name));
+                        let secondaryFiltered = [];
+                        for (let i = 0; i < secondary.length && i < 2; i++) {
+                            secondaryFiltered.push(secondary[i]);
+                        }
+                        return (
+                            <ZScrollView>
+                                <ZListItemHeader
+                                    photo={resp.data!!.me!!.picture}
+                                    id={resp.data!!.me!!.id}
+                                    title={resp.data!!.me!!.name}
+                                    subtitle={primary.name}
+                                    path="SettingsProfile"
+                                    action="Edit profile"
+                                />
+                                <ZListItemGroup header="Organizations">
+                                    <ZListItem
+                                        text={primary.name}
+                                        leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
+                                        description="Primary"
+                                        onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })}
                                     />
-                                    <ZListItemGroup header="Organizations">
+                                    {secondaryFiltered.map((v) => (
                                         <ZListItem
-                                            text={primary.name}
-                                            leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
-                                            description="Primary"
-                                            onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })}
+                                            text={v.name}
+                                            leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
+                                            onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })}
                                         />
-                                        {secondaryFiltered.map((v) => (
-                                            <ZListItem
-                                                text={v.name}
-                                                leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
-                                                onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })}
-                                            />
-                                        ))}
-                                        {secondaryFiltered.length < secondary.length && <ZListItem text="More" path="SettingsOrganizations" />}
-                                    </ZListItemGroup>
-                                    <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
-                                        <ZListItem text="Notifications" path="SettingsNotifications" />
-                                    </ZListItemGroup>
-                                    <ZListItemGroup header="Application">
-                                        <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />
-                                        {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
-                                        {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
-                                    </ZListItemGroup>
-                                    {/* <ZListItemGroup header="Dev Tools">
+                                    ))}
+                                    {secondaryFiltered.length < secondary.length && <ZListItem text="More" path="SettingsOrganizations" />}
+                                </ZListItemGroup>
+                                <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
+                                    <ZListItem text="Notifications" path="SettingsNotifications" />
+                                </ZListItemGroup>
+                                <ZListItemGroup header="Application">
+                                    <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />
+                                    {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
+                                    {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
+                                </ZListItemGroup>
+                                {/* <ZListItemGroup header="Dev Tools">
                                         <ZListItem text="Typography" path="DevTypography" />
                                         <ZListItem text="Components" path="DevComponents" />
                                         <ZListItem text="Navigation" path="DevNavigation" />
@@ -121,12 +120,11 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                         <ZListItem text="Log out" onPress={this.handleLogout} />
                                     </ZListItemGroup>
                                     <ZListItemFooter /> */}
-                                    <ZListItemFooter />
-                                </>
-                            );
-                        }}
-                    </ZQuery>
-                </ZScrollView>
+                                <ZListItemFooter />
+                            </ZScrollView>
+                        );
+                    }}
+                </ZQuery>
             </>
         );
     }
