@@ -16,11 +16,11 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
+import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
+import { OrganizationProfile } from '../profile/ProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
-import { OrganizationProfile } from '../profile/ProfileComponent';
 import PlusIcon from '../../../components/icons/ic-add-medium.svg';
 
 let ChatContainer = Glamorous.div({
