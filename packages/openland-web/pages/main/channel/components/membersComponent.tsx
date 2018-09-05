@@ -118,7 +118,7 @@ const Accept = withChannelInvite((props) => {
             />
         </XMutation>
     );
-}) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string }, isHovered: boolean }>;
+}) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
 class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment, channelId: string }, { isHovered: boolean }> {
     constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment, channelId: string }) {
@@ -162,7 +162,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
 
                 {item.status === 'requested' && (
                     <MemberTools separator={6}>
-                        <Accept variables={{ userId: item.id, channelId: this.props.channelId }} isHovered={this.state.isHovered} refetchVars={{ channelId: this.props.channelId }} />
+                        <Accept variables={{ userId: item.id, channelId: this.props.channelId }} isHovered={this.state.isHovered} refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }} />
                         <DeclineButton isHoveredWrapper={this.state.isHovered} userId={item.id} />
                     </MemberTools>
                 )}
