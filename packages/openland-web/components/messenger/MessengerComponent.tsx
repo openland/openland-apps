@@ -29,6 +29,7 @@ import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import PlusIcon from '../icons/ic-add-medium.svg';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
+import { XText } from 'openland-x/XText';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -515,6 +516,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         channelTitle={title}
                         key={props.data.chat.id + '_members'}
                         variables={{ channelId: props.data.chat.id }}
+                        description={props.data.chat.description}
+                        longDescription={props.data.chat.longDescription}
                         {...{ isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine }}
                     />
                 )}
