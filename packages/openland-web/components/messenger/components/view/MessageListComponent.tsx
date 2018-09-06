@@ -86,7 +86,7 @@ interface MessageListProps {
     loadBefore: (id: string) => void;
     conversationType?: string;
     inputShower?: (show: boolean) => void;
-    me: UserShortFragment | null;
+    me?: UserShortFragment | null;
 }
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
