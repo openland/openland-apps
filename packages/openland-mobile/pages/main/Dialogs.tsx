@@ -44,7 +44,6 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
     }
 
     render() {
-        console.log(this.props);
         return (
             <>
                 <FastHeader title="Messages" />
@@ -56,8 +55,8 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
                         searchClosed: this.handleSearchStop, searchPress: this.handleSearchStart
                     })}
                 />
-                <ZSafeAreaProvider top={44} bottom={this.state.search ? -88 : 0}>
-                    <View style={{ height: '100%', marginTop: this.state.search ? -88 : 0 }}>
+                <ZSafeAreaProvider top={44}>
+                    <View style={{ flexGrow: 1, marginTop: this.state.search ? -88 : 0 }}>
                         <MobileMessengerContext.Consumer>
                             {engine => (<DialogListComponent engine={engine} />)}
                         </MobileMessengerContext.Consumer>
