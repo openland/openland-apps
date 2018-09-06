@@ -187,6 +187,21 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         >
                             {content}
                         </Animated.View>
+                        <Animated.View
+                            key="shadow"
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                opacity: ctx.positionShadow,
+                                backgroundColor: '#000',
+                                zIndex: 1000,
+                                transform: [{ translateY: ctx.backgroundOffset }],
+                            }}
+                            pointerEvents="none"
+                        />
                     </Animated.View>
                 );
             } else {

@@ -206,7 +206,7 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
         let positionContent = Animated.add(interpolateContent(position), Animated.multiply(positionContainer, -1));
 
         let positionShadow = position.interpolate({
-            inputRange: [-1, 0],
+            inputRange: [0, 1],
             outputRange: [0, 0.2],
             extrapolate: 'clamp'
         });
