@@ -38,7 +38,6 @@ class PushRegistrator {
                 sandbox: sandbox
             };
             log.log('Registering endpoint' + (sandbox ? ' [sandbox]' : ''));
-            log.log(endpoint);
             await backoff(async () => await this.client.client.mutate({
                 mutation: RegisterPush,
                 variables: {

@@ -1,6 +1,7 @@
 import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import Push from 'react-native-push-notification';
-import PushNotification from 'react-native-push-notification';
+import { Platform } from 'react-native';
+import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 
 var token: string | null = null;
 var tokenListeners: ((token: string) => void)[] = [];
@@ -54,6 +55,9 @@ class AppNotiticationsIOS implements AppNotificationsApi {
 
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
         console.log('RNPushNotification', 'local', content);
+        if (Platform.OS === 'android' && !AppVisibility.isVisible) {
+            return;
+        }
         Push.localNotification({
             title: content.title,
             message: content.body,
