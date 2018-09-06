@@ -2,14 +2,13 @@ import * as React from 'react';
 import { View, Animated, StyleSheet, ViewStyle, Dimensions, Image, Platform } from 'react-native';
 import { FastHeaderBackButton } from './FastHeaderBackButton';
 import { DeviceConfig } from '../DeviceConfig';
-import { FastHistoryRecord } from '../FastHistory';
+import { FastHistoryRecord, FastHistoryManager } from '../FastHistory';
 import { FastBlurredView } from '../utils/FastBlurView';
 import { FastHeaderConfig } from '../FastHeaderConfig';
 import { FastHeaderTitle } from './FastHeaderTitle';
 import { FastScrollValue } from '../FastScrollValue';
 
 interface NormalizedRoute {
-    current: boolean;
     mounted: boolean;
     record: FastHistoryRecord;
     config: FastHeaderConfig;
@@ -18,6 +17,7 @@ interface NormalizedRoute {
 
 interface FastHeaderProps {
     routes: NormalizedRoute[];
+    history: FastHistoryManager;
 }
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
@@ -81,10 +81,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
 
     // Back Button
     handleBack = () => {
-        let currentRoute = this.props.routes.find((v) => v.current);
-        if (currentRoute) {
-            currentRoute.record.router.back();
-        }
+        this.props.history.pop();
     }
 
     render() {

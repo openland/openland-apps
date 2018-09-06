@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FastHistoryRecord } from '../FastHistory';
+import { FastHistoryRecord, FastHistoryManager } from '../FastHistory';
 import { Animated } from 'react-native';
 import { FastHeaderConfig } from '../FastHeaderConfig';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
@@ -13,11 +13,10 @@ interface Route {
 export interface FastHeaderContainerProps {
     routes: Route[];
     mounted: string[];
-    current: string;
+    history: FastHistoryManager;
 }
 
 interface NormalizedRoute {
-    current: boolean;
     mounted: boolean;
     record: FastHistoryRecord;
     config: FastHeaderConfig;
@@ -88,7 +87,6 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
 
     normalizeRoutes(props: FastHeaderContainerProps) {
         return props.routes.map((v) => ({
-            current: props.current === v.record.key,
             mounted: !!props.mounted.find((m) => m === v.record.key),
             record: v.record,
             config: v.record.config.getState()!!,
@@ -97,6 +95,6 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
     }
 
     render() {
-        return <FastHeader routes={this.state.routes} />;
+        return <FastHeader routes={this.state.routes} history={this.props.history} />;
     }
 }

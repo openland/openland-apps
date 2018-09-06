@@ -100,11 +100,10 @@ function animate(value: Animated.Value, to: number) {
 interface ContainerState {
     routes: HistoryRecordHolder[];
     mounted: string[];
-    current: string;
     transitioning: boolean;
 }
 
-const FULL_TRASITION_DELAY = 200;
+const FULL_TRASITION_DELAY = 250;
 
 export class Container extends React.PureComponent<ContainerProps, ContainerState> implements HistoryWatcher {
 
@@ -142,7 +141,6 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.state = {
             routes: this.routes,
             mounted: this.mounted,
-            current: this.current,
             transitioning: false
         };
     }
@@ -153,7 +151,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             this.routes = prepareInitialRecords(this.currentHistory.history, this.panOffsetCurrent, this.panOffsetPrev);
             this.current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             this.mounted = [this.current];
-            this.setState({ routes: this.routes, mounted: this.mounted, current: this.current });
+            this.setState({ routes: this.routes, mounted: this.mounted });
         }
     }
 
@@ -191,7 +189,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.mounted = [...this.mounted, newRecord.record.key];
         this.current = newRecord.record.key;
         this.currentHistory = history;
-        this.setState({ mounted: this.mounted, routes: this.routes, current: this.current, transitioning: true });
+        this.setState({ mounted: this.mounted, routes: this.routes, transitioning: true });
     }
     onPopped = (record: FastHistoryRecord, history: FastHistory, args?: { immediate?: boolean }) => {
         Keyboard.dismiss();
@@ -220,7 +218,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
                 unlock();
             });
-            this.setState({ mounted: this.mounted, current: this.current, transitioning: true });
+            this.setState({ mounted: this.mounted, transitioning: true });
         }
     }
     onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
@@ -360,7 +358,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                     <FastHeaderGuard
                         routes={this.state.routes}
                         mounted={this.state.mounted}
-                        current={this.state.current}
+                        history={this.props.historyManager}
                     />
                 </View>
             </Animated.View>
