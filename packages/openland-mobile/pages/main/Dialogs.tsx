@@ -6,6 +6,8 @@ import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { PageProps } from '../../components/PageProps';
 import { MobileMessengerContext } from '../../messenger/MobileMessenger';
+import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
+import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 
 function startAnimation() {
     LayoutAnimation.configureNext({
@@ -46,9 +48,16 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
             <>
                 <FastHeader title="Messages" />
                 <FastHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
+                <FastHeaderConfigRegistrator
+                    config={new FastHeaderConfig({
+                        search: true,
+                        searchActive: this.state.search,
+                        searchClosed: this.handleSearchStop, searchPress: this.handleSearchStart
+                    })}
+                />
                 <View style={{ height: '100%' }}>
                     <MobileMessengerContext.Consumer>
-                        {engine => ( <DialogListComponent engine={engine} />)}
+                        {engine => (<DialogListComponent engine={engine} />)}
                     </MobileMessengerContext.Consumer>
                 </View>
             </>

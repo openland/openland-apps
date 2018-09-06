@@ -172,11 +172,11 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             top: 0,
                             bottom: 0,
                             // width: ''
-                            transform: [{ translateX: ctx.positionContainer }]
+                            transform: [{ translateX: ctx.positionContainer }],
+                            zIndex: 100
                         }}
                     >
                         <Animated.View
-                            key={ctx.key}
                             style={[
                                 styles.styleMainContainerTransparent,
                                 searchActive && styles.styleMainContainerTransparentSearch,

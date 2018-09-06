@@ -29,6 +29,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   private var keyboardShown = false
   private var keyboardHiding = false
+  private var loaded = false
   
   init(parent: RNAsyncListView) {
     print("create list")
@@ -54,6 +55,11 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+  }
+  
+  override func didLoad() {
+    super.didLoad()
+    self.loaded = true
   }
   
   func destroy() {
@@ -235,7 +241,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onInited(state: RNAsyncDataViewState) {
     DispatchQueue.main.async {
       self.state = state
-      self.node.reloadData()
+      if self.loaded {
+        self.node.reloadData()
+      }
     }
   }
   

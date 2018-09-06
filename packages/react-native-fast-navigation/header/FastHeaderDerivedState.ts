@@ -135,8 +135,10 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
 
         // Check if we need to start new context
         if (currentContext.length !== 0) {
-            contexts.push(currentContext);
-            currentContext = [];
+            if (currentContext[currentContext.length - 1].config.searchActive) {
+                contexts.push(currentContext);
+                currentContext = [];
+            }
         }
 
         currentContext.push(r);
@@ -177,11 +179,17 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
             });
         }
 
-        let position = v[0].progress.interpolate({
-            inputRange: [- 1, 0, 1],
-            outputRange: [-1, 0, 1],
-            extrapolate: 'clamp'
-        });
+        let position = Animated.add(
+            v[0].progress.interpolate({
+                inputRange: [- 1, 0],
+                outputRange: [-1, 0],
+                extrapolate: 'clamp'
+            }),
+            v[v.length - 1].progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+                extrapolate: 'clamp'
+            }));
 
         let backgroundOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
         for (let f of normalized) {
@@ -224,6 +232,7 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
             key: 'context-' + v[0].record.key
         } as NormalizedRouteContext;
     });
-    return res.reverse();
+    console.log(res);
+    return res;
     // return res;
 }
