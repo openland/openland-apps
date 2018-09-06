@@ -3,6 +3,7 @@ import { FlatList, FlatListProps, Animated } from 'react-native';
 import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
+import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -13,11 +14,7 @@ export interface ZFlatListProps<T> extends FlatListProps<T> {
 
 export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T> & { insets: { top: number, bottom: number } }> {
 
-    private contentOffset = new Animated.Value(0);
-    private contentOffsetEvent = Animated.event(
-        [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
-        { useNativeDriver: true }
-    );
+    private contentOffset = new FastScrollValue();
 
     render() {
 
@@ -31,7 +28,7 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
                     {...other}
                     style={[other.style, {
                         // Work-around for freezing navive animation driver
-                        opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                        opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
                     }]}
                     contentContainerStyle={this.props.inverted ?
                         {
@@ -45,7 +42,7 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
                         bottom: this.props.insets.bottom,
                         top: this.props.insets.top
                     }}
-                    onScroll={this.contentOffsetEvent}
+                    onScroll={this.contentOffset.event}
                     scrollEventThrottle={1}
                     {...fixedHeight ? {
                         getItemLayout: (item: any, index: number) => ({ offset: index * fixedHeight!!, length: fixedHeight, index })

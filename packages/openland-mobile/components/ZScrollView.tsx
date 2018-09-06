@@ -3,6 +3,7 @@ import { ScrollViewProps, Animated } from 'react-native';
 import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
+import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
 
 export interface ZScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
@@ -10,12 +11,7 @@ export interface ZScrollViewProps extends ScrollViewProps {
 }
 
 export class ZScrollView extends React.Component<ZScrollViewProps> {
-
-    private contentOffset = new Animated.Value(0);
-    private contentOffsetEvent = Animated.event(
-        [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
-        { useNativeDriver: true }
-    );
+    private contentOffset = new FastScrollValue();
 
     render() {
         let { syncWithBar, adjustPaddings, ...other } = this.props;
@@ -30,10 +26,10 @@ export class ZScrollView extends React.Component<ZScrollViewProps> {
                                 {...other}
                                 style={[other.style, {
                                     // Work-around for freezing navive animation driver
-                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
                                     backgroundColor: '#fff'
                                 }]}
-                                onScroll={this.contentOffsetEvent}
+                                onScroll={this.contentOffset.event}
                                 scrollEventThrottle={1}
                                 scrollIndicatorInsets={{
                                     bottom: area.bottom,

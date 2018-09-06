@@ -10,6 +10,7 @@ import { StyleProp, ViewStyle, Animated } from 'react-native';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
+import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
 
 type ListQuery<Q> = {
     items: {
@@ -36,11 +37,7 @@ export interface ZAsyncRoutedListProps<Q, V> {
 }
 
 export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>> {
-    private contentOffset = new Animated.Value(0);
-    private contentOffsetEvent = Animated.event(
-        [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
-        { useNativeDriver: true }
-    );
+    private contentOffset = new FastScrollValue();
 
     private isLoading = false;
     private nextCursor: string | undefined;
@@ -97,13 +94,13 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                             <FastHeaderConfigRegistrator config={new FastHeaderConfig({ contentOffset: this.contentOffset })} />
                             <ASListView
                                 style={[this.props.style, {
-                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset)),
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
                                 } as any]}
                                 dataView={this.dataView}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 headerPadding={4}
-                                onScroll={this.contentOffsetEvent}
+                                onScroll={this.contentOffset.event}
                             />
                         </>
                     );

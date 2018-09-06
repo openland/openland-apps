@@ -6,6 +6,7 @@ import { FastHistoryRecord } from '../FastHistory';
 import { FastBlurredView } from '../utils/FastBlurView';
 import { FastHeaderConfig } from '../FastHeaderConfig';
 import { FastHeaderTitle } from './FastHeaderTitle';
+import { FastScrollValue } from '../FastScrollValue';
 
 interface NormalizedRoute {
     current: boolean;
@@ -27,6 +28,7 @@ const defaultBackgroundOffset = new Animated.Value(DeviceConfig.navigationBarHei
 
 // const NAVIGATOR_MIN_HEIGHT = ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight;
 const zeroValue = new Animated.Value(0);
+const zeroValueTracked = new FastScrollValue();
 const oneValue = new Animated.Value(1);
 
 let styles = StyleSheet.create({
@@ -125,12 +127,12 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
             //
             // Content Offset with fallback to zero
             //
-            let inputOffset = contentOffset ? contentOffset : zeroValue;
+            let inputOffset = contentOffset ? contentOffset : zeroValueTracked;
 
             //
             // Invert offset since negative offset in scroll views (when we overscroll) is when it scrolled down
             //
-            let invertedOffset = Animated.multiply(inputOffset, -1);
+            let invertedOffset = Animated.multiply(inputOffset.offset, -1);
 
             if ((config.appearance !== 'small' && config.appearance !== 'small-hidden')) {
 
@@ -175,7 +177,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
 
             if (contentOffset || (config.appearance !== 'small')) {
                 // Update title opacity for hiding when bar is expanded
-                titleOpacity = Animated.multiply(interpolated, inputOffset.interpolate({
+                titleOpacity = Animated.multiply(interpolated, inputOffset.offset.interpolate({
                     inputRange: [0, resolvedTitleSwitchTreshold],
                     outputRange: [0, 1],
                     extrapolate: 'clamp'

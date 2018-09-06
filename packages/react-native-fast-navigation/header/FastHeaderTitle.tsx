@@ -3,6 +3,7 @@ import { Animated } from 'react-native';
 import { FastHeaderConfig } from '../FastHeaderConfig';
 import { FastHeaderTitleAndroid } from './FastHeaderTitleAndroid';
 import { FastHeaderTitleIOS } from './FastHeaderTitleIOS';
+import { FastScrollValue } from '../FastScrollValue';
 
 export interface FastHeaderTitleProps {
     index: number;
@@ -14,7 +15,7 @@ export interface FastHeaderTitleProps {
     rightView?: any;
 
     progress: Animated.AnimatedInterpolation;
-    contentOffset: Animated.AnimatedValue;
+    contentOffset: FastScrollValue;
     headerBaseHeight: Animated.AnimatedInterpolation;
     headerHeight: Animated.AnimatedInterpolation;
     config: FastHeaderConfig;

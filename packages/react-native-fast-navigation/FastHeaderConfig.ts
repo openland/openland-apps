@@ -1,13 +1,14 @@
 import { Animated } from 'react-native';
 import { FastHeaderButtonDescription } from './FastHeaderButtonDescription';
 import { FastHeaderAppearance, FastHeaderHairline } from './FastHeaderAppearance';
+import { FastScrollValue } from './FastScrollValue';
 
 export class FastHeaderConfig {
 
     readonly title?: string;
     readonly titleView?: any;
     readonly counter: number;
-    readonly contentOffset?: Animated.Value;
+    readonly contentOffset?: FastScrollValue;
     readonly buttons: FastHeaderButtonDescription[];
     readonly appearance?: FastHeaderAppearance;
     readonly hairline?: FastHeaderHairline;
@@ -16,7 +17,7 @@ export class FastHeaderConfig {
     readonly searchPress?: () => void;
     readonly searchClosed?: () => void;
 
-    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: Animated.Value, buttons?: FastHeaderButtonDescription[], appearance?: FastHeaderAppearance, hairline?: FastHeaderHairline, search?: boolean, searchActive?: boolean, searchPress?: () => void, searchClosed?: () => void }) {
+    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: FastScrollValue, buttons?: FastHeaderButtonDescription[], appearance?: FastHeaderAppearance, hairline?: FastHeaderHairline, search?: boolean, searchActive?: boolean, searchPress?: () => void, searchClosed?: () => void }) {
         this.counter = args.counter || 0;
         this.buttons = args.buttons || [];
         this.title = args.title;
@@ -34,7 +35,7 @@ export class FastHeaderConfig {
 export function mergeConfigs(configs: FastHeaderConfig[]) {
     let title: string | undefined;
     let buttons: FastHeaderButtonDescription[] = [];
-    let contentOffset: Animated.Value | undefined;
+    let contentOffset: FastScrollValue | undefined;
     let appearance: FastHeaderAppearance | undefined;
     let titleView: any | undefined;
     let hairline: FastHeaderHairline | undefined;

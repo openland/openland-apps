@@ -5,13 +5,11 @@ import { MobileMessenger } from '../../../messenger/MobileMessenger';
 import { Animated } from 'react-native';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
+import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
 
 export class DialogListComponent extends React.PureComponent<{ engine: MobileMessenger }> {
-    private contentOffset = new Animated.Value(0);
-    private contentOffsetEvent = Animated.event(
-        [{ nativeEvent: { contentOffset: { y: this.contentOffset } } }],
-        { useNativeDriver: true }
-    );
+    private contentOffset = new FastScrollValue();
+
     render() {
         return (
             <ZSafeAreaContext.Consumer>
@@ -23,8 +21,11 @@ export class DialogListComponent extends React.PureComponent<{ engine: MobileMes
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 dataView={this.props.engine.dialogs}
-                                style={{ flexGrow: 1 }}
-                                onScroll={this.contentOffsetEvent}
+                                style={[{ flexGrow: 1 }, {
+                                    // Work-around for freezing navive animation driver
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
+                                } as any]}
+                                onScroll={this.contentOffset.event}
                                 headerPadding={4}
                             />
                         </>

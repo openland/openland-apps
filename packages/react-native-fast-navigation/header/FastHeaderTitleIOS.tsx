@@ -3,6 +3,7 @@ import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, T
 import { FastHeaderTitleProps } from './FastHeaderTitle';
 import { FastHeaderBackButton } from './FastHeaderBackButton';
 import { DeviceConfig } from '../DeviceConfig';
+import { FastScrollValue } from '../FastScrollValue';
 
 const styles = StyleSheet.create({
     title: {
@@ -39,7 +40,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
     translateLarge = Animated.multiply(Animated.multiply(this.props.progress, Dimensions.get('window').width), -1);
     titleProgress = new Animated.Value(0);
     showed = false;
-    subscribedValue: Animated.Value | null = null;
+    subscribedValue: FastScrollValue | null = null;
     subscribed: string | null = null;
 
     constructor(props: FastHeaderTitleProps) {
@@ -67,9 +68,13 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         this.setState({ rightSize: val });
     }
 
-    private handleOffset = (state: { value: number }) => {
+    private handleOffset = () => {
+        if (!this.subscribedValue) {
+            return;
+        }
+        let value = this.subscribedValue!!.offsetValue;
         // console.log('Offset: ' + state.value);
-        if (state.value > 22) {
+        if (value > 22) {
             if (!this.showed) {
                 this.showed = true;
                 Animated.timing(this.titleProgress, {
@@ -97,14 +102,15 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
     // }
 
     componentWillMount() {
-        this.subscribed = this.props.contentOffset.addListener(this.handleOffset);
+        this.subscribed = this.props.contentOffset.offset.addListener(this.handleOffset);
         this.subscribedValue = this.props.contentOffset;
+        this.handleOffset();
         // this.handleOffsetUpdate(this.props.contentOffset.)
     }
 
     componentWillUnmount() {
         if (this.subscribed) {
-            this.subscribedValue!!.removeListener(this.subscribed);
+            this.subscribedValue!!.offset.removeListener(this.subscribed);
             this.subscribed = null;
             this.subscribedValue = null;
         }
@@ -132,12 +138,26 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         // Resubscribe
         if (this.subscribedValue !== nextProps.contentOffset) {
             if (this.subscribed) {
-                this.subscribedValue!!.removeListener(this.subscribed);
+                this.subscribedValue!!.offset.removeListener(this.subscribed);
                 this.subscribed = null;
                 this.subscribedValue = null;
             }
-            this.subscribed = nextProps.contentOffset.addListener(this.handleOffset);
+            this.subscribed = nextProps.contentOffset.offset.addListener(this.handleOffset);
             this.subscribedValue = nextProps.contentOffset;
+            // this.handleOffset();
+            if (this.subscribedValue.offsetValue > 22) {
+                this.showed = true;
+                this.titleProgress.setValue(1);
+                // this.titleProgress.stopAnimation((v) => {
+                //     this.titleProgress.setValue(1);
+                // });
+            } else {
+                this.showed = false;
+                this.titleProgress.setValue(0);
+                // this.titleProgress.stopAnimation((v) => {
+                //     this.titleProgress.setValue(0);
+                // });
+            }
         }
     }
 
