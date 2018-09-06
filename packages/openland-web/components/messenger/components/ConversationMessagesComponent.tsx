@@ -94,7 +94,7 @@ interface ConversationMessagesComponentProps {
     conversationId: string;
     conversationType?: string;
     inputShower?: (show: boolean) => void;
-    me: UserShortFragment | null;
+    me?: UserShortFragment | null;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
