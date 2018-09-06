@@ -2721,6 +2721,51 @@
               }
             },
             {
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "fromDate",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "toDate",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              ],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "statsChats",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ChatStats",
+                  "ofType": null
+                }
+              }
+            },
+            {
               "args": [],
               "deprecationReason": null,
               "description": "",
@@ -6985,6 +7030,22 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "longDescription",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "myStatus",
               "type": {
                 "kind": "NON_NULL",
@@ -7042,6 +7103,30 @@
               "description": "",
               "isDeprecated": false,
               "name": "photoRef",
+              "type": {
+                "kind": "OBJECT",
+                "name": "ImageRef",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "socialImage",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "socialImageRef",
               "type": {
                 "kind": "OBJECT",
                 "name": "ImageRef",
@@ -13430,6 +13515,49 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "messagesSent",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "usersActive",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "kind": "OBJECT",
+          "name": "ChatStats",
+          "possibleTypes": null
+        },
+        {
+          "description": "",
+          "enumValues": null,
+          "fields": [
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "id",
               "type": {
                 "kind": "NON_NULL",
@@ -13496,9 +13624,45 @@
               "isDeprecated": false,
               "name": "mobileNotifications",
               "type": {
-                "kind": "ENUM",
-                "name": "NotificationMessages",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "NotificationMessages",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "mobileAlert",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "mobileIncludeText",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
               }
             },
             {
@@ -17265,6 +17429,37 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "ConversationEventEditMessage",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "messageId",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  }
+                }
+              ],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "alphaDeleteMessage",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ConversationEventDelete",
                   "ofType": null
                 }
               }
@@ -21537,6 +21732,55 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "seq",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "messageId",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "ConversationEvent",
+              "ofType": null
+            }
+          ],
+          "kind": "OBJECT",
+          "name": "ConversationEventDelete",
+          "possibleTypes": null
+        },
+        {
+          "description": "",
+          "enumValues": null,
+          "fields": [
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "conversation",
               "type": {
                 "kind": "NON_NULL",
@@ -21590,6 +21834,36 @@
               "defaultValue": null,
               "description": "",
               "name": "photoRef",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ImageRefInput",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": "",
+              "name": "description",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": "",
+              "name": "longDescription",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": "",
+              "name": "socialImageRef",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "ImageRefInput",
@@ -21899,6 +22173,11 @@
             },
             {
               "kind": "OBJECT",
+              "name": "UserEventDeleteMessage",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "UserEventOwnMessage",
               "ofType": null
             },
@@ -22026,6 +22305,26 @@
               "type": {
                 "kind": "ENUM",
                 "name": "NotificationMessages",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": "",
+              "name": "mobileAlert",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": "",
+              "name": "mobileIncludeText",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -26465,6 +26764,38 @@
                 "name": "ImageRef",
                 "ofType": null
               }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "description",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "longDescription",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
             }
           ],
           "inputFields": null,
@@ -26477,55 +26808,6 @@
           ],
           "kind": "OBJECT",
           "name": "GroupConversation",
-          "possibleTypes": null
-        },
-        {
-          "description": "",
-          "enumValues": null,
-          "fields": [
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "seq",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "messageId",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                }
-              }
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [
-            {
-              "kind": "INTERFACE",
-              "name": "ConversationEvent",
-              "ofType": null
-            }
-          ],
-          "kind": "OBJECT",
-          "name": "ConversationEventDelete",
           "possibleTypes": null
         },
         {
@@ -26872,6 +27154,55 @@
           ],
           "kind": "OBJECT",
           "name": "UserEventEditMessage",
+          "possibleTypes": null
+        },
+        {
+          "description": "",
+          "enumValues": null,
+          "fields": [
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "seq",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "message",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ConversationMessage",
+                  "ofType": null
+                }
+              }
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "UserEvent",
+              "ofType": null
+            }
+          ],
+          "kind": "OBJECT",
+          "name": "UserEventDeleteMessage",
           "possibleTypes": null
         },
         {

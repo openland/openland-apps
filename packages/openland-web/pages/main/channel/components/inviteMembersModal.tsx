@@ -365,7 +365,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                         this.copyLink();
                     }
                 }}
-                title="Invite members to"
+                title="Invite people to"
                 titleChildren={<ChannelName>{this.props.channelTitle}</ChannelName>}
                 useTopCloser={true}
                 scrollableContent={true}

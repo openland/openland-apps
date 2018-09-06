@@ -76,6 +76,9 @@ export interface ChannelInviteRequest {
 export interface UpdateGroupInput {
   title?: string | null,
   photoRef?: ImageRefInput | null,
+  description?: string | null,
+  longDescription?: string | null,
+  socialImageRef?: ImageRefInput | null,
 };
 
 export enum DealStatus {
@@ -358,6 +361,8 @@ export interface UpdateSettingsInput {
   emailFrequency?: EmailFrequency | null,
   desktopNotifications?: NotificationMessages | null,
   mobileNotifications?: NotificationMessages | null,
+  mobileAlert?: boolean | null,
+  mobileIncludeText?: boolean | null,
   mute?: boolean | null,
 };
 
@@ -1072,6 +1077,19 @@ export interface ChatInfoQuery {
       featured: boolean,
       hidden: boolean,
       description: string,
+      longDescription: string,
+      socialImageRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
+      socialImage: string | null,
       myStatus: ChannelMembershipStatus,
       membersCount: number,
       memberRequestsCount: number,
@@ -3207,6 +3225,7 @@ export interface ChannelInviteInfoQuery {
       description: string,
       myStatus: ChannelMembershipStatus,
       membersCount: number,
+      socialImage: string | null,
       organization:  {
         __typename: "Organization",
         id: string,
@@ -6497,7 +6516,7 @@ export interface SettingsQuery {
     primaryEmail: string,
     emailFrequency: EmailFrequency,
     desktopNotifications: NotificationMessages,
-    mobileNotifications: NotificationMessages | null,
+    mobileNotifications: NotificationMessages,
   },
 };
 
@@ -6512,7 +6531,7 @@ export interface SettingsUpdateMutation {
     primaryEmail: string,
     emailFrequency: EmailFrequency,
     desktopNotifications: NotificationMessages,
-    mobileNotifications: NotificationMessages | null,
+    mobileNotifications: NotificationMessages,
   },
 };
 
@@ -8450,7 +8469,7 @@ export interface SettingsFullFragment {
   primaryEmail: string,
   emailFrequency: EmailFrequency,
   desktopNotifications: NotificationMessages,
-  mobileNotifications: NotificationMessages | null,
+  mobileNotifications: NotificationMessages,
 };
 
 export interface UserShortFragment {

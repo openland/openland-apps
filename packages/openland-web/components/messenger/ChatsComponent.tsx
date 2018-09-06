@@ -380,7 +380,10 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     }
 
     onSelect = () => {
-        this.setState({ query: '' });
+        this.setState({
+            query: '',
+            chatsLength: this.props.data.chats.conversations.length
+        });
     }
 
     componentDidMount() {
@@ -467,9 +470,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     }
 
     itemsCount = (items: number) => {
-        let { chatsLength, query } = this.state;
-
-        if (items !== chatsLength && query !== '') {
+        if (items !== this.state.chatsLength) {
             this.setState({
                 chatsLength: items
             });

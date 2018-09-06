@@ -38,7 +38,7 @@ const InfoText = Glamorous.div({
 const InviteInfo = withChannelInviteInfo((props) => {
     return (
         <>
-            <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={InitTexts.socialPageTitle} />
+            <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={props.data.invite && props.data.invite.channel.description || InitTexts.socialPageTitle} imgUrl={props.data.invite ? props.data.invite.channel.socialImage : undefined} />
             <XTrack event="Join Channel">
                 <Root>
                     <SideBarWrapper>
@@ -50,7 +50,7 @@ const InviteInfo = withChannelInviteInfo((props) => {
                                 noLogin={true}
                                 channel={props.data.invite.channel}
                                 invite={props.data.invite}
-                                signup={'/signin?redirect=' + encodeURIComponent((props as any).redirect)}
+                                signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
                             />
                         )}
                         {!props.data.invite && (

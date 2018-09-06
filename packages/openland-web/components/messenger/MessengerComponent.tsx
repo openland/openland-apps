@@ -8,7 +8,7 @@ import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
 import { makeNavigable } from 'openland-x/Navigable';
-import { XMenuTitle, XMenuItemWrapper } from 'openland-x/XMenuItem';
+import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XButton } from 'openland-x/XButton';
 import { withBlockUser } from '../../api/withBlockUser';
@@ -28,6 +28,7 @@ import { withAlterChat } from '../../api/withAlterChat';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import PlusIcon from '../icons/ic-add-medium.svg';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
+import { XTextArea } from 'openland-x/XTextArea';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -250,9 +251,65 @@ const ChannelTab = Glamorous(XLink)({
 });
 
 const AvatarUpload = Glamorous(XAvatarUpload)({
-    width: 84,
-    height: 84,
+    width: 96,
+    height: 96,
 });
+
+export const ChannelEditComponent = withAlterChat((props) => {
+    let editTitle = (props as any).title;
+    let editDescription = (props as any).description;
+    let editLongDescription = (props as any).longDescription;
+    let editPhotoRef = (props as any).photoRef;
+    let editSocialImageRef = (props as any).socialImageRef;
+    return (
+        <XModalForm
+            scrollableContent={true}
+            targetQuery="editChat"
+            title="Channel settings"
+            defaultAction={(data) => {
+                let newTitle = data.input.title;
+                let newDescription = data.input.description;
+                let newLongDescription = data.input.longDescription;
+                let newPhoto = data.input.photoRef;
+                let newSocialImage = data.input.socialImageRef;
+
+                props.alter({
+                    variables: {
+                        input: {
+                            ...newTitle !== editTitle ? { title: newTitle } : {},
+                            ...newDescription !== editDescription ? { description: newDescription } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
+                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
+                        }
+                    }
+                });
+            }}
+            defaultData={{
+                input: {
+                    title: (props as any).title || '',
+                    description: (props as any).description || '',
+                    longDescription: (props as any).longDescription || '',
+                    photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
+                }
+            }}
+        >
+            <XVertical>
+                <XHorizontal>
+                    <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                    <XVertical flexGrow={1}>
+                        <XInput field="input.title" placeholder="Title" color="primary-sky-blue" size="r-default" />
+                        <XInput field="input.description" placeholder="Short Description" color="primary-sky-blue" size="r-default" />
+                    </XVertical>
+                </XHorizontal>
+
+                <XTextArea valueStoreKey="fields.input.longDescription" placeholder="Description" resize={false} />
+                <XAvatarUpload field="input.socialImageRef" placeholder={{ add: 'Add social image', change: 'Change social image' }} />
+            </XVertical>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ title: string, photoRef: any, description: string, longDescription: string, socialImageRef: any, refetchVars: { conversationId: string } }>;
 
 export const ChatEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
@@ -380,7 +437,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         <AddButton
                                             text="Invite"
                                             iconResponsive={<PlusIcon />}
-                                            icon={<PlusIcon className="icon"/>}
+                                            icon={<PlusIcon className="icon" />}
                                             size="r-default"
                                             alignSelf="center"
                                         />
@@ -417,9 +474,25 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         <XMenuTitle>Super admin</XMenuTitle>
                                         <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
                                         <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                        <XMenuTitle>Common</XMenuTitle>
+                                        <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
                                     </div>
                                 )}
                             />
+                        </XWithRole>}
+                        {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']} negate={true}>
+                            <XWithRole role={['admin']} orgPermission={true}>
+                                <XOverflow
+                                    flat={true}
+                                    placement="bottom-end"
+                                    content={(
+                                        <div style={{ width: 160 }}>
+                                            <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
+                                        </div>
+                                    )}
+                                />
+                            </XWithRole>
+
                         </XWithRole>}
                     </XHorizontal>
                 </ChatHeaderContent>
@@ -447,6 +520,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 )}
             </XHorizontal>
             {<ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
+            {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
         </XVertical>
     );
 }));
