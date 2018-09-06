@@ -526,6 +526,7 @@ export const ChannelInviteInfoQuery = gql`
                 description
                 myStatus
                 membersCount
+                socialImage
                 organization{
                     id
                     isMine

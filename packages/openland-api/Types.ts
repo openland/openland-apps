@@ -3225,6 +3225,7 @@ export interface ChannelInviteInfoQuery {
       description: string,
       myStatus: ChannelMembershipStatus,
       membersCount: number,
+      socialImage: string | null,
       organization:  {
         __typename: "Organization",
         id: string,
