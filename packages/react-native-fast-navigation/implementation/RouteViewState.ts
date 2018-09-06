@@ -50,10 +50,9 @@ export class RouteViewState {
     startSearch() {
         if (!this.searchStarted) {
             this.searchStarted = true;
-            Animated.timing(this.searchProgress, {
+            Animated.spring(this.searchProgress, {
                 toValue: 1,
-                duration: 340,
-                easing: Easing.inOut(Easing.ease),
+                damping: 500,
                 useNativeDriver: true
             }).start();
         }
@@ -62,10 +61,9 @@ export class RouteViewState {
     stopSearch() {
         if (this.searchStarted) {
             this.searchStarted = false;
-            Animated.timing(this.searchProgress, {
+            Animated.spring(this.searchProgress, {
                 toValue: 0,
-                duration: 340,
-                easing: Easing.inOut(Easing.ease),
+                damping: 500,
                 useNativeDriver: true
             }).start();
         }

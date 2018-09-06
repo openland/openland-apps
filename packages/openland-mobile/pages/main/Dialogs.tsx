@@ -12,10 +12,10 @@ import { ZSafeAreaProvider } from '../../components/layout/ZSafeAreaContext';
 
 function startAnimation() {
     LayoutAnimation.configureNext({
-        duration: 340,
+        duration: 540,
         update: {
-            type: 'easeInEaseOut',
-            duration: 340
+            type: 'spring',
+            springDamping: 50
         }
     });
 }

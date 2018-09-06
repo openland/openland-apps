@@ -75,7 +75,8 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         }
         let value = this.subscribedValue!!.offsetValue;
         // console.log('Offset: ' + state.value);
-        if (value > 22) {
+        let delta = this.props.config.search ? 92 : 32;
+        if (value > delta) {
             if (!this.showed) {
                 this.showed = true;
                 Animated.timing(this.titleProgress, {
@@ -146,7 +147,8 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
             this.subscribed = nextProps.contentOffset.offset.addListener(this.handleOffset);
             this.subscribedValue = nextProps.contentOffset;
             // this.handleOffset();
-            if (this.subscribedValue.offsetValue > 22) {
+            let delta = nextProps.config.search ? 92 : 32;
+            if (this.subscribedValue.offsetValue > delta) {
                 this.showed = true;
                 this.titleProgress.setValue(1);
                 // this.titleProgress.stopAnimation((v) => {
