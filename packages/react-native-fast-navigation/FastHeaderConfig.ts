@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
-import { FastHeaderButtonDescription } from './FastHeaderButtonDescription';
 import { FastHeaderAppearance, FastHeaderHairline } from './FastHeaderAppearance';
 import { FastScrollValue } from './FastScrollValue';
+import { FastHeaderButtonDescription } from './FastHeaderButton';
 
 export class FastHeaderConfig {
 

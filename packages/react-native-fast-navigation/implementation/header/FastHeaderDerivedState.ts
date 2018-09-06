@@ -1,5 +1,5 @@
 import { Animated, Dimensions } from 'react-native';
-import { DeviceConfig } from '../DeviceConfig';
+import { DeviceConfig } from '../../DeviceConfig';
 import {
     defaultBackgroundOffset,
     defaultHairlineOffset,
@@ -8,7 +8,7 @@ import {
     NormalizedRouteState,
     NormalizedRouteContext
 } from './types';
-import { FastScrollValue } from '../FastScrollValue';
+import { FastScrollValue } from '../../FastScrollValue';
 import { interpolateContent } from '../utils/interpolateContent';
 
 const zeroValue = new Animated.Value(0);
@@ -87,6 +87,17 @@ export function buildDerivedState(route: NormalizedRoute, progress: Animated.Ani
                 });
         } else {
             screenHeaderBaseHeight = computedHairlineOffset;
+        }
+
+        if (config.search && config.searchActive) {
+            // screenHeaderBaseHeight = screenHeaderBaseHeight.interpolate({
+            //     inputRange: [0, resolvedNavigationBarHeight],
+            //     outputRange: [0, resolvedNavigationBarHeight],
+            //     extrapolate: 'clamp'
+            // });
+            // screenHairlineOffset = screenHeaderBaseHeight;
+            screenHeaderBaseHeight = defaultHairlineOffset;
+            screenHairlineOffset = defaultHairlineOffset;
         }
         // screenHeaderBaseHeight = computedHairlineOffset;
 

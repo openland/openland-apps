@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, Animated, StyleSheet, ViewStyle, Dimensions, Image, Platform } from 'react-native';
-import { FastHeaderBackButton } from './FastHeaderBackButton';
-import { DeviceConfig } from '../DeviceConfig';
-import { FastHistoryManager } from '../FastHistory';
+import { DeviceConfig } from '../../DeviceConfig';
+import { FastHistoryManager } from '../../FastHistory';
 import { FastBlurredView } from '../utils/FastBlurView';
 import { FastHeaderTitle } from './FastHeaderTitle';
 import { NormalizedRoute, BACKGROUND_SIZE } from './types';
-import { buildDerivedState, buildDerivedContexts } from './FastHeaderDerivedState';
+import { buildDerivedContexts } from './FastHeaderDerivedState';
+import { FastHeaderBackButton } from '../../views/FastHeaderBackButton';
 
 let styles = StyleSheet.create({
     titleWrapper: {
@@ -128,26 +128,51 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     </View>
 
                     {/* Background */}
-                    <View style={styles.backgroundContainer} pointerEvents="box-none">
-                        <Animated.View
-                            style={{
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                transform: [{ translateY: ctx.backgroundOffset }],
-                                height: BACKGROUND_SIZE,
-                                zIndex: 1
-                            }}
-                        >
-                            <FastBlurredView
+                    {DeviceConfig.debugBackground && (
+                        <View style={styles.backgroundContainer} pointerEvents="box-none">
+                            <Animated.View
                                 style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    transform: [{ translateY: ctx.backgroundOffset }],
                                     height: BACKGROUND_SIZE,
-                                    width: '100%',
+                                    zIndex: 1
                                 }}
-                            />
-                        </Animated.View>
-                    </View>
+                            >
+                                <View
+                                    style={{
+                                        height: BACKGROUND_SIZE,
+                                        width: '100%',
+                                        backgroundColor: '#0f0'
+                                    }}
+                                />
+                            </Animated.View>
+                        </View>
+                    )}
+                    {!DeviceConfig.debugBackground && (
+                        <View style={styles.backgroundContainer} pointerEvents="box-none">
+                            <Animated.View
+                                style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    transform: [{ translateY: ctx.backgroundOffset }],
+                                    height: BACKGROUND_SIZE,
+                                    zIndex: 1
+                                }}
+                            >
+                                <FastBlurredView
+                                    style={{
+                                        height: BACKGROUND_SIZE,
+                                        width: '100%',
+                                    }}
+                                />
+                            </Animated.View>
+                        </View>
+                    )}
 
                     {/* Hairline */}
                     <Animated.View
@@ -179,7 +204,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         <Animated.View
                             style={[
                                 styles.styleMainContainerTransparent,
-                                searchActive && styles.styleMainContainerTransparentSearch,
+                                // searchActive && styles.styleMainContainerTransparentSearch,
                                 {
                                     transform: [{ translateX: ctx.positionContent }]
                                 }

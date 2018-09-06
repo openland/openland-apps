@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { FastHistoryRecord, FastHistoryManager } from '../FastHistory';
+import { FastHistoryManager } from '../../FastHistory';
 import { Animated } from 'react-native';
-import { FastHeaderConfig } from '../FastHeaderConfig';
+import { FastHeaderConfig } from '../../FastHeaderConfig';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { FastHeader } from './FastHeader';
-
-interface Route {
-    record: FastHistoryRecord;
-    progress: Animated.AnimatedInterpolation;
-}
+import { FastHistoryRecord } from '../../FastHistoryRecord';
+import { RouteViewState } from '../RouteViewState';
 
 export interface FastHeaderContainerProps {
-    routes: Route[];
+    routes: RouteViewState[];
     mounted: string[];
     history: FastHistoryManager;
 }
@@ -60,7 +57,7 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
         }
     }
 
-    watchRoutes(routes: Route[]) {
+    watchRoutes(routes: RouteViewState[]) {
         // Create new subscriptions
         for (let w of routes) {
             if (!this.subscriptions.has(w.record.key)) {

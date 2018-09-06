@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Button, Platform } from 'react-native';
 import UUID from 'uuid/v4';
-import { FastHeaderActionButtonAndroid } from './header/FastHeaderActionButtonAndroid';
+import { FastHeaderActionButtonAndroid } from './views/FastHeaderActionButtonAndroid';
 import { FastHeaderConfigRegistrator } from './FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from './FastHeaderConfig';
-import { FastHeaderActionButtonIOS } from './header/FastHeaderActionButtonIOS';
+import { FastHeaderActionButtonIOS } from './views/FastHeaderActionButtonIOS';
 
 export interface FastHeaderButtonDescription {
     id: string;

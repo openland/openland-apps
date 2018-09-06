@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { View, BackHandler } from 'react-native';
-import { FastRoutes } from './FastRoutes';
 import { FastHistoryManager } from './FastHistory';
-import UUID from 'uuid/v4';
-import { Container } from './containers/Container';
+import { Container } from './implementation/Container';
 
 export interface FastRouterProviderProps {
     history: FastHistoryManager;

@@ -1,9 +1,6 @@
 import * as React from 'react';
-// import { ZTouchable } from '../ZTouchable';
 import { Image, View, Text, Platform } from 'react-native';
-import { FastTouchable } from '../utils/FastTouchable';
-// import { isAndroid } from '../../utils/isAndroid';
-// import { AppStyles } from '../../styles/AppStyles';
+import { FastTouchable } from '../implementation/utils/FastTouchable';
 
 let image = (inverted: boolean) => Platform.OS === 'android' ?
     (

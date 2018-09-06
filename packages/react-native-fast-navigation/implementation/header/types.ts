@@ -1,8 +1,8 @@
-import { FastHistoryRecord } from '../FastHistory';
-import { FastHeaderConfig } from '../FastHeaderConfig';
+import { FastHeaderConfig } from '../../FastHeaderConfig';
 import { Animated, Dimensions } from 'react-native';
-import { FastScrollValue } from '../FastScrollValue';
-import { DeviceConfig } from '../DeviceConfig';
+import { FastScrollValue } from '../../FastScrollValue';
+import { DeviceConfig } from '../../DeviceConfig';
+import { FastHistoryRecord } from '../../FastHistoryRecord';
 
 export interface NormalizedRoute {
     mounted: boolean;

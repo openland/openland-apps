@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Animated } from 'react-native';
-import { FastHeaderConfig } from '../FastHeaderConfig';
+import { FastHeaderConfig } from '../../FastHeaderConfig';
 import { FastHeaderTitleAndroid } from './FastHeaderTitleAndroid';
 import { FastHeaderTitleIOS } from './FastHeaderTitleIOS';
-import { FastScrollValue } from '../FastScrollValue';
+import { FastScrollValue } from '../../FastScrollValue';
 
 export interface FastHeaderTitleProps {
     index: number;

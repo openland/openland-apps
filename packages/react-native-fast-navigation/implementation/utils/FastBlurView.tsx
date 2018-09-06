@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ViewProps, View } from 'react-native';
 import { BlurView } from 'react-native-blur';
-import { DeviceConfig } from '../DeviceConfig';
+import { DeviceConfig } from '../../DeviceConfig';
 
 export class FastBlurredView extends React.PureComponent<ViewProps & { intensity?: 'normal' | 'high' }> {
     render() {

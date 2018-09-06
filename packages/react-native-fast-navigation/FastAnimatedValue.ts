@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
 import { Watcher } from 'openland-y-utils/Watcher';
 
-export class TrackedAnimatedValue {
+export class FastAnimatedValue {
     readonly animated: Animated.Value;
     readonly value: Watcher<number>;
 

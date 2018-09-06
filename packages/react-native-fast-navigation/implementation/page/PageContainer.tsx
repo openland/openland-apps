@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { FastRouter } from '../FastRouter';
-import { View, StyleSheet, ViewStyle, Animated, Dimensions, Platform } from 'react-native';
+import { View, StyleSheet, ViewStyle, Animated } from 'react-native';
 import { PageImmutableContainer } from './PageImmutableContainer';
 import { interpolateContent } from '../utils/interpolateContent';
+import { interpolateOverlayShadow } from '../utils/interpolateOverlayShadow';
+import { FastRouter } from '../../FastRouter';
 
 const styles = StyleSheet.create({
     root: {
@@ -23,23 +24,13 @@ export interface PageContainerProps {
 }
 
 function buildInterpolations(src: Animated.AnimatedInterpolation) {
-    let w = Dimensions.get('window').width;
-    let progressTranslate: Animated.AnimatedInterpolation = interpolateContent(src);
-    let underlayOpacity: Animated.AnimatedInterpolation;
-
-    underlayOpacity = src.interpolate({
-        inputRange: [-1, 0],
-        outputRange: [0, 0.2],
-        extrapolate: 'clamp'
-    });
-
     return {
-        progressTranslate,
-        underlayOpacity
+        progressTranslate: interpolateContent(src),
+        overlayOpacity: interpolateOverlayShadow(src)
     };
 }
 
-export class PageContainer extends React.PureComponent<PageContainerProps, { progressTranslate: Animated.AnimatedInterpolation, underlayOpacity: Animated.AnimatedInterpolation }> {
+export class PageContainer extends React.PureComponent<PageContainerProps, { progressTranslate: Animated.AnimatedInterpolation, overlayOpacity: Animated.AnimatedInterpolation }> {
 
     private handledProgress: Animated.AnimatedInterpolation;
 
@@ -60,19 +51,6 @@ export class PageContainer extends React.PureComponent<PageContainerProps, { pro
         return (
             <View style={[styles.root, !this.props.mounted && styles.rootUnmounted]} pointerEvents="box-none">
                 <Animated.View
-                    key="shadow"
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        opacity: this.props.mounted ? this.state.underlayOpacity : 0,
-                        backgroundColor: '#000'
-                    }}
-                    pointerEvents="none"
-                />
-                <Animated.View
                     key="page"
                     style={{
                         position: 'absolute',
@@ -85,6 +63,19 @@ export class PageContainer extends React.PureComponent<PageContainerProps, { pro
                 >
                     <PageImmutableContainer component={this.props.component} router={this.props.router} />
                 </Animated.View>
+                <Animated.View
+                    key="shadow"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        opacity: this.props.mounted ? this.state.overlayOpacity : 0,
+                        backgroundColor: '#000'
+                    }}
+                    pointerEvents="none"
+                />
             </View>
         );
     }

@@ -1,71 +1,55 @@
-import { FastRouter } from './FastRouter';
 import { FastRoutes } from './FastRoutes';
-import UUID from 'uuid/v4';
-import { WatchSubscription, Watcher } from 'openland-y-utils/Watcher';
-import { Animated } from 'react-native';
-import { FastHeaderConfig } from './FastHeaderConfig';
-
-export interface FastHistoryRecord {
-    readonly route: string;
-    readonly key: string;
-    readonly params: any;
-    readonly component: React.ComponentType<{}>;
-    readonly router: FastRouter;
-    readonly contentOffset: Animated.Value;
-    readonly config: Watcher<FastHeaderConfig>;
-    readonly prevKey?: string;
-    readonly startIndex: number;
-}
-
-export class FastHistory {
-    readonly history: FastHistoryRecord[];
-    constructor(history: FastHistoryRecord[]) {
-        this.history = [...history];
-    }
-}
+import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { FastHistoryRecord } from './FastHistoryRecord';
+import { FastHistoryState } from './FastHistoryState';
 
 export interface HistoryWatcher {
-    onPushed(record: FastHistoryRecord, history: FastHistory): void;
-    onPopped(record: FastHistoryRecord, history: FastHistory, args?: { immediate?: boolean }): void;
+    onPushed(record: FastHistoryRecord, state: FastHistoryState): void;
+    onPopped(record: FastHistoryRecord, state: FastHistoryState, args?: { immediate?: boolean }): void;
 }
 
 export class FastHistoryManager {
     readonly routes: FastRoutes;
-    private history: FastHistory;
+    private state: FastHistoryState;
     private watchers: HistoryWatcher[] = [];
     private locksCount = 0;
 
-    private createRecord(index: number, route: string, params?: any, prevKey?: string): FastHistoryRecord {
-        let key = 'page-' + index + '-' + UUID();
-        let component = this.routes.resolvePath(route);
-        let router = {
-            route,
-            index,
-            key,
-            params: params || {},
-            push: (destRoute: string, destParams?: any) => {
-                this.push(destRoute, destParams, key);
-            },
-            back: (args?: { immediate?: boolean }) => {
-                return this.pop(args, key);
-            },
-            updateConfig: (config) => {
-                this.updateConfig(key, config);
-            },
-            prevKey
-        } as FastRouter;
-        let cfg = new Watcher<FastHeaderConfig>();
-        cfg.setState(new FastHeaderConfig({}));
-        return { route: route, params, key, component, router, contentOffset: new Animated.Value(0), config: cfg, startIndex: index };
-    }
-
     constructor(routes: FastRoutes) {
         this.routes = routes;
-        this.history = new FastHistory([this.createRecord(0, routes.defaultRoute)]);
+        this.state = new FastHistoryState([new FastHistoryRecord(this, 0, routes.defaultRoute)]);
     }
 
     getState() {
-        return this.history;
+        return this.state;
+    }
+
+    push = (route: string, params?: any) => {
+        if (this.locksCount > 0) {
+            return;
+        }
+        let record = new FastHistoryRecord(this, this.state.history.length, route, params, this.state.history[this.state.history.length - 1].key);
+        let nhistory = new FastHistoryState([...this.state.history, record]); // keep to avoid insonsistency if we will change routes in watchers
+        this.state = nhistory;
+        for (let w of this.watchers) {
+            w.onPushed(record, nhistory);
+        }
+    }
+    pop = (args?: { immediate?: boolean }) => {
+        if (this.locksCount > 0) {
+            return;
+        }
+        if (this.state.history.length <= 1) {
+            return false;
+        }
+        let removed = this.state.history[this.state.history.length - 1];
+        let r = [...this.state.history];
+        r.splice(r.length - 1, 1);
+        let nhistory = new FastHistoryState(r);
+        this.state = nhistory;
+        for (let w of this.watchers) {
+            w.onPopped(removed, nhistory, args);
+        }
+        return true;
     }
 
     watch(watcher: HistoryWatcher): WatchSubscription {
@@ -82,13 +66,6 @@ export class FastHistoryManager {
         };
     }
 
-    updateConfig = (key: string, config: FastHeaderConfig) => {
-        let r = this.history.history.find((v) => v.key === key);
-        if (r) {
-            r.config.setState(config);
-        }
-    }
-
     beginLock = () => {
         var locked = true;
         this.locksCount++;
@@ -100,42 +77,7 @@ export class FastHistoryManager {
         };
     }
 
-    push = (route: string, params?: any, current?: String) => {
-        if (this.locksCount > 0) {
-            return;
-        }
-        if (current) {
-            if (this.history.history[this.history.history.length - 1].key !== current) {
-                return;
-            }
-        }
-        let record = this.createRecord(this.history.history.length, route, params, this.history.history[this.history.history.length - 1].key);
-        let nhistory = new FastHistory([...this.history.history, record]); // keep to avoid insonsistency if we will change routes in watchers
-        this.history = nhistory;
-        for (let w of this.watchers) {
-            w.onPushed(record, nhistory);
-        }
-    }
-    pop = (args?: { immediate?: boolean }, current?: String) => {
-        if (this.locksCount > 0) {
-            return;
-        }
-        if (current) {
-            if (this.history.history[this.history.history.length - 1].key !== current) {
-                return false;
-            }
-        }
-        if (this.history.history.length <= 1) {
-            return false;
-        }
-        let removed = this.history.history[this.history.history.length - 1];
-        let r = [...this.history.history];
-        r.splice(r.length - 1, 1);
-        let nhistory = new FastHistory(r);
-        this.history = nhistory;
-        for (let w of this.watchers) {
-            w.onPopped(removed, nhistory, args);
-        }
-        return true;
+    resolvePath(route: string) {
+        return this.routes.resolvePath(route);
     }
 }

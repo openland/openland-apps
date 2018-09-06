@@ -113,15 +113,15 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
                                     {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
                                 </ZListItemGroup>
-                                {/* <ZListItemGroup header="Dev Tools">
-                                        <ZListItem text="Typography" path="DevTypography" />
-                                        <ZListItem text="Components" path="DevComponents" />
-                                        <ZListItem text="Navigation" path="DevNavigation" />
-                                        <ZListItem text="Loader" path="DevLoader" />
-                                        <ZListItem text="Reboot" onPress={this.handleReboot} />
-                                        <ZListItem text="Log out" onPress={this.handleLogout} />
-                                    </ZListItemGroup>
-                                    <ZListItemFooter /> */}
+                                <ZListItemGroup header="Dev Tools">
+                                    <ZListItem text="Typography" path="DevTypography" />
+                                    <ZListItem text="Components" path="DevComponents" />
+                                    <ZListItem text="Navigation" path="DevNavigation" />
+                                    <ZListItem text="Loader" path="DevLoader" />
+                                    <ZListItem text="Reboot" onPress={this.handleReboot} />
+                                    <ZListItem text="Log out" onPress={this.handleLogout} />
+                                </ZListItemGroup>
+                                <ZListItemFooter />
                                 <ZListItemFooter />
                             </ZScrollView>
                         );

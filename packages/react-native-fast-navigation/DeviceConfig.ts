@@ -30,5 +30,6 @@ export const DeviceConfig = {
     navigationBarContentInsetSmall,
     navigationBarTransparent,
     bottomNavigationBarInset,
-    enableBlur
+    enableBlur,
+    debugBackground: false
 };

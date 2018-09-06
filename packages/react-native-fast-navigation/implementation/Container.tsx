@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { View, Animated, Easing, Dimensions, Platform, StyleSheet, ViewStyle, Keyboard } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerStateChangeEvent, State } from 'react-native-gesture-handler';
-import { FastHistoryRecord, HistoryWatcher, FastHistory, FastHistoryManager } from '../FastHistory';
+import { HistoryWatcher, FastHistoryManager } from '../FastHistory';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { FastHeaderGuard } from '../header/FastHeaderGuard';
+import { FastHeaderGuard } from './header/FastHeaderGuard';
 import { DeviceConfig } from '../DeviceConfig';
-import { PageContainer } from './PageContainer';
+import { PageContainer } from './page/PageContainer';
+import { FastHistoryRecord } from '../FastHistoryRecord';
+import { FastHistoryState } from '../FastHistoryState';
+import { RouteViewState } from './RouteViewState';
 
 const styles = StyleSheet.create({
     root: {
@@ -33,47 +36,8 @@ const styles = StyleSheet.create({
     } as ViewStyle
 });
 
-class HistoryRecordHolder {
-    readonly record: FastHistoryRecord;
-    readonly progressValue: Animated.Value;
-    readonly progress: Animated.AnimatedInterpolation;
-    private readonly useProgress: Animated.Value = new Animated.Value(1);
-    private readonly useSwipe: Animated.Value = new Animated.Value(0);
-    private readonly useSwipePrev: Animated.Value = new Animated.Value(0);
-
-    constructor(record: FastHistoryRecord, progress: Animated.Value, swipe: Animated.AnimatedInterpolation, swipePrev: Animated.AnimatedInterpolation) {
-        this.record = record;
-        this.progressValue = progress;
-        this.progress = Animated.add(
-            Animated.add(
-                Animated.multiply(this.useProgress, progress),
-                Animated.multiply(this.useSwipe, swipe)
-            ),
-            Animated.multiply(this.useSwipePrev, swipePrev)
-        );
-    }
-
-    startSwipe() {
-        this.useProgress.setValue(0);
-        this.useSwipe.setValue(1);
-        this.useSwipePrev.setValue(0);
-    }
-
-    startSwipePRev() {
-        this.useProgress.setValue(0);
-        this.useSwipe.setValue(0);
-        this.useSwipePrev.setValue(1);
-    }
-
-    stopSwipe() {
-        this.useProgress.setValue(1);
-        this.useSwipe.setValue(0);
-        this.useSwipePrev.setValue(0);
-    }
-}
-
-function prepareInitialRecords(routes: FastHistoryRecord[], swipe: Animated.AnimatedInterpolation, swipePrev: Animated.AnimatedInterpolation): HistoryRecordHolder[] {
-    return routes.map((v, i) => new HistoryRecordHolder(v, new Animated.Value(i === routes.length - 1 ? 0 : 1), swipe, swipePrev));
+function prepareInitialRecords(routes: FastHistoryRecord[], swipe: Animated.AnimatedInterpolation, swipePrev: Animated.AnimatedInterpolation): RouteViewState[] {
+    return routes.map((v, i) => new RouteViewState(v, new Animated.Value(i === routes.length - 1 ? 0 : 1), swipe, swipePrev));
 }
 
 function animate(value: Animated.Value, to: number) {
@@ -97,7 +61,7 @@ function animate(value: Animated.Value, to: number) {
 }
 
 interface ContainerState {
-    routes: HistoryRecordHolder[];
+    routes: RouteViewState[];
     mounted: string[];
     transitioning: boolean;
 }
@@ -111,11 +75,11 @@ const FULL_TRASITION_DELAY = 250;
 export class Container extends React.PureComponent<ContainerProps, ContainerState> implements HistoryWatcher {
 
     private subscription?: WatchSubscription;
-    private routes: HistoryRecordHolder[];
+    private routes: RouteViewState[];
     private mounted: string[];
     private removing: string[];
     private current: string;
-    private currentHistory: FastHistory;
+    private currentHistory: FastHistoryState;
     private panOffset = new Animated.Value(0);
     private panOffsetCurrent = this.panOffset.interpolate({
         inputRange: [0, Dimensions.get('window').width],
@@ -128,8 +92,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         extrapolate: 'clamp'
     });
     private panEvent = Animated.event([{ nativeEvent: { translationX: this.panOffset } }], { useNativeDriver: true });
-    private swipeCurrent?: HistoryRecordHolder;
-    private swipePrev?: HistoryRecordHolder;
+    private swipeCurrent?: RouteViewState;
+    private swipePrev?: RouteViewState;
     private swipeHistoryLock?: () => void;
 
     constructor(props: ContainerProps) {
@@ -158,13 +122,13 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         }
     }
 
-    onPushed = (record: FastHistoryRecord, history: FastHistory) => {
+    onPushed = (record: FastHistoryRecord, state: FastHistoryState) => {
         Keyboard.dismiss();
 
-        let underlay = history.history[history.history.length - 2].key;
+        let underlay = state.history[state.history.length - 2].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
         let progress = new Animated.Value(-1);
-        let newRecord = new HistoryRecordHolder(record, progress, this.panOffsetCurrent, this.panOffsetPrev);
+        let newRecord = new RouteViewState(record, progress, this.panOffsetCurrent, this.panOffsetPrev);
 
         // Start animation
         let unlock = this.props.historyManager.beginLock();
@@ -191,24 +155,24 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.routes = [...this.routes, newRecord];
         this.mounted = [...this.mounted, newRecord.record.key];
         this.current = newRecord.record.key;
-        this.currentHistory = history;
+        this.currentHistory = state;
         this.setState({ mounted: this.mounted, routes: this.routes, transitioning: true });
     }
-    onPopped = (record: FastHistoryRecord, history: FastHistory, args?: { immediate?: boolean }) => {
+    onPopped = (record: FastHistoryRecord, state: FastHistoryState, args?: { immediate?: boolean }) => {
         Keyboard.dismiss();
 
         let holder = this.routes.find((v) => v.record.key === record.key)!!;
-        let underlay = history.history[history.history.length - 1].key;
+        let underlay = state.history[state.history.length - 1].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
-        this.current = history.history[history.history.length - 1].key;
-        this.currentHistory = history;
+        this.current = state.history[state.history.length - 1].key;
+        this.currentHistory = state;
 
         let alreadyRemoving = this.removing.find((v) => v === record.key);
         if (!alreadyRemoving) {
             let unlock = this.props.historyManager.beginLock();
             setTimeout(unlock, FULL_TRASITION_DELAY);
             this.removing = [...this.removing, holder.record.key];
-            this.mounted = [...this.mounted, history.history[history.history.length - 1].key];
+            this.mounted = [...this.mounted, state.history[state.history.length - 1].key];
             Animated.parallel([
                 animate(underlayHolder.progressValue, 0),
                 animate(holder.progressValue, -1)
@@ -236,7 +200,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             this.swipeCurrent = this.routes.find((v) => v.record.key === current)!!;
             this.swipePrev = this.routes.find((v) => v.record.key === prev)!!;
             this.swipeCurrent.startSwipe();
-            this.swipePrev.startSwipePRev();
+            this.swipePrev.startSwipePrev();
 
             this.mounted = [...this.mounted, this.currentHistory.history[this.currentHistory.history.length - 2].key];
             this.setState({ mounted: this.mounted });

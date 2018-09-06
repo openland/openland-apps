@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { FastRouter, FastRouterContext } from '../FastRouter';
+import { FastRouter, FastRouterContext } from '../../FastRouter';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { FastHeaderContextDirect } from '../FastHeaderContextDirect';
-import { FastRouterProvider } from '../FastRouterProvider';
+import { FastHeaderContextDirect } from '../../FastHeaderContextDirect';
 
 const styles = StyleSheet.create({
     root: {

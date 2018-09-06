@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Animated } from 'react-native';
-import { DeviceConfig } from '../DeviceConfig';
+import { DeviceConfig } from '../../DeviceConfig';
 import { FastHeaderTitleProps } from './FastHeaderTitle';
 
 const styles = StyleSheet.create({

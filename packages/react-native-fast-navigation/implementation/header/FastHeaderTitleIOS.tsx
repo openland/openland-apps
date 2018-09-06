@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, TextStyle, Dimensions, Image, Button, TouchableWithoutFeedback } from 'react-native';
 import { FastHeaderTitleProps } from './FastHeaderTitle';
-import { FastHeaderBackButton } from './FastHeaderBackButton';
-import { DeviceConfig } from '../DeviceConfig';
-import { FastScrollValue } from '../FastScrollValue';
+import { DeviceConfig } from '../../DeviceConfig';
+import { FastScrollValue } from '../../FastScrollValue';
+import { FastHeaderBackButton } from '../../views/FastHeaderBackButton';
 
 const styles = StyleSheet.create({
     title: {

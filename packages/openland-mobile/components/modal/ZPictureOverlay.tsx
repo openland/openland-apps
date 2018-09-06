@@ -5,7 +5,7 @@ import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
-import { FastHeaderBackButton } from 'react-native-fast-navigation/header/FastHeaderBackButton';
+import { FastHeaderBackButton } from 'react-native-fast-navigation/views/FastHeaderBackButton';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
