@@ -9,6 +9,7 @@ export interface NormalizedRoute {
     record: FastHistoryRecord;
     config: FastHeaderConfig;
     progress: Animated.AnimatedInterpolation;
+    searchProgress: Animated.AnimatedInterpolation;
 }
 
 export interface NormalizedRouteState {

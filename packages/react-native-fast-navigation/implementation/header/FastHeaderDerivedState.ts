@@ -89,15 +89,21 @@ export function buildDerivedState(route: NormalizedRoute, progress: Animated.Ani
             screenHeaderBaseHeight = computedHairlineOffset;
         }
 
-        if (config.search && config.searchActive) {
+        if (config.search) {
+            // screenHeaderBaseHeight = Animated.add(
+            //     Animated.multiply(route.searchProgress, defaultHairlineOffset),
+            //     Animated.multiply(Animated.add(1, Animated.multiply(route.searchProgress, -1)), screenHeaderBaseHeight));
+            screenHairlineOffset = Animated.add(
+                Animated.multiply(route.searchProgress, defaultHairlineOffset),
+                Animated.multiply(Animated.add(1, Animated.multiply(route.searchProgress, -1)), screenHairlineOffset));
             // screenHeaderBaseHeight = screenHeaderBaseHeight.interpolate({
             //     inputRange: [0, resolvedNavigationBarHeight],
             //     outputRange: [0, resolvedNavigationBarHeight],
             //     extrapolate: 'clamp'
             // });
             // screenHairlineOffset = screenHeaderBaseHeight;
-            screenHeaderBaseHeight = defaultHairlineOffset;
-            screenHairlineOffset = defaultHairlineOffset;
+            // screenHeaderBaseHeight = defaultHairlineOffset;
+            // screenHairlineOffset = defaultHairlineOffset;
         }
         // screenHeaderBaseHeight = computedHairlineOffset;
 

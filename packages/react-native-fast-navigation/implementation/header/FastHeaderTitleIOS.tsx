@@ -4,6 +4,7 @@ import { FastHeaderTitleProps } from './FastHeaderTitle';
 import { DeviceConfig } from '../../DeviceConfig';
 import { FastScrollValue } from '../../FastScrollValue';
 import { FastHeaderBackButton } from '../../views/FastHeaderBackButton';
+import { animatedInterpolate } from '../utils/animatedInterpolate';
 
 const styles = StyleSheet.create({
     title: {
@@ -166,16 +167,15 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
     }
 
     render() {
-        let opacity = this.props.progress.interpolate({
-            inputRange: [-0.98, 0, 0.98],
-            outputRange: [0, 1, 0],
-            extrapolate: 'clamp'
-        });
-        let faraway = this.props.progress.interpolate({
-            inputRange: [-1, -0.98, 0, 0.98, 1],
-            outputRange: [1, 0, 0, 0, 1],
-            extrapolate: 'clamp'
-        });
+        let invertedSearchProgress = Animated.add(1, Animated.multiply(this.props.searchProgress, -1));
+        let opacity = Animated.multiply(
+            this.props.progress.interpolate({
+                inputRange: [-1, 0, 1],
+                outputRange: [0, 1, 0],
+                extrapolate: 'clamp'
+            }),
+            invertedSearchProgress
+        );
         let titleOpacity = opacity;
         if (this.props.headerAppearance === 'large') {
             titleOpacity = Animated.multiply(opacity, this.titleProgress);
@@ -200,7 +200,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                     <View key="main-header" style={{ position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap' }} pointerEvents="box-none">
                         <View style={{ flexGrow: this.state.leftSize, flexBasis: this.state.leftSize }} pointerEvents="box-none" />
                         {this.state.rightSize - this.state.leftSize > 0 && <View style={{ flexGrow: this.state.rightSize - this.state.leftSize, flexBasis: this.state.rightSize - this.state.leftSize, flexShrink: 100000 }} pointerEvents="box-none" />}
-                        <Animated.View style={{ flexShrink: 1, flexDirection: 'row', opacity: titleOpacity, flexWrap: 'nowrap', transform: [{ translateX: this.translate }, { translateY: Animated.multiply(faraway, 10000) }] }} pointerEvents="box-none">
+                        <Animated.View style={{ flexShrink: 1, flexDirection: 'row', opacity: titleOpacity, flexWrap: 'nowrap', transform: [{ translateX: this.translate }] }} pointerEvents="box-none">
                             <View style={{ flexDirection: 'column' }} pointerEvents="box-none">
                                 {!this.props.titleView && this.props.titleText && <Text style={styles.title}>{this.props.titleText}</Text>}
                                 {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
@@ -212,12 +212,12 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                     </View>
                 )}
 
-                <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, opacity: this.props.config.searchActive ? 0 : 1, }} onLayout={this.handleLeftLayout} pointerEvents="none">
+                <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100 }} onLayout={this.handleLeftLayout} pointerEvents="none">
                     {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
                     {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><FastHeaderBackButton /></View>}
                 </View>
                 <View key="button-padding" style={{ flexGrow: 1, flexBasis: 0, opacity: this.props.config.searchActive ? 0 : 1, }} pointerEvents="box-none" />
-                <Animated.View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: this.props.config.searchActive ? 0 : opacity, alignItems: 'center', transform: [{ translateY: Animated.multiply(faraway, 10000) }] }} onLayout={this.handleRightLayout} pointerEvents="box-none">
+                <Animated.View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, opacity: opacity, alignItems: 'center' }} onLayout={this.handleRightLayout} pointerEvents="box-none">
                     {this.props.rightView}
                 </Animated.View>
             </>
@@ -225,36 +225,77 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
 
         const largeHeader = this.props.headerAppearance === 'large' && (
             <View key="large-header" style={{ overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
-                <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
+                <Animated.View
+                    style={{
+                        flexShrink: 1,
+                        flexDirection: 'row',
+                        flexWrap: 'nowrap',
+                        opacity: invertedSearchProgress,
+                        transform: [
+                            { translateX: this.translateLarge },
+                            {
+                                translateY: Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight))
+                            }
+                        ]
+                    }}
+                    pointerEvents="none"
+                >
                     {!this.props.titleView && this.props.titleText && <Text style={styles.titleLarge}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
                 </Animated.View>
             </View>
         );
 
-        const search = this.props.config.search && (
-            <View style={{ overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeightLarge, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
-                <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: this.props.config.searchActive ? 0 : Animated.add(Animated.add(this.props.headerHeight, -(DeviceConfig.navigationBarHeightLarge + 48 + DeviceConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="box-none">
-                    <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
-                        <TouchableWithoutFeedback onPress={this.props.config.searchPress}>
-                            <View style={{ flexDirection: 'row', height: 36, marginRight: 15, alignItems: 'center', flexGrow: 1 }}>
-                                <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
-                                <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
-                                <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        {this.props.config.searchActive && <Button title="Close" onPress={this.props.config.searchClosed!!} />}
-                    </View>
-                </Animated.View>
-            </View >
-        );
+        let search: any | undefined;
+        let translateGlobal: Animated.AnimatedInterpolation = new Animated.Value(0);
+        if (this.props.config.search) {
+            // let invertedSearchProgress = Animated.add(1, Animated.multiply(this.props.searchProgress, -1));
+            // let searchHeight = animatedInterpolate(this.props.searchProgress, this.props.headerHeight, this.props.headerBaseHeight);
+            let translate1 = Animated.add(this.props.headerHeight, -(DeviceConfig.navigationBarHeightLarge + 88));
+            let translate2 = Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge));
+            let translate = animatedInterpolate(this.props.searchProgress, translate1, translate2);
+
+            translateGlobal = Animated.multiply(this.props.searchProgress, -DeviceConfig.navigationBarHeightLarge - DeviceConfig.statusBarHeight);
+            // let interpolated = Animated.add(
+            //     Animated.multiply(invertedSearchProgress, baseTranslate),
+            //     Animated.multiply(this.props.searchProgress, Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight))));
+            search = (
+                <View style={{ position: 'absolute', overflow: 'hidden', top: DeviceConfig.navigationBarHeightLarge, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
+                    <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: translate }] }} pointerEvents="box-none">
+                        <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
+                            <TouchableWithoutFeedback onPress={this.props.config.searchPress}>
+                                <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
+                                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
+                                    <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
+                                    <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            {this.props.config.searchActive && <View opacity={0} marginLeft={15} pointerEvents="none"><Button title="Close" onPress={this.props.config.searchClosed!!} /></View>}
+                            <Animated.View
+                                style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                    bottom: 0,
+                                    opacity: this.props.searchProgress,
+                                    transform: [
+                                        { translateX: Animated.multiply(invertedSearchProgress, 100) }
+                                    ]
+                                }}
+                            >
+                                <Button title="Close" onPress={this.props.config.searchClosed!!} />
+                            </Animated.View>
+                        </View>
+                    </Animated.View>
+                </View >
+            );
+        }
 
         return (
-            <View style={{ height: 44, flexDirection: 'row' }} onLayout={this.handleGlobalLayout} pointerEvents="box-none">
+            <Animated.View style={{ height: 44, flexDirection: 'row', transform: [{ translateY: translateGlobal }] }} onLayout={this.handleGlobalLayout} pointerEvents="box-none">
                 {mainHeader}
                 {largeHeader}
                 {search}
-            </View>
+            </Animated.View>
         );
     }
 }

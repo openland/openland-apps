@@ -67,7 +67,6 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
         // let renderedContexts = [];
         return contexts.map((ctx, i) => {
             let titles: any[] = [];
-            let searchActive = ctx.routes.find((v) => !!v.route.config.searchActive);
             for (let s of ctx.routes) {
                 if (!s.route.mounted) {
                     continue;
@@ -92,6 +91,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             rightView={rightView}
                             headerHeight={ctx.hairlineOffset}
                             headerBaseHeight={s.headerBottom}
+                            searchProgress={s.route.searchProgress}
                             config={s.route.config}
                         />
                     </View>
@@ -136,8 +136,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 right: 0,
                                 top: 0,
                                 transform: [
-                                    { translateY: ctx.backgroundOffset },
-                                    { translateY: searchActive ? 96 : 0 }
+                                    { translateY: ctx.backgroundOffset }
                                 ],
                                 height: BACKGROUND_SIZE,
                                 zIndex: 1
@@ -167,8 +166,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     <Animated.View
                         style={[styles.hairline, {
                             transform: [
-                                { translateY: ctx.hairlineOffset },
-                                { translateY: searchActive ? 96 : 0 }
+                                { translateY: ctx.hairlineOffset }
                             ],
                             opacity: Animated.multiply(ctx.hairlineOpacity, 0.3),
                         }]}
@@ -196,7 +194,6 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         <Animated.View
                             style={[
                                 styles.styleMainContainerTransparent,
-                                searchActive && styles.styleMainContainerTransparentSearch,
                                 {
                                     transform: [{ translateX: ctx.positionContent }]
                                 }

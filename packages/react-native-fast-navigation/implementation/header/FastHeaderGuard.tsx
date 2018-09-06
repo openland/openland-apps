@@ -6,18 +6,12 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { FastHeader } from './FastHeader';
 import { FastHistoryRecord } from '../../FastHistoryRecord';
 import { RouteViewState } from '../RouteViewState';
+import { NormalizedRoute } from './types';
 
 export interface FastHeaderContainerProps {
     routes: RouteViewState[];
     mounted: string[];
     history: FastHistoryManager;
-}
-
-interface NormalizedRoute {
-    mounted: boolean;
-    record: FastHistoryRecord;
-    config: FastHeaderConfig;
-    progress: Animated.AnimatedInterpolation;
 }
 
 export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProps, { routes: NormalizedRoute[] }> {
@@ -87,7 +81,8 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
             mounted: !!props.mounted.find((m) => m === v.record.key),
             record: v.record,
             config: v.record.config.getState()!!,
-            progress: v.progress
+            progress: v.progress,
+            searchProgress: v.searchProgress
         }));
     }
 
