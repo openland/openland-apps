@@ -10,6 +10,7 @@ import {
 } from './types';
 import { FastScrollValue } from '../../FastScrollValue';
 import { interpolateContent } from '../utils/interpolateContent';
+import { animatedInterpolate } from '../utils/animatedInterpolate';
 
 const zeroValue = new Animated.Value(0);
 const zeroValueTracked = new FastScrollValue();
@@ -93,9 +94,9 @@ export function buildDerivedState(route: NormalizedRoute, progress: Animated.Ani
             // screenHeaderBaseHeight = Animated.add(
             //     Animated.multiply(route.searchProgress, defaultHairlineOffset),
             //     Animated.multiply(Animated.add(1, Animated.multiply(route.searchProgress, -1)), screenHeaderBaseHeight));
-            screenHairlineOffset = Animated.add(
-                Animated.multiply(route.searchProgress, defaultHairlineOffset),
-                Animated.multiply(Animated.add(1, Animated.multiply(route.searchProgress, -1)), screenHairlineOffset));
+            // screenHairlineOffset = Animated.add(
+            //     Animated.multiply(route.searchProgress, defaultHairlineOffset),
+            //     Animated.multiply(Animated.add(1, Animated.multiply(route.searchProgress, -1)), screenHairlineOffset));
             // screenHeaderBaseHeight = screenHeaderBaseHeight.interpolate({
             //     inputRange: [0, resolvedNavigationBarHeight],
             //     outputRange: [0, resolvedNavigationBarHeight],
@@ -129,7 +130,7 @@ export function buildDerivedState(route: NormalizedRoute, progress: Animated.Ani
         screenHailineOpacity = zeroValue;
     }
     if (config.search && config.searchActive) {
-        screenHailineOpacity = oneValue;
+        screenHailineOpacity = animatedInterpolate(route.searchProgress, screenHailineOpacity, oneValue);
     }
 
     return {

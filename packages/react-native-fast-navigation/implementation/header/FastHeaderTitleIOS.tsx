@@ -247,20 +247,13 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         );
 
         let search: any | undefined;
-        let translateGlobal: Animated.AnimatedInterpolation = new Animated.Value(0);
+        let translateGlobal = 0;
         if (this.props.config.search) {
-            // let invertedSearchProgress = Animated.add(1, Animated.multiply(this.props.searchProgress, -1));
-            // let searchHeight = animatedInterpolate(this.props.searchProgress, this.props.headerHeight, this.props.headerBaseHeight);
-            let translate1 = Animated.add(this.props.headerHeight, -(DeviceConfig.navigationBarHeightLarge + 88));
-            // let translate2 = Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge));
-            let translate = animatedInterpolate(this.props.searchProgress, translate1, DeviceConfig.statusBarHeight);
-
-            translateGlobal = Animated.multiply(this.props.searchProgress, -DeviceConfig.navigationBarHeightLarge - DeviceConfig.statusBarHeight);
-            // let interpolated = Animated.add(
-            //     Animated.multiply(invertedSearchProgress, baseTranslate),
-            //     Animated.multiply(this.props.searchProgress, Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight))));
+            let translate = this.props.config.searchActive ? 0 : Animated.add(this.props.headerHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight + DeviceConfig.navigationBarHeight));
+            let translateStatic = this.props.config.searchActive ? DeviceConfig.statusBarHeight : 0;
+            translateGlobal = this.props.config.searchActive ? -DeviceConfig.navigationBarHeightLarge - DeviceConfig.statusBarHeight : 0;
             search = (
-                <View style={{ position: 'absolute', overflow: 'hidden', top: DeviceConfig.navigationBarHeightLarge, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
+                <View style={{ position: 'absolute', overflow:'hidden', top: DeviceConfig.navigationBarHeightLarge + translateStatic, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
                     <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: translate }] }} pointerEvents="box-none">
                         <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                             <TouchableWithoutFeedback onPress={this.props.config.searchPress}>
@@ -270,20 +263,18 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                                     <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
                                 </View>
                             </TouchableWithoutFeedback>
-                            {this.props.config.searchActive && <View opacity={0} marginLeft={15} pointerEvents="none"><Button title="Close" onPress={this.props.config.searchClosed!!} /></View>}
-                            <Animated.View
+                            <View
                                 style={{
-                                    position: 'absolute',
-                                    right: 0,
-                                    bottom: 0,
-                                    opacity: this.props.searchProgress,
-                                    transform: [
-                                        { translateX: Animated.multiply(invertedSearchProgress, 100) }
-                                    ]
+                                    opacity: this.props.config.searchActive ? 1 : 0,
+                                    marginLeft: 15,
+                                    marginRight: this.props.config.searchActive ? 0 : -70,
+                                    width: 70 - 15
                                 }}
                             >
-                                <Button title="Close" onPress={this.props.config.searchClosed!!} />
-                            </Animated.View>
+                                <Animated.View opacity={this.props.searchProgress}>
+                                    <Button title="Close" onPress={this.props.config.searchClosed!!} />
+                                </Animated.View>
+                            </View>
                         </View>
                     </Animated.View>
                 </View >
@@ -291,11 +282,11 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         }
 
         return (
-            <Animated.View style={{ height: 44, flexDirection: 'row', transform: [{ translateY: translateGlobal }] }} onLayout={this.handleGlobalLayout} pointerEvents="box-none">
+            <View style={{ flexDirection: 'row', marginTop: translateGlobal }} onLayout={this.handleGlobalLayout} pointerEvents="box-none">
                 {mainHeader}
                 {largeHeader}
                 {search}
-            </Animated.View>
+            </View>
         );
     }
 }

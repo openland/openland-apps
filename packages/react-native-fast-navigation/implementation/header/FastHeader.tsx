@@ -100,6 +100,8 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                 titles.push(header);
             }
 
+            let searchActive = !!(ctx.routes[0].route.config.search && ctx.routes[0].route.config.searchActive);
+
             //
             // Complete Render
             //
@@ -128,7 +130,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     </View>
 
                     {/* Background */}
-                    <View style={styles.backgroundContainer} pointerEvents="box-none">
+                    <View style={[styles.backgroundContainer, searchActive && { marginTop: -88 }]} pointerEvents="box-none">
                         <Animated.View
                             style={{
                                 position: 'absolute',
@@ -136,7 +138,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 right: 0,
                                 top: 0,
                                 transform: [
-                                    { translateY: ctx.backgroundOffset }
+                                    { translateY: searchActive ? -BACKGROUND_SIZE + 88 + 44 + 44 : ctx.backgroundOffset }
                                 ],
                                 height: BACKGROUND_SIZE,
                                 zIndex: 1
@@ -166,7 +168,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     <Animated.View
                         style={[styles.hairline, {
                             transform: [
-                                { translateY: ctx.hairlineOffset }
+                                { translateY: 88 },
                             ],
                             opacity: Animated.multiply(ctx.hairlineOpacity, 0.3),
                         }]}
@@ -245,38 +247,5 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                 );
             }
         });
-
-        //
-        // Interpolated values
-        //
-
-        // let backgroundOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
-        // for (let f of offsets) {
-        //     backgroundOffset = Animated.add(f.backgroundOffset, backgroundOffset);
-        // }
-
-        // let hairlineOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
-        // for (let f of offsets) {
-        //     hairlineOffset = Animated.add(Animated.multiply(f.positionInverted, f.hairlineOffset), hairlineOffset);
-        // }
-
-        // let hairlineOpacity: Animated.AnimatedInterpolation = new Animated.Value(0);
-        // for (let f of offsets) {
-        //     hairlineOpacity = Animated.add(Animated.multiply(f.positionInverted, f.hairlineOpacity), hairlineOpacity);
-        // }
-
-        // let backOpacity: Animated.AnimatedInterpolation = new Animated.Value(0);
-        // let first = offsets.find((v) => v.route.record.startIndex === 0);
-        // if (first) {
-        //     backOpacity = first.positionInverted.interpolate({
-        //         inputRange: [0, 1],
-        //         outputRange: [1, 0],
-        //         extrapolate: 'clamp'
-        //     });
-        // }
-
-        //
-        // Rendering Titles
-        //
     }
 }

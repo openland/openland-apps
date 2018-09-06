@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FastHeaderConfig } from './FastHeaderConfig';
+import { Animated } from 'react-native';
 
 export const FastRouterContext = React.createContext<FastRouter | undefined>(undefined);
 

@@ -61,6 +61,9 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
                             {engine => (<DialogListComponent engine={engine} />)}
                         </MobileMessengerContext.Consumer>
                     </View>
+                    <View opacity={this.state.search ? 1 : 0} marginTop={this.state.search ? 88 : 88 + 88 + 8} backgroundColor="rgba(0,0,0,0.3)" position="absolute" top={0} left={0} right={0} bottom={0} pointerEvents={this.state.search ? 'auto' : 'box-none'}>
+                        {}
+                    </View>
                 </ZSafeAreaProvider>
             </>
         );
