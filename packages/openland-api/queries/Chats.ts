@@ -112,6 +112,17 @@ export const ChatInfoQuery = gql`
                 featured
                 hidden
                 description
+                longDescription
+                socialImageRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+                socialImage
                 myStatus
                 membersCount
                 memberRequestsCount

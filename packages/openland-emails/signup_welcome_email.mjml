@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Welcome to Openland!</mj-title>
+        <mj-title>Welcome to Openland</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -8,12 +8,12 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    Now, you can do everything faster
+                    Welcome to Openland
                 </mj-text>
                 <mj-text mj-class="text">
-                    {{userFirstName}} — it’s great to have you joining. At Openland you can participate in insider discussions, source and qualify opportunities, and collaborate on deals with other organizations. To get started, visit our organizations directory, discover potential partners, and send your first message.
+                    {{userFirstName}} — thanks for joining! To get started, visit our directory, discover organizations and communities that match your interests, and send your first message.
                 </mj-text>
-                <mj-button mj-class="button" href="http://app.openland.com">Start exploring</mj-button>
+                <mj-button mj-class="button" href="http://app.openland.com/directory">Start exploring</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />
