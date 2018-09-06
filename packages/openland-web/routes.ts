@@ -311,6 +311,8 @@ routes.add('/super/readers', '/dev/readers');
 routes.add('/super/readers/', '/dev/readers');
 routes.add('/super/cities', '/dev/cities');
 routes.add('/super/cities/', '/dev/cities');
+routes.add('/super/stats', '/dev/stats');
+routes.add('/super/stats/', '/dev/stats');
 
 routes.add('/super', '/dev/orgs');
 routes.add('/super/', '/dev/orgs');

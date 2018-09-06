@@ -137,3 +137,12 @@ export const SuperAdminRemoveMutation = gql`
         superAdminRemove(userId: $userId)
     }
 `;
+
+export const SuperChatsStatsQuery = gql`
+    query SuperChatsStats($fromDate: String!, $toDate: String!) {
+        statsChats(fromDate: $fromDate, toDate: $toDate) {
+            messagesSent
+            usersActive
+        }
+    }
+`;
