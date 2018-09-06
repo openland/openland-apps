@@ -12,12 +12,13 @@ export class FastHeaderConfig {
     readonly buttons: FastHeaderButtonDescription[];
     readonly appearance?: FastHeaderAppearance;
     readonly hairline?: FastHeaderHairline;
+    readonly headerHidden?: boolean;
     readonly search?: boolean;
     readonly searchActive?: boolean;
     readonly searchPress?: () => void;
     readonly searchClosed?: () => void;
 
-    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: FastScrollValue, buttons?: FastHeaderButtonDescription[], appearance?: FastHeaderAppearance, hairline?: FastHeaderHairline, search?: boolean, searchActive?: boolean, searchPress?: () => void, searchClosed?: () => void }) {
+    constructor(args: { title?: string, titleView?: any, counter?: number, contentOffset?: FastScrollValue, buttons?: FastHeaderButtonDescription[], appearance?: FastHeaderAppearance, hairline?: FastHeaderHairline, search?: boolean, searchActive?: boolean, searchPress?: () => void, searchClosed?: () => void, headerHidden?: boolean }) {
         this.counter = args.counter || 0;
         this.buttons = args.buttons || [];
         this.title = args.title;
@@ -29,6 +30,7 @@ export class FastHeaderConfig {
         this.searchActive = args.searchActive;
         this.searchPress = args.searchPress;
         this.searchClosed = args.searchClosed;
+        this.headerHidden = args.headerHidden;
     }
 }
 
@@ -39,6 +41,7 @@ export function mergeConfigs(configs: FastHeaderConfig[]) {
     let appearance: FastHeaderAppearance | undefined;
     let titleView: any | undefined;
     let hairline: FastHeaderHairline | undefined;
+    let headerHidden: boolean | undefined;
     let search: boolean | undefined;
     let searchActive: boolean | undefined;
     let searchPress: (() => void) | undefined;
@@ -70,6 +73,9 @@ export function mergeConfigs(configs: FastHeaderConfig[]) {
         }
         if (c.searchClosed !== undefined) {
             searchClosed = c.searchClosed;
+        }
+        if (c.headerHidden !== undefined) {
+            headerHidden = c.headerHidden;
         }
         buttons.push(...c.buttons);
     }
@@ -105,6 +111,9 @@ export function isConfigEquals(a: FastHeaderConfig, b: FastHeaderConfig) {
         return false;
     }
     if (a.searchClosed !== b.searchClosed) {
+        return false;
+    }
+    if (a.headerHidden !== b.headerHidden) {
         return false;
     }
     if (a.buttons.length > 0) {

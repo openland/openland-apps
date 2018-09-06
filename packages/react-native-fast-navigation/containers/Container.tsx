@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { View, Animated, Easing, Dimensions, Platform, StyleSheet, ViewStyle, Keyboard } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerStateChangeEvent, State } from 'react-native-gesture-handler';
-import { FastHistoryRecord, HistoryWatcher, FastHistory } from '../FastHistory';
-import { ContainerProps } from './ContainerProps';
+import { FastHistoryRecord, HistoryWatcher, FastHistory, FastHistoryManager } from '../FastHistory';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { FastHeaderGuard } from '../header/FastHeaderGuard';
 import { DeviceConfig } from '../DeviceConfig';
@@ -101,6 +100,10 @@ interface ContainerState {
     routes: HistoryRecordHolder[];
     mounted: string[];
     transitioning: boolean;
+}
+
+export interface ContainerProps {
+    historyManager: FastHistoryManager;
 }
 
 const FULL_TRASITION_DELAY = 250;

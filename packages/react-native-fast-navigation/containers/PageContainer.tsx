@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FastRouter } from '../FastRouter';
 import { View, StyleSheet, ViewStyle, Animated, Dimensions, Platform } from 'react-native';
 import { PageImmutableContainer } from './PageImmutableContainer';
+import { interpolateContent } from '../utils/interpolateContent';
 
 const styles = StyleSheet.create({
     root: {
@@ -23,22 +24,8 @@ export interface PageContainerProps {
 
 function buildInterpolations(src: Animated.AnimatedInterpolation) {
     let w = Dimensions.get('window').width;
-    let progressTranslate: Animated.AnimatedInterpolation;
+    let progressTranslate: Animated.AnimatedInterpolation = interpolateContent(src);
     let underlayOpacity: Animated.AnimatedInterpolation;
-
-    if (Platform.OS === 'ios') {
-        progressTranslate = src.interpolate({
-            inputRange: [-1, 0, 1],
-            outputRange: [w, 0, -w * 0.3],
-            extrapolate: 'clamp'
-        });
-    } else {
-        progressTranslate = src.interpolate({
-            inputRange: [-1, 0],
-            outputRange: [w, 0],
-            extrapolate: 'clamp'
-        });
-    }
 
     underlayOpacity = src.interpolate({
         inputRange: [-1, 0],
