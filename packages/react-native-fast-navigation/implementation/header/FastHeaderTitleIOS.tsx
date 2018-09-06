@@ -224,7 +224,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         );
 
         const largeHeader = this.props.headerAppearance === 'large' && (
-            <View key="large-header" style={{ opacity: this.props.config.searchActive ? 0 : 1, overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
+            <View key="large-header" style={{ overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
                 <Animated.View style={{ flexShrink: 1, flexDirection: 'row', flexWrap: 'nowrap', transform: [{ translateX: this.translateLarge }, { translateY: Animated.add(Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight)), Animated.multiply(faraway, 10000)) }] }} pointerEvents="none">
                     {!this.props.titleView && this.props.titleText && <Text style={styles.titleLarge}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}

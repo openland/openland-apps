@@ -128,19 +128,30 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     </View>
 
                     {/* Background */}
-                    {DeviceConfig.debugBackground && (
-                        <View style={styles.backgroundContainer} pointerEvents="box-none">
-                            <Animated.View
-                                style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    right: 0,
-                                    top: 0,
-                                    transform: [{ translateY: ctx.backgroundOffset }],
-                                    height: BACKGROUND_SIZE,
-                                    zIndex: 1
-                                }}
-                            >
+                    <View style={styles.backgroundContainer} pointerEvents="box-none">
+                        <Animated.View
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                transform: [
+                                    { translateY: ctx.backgroundOffset },
+                                    { translateY: searchActive ? 96 : 0 }
+                                ],
+                                height: BACKGROUND_SIZE,
+                                zIndex: 1
+                            }}
+                        >
+                            {!DeviceConfig.debugBackground && (
+                                <FastBlurredView
+                                    style={{
+                                        height: BACKGROUND_SIZE,
+                                        width: '100%',
+                                    }}
+                                />)
+                            }
+                            {DeviceConfig.debugBackground && (
                                 <View
                                     style={{
                                         height: BACKGROUND_SIZE,
@@ -148,36 +159,17 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                         backgroundColor: '#0f0'
                                     }}
                                 />
-                            </Animated.View>
-                        </View>
-                    )}
-                    {!DeviceConfig.debugBackground && (
-                        <View style={styles.backgroundContainer} pointerEvents="box-none">
-                            <Animated.View
-                                style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    right: 0,
-                                    top: 0,
-                                    transform: [{ translateY: ctx.backgroundOffset }],
-                                    height: BACKGROUND_SIZE,
-                                    zIndex: 1
-                                }}
-                            >
-                                <FastBlurredView
-                                    style={{
-                                        height: BACKGROUND_SIZE,
-                                        width: '100%',
-                                    }}
-                                />
-                            </Animated.View>
-                        </View>
-                    )}
+                            )}
+                        </Animated.View>
+                    </View>
 
                     {/* Hairline */}
                     <Animated.View
                         style={[styles.hairline, {
-                            transform: [{ translateY: ctx.hairlineOffset }],
+                            transform: [
+                                { translateY: ctx.hairlineOffset },
+                                { translateY: searchActive ? 96 : 0 }
+                            ],
                             opacity: Animated.multiply(ctx.hairlineOpacity, 0.3),
                         }]}
                     />
@@ -204,7 +196,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         <Animated.View
                             style={[
                                 styles.styleMainContainerTransparent,
-                                // searchActive && styles.styleMainContainerTransparentSearch,
+                                searchActive && styles.styleMainContainerTransparentSearch,
                                 {
                                     transform: [{ translateX: ctx.positionContent }]
                                 }
