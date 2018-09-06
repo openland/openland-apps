@@ -125,6 +125,7 @@ interface XCheckboxBasicProps {
     hint?: string;
     square?: boolean;
     loading?: boolean;
+    onClick?: React.MouseEventHandler<any>;
 }
 
 export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChecked: boolean }> {
@@ -159,9 +160,8 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
 
     render() {
         const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
-        console.warn(this.props.loading);
         return (
-            <CheckboxInputDiv disabled={this.props.disabled} active={this.state.isChecked} marginBottom={this.props.marginBottom}>
+            <CheckboxInputDiv disabled={this.props.disabled} active={this.state.isChecked} marginBottom={this.props.marginBottom} onClick={this.props.onClick}>
                 <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
                 <label htmlFor={id}>
                     <div className="top-content">
