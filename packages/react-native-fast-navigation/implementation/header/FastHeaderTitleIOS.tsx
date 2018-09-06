@@ -253,7 +253,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
             let translateStatic = this.props.config.searchActive ? DeviceConfig.statusBarHeight : 0;
             translateGlobal = this.props.config.searchActive ? -DeviceConfig.navigationBarHeightLarge - DeviceConfig.statusBarHeight : 0;
             search = (
-                <View style={{ position: 'absolute', overflow:'hidden', top: DeviceConfig.navigationBarHeightLarge + translateStatic, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
+                <View style={{ position: 'absolute', overflow: 'hidden', top: DeviceConfig.navigationBarHeightLarge + translateStatic, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
                     <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateX: this.translateLarge }, { translateY: translate }] }} pointerEvents="box-none">
                         <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                             <TouchableWithoutFeedback onPress={this.props.config.searchPress}>

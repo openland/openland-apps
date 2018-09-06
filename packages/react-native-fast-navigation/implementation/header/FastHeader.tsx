@@ -173,6 +173,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             opacity: Animated.multiply(ctx.hairlineOpacity, 0.3),
                         }]}
                     />
+
                 </>
             );
 
@@ -203,6 +204,24 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         >
                             {content}
                         </Animated.View>
+
+                        <Animated.View
+                            style={{
+                                zIndex: 100,
+                                opacity: ctx.routes[0].route.searchProgress,
+                                marginTop: searchActive ? 88 : 88 + 88 + 12,
+                                backgroundColor: 'rgba(0,0,0,0.3)',
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                                left: 0,
+                                bottom: 0
+                            }}
+                            pointerEvents={searchActive ? 'auto' : 'box-none'}
+                        >
+                            {}
+                        </Animated.View>
+
                         <Animated.View
                             key="shadow"
                             style={{
