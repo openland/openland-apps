@@ -286,7 +286,7 @@ const SwitchMemberIsContact = withAlterMemberIsContact((props) => {
                 <XCheckbox
                     marginBottom={0}
                     value={(props as any).showInContacts ? 'non_hidden' : 'hidden'}
-                    onChange={() => {
+                    action={() => {
                         props.alterIsContact({ variables: { orgId: (props as any).orgId, memberId: (props as any).memberId, showInContacts: !(props as any).showInContacts } });
                     }}
                     trueValue="hidden"
