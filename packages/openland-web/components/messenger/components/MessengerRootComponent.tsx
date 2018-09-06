@@ -43,7 +43,7 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
             defaultAction={(data) => {
                 props.deleteMessage({ variables: { messageId: id } });
             }}
-            submitProps={{ succesText: 'deleted!' }}
+            submitProps={{ succesText: 'deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
         </XModalForm >
@@ -69,7 +69,7 @@ const EditMessageComponent = withEditMessage((props) => {
             }}
             submitProps={{ succesText: 'done!' }}
         >
-            <XInput field="message" />
+            <XInput field="message" size="r-default" color="primary-sky-blue" autofocus={true}/>
         </XModalForm >
     );
 }) as React.ComponentType<{ conversation: ConversationEngine }>;
