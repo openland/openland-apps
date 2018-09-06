@@ -364,7 +364,15 @@ export interface UpdateSettingsInput {
   mobileAlert?: boolean | null,
   mobileIncludeText?: boolean | null,
   mute?: boolean | null,
+  notificationsDelay?: NotificationsDelay | null,
 };
+
+export enum NotificationsDelay {
+  MIN_1 = "MIN_1",
+  MIN_15 = "MIN_15",
+  NONE = "NONE",
+}
+
 
 export enum OpportunitySort {
   AREA_ASC = "AREA_ASC",
@@ -5449,6 +5457,10 @@ export interface OrganizationByPrefixQuery {
       hidden: boolean,
     } | null >,
   } | null,
+};
+
+export interface TopCategoriesQuery {
+  topCategories: Array< string >,
 };
 
 export interface BlocksConnectionQueryVariables {

@@ -340,3 +340,9 @@ export const OrganizationByPrefixQuery = gql`
     }
     ${OrganizationSearch}
 `;
+
+export const TopCategoriesQuery = gql`
+    query TopCategories{
+        topCategories: alphaTopCategories
+    }
+`;

@@ -170,7 +170,7 @@ const SearchSelectInput = Glamorous(XInput)({
     boxShadow: 'none!important'
 });
 
-interface SearchSelectProps {
+export interface SearchSelectProps {
     title: string;
     conditionType: 'name' | 'location' | 'organizationType' | 'interest';
     onPick: (q: SearchCondition) => void;

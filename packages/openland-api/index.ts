@@ -125,6 +125,7 @@ export const HitsPopularQuery = typedQuery<Types.HitsPopularQuery, Types.HitsPop
 export const HitsAddMutation = typedMutation<Types.HitsAddMutation, Types.HitsAddMutationVariables>(Organization.HitsAddMutation);
 export const AlterMemberAsContactMutation = typedMutation<Types.AlterMemberAsContactMutation, Types.AlterMemberAsContactMutationVariables>(Organization.AlterMemberAsContactMutation);
 export const OrganizationByPrefixQuery = typedQuery<Types.OrganizationByPrefixQuery, Types.OrganizationByPrefixQueryVariables>(Organization.OrganizationByPrefixQuery);
+export const TopCategoriesQuery = typedQuery<Types.TopCategoriesQuery, {}>(Organization.TopCategoriesQuery);
 export const BlocksConnectionQuery = typedQuery<Types.BlocksConnectionQuery, Types.BlocksConnectionQueryVariables>(Parcels.BlocksConnectionQuery);
 export const BlockQuery = typedQuery<Types.BlockQuery, Types.BlockQueryVariables>(Parcels.BlockQuery);
 export const ParcelsConnectionQuery = typedQuery<Types.ParcelsConnectionQuery, Types.ParcelsConnectionQueryVariables>(Parcels.ParcelsConnectionQuery);

@@ -15,7 +15,7 @@ import { AutocompletePopper } from './autocompletePopper';
 import { SortPicker } from './sortPicker';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader, XSubHeaderLink, XSubHeaderRight } from 'openland-x/XSubHeader';
-import { SearchSelect } from './components/SearchSelect';
+import { SearchSelect, SearchSelectProps } from './components/SearchSelect';
 import { OrganizationCard } from './components/OrganizationCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
@@ -36,6 +36,7 @@ import {
     SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { withTopCategories } from '../../../api/withTopCategories';
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -241,6 +242,17 @@ interface RootComponentState {
     shownSelect: number;
 }
 
+const CategoryPicker = withTopCategories((props) => (
+    <SearchSelect
+        title={(props as any).title}
+        conditionType={(props as any).conditionType}
+        onPick={(props as any).onPick}
+        options={props.data.topCategories.map(c => ({ label: c, value: c }))}
+        onShow={(props as any).onShow}
+        shown={(props as any).shown}
+        noResultsText={(props as any).noResultsText}
+    />)) as React.ComponentType<SearchSelectProps>;
+
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     input?: any;
 
@@ -370,7 +382,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                         <SidebarItemWrapper active={true}>
                             <SidebarItemHeadLink isCommunity={false} />
                             <SidebarItemBody>
-                                <SearchSelect
+                                <CategoryPicker
                                     title="Category"
                                     conditionType="organizationType"
                                     onPick={this.addCondition}
