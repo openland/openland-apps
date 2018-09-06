@@ -6,6 +6,7 @@ import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OrganizationQuery } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
@@ -413,16 +414,6 @@ const MemberCardAvatar = Glamorous.div({
     padding: '0 12px 0 24px'
 });
 
-const MemberCardInfo = Glamorous.div({
-    flex: 1,
-});
-
-const MemberCardTitleWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: 1,
-});
-
 const MemberCardTitle = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
@@ -431,9 +422,19 @@ const MemberCardTitle = Glamorous.div({
     color: '#5c6a81',
 });
 
+const MemberCardOrg = Glamorous.div({
+    fontSize: 12,
+    fontWeight: 500,
+    opacity: 0.5,
+    color: '#334562',
+    letterSpacing: -0.2,
+    alignSelf: 'flex-end',
+    marginBottom: -2,
+    cursor: 'pointer'
+});
+
 const MemberCardSocial = Glamorous(XLink)({
     display: 'block',
-    marginLeft: 8,
     '& svg': {
         display: 'block',
         '& *': {
@@ -457,45 +458,68 @@ const MemberCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
-class MemberCard extends React.PureComponent<{ item: any, iAmOwner: boolean }> {
+interface MemberCardProps {
+    user: {
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+        primaryOrganization: {
+            id: string,
+            name: string,
+        } | null,
+        role: string | null,
+        linkedin: string | null,
+        twitter: string | null
+    };
+    iAmOwner: boolean;
+}
+
+class MemberCard extends React.PureComponent<MemberCardProps> {
 
     state = {
         isHovered: false,
     };
 
     render() {
-        let member = this.props.item;
+        const { user } = this.props;
+        console.log(user);
         return (
             <MemberCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <MemberCardAvatar>
-                    <XAvatar cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} style="colorus" />
+                    <XAvatar cloudImageUuid={user.picture || undefined} userName={user.name} userId={user.id} style="colorus" />
                 </MemberCardAvatar>
-                <MemberCardInfo>
-                    <MemberCardTitleWrapper>
-                        <MemberCardTitle>{member.user.name}</MemberCardTitle>
-                        {member.user.email && (<MemberCardSocial href={'mailto:' + member.user.email}><EmailIcon /></MemberCardSocial>)}
-                        {member.user.linkedin && (<MemberCardSocial href={member.user.linkedin}><LinkedinIcon /></MemberCardSocial>)}
-                        {member.user.twitter && (<MemberCardSocial href={member.user.twitter}><TwitterIcon /></MemberCardSocial>)}
-                    </MemberCardTitleWrapper>
-                    <MemberCardRole>{member.role}</MemberCardRole>
-                </MemberCardInfo>
+                <XHorizontal alignItems="center" flexGrow={1}>
+                    <XVertical flexGrow={1} separator={0.5} flexShrink={0}>
+                        <XHorizontal alignItems="center" separator={4}>
+                            <MemberCardTitle>{user.name}</MemberCardTitle>
+                            {user.email && <MemberCardSocial href={'mailto:' + user.email}><EmailIcon /></MemberCardSocial>}
+                            {user.linkedin && <MemberCardSocial href={user.linkedin}><LinkedinIcon /></MemberCardSocial>}
+                            {user.twitter && <MemberCardSocial href={user.twitter}><TwitterIcon /></MemberCardSocial>}
+                            {user.primaryOrganization && <MemberCardOrg>{user.primaryOrganization.name}</MemberCardOrg>}
+                        </XHorizontal>
+                        {user.role && <MemberCardRole>{user.role}</MemberCardRole>}
+                    </XVertical>
+                </XHorizontal>
                 <MemberCardTools separator={5}>
                     <XButton
                         text="Message"
                         size="r-default"
                         style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                        path={'/mail/' + member.user.id}
+                        path={'/mail/' + user.id}
                     />
                     {this.props.iAmOwner && <XOverflow
                         placement="bottom-end"
                         flat={true}
                         content={
                             <>
-                                <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: member.user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
-                                <XMenuItem style="danger" query={{ field: 'remove', value: member.user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
                             </>
                         }
                     />}
@@ -523,7 +547,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                     <XScrollView height="calc(100% - 216px)">
                         {(organization.members || []).map((member, i) => {
                             return (
-                                <MemberCard key={i} item={member} iAmOwner={organization.isOwner} />
+                                <MemberCard key={i} user={member.user} iAmOwner={organization.isOwner} />
                             );
                         })}
                     </XScrollView>
@@ -570,25 +594,40 @@ const ChannelCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
-class ChannelCard extends React.Component<{ item: any, organization: { isOwner?: boolean } }, { isHovered: boolean }> {
+interface ChannelCardProps {
+    channel: {
+        id: string;
+        isRoot: boolean;
+        title: string;
+        membersCount: number;
+        memberRequestsCount: number;
+        hidden: boolean;
+        featured: boolean;
+    };
+    organization: {
+        isOwner?: boolean
+    };
+}
+
+class ChannelCard extends React.Component<ChannelCardProps> {
     state = {
         isHovered: false,
     };
 
     render() {
-        let channel = this.props.item;
-        let organization = this.props.organization;
-        let membersCountText = channel!!.membersCount + ' ' + ((channel!!.membersCountx) > 1 ? 'members' : 'member');
-        let requesetsCountText = (organization && organization.isOwner && channel!!.memberRequestsCount > 0) ? '• ' + (channel!!.memberRequestsCount + ' ' + (channel!!.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
+        const { channel } = this.props;
+        const organization = this.props.organization;
+        const membersCountText = channel.membersCount + ' ' + ((channel.membersCount) > 1 ? 'members' : 'member');
+        const requesetsCountText = (organization && organization.isOwner && channel.memberRequestsCount > 0) ? '• ' + (channel.memberRequestsCount + ' ' + (channel.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
 
         return (
             <ChannelCardWrapper
-                path={'/mail/' + this.props.item.id}
+                path={'/mail/' + channel.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <ChannelCardInfo>
-                    <ChannelCardTitle>{(channel!!.isRoot ? '' : '/') + channel!!.title}</ChannelCardTitle>
+                    <ChannelCardTitle>{(channel.isRoot ? '' : '/') + channel.title}</ChannelCardTitle>
                     <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>
                 </ChannelCardInfo>
                 <ChannelCardTools separator={5}>
@@ -596,7 +635,7 @@ class ChannelCard extends React.Component<{ item: any, organization: { isOwner?:
                         text="View"
                         size="r-default"
                         style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                        path={'/mail/' + channel!!.id}
+                        path={'/mail/' + channel.id}
                     />
                     <XWithRole role={['super-admin', 'editor']}>
                         <XOverflow
@@ -664,7 +703,7 @@ const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
                 tabs={headerTabs}
             />
             {channelsTab && org.channels.filter(c => c && !c.hidden).map((c, i) => (
-                <ChannelCard key={i} item={c} organization={org} />
+                c ? <ChannelCard key={i} channel={c} organization={org} /> : null
             ))}
             {aboutTab && <About organizationQuery={props.organizationQuery} />}
             {membersTab && <Members organizationQuery={props.organizationQuery} />}
