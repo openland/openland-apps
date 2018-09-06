@@ -3290,6 +3290,34 @@ export interface ChatUpdateGroupMutation {
   },
 };
 
+export interface ChatDeleteMessageMutationVariables {
+  messageId: string,
+};
+
+export interface ChatDeleteMessageMutation {
+  event:  {
+    __typename: "ConversationEventDelete",
+    seq: number,
+    messageId: string,
+  },
+};
+
+export interface ChatEditMessageMutationVariables {
+  messageId: string,
+  message?: string | null,
+};
+
+export interface ChatEditMessageMutation {
+  event:  {
+    __typename: "ConversationEventEditMessage",
+    seq: number,
+    message:  {
+      __typename: "ConversationMessage",
+      id: string,
+    },
+  },
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",

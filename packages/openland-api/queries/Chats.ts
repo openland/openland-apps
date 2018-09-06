@@ -557,3 +557,23 @@ export const ChatUpdateGroupMutation = gql`
         }
     }
 `;
+
+export const ChatDeleteMessageMutation = gql`
+    mutation ChatDeleteMessage($messageId: ID!) {
+        event: alphaDeleteMessage(messageId: $messageId){
+            seq
+            messageId
+        }
+    }
+`;
+
+export const ChatEditMessageMutation = gql`
+    mutation ChatEditMessage($messageId: ID!, $message: String) {
+        event: alphaEditMessage(messageId: $messageId, message: $message){
+            seq
+            message{
+                id
+            }
+        }
+    }
+`;

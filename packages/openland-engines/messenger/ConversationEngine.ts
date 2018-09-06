@@ -21,6 +21,14 @@ const CHAT_SUBSCRIPTION = gql`
             ...MessageFull
         }
       }
+      ... on ConversationEventDelete{
+            messageId
+      }
+      ... on ConversationEventEditMessage{
+        message {
+            ...MessageFull
+        }
+      }
     }
   }
   ${MessageFull}
@@ -471,6 +479,50 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Add to datasource
             this.appendMessage(event.message);
+        } else if (event.__typename === 'ConversationEventDelete') {
+            // Handle message
+            console.info('Received delete message');
+            // Write message to store
+            let data = this.engine.client.client.readQuery({
+                query: ChatHistoryQuery.document,
+                variables: { conversationId: this.conversationId }
+            });
+            (data as any).messages.seq = event.seq;
+            (data as any).messages.messages = (data as any).messages.messages.filter((m: any) => m.id !== event.messageId);
+            this.engine.client.client.writeQuery({
+                query: ChatHistoryQuery.document,
+                variables: { conversationId: this.conversationId },
+                data: data
+            });
+            this.messages = this.messages.filter((m: any) => m.id !== event.messageId);
+
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.onMessagesUpdated();
+
+            // Remove from datasource
+            this.dataSource.removeItem(event.messageId);
+        } else if (event.__typename === 'ConversationEventEditMessage') {
+            // Handle message
+            console.info('Received edit message');
+            // Write message to store
+            let data = this.engine.client.client.readQuery({
+                query: ChatHistoryQuery.document,
+                variables: { conversationId: this.conversationId }
+            });
+            (data as any).messages.seq = event.seq;
+            (data as any).messages.messages = (data as any).messages.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
+            this.engine.client.client.writeQuery({
+                query: ChatHistoryQuery.document,
+                variables: { conversationId: this.conversationId },
+                data: data
+            });
+            this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
+
+            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.onMessagesUpdated();
+
+            // Update in datasource
+            this.dataSource.updateItem(event.message);
         } else {
             console.warn('Received unknown message');
         }
