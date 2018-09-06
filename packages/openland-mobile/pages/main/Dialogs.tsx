@@ -8,6 +8,7 @@ import { PageProps } from '../../components/PageProps';
 import { MobileMessengerContext } from '../../messenger/MobileMessenger';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
+import { ZSafeAreaProvider } from '../../components/layout/ZSafeAreaContext';
 
 function startAnimation() {
     LayoutAnimation.configureNext({
@@ -55,11 +56,13 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
                         searchClosed: this.handleSearchStop, searchPress: this.handleSearchStart
                     })}
                 />
-                <View style={{ height: '100%' }}>
-                    <MobileMessengerContext.Consumer>
-                        {engine => (<DialogListComponent engine={engine} />)}
-                    </MobileMessengerContext.Consumer>
-                </View>
+                <ZSafeAreaProvider top={44}>
+                    <View style={{ height: '100%', marginTop: this.state.search ? -88 : 0, marginBottom: this.state.search ? 88 : -88 }}>
+                        <MobileMessengerContext.Consumer>
+                            {engine => (<DialogListComponent engine={engine} />)}
+                        </MobileMessengerContext.Consumer>
+                    </View>
+                </ZSafeAreaProvider>
             </>
         );
     }
