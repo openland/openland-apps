@@ -13,16 +13,17 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { XText } from 'openland-x/XText';
-import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import { makeNavigable } from 'openland-x/Navigable';
+import { XOverflow } from '../../../Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
 
 interface MessageComponentProps {
     compact: boolean;
     sender?: UserShortFragment;
     message: MessageFullFragment | PendingMessage;
     conversation: ConversationEngine;
+    out: boolean;
 }
 
 const MessageWrapper = Glamorous(XVertical)({
@@ -75,10 +76,20 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
         backgroundColor: 'rgba(242, 244, 245, 0.5)',
         '& .time': {
             opacity: 0.5
+        },
+        '& .menu': {
+            display: 'block',
         }
     },
     '& .time': {
         opacity: props.compact ? 0 : 0.5
+    },
+    '& .menu > div': {
+        height: 20,
+        marginRight: -14
+    },
+    '& .menu': {
+        display: 'none'
     }
 }));
 
@@ -144,11 +155,30 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             content.push(<MessageTextComponent message={''} key={'text'} isService={false} />);
         }
 
+        // menu
+        let menu = isServerMessage(this.props.message) && this.props.out ?
+            (
+                <div className="menu">
+                    <XOverflow
+                        flat={true}
+                        placement="bottom-end"
+                        content={
+                            <>
+                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: this.props.message.id }}>delete</XMenuItem>
+                                {this.props.message.message && <XMenuItem style="primary-sky-blue" query={{ field: 'editMessage', value: this.props.message.id }}>edit</XMenuItem>}
+                            </>
+                        }
+                    />
+                </div>
+            ) : null;
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
-                    {content}
+                    <XVertical separator={0} flexGrow={1}>
+                        {content}
+                    </XVertical>
+                    {menu}
                 </MessageContainer>
             );
         }
@@ -167,6 +197,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         </XHorizontal>
                         {content}
                     </MessageWrapper>
+                    {menu}
                 </XHorizontal>
             </MessageContainer>
         );

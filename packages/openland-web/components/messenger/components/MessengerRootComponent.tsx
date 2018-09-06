@@ -11,18 +11,68 @@ import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
+import { withUserInfo } from '../../UserInfo';
+import { UserShortFragment } from 'openland-api/Types';
+import { XText } from 'openland-x/XText';
+import { withDeleteMessage } from '../../../api/withDeleteMessage';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { withEditMessage } from '../../../api/withEditMessage';
+import { isServerMessage } from 'openland-engines/messenger/types';
+import { XInput } from 'openland-x/XInput';
 
 interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
     conversationType?: string;
+    me: UserShortFragment | null;
 }
 
 interface MessagesComponentState {
     mounted: boolean;
     hideInput: boolean;
 }
+
+const DeleteMessageComponent = withDeleteMessage((props) => {
+    let id = props.router.query.deleteMessage;
+    return (
+        <XModalForm
+            title="Delete message"
+            targetQuery="deleteMessage"
+            submitBtnText="delete"
+            defaultAction={(data) => {
+                props.deleteMessage({ variables: { messageId: id } });
+            }}
+            submitProps={{ succesText: 'deleted!' }}
+        >
+            <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
+        </XModalForm >
+    );
+});
+
+const EditMessageComponent = withEditMessage((props) => {
+    let id = props.router.query.editMessage;
+    let conversation: ConversationEngine = (props as any).conversation;
+    let message = conversation.getState().messages.filter(m => isServerMessage(m) && m.id === id)[0];
+    if (!message) {
+        return null;
+    }
+    return (
+        <XModalForm
+            title="Edit message"
+            targetQuery="editMessage"
+            defaultAction={(data) => {
+                props.editMessage({ variables: { messageId: id, message: data.message } });
+            }}
+            defaultData={{
+                message: message.message
+            }}
+            submitProps={{ succesText: 'done!' }}
+        >
+            <XInput field="message" />
+        </XModalForm >
+    );
+}) as React.ComponentType<{ conversation: ConversationEngine }>;
 
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> {
 
@@ -81,6 +131,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         return (
             <ConversationContainer>
                 <ConversationMessagesComponent
+                    me={this.props.me}
                     conversation={this.conversation}
                     conversationId={this.props.conversationId}
                     conversationType={this.props.conversationType}
@@ -96,6 +147,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         conversationId={this.props.conversationId}
                     />
                 )}
+                <DeleteMessageComponent />
+                <EditMessageComponent conversation={this.conversation} />
             </ConversationContainer>
         );
     }
@@ -116,6 +169,17 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType?: string;
 }
+
+const MessagesWithUser = withUserInfo((props) => (
+    <MessagesComponent
+        me={props.user}
+        loading={false}
+        conversationId={props.conversationId}
+        messenger={props.messenger}
+        conversationType={props.conversationType}
+    />
+)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
+
 export class MessengerRootComponent extends React.Component<MessengerRootComponentProps> {
     render() {
         // We are not allowing messenger to be rendered on server side: just preload history and that's all
@@ -125,8 +189,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
         return (
             <MessengerContext.Consumer>
                 {messenger => (
-                    <MessagesComponent
-                        loading={false}
+                    <MessagesWithUser
                         conversationId={this.props.conversationId}
                         messenger={messenger}
                         conversationType={this.props.conversationType}

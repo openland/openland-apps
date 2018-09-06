@@ -5,7 +5,7 @@ import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
-import { MessageFullFragment } from 'openland-api/Types';
+import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 
 let months = [
@@ -86,6 +86,7 @@ interface MessageListProps {
     loadBefore: (id: string) => void;
     conversationType?: string;
     inputShower?: (show: boolean) => void;
+    me: UserShortFragment | null;
 }
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
@@ -170,6 +171,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         sender={m.sender as any}
                         message={m}
                         conversation={this.props.conversation}
+                        out={!!(this.props.me && this.props.me.id === m.sender.id)}
                     />
                 );
             } else {
@@ -180,6 +182,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         sender={this.props.conversation.engine.user}
                         message={m}
                         conversation={this.props.conversation}
+                        out={true}
                     />
                 );
             }
