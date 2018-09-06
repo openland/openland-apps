@@ -252,8 +252,8 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
             // let invertedSearchProgress = Animated.add(1, Animated.multiply(this.props.searchProgress, -1));
             // let searchHeight = animatedInterpolate(this.props.searchProgress, this.props.headerHeight, this.props.headerBaseHeight);
             let translate1 = Animated.add(this.props.headerHeight, -(DeviceConfig.navigationBarHeightLarge + 88));
-            let translate2 = Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge));
-            let translate = animatedInterpolate(this.props.searchProgress, translate1, translate2);
+            // let translate2 = Animated.add(this.props.headerBaseHeight, -(DeviceConfig.navigationBarHeightLarge));
+            let translate = animatedInterpolate(this.props.searchProgress, translate1, DeviceConfig.statusBarHeight);
 
             translateGlobal = Animated.multiply(this.props.searchProgress, -DeviceConfig.navigationBarHeightLarge - DeviceConfig.statusBarHeight);
             // let interpolated = Animated.add(

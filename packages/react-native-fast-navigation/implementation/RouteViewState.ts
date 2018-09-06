@@ -53,7 +53,7 @@ export class RouteViewState {
             Animated.timing(this.searchProgress, {
                 toValue: 1,
                 duration: 340,
-                // easing: Easing.inOut(Easing.ease),
+                easing: Easing.inOut(Easing.ease),
                 useNativeDriver: true
             }).start();
         }
@@ -65,7 +65,7 @@ export class RouteViewState {
             Animated.timing(this.searchProgress, {
                 toValue: 0,
                 duration: 340,
-                // easing: Easing.inOut(Easing.ease),
+                easing: Easing.inOut(Easing.ease),
                 useNativeDriver: true
             }).start();
         }
