@@ -126,6 +126,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     private panEvent = Animated.event([{ nativeEvent: { translationX: this.panOffset } }], { useNativeDriver: true });
     private swipeCurrent?: HistoryRecordHolder;
     private swipePrev?: HistoryRecordHolder;
+    private swipeHistoryLock?: () => void;
 
     constructor(props: ContainerProps) {
         super(props);
@@ -163,12 +164,14 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         let newRecord = new HistoryRecordHolder(record, progress, this.panOffsetCurrent, this.panOffsetPrev);
 
         // Start animation
+        let unlock = this.props.historyManager.beginLock();
+        setTimeout(unlock, 150);
         underlayHolder.progressValue.stopAnimation((v2: number) => {
-            console.log(v2);
             Animated.parallel([
                 animate(underlayHolder.progressValue, 1),
                 animate(progress, 0),
             ]).start(() => {
+                unlock();
                 // Unmount underlay when animation finished
                 // Ignore if we are aborted transition
                 if (this.removing.find((v) => v === record.key)) {
@@ -199,6 +202,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
 
         let alreadyRemoving = this.removing.find((v) => v === record.key);
         if (!alreadyRemoving) {
+            let unlock = this.props.historyManager.beginLock();
+            setTimeout(unlock, 150);
             this.removing = [...this.removing, holder.record.key];
             this.mounted = [...this.mounted, history.history[history.history.length - 1].key];
             Animated.parallel([
@@ -211,6 +216,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 this.mounted = this.mounted.filter((v) => v !== record.key);
                 this.routes = this.routes.filter((v) => v.record.key !== record.key);
                 this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
+                unlock();
             });
             this.setState({ mounted: this.mounted, current: this.current, transitioning: true });
         }
@@ -221,6 +227,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         }
         if (event.nativeEvent.state === State.ACTIVE) {
             Keyboard.dismiss();
+            this.swipeHistoryLock = this.props.historyManager.beginLock();
             let current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             let prev = this.currentHistory.history[this.currentHistory.history.length - 2].key;
             this.swipeCurrent = this.routes.find((v) => v.record.key === current)!!;
@@ -248,9 +255,15 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                     shouldMoveBack = true;
                 }
                 if (shouldMoveBack) {
+                    if (this.swipeHistoryLock) {
+                        this.swipeHistoryLock();
+                        this.swipeHistoryLock = undefined;
+                    }
                     handled = true;
                     this.removing = [...this.removing, currentHolder.record.key];
                     this.props.historyManager.pop();
+                    let unlock = this.props.historyManager.beginLock();
+                    setTimeout(unlock, 150);
                     Animated.parallel([
                         Animated.spring(currentHolder.progressValue, {
                             toValue: -1,
@@ -271,6 +284,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                             velocity: velocity
                         })
                     ]).start(() => {
+                        unlock();
                         this.removing = this.removing.filter((v) => v !== currentHolder.record.key);
                         this.mounted = this.mounted.filter((v) => v !== currentHolder.record.key);
                         this.routes = this.routes.filter((v) => v.record.key !== currentHolder.record.key);
@@ -280,6 +294,11 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             }
 
             if (!handled) {
+                let unlock = this.swipeHistoryLock;
+                this.swipeHistoryLock = undefined;
+                if (unlock) {
+                    setTimeout(unlock, 150);
+                }
                 Animated.parallel([
                     Animated.spring(currentHolder.progressValue, {
                         toValue: 0,
@@ -299,7 +318,11 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                         overshootClamping: true,
                         velocity: velocity
                     })
-                ]).start();
+                ]).start(() => {
+                    if (unlock) {
+                        unlock();
+                    }
+                });
             }
 
             currentHolder.stopSwipe();

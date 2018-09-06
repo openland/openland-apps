@@ -33,6 +33,7 @@ export class FastHistoryManager {
     readonly routes: FastRoutes;
     private history: FastHistory;
     private watchers: HistoryWatcher[] = [];
+    private locksCount = 0;
 
     private createRecord(index: number, route: string, params?: any, prevKey?: string): FastHistoryRecord {
         let key = 'page-' + index + '-' + UUID();
@@ -88,7 +89,21 @@ export class FastHistoryManager {
         }
     }
 
+    beginLock = () => {
+        var locked = true;
+        this.locksCount++;
+        return () => {
+            if (locked) {
+                locked = false;
+                this.locksCount--;
+            }
+        };
+    }
+
     push = (route: string, params?: any, current?: String) => {
+        if (this.locksCount > 0) {
+            return;
+        }
         if (current) {
             if (this.history.history[this.history.history.length - 1].key !== current) {
                 return;
@@ -102,6 +117,9 @@ export class FastHistoryManager {
         }
     }
     pop = (args?: { immediate?: boolean }, current?: String) => {
+        if (this.locksCount > 0) {
+            return;
+        }
         if (current) {
             if (this.history.history[this.history.history.length - 1].key !== current) {
                 return false;
