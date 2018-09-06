@@ -104,6 +104,8 @@ interface ContainerState {
     transitioning: boolean;
 }
 
+const FULL_TRASITION_DELAY = 200;
+
 export class Container extends React.PureComponent<ContainerProps, ContainerState> implements HistoryWatcher {
 
     private subscription?: WatchSubscription;
@@ -165,7 +167,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
 
         // Start animation
         let unlock = this.props.historyManager.beginLock();
-        setTimeout(unlock, 150);
+        setTimeout(unlock, FULL_TRASITION_DELAY);
         underlayHolder.progressValue.stopAnimation((v2: number) => {
             Animated.parallel([
                 animate(underlayHolder.progressValue, 1),
@@ -203,7 +205,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         let alreadyRemoving = this.removing.find((v) => v === record.key);
         if (!alreadyRemoving) {
             let unlock = this.props.historyManager.beginLock();
-            setTimeout(unlock, 150);
+            setTimeout(unlock, FULL_TRASITION_DELAY);
             this.removing = [...this.removing, holder.record.key];
             this.mounted = [...this.mounted, history.history[history.history.length - 1].key];
             Animated.parallel([
@@ -297,7 +299,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 let unlock = this.swipeHistoryLock;
                 this.swipeHistoryLock = undefined;
                 if (unlock) {
-                    setTimeout(unlock, 150);
+                    setTimeout(unlock, FULL_TRASITION_DELAY);
                 }
                 Animated.parallel([
                     Animated.spring(currentHolder.progressValue, {
