@@ -6250,6 +6250,19 @@ export interface SuperAdminRemoveMutation {
   superAdminRemove: string,
 };
 
+export interface SuperChatsStatsQueryVariables {
+  fromDate: string,
+  toDate: string,
+};
+
+export interface SuperChatsStatsQuery {
+  statsChats:  {
+    __typename: "ChatStats",
+    messagesSent: number,
+    usersActive: number,
+  },
+};
+
 export interface PermitQueryVariables {
   permitId: string,
 };

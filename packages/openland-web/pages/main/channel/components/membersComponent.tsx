@@ -8,8 +8,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XPopper } from 'openland-x/XPopper';
-import { XIcon } from 'openland-x/XIcon';
-import { XLink, XLinkProps } from 'openland-x/XLink';
+import { XLink } from 'openland-x/XLink';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
 import { ChannelMembersQuery, UserShortFragment } from 'openland-api/Types';
 import { XLoader } from 'openland-x/XLoader';
@@ -70,6 +69,16 @@ const MemberStaff = Glamorous.div({
 
 const MemberTools = Glamorous(XHorizontal)({
     paddingTop: 4,
+});
+
+const AboutText = Glamorous.div({
+    fontWeight: 500,
+    fontSize: 14,
+    lineHeight: '24px',
+    letterSpacing: -0.4,
+    color: '#5c6a81',
+    padding: '18px 24px',
+
 });
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
@@ -212,7 +221,15 @@ const RemoveMemberModal = withConversationKick((props) => {
     );
 }) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string }>;
 
-class ChannelMembersComponentInner extends React.Component<{ data: ChannelMembersQuery, channelTitle: string, channelId: string, isMyOrganization: boolean }> {
+class ChannelMembersComponentInner extends React.Component<{
+    data: ChannelMembersQuery,
+    channelTitle: string,
+    channelId: string,
+    isMyOrganization: boolean,
+    description?: string,
+    longDescription?: string,
+
+}> {
     render() {
         if (!this.props.data || !this.props.data.members) {
             return <XLoader loading={true} />;
@@ -227,6 +244,13 @@ class ChannelMembersComponentInner extends React.Component<{ data: ChannelMember
 
         return (
             <MembersWrapper>
+                {(this.props.description || this.props.longDescription) && (
+                    <>
+                        <XSubHeader title="Description" />
+                        {this.props.description && <AboutText>{this.props.description}</AboutText>}
+                        {this.props.longDescription && <AboutText>{this.props.longDescription}</AboutText>}
+                    </>
+                )}
                 {this.props.isMyOrganization && requests.length > 0 && (
                     <XWithRole role="admin" orgPermission={true}>
                         <XSubHeader title="Requests" counter={requests.length} />
@@ -263,5 +287,7 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         channelTitle={(props as any).channelTitle}
         channelId={(props.variables as any).channelId}
         isMyOrganization={(props as any).isMyOrganization}
+        description={(props as any).description}
+        longDescription={(props as any).longDescription}
     />
-)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string } }>;
+)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string }>;
