@@ -50,7 +50,8 @@
     <mj-class
         name="button"
 
-        background-color="#654bfa"
+        background-color="#522bff"
+        border-radius="20px"
         align="left"
         font-size="16px"
         line-height="20px"

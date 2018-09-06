@@ -2,8 +2,8 @@
     <mj-column>
         <mj-divider mj-class="divider"></mj-divider>   
         <mj-text mj-class="footer-buttons">
-            <a href="https://app.openland.com/mail/61gk9KRrl9ComJkvYnvdcddr4o" style="background-color: rgba(232, 233, 236, 0.45); font-size: 14px; line-height: 28px; letter-spacing: 0.5px; padding: 0 8px 2px; color: #99a2b0; border-radius: 5px; text-decoration: none; margin-right: 4px; display: inline-block; vertical-align: top;">Message support</a>
-            <a href="https://app.openland.com/settings/notifications" style="background-color: rgba(232, 233, 236, 0.45); font-size: 14px; line-height: 28px; letter-spacing: 0.5px; padding: 0 8px 2px; color: #99a2b0; border-radius: 5px; text-decoration: none; margin-right: 4px; display: inline-block; vertical-align: top;">Email settings</a>
+            <a href="https://app.openland.com/mail/61gk9KRrl9ComJkvYnvdcddr4o" style="background-color: rgba(232, 233, 236, 0.45); font-size: 14px; line-height: 28px; letter-spacing: 0.5px; padding: 0 12px 2px; color: #99a2b0; border-radius: 14px; text-decoration: none; margin-right: 5px; display: inline-block; vertical-align: top;">Message support</a>
+            <a href="https://app.openland.com/settings/notifications" style="background-color: rgba(232, 233, 236, 0.45); font-size: 14px; line-height: 28px; letter-spacing: 0.5px; padding: 0 12px 2px; color: #99a2b0; border-radius: 14px; text-decoration: none; margin-right: 4px; display: inline-block; vertical-align: top;">Email settings</a>
         </mj-text>
         <mj-text mj-class="footer-text">
             © 2018 Openland — Professional messenger for real estate
