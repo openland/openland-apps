@@ -577,3 +577,9 @@ export const ChatEditMessageMutation = gql`
         }
     }
 `;
+
+export const SuperChannelAddMemberMutation = gql`
+    mutation SuperChannelAddMember($id: ID!, $userId: ID!){
+        superAccountChannelMemberAdd(id: $id, userId: $userId)
+    }
+`;

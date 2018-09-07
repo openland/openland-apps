@@ -96,6 +96,7 @@ export interface XScrollViewProps extends XFlexStyles {
     flexDirection?: 'row' | 'column';
     className?: string;
     innerRef?: (src: any) => void;
+    contentContainerRef?: (ref: any) => void;
     onScroll?: () => void;
     optimize?: boolean;
 }
@@ -111,14 +112,12 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
 
 export class XScrollView extends React.Component<XScrollViewProps> {
     Simplebar = canUseDOM ? require('simplebar') : null;
-    node: any = undefined;
     handleRef = (el: any) => {
         if (canUseDOM && el) {
             let isSafari = (window as any).safari !== undefined;
             if (!isSafari || this.props.optimize !== true) {
                 // tslint:disable
                 new this.Simplebar(el);
-                this.node = ReactDOM.findDOMNode(el);
                 // tslint:enable
             }
         }
@@ -137,8 +136,8 @@ export class XScrollView extends React.Component<XScrollViewProps> {
                 <div className="simplebar-track horizontal">
                     <div className="simplebar-scrollbar" />
                 </div>
-                <div className="simplebar-scroll-content" ref={this.props.innerRef} onScroll={this.props.onScroll}>
-                    <div className="simplebar-content">
+                <div className="simplebar-scroll-content" ref={this.props.contentContainerRef || this.props.innerRef} onScroll={this.props.onScroll}>
+                    <div className="simplebar-content" >
                         {this.props.children}
                     </div>
                 </div>
