@@ -214,7 +214,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                     </View>
                 )}
 
-                <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100 }} onLayout={this.handleLeftLayout} pointerEvents="none">
+                <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 150 }} onLayout={this.handleLeftLayout} pointerEvents="none">
                     {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
                     {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><FastHeaderBackButton /></View>}
                 </View>

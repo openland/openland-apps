@@ -31,7 +31,7 @@ let image = (inverted: boolean) => Platform.OS === 'android' ?
 export class FastHeaderBackButton extends React.PureComponent<{ inverted?: boolean, onPress?: () => void }> {
     render() {
         return (
-            <FastTouchable onPress={this.props.onPress} style={{ margin: Platform.OS === 'android' ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={Platform.OS === 'android' ? { top: 13, left: 13, bottom: 13, right: 13 } : undefined}>
+            <FastTouchable onPress={this.props.onPress} style={{ margin: Platform.OS === 'android' ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={Platform.OS === 'android' ? { top: 13, left: 13, bottom: 13, right: 13 } : { top: 8, left: 8, bottom: 8, right: 8 }}>
                 <View style={{ backgroundColor: 'transparent', flexDirection: 'row' }}>
                     {image(this.props.inverted !== undefined ? this.props.inverted : false)}
                     {Platform.OS === 'ios' && <Text style={{ height: 44, lineHeight: 44, marginLeft: 3, fontSize: 16, paddingRight: 10, color: this.props.inverted ? '#fff' : '#4747ec' }}>Back</Text>}

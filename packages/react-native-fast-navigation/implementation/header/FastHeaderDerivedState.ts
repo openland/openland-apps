@@ -250,7 +250,5 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
             key: 'context-' + v[0].record.key
         } as NormalizedRouteContext;
     });
-    console.log(res);
     return res;
-    // return res;
 }

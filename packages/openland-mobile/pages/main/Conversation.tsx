@@ -16,6 +16,7 @@ import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton'
 import { PageProps } from '../../components/PageProps';
 import { ZQuery } from '../../components/ZQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
+import { Deferred } from '../../components/Deferred';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -97,16 +98,18 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
                 <FastHeaderButton>
                     <ChatRight conversationId={this.engine.conversationId} router={this.props.router} />
                 </FastHeaderButton>
-                <View style={{ height: '100%', flexDirection: 'column' }}>
-                    <ConversationView engine={this.engine} />
-                    <MessageInputBar
-                        onAttachPress={this.handleAttach}
-                        onSubmitPress={this.handleSubmit}
-                        onChangeText={this.handleTextChange}
-                        text={this.state.text}
-                        uploadState={this.state.uploadState}
-                    />
-                </View>
+                <Deferred>
+                    <View style={{ height: '100%', flexDirection: 'column' }}>
+                        <ConversationView engine={this.engine} />
+                        <MessageInputBar
+                            onAttachPress={this.handleAttach}
+                            onSubmitPress={this.handleSubmit}
+                            onChangeText={this.handleTextChange}
+                            text={this.state.text}
+                            uploadState={this.state.uploadState}
+                        />
+                    </View>
+                </Deferred>
             </>
         );
     }
@@ -122,7 +125,7 @@ class ConversationComponent extends React.Component<PageProps> {
                             <MessengerContext.Consumer>
                                 {messenger => {
                                     return (
-                                        <ZQuery query={ChatInfoQuery} variables={{conversationId: this.props.router.params.id}}>
+                                        <ZQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.id }}>
                                             {resp => (
                                                 <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />
                                             )}

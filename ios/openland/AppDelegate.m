@@ -13,10 +13,15 @@
 #import <React/RCTRootView.h>
 #import <React/RCTPushNotificationManager.h>
 
+#import <Fabric/Fabric.h>
+#import <Answers/Answers.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [Fabric with:@[[Answers class]]];
+
   NSURL *jsCodeLocation;
 
   #if TARGET_IPHONE_SIMULATOR

@@ -4,6 +4,8 @@ target 'openland' do
     # use_frameworks!
   pod 'Texture'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'Fabric'
+  pod 'Answers'
 end
 
 post_install do |installer|

@@ -45,6 +45,20 @@
 	<string>57</string>
 	<key>CodePushDeploymentKey</key>
 	<string>TNsklumnHNeMxRjz3VClHfhoIdqZH1kRWpV47</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>17daeaf4b6ee95da896b68c467e1e7dbcd465449</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Answers</string>
+			</dict>
+		</array>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
