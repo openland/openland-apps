@@ -62,6 +62,7 @@ class AppNotiticationsIOS implements AppNotificationsApi {
             title: content.title,
             message: content.body,
             group: 'conversation_message',
+            color: '#4747EC',
             ...content.id ? { id: content.id } : {},
         });
     }
