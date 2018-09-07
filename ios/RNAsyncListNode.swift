@@ -17,7 +17,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   private var state: RNAsyncDataViewState!
   private var headerPadding: Float = 0.0
-  private var dataView: RNAsyncDataView!
+  private var dataView: RNAsyncDataViewWindow!
   private var dataViewUnsubscribe: (()->Void)? = nil
   
   private var batchContext: ASBatchContext? = nil
@@ -167,7 +167,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func setDataView(dataView: RNAsyncDataView) {
-    self.dataView = dataView
+    self.dataView = RNAsyncDataViewWindow(source: dataView)
     self.state = self.dataView!.state
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
   }
@@ -249,6 +249,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.state = state
       if self.loaded {
         self.node.reloadData()
+        self.batchContext?.completeBatchFetching(true)
+        self.batchContext = nil
       }
     }
   }
@@ -322,7 +324,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func collectionNode(_ collectionNode: ASCollectionNode, willBeginBatchFetchWith context: ASBatchContext) {
     self.batchContext = context
-    AsyncViewEventEmitter.sharedInstance.dispatchOnLoadMore(key: self.dataView!.dataSourceKey)
+    self.dataView.loadMore()
   }
   
   func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
