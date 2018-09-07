@@ -1,11 +1,9 @@
 platform :ios, '9.0'
 
 target 'openland' do
-  use_frameworks!
+    # use_frameworks!
   pod 'Texture'
-  pod 'ComponentKit', '~> 0.23'
   pod 'SwiftyJSON', '~> 4.0'
-  pod 'BouncyLayout'
 end
 
 post_install do |installer|
