@@ -13,11 +13,8 @@ import FileIcon from '../icons/ic-file.svg';
 import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 
 interface SendMessageWrapperProps {
-    onDragOver: () => void;
-    onDragLeave: () => void;
     onDrop: (e: any) => void;
     dragOn: boolean;
-    dragUnder: boolean;
 }
 
 const SendMessageWrapper = Glamorous(XHorizontal)<SendMessageWrapperProps>(props => ({
@@ -120,8 +117,7 @@ export interface MessageComposeComponentProps {
 export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps> {
 
     state = {
-        dragOn: false,
-        dragUnder: false
+        dragOn: false
     };
 
     private input = React.createRef<XRichTextInput>();
@@ -175,18 +171,6 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                 this.input.current.focus();
             }
         }
-    }
-
-    private handleDragOver = () => {
-        this.setState({
-            dragUnder: true
-        });
-    }
-
-    private handleDragLeave = () => {
-        this.setState({
-            dragUnder: false
-        });
     }
 
     private handleDrop = (e: any) => {
@@ -248,11 +232,8 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
             <SendMessageWrapper
                 alignItems="stretch"
                 justifyContent="center"
-                onDragOver={this.handleDragOver}
-                onDragLeave={this.handleDragLeave}
                 onDrop={this.handleDrop}
                 dragOn={this.state.dragOn}
-                dragUnder={this.state.dragUnder}
             >
                 <DropArea
                     className="dropArea"
