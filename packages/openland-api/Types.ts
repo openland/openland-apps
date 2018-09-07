@@ -3326,6 +3326,15 @@ export interface ChatEditMessageMutation {
   },
 };
 
+export interface SuperChannelAddMemberMutationVariables {
+  id: string,
+  userId: string,
+};
+
+export interface SuperChannelAddMemberMutation {
+  superAccountChannelMemberAdd: string,
+};
+
 export interface AllDealsQuery {
   deals:  Array< {
     __typename: "Deal",

@@ -1,89 +1,27 @@
 {
   "project_info": {
-    "project_number": "1096143404604",
-    "firebase_url": "https://actor-51469.firebaseio.com",
-    "project_id": "actor-51469",
-    "storage_bucket": "actor-51469.appspot.com"
+    "project_number": "1095846783035",
+    "firebase_url": "https://statecraft-188615.firebaseio.com",
+    "project_id": "statecraft-188615",
+    "storage_bucket": "statecraft-188615.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1096143404604:android:3c99b9569ace0c58",
-        "android_client_info": {
-          "package_name": "com.korshakov.testing.openland"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1096143404604-kaa1jig6cms3p03ui6uqeta01nhm1ik6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB4xIYfsl1bBVW0wSATtvVVBsz6T-y-e8c"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1096143404604:android:060ff3f49cbf4099",
-        "android_client_info": {
-          "package_name": "com.korshakov.testing.openland.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1096143404604-kaa1jig6cms3p03ui6uqeta01nhm1ik6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB4xIYfsl1bBVW0wSATtvVVBsz6T-y-e8c"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1096143404604:android:508162d2dfa852b1",
+        "mobilesdk_app_id": "1:1095846783035:android:508162d2dfa852b1",
         "android_client_info": {
           "package_name": "com.openland.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1096143404604-kaa1jig6cms3p03ui6uqeta01nhm1ik6.apps.googleusercontent.com",
+          "client_id": "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB4xIYfsl1bBVW0wSATtvVVBsz6T-y-e8c"
+          "current_key": "AIzaSyByFkMXQV2veJMJCkC2WVvapXFDs0bJDeo"
         }
       ],
       "services": {
@@ -101,20 +39,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1096143404604:android:2c9842c15ab08b98",
+        "mobilesdk_app_id": "1:1095846783035:android:2c9842c15ab08b98",
         "android_client_info": {
           "package_name": "com.openland.app.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1096143404604-kaa1jig6cms3p03ui6uqeta01nhm1ik6.apps.googleusercontent.com",
+          "client_id": "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB4xIYfsl1bBVW0wSATtvVVBsz6T-y-e8c"
+          "current_key": "AIzaSyByFkMXQV2veJMJCkC2WVvapXFDs0bJDeo"
         }
       ],
       "services": {

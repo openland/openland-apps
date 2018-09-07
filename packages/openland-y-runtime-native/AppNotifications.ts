@@ -14,7 +14,7 @@ Push.configure({
         }
         tokenListeners = [];
     },
-    senderID: '1096143404604',
+    senderID: '1095846783035',
     requestPermissions: false,
 });
 
@@ -62,6 +62,7 @@ class AppNotiticationsIOS implements AppNotificationsApi {
             title: content.title,
             message: content.body,
             group: 'conversation_message',
+            color: '#4747EC',
             ...content.id ? { id: content.id } : {},
         });
     }

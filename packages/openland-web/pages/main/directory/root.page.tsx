@@ -117,8 +117,8 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
     }
 
     scrolTop = () => {
-        if (this.scrollRef && this.scrollRef.node) {
-            this.scrollRef.node.scrollTop();
+        if (this.scrollRef) {
+            this.scrollRef.scrollTo(0, 0);
         }
     }
 
@@ -177,7 +177,7 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
         }
 
         return (
-            <Results innerRef={this.handleScrollRef}>
+            <Results contentContainerRef={this.handleScrollRef}>
                 <OrganizationCards
                     onPick={this.props.onPick}
                     onSearchReset={this.props.onSearchReset}
@@ -255,6 +255,7 @@ const CategoryPicker = withTopCategories((props) => (
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     input?: any;
+    organizationListRef = React.createRef<Organizations>();
 
     constructor(props: any) {
         super(props);
@@ -294,6 +295,10 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         this.setState({ conditions: res, searchText: '' });
 
         this.props.router.replaceQueryParams({ clauses: JSON.stringify(res), page: undefined });
+
+        if (this.organizationListRef.current) {
+            this.organizationListRef.current.scrolTop();
+        }
     }
 
     replaceConditions = (condition: SearchCondition) => {
@@ -466,6 +471,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 <XSubHeader title="No results" />
                             )}
                             <Organizations
+                                ref={this.organizationListRef}
                                 featuredFirst={this.state.sort.featured}
                                 orderBy={this.state.sort.orderBy}
                                 conditions={conditions}

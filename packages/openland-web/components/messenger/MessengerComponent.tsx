@@ -22,6 +22,7 @@ import { ChannelsInviteComponent } from './ChannelsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
 import { XCounter } from 'openland-x/XCounter';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { withAlterChat } from '../../api/withAlterChat';
@@ -29,7 +30,10 @@ import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import PlusIcon from '../icons/ic-add-medium.svg';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XText } from 'openland-x/XText';
+import { UserSelect } from '../../api/UserSelect';
+import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
+import { XForm } from 'openland-x-forms/XForm';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -347,6 +351,23 @@ export const ChatEditComponent = withAlterChat((props) => {
     );
 }) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
+const AddMemberForm = withSuperAddToChannel((props) => {
+    return (
+        <XModalFormOld
+            title="Add member to channel"
+            submitMutation={props.add}
+            mutationDirect={true}
+            actionName="Add"
+            targetQuery="addMember"
+            defaultValues={{ id: (props as any).channelId }}
+        >
+            <XFormField title="User">
+                <XForm.Select field="userId" component={UserSelect} />
+            </XFormField>
+        </XModalFormOld>
+    );
+}) as React.ComponentType<{ refetchVars: { conversationId: string }, channelId: string }>;
+
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
         transition: 'all .2s'
@@ -475,8 +496,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         <XMenuTitle>Super admin</XMenuTitle>
                                         <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
                                         <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                        <XMenuItem query={{ field: 'addMember', value: 'true' }} style="primary-sky-blue">Add Member</XMenuItem>
                                         <XMenuTitle>Common</XMenuTitle>
                                         <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
+
                                     </div>
                                 )}
                             />
@@ -524,6 +547,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             </XHorizontal>
             {<ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
             {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
+
+            <XWithRole role={['super-admin']}>
+                <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
+            </XWithRole>
+
         </XVertical>
     );
 }));
