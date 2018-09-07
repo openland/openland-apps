@@ -66,7 +66,7 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
   res.children = resolveNodes(direct, context)
 
   var res2: ASLayoutElement = res
-  res2 = resolveStyle(spec.style, res, context)
+  res2 = resolveStyle(spec, res, context)
   if (spec.touchableKey != nil) {
     res2 = ASBackgroundLayoutSpec(child: res2, background: RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor))
   }
@@ -82,96 +82,87 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
 }
 
 func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayoutElement {
-//  let res = context.fetchCached(key: spec.key) { () -> RNAsyncTextNode in
-//    return RNAsyncTextNode()
-//  }
-  let res = RNAsyncTextNode()
+  let res = context.fetchCached(key: spec.key) { () -> RNAsyncTextNode in
+    return RNAsyncTextNode()
+  }
   res.setSpec(spec: spec)
-  return resolveStyle(spec.style, res, context)
+  return resolveStyle(spec, res, context)
 }
 
 func createImageNode(spec: AsyncImageSpec, context: RNAsyncViewContext) -> ASLayoutElement {
   let res = context.fetchCached(key: spec.key) { () -> RNImageNode in
-    return RNImageNode(key: spec.key)
+    return RNImageNode()
   }
-
   res.setSpec(spec: spec)
-  return resolveStyle(spec.style, res, context)
+  return resolveStyle(spec, res, context)
 }
 
 //
 // Helpers
 //
 
-func resolveStyle(_ spec: AsyncStyleSpec, _ source: ASLayoutElement, _ context: RNAsyncViewContext) -> ASLayoutElement {
+func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: RNAsyncViewContext) -> ASLayoutElement {
   var res = source
   
   // Apply basic styles
-  if let v = spec.width {
+  if let v = spec.style.width {
     res.style.width = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.height {
+  if let v = spec.style.height {
     res.style.height = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.borderRadius {
+  if let v = spec.style.borderRadius {
     if let g = source as? ASDisplayNode {
-      g.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
-        let bounds = context.boundingBoxOfClipPath
-        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(v) * UIScreen.main.scale).addClip()
-      }
+      g.cornerRadius = CGFloat(v)
+      g.cornerRoundingType = .precomposited
     }
   }
   
-  if let v = spec.backgroundPatch {
-    let g = ASImageNode()
-    var _baseImage: UIImage? = nil
-    if let val = cache[v.source] {
-      _baseImage = val
-    } else {
-      _baseImage = try! UIImage(data: Data(contentsOf: URL(string: v.source)!), scale: UIScreen.main.scale)
-      if _baseImage != nil {
-        cache[v.source] = _baseImage
-      }
+  if let v = spec.style.backgroundPatch {
+    let g = context.fetchCached(key: spec.key+"-bg-patch") { () -> RNPatchNode in
+      return RNPatchNode()
     }
-    g.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(v.top), left: CGFloat(v.left), bottom: CGFloat(v.bottom), right: CGFloat(v.right)), resizingMode: UIImageResizingMode.stretch)
+    g.setSpec(spec: v)
     res = ASBackgroundLayoutSpec(child: res, background: g)
-  } else if let v = spec.backgroundGradient {
-    let g = RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
-    if let br = spec.borderRadius {
-      g.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
-        let bounds = context.boundingBoxOfClipPath
-        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(br)).addClip()
-      }
+  } else if let v = spec.style.backgroundGradient {
+    let g = context.fetchCached(key: spec.key+"-bg-gradient") { () -> RNAsyncGradient in
+      return RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
+    }
+    g.update(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
+    if let br = spec.style.borderRadius {
+      g.cornerRadius = CGFloat(br)
+      g.cornerRoundingType = .precomposited
     }
     res = ASBackgroundLayoutSpec(child: res, background: g)
-  } else if let v = spec.backgroundColor {
-    let g = RNAsyncBackground(v)
-    if let br = spec.borderRadius {
-      g.willDisplayNodeContentWithRenderingContext = { context, drawParameters in
-        let bounds = context.boundingBoxOfClipPath
-        UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(br)).addClip()
-      }
+  } else if let v = spec.style.backgroundColor {
+    let g = context.fetchCached(key: spec.key+"-bg-color") { () -> RNAsyncBackground in
+      return RNAsyncBackground(v)
+    }
+    g.update(color: v)
+    if let br = spec.style.borderRadius {
+      g.cornerRadius = CGFloat(br)
+      g.cornerRoundingType = .precomposited
     }
     res = ASBackgroundLayoutSpec(child: res, background: g)
   }
   
   // Apply margins
-  let marginTop: Float = spec.marginTop ?? 0.0
-  let marginBottom: Float = spec.marginBottom ?? 0.0
-  let marginLeft: Float = spec.marginLeft ?? 0.0
-  let marginRight: Float = spec.marginRight ?? 0.0
+  let marginTop: Float = spec.style.marginTop ?? 0.0
+  let marginBottom: Float = spec.style.marginBottom ?? 0.0
+  let marginLeft: Float = spec.style.marginLeft ?? 0.0
+  let marginRight: Float = spec.style.marginRight ?? 0.0
   if marginTop != 0 || marginBottom != 0 || marginRight != 0 || marginLeft != 0 {
     res = ASInsetLayoutSpec(insets: UIEdgeInsetsMake(CGFloat(marginTop), CGFloat(marginLeft), CGFloat(marginBottom), CGFloat(marginRight)), child: res)
   }
   
   // Apply flex params
-  if let v = spec.flexBasis {
+  if let v = spec.style.flexBasis {
     res.style.flexBasis = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.flexGrow {
+  if let v = spec.style.flexGrow {
     res.style.flexGrow = CGFloat(v)
   }
-  if let v = spec.flexShrink {
+  if let v = spec.style.flexShrink {
     res.style.flexShrink = CGFloat(v)
   }
 

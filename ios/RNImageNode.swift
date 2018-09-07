@@ -8,18 +8,14 @@
 
 import Foundation
 
-
-
 class RNImageNode: ASDisplayNode {
   let instanceKey: String = randomKey()
-  let key: String
   var touchableKey: String? = nil
   let node: ASNetworkImageNode
   private var url: String? = nil
   
-  init(key: String) {
+  override init() {
     self.node = ASNetworkImageNode()
-    self.key = key
     super.init()
     
     self.node.shouldCacheImage = false; // It doesn't work otherwise

@@ -10,11 +10,11 @@ import Foundation
 
 class RNAsyncBackground: ASDisplayNode {
   
-  private let color: UIColor
+  private var color: UIColor
   
   override class func draw(_ bounds: CGRect, withParameters parameters: Any?, isCancelled isCancelledBlock: () -> Bool, isRasterizing: Bool) {
     
-    guard let parameters = parameters as? RNAsyncBackground else {
+    guard let parameters = parameters as? UIColor else {
       // CCLog.assert("Expected type SimpleGradientNode to be returned")
       return
     }
@@ -22,7 +22,7 @@ class RNAsyncBackground: ASDisplayNode {
     let context = UIGraphicsGetCurrentContext()!
     context.saveGState()
     context.clip(to: bounds)
-    parameters.color.setFill()
+    parameters.setFill()
     UIRectFill(bounds)
     context.restoreGState()
   }
@@ -34,7 +34,12 @@ class RNAsyncBackground: ASDisplayNode {
     self.isOpaque = false
   }
   
+  func update(color: UIColor) {
+    self.color = color
+    self.setNeedsDisplay()
+  }
+  
   override func drawParameters(forAsyncLayer layer: _ASDisplayLayer) -> NSObjectProtocol? {
-    return self
+    return self.color
   }
 }

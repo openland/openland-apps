@@ -27,7 +27,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 style={{ flexGrow: 1 }}
-                                headerPadding={16}
+                                headerPadding={6}
                             />
                         )}
                     </MobileMessengerContext.Consumer>

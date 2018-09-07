@@ -8,16 +8,43 @@
 
 import Foundation
 
+class RNAsyncGradientParams: NSObject {
+  let startUnitPoint: CGPoint;
+  let endUnitPoint: CGPoint;
+  let colors: [UIColor];
+  let locations: [CGFloat]?;
+  
+  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
+    self.startUnitPoint = startUnitPoint
+    self.endUnitPoint = endUnitPoint
+    self.colors = colors
+    self.locations = locations
+  }
+}
+
 class RNAsyncGradient: ASDisplayNode {
   
-  private let startUnitPoint: CGPoint
-  private let endUnitPoint: CGPoint
-  private let colors: [UIColor]
-  private let locations: [CGFloat]?
+  private var params: RNAsyncGradientParams
+
+  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
+    self.params = RNAsyncGradientParams(startingAt: startUnitPoint, endingAt: endUnitPoint, with: colors, for: locations)
+    super.init()
+    self.isLayerBacked = true
+    self.isOpaque = false
+  }
+  
+  override func drawParameters(forAsyncLayer layer: _ASDisplayLayer) -> NSObjectProtocol? {
+    return self.params
+  }
+  
+  func update(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
+    self.params = RNAsyncGradientParams(startingAt: startUnitPoint, endingAt: endUnitPoint, with: colors, for: locations)
+    self.setNeedsDisplay()
+  }
   
   override class func draw(_ bounds: CGRect, withParameters parameters: Any?, isCancelled isCancelledBlock: () -> Bool, isRasterizing: Bool) {
     
-    guard let parameters = parameters as? RNAsyncGradient else {
+    guard let parameters = parameters as? RNAsyncGradientParams else {
       // CCLog.assert("Expected type SimpleGradientNode to be returned")
       return
     }
@@ -49,17 +76,4 @@ class RNAsyncGradient: ASDisplayNode {
     context.restoreGState()
   }
   
-  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
-    self.startUnitPoint = startUnitPoint
-    self.endUnitPoint = endUnitPoint
-    self.colors = colors
-    self.locations = locations
-    super.init()
-    self.isLayerBacked = true
-    self.isOpaque = false
-  }
-  
-  override func drawParameters(forAsyncLayer layer: _ASDisplayLayer) -> NSObjectProtocol? {
-    return self
-  }
 }
