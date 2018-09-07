@@ -277,11 +277,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       if let c = self.activeCells.get(key: self.state.items[index].key) {
         c.setSpec(spec: self.state.items[index].config)
       }
-      // self.node.reloadItems(at: [IndexPath(item: index, section: 1)])
-//      self.node.performBatch(animated: false, updates: {
-//        self.state = state
-//        self.node.reloadItems(at: [IndexPath(item: index, section: 1)])
-//      }, completion: nil)
     }
   }
   
@@ -361,13 +356,17 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let d = self.state.items[indexPath.row]
       let ac = self.activeCells
       let c = self.context
+      let w = self.width
       return { () -> ASCellNode in
         var cached = ac.get(key: d.key)
         if cached == nil {
           cached = RNAsyncCell(spec: d.config, context: c)
           ac.set(key: d.key, value: cached!)
         }
-        return ac.get(key: d.key)!
+        let res = ac.get(key: d.key)!
+        res.style.width = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(w))
+        res.style.height = ASDimension(unit: ASDimensionUnit.points, value: res.layoutThatFits(ASSizeRange(min: CGSize(width: w, height: 0), max: CGSize(width: w, height: 10000))).size.height)
+        return res
       }
     } else if indexPath.section == 2 {
       let isCompleted = self.state.completed

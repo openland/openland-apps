@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ASViewStyle } from './ASViewStyle';
-import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { ASPressEvent } from './ASPressEvent';
 import { baseStyleProcessor } from './internals/baseStyleProcessor';
 import { processColor } from 'react-native';
+import { randomTag } from './internals/randomTag';
 
 export interface ASTextProps extends ASViewStyle {
     color?: string;
@@ -19,7 +19,7 @@ export interface ASTextProps extends ASViewStyle {
 }
 
 export class ASText extends React.PureComponent<ASTextProps> {
-    private tag = UUID();
+    private tag = randomTag();
 
     componentWillMount() {
         if (this.props.onPress) {

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Image, processColor } from 'react-native';
+import { Image } from 'react-native';
 import { ASViewStyle } from './ASViewStyle';
 import { ASPressEvent } from './ASPressEvent';
-import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { baseStyleProcessor } from './internals/baseStyleProcessor';
+import { randomTag } from './internals/randomTag';
 
 export interface ASImageProps extends ASViewStyle {
     source: any;
@@ -13,7 +13,7 @@ export interface ASImageProps extends ASViewStyle {
 }
 
 export class ASImage extends React.PureComponent<ASImageProps> {
-    private tag = UUID();
+    private tag = randomTag();
 
     componentWillMount() {
         if (this.props.onPress) {

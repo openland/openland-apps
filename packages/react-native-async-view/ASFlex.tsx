@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, processColor } from 'react-native';
+import { processColor } from 'react-native';
 import { ASViewStyle } from './ASViewStyle';
-import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { ASPressEvent } from './ASPressEvent';
 import { baseStyleProcessor } from './internals/baseStyleProcessor';
+import { randomTag } from './internals/randomTag';
 
 export interface ASFlexProps extends ASViewStyle {
     flexDirection?: 'row' | 'column';
@@ -18,7 +18,7 @@ export interface ASFlexProps extends ASViewStyle {
 
 export class ASFlex extends React.Component<ASFlexProps> {
 
-    private tag = UUID();
+    private tag = randomTag();
 
     componentWillMount() {
         if (this.props.onPress) {
