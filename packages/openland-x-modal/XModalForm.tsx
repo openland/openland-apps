@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XModal, XModalFooter, XModalHeader, XModalBody } from './XModal';
+import { XModal, XModalFooter, XModalHeader, XModalBody, XModalTitle } from './XModal';
 import { XForm, XFormActionProps, XFormAction } from 'openland-x-forms/XForm';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from 'openland-x/XButton';
@@ -41,11 +41,14 @@ const Footer = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.6)',
     '> *': {
         borderTop: 0
-    }
+    },
+    backgroundColor: '#fafbfc',
+    borderRadius: 8
 });
 
 const FooterSubActions = Glamorous(XModalFooter)({
     justifyContent: 'flex-start',
+    borderTop: 0
 });
 
 export class XModalForm extends React.Component<XModalFormProps> {
@@ -54,7 +57,11 @@ export class XModalForm extends React.Component<XModalFormProps> {
 
         return (
             <XModal {...other} customContent={true}>
-                {this.props.title && <XModalHeader>{this.props.title}</XModalHeader>}
+                {this.props.title && <XModalHeader>
+                    <XHorizontal alignItems="center" separator={4}>
+                        <XModalTitle>{this.props.title}</XModalTitle>
+                    </XHorizontal>
+                </XModalHeader>}
                 <XForm submitMutation={submitMutation} mutationDirect={mutationDirect} onSubmit={onSubmit} prepare={prepare} fillValues={fillValues} defaultValues={defaultValues} autoClose={true}>
                     <XModalBody>
                         {this.props.children}

@@ -239,9 +239,6 @@ class ChannelMembersComponentInner extends React.Component<{
         let requests = this.props.data.members.filter(m => m.status === 'requested');
         let members = this.props.data.members.filter(m => m.status === 'member');
 
-        // for tests
-        // requests = members.map(m => ({ ...m, status: 'requested' }));
-
         return (
             <MembersWrapper>
                 {(this.props.description || this.props.longDescription) && (
