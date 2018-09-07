@@ -3290,6 +3290,10 @@ babel-plugin-transform-react-stateless-component-name@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-stateless-component-name/-/babel-plugin-transform-react-stateless-component-name-1.1.2.tgz#9106f4fa7eb51ec4bb37e8e6f8d6bb0381695bff"
 
+babel-plugin-transform-remove-console@^6.9.4:
+  version "6.9.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.9.4.tgz#b980360c067384e24b357a588d807d3c83527780"
+
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.24.1.tgz#d5faf7aa578a65bbe591cf5edae04a0c67020758"

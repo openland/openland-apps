@@ -26,7 +26,8 @@
                         "openland-shared": "./build/native/openland-shared",
                         "assets": "./packages/openland-mobile/assets"
                     }
-                }]
+                }],
+                "transform-remove-console"
             ]
         },
         "development": {
