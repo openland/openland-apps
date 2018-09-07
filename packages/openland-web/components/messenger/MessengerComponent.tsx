@@ -445,7 +445,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
                                     <ChannelTab query={{ field: 'tab', value: 'members' }}>
                                         <XHorizontal separator={4} alignItems="center">
-                                            <span>Members</span>
+                                            <span>About</span>
                                             {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
                                                 <XCounter big={true} count={props.data.chat.memberRequestsCount} />
                                             )}
