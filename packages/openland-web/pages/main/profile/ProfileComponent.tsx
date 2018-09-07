@@ -422,7 +422,7 @@ const MemberCardTitle = Glamorous.div({
     color: '#5c6a81',
 });
 
-const MemberCardOrg = Glamorous.div({
+const MemberCardOrg = Glamorous(XLink)({
     fontSize: 12,
     fontWeight: 500,
     opacity: 0.5,
@@ -430,7 +430,11 @@ const MemberCardOrg = Glamorous.div({
     letterSpacing: -0.2,
     alignSelf: 'flex-end',
     marginBottom: -2,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '&:hover': {
+        opacity: 1,
+        color: '#1790ff'
+    }
 });
 
 const MemberCardSocial = Glamorous(XLink)({
@@ -501,7 +505,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             {user.email && <MemberCardSocial href={'mailto:' + user.email}><EmailIcon /></MemberCardSocial>}
                             {user.linkedin && <MemberCardSocial href={user.linkedin}><LinkedinIcon /></MemberCardSocial>}
                             {user.twitter && <MemberCardSocial href={user.twitter}><TwitterIcon /></MemberCardSocial>}
-                            {user.primaryOrganization && <MemberCardOrg>{user.primaryOrganization.name}</MemberCardOrg>}
+                            {user.primaryOrganization && <MemberCardOrg path={`/directory/o/${user.primaryOrganization.id}`}>{user.primaryOrganization.name}</MemberCardOrg>}
                         </XHorizontal>
                         {user.role && <MemberCardRole>{user.role}</MemberCardRole>}
                     </XVertical>
@@ -511,7 +515,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                         text="Message"
                         size="r-default"
                         style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                        path={'/mail/' + user.id}
+                        path={`/mail/${user.id}`}
                     />
                     {this.props.iAmOwner && <XOverflow
                         placement="bottom-end"

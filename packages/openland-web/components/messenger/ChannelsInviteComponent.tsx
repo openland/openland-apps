@@ -48,7 +48,10 @@ const UserInfoWrapper = Glamorous(XHorizontal)({
     margin: 'auto',
     marginTop: 45,
     marginBottom: 24,
-    flexShrink: 0
+    flexShrink: 0,
+    '@media (max-width: 1400px)': {
+        marginTop: 25
+    }
 });
 
 const InfoCardWrapper = Glamorous.div({
@@ -130,7 +133,10 @@ const ImageWrapper = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     marginTop: 64,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    '@media (max-width: 1400px)': {
+        marginTop: 30
+    }
 });
 
 const Image = Glamorous.div({
@@ -140,6 +146,10 @@ const Image = Glamorous.div({
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
+    '@media (max-width: 1250px)': {
+        width: 500,
+        height: 391
+    }
 });
 
 const JoinButton = withChannelJoin((props) => {
