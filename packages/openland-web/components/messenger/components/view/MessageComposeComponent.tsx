@@ -177,7 +177,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         e.preventDefault();
 
         this.setState({
-            dragUnder: false
+            dragOn: false
         });
 
         let file = e.dataTransfer.files[0];
@@ -227,7 +227,6 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
     }
 
     render() {
-        console.log(this.state);
         return (
             <SendMessageWrapper
                 alignItems="stretch"
