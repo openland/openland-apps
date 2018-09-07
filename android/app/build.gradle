@@ -99,7 +99,12 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
-buildDir = "./app/build/"
+/**
+ * Hack for AppCenter
+ */
+if ("$System.env.CI" == "true") {
+    buildDir = "./app/build/"
+}
 
 android {
     dexOptions {
