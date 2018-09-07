@@ -99,6 +99,8 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+buildDir = "./app/build/"
+
 android {
     dexOptions {
         preDexLibraries = false
