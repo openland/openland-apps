@@ -12,7 +12,15 @@ import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
 import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 
-const SendMessageWrapper = Glamorous(XHorizontal)({
+interface SendMessageWrapperProps {
+    onDragOver: () => void;
+    onDragLeave: () => void;
+    onDrop: (e: any) => void;
+    dragOn: boolean;
+    dragUnder: boolean;
+}
+
+const SendMessageWrapper = Glamorous(XHorizontal)<SendMessageWrapperProps>(props => ({
     width: '100%',
     minHeight: 114,
     maxHeight: 200,
@@ -22,7 +30,20 @@ const SendMessageWrapper = Glamorous(XHorizontal)({
     paddingRight: 20,
     paddingTop: 12,
     paddingBottom: 12,
-    borderTop: '1px solid rgba(220, 222, 228, 0.45)'
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)',
+    '& > .dropArea': {
+        visibility: props.dragOn ? 'visible' : 'hidden',
+        backgroundColor: props.dragOn ? '#f9fafb' : 'transparent'
+    }
+}));
+
+const DropArea = Glamorous.div({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 2
 });
 
 const SendMessageContent = Glamorous(XHorizontal)({
@@ -98,6 +119,11 @@ export interface MessageComposeComponentProps {
 
 export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps> {
 
+    state = {
+        dragOn: false,
+        dragUnder: false
+    };
+
     private input = React.createRef<XRichTextInput>();
     private wasFocused = false;
     private message: string = '';
@@ -151,8 +177,65 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         }
     }
 
+    private handleDragOver = () => {
+        this.setState({
+            dragUnder: true
+        });
+    }
+
+    private handleDragLeave = () => {
+        this.setState({
+            dragUnder: false
+        });
+    }
+
+    private handleDrop = (e: any) => {
+        e.preventDefault();
+
+        this.setState({
+            dragUnder: false
+        });
+
+        let file = e.dataTransfer.files[0];
+
+        let ucFile = UploadCare.fileFrom('object', file);
+
+        let dialog = UploadCare.openDialog(ucFile, {
+            publicKey: getConfig().uploadcareKey!!,
+        });
+
+        dialog.done((r) => {
+            this.setState({ message: '' }, () => {
+                if (this.props.onSendFile) {
+                    this.props.onSendFile(r);
+                }
+            });
+        });
+    }
+
+    private handleWindowDragover = (e: any) => {
+        e.preventDefault();
+        this.setState({
+            dragOn: true
+        });
+    }
+
+    private handleWindowDrop = (e: any) => {
+        e.preventDefault();
+        this.setState({
+            dragOn: false
+        });
+    }
+
     componentDidMount() {
         this.focusIfNeeded();
+        window.addEventListener('dragover', this.handleWindowDragover);
+        window.addEventListener('drop', this.handleWindowDrop);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('dragover', this.handleWindowDragover);
+        window.removeEventListener('drop', this.handleWindowDrop);
     }
 
     componentDidUpdate() {
@@ -160,8 +243,20 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
     }
 
     render() {
+        console.log(this.state);
         return (
-            <SendMessageWrapper alignItems="stretch" justifyContent="center" >
+            <SendMessageWrapper
+                alignItems="stretch"
+                justifyContent="center"
+                onDragOver={this.handleDragOver}
+                onDragLeave={this.handleDragLeave}
+                onDrop={this.handleDrop}
+                dragOn={this.state.dragOn}
+                dragUnder={this.state.dragUnder}
+            >
+                <DropArea
+                    className="dropArea"
+                />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1}>
                         <TextInputWrapper>
@@ -183,14 +278,16 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                                     <PhotoIcon />
                                     <span>Photo</span>
                                 </AttachmentButton>
-                                {this.props.conversationType === 'ChannelConversation' && this.props.conversationId && <AttachmentButton
-                                    query={{ field: 'addListing', value: 'true' }}
+                                {this.props.conversationType === 'ChannelConversation' && this.props.conversationId && (
+                                    <AttachmentButton
+                                        query={{ field: 'addListing', value: 'true' }}
                                     // enabled={this.props.enabled === false}
                                     // disable={this.props.enabled === false}
-                                >
-                                    <ListingIcon />
-                                    <span>Listing</span>
-                                </AttachmentButton>}
+                                    >
+                                        <ListingIcon />
+                                        <span>Listing</span>
+                                    </AttachmentButton>
+                                )}
                                 <AttachmentButton
                                     onClick={this.props.enabled === false ? undefined : this.handleAttach}
                                     enabled={this.props.enabled === false}
