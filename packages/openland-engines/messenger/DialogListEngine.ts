@@ -45,7 +45,7 @@ export class DialogListEngine {
     readonly engine: MessengerEngine;
     private conversations: ConversationShortFragment[] = [];
     readonly dataSource: DataSource<DialogDataSourceItem>;
-    private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
+    // private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
     private next?: string;
     private loading: boolean = true;
     constructor(engine: MessengerEngine) {
@@ -53,7 +53,7 @@ export class DialogListEngine {
         this.dataSource = new DataSource<DialogDataSourceItem>(() => {
             this.loadNext();
         });
-        this.dataSourceLogger = new DataSourceLogger<DialogDataSourceItem>('[DIALOGS]', this.dataSource);
+        // this.dataSourceLogger = new DataSourceLogger<DialogDataSourceItem>('[DIALOGS]', this.dataSource);
     }
 
     //

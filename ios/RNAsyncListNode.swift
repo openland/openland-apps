@@ -217,11 +217,17 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func setHeaderPadding(padding: Float) {
-    DispatchQueue.main.async {
-      self.node.performBatch(animated: false, updates: {
-        self.headerPadding = padding
-        self.node.reloadSections(IndexSet(integer: 0))
-      }, completion: nil)
+    if !self.loaded {
+      self.headerPadding = padding
+    } else {
+      if self.headerPadding != padding {
+        DispatchQueue.main.async {
+          self.node.performBatch(animated: false, updates: {
+            self.headerPadding = padding
+            self.node.reloadSections(IndexSet(integer: 0))
+          }, completion: nil)
+        }
+      }
     }
   }
   
@@ -336,6 +342,11 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
+  
+  func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
+    return ASSizeRange(min: CGSize(width: self.width, height: 0), max: CGSize(width: self.width, height: 10000))
+  }
+  
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
     if self.dataView == nil {
       fatalError()
@@ -353,6 +364,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.alignItems = ASStackLayoutAlignItems.stretch
           res.child = resolveNode(spec: d.config, context: c)
           res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
+          
+          // Precompute layout?
+          res.layoutThatFits(ASSizeRange(min: CGSize(width: w, height: 0), max: CGSize(width: w, height: 10000)))
+          
           return res
         }
         return res

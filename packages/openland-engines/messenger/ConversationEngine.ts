@@ -108,7 +108,7 @@ export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
     readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem>;
-    private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem>;
+    // private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem>;
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
@@ -127,7 +127,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.dataSource = new DataSource(() => {
             this.loadBefore();
         });
-        this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
+        // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
     }
 
     start = async () => {
