@@ -193,17 +193,9 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
 
         let ucFile = UploadCare.fileFrom('object', file);
 
-        let dialog = UploadCare.openDialog(ucFile, {
-            publicKey: getConfig().uploadcareKey!!,
-        });
-
-        dialog.done((r) => {
-            this.setState({ message: '' }, () => {
-                if (this.props.onSendFile) {
-                    this.props.onSendFile(r);
-                }
-            });
-        });
+        if (this.props.onSendFile) {
+            this.props.onSendFile(ucFile);
+        }
     }
 
     private handleWindowDragover = (e: any) => {
