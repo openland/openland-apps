@@ -436,7 +436,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
 
         if (!this.props.emptyState && e.code === 'Escape') {
             if (canUseDOM) {
-                if (document.body.classList[0] === 'ReactModal__Body--open') {
+                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
                     return;
                 }
             }
