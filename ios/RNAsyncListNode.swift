@@ -14,6 +14,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private let width = UIScreen.main.bounds.width // Screen width
   private let context: RNAsyncViewContext = RNAsyncViewContext()
   private var node: ASCollectionNode!
+  private let queue: DispatchQueue
   
   private var state: RNAsyncDataViewState!
   private var headerPadding: Float = 0.0
@@ -32,8 +33,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var activeCells = WeakMap<RNAsyncCell>()
   
   init(parent: RNAsyncListView) {
-    print("create list")
     self.parent = parent
+    self.queue = DispatchQueue(label: "rn-async-node")
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 0.0
     layout.minimumInteritemSpacing = 0.0
@@ -245,72 +246,110 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   //
   
   func onInited(state: RNAsyncDataViewState) {
-    DispatchQueue.main.async {
-      self.state = state
-      if self.loaded {
-        self.node.reloadData()
-        self.batchContext?.completeBatchFetching(true)
-        self.batchContext = nil
+    self.queue.async {
+      
+      // Precaching layouts
+      for itm in state.items {
+        let ex = self.activeCells.get(key: itm.key)
+        if ex != nil {
+          ex!.setSpec(spec: itm.config)
+        } else {
+          self.activeCells.set(key: itm.key, value: RNAsyncCell(spec: itm.config, context: self.context))
+        }
+      }
+      
+      DispatchQueue.main.async {
+        self.state = state
+        if self.loaded {
+          self.node.reloadData()
+          self.batchContext?.completeBatchFetching(true)
+          self.batchContext = nil
+        }
       }
     }
   }
   
   func onAdded(index: Int, state: RNAsyncDataViewState) {
-    DispatchQueue.main.async {
-      self.node.performBatchUpdates({
-        self.state = state
-        self.node.insertItems(at: [IndexPath(row: index, section: 1)])
-      }, completion: nil)
-    }
-  }
-  
-  func onMoved(from: Int, to: Int, state: RNAsyncDataViewState) {
-    DispatchQueue.main.async {
-      self.node.performBatchUpdates({
-        self.state = state
-        self.node.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
-      }, completion: nil)
-    }
-  }
-  
-  func onUpdated(index: Int, state: RNAsyncDataViewState) {
-    DispatchQueue.main.async {
-      self.state = state
-      if let c = self.activeCells.get(key: self.state.items[index].key) {
-        c.setSpec(spec: self.state.items[index].config)
+    self.queue.async {
+      let ex = self.activeCells.get(key: state.items[index].key)
+      if ex != nil {
+        ex!.setSpec(spec: state.items[index].config)
+      } else {
+        self.activeCells.set(key: state.items[index].key, value: RNAsyncCell(spec: state.items[index].config, context: self.context))
+      }
+      DispatchQueue.main.async {
+        self.node.performBatchUpdates({
+          self.state = state
+          self.node.insertItems(at: [IndexPath(row: index, section: 1)])
+        }, completion: nil)
       }
     }
   }
   
+  func onMoved(from: Int, to: Int, state: RNAsyncDataViewState) {
+    self.queue.async {
+      DispatchQueue.main.async {
+        self.node.performBatchUpdates({
+          self.state = state
+          self.node.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
+        }, completion: nil)
+      }
+    }
+  }
+  
+  func onUpdated(index: Int, state: RNAsyncDataViewState) {
+    self.queue.async {
+      // DispatchQueue.main.async {
+      self.state = state
+      if let c = self.activeCells.get(key: self.state.items[index].key) {
+        c.setSpec(spec: self.state.items[index].config)
+      }
+      // }
+    }
+  }
+  
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState) {
-    DispatchQueue.main.async {
-      self.node.performBatch(animated: false, updates: {
-        let wasCompleted = self.state.completed
-        self.state = state
-        if count > 0 {
-          var paths: [IndexPath] = []
-          for i in from...from+count-1 {
-            paths.append(IndexPath(item: i, section: 1))
+    self.queue.async {
+      for i in from..<from+count {
+        let itm = state.items[i]
+        let ex = self.activeCells.get(key: itm.key)
+        if ex != nil {
+          ex!.setSpec(spec: itm.config)
+        } else {
+          self.activeCells.set(key: itm.key, value: RNAsyncCell(spec: itm.config, context: self.context))
+        }
+      }
+      DispatchQueue.main.async {
+        self.node.performBatch(animated: false, updates: {
+          let wasCompleted = self.state.completed
+          self.state = state
+          if count > 0 {
+            var paths: [IndexPath] = []
+            for i in from...from+count-1 {
+              paths.append(IndexPath(item: i, section: 1))
+            }
+            self.node.insertItems(at: paths)
           }
-          self.node.insertItems(at: paths)
-        }
-        if wasCompleted != state.completed {
-          self.node.reloadSections(IndexSet(integer: 2))
-        }
-        self.batchContext?.completeBatchFetching(true)
-        self.batchContext = nil
-      }, completion: nil)
+          if wasCompleted != state.completed {
+            self.node.reloadSections(IndexSet(integer: 2))
+          }
+          self.batchContext?.completeBatchFetching(true)
+          self.batchContext = nil
+        }, completion: nil)
+      }
     }
   }
   
   func onCompleted(state: RNAsyncDataViewState) {
-    DispatchQueue.main.async {
-      self.node.performBatch(animated: false, updates: {
-        self.state = state
-        self.node.reloadSections(IndexSet(integer: 2))
-        self.batchContext?.completeBatchFetching(true)
-        self.batchContext = nil
-      }, completion: nil)
+    self.queue.async {
+      DispatchQueue.main.async {
+        self.node.performBatch(animated: false, updates: {
+          self.state = state
+          self.node.reloadSections(IndexSet(integer: 2))
+          self.batchContext?.completeBatchFetching(true)
+          self.batchContext = nil
+        }, completion: nil)
+      }
     }
   }
   
@@ -365,10 +404,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           cached = RNAsyncCell(spec: d.config, context: c)
           ac.set(key: d.key, value: cached!)
         }
-        let res = ac.get(key: d.key)!
-        res.style.width = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(w))
-        res.style.height = ASDimension(unit: ASDimensionUnit.points, value: res.layoutThatFits(ASSizeRange(min: CGSize(width: w, height: 0), max: CGSize(width: w, height: 10000))).size.height)
-        return res
+        return ac.get(key: d.key)!
       }
     } else if indexPath.section == 2 {
       let isCompleted = self.state.completed

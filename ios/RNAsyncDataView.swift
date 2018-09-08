@@ -134,6 +134,9 @@ class RNAsyncDataView {
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
     watchers[key] = delegate
+    if self.state.inited {
+      delegate.onInited(state: self.state)
+    }
     return {
       self.watchers[key] = nil
     }

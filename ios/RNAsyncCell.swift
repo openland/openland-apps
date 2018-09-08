@@ -18,11 +18,14 @@ class RNAsyncCell: ASCellNode {
     self.spec = spec
     super.init()
     self.automaticallyManagesSubnodes = true
+    self.style.width = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(self.w))
   }
   
+  // We are updating cell always from background thread
   func setSpec(spec: AsyncViewSpec) {
     self.spec = spec
-    setNeedsLayout()
+    self.layoutThatFits(ASSizeRange(min: CGSize(width: self.w, height: 0), max: CGSize(width: self.w, height: 10000)))
+    self.setNeedsLayout()
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
