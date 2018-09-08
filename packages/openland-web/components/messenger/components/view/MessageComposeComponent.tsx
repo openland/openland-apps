@@ -30,17 +30,26 @@ const SendMessageWrapper = Glamorous(XHorizontal)<SendMessageWrapperProps>(props
     borderTop: '1px solid rgba(220, 222, 228, 0.45)',
     '& > .dropArea': {
         visibility: props.dragOn ? 'visible' : 'hidden',
-        backgroundColor: props.dragOn ? '#f9fafb' : 'transparent'
+        backgroundColor: props.dragOn ? '#eef4fc' : 'transparent'
     }
 }));
 
 const DropArea = Glamorous.div({
     position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     top: 0,
     left: 0,
     width: '100%',
     height: '100%',
-    zIndex: 2
+    zIndex: 2,
+    border: '1px dashed #1790ff',
+    borderBottom: 'none',
+    '& > svg': {
+        width: 30,
+        height: 30
+    }
 });
 
 const SendMessageContent = Glamorous(XHorizontal)({
@@ -234,9 +243,9 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                 onDrop={this.handleDrop}
                 dragOn={this.state.dragOn}
             >
-                <DropArea
-                    className="dropArea"
-                />
+                <DropArea className="dropArea">
+                    <PhotoIcon />
+                </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1}>
                         <TextInputWrapper>
