@@ -145,7 +145,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         });
         dialog.done((r) => {
             // this.props.conversation.sendFile(r);
-            this.setState({ message: '' }, () => {
+            this.setState({ message: '', dragOn: false }, () => {
                 // this.focus();
                 if (this.props.onSendFile) {
                     this.props.onSendFile(r);
