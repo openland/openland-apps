@@ -89,6 +89,9 @@
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
+		AAE5017A2144FFA400BEAA04 /* RNAsyncAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE501792144FFA400BEAA04 /* RNAsyncAnimation.swift */; };
+		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
+		AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
 		AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
@@ -768,6 +771,9 @@
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
 		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
+		AAE501792144FFA400BEAA04 /* RNAsyncAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncAnimation.swift; sourceTree = "<group>"; };
+		AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardManager.swift; sourceTree = "<group>"; };
+		AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardViewManager.swift; sourceTree = "<group>"; };
 		AAE56C072127F447003706B3 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
 		AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AggressiveImage.swift; path = openland/hacks/AggressiveImage.swift; sourceTree = "<group>"; };
@@ -1324,6 +1330,9 @@
 				AAB0EF8A21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift */,
 				AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */,
 				AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */,
+				AAE501792144FFA400BEAA04 /* RNAsyncAnimation.swift */,
+				AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */,
+				AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
 				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 				AAB0EF90213D8CF500FBCB75 /* Utils.swift */,
@@ -2352,10 +2361,13 @@
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */,
+				AAE5017A2144FFA400BEAA04 /* RNAsyncAnimation.swift in Sources */,
 				AAB0EF87213719B300FBCB75 /* RNAsyncViewContext.swift in Sources */,
 				AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */,
 				AAB021962142ACB300927CF0 /* RNPatchNode.swift in Sources */,
 				AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */,
+				AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */,
+				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,

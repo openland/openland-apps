@@ -2,15 +2,17 @@ import * as React from 'react';
 import { View, Platform, LayoutChangeEvent } from 'react-native';
 import { ZBlurredView } from '../ZBlurredView';
 import { ZAppConfig } from '../ZAppConfig';
-import { KeyboardTrackingView } from 'react-native-keyboard-tracking-view';
+
 import { ZKeyboardAwareBarContext } from './ZKeyboardAwareContainer';
+import { ASKeyboardTracker } from 'react-native-async-view/ASKeyboardTracker';
 
 class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updateSize: (size: number) => void } }> {
 
     handleLayout = (event: LayoutChangeEvent) => {
         if (this.props.context) {
+            console.log('JS Keybard height: ' + (event.nativeEvent.layout.height - ZAppConfig.bottomNavigationBarInset));
             if (Platform.OS === 'ios') {
-                this.props.context.updateSize(event.nativeEvent.layout.height - ZAppConfig.bottomNavigationBarInset - 100);
+                this.props.context.updateSize(event.nativeEvent.layout.height - ZAppConfig.bottomNavigationBarInset);
             } else {
                 this.props.context.updateSize(event.nativeEvent.layout.height - ZAppConfig.bottomNavigationBarInset);
             }
@@ -27,21 +29,20 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
         if (Platform.OS === 'ios') {
             return (
                 <View position="absolute" left={0} bottom={0} right={0}>
-                    <KeyboardTrackingView manageScrollView={false} allowHitsOutsideBounds={false} addBottomView={false}>
+                    <ASKeyboardTracker>
                         <View
                             style={{
                                 flexDirection: 'column',
                                 alignItems: 'stretch',
-                                marginBottom: -ZAppConfig.bottomNavigationBarInset - 100,
                             }}
                             onLayout={this.handleLayout}
                         >
                             <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
-                            <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: ZAppConfig.bottomNavigationBarInset + 100 }}>
+                            <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" paddingBottom={ZAppConfig.bottomNavigationBarInset}>
                                 {this.props.children}
                             </ZBlurredView>
                         </View>
-                    </KeyboardTrackingView>
+                    </ASKeyboardTracker>
                 </View>
             );
         }

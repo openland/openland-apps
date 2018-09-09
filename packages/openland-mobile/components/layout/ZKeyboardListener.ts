@@ -16,12 +16,10 @@ export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: numbe
     }
 
     keyboardWillHideHandler = (src: any) => {
-        console.log('willHide');
-        console.log(src);
-        if (this.keybardHiding) {
-            return;
-        }
-        this.keybardHiding = true;
+        // if (this.keybardHiding) {
+        //     return;
+        // }
+        // this.keybardHiding = true;
 
         if (this.state.height !== 0) {
             if (src.duration && src.easing) {
@@ -35,27 +33,26 @@ export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: numbe
             }
             this.setState({ height: 0 });
         }
-        setTimeout(
-            () => {
-                if (this.keyboardVisible) {
-                    this.keyboardVisible = false;
-                    this.keyboardShown = false;
-                }
-                if (this.keybardHiding) {
-                    this.keybardHiding = false;
-                }
-            },
-            src.duration || 250);
+        // setTimeout(
+        //     () => {
+        //         if (this.keyboardVisible) {
+        //             this.keyboardVisible = false;
+        //             this.keyboardShown = false;
+        //         }
+        //         if (this.keybardHiding) {
+        //             this.keybardHiding = false;
+        //         }
+        //     },
+        //     src.duration || 250);
     }
 
     keyboardChangeFrame = (src: any) => {
-        console.log('changeFrame');
-        console.log(src);
-        if (!this.keyboardVisible || !this.keyboardShown) {
-            return;
-        }
+        // if (!this.keyboardVisible || !this.keyboardShown) {
+        //     return;
+        // }
 
         const height = this._relativeKeyboardHeight(src.endCoordinates);
+        console.log('[KEYBOARD] JS frame height: ' + height);
         if (this.state.height !== height) {
             if (src.duration && src.easing) {
                 LayoutAnimation.configureNext({
@@ -71,14 +68,12 @@ export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: numbe
     }
 
     keyboardWillShowHandler = (src: any) => {
-        console.log('willShow');
-        console.log(src);
-        if (this.keyboardVisible) {
-            return;
-        }
-        this.keyboardVisible = true;
-        this.keyboardShown = false;
-        this.keybardHiding = false;
+        // if (this.keyboardVisible) {
+        //     return;
+        // }
+        // this.keyboardVisible = true;
+        // this.keyboardShown = false;
+        // this.keybardHiding = false;
 
         const height = this._relativeKeyboardHeight(src.endCoordinates);
         if (this.state.height !== height) {
@@ -93,19 +88,19 @@ export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: numbe
             }
             this.setState({ height: height });
         }
-        setTimeout(
-            () => {
-                if (this.keyboardVisible) {
-                    this.keyboardShown = true;
-                }
-            },
-            src.duration || 250);
+        // setTimeout(
+        //     () => {
+        //         if (this.keyboardVisible) {
+        //             this.keyboardShown = true;
+        //         }
+        //     },
+        //     src.duration || 250);
     }
 
     componentDidMount() {
         if (Platform.OS === 'ios') {
-            this.subscriptions.push(Keyboard.addListener('keyboardWillShow', this.keyboardWillShowHandler));
-            this.subscriptions.push(Keyboard.addListener('keyboardWillHide', this.keyboardWillHideHandler));
+            // this.subscriptions.push(Keyboard.addListener('keyboardWillShow', this.keyboardWillShowHandler));
+            // this.subscriptions.push(Keyboard.addListener('keyboardWillHide', this.keyboardWillHideHandler));
             this.subscriptions.push(Keyboard.addListener('keyboardWillChangeFrame', this.keyboardChangeFrame));
         }
     }
@@ -115,7 +110,6 @@ export class ZKeyboardListener extends React.PureComponent<{ bottomOffset: numbe
         }
     }
     render() {
-        console.log(this.state.height);
         return this.props.children(this.state.height);
     }
 }

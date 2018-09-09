@@ -15,6 +15,7 @@
 
 #import <Fabric/Fabric.h>
 #import <Answers/Answers.h>
+#import "openland-Swift.h"
 
 @implementation AppDelegate
 
@@ -42,6 +43,10 @@
   #endif
 
   // jsCodeLocation = [CodePush bundleURL];
+  
+  // [RNAsyncKeyboardManager
+  
+  [RNAsyncKeyboardManager.sharedInstance start];
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"openland"

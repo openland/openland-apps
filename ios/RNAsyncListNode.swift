@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate {
+class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate, RNAsyncKeyboardManagerDelegate {
   
   weak var parent: RNAsyncListView!
   private let width = UIScreen.main.bounds.width // Screen width
@@ -27,12 +27,13 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var topInset: Float = 0.0
   private var onScrollCallback: RCTDirectEventBlock? = nil
   
-  private var keyboardShown = false
-  private var keyboardHiding = false
   private var loaded = false
   private var activeCells = WeakMap<RNAsyncCell>()
   private var activeCellsStrong: [String:RNAsyncCell] = [:]
   private var viewLoaded = false
+  private var keyboardSubscription: (() -> Void)?
+  private var isDragging = false
+  private var keyboardHeight: CGFloat = 0.0
   
   init(parent: RNAsyncListView) {
     self.parent = parent
@@ -49,11 +50,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.node.dataSource = self
     self.node.delegate = self
     
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+    self.keyboardSubscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self)
   }
   
   func start() {
@@ -68,10 +65,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
     self.viewLoaded = true
     
-    let insets = UIEdgeInsets(top: CGFloat(self.node.inverted ? (self.keyboardVisible ? 0 : self.bottomInset) : self.topInset), left: 0.0, bottom: CGFloat(self.node.inverted ? self.topInset: (self.keyboardVisible ? 0 : self.bottomInset)), right: 0.0)
-    self.node.view.scrollIndicatorInsets = insets
-    self.node.contentInset = insets
-    // self.view.alpha = 0.0
+    self.fixContentInset()
   }
   
   func destroy() {
@@ -80,102 +74,74 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.dataViewUnsubscribe!()
       self.dataViewUnsubscribe = nil
     }
-  }
-  
-  func keyboardWillShow(aNotification: Notification) {
-    if self.node.inverted {
-      if self.keyboardVisible {
-        return
-      }
-//      if self.keyboardShown {
-//        self.keyboardShown = false
-//        return
-//      }
-      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
-      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
-      let r = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-      let r2 = aNotification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! CGRect
-      self.keyboardVisible = true
-      self.keyboardHiding = false
-      // self.keyboardShown = true
-      let delta = self.node.contentInset.top - r.height
-      self.node.contentInset.top = r.height
-      UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
-        self.node.view.scrollIndicatorInsets.top = r.height
-        let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y + delta)
-        self.node.setContentOffset(offset, animated: false)
-      }, completion: { (bool) in
-        self.keyboardShown = true
-      }  )
+    if self.keyboardSubscription != nil {
+      self.keyboardSubscription!()
+      self.keyboardSubscription = nil
     }
   }
   
-  func keyboardDidShow(aNotification: Notification) {
-//    if self.node.inverted {
-//      print("didShow")
-//      if !self.keyboardVisible {
-//        return
-//      }
-//      self.keyboardShown = true
-//    }
-  }
-  
-  func keyboardWillChangeFrame(aNotification: Notification) {
+  func keyboardWillChangeHeight(height: CGFloat) {
     if self.node.inverted {
-      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
-      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
-      let r = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-      let r2 = aNotification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! CGRect
+      self.keyboardHeight = height
       
-      if self.keyboardShown && self.keyboardVisible {
-        let delta = self.node.contentInset.top - r.height
-        self.node.contentInset.top = r.height
-        if delta < 0 {
-          UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
-            self.node.view.scrollIndicatorInsets.top = r.height
-            let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y + delta)
-            self.node.setContentOffset(offset, animated: false)
-          }, completion: nil)
-        } else {
-          let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y + delta)
-          self.node.setContentOffset(offset, animated: false)
-          UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
-            self.node.view.scrollIndicatorInsets.top = r.height
-            let offset = CGPoint(x: 0, y: self.node.view.contentOffset.y - delta)
-            self.node.setContentOffset(offset, animated: false)
-          }, completion: nil)
-        }
+      if !self.isDragging {
+        self.fixContentInset()
       }
     }
   }
   
-  func keyboardWillHide(aNotification: Notification) {
-    if self.node.inverted {
-      if self.keyboardHiding {
-        return
-      }
-      self.keyboardHiding = true
-//      let k = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
-//      let d = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
-      self.node.view.scrollIndicatorInsets.top = CGFloat(self.bottomInset)
-      self.node.view.contentInset.top = CGFloat(self.bottomInset)
-      self.keyboardVisible = false
-      self.keyboardShown = false
-//      UIView.animate(withDuration: TimeInterval(d), delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(k)), animations: {
-//        self.node.view.contentInset.top = CGFloat(self.bottomInset)
-//      }, completion: { (b) in
-//        self.keyboardVisible = false
-//        self.keyboardShown = false
-//      })
-      // }
-    }
+  func keyboardWillShow(height: CGFloat, duration: Double, curve: Int) {
+    self.keyboardVisible = true
+    self.keyboardHeight = height
+    UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
+      self.fixContentInset()
+    }, completion: nil)
   }
   
-  func keyboardDidHide(aNotification: Notification) {
+  func keyboardWillHide(height: CGFloat, duration: Double, curve: Int) {
+    self.keyboardVisible = false
+    self.keyboardHeight = height
+    UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
+      self.fixContentInset()
+    }, completion: nil)
+  }
+  
+  private func fixContentInset() {
+    let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
+    let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
+    let insetsDiff = currentInset - newInset
     if self.node.inverted {
-      self.keyboardVisible = false
-      self.keyboardShown = false
+      self.node.view.contentInset.top = newInset
+      self.node.view.contentInset.bottom = CGFloat(self.topInset)
+    } else {
+      self.node.view.contentInset.bottom = newInset
+      self.node.view.contentInset.top = CGFloat(self.topInset)
     }
+    let originalOffset = self.node.contentOffset
+    if self.node.inverted {
+      self.node.view.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
+    }
+    var inset = self.node.view.contentInset
+    if self.node.inverted {
+      inset.top = newInset
+      inset.bottom = CGFloat(self.topInset)
+    } else {
+      inset.bottom = newInset
+      inset.top = CGFloat(self.topInset)
+    }
+    self.node.view.scrollIndicatorInsets = inset
+  }
+  
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    self.isDragging = true
+  }
+  
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    self.isDragging = false
+  }
+  
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    self.isDragging = false
   }
   
   func setDataView(dataView: RNAsyncDataView) {
@@ -191,7 +157,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.topInset = value
       self.updateContentPadding()
     }
-    print("setContentPaddingTop \(value)")
   }
   
   func setContentPaddingBottom(value: Float) {
@@ -199,7 +164,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.bottomInset = value
       self.updateContentPadding()
     }
-    print("setContentPaddingBottom \(value)")
   }
   
   func setOnScroll(callback: RCTDirectEventBlock?) {
@@ -208,6 +172,19 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     
+    // Update scroll bars
+    if self.keyboardVisible {
+      let newInset = max(self.keyboardHeight, CGFloat(bottomInset))
+      var inset = self.node.view.scrollIndicatorInsets
+      if self.node.inverted {
+        inset.top = newInset
+      } else {
+        inset.bottom = newInset
+      }
+      self.node.view.scrollIndicatorInsets = inset
+    }
+    
+    // Forward scroll offset
     let offsetX = scrollView.contentOffset.x
     let offsetY = scrollView.contentOffset.y + CGFloat(self.topInset)
     
@@ -242,14 +219,11 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         }
       }
     }
-    print("setHeaderPadding \(padding)")
   }
   
   private func updateContentPadding() {
-      if !self.keyboardVisible && self.viewLoaded {
-        let insets = UIEdgeInsets(top: CGFloat(self.node.inverted ? (self.keyboardVisible ? 0 : self.bottomInset) : self.topInset), left: 0.0, bottom: CGFloat(self.node.inverted ? self.topInset: (self.keyboardVisible ? 0 : self.bottomInset)), right: 0.0)
-        self.node.view.scrollIndicatorInsets = insets
-        self.node.contentInset = insets
+      if self.viewLoaded {
+        self.fixContentInset()
     }
   }
   
@@ -281,7 +255,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
             self.activeCellsStrong[itm.key] = cell
             pendingCells[itm.key] = cell
           })
-          // self.activeCells.set(key: itm.key, value: cell)
           myGroup.leave()
         }
       }
@@ -493,7 +466,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       return 1
     }
   }
-  
   
   func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
     return ASSizeRange(min: CGSize(width: self.width, height: 0), max: CGSize(width: self.width, height: 10000))

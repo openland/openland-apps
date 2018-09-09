@@ -28,6 +28,9 @@ RCT_EXPORT_VIEW_PROPERTY(inverted, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 @end
 
+@interface RCT_EXTERN_MODULE(RNAsyncKeyboardViewManager, RCTViewManager)
+@end
+
 @interface RCT_EXTERN_MODULE(RNAsyncConfigManager, NSObject)
 RCT_EXTERN_METHOD(setConfig:(NSString *)key config:(NSString *)config)
 RCT_EXTERN_METHOD(setSuspended:(NSString *)key suspended:(nonnull BOOL)suspended)

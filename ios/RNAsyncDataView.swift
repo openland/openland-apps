@@ -375,7 +375,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       if self.completed {
         self.source.loadMore()
       } else {
-        queue.asyncAfter(deadline: .now() + .milliseconds(500)) {
+        queue.asyncAfter(deadline: .now() + .milliseconds(50)) {
           if self.completed {
             self.source.loadMore()
             return

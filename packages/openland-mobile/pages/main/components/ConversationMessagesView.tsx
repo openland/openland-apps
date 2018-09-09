@@ -25,7 +25,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                                 dataView={engine.getConversation(this.props.engine.conversationId)}
                                 inverted={true}
                                 contentPaddingTop={area.top}
-                                contentPaddingBottom={area.bottom}
+                                contentPaddingBottom={area.bottom - area.keyboardHeight}
                                 style={{ flexGrow: 1 }}
                                 headerPadding={6}
                             />
