@@ -78,7 +78,7 @@ const AboutText = Glamorous.div({
     letterSpacing: -0.4,
     color: '#5c6a81',
     padding: '18px 24px',
-
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
 });
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
@@ -241,10 +241,9 @@ class ChannelMembersComponentInner extends React.Component<{
 
         return (
             <MembersWrapper>
-                {(this.props.description || this.props.longDescription) && (
+                {this.props.longDescription && (
                     <>
                         <XSubHeader title="Description" />
-                        {this.props.description && <AboutText>{this.props.description}</AboutText>}
                         {this.props.longDescription && <AboutText>{this.props.longDescription}</AboutText>}
                     </>
                 )}

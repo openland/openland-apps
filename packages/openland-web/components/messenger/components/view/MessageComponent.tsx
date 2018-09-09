@@ -93,6 +93,12 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     }
 }));
 
+const MenuWrapper = Glamorous.div({
+    position: 'absolute',
+    right: 0,
+    top: 0
+});
+
 export class MessageComponent extends React.PureComponent<MessageComponentProps> {
     render() {
         let content: any[] = [];
@@ -158,7 +164,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         // menu
         let menu = isServerMessage(this.props.message) && this.props.out ?
             (
-                <div className="menu">
+                <MenuWrapper className="menu">
                     <XOverflow
                         flat={true}
                         placement="bottom-end"
@@ -169,7 +175,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                             </>
                         }
                     />
-                </div>
+                </MenuWrapper>
             ) : null;
         if (this.props.compact) {
             return (

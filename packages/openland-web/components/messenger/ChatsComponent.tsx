@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withChatsAll } from '../../api/withChatsAll';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { makeNavigable } from 'openland-x/Navigable';
@@ -434,6 +435,12 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
         }
 
         if (!this.props.emptyState && e.code === 'Escape') {
+            if (canUseDOM) {
+                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
+                    return;
+                }
+            }
+
             this.props.router.replace('/mail');
         }
 
