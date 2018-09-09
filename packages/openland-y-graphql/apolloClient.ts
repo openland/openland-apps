@@ -4,9 +4,11 @@ import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { split } from 'apollo-link';
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from 'openland-api/fragmentTypes.json';
 import { GraphqlTypedQuery } from './typed';
+import { getMainDefinition } from 'apollo-utilities';
 // import LogCache from 'apollo-cache-logger';
 
 export class ApolloClientStatus {
@@ -97,18 +99,19 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
     // Link
     //
 
+    var headers: any = {};
+    if (config.token) {
+        headers['x-openland-token'] = config.token;
+    }
+    if (config.organization) {
+        headers['x-openland-org'] = config.organization;
+    }
+
     let link: ApolloLink;
     if (!config.wsEndpoint) {
         //
         // HTTP Link
         //
-        var headers: any = {};
-        if (config.token) {
-            headers['x-openland-token'] = config.token;
-        }
-        if (config.organization) {
-            headers['x-openland-org'] = config.organization;
-        }
         link = new HttpLink({
             uri: config.endpoint,
             headers: headers,
@@ -142,7 +145,28 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         subscriptionClient.onReconnecting(() => {
             status.markDisconected();
         });
-        link = new WebSocketLink(subscriptionClient);
+        let wsLink = new WebSocketLink(subscriptionClient);
+
+        //
+        // HTTP Link
+        //
+
+        let httpLink = new HttpLink({
+            uri: config.endpoint,
+            headers: headers,
+            fetch: config.fetch
+        });
+
+        // Hybrid link
+        link = split(
+            // split based on operation type
+            (args) => {
+                let def = getMainDefinition(args.query as any);
+                return def.kind === 'OperationDefinition' && def.operation === 'subscription';
+            },
+            wsLink,
+            httpLink,
+        );
     }
 
     //

@@ -131,7 +131,7 @@
 		"react-tree-walker": "^4.3.0",
 		"rn-fetch-blob": "^0.10.12",
 		"simplebar": "^2.6.1",
-		"subscriptions-transport-ws": "^0.9.11",
+		"subscriptions-transport-ws": "^0.9.14",
 		"tlds": "^1.203.1",
 		"uploadcare-widget": "^3.2.1",
 		"url": "^0.11.0",
