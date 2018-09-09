@@ -72,6 +72,8 @@ class RNAsyncListView: RCTView {
   
   override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame)
+    print("setFrame")
     self.node.frame = frame
+    self.node.start()
   }
 }

@@ -7,18 +7,20 @@
 //
 
 import Foundation
+import Nuke
 
 class RNImageNode: ASDisplayNode {
   let instanceKey: String = randomKey()
   var touchableKey: String? = nil
-  let node: ASNetworkImageNode
+  let node: ASImageNode
+  var task: ImageTask? = nil
   private var url: String? = nil
   
   override init() {
-    self.node = ASNetworkImageNode()
+    self.node = ASImageNode()
     super.init()
     
-    self.node.shouldCacheImage = false; // It doesn't work otherwise
+    // self.node.shouldCacheImage = false; // It doesn't work otherwise
     self.addSubnode(self.node)
     
     self.node.addTarget(self, action: #selector(self.handleTouch), forControlEvents: .touchUpInside)
@@ -33,8 +35,25 @@ class RNImageNode: ASDisplayNode {
 
   func setSpec(spec: AsyncImageSpec) {
     if self.url != spec.url {
-      self.node.url = URL(string: spec.url)
+      // Cancel previous task
+      if self.task != nil {
+        self.task?.cancel()
+      }
       self.url = spec.url
+      if spec.url != "" {
+        let targetSize = CGSize(width: CGFloat(spec.style.width!), height: CGFloat(spec.style.height!))
+        let targetUrl = URL(string: spec.url)!
+        let targetContentMode = ImageDecompressor.ContentMode.aspectFill
+        let targetRequest = ImageRequest(url: targetUrl, targetSize: targetSize, contentMode: targetContentMode)
+        self.task = ImagePipeline.shared.loadImage(with: targetRequest, progress: nil) { (response, error) in
+          if response != nil {
+            let img = UIImage(cgImage: response!.image.cgImage!)
+            self.node.image = img
+          } else {
+            print(error.debugDescription)
+          }
+        }
+      }
     }
     if let v = spec.style.borderRadius {
       self.node.cornerRadius = CGFloat(v)

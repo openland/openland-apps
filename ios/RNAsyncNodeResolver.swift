@@ -175,4 +175,67 @@ func resolveNodes(_ specs: [AsyncViewSpec], _ context: RNAsyncViewContext) -> [A
   }
 }
 
+func resolveTextForTextSpec(spec: AsyncTextSpec) {
+  var attributes: [String: Any] = [:]
+  attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
+  attributes[NSForegroundColorAttributeName] = spec.color != nil ? spec.color : UIColor.black
+  let style = NSMutableParagraphStyle();
+  style.headIndent = 0.0
+  style.tailIndent = 0.0
+  style.paragraphSpacing = 0.0
+  style.paragraphSpacingBefore = 0.0
+  style.lineSpacing = 0.0
+  style.lineBreakMode = .byWordWrapping
+  if let v = spec.alignment {
+    if v == .center {
+      style.alignment = .center
+    } else if v == .left {
+      style.alignment = .left
+    } else if v == .right {
+      style.alignment = .right
+    }
+  }
+  if let v = spec.lineHeight {
+    style.minimumLineHeight = CGFloat(v)
+    style.maximumLineHeight = CGFloat(v)
+  }
+  attributes[NSParagraphStyleAttributeName] = style
+  if let v = spec.letterSpacing {
+    attributes[NSKernAttributeName] = CGFloat(v)
+  }
+  spec.attributedText = resolveAttributedText(spec: spec, attributes: attributes)
+}
+
+private func resolveAttributedText(spec: AsyncTextSpec, attributes: [String: Any]) -> NSAttributedString {
+  let res = NSMutableAttributedString(string: "", attributes: attributes)
+  
+  var innerAttributes = attributes
+  if spec.color != nil {
+    innerAttributes[NSForegroundColorAttributeName] = spec.color
+  }
+  
+  if spec.textDecorationLine != nil {
+    if spec.textDecorationLine == AsyncTextDecorationLine.none {
+      innerAttributes[NSUnderlineStyleAttributeName] = NSUnderlineStyle.styleNone.rawValue
+    } else {
+      innerAttributes[NSUnderlineStyleAttributeName] = NSUnderlineStyle.styleSingle.rawValue
+    }
+  }
+  
+  if spec.touchableKey != nil {
+    innerAttributes["RNClickableText"] = spec.touchableKey!
+  }
+  
+  // innerAttributes[NSLinkAttributeName]
+  
+  for v in spec.children {
+    if let s = v as? String {
+      res.append(NSAttributedString(string: s, attributes: innerAttributes))
+    } else if let s = v as? AsyncTextSpec {
+      res.append(resolveAttributedText(spec: s, attributes: innerAttributes))
+    }
+  }
+  return res
+}
+
 var cache = [String : UIImage]()

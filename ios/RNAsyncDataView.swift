@@ -9,6 +9,8 @@
 import Foundation
 import SwiftyJSON
 
+fileprivate let queue = DispatchQueue(label: "rn-data-view")
+
 class RNAsyncDataViewItem {
   let key: String
   let config: AsyncViewSpec
@@ -23,6 +25,7 @@ protocol RNAsyncDataViewDelegate {
   func onAdded(index: Int, state: RNAsyncDataViewState)
   func onUpdated(index: Int, state: RNAsyncDataViewState)
   func onMoved(from: Int, to:Int, state: RNAsyncDataViewState)
+  func onRemoved(index: Int, state: RNAsyncDataViewState)
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState)
   func onCompleted(state: RNAsyncDataViewState)
 }
@@ -36,6 +39,55 @@ class RNAsyncDataViewState {
     self.items = items
     self.completed = completed
     self.inited = inited
+  }
+  
+  func replace(index: Int, spec: AsyncViewSpec) -> RNAsyncDataViewState {
+    var itms = self.items.map {$0}
+    itms[index] = RNAsyncDataViewItem(key: self.items[index].key, config: spec)
+    return RNAsyncDataViewState(items: itms, completed: self.completed, inited: self.inited)
+  }
+  
+  func move(from: Int, to: Int) -> RNAsyncDataViewState {
+    var itms = self.items.map {$0}
+    let r = itms.remove(at: from)
+    itms.insert(r, at: to)
+    return RNAsyncDataViewState(items: itms, completed: self.completed, inited: self.inited)
+  }
+  
+  func remove(index: Int) -> RNAsyncDataViewState {
+    var itms = self.items.map {$0}
+    itms.remove(at: index)
+    return RNAsyncDataViewState(items: itms, completed: self.completed, inited: self.inited)
+  }
+  
+  func add(index: Int, key: String, spec: AsyncViewSpec) -> RNAsyncDataViewState {
+    var itms = self.items.map {$0}
+    itms.insert(RNAsyncDataViewItem(key: key, config: spec), at: index)
+    return RNAsyncDataViewState(items: itms, completed: self.completed, inited: self.inited)
+  }
+  
+  func setCompleted(completed: Bool) -> RNAsyncDataViewState {
+    if self.completed != completed {
+      return RNAsyncDataViewState(items: self.items, completed: completed, inited: self.inited)
+    } else {
+      return self
+    }
+  }
+  
+  func setInited() -> RNAsyncDataViewState {
+    if !self.inited {
+      return RNAsyncDataViewState(items: self.items, completed: self.completed, inited: self.inited)
+    } else {
+      return self
+    }
+  }
+  
+  func loadedMore(items: [RNAsyncDataViewItem]) -> RNAsyncDataViewState {
+    var itms = self.items.map {$0}
+    for i in items {
+      itms.append(i)
+    }
+    return RNAsyncDataViewState(items: itms, completed: self.completed, inited: self.inited)
   }
 }
 
@@ -68,9 +120,7 @@ class RNAsyncDataView {
   }
   
   func handleAdded(item: RNAsyncDataViewItem, index: Int) {
-    var itms = self.state.items.map {$0}
-    itms.insert(item, at: index)
-    let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
+    let st = self.state.add(index: index, key: item.key, spec: item.config)
     self.state = st
     for i in watchers {
       i.value.onAdded(index: index, state: st)
@@ -78,9 +128,8 @@ class RNAsyncDataView {
   }
   
   func handleUpdated(item: RNAsyncDataViewItem, index: Int) {
-    var itms = self.state.items.map {$0}
-    itms[index] = item
-    let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
+    let st = self.state
+      .replace(index: index, spec: item.config)
     self.state = st
     for i in watchers {
       i.value.onUpdated(index: index, state: st)
@@ -88,32 +137,26 @@ class RNAsyncDataView {
   }
   
   func handleRemoved(index: Int) {
-    var itms = self.state.items.map {$0}
-    itms.remove(at: index)
-    let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
+    let st = self.state.remove(index: index)
     self.state = st
-//    for i in watchers {
-//      i.value.onUpdated(items: itms)
-//    }
+    for i in watchers {
+      i.value.onRemoved(index: index, state: st)
+    }
   }
   
   func handleMoved(fromIndex: Int, toIndex: Int) {
-    var itms = self.state.items.map {$0}
-    let r = itms.remove(at: fromIndex)
-    itms.insert(r, at: toIndex)
-    let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
+    let st = self.state.move(from: fromIndex, to: toIndex)
+    self.state = st
     for i in watchers {
       i.value.onMoved(from: fromIndex, to: toIndex, state: st)
     }
   }
   
   func handleLoadedMore(items: [RNAsyncDataViewItem], completed: Bool) {
-    var itms = self.state.items.map {$0}
-    let start = itms.count
-    for i in items {
-      itms.append(i)
-    }
-    let st = RNAsyncDataViewState(items: itms, completed: completed, inited: true)
+    let start = self.state.items.count
+    let st = self.state
+      .loadedMore(items: items)
+      .setCompleted(completed: completed)
     self.state = st
     for i in watchers {
       i.value.onLoadedMore(from: start, count: items.count, state: st)
@@ -121,7 +164,9 @@ class RNAsyncDataView {
   }
   
   func handleCompleted() {
-    let st = RNAsyncDataViewState(items: self.state.items, completed: true, inited: true)
+    let st = self.state
+      .setCompleted(completed: true)
+    self.state = st
     for i in watchers {
       i.value.onCompleted(state: st)
     }
@@ -134,8 +179,9 @@ class RNAsyncDataView {
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
     watchers[key] = delegate
-    if self.state.inited {
-      delegate.onInited(state: self.state)
+    let st = self.state
+    if st.inited {
+      delegate.onInited(state: st)
     }
     return {
       self.watchers[key] = nil
@@ -144,6 +190,7 @@ class RNAsyncDataView {
 }
 
 class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
+  
   var watchers: [String : RNAsyncDataViewDelegate] = [:]
   var state = RNAsyncDataViewState(items: [], completed: false, inited: false)
   private var latestState = RNAsyncDataViewState(items: [], completed: false, inited: false)
@@ -171,137 +218,213 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   }
   
   func onInited(state: RNAsyncDataViewState) {
-    self.latestState = state
-    
-    if self.latestState.items.count <= 20 {
-      self.completed = true
-      self.state = latestState
-      for i in watchers {
-        i.value.onInited(state: latestState)
-      }
-    } else {
-      self.windowSize = min(latestState.items.count, 20)
-      let s = RNAsyncDataViewState(items: Array(source.state.items[0...max(self.windowSize-1, 0)]), completed: source.state.completed &&  self.windowSize == source.state.items.count, inited: true)
-      self.latestState = source.state
-      self.state = s
-      for i in watchers {
-        i.value.onInited(state: s)
+    queue.async {
+      self.latestState = state
+      
+      if self.latestState.items.count <= 20 {
+        self.completed = true
+        self.state = self.latestState
+        for i in self.watchers {
+          i.value.onInited(state: state)
+        }
+      } else {
+        self.windowSize = min(state.items.count, 20)
+        let s = RNAsyncDataViewState(items: Array(state.items[0..<self.windowSize]), completed: false, inited: true)
+        self.latestState = self.source.state
+        self.state = s
+        for i in self.watchers {
+          i.value.onInited(state: s)
+        }
       }
     }
   }
   
   func onAdded(index: Int, state: RNAsyncDataViewState) {
-    if (self.completed) {
+    queue.async {
       self.latestState = state
-      self.state = state
-      for i in watchers {
-        i.value.onAdded(index: index, state: state)
+      
+      if (self.completed) {
+        self.state = state
+        for i in self.watchers {
+          i.value.onAdded(index: index, state: state)
+        }
+        return
       }
-      return
-    }
     
-    self.latestState = state
-    
-    if index < self.windowSize {
-      var itms = self.state.items.map {$0}
-      itms.insert(state.items[index], at: index)
-      let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
-      self.state = st
-      for i in watchers {
-        i.value.onAdded(index: index, state: st)
+      if index < self.windowSize {
+        var itms = self.state.items.map {$0}
+        itms.insert(state.items[index], at: index)
+        let st = RNAsyncDataViewState(items: itms, completed: self.state.completed, inited: true)
+        self.state = st
+        self.windowSize = self.windowSize + 1
+        for i in self.watchers {
+          i.value.onAdded(index: index, state: st)
+        }
       }
     }
   }
+  
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
-    if (self.completed) {
+    queue.async {
       self.latestState = state
-      self.state = state
-      for i in watchers {
-        i.value.onUpdated(index: index, state: state)
+      if (self.completed) {
+        self.state = state
+        for i in self.watchers {
+          i.value.onUpdated(index: index, state: state)
+        }
+        return
       }
-      return
-    }
     
-    // TODO: Implement
+      if index < self.windowSize {
+        let st = self.state.replace(index: index, spec: state.items[index].config)
+        self.state = st
+        for i in self.watchers {
+          i.value.onUpdated(index: index, state: state)
+        }
+      }
+    }
   }
+  
   func onMoved(from: Int, to: Int, state: RNAsyncDataViewState) {
-    if (self.completed) {
+    queue.async {
       self.latestState = state
-      self.state = state
-      for i in watchers {
-        i.value.onMoved(from: from, to: to, state: state)
+      if (self.completed) {
+        self.state = state
+        for i in self.watchers {
+          i.value.onMoved(from: from, to: to, state: state)
+        }
+        return
       }
-      return
+      
+      if from < self.windowSize && to < self.windowSize {
+        let st = self.state.move(from: from, to: to)
+        self.state = st
+        for i in self.watchers {
+          i.value.onMoved(from: from, to: to, state: st)
+        }
+      } else if from < self.windowSize {
+        let st = self.state.remove(index: from)
+        self.windowSize = self.windowSize - 1
+        self.state = st
+        for i in self.watchers {
+          i.value.onRemoved(index: from, state: st)
+        }
+      } else if to < self.windowSize {
+        let st = self.state
+          .add(index: to, key: state.items[to].key, spec: state.items[to].config)
+        self.windowSize = self.windowSize + 1
+        self.state = st
+        for i in self.watchers {
+          i.value.onAdded(index: from, state: st)
+        }
+      }
     }
-    
-    // TODO: Implement
   }
+  
+  func onRemoved(index: Int, state: RNAsyncDataViewState) {
+    queue.async {
+      self.latestState = state
+      if (self.completed) {
+        self.state = state
+        for i in self.watchers {
+          i.value.onRemoved(index: index, state: state)
+        }
+        return
+      }
+      
+      if index < self.windowSize {
+        let st = self.state.add(index: index, key: state.items[index].key, spec: state.items[index].config)
+        self.state = st
+        for i in self.watchers {
+          i.value.onAdded(index: index, state: st)
+        }
+      }
+    }
+  }
+  
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState) {
-    if (self.completed) {
+    queue.async {
       self.latestState = state
-      self.state = state
-      for i in watchers {
-        i.value.onLoadedMore(from: from, count: count, state: state)
+      if (self.completed) {
+        self.state = state
+        for i in self.watchers {
+          i.value.onLoadedMore(from: from, count: count, state: state)
+        }
+        return
       }
-      return
     }
-    
-    // TODO: Implement
   }
+  
   func onCompleted(state: RNAsyncDataViewState) {
-    if (self.completed) {
+    queue.async {
       self.latestState = state
-      self.state = state
-      for i in watchers {
-        i.value.onCompleted(state: state)
+      if (self.completed) {
+        self.state = state
+        for i in self.watchers {
+          i.value.onCompleted(state: state)
+        }
       }
-      return
     }
-    
-    // TODO: Implement
   }
   
   func loadMore() {
-    if !self.latestState.inited {
-      return
-    }
-    if self.completed {
-      self.source.loadMore()
-    } else {
-      let loaded = min(self.latestState.items.count - self.windowSize, 20)
-      if loaded > 0 {
-        if loaded + self.windowSize >= self.latestState.items.count {
-          self.completed = true
-          self.windowSize = 0
-          let s = self.latestState
-          self.state = s
-          for i in watchers {
-            i.value.onLoadedMore(from: self.latestState.items.count-loaded, count: loaded, state: s)
-          }
-        } else {
-          var itms = self.state.items.map {$0}
-          for i in self.windowSize...(self.windowSize+loaded-1) {
-            itms.append(self.latestState.items[i])
-          }
-          let st = RNAsyncDataViewState(items: itms, completed: completed, inited: true)
-          self.state = st
-          for i in watchers {
-            i.value.onLoadedMore(from: self.windowSize, count: loaded, state: st)
-          }
-          self.windowSize += loaded
-        }
-      } else {
-        self.completed = true
+    queue.async {
+      if !self.latestState.inited {
+        return
+      }
+      if self.completed {
         self.source.loadMore()
+      } else {
+        queue.asyncAfter(deadline: .now() + .milliseconds(500)) {
+          if self.completed {
+            self.source.loadMore()
+            return
+          }
+          if self.windowSize + 20 <= self.latestState.items.count {
+            let loaded = min(self.latestState.items.count - self.windowSize, 20)
+            var itms = self.state.items.map {$0}
+            for i in self.windowSize..<(self.windowSize+loaded) {
+              itms.append(self.latestState.items[i])
+            }
+            let st = RNAsyncDataViewState(items: itms, completed: self.completed, inited: true)
+            self.state = st
+            let from = self.windowSize
+            self.windowSize += loaded
+            for i in self.watchers {
+              i.value.onLoadedMore(from: from, count: loaded, state: st)
+            }
+          } else {
+            if self.latestState.items.count == self.windowSize {
+              self.completed = true
+              self.source.loadMore()
+            } else {
+              let loaded = self.latestState.items.count - self.windowSize
+              self.completed = true
+              self.windowSize = 0
+              let s = self.latestState
+              self.state = s
+              for i in self.watchers {
+                i.value.onLoadedMore(from: s.items.count-loaded, count: loaded, state: s)
+              }
+            }
+          }
+        }
       }
     }
   }
   
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
-    watchers[key] = delegate
+    queue.async {
+      if self.state.inited {
+        delegate.onInited(state: self.state)
+      }
+      self.watchers[key] = delegate
+    }
     return {
-      self.watchers[key] = nil
+      queue.async {
+        self.watchers[key] = nil
+      }
     }
   }
 }

@@ -8,23 +8,28 @@
 
 import Foundation
 
+let range = ASSizeRange(min: CGSize(width: UIScreen.main.bounds.width, height: 0), max: CGSize(width: UIScreen.main.bounds.width, height: 10000))
+
 class RNAsyncCell: ASCellNode {
-  private let w = UIScreen.main.bounds.width
   let context: RNAsyncViewContext
   var spec: AsyncViewSpec
+  var node: ASLayoutElement!
   
   init(spec: AsyncViewSpec, context: RNAsyncViewContext) {
     self.context = context
     self.spec = spec
     super.init()
+    self.node = resolveNode(spec: spec, context: self.context)
     self.automaticallyManagesSubnodes = true
-    self.style.width = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(self.w))
+    self.setNeedsLayout()
+    self.layoutThatFits(range)
   }
   
   // We are updating cell always from background thread
   func setSpec(spec: AsyncViewSpec) {
     self.spec = spec
-    self.layoutThatFits(ASSizeRange(min: CGSize(width: self.w, height: 0), max: CGSize(width: self.w, height: 10000)))
+    self.node = resolveNode(spec: spec, context: self.context)
+    self.layoutThatFits(range)
     self.setNeedsLayout()
   }
   
@@ -32,8 +37,8 @@ class RNAsyncCell: ASCellNode {
     let res = ASStackLayoutSpec()
     res.direction = ASStackLayoutDirection.vertical
     res.alignItems = ASStackLayoutAlignItems.stretch
-    res.child = resolveNode(spec: self.spec, context: self.context)
-    res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
+    res.child = self.node
+    res.style.width = ASDimension(unit: ASDimensionUnit.points, value: UIScreen.main.bounds.width)
     return res
   }
 }

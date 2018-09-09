@@ -76,6 +76,7 @@ class AsyncTextSpec: AsyncViewSpec {
   var textDecorationLine: AsyncTextDecorationLine? = nil
   var touchableKey: String?
   var alignment: AsyncTextAlignment?
+  var attributedText: NSAttributedString! = nil
 }
 
 class AsyncImageSpec: AsyncViewSpec {
@@ -295,6 +296,10 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     if let v = src["props"]["touchableKey"].string {
       res.touchableKey = v
     }
+    
+    // Resolve Attributed Text
+    resolveTextForTextSpec(spec: res)
+    
     return res
   } else if (type == "image") {
     let res = AsyncImageSpec()

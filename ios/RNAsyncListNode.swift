@@ -16,7 +16,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var node: ASCollectionNode!
   private let queue: DispatchQueue
   
-  private var state: RNAsyncDataViewState!
+  private var state: RNAsyncDataViewState = RNAsyncDataViewState(items: [], completed: false, inited: false)
   private var headerPadding: Float = 0.0
   private var dataView: RNAsyncDataViewWindow!
   private var dataViewUnsubscribe: (()->Void)? = nil
@@ -31,6 +31,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var keyboardHiding = false
   private var loaded = false
   private var activeCells = WeakMap<RNAsyncCell>()
+  private var activeCellsStrong: [String:RNAsyncCell] = [:]
+  private var viewLoaded = false
   
   init(parent: RNAsyncListView) {
     self.parent = parent
@@ -42,10 +44,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.node = ASCollectionNode(collectionViewLayout: layout)
     self.node.alwaysBounceVertical = true
     self.node.backgroundColor = UIColor.clear
-    self.node.view.keyboardDismissMode = .interactive
-    if #available(iOS 11.0, *) {
-      self.node.view.contentInsetAdjustmentBehavior = .never
-    }
     super.init()
     addSubnode(node)
     self.node.dataSource = self
@@ -56,11 +54,28 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+    
+    self.node.onDidLoad { (n) in
+     
+      print("didLoad:col")
+    }
+    print("initEnded")
   }
   
   override func didLoad() {
     super.didLoad()
+    print("didLoad")
     self.loaded = true
+  }
+  
+  func start() {
+    self.node.view.keyboardDismissMode = .interactive
+    if #available(iOS 11.0, *) {
+      self.node.view.contentInsetAdjustmentBehavior = .never
+    }
+    self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
+    self.viewLoaded = true
+    // self.view.alpha = 0.0
   }
   
   func destroy() {
@@ -169,8 +184,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func setDataView(dataView: RNAsyncDataView) {
     self.dataView = RNAsyncDataViewWindow(source: dataView)
-    self.state = self.dataView!.state
-    self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
+    if self.viewLoaded {
+      self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
+    }
   }
   
   func setInverted(inverted: Bool) {
@@ -182,6 +198,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.topInset = value
       self.updateContentPadding()
     }
+    print("setContentPaddingTop \(value)")
   }
   
   func setContentPaddingBottom(value: Float) {
@@ -189,6 +206,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.bottomInset = value
       self.updateContentPadding()
     }
+    print("setContentPaddingBottom \(value)")
   }
   
   func setOnScroll(callback: RCTDirectEventBlock?) {
@@ -231,6 +249,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         }
       }
     }
+    print("setHeaderPadding \(padding)")
   }
   
   private func updateContentPadding() {
@@ -246,40 +265,89 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   //
   
   func onInited(state: RNAsyncDataViewState) {
+    let start = DispatchTime.now()
+    
     self.queue.async {
-      
+      var end = DispatchTime.now()
+      var nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+      var timeInterval = nanoTime / 1_000_000
+      print("Time to start inited: \(timeInterval) ms")
       // Precaching layouts
+      let myGroup = DispatchGroup()
+      var pendingCells: [String: RNAsyncCell] = [:]
+      let lockObj = NSObject()
       for itm in state.items {
-        let ex = self.activeCells.get(key: itm.key)
-        if ex != nil {
-          ex!.setSpec(spec: itm.config)
-        } else {
-          self.activeCells.set(key: itm.key, value: RNAsyncCell(spec: itm.config, context: self.context))
+        myGroup.enter()
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+          let ex = self.activeCells.get(key: itm.key)
+          if ex != nil {
+            fatalError("Item already exists!")
+          }
+          let cell = RNAsyncCell(spec: itm.config, context: self.context)
+          openland.lock(lockObj, blk: {
+            self.activeCellsStrong[itm.key] = cell
+            pendingCells[itm.key] = cell
+          })
+          // self.activeCells.set(key: itm.key, value: cell)
+          myGroup.leave()
         }
       }
+      myGroup.wait()
+      
+      end = DispatchTime.now()
+      nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+      timeInterval = nanoTime / 1_000_000
+      print("Time to measure inited: \(timeInterval) ms")
+      
+      let indexPaths = (0..<state.items.count).map({ (i) -> IndexPath in
+        IndexPath(row: i, section: 1)
+      })
       
       DispatchQueue.main.async {
+        var end = DispatchTime.now()
+        var nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        var timeInterval = nanoTime / 1_000_000
+        print("Time to apply inited: \(timeInterval) ms")
         self.state = state
-        if self.loaded {
-          self.node.reloadData()
-          self.batchContext?.completeBatchFetching(true)
-          self.batchContext = nil
+        for itm in pendingCells {
+          self.activeCells.set(key: itm.key, value: itm.value)
         }
+        if self.loaded {
+          if indexPaths.count > 0 {
+            self.node.performBatch(animated: false, updates: {
+              self.node.insertItems(at: indexPaths)
+            }, completion: nil)
+          }
+          self.node.reloadSections(IndexSet(integer: 2))
+          if self.batchContext != nil {
+            DispatchQueue.main.async {
+              self.batchContext?.completeBatchFetching(true)
+              self.batchContext = nil
+            }
+          }
+        }
+        end = DispatchTime.now()
+        nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+        timeInterval = nanoTime / 1_000_000
+        print("Time to complete inited: \(timeInterval) ms")
       }
     }
   }
   
   func onAdded(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
+      print("onAdded: " + state.items[index].key)
       let ex = self.activeCells.get(key: state.items[index].key)
       if ex != nil {
-        ex!.setSpec(spec: state.items[index].config)
-      } else {
-        self.activeCells.set(key: state.items[index].key, value: RNAsyncCell(spec: state.items[index].config, context: self.context))
+        fatalError("Item already exists!")
       }
+      let cell = RNAsyncCell(spec: state.items[index].config, context: self.context)
+      self.activeCellsStrong[state.items[index].key] = cell
+      
       DispatchQueue.main.async {
         self.node.performBatchUpdates({
           self.state = state
+          self.activeCells.set(key: state.items[index].key, value: cell)
           self.node.insertItems(at: [IndexPath(row: index, section: 1)])
         }, completion: nil)
       }
@@ -299,33 +367,63 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
-      // DispatchQueue.main.async {
-      self.state = state
-      if let c = self.activeCells.get(key: self.state.items[index].key) {
-        c.setSpec(spec: self.state.items[index].config)
+      print("onUpdated: " + state.items[index].key)
+      let c = self.activeCellsStrong[state.items[index].key]!
+      c.setSpec(spec: state.items[index].config)
+      DispatchQueue.main.async {
+        self.state = state
       }
-      // }
     }
   }
   
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState) {
     self.queue.async {
+      let myGroup = DispatchGroup()
+      var pendingCells: [String: RNAsyncCell] = [:]
+      let lockObj = NSObject()
       for i in from..<from+count {
+        myGroup.enter()
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+          let itm = state.items[i]
+          openland.lock(lockObj, blk: {
+            let ex = self.activeCells.get(key: itm.key)
+            if ex != nil {
+              fatalError("Item already exists!")
+            }
+          })
+          let cell = RNAsyncCell(spec: itm.config, context: self.context)
+          openland.lock(lockObj, blk: {
+            self.activeCellsStrong[itm.key] = cell
+            pendingCells[itm.key] = cell
+          })
+          myGroup.leave()
+        }
+      }
+      myGroup.wait()
+      
+      for i in from..<from+count {
+        print("onLoadedMore: " + state.items[i].key)
         let itm = state.items[i]
         let ex = self.activeCells.get(key: itm.key)
         if ex != nil {
-          ex!.setSpec(spec: itm.config)
-        } else {
-          self.activeCells.set(key: itm.key, value: RNAsyncCell(spec: itm.config, context: self.context))
+          // ex!.setSpec(spec: itm.config)
+          fatalError("Item already exists!")
         }
+        
+        let cell = RNAsyncCell(spec: itm.config, context: self.context)
+        self.activeCellsStrong[itm.key] = cell
+        pendingCells[itm.key] = cell
       }
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
           let wasCompleted = self.state.completed
           self.state = state
+          for itm in pendingCells {
+            self.activeCells.set(key: itm.key, value: itm.value)
+          }
           if count > 0 {
             var paths: [IndexPath] = []
-            for i in from...from+count-1 {
+            for i in from..<from+count {
               paths.append(IndexPath(item: i, section: 1))
             }
             self.node.insertItems(at: paths)
@@ -333,8 +431,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           if wasCompleted != state.completed {
             self.node.reloadSections(IndexSet(integer: 2))
           }
-          self.batchContext?.completeBatchFetching(true)
-          self.batchContext = nil
+          if self.batchContext != nil {
+            DispatchQueue.main.async {
+              self.batchContext?.completeBatchFetching(true)
+              self.batchContext = nil
+            }
+          }
         }, completion: nil)
       }
     }
@@ -346,10 +448,23 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.node.performBatch(animated: false, updates: {
           self.state = state
           self.node.reloadSections(IndexSet(integer: 2))
-          self.batchContext?.completeBatchFetching(true)
-          self.batchContext = nil
+          if self.batchContext != nil {
+            DispatchQueue.main.async {
+              self.batchContext?.completeBatchFetching(true)
+              self.batchContext = nil
+            }
+          }
         }, completion: nil)
       }
+    }
+  }
+  
+  func onRemoved(index: Int, state: RNAsyncDataViewState) {
+    self.queue.async {
+      self.node.performBatch(animated: false, updates: {
+        self.state = state
+        self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
+      }, completion: nil)
     }
   }
   
@@ -363,7 +478,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func collectionNode(_ collectionNode: ASCollectionNode, willBeginBatchFetchWith context: ASBatchContext) {
     self.batchContext = context
-    self.dataView.loadMore()
+    if self.state.inited {
+      self.dataView.loadMore()
+    }
   }
   
   func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
@@ -395,19 +512,15 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
     if indexPath.section == 1 {
       let d = self.state.items[indexPath.row]
-      let ac = self.activeCells
-      let c = self.context
-      let w = self.width
+      let cached = self.activeCells.get(key: d.key)
       return { () -> ASCellNode in
-        var cached = ac.get(key: d.key)
         if cached == nil {
-          cached = RNAsyncCell(spec: d.config, context: c)
-          ac.set(key: d.key, value: cached!)
+          fatalError("Unable to find cell: " + d.key)
         }
-        return ac.get(key: d.key)!
+        return cached!
       }
     } else if indexPath.section == 2 {
-      let isCompleted = self.state.completed
+      let hideLoader = self.state.completed || !self.state.inited
       let w = self.width
       return { () -> ASCellNode in
         let res = ASCellNode()
@@ -417,13 +530,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.direction = ASStackLayoutDirection.vertical
           res.alignItems = ASStackLayoutAlignItems.center
           res.justifyContent = ASStackLayoutJustifyContent.center
-          if !isCompleted {
+          if !hideLoader {
             res.child = RNAsyncLoadingIndicator()
           }
           res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: 64.0)
           return res
         }
+        res.layoutThatFits(range)
         return res
       }
     } else if indexPath.section == 0 {
@@ -441,6 +555,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
           return res
         }
+        res.layoutThatFits(range)
         return res
       }
     } else {

@@ -40,54 +40,49 @@ private func createAttributedText(spec: AsyncTextSpec, attributes: [String: Any]
   return res
 }
 
+//class RNAsyncTextNode: ASDisplayNode {
+//  private let layout = TextNode.asyncLayout(nil)
+//  private var currentSpec: AsyncTextSpec!
+//
+//  override init() {
+//    super.init()
+//    self.automaticallyManagesSubnodes = true
+//  }
+//
+//  func setSpec(spec: AsyncTextSpec) {
+//    self.currentSpec = spec
+//  }
+//
+//  override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+//    var numberOfLines = 0
+//    if let v = self.currentSpec.numberOfLines {
+//      numberOfLines = Int(v)
+//    }
+//
+//    let node = self.layout(TextNodeLayoutArguments(attributedString: self.currentSpec.attributedText, maximumNumberOfLines: numberOfLines, truncationType: .end, constrainedSize: CGSize(width: 100, height: 100))).1()
+//    return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: node)
+//  }
+//}
+
 class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
-  
+
   override init() {
     super.init()
     self.delegate = self
     self.linkAttributeNames = ["RNClickableText"]
     self.passthroughNonlinkTouches = true
     self.isUserInteractionEnabled = true
+    self.placeholderEnabled = false
   }
-  
+
   func setSpec(spec: AsyncTextSpec) {
-    
-    // Initial Styles
-    var attributes: [String: Any] = [:]
-    attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
-    attributes[NSForegroundColorAttributeName] = spec.color != nil ? spec.color : UIColor.black
-    let style = NSMutableParagraphStyle();
-    style.headIndent = 0.0
-    style.tailIndent = 0.0
-    style.paragraphSpacing = 0.0
-    style.paragraphSpacingBefore = 0.0
-    style.lineSpacing = 0.0
-    style.lineBreakMode = .byWordWrapping
-    if let v = spec.alignment {
-      if v == .center {
-        style.alignment = .center
-      } else if v == .left {
-        style.alignment = .left
-      } else if v == .right {
-        style.alignment = .right
-      }
-    }
-    if let v = spec.lineHeight {
-      style.minimumLineHeight = CGFloat(v)
-      style.maximumLineHeight = CGFloat(v)
-    }
-    attributes[NSParagraphStyleAttributeName] = style
-    if let v = spec.letterSpacing {
-      attributes[NSKernAttributeName] = CGFloat(v)
-    }
-    
+
     // Set text
     if (self.attributedText == nil) {
-      self.attributedText = createAttributedText(spec: spec, attributes: attributes)
+      self.attributedText = spec.attributedText
     } else {
-      let n = createAttributedText(spec: spec, attributes: attributes)
-      if n.string != self.attributedText!.string {
-        self.attributedText = n
+      if spec.attributedText.string != self.attributedText!.string {
+        self.attributedText = spec.attributedText
       }
     }
 
@@ -97,18 +92,18 @@ class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
     } else {
       self.maximumNumberOfLines = 0
     }
-    
+
     if let v = spec.style.opacity {
       self.alpha = CGFloat(v)
     } else {
       self.alpha = CGFloat(1)
     }
   }
-  
+
   func textNode(_ textNode: ASTextNode!, shouldHighlightLinkAttribute attribute: String!, value: Any!, at point: CGPoint) -> Bool {
     return true
   }
-  
+
   func textNode(_ textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: Any!, at point: CGPoint, textRange: NSRange) {
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: value as! String, frame: CGRect.zero, instanceKey: nil)
   }

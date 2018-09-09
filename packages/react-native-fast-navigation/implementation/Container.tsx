@@ -305,34 +305,35 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     }
 
     render() {
-        let body = (
-            <Animated.View style={styles.root}>
-                <View style={styles.pages}>
-                    {this.state.routes.map((v, i) => {
-                        return (
-                            <View key={v.record.key} style={styles.page} pointerEvents="box-none">
-                                <PageContainer
-                                    component={v.record.component}
-                                    router={v.record.router}
-                                    progress={v.progress}
-                                    mounted={!!this.state.mounted.find((m) => v.record.key === m)}
-                                />
-                            </View>
-                        );
-                    })}
-                </View>
-                <View style={styles.header} pointerEvents="box-none">
-                    <FastHeaderGuard
-                        routes={this.state.routes}
-                        mounted={this.state.mounted}
-                        history={this.props.historyManager}
-                    />
-                </View>
+        let pages = (
+            <Animated.View style={styles.pages}>
+                {this.state.routes.map((v, i) => {
+                    return (
+                        <View key={v.record.key} style={styles.page} pointerEvents="box-none">
+                            <PageContainer
+                                component={v.record.component}
+                                router={v.record.router}
+                                progress={v.progress}
+                                mounted={!!this.state.mounted.find((m) => v.record.key === m)}
+                            />
+                        </View>
+                    );
+                })}
             </Animated.View>
         );
 
+        let header = (
+            <View style={styles.header} pointerEvents="box-none">
+                <FastHeaderGuard
+                    routes={this.state.routes}
+                    mounted={this.state.mounted}
+                    history={this.props.historyManager}
+                />
+            </View>
+        );
+
         if (Platform.OS === 'ios') {
-            return (
+            pages = (
                 <PanGestureHandler
                     onGestureEvent={this.panEvent}
                     onHandlerStateChange={this.onGestureChanged}
@@ -342,11 +343,16 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                     // avgTouches={true}
                     enabled={!this.state.transitioning}
                 >
-                    {body}
+                    {pages}
                 </PanGestureHandler>
             );
-        } else {
-            return body;
         }
+
+        return (
+            <Animated.View style={styles.root}>
+                {pages}
+                {header}
+            </Animated.View>
+        );
     }
 }

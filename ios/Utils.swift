@@ -35,3 +35,34 @@ class WeakMap<V: AnyObject> {
     }
   }
 }
+
+
+public class Signpost {
+  static func start( code:UInt32, arg1:UInt = 0, arg2:UInt = 0, arg3:UInt = 0, arg4:UInt = 0 ) -> Int32 {
+    if #available(iOS 10.0, *) {
+      return kdebug_signpost_start(code,arg1,arg2,arg3,arg4);
+    } else {
+      return 0;
+    }
+  }
+  
+  static func end( code:UInt32, arg1:UInt = 0, arg2:UInt = 0, arg3:UInt = 0, arg4:UInt = 0 ) -> Int32 {
+    if #available(iOS 10.0, *) {
+      return kdebug_signpost_end(code,arg1,arg2,arg3,arg4)
+    } else {
+      return 0;
+    }
+  }
+  
+  static func point( code:UInt32, arg1:UInt = 0, arg2:UInt = 0, arg3:UInt = 0, arg4:UInt = 0 ) -> Int32 {
+    if #available(iOS 10.0, *) {
+      return kdebug_signpost(code,arg1,arg2,arg3,arg4)
+    } else {
+      return 0;
+    }
+  }
+  
+  static func id() -> UInt {
+    return UInt(arc4random_uniform(256))
+  }
+}
