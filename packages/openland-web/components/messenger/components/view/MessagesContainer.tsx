@@ -38,7 +38,8 @@ const MessagesContainerInner = Glamorous.div({
             overflowX: 'unset !important',
             overflowY: 'unset !important',
             width: '100%',
-            justifyContent: 'flex-end'
+            justifyContent: 'flex-end',
+            willChange: 'transform'
         }
     }
 });

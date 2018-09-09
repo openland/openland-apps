@@ -75,9 +75,7 @@ const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
     paddingTop: props.empty ? 20 : 96,
     paddingBottom: props.empty ? 0 : 40,
     width: '100%',
-    maxWidth: 1000,
-    transform: 'translate3d(0, 0, 0)',
-
+    maxWidth: 1000
 }));
 
 interface MessageListProps {
@@ -93,9 +91,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
-    constructor(props: any) {
+    constructor(props: MessageListProps) {
         super(props);
-        this.checkEmptyState();
+        // this.checkEmptyState();
     }
 
     scrollToBottom = () => {
@@ -107,7 +105,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.updateDimensions();
             this.unshifted = true;
         }
-        this.checkEmptyState();
+        // this.checkEmptyState();
     }
 
     componentDidUpdate() {
@@ -115,19 +113,19 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.restorePreviousScroll();
             this.unshifted = false;
         }
-        this.checkEmptyState();
+        // this.checkEmptyState();
     }
 
     isEmpty = () => {
         return this.props.conversation.historyFullyLoaded && this.props.messages.filter(m => m.message && !((m as any).isService)).length < 1;
     }
 
-    checkEmptyState = () => {
+    // checkEmptyState = () => {
 
-        // if (this.props.inputShower) {
-        //     this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
-        // }
-    }
+    //     if (this.props.inputShower) {
+    //         this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
+    //     }
+    // }
 
     render() {
 
