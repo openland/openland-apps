@@ -54,27 +54,23 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-    
-    self.node.onDidLoad { (n) in
-     
-      print("didLoad:col")
-    }
-    print("initEnded")
-  }
-  
-  override func didLoad() {
-    super.didLoad()
-    print("didLoad")
-    self.loaded = true
   }
   
   func start() {
+    if self.loaded {
+      return
+    }
+    self.loaded = true
     self.node.view.keyboardDismissMode = .interactive
     if #available(iOS 11.0, *) {
       self.node.view.contentInsetAdjustmentBehavior = .never
     }
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
     self.viewLoaded = true
+    
+    let insets = UIEdgeInsets(top: CGFloat(self.node.inverted ? (self.keyboardVisible ? 0 : self.bottomInset) : self.topInset), left: 0.0, bottom: CGFloat(self.node.inverted ? self.topInset: (self.keyboardVisible ? 0 : self.bottomInset)), right: 0.0)
+    self.node.view.scrollIndicatorInsets = insets
+    self.node.contentInset = insets
     // self.view.alpha = 0.0
   }
   
@@ -184,9 +180,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func setDataView(dataView: RNAsyncDataView) {
     self.dataView = RNAsyncDataViewWindow(source: dataView)
-    if self.viewLoaded {
-      self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
-    }
   }
   
   func setInverted(inverted: Bool) {
@@ -253,7 +246,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   private func updateContentPadding() {
-      if !self.keyboardVisible {
+      if !self.keyboardVisible && self.viewLoaded {
         let insets = UIEdgeInsets(top: CGFloat(self.node.inverted ? (self.keyboardVisible ? 0 : self.bottomInset) : self.topInset), left: 0.0, bottom: CGFloat(self.node.inverted ? self.topInset: (self.keyboardVisible ? 0 : self.bottomInset)), right: 0.0)
         self.node.view.scrollIndicatorInsets = insets
         self.node.contentInset = insets
