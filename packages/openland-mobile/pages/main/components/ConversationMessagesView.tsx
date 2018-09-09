@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { MobileMessengerContext } from '../../../messenger/MobileMessenger';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
@@ -17,7 +17,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
 
     render() {
         return (
-            <ZSafeAreaContext.Consumer>
+            <ASSafeAreaContext.Consumer>
                 {area => (
                     <MobileMessengerContext.Consumer>
                         {engine => (
@@ -32,7 +32,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                         )}
                     </MobileMessengerContext.Consumer>
                 )}
-            </ZSafeAreaContext.Consumer>
+            </ASSafeAreaContext.Consumer>
         );
     }
 }

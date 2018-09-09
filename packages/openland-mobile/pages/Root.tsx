@@ -11,7 +11,6 @@ import { LoginStack, Routes } from '../routes';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
-import { ZSafeAreaRoot } from '../components/layout/ZSafeAreaRoot';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { NativeModules } from 'react-native';
 import { FastRouterProvider } from 'react-native-fast-navigation/FastRouterProvider';
@@ -77,13 +76,11 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                     <PushManager client={getClient()} />
                     <MobileMessengerContext.Provider value={getMessenger()}>
                         <MessengerContext.Provider value={getMessenger().engine}>
-                            <ZSafeAreaRoot>
-                                <View style={{ width: '100%', height: '100%' }}>
-                                    <ZPictureModal ref={this.ref}>
-                                        <FastRouterProvider history={getMessenger().history} />
-                                    </ZPictureModal>
-                                </View>
-                            </ZSafeAreaRoot>
+                            <View style={{ width: '100%', height: '100%' }}>
+                                <ZPictureModal ref={this.ref}>
+                                    <FastRouterProvider history={getMessenger().history} />
+                                </ZPictureModal>
+                            </View>
                         </MessengerContext.Provider>
                     </MobileMessengerContext.Provider>
                 </YApolloProvider>

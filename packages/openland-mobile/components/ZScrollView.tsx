@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ScrollViewProps, Animated } from 'react-native';
-import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface ZScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
@@ -18,7 +18,7 @@ export class ZScrollView extends React.Component<ZScrollViewProps> {
         return (
             <>
                 <FastHeaderConfigRegistrator config={new FastHeaderConfig({ contentOffset: this.contentOffset })} />
-                <ZSafeAreaContext.Consumer>
+                <ASSafeAreaContext.Consumer>
                     {area => {
                         return (
                             <Animated.ScrollView
@@ -44,7 +44,7 @@ export class ZScrollView extends React.Component<ZScrollViewProps> {
                             </Animated.ScrollView>
                         );
                     }}
-                </ZSafeAreaContext.Consumer>
+                </ASSafeAreaContext.Consumer>
             </>
         );
     }

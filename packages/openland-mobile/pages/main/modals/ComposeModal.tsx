@@ -2,7 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { ZScrollView } from '../../../components/ZScrollView';
 import { View, LayoutChangeEvent } from 'react-native';
-import { ZSafeAreaContext, ZSafeAreaProvider } from '../../../components/layout/ZSafeAreaContext';
 import { ZBlurredView } from '../../../components/ZBlurredView';
 import { AppStyles } from '../../../styles/AppStyles';
 import { MessageInputBar } from '../components/MessageInputBar';
@@ -15,10 +14,11 @@ import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEng
 import { ZLoader } from '../../../components/ZLoader';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
-import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationView } from '../components/ConversationView';
 import { PageProps } from '../../../components/PageProps';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 interface ComposeModalState {
     message: string;
@@ -139,7 +139,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                 <View style={{ height: '100%', flexDirection: 'column', alignItems: 'stretch', backgroundColor: '#fff' }}>
                     {/* <ZListItemEdit title="Search" /> */}
                     <View style={{ flexGrow: 1, flexBasis: 0, flexDirection: 'column' }}>
-                        <ZSafeAreaProvider top={this.state.searchHeight}>
+                        <ASSafeAreaProvider top={this.state.searchHeight}>
                             {(this.state.users.length === 0 || this.state.query !== '') && (
                                 <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                                     {r => (
@@ -153,11 +153,11 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                                 <ConversationView key={this.state.conversationId} engine={this.props.messenger.getConversation(this.state.conversationId!!)} />
                             )}
                             {(this.state.users.length !== 0 && this.state.query === '' && this.state.resolving) && (
-                                <ZSafeAreaView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                                <ASSafeAreaView style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
                                     <ZLoader />
-                                </ZSafeAreaView>
+                                </ASSafeAreaView>
                             )}
-                        </ZSafeAreaProvider>
+                        </ASSafeAreaProvider>
                     </View>
                     <MessageInputBar
                         onSubmitPress={this.handleSubmit}
@@ -166,7 +166,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                         enabled={!this.state.resolving}
                         attachesEnabled={false}
                     />
-                    <ZSafeAreaContext.Consumer>
+                    <ASSafeAreaContext.Consumer>
                         {area => (
                             <ZBlurredView onLayout={this.handleSearchLayout} style={{ position: 'absolute', top: area.top, left: 0, right: 0, flexDirection: 'column', maxHeight: 44 * 4 }}>
                                 <ZTagView
@@ -179,7 +179,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                                 <View style={{ height: 1, backgroundColor: AppStyles.separatorColor }} />
                             </ZBlurredView>
                         )}
-                    </ZSafeAreaContext.Consumer>
+                    </ASSafeAreaContext.Consumer>
                 </View>
             </>
         );

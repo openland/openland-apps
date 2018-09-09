@@ -9,9 +9,9 @@
 import Foundation
 
 protocol RNAsyncKeyboardManagerDelegate {
-  func keyboardWillChangeHeight(height: CGFloat)
-  func keyboardWillShow(height: CGFloat, duration: Double, curve: Int)
-  func keyboardWillHide(height: CGFloat, duration: Double, curve: Int)
+  func keyboardWillChangeHeight(ctx: String, height: CGFloat)
+  func keyboardWillShow(ctx: String, height: CGFloat, duration: Double, curve: Int)
+  func keyboardWillHide(ctx: String, height: CGFloat, duration: Double, curve: Int)
 }
 
 @objc class RNAsyncKeyboardManager: NSObject {
@@ -19,7 +19,8 @@ protocol RNAsyncKeyboardManagerDelegate {
   static var sharedInstance: RNAsyncKeyboardManager = RNAsyncKeyboardManager()
   
   var keyboardHeight: Float = 0.0
-  var trackingView: TrackingView? = nil
+  var currentView: RNAsyncKeyboardView? = nil
+  var lastCtx: String = "default"
   
   private var watchers: [String : RNAsyncKeyboardManagerDelegate] = [:]
   
@@ -39,10 +40,11 @@ protocol RNAsyncKeyboardManagerDelegate {
     NotificationCenter.default.removeObserver(self)
   }
   
-  func reportRealHeigh(height: Float) {
+  func reportRealHeight(ctx: String, height: Float) {
+    print("Report Height \(height)")
     self.keyboardHeight = height
     for i in self.watchers {
-      i.value.keyboardWillChangeHeight(height: CGFloat(height))
+      i.value.keyboardWillChangeHeight(ctx: ctx, height: CGFloat(height))
     }
   }
   
@@ -50,13 +52,15 @@ protocol RNAsyncKeyboardManagerDelegate {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
     let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
     let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-    NSLog("[KEYBOARD] willShow: \(endRect)")
-    if let tr = trackingView  {
-      NSLog("[KEYBOARD] height: \(tr.keyboardHeight)")
-      if let ct = tr.container {
-        let h = tr.keyboardHeight + ct.bounds.size.height
+    let context = (UIResponder.current as? UIView)?.resolveKeyboardContextKey()
+    self.lastCtx = context?.keyboardContextKey ?? "default"
+    NSLog("[KEYBOARD] (\(context?.keyboardContextKey)) willShow: \(endRect)")
+    if let tr = currentView  {
+      NSLog("[KEYBOARD] (\(context?.keyboardContextKey)) height: \(tr.keyboardHeightWithAccessory)")
+      let h = tr.keyboardHeightWithAccessory
+      if let ctx = context?.keyboardContextKey {
         for i in self.watchers {
-          i.value.keyboardWillShow(height: h, duration: duration, curve: curve)
+          i.value.keyboardWillShow(ctx: ctx, height: h, duration: duration, curve: curve)
         }
       }
     }
@@ -76,14 +80,14 @@ protocol RNAsyncKeyboardManagerDelegate {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
     let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
     let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-    NSLog("[KEYBOARD] willHide: \(endRect)")
-    if let tr = trackingView  {
-      if let ct = tr.container {
-        NSLog("[KEYBOARD] height: \(tr.keyboardHeight)")
-        let h = tr.keyboardHeight + ct.bounds.size.height
-        for i in self.watchers {
-          i.value.keyboardWillHide(height: h, duration: duration, curve: curve)
-        }
+    // let context = (UIResponder.current as? UIView)?.resolveKeyboardContextKey()
+    // self.lastCtx = context?.keyboardContextKey ?? "default"
+    NSLog("[KEYBOARD] (\(self.lastCtx)) willHide: \(endRect), \(duration)")
+    if let tr = currentView  {
+      NSLog("[KEYBOARD] (\(self.lastCtx)) height: \(tr.keyboardHeightWithAccessory)")
+      let h = tr.keyboardHeightWithAccessory
+      for i in self.watchers {
+        i.value.keyboardWillHide(ctx: self.lastCtx, height: h, duration: duration, curve: curve)
       }
     }
   }
@@ -96,7 +100,7 @@ protocol RNAsyncKeyboardManagerDelegate {
   func watch(delegate: RNAsyncKeyboardManagerDelegate) -> ()-> Void {
     let key = UUID().uuidString
     self.watchers[key] = delegate
-    delegate.keyboardWillChangeHeight(height: CGFloat(keyboardHeight))
+    delegate.keyboardWillChangeHeight(ctx: self.lastCtx, height: CGFloat(keyboardHeight))
     return {
       self.watchers[key] = nil
     }

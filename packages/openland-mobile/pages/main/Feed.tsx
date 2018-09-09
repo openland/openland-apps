@@ -3,12 +3,10 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ZScrollView } from '../../components/ZScrollView';
-import { View, Text, Dimensions } from 'react-native';
-import { XPAvatar } from 'openland-xp/XPAvatar';
+import { View } from 'react-native';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ZSafeAreaView } from '../../components/layout/ZSafeAreaView';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { ASText } from 'react-native-async-view/ASText';
 

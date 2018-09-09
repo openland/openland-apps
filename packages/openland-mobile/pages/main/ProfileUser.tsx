@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
 import { UserQuery } from 'openland-api';

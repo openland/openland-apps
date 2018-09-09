@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, Animated, StatusBar, Dimensions, Platform } from 'react-native';
-import { ZAppConfig } from '../ZAppConfig';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
 import { FastHeaderBackButton } from 'react-native-fast-navigation/views/FastHeaderBackButton';
+import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -213,8 +213,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
                 <Animated.View
                     style={{
-                        height: ZAppConfig.navigationBarHeight + ZAppConfig.statusBarHeight,
-                        paddingTop: ZAppConfig.statusBarHeight,
+                        height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight,
+                        paddingTop: DeviceConfig.statusBarHeight,
                         backgroundColor: 'rgba(0,0,0,0.6)',
                         opacity: Animated.multiply(this.progressLinear, this.barOpacity)
                         // transform: [{

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FlatList, FlatListProps, Animated } from 'react-native';
-import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -55,8 +55,8 @@ export class ZFlatListComponent<T> extends React.PureComponent<ZFlatListProps<T>
 
 export const ZFlatList = function <T>(props: ZFlatListProps<T>) {
     return (
-        <ZSafeAreaContext.Consumer>
+        <ASSafeAreaContext.Consumer>
             {(area) => <ZFlatListComponent {...props} insets={area} />}
-        </ZSafeAreaContext.Consumer>
+        </ASSafeAreaContext.Consumer>
     );
 };

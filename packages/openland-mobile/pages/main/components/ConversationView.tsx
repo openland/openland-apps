@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Dimensions, Platform } from 'react-native';
+import { View, Image, Text, Dimensions } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
-import { MessageFullFragment } from 'openland-api/Types';
-import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
-import { ZSafeAreaView } from '../../../components/layout/ZSafeAreaView';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -81,17 +80,17 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     engine={this.props.engine}
                 />
                 {!this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
-                    <ZSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                    <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ width: 375, height: 375, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }} />
                             <Image source={require('assets/img-messages.png')} style={{ width: 48, height: 42, marginBottom: 13 }} />
                             <Text style={{ color: '#c8c7cc', fontSize: 13, fontWeight: '500' }}>No messages yet</Text>
                         </View>
-                    </ZSafeAreaView>
+                    </ASSafeAreaView>
                 )}
-                <ZSafeAreaView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} pointerEvents="none">
+                <ASSafeAreaView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} pointerEvents="none">
                     <ZLoader transparent={true} enabled={this.state.conversation.loading} />
-                </ZSafeAreaView>
+                </ASSafeAreaView>
             </View>
         );
     }
@@ -99,8 +98,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     return (
-        <ZSafeAreaContext.Consumer>
+        <ASSafeAreaContext.Consumer>
             {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} />)}
-        </ZSafeAreaContext.Consumer>
+        </ASSafeAreaContext.Consumer>
     );
 };

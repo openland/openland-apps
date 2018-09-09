@@ -8,7 +8,6 @@ import { ZListItem } from '../../components/ZListItem';
 import { ZScrollView } from '../../components/ZScrollView';
 import { PageProps } from '../../components/PageProps';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 

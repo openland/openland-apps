@@ -5,12 +5,12 @@ import { ZBottomTabs } from '../../components/ZBottomTabs';
 import { Directory } from './Directory';
 import { Dialogs } from './Dialogs';
 import { Settings } from './Settings';
-import { ZAppConfig } from '../../components/ZAppConfig';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
-import { ZSafeAreaProvider } from '../../components/layout/ZSafeAreaContext';
 import { FastHeaderContextChild } from 'react-native-fast-navigation/FastHeaderContextChild';
 import { Feed } from './Feed';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
+import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 
 export class Home extends React.PureComponent<{}, { tab: number }> {
     constructor(props: NavigationInjectedProps) {
@@ -27,7 +27,7 @@ export class Home extends React.PureComponent<{}, { tab: number }> {
     render() {
         return (
             <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
-                <ZSafeAreaProvider bottom={Platform.OS === 'ios' ? 54 : 0}>
+                <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 54 : 0}>
                     <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 0 ? 1 : 0 }} pointerEvents={this.state.tab === 0 ? 'box-none' : 'none'}>
                             <FastHeaderContextChild enabled={this.state.tab === 0}>
@@ -50,10 +50,10 @@ export class Home extends React.PureComponent<{}, { tab: number }> {
                             </FastHeaderContextChild>
                         </View>
                     </View>
-                </ZSafeAreaProvider>
+                </ASSafeAreaProvider>
                 <YQuery query={GlobalCounterQuery}>
                     {resp => (
-                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: ZAppConfig.bottomNavigationBarInset, left: 0, right: 0 }}>
+                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: DeviceConfig.bottomNavigationBarInset, left: 0, right: 0 }}>
                             <ZBottomTabs counter={resp.data && resp.data.counter.unreadCount || 0} selected={this.state.tab} onPress={this.handleTabChange} />
                         </View>
                     )}

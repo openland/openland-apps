@@ -9,8 +9,8 @@ import { ASListView } from 'react-native-async-view/ASListView';
 import { StyleProp, ViewStyle, Animated } from 'react-native';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
-import { ZSafeAreaContext } from './layout/ZSafeAreaContext';
 import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 type ListQuery<Q> = {
     items: {
@@ -87,7 +87,7 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
     }
     render() {
         return (
-            <ZSafeAreaContext.Consumer>
+            <ASSafeAreaContext.Consumer>
                 {area => {
                     return (
                         <>
@@ -105,7 +105,7 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                         </>
                     );
                 }}
-            </ZSafeAreaContext.Consumer>
+            </ASSafeAreaContext.Consumer>
         );
     }
 }

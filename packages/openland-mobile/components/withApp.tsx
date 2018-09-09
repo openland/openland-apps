@@ -1,9 +1,9 @@
 import * as React from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { ZHeaderSafeArea } from './layout/ZHeaderSafeArea';
 import { PageProps } from './PageProps';
 import { withRouter } from 'react-native-fast-navigation/withRouter';
 import { FastHeaderAppearance } from 'react-native-fast-navigation/FastHeaderAppearance';
+import { FastHeaderSafeArea } from 'react-native-fast-navigation/FastHeaderSafeArea';
 
 export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: FastHeaderAppearance }) => {
 
@@ -13,9 +13,9 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
         }
         render() {
             return (
-                <ZHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                <FastHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
                     <Wrapped {...this.props} />
-                </ZHeaderSafeArea>
+                </FastHeaderSafeArea>
             );
         }
     };

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 func randomKey() -> String {
   return UUID().uuidString
@@ -36,6 +37,19 @@ class WeakMap<V: AnyObject> {
   }
 }
 
+extension UIResponder {
+  private weak static var _currentFirstResponder: UIResponder? = nil
+  
+  public static var current: UIResponder? {
+    UIResponder._currentFirstResponder = nil
+    UIApplication.shared.sendAction(#selector(findFirstResponder(sender:)), to: nil, from: nil, for: nil)
+    return UIResponder._currentFirstResponder
+  }
+  
+  @objc internal func findFirstResponder(sender: AnyObject) {
+    UIResponder._currentFirstResponder = self
+  }
+}
 
 public class Signpost {
   static func start( code:UInt32, arg1:UInt = 0, arg2:UInt = 0, arg3:UInt = 0, arg4:UInt = 0 ) -> Int32 {

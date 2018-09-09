@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZQuery } from '../../components/ZQuery';
 import { ExploreOrganizationsQuery } from 'openland-api';
-import { View, Text } from 'react-native';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemBase } from '../../components/ZListItemBase';
-import { ZScrollView } from '../../components/ZScrollView';
-import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';

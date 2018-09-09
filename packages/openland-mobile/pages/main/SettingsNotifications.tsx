@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZScrollView } from '../../components/ZScrollView';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';

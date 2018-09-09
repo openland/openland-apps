@@ -31,6 +31,12 @@ RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 @interface RCT_EXTERN_MODULE(RNAsyncKeyboardViewManager, RCTViewManager)
 @end
 
+@interface RCT_EXTERN_MODULE(RNAsyncKeyboardContextViewManager, RCTViewManager)
+RCT_EXPORT_VIEW_PROPERTY(contextKey, NSString)
+RCT_EXPORT_VIEW_PROPERTY(bottomSafeInset, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(onKeyboardChanged, RCTDirectEventBlock)
+@end
+
 @interface RCT_EXTERN_MODULE(RNAsyncConfigManager, NSObject)
 RCT_EXTERN_METHOD(setConfig:(NSString *)key config:(NSString *)config)
 RCT_EXTERN_METHOD(setSuspended:(NSString *)key suspended:(nonnull BOOL)suspended)

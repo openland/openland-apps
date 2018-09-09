@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { FastRouter, FastRouterContext } from '../../FastRouter';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
 import { FastHeaderContextDirect } from '../../FastHeaderContextDirect';
+import { ASKeyboardContext } from 'react-native-async-view/ASKeyboardContext';
+import { PageKeyboard } from './PageKeyboard';
 
 const styles = StyleSheet.create({
     root: {
@@ -31,13 +33,14 @@ export class PageImmutableContainer extends React.Component<PageImmutableContain
     }
     render() {
         let Component = this.props.component;
+
         return (
             <FastRouterContext.Provider value={this.props.router}>
                 <FastHeaderContextDirect router={this.props.router}>
-                    <View style={styles.root}>
+                    <PageKeyboard style={styles.root} contextKey={this.props.router.key}>
                         <Component />
-                    </View>
-                </FastHeaderContextDirect >
+                    </PageKeyboard>
+                </FastHeaderContextDirect>
             </FastRouterContext.Provider>
         );
     }

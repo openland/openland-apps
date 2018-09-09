@@ -1,10 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar } from 'react-native';
-import { NavigationInjectedProps, SafeAreaView } from 'react-navigation';
-import { buildNativeClient, saveClient } from '../../utils/apolloClient';
+import { SafeAreaView } from 'react-navigation';
 import { Auth0Client } from '../../index';
-import { AccountQuery } from 'openland-api/AccountQuery';
-import { buildMessenger, setMessenger } from '../../utils/messenger';
 import { ZLoader } from '../../components/ZLoader';
 import { AppStyles } from '../../styles/AppStyles';
 import { isAndroid } from '../../utils/isAndroid';

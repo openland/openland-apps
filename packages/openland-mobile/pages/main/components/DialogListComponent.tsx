@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { ASListView } from 'react-native-async-view/ASListView';
-import { ZSafeAreaContext } from '../../../components/layout/ZSafeAreaContext';
 import { MobileMessenger } from '../../../messenger/MobileMessenger';
 import { Animated } from 'react-native';
 import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 export class DialogListComponent extends React.PureComponent<{ engine: MobileMessenger }> {
     private contentOffset = new FastScrollValue();
 
     render() {
         return (
-            <ZSafeAreaContext.Consumer>
+            <ASSafeAreaContext.Consumer>
                 {area => {
                     return (
                         <>
@@ -31,7 +31,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: MobileMes
                         </>
                     );
                 }}
-            </ZSafeAreaContext.Consumer>
+            </ASSafeAreaContext.Consumer>
         );
     }
 }

@@ -1,4 +1,4 @@
-import { Platform, ActionSheetIOS, Alert } from 'react-native';
+import { Platform, ActionSheetIOS } from 'react-native';
 
 export class ActionSheetBuilder {
     private _title?: string;

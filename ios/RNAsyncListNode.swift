@@ -34,6 +34,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var keyboardSubscription: (() -> Void)?
   private var isDragging = false
   private var keyboardHeight: CGFloat = 0.0
+  private var keyboard: RNAsyncKeyboardContextView? = nil
   
   init(parent: RNAsyncListView) {
     self.parent = parent
@@ -66,9 +67,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.viewLoaded = true
     
     self.fixContentInset()
+    
+    self.keyboard = self.parent.resolveKeyboardContextKey()
   }
   
   func destroy() {
+    self.keyboard = nil
     NotificationCenter.default.removeObserver(self)
     if self.dataViewUnsubscribe != nil {
       self.dataViewUnsubscribe!()
@@ -80,36 +84,53 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
-  func keyboardWillChangeHeight(height: CGFloat) {
-    if self.node.inverted {
-      self.keyboardHeight = height
-      
-      if !self.isDragging {
-        self.fixContentInset()
+  func keyboardWillChangeHeight(ctx: String, height: CGFloat) {
+    if let k = self.keyboard {
+      if k.keyboardContextKey == ctx {
+        if self.node.inverted {
+          self.keyboardHeight = height
+          
+          print("keyboardWillChangeHeight")
+          if !self.isDragging {
+            self.fixContentInset()
+          }
+        }
       }
     }
   }
   
-  func keyboardWillShow(height: CGFloat, duration: Double, curve: Int) {
-    self.keyboardVisible = true
-    self.keyboardHeight = height
-    UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
-      self.fixContentInset()
-    }, completion: nil)
+  func keyboardWillShow(ctx: String, height: CGFloat, duration: Double, curve: Int) {
+    if let k = self.keyboard {
+      if k.keyboardContextKey == ctx {
+        self.keyboardVisible = true
+        self.keyboardHeight = height
+        print("keyboardWillShow")
+        UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
+          self.fixContentInset()
+        }, completion: nil)
+      }
+    }
   }
   
-  func keyboardWillHide(height: CGFloat, duration: Double, curve: Int) {
-    self.keyboardVisible = false
-    self.keyboardHeight = height
-    UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
-      self.fixContentInset()
-    }, completion: nil)
+  func keyboardWillHide(ctx: String, height: CGFloat, duration: Double, curve: Int) {
+    if let k = self.keyboard {
+      if k.keyboardContextKey == ctx {
+        self.keyboardVisible = false
+        self.keyboardHeight = height
+        print("keyboardWillHide")
+        UIView.animate(withDuration: duration, delay: 0.0, options: [UIViewAnimationOptions(rawValue: UInt(curve)), UIViewAnimationOptions.beginFromCurrentState], animations: {
+          self.fixContentInset()
+        }, completion: nil)
+      }
+    }
   }
   
   private func fixContentInset() {
     let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
     let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
     let insetsDiff = currentInset - newInset
+    let originalOffset = self.node.contentOffset
+    
     if self.node.inverted {
       self.node.view.contentInset.top = newInset
       self.node.view.contentInset.bottom = CGFloat(self.topInset)
@@ -117,10 +138,17 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.node.view.contentInset.bottom = newInset
       self.node.view.contentInset.top = CGFloat(self.topInset)
     }
-    let originalOffset = self.node.contentOffset
+    
     if self.node.inverted {
+      print("insetsDiff \(insetsDiff)")
+      print("keyboardHeight \(self.keyboardHeight)")
+      print("bottomInset \(self.bottomInset)")
+      print("originalOffset.y \(originalOffset.y)")
+      print("newInset \(newInset)")
+      print("currentInset \(currentInset)")
       self.node.view.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
     }
+    
     var inset = self.node.view.contentInset
     if self.node.inverted {
       inset.top = newInset
