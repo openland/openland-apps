@@ -1,40 +1,70 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from './XLink';
+import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 
-const XCardWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    '> :not(:last-child)': {
-        borderBottom: '1px solid #f6f9fc'
-    }
-});
+interface XListProps {
+    rowCount: number;
+    rowRenderer: any;
+    autoHeight?: boolean;
+    rowHeight: number;
+}
 
-const XCardItemWrapper = Glamorous(XLink)({
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 16,
-    paddingRight: 16,
-    alignItems: 'stretch',
-    cursor: 'pointer',
-    '&:hover': {
-        backgroundColor: '#f6f9fc'
-    }
-});
+interface XListInfiniteProps extends XListProps {
+    isRowLoaded: any;
+    loadMoreRows: any;
+}
 
-export class XListItem extends React.Component<{ path?: string }> {
+export interface XListRowRendererProps {
+    isScrolling: boolean;
+    isVisible: boolean;
+    key: string;
+    index: number;
+    style: React.CSSProperties;
+}
+
+export class XList extends React.Component<XListProps> {
     render() {
         return (
-            <XCardItemWrapper path={this.props.path}>
-                {this.props.children}
-            </XCardItemWrapper>
+            <AutoSizer>
+                {({ height, width }) => (
+                    <List
+                        autoHeight={this.props.autoHeight}
+                        rowCount={this.props.rowCount}
+                        rowHeight={this.props.rowHeight}
+                        rowRenderer={this.props.rowRenderer}
+                        width={width}
+                        height={height}
+                    />
+                )}
+            </AutoSizer>
         );
     }
 }
 
-export function XList(props: { children: any }) {
-    return (<XCardWrapper>{props.children}</XCardWrapper>);
+export class XListInfinite extends React.Component<XListInfiniteProps> {
+    render() {
+        return (
+            <InfiniteLoader
+                isRowLoaded={this.props.isRowLoaded}
+                loadMoreRows={this.props.loadMoreRows}
+                rowCount={this.props.rowCount}
+            >
+                {({ onRowsRendered, registerChild }) => (
+                    <AutoSizer>
+                        {({ height, width }) => (
+                            <List
+                                width={width}
+                                height={height}
+                                onRowsRendered={onRowsRendered}
+                                ref={registerChild}
+                                rowCount={this.props.rowCount}
+                                rowHeight={this.props.rowHeight}
+                                rowRenderer={this.props.rowRenderer}
+                            />
+                        )}
+                    </AutoSizer>
+                )}
+            </InfiniteLoader>
+        );
+    }
 }

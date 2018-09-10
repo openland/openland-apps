@@ -298,6 +298,8 @@ routes.add('/ui/menu-items', '/dev/ui/menu-items');
 routes.add('/ui/menu-items/', '/dev/ui/menu-items');
 routes.add('/ui/profile', '/dev/ui/profile');
 routes.add('/ui/profile/', '/dev/ui/profile');
+routes.add('/ui/lists', '/dev/ui/lists');
+routes.add('/ui/lists/', '/dev/ui/lists');
 
 //
 // Dev Tools
