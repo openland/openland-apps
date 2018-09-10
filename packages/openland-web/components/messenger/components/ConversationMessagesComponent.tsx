@@ -70,10 +70,14 @@ const TypingComponent = (props: { chatId: string }) => (
             <TypingContext.Consumer>
                 {typing => (
                     <TypingContent separator={5} alignItems="center" flexGrow={1}>
+                        {console.log(typing)}
                         {typing.pictures && (
                             <TypingAvatarWrapper>
                                 {typing.pictures.map((i, j) => (
-                                    <TypingAvatar key={'typing_img_' + j} cloudImageUuid={i || undefined} />
+                                    <TypingAvatar
+                                        key={'typing_img_' + j}
+                                        cloudImageUuid={i || undefined}
+                                    />
                                 ))}
                             </TypingAvatarWrapper>
                         )}
