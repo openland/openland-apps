@@ -13,7 +13,7 @@ import { TextGlobal } from 'openland-text/TextGlobal';
 import { TextGlobalSearch } from 'openland-text/TextGlobalSearch';
 import { XLink } from 'openland-x/XLink';
 import { XArea } from 'openland-x-format/XArea';
-import { XList, XListItem } from 'openland-x/XList';
+import { XSearchList, XSearchListItem } from 'openland-x/XSearchList';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -496,18 +496,18 @@ let SearchResults = withSearch((props) => {
     if (props.data && props.data.search && (props.data.search.parcels.edges.length > 0 || props.data.search.folders.edges.length > 0)) {
         return (
             <ResultsContainer>
-                <XList>
+                <XSearchList>
                     {props.data.search.folders.edges.length > 0 && <Tilte>Folders</Tilte>}
                     {props.data.search.folders.edges.map((v) => (
-                        <XListItem key={v.node.id} path={'/folders/' + v.node.id}>
+                        <XSearchListItem key={v.node.id} path={'/folders/' + v.node.id}>
                             <ResultTilte>
                                 <ResultTilteMain>{v.node.name}</ResultTilteMain>
                             </ResultTilte>
-                        </XListItem>
+                        </XSearchListItem>
                     ))}
                     {props.data.search.folders.edges.length > 0 && <Tilte>Parcels</Tilte>}
                     {props.data.search.parcels.edges.map((v) => (
-                        <XListItem key={v.node.id} path={'/parcels/' + v.node.id}>
+                        <XSearchListItem key={v.node.id} path={'/parcels/' + v.node.id}>
                             <ResultTilte>
                                 <ResultTilteMain>{TextGlobalSearch.parcelIdPrefix}<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
                                 <ResultTilteHint>{v.node.extrasArea && <XArea value={v.node.extrasArea} />}</ResultTilteHint>
@@ -524,9 +524,9 @@ let SearchResults = withSearch((props) => {
                                     <Highlighted field={'address'} highlight={v.highlight} />
                                 </ResultBody>
                             )}
-                        </XListItem>
+                        </XSearchListItem>
                     ))}
-                </XList>
+                </XSearchList>
             </ResultsContainer>
         );
     } else {

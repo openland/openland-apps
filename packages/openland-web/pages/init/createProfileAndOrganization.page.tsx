@@ -88,12 +88,12 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                             variables: {
                                 user: {
                                     firstName: data.input.firstName,
-                                    lastName: data.input.lastName
+                                    lastName: data.input.lastName,
+                                    photoRef: sanitizeIamgeRef(data.input.photoRef),
                                 },
                                 organization: {
                                     name: data.input.name,
                                     website: '',
-                                    photoRef: sanitizeIamgeRef(data.input.photoRef),
                                     personal: false,
                                 }
                             }

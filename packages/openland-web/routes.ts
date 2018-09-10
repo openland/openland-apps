@@ -214,8 +214,10 @@ routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
-routes.add('/joinChannel/:uuid', '/main/mail/root');
-routes.add('/joinChannel/:uuid/', '/main/mail/root');
+routes.add('/joinChannel/:uuid', '/init/signChannelInvite');
+routes.add('/joinChannel/:uuid/', '/init/signChannelInvite');
+routes.add('/mail/joinChannel/:uuid', '/main/mail/root');
+routes.add('/mail/joinChannel/:uuid/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
 routes.add('/mail/o/:organizationId/', '/main/mail/root');
 
@@ -298,6 +300,8 @@ routes.add('/ui/menu-items', '/dev/ui/menu-items');
 routes.add('/ui/menu-items/', '/dev/ui/menu-items');
 routes.add('/ui/profile', '/dev/ui/profile');
 routes.add('/ui/profile/', '/dev/ui/profile');
+routes.add('/ui/lists', '/dev/ui/lists');
+routes.add('/ui/lists/', '/dev/ui/lists');
 
 //
 // Dev Tools
