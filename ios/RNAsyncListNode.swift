@@ -66,7 +66,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
     self.viewLoaded = true
     
-    self.fixContentInset()
+    self.fixContentInset(interactive: false)
     
     self.keyboard = self.parent.resolveKeyboardContextKey()
   }
@@ -91,9 +91,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.keyboardHeight = height
           
           print("keyboardWillChangeHeight")
-          if !self.isDragging {
-            self.fixContentInset()
-          }
+          // self.fixContentInset(interactive: true)
         }
       }
     }
@@ -106,7 +104,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.keyboardHeight = height
         print("keyboardWillShow")
         UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
-          self.fixContentInset()
+          self.fixContentInset(interactive: false)
         }, completion: nil)
       }
     }
@@ -119,33 +117,36 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.keyboardHeight = height
         print("keyboardWillHide")
         UIView.animate(withDuration: duration, delay: 0.0, options: [UIViewAnimationOptions(rawValue: UInt(curve)), UIViewAnimationOptions.beginFromCurrentState], animations: {
-          self.fixContentInset()
+          self.fixContentInset(interactive: false)
         }, completion: nil)
       }
     }
   }
   
-  private func fixContentInset() {
-    let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
+  private func fixContentInset(interactive: Bool) {
+    let currentInset = self.node.inverted ? self.node.view.contentInset.top : self.node.view.contentInset.bottom
     let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
     let insetsDiff = currentInset - newInset
     let originalOffset = self.node.contentOffset
-    
+    let size = self.node.view.contentSize
     if self.node.inverted {
-      self.node.view.contentInset.top = newInset
-      self.node.view.contentInset.bottom = CGFloat(self.topInset)
+      var inset = self.node.view.contentInset
+      inset.top = newInset
+      inset.bottom = CGFloat(self.topInset)
+      self.node.view.contentInset = inset
     } else {
       self.node.view.contentInset.bottom = newInset
       self.node.view.contentInset.top = CGFloat(self.topInset)
     }
     
-    if self.node.inverted {
+    if self.node.inverted && !interactive {
       print("insetsDiff \(insetsDiff)")
       print("keyboardHeight \(self.keyboardHeight)")
       print("bottomInset \(self.bottomInset)")
       print("originalOffset.y \(originalOffset.y)")
       print("newInset \(newInset)")
       print("currentInset \(currentInset)")
+      print("contentSize.height \(size.height)")
       self.node.view.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
     }
     
@@ -200,17 +201,41 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     
+    self.fixContentInset(interactive: true)
     // Update scroll bars
-    if self.keyboardVisible {
-      let newInset = max(self.keyboardHeight, CGFloat(bottomInset))
-      var inset = self.node.view.scrollIndicatorInsets
-      if self.node.inverted {
-        inset.top = newInset
-      } else {
-        inset.bottom = newInset
-      }
-      self.node.view.scrollIndicatorInsets = inset
-    }
+//    if self.keyboardVisible && self.isDragging {
+////      let newInset = max(self.keyboardHeight, CGFloat(bottomInset))
+////      var inset = self.node.view.scrollIndicatorInsets
+////      if self.node.inverted {
+////        inset.top = newInset
+////      } else {
+////        inset.bottom = newInset
+////      }
+////      self.node.view.scrollIndicatorInsets = inset
+//
+////      let currentInset = self.node.inverted ? self.node.view.contentInset.top : self.node.view.contentInset.bottom
+//      let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
+////      print(self.keyboardHeight)
+////      if self.node.inverted {
+////        var inset = self.node.view.contentInset
+////        inset.top = newInset
+////        inset.bottom = CGFloat(self.topInset)
+////        self.node.view.contentInset = inset
+////      } else {
+////        self.node.view.contentInset.bottom = newInset
+////        self.node.view.contentInset.top = CGFloat(self.topInset)
+////      }
+//
+//      var inset = self.node.view.contentInset
+//      if self.node.inverted {
+//        inset.top = newInset
+//        inset.bottom = CGFloat(self.topInset)
+//      } else {
+//        inset.bottom = newInset
+//        inset.top = CGFloat(self.topInset)
+//      }
+//      self.node.view.scrollIndicatorInsets = inset
+//    }
     
     // Forward scroll offset
     let offsetX = scrollView.contentOffset.x
@@ -251,7 +276,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   private func updateContentPadding() {
       if self.viewLoaded {
-        self.fixContentInset()
+        self.fixContentInset(interactive: false)
     }
   }
   
@@ -306,6 +331,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         for itm in pendingCells {
           self.activeCells.set(key: itm.key, value: itm.value)
         }
+        self.fixContentInset(interactive: false)
         if self.loaded {
           if indexPaths.count > 0 {
             self.node.performBatch(animated: false, updates: {

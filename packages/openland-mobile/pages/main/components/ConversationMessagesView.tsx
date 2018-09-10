@@ -3,6 +3,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { ASListView } from 'react-native-async-view/ASListView';
 import { MobileMessengerContext } from '../../../messenger/MobileMessenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
@@ -25,7 +26,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                                 dataView={engine.getConversation(this.props.engine.conversationId)}
                                 inverted={true}
                                 contentPaddingTop={area.top}
-                                contentPaddingBottom={area.bottom - area.keyboardHeight}
+                                contentPaddingBottom={0}
                                 style={{ flexGrow: 1 }}
                                 headerPadding={6}
                             />

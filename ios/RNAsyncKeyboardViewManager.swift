@@ -101,7 +101,7 @@ class RNAsyncKeyboardView: RCTView {
       let kbheight = w!.bounds.size.height - kbtop
       let height = max(kbheight - self.trackingView.bounds.height, ctx.safeInset) - ctx.safeInset // Skip first safeInset bytes before starting moving input bar
       
-      let accessoryHeight = self.bounds.size.height - ctx.safeInset
+      let accessoryHeight = self.bounds.size.height
       let fullHeight = height + accessoryHeight
       
       print("kbheight: \(kbheight)")
