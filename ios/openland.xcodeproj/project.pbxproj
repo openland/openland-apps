@@ -92,6 +92,9 @@
 		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
 		AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */; };
 		AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */; };
+		AAE50182214602D700BEAA04 /* RNFastAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50181214602D700BEAA04 /* RNFastAnimation.swift */; };
+		AAE501842146079E00BEAA04 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
+		AAE50186214607B600BEAA04 /* RNFastAnimationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50185214607B600BEAA04 /* RNFastAnimationSpec.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
 		AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
@@ -774,6 +777,8 @@
 		AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardManager.swift; sourceTree = "<group>"; };
 		AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardViewManager.swift; sourceTree = "<group>"; };
 		AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardContext.swift; sourceTree = "<group>"; };
+		AAE50181214602D700BEAA04 /* RNFastAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNFastAnimation.swift; sourceTree = "<group>"; };
+		AAE50185214607B600BEAA04 /* RNFastAnimationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNFastAnimationSpec.swift; sourceTree = "<group>"; };
 		AAE56C072127F447003706B3 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
 		AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AggressiveImage.swift; path = openland/hacks/AggressiveImage.swift; sourceTree = "<group>"; };
@@ -967,8 +972,11 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AAE501832146078400BEAA04 /* RNFastAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
+				AAE56DC32129FA25003706B3 /* Bridge.h */,
+				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 				AACFC575210778FE00225C86 /* openland.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1333,11 +1341,18 @@
 				AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */,
 				AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */,
 				AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */,
-				AAE56DC32129FA25003706B3 /* Bridge.h */,
-				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 				AAB0EF90213D8CF500FBCB75 /* Utils.swift */,
 			);
 			name = RNAsyncView;
+			sourceTree = "<group>";
+		};
+		AAE501832146078400BEAA04 /* RNFastAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				AAE50181214602D700BEAA04 /* RNFastAnimation.swift */,
+				AAE50185214607B600BEAA04 /* RNFastAnimationSpec.swift */,
+			);
+			name = RNFastAnimation;
 			sourceTree = "<group>";
 		};
 		AAE56C082127F447003706B3 /* Products */ = {
@@ -2359,6 +2374,7 @@
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
+				AAE50186214607B600BEAA04 /* RNFastAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
 				AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */,
@@ -2369,6 +2385,7 @@
 				AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */,
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
+				AAE50182214602D700BEAA04 /* RNFastAnimation.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,
@@ -2380,6 +2397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
+				AAE501842146079E00BEAA04 /* Bridge.m in Sources */,
 				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

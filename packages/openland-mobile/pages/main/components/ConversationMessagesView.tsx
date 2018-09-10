@@ -3,7 +3,6 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { ASListView } from 'react-native-async-view/ASListView';
 import { MobileMessengerContext } from '../../../messenger/MobileMessenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
