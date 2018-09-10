@@ -131,7 +131,7 @@ const HeaderTools = Glamorous.div({
     padding: 24
 });
 
-const Header = (props: { organizationQuery: OrganizationQuery, tabs: string[] }) => {
+const Header = (props: { organizationQuery: OrganizationQuery }) => {
     let org = props.organizationQuery.organization;
 
     return (
@@ -158,11 +158,11 @@ const Header = (props: { organizationQuery: OrganizationQuery, tabs: string[] })
                         </HeaderFeatured>
                     )}
                 </HeaderBox>
-                <HeaderTabs>
+                {/* <HeaderTabs>
                     {(props.tabs.indexOf('channels') > -1) && <XSwitcher.Item query={{ field: 'orgTab' }}>Channels</XSwitcher.Item>}
                     {(props.tabs.indexOf('about') > -1) && <XSwitcher.Item query={{ field: 'orgTab', value: 'about' }}>About</XSwitcher.Item>}
                     <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
-                </HeaderTabs>
+                </HeaderTabs> */}
             </HeaderInfo>
             {org.isMine && (
                 <XWithRole role="admin" orgPermission={true}>
@@ -548,13 +548,11 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                             </XWithRole>
                         )}
                     </XSubHeader>
-                    <XScrollView height="calc(100% - 216px)">
-                        {(organization.members || []).map((member, i) => {
-                            return (
-                                <MemberCard key={i} user={member.user} iAmOwner={organization.isOwner} />
-                            );
-                        })}
-                    </XScrollView>
+                    {(organization.members || []).map((member, i) => {
+                        return (
+                            <MemberCard key={i} user={member.user} iAmOwner={organization.isOwner} />
+                        );
+                    })}
                 </>
             )}
             <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
@@ -665,52 +663,31 @@ interface OrganizationProfileInnerProps extends XWithRouter {
     onBack: () => void;
 }
 
+const Channels = (props: { items?: any, organization: any }) => {
+    return (
+        <>
+            {props.items && (props.items.length > 0) && (
+                <XSubHeader title="Channels" counter={props.items.length} />
+            )}
+            {props.items.map((c: any, i: any) => (
+                c ? <ChannelCard key={i} channel={c} organization={props.organization} /> : null
+            ))}
+        </>
+    );
+};
+
 const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
-    let channelsTab = props.router.query.orgTab === undefined;
-    let aboutTab = props.router.query.orgTab === 'about';
-    let membersTab = props.router.query.orgTab === 'members';
-
     let org = props.organizationQuery.organization;
-
-    // check isEmptyChannels
-    let isEmptyChannels = org.channels.filter(c => c && !c.hidden).length <= 0;
-
-    // check isEmptyAbout
-    let hasLinks = (org.linkedin || org.twitter || org.website);
-    let hasCategories = (org.organizationType || []).length > 0;
-    let hasLocations = (org.locations || []).length > 0;
-    let isEmptyAbout = !org.isMine && !org.about && !hasLinks && !hasLocations && !hasCategories;
-
-    let headerTabs = ['members'];
-
-    if (!isEmptyChannels) {
-        headerTabs.push('channels');
-    }
-
-    if (!isEmptyAbout) {
-        headerTabs.push('about');
-    }
-
-    if (channelsTab && isEmptyChannels && !isEmptyAbout) {
-        props.router.pushQuery('orgTab', 'about');
-    }
-
-    if (channelsTab && isEmptyChannels && isEmptyAbout) {
-        props.router.pushQuery('orgTab', 'members');
-    }
 
     return (
         <>
             <Back callback={props.onBack} />
-            <Header
-                organizationQuery={props.organizationQuery}
-                tabs={headerTabs}
-            />
-            {channelsTab && org.channels.filter(c => c && !c.hidden).map((c, i) => (
-                c ? <ChannelCard key={i} channel={c} organization={org} /> : null
-            ))}
-            {aboutTab && <About organizationQuery={props.organizationQuery} />}
-            {membersTab && <Members organizationQuery={props.organizationQuery} />}
+            <Header organizationQuery={props.organizationQuery} />
+            <XScrollView height="calc(100% - 160px)">
+                <About organizationQuery={props.organizationQuery} />
+                <Members organizationQuery={props.organizationQuery} />
+                <Channels items={org.channels.filter(c => c && !c.hidden)} organization={org} />
+            </XScrollView>
         </>
     );
 };
