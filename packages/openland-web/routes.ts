@@ -214,8 +214,10 @@ routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
-routes.add('/joinChannel/:uuid', '/main/mail/root');
-routes.add('/joinChannel/:uuid/', '/main/mail/root');
+routes.add('/joinChannel/:uuid', '/init/signChannelInvite');
+routes.add('/joinChannel/:uuid/', '/init/signChannelInvite');
+routes.add('/mail/joinChannel/:uuid', '/main/mail/root');
+routes.add('/mail/joinChannel/:uuid/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
 routes.add('/mail/o/:organizationId/', '/main/mail/root');
 

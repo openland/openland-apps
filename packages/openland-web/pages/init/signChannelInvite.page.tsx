@@ -13,6 +13,7 @@ import { ChannelsInviteComponent } from '../../components/messenger/ChannelsInvi
 import { withRouter } from 'openland-x-routing/withRouter';
 
 import { Sidebar } from './components/signChannelInviteComponents';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -66,14 +67,15 @@ const InviteInfo = withChannelInviteInfo((props) => {
 }) as React.ComponentType<{ variables: { uuid: string }, redirect: string }>;
 
 export default withAppBase('Join Channel', withRouter((props) => {
-    console.warn(String(props.router.query.redirect).split('/')[2]);
+    let uuid = props.router.routeQuery.uuid || (props.router.query.redirect ? props.router.query.redirect.split('/')[2] : '');
 
     return (
         <>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
-                <InviteInfo variables={{ uuid: props.router.query.redirect.split('/')[2] }} redirect={props.router.query.redirect} />
+                <InviteInfo variables={{ uuid: uuid }} redirect={props.router.query.redirect} />
             </XTrack>
+            {props.router.routeQuery.uuid && <XPageRedirect path={'/mail/joinChannel/' + uuid} />}
         </>
     );
 }));
