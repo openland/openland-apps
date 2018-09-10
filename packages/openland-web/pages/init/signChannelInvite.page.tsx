@@ -6,14 +6,13 @@ import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
 import { ChannelsInviteComponent } from '../../components/messenger/ChannelsInviteComponent';
-import { withRouter } from 'openland-x-routing/withRouter';
 
 import { Sidebar } from './components/signChannelInviteComponents';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { withUserInfo } from '../../components/UserInfo';
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -40,42 +39,42 @@ const InviteInfo = withChannelInviteInfo((props) => {
     return (
         <>
             <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={props.data.invite && props.data.invite.channel.description || InitTexts.socialPageTitle} imgUrl={props.data.invite ? props.data.invite.channel.socialImage : undefined} />
-            <XTrack event="Join Channel">
-                <Root>
-                    <SideBarWrapper>
-                        <Sidebar />
-                    </SideBarWrapper>
-                    <Content>
-                        {props.data.invite && (
-                            <ChannelsInviteComponent
-                                noLogin={true}
-                                channel={props.data.invite.channel}
-                                invite={props.data.invite}
-                                signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
-                            />
-                        )}
-                        {!props.data.invite && (
-                            <MessagePageContent title="Join">
-                                <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                            </MessagePageContent>
-                        )}
-                    </Content>
-                </Root>
-            </XTrack>
+            {(props as any).instantRedirect && <XPageRedirect path={(props as any).instantRedirect} />}
+            {!(props as any).instantRedirect &&
+                <XTrack event="Join Channel">
+                    <Root>
+                        <SideBarWrapper>
+                            <Sidebar />
+                        </SideBarWrapper>
+                        <Content>
+                            {props.data.invite && (
+                                <ChannelsInviteComponent
+                                    noLogin={true}
+                                    channel={props.data.invite.channel}
+                                    invite={props.data.invite}
+                                    signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
+                                />
+                            )}
+                            {!props.data.invite && (
+                                <MessagePageContent title="Join">
+                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                </MessagePageContent>
+                            )}
+                        </Content>
+                    </Root>
+                </XTrack>}
         </>
     );
-}) as React.ComponentType<{ variables: { uuid: string }, redirect: string }>;
+}) as React.ComponentType<{ variables: { uuid: string }, redirect: string, instantRedirect?: string }>;
 
-export default withAppBase('Join Channel', withRouter((props) => {
-    let uuid = props.router.routeQuery.uuid || (props.router.query.redirect ? props.router.query.redirect.split('/')[2] : '');
-
+export default withAppBase('Join Channel', withUserInfo((props) => {
+    let uuid = props.router.routeQuery.uuid;
     return (
         <>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
-                <InviteInfo variables={{ uuid: uuid }} redirect={props.router.query.redirect} />
+                <InviteInfo variables={{ uuid: uuid }} redirect={'/acceptChannelInvite/' + uuid} instantRedirect={props.isLoggedIn ? '/mail/joinChannel/' + uuid : undefined} />
             </XTrack>
-            {props.router.routeQuery.uuid && <XPageRedirect path={'/mail/joinChannel/' + uuid} />}
         </>
     );
 }));
