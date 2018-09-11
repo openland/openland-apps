@@ -9,7 +9,6 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from './_text';
 import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
 import { ChannelsInviteComponent } from '../../components/messenger/ChannelsInviteComponent';
-
 import { Sidebar } from './components/signChannelInviteComponents';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withUserInfo } from '../../components/UserInfo';
@@ -38,7 +37,11 @@ const InfoText = Glamorous.div({
 const InviteInfo = withChannelInviteInfo((props) => {
     return (
         <>
-            <XDocumentHead title={InitTexts.join.pageTitle} titleSocial={props.data.invite && props.data.invite.channel.description || InitTexts.socialPageTitle} imgUrl={props.data.invite ? props.data.invite.channel.socialImage : undefined} />
+            <XDocumentHead
+                title={InitTexts.join.pageTitle}
+                titleSocial={(props.data.invite && props.data.invite.channel) && props.data.invite.channel.description || InitTexts.socialPageTitle}
+                imgUrl={(props.data.invite && props.data.invite.channel) ? props.data.invite.channel.socialImage : undefined}
+            />
             {(props as any).instantRedirect && <XPageRedirect path={(props as any).instantRedirect} />}
             {!(props as any).instantRedirect &&
                 <XTrack event="Join Channel">

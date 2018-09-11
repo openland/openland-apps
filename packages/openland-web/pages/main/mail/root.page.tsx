@@ -86,11 +86,13 @@ const OrganizationProfilContainer = Glamorous.div({
     flexShrink: 0
 });
 
-const ChannelInviteFromLink = withChannelInviteInfo((props) => {
-    return props.data && props.data.invite ?
-        props.data.invite.channel.myStatus === 'member' ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} /> : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite} /> :
-        <XLoader loading={true} />;
-});
+const ChannelInviteFromLink = withChannelInviteInfo((props) => (
+    props.data && props.data.invite
+        ? props.data.invite.channel.myStatus === 'member'
+            ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} />
+            : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite} />
+        : <XLoader loading={true} />
+));
 
 const AddButton = Glamorous(XButton)({
     marginTop: 5,
@@ -149,7 +151,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                                 <AddButton
                                     path="/mail/new"
                                     text="New chat"
-                                    icon={<PlusIcon/>}
+                                    icon={<PlusIcon />}
                                     size="r-small"
                                 />
                             </Header>

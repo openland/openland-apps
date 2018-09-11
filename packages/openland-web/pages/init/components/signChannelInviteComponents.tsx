@@ -169,7 +169,7 @@ export const Sidebar = () => {
 
     for (let i = 0; i < channelsCount; i++) {
         ChannelsComponents.push(
-            <XHorizontal alignItems="center">
+            <XHorizontal alignItems="center" key={'ChannelsComponents_' + i}>
                 <ChatAvatarWrapper small={true} borderRadius={5}>
                     <ChannelIcon />
                 </ChatAvatarWrapper>
@@ -183,7 +183,7 @@ export const Sidebar = () => {
 
     for (let i = 0; i < chatsCount; i++) {
         ChatsComponents.push(
-            <XHorizontal alignItems="center">
+            <XHorizontal alignItems="center" key={'ChatsComponents' + i}>
                 <ChatAvatarWrapper small={false} borderRadius={50}>
                     <ChatIcon />
                 </ChatAvatarWrapper>
@@ -197,7 +197,7 @@ export const Sidebar = () => {
 
     for (let i = 0; i < listingsCount; i++) {
         ListingsComponents.push(
-            <XVertical>
+            <XVertical key={'ListingsComponents' + i}>
                 <XHorizontal alignItems="center" separator={9}>
                     <ChatAvatarWrapper small={false} borderRadius={9}>
                         <ListingIcon />

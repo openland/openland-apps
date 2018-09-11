@@ -64,13 +64,14 @@ const InfoCardWrapper = Glamorous.div({
     flexShrink: 0
 });
 
-const Text = Glamorous.div<{ width?: number }>(props => ({
+const Text = Glamorous.div<{ width?: number, autoMargin?: boolean }>(props => ({
     fontSize: 14,
     lineHeight: 1.43,
     letterSpacing: -0.3,
     color: '#5c6a81',
     textAlign: 'center',
-    width: props.width
+    width: props.width,
+    margin: props.autoMargin ? 'auto' : undefined
 }));
 
 const ChannelTitle = Glamorous.div({
@@ -212,7 +213,6 @@ interface ChannelsInviteComponentProps {
 
 export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
     render() {
-        console.warn(this.props);
         let joinText = this.props.channel.myStatus === 'none' ? (this.props.channel.organization && this.props.channel.organization.isMine ? 'Join channel' : 'Request invite') : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
         return (
             <Root>
@@ -237,7 +237,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                                 <ChannelTitle>
                                     {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + ' / ' : '') + this.props.channel.title}
                                 </ChannelTitle>
-                                <Text width={354}>{this.props.channel.description || TextChannel.descriptionPlaceholder}</Text>
+                                <Text width={354} autoMargin={true}>{this.props.channel.description || TextChannel.descriptionPlaceholder}</Text>
                             </XVertical>
                             <ChannelCounter>
                                 <ProfileIcon />
