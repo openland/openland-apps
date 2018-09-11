@@ -29,7 +29,6 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
     }
 
     render() {
-        console.log(this.props.contextKey);
         if (Platform.OS === 'ios') {
             return (
                 <ASKeyboardContext style={this.props.style} contextKey={this.props.contextKey} onKeyboardChanged={this.handleKeyboard} bottomSafeInset={DeviceConfig.bottomNavigationBarInset}>

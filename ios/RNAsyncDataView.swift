@@ -279,7 +279,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         let st = self.state.replace(index: index, spec: state.items[index].config)
         self.state = st
         for i in self.watchers {
-          i.value.onUpdated(index: index, state: state)
+          i.value.onUpdated(index: index, state: st)
         }
       }
     }

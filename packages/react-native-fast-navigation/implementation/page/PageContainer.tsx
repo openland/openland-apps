@@ -4,6 +4,7 @@ import { PageImmutableContainer } from './PageImmutableContainer';
 import { interpolateContent } from '../utils/interpolateContent';
 import { interpolateOverlayShadow } from '../utils/interpolateOverlayShadow';
 import { FastRouter } from '../../FastRouter';
+import { ASAnimatedView, animateOpacity, animateTranslateX } from 'react-native-async-view/ASAnimatedView';
 
 const styles = StyleSheet.create({
     root: {
@@ -49,21 +50,22 @@ export class PageContainer extends React.PureComponent<PageContainerProps, { pro
 
     render() {
         return (
-            <View style={[styles.root, !this.props.mounted && styles.rootUnmounted]} pointerEvents="box-none">
-                <Animated.View
+            <View collapsable={false}>
+                <View
                     key="page"
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        transform: [{ translateX: this.state.progressTranslate }]
-                    }}
+                    style={[styles.root, !this.props.mounted && styles.rootUnmounted]}
+                // style={{
+                //     position: 'absolute',
+                //     top: 0,
+                //     bottom: 0,
+                //     right: 0,
+                //     left: 0,
+                //     // transform: [{ translateX: this.state.progressTranslate }]
+                // }}
                 >
                     <PageImmutableContainer component={this.props.component} router={this.props.router} />
-                </Animated.View>
-                <Animated.View
+                </View>
+                {/* <Animated.View
                     key="shadow"
                     style={{
                         position: 'absolute',
@@ -75,7 +77,7 @@ export class PageContainer extends React.PureComponent<PageContainerProps, { pro
                         backgroundColor: '#000'
                     }}
                     pointerEvents="none"
-                />
+                /> */}
             </View>
         );
     }

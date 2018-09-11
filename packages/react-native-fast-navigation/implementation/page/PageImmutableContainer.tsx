@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { FastRouter, FastRouterContext } from '../../FastRouter';
-import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import { FastHeaderContextDirect } from '../../FastHeaderContextDirect';
-import { ASKeyboardContext } from 'react-native-async-view/ASKeyboardContext';
 import { PageKeyboard } from './PageKeyboard';
 
 const styles = StyleSheet.create({

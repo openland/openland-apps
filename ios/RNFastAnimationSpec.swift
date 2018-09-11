@@ -23,8 +23,8 @@ class RNFastAnimationSpec {
   var type: RNFastAnimationType!
   var viewKey: String!
   var property: String!
-  var from: CGFloat!
   var to: CGFloat!
+  var from: CGFloat!
   
   var duration: Double?
 }
@@ -43,8 +43,8 @@ func parseAnimationSpec(spec: String) -> RNFastAnimationTransactionSpec {
       aspec.type = RNFastAnimationType(rawValue: anim["type"].stringValue)!
       aspec.viewKey = anim["view"].string!
       aspec.property = anim["prop"].string!
-      aspec.from = CGFloat(anim["from"].double!)
       aspec.to = CGFloat(anim["to"].double!)
+      aspec.from = CGFloat(anim["from"].double!)
       
       // Duration
       if let duration = anim["duration"].double {

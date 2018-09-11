@@ -45,6 +45,10 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   func handler() {
     let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.key, frame: res, instanceKey: nil)
+    self.backgroundColor = self.higlightColor
+    UIView.animate(withDuration: 0.5) {
+      self.backgroundColor = UIColor.clear
+    }
   }
   
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
