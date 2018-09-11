@@ -37,8 +37,8 @@ export const ProfileQuery = gql`
 `;
 
 export const ProfileUpdateMutation = gql`
-    mutation ProfileUpdate($input: UpdateProfileInput!) {
-        updateProfile(input: $input) {
+    mutation ProfileUpdate($input: UpdateProfileInput!, $uid: ID) {
+        updateProfile(input: $input, uid: $uid) {
             id
             firstName
             lastName

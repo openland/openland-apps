@@ -98,7 +98,7 @@ const Channels = withChatSearchChannels((props) => {
                                 <XHorizontal separator={6} alignItems="center" flexGrow={1}>
                                     <Avatar
                                         style="channel"
-                                        cloudImageUuid={channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
+                                        cloudImageUuid={channel.photo || channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
                                     />
                                     <XVertical separator={1}>
                                         <ChannelName>{title}</ChannelName>

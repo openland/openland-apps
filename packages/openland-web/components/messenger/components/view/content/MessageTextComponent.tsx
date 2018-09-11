@@ -14,7 +14,7 @@ const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props)
     whiteSpace: 'pre-wrap',
     opacity: props.isService ? 0.3 : 1,
     fontSize: props.big ? 44 : 14,
-    lineHeight: 1.71,
+    lineHeight: 1.57,
     letterSpacing: -0.2,
     color: '#1f3449',
     '& .link': {

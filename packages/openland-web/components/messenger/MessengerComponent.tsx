@@ -53,15 +53,16 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
     flexBasis: '100%'
 });
 
-const Title = Glamorous.div({
+const Title = makeNavigable(Glamorous.div<{href?: string}>(props => ({
     fontSize: 16,
     fontWeight: 500,
     letterSpacing: -0.2,
     color: '#1790ff',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
-});
+    textOverflow: 'ellipsis',
+    cursor: props.href ? 'pointer' : undefined
+})));
 
 const SubTitle = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     fontSize: 14,
@@ -77,10 +78,6 @@ const NavChatLeftContent = makeNavigable(XHorizontal);
 const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftContent)(props => ({
     cursor: props.path || props.query ? 'pointer' : undefined
 }));
-
-const XButtonMargin = Glamorous(XButton)({
-    margin: 4
-});
 
 class BlockSwitcherComponent extends React.Component<{ unblock: any, block: any, blocked: boolean, userId: string, refetchVars: { conversationId: string } }, { blocked: boolean }> {
     constructor(props: any) {
@@ -516,7 +513,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     )}
                                 />
                             </XWithRole>
-
                         </XWithRole>}
                     </XHorizontal>
                 </ChatHeaderContent>

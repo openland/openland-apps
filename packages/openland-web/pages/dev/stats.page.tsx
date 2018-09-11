@@ -51,6 +51,9 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
     return (
         <DevToolsScaffold title="Stats">
+            <XHeader text="Total" />
+            <Stats variables={{ fromDate: (new Date(0).getTime()).toString(), toDate: (new Date().getTime()).toString() }} />
+
             <XHeader text="Messenger weekly stats" />
             <XTable>
                 <XTable.Body>

@@ -11,7 +11,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
-import { XSwitcher } from 'openland-x/XSwitcher';
+// import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
@@ -30,6 +30,10 @@ import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import TwitterIcon from './icons/twitter-2.svg';
 import EmailIcon from './icons/email.svg';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -103,29 +107,29 @@ const HeaderFeatured = Glamorous.div({
     margin: '1px 0 -1px',
 });
 
-const HeaderTabs = Glamorous(XSwitcher)({
-    border: 'none',
-    boxShadow: 'none',
-    padding: 0,
-    borderRadius: 0,
-    background: 'none',
-    margin: '0 0 -1px -7px',
-    '& > a': {
-        padding: '17px 7px 16px!important',
-        borderBottom: '3px solid transparent',
-        fontSize: 14,
-        lineHeight: '20px',
-        fontWeight: '500!important',
-        margin: '0 15px 0 0!important',
-        color: '#334562',
-        opacity: 0.5,
-        '&.is-active': {
-            opacity: 1,
-            color: '#334562',
-            borderBottomColor: '#1790ff'
-        }
-    }
-});
+// const HeaderTabs = Glamorous(XSwitcher)({
+//     border: 'none',
+//     boxShadow: 'none',
+//     padding: 0,
+//     borderRadius: 0,
+//     background: 'none',
+//     margin: '0 0 -1px -7px',
+//     '& > a': {
+//         padding: '17px 7px 16px!important',
+//         borderBottom: '3px solid transparent',
+//         fontSize: 14,
+//         lineHeight: '20px',
+//         fontWeight: '500!important',
+//         margin: '0 15px 0 0!important',
+//         color: '#334562',
+//         opacity: 0.5,
+//         '&.is-active': {
+//             opacity: 1,
+//             color: '#334562',
+//             borderBottomColor: '#1790ff'
+//         }
+//     }
+// });
 
 const HeaderTools = Glamorous.div({
     padding: 24
@@ -527,11 +531,42 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             </>
                         }
                     />}
+                    <XWithRole role={['super-admin']}>
+                        <XOverflow
+                            placement="bottom-end"
+                            flat={true}
+                            content={<XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
+                        />
+                    </XWithRole>
                 </MemberCardTools>
             </MemberCardWrapper>
         );
     }
 }
+
+const UpdateUserProfileModal = withUserProfileUpdate((props) => {
+    let uid = props.router.query.editUser;
+    return (
+        <XModalForm
+            title="Edit profile"
+            targetQuery="editUser"
+            defaultAction={
+                async (data) => {
+                    await props.updateProfile({
+                        variables: {
+                            input: {
+                                photoRef: sanitizeIamgeRef(data.input.photoRef)
+                            },
+                            uid: uid
+                        }
+                    });
+                }
+            }
+        >
+            <XAvatarUpload field="input.photoRef" />
+        </XModalForm>
+    );
+});
 
 const Members = (props: { organizationQuery: OrganizationQuery }) => {
     let organization = props.organizationQuery.organization;
@@ -557,6 +592,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
             )}
             <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
             <PermissionsModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
+            <UpdateUserProfileModal />
         </>
     );
 };

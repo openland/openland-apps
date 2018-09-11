@@ -49,8 +49,8 @@ const UserInfoWrapper = Glamorous(XHorizontal)({
     marginTop: 45,
     marginBottom: 24,
     flexShrink: 0,
-    '@media (max-width: 1400px)': {
-        marginTop: 25
+    '@media (max-height: 800px)': {
+        marginTop: 15
     }
 });
 
@@ -135,7 +135,7 @@ const ImageWrapper = Glamorous.div({
     justifyContent: 'center',
     marginTop: 64,
     alignSelf: 'center',
-    '@media (max-width: 1400px)': {
+    '@media (max-height: 800px)': {
         marginTop: 30
     }
 });
@@ -147,7 +147,7 @@ const Image = Glamorous.div({
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
-    '@media (max-width: 1250px)': {
+    '@media (max-height: 800px)': {
         width: 500,
         height: 391
     }
