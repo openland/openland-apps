@@ -6506,6 +6506,7 @@ export interface ProfileQuery {
 
 export interface ProfileUpdateMutationVariables {
   input: UpdateProfileInput,
+  uid?: string | null,
 };
 
 export interface ProfileUpdateMutation {

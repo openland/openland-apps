@@ -30,6 +30,10 @@ import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import TwitterIcon from './icons/twitter-2.svg';
 import EmailIcon from './icons/email.svg';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -527,11 +531,42 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             </>
                         }
                     />}
+                    <XWithRole role={['super-admin']}>
+                        <XOverflow
+                            placement="bottom-end"
+                            flat={true}
+                            content={<XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
+                        />
+                    </XWithRole>
                 </MemberCardTools>
             </MemberCardWrapper>
         );
     }
 }
+
+const UpdateUserProfileModal = withUserProfileUpdate((props) => {
+    let uid = props.router.query.editUser;
+    return (
+        <XModalForm
+            title="Edit profile"
+            targetQuery="editUser"
+            defaultAction={
+                async (data) => {
+                    await props.updateProfile({
+                        variables: {
+                            input: {
+                                photoRef: sanitizeIamgeRef(data.input.photoRef)
+                            },
+                            uid: uid
+                        }
+                    });
+                }
+            }
+        >
+            <XAvatarUpload field="input.photoRef" />
+        </XModalForm>
+    );
+});
 
 const Members = (props: { organizationQuery: OrganizationQuery }) => {
     let organization = props.organizationQuery.organization;
@@ -557,6 +592,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
             )}
             <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
             <PermissionsModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
+            <UpdateUserProfileModal />
         </>
     );
 };
