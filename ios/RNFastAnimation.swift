@@ -53,6 +53,7 @@ class RNFastAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
   
   func registerView(key: String, view: RNFastAnimatedView) {
     self.registeredViews.set(key: key, value: view)
+    self.resolvePendingAnimations()
   }
   
   //
@@ -83,14 +84,16 @@ class RNFastAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
     if self.pendingAnimations.count > 0 {
       var missing: [RNFastAnimationTransactionSpec] = []
       for spec in self.pendingAnimations {
-        let viewKeys = Set(spec.animations.map( { (spec) -> String in spec.viewKey }))
         var views: [String: RNFastAnimatedView] = [:]
         var allViews = true
-        for vk in viewKeys {
-          let registered = self.registeredViews.get(key: vk)
-          views[vk] = registered
+        for a in spec.animations {
+          let registered = self.registeredViews.get(key: a.viewKey)
+          views[a.viewKey] = registered
           if registered == nil {
-            allViews = false
+            if !a.optional {
+              allViews = false
+              print("unable to find view: " + a.viewKey)
+            }
           }
         }
         

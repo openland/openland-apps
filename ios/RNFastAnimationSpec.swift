@@ -27,6 +27,7 @@ class RNFastAnimationSpec {
   var from: CGFloat!
   
   var duration: Double?
+  var optional: Bool = false
 }
 
 func parseAnimationSpec(spec: String) -> RNFastAnimationTransactionSpec {
@@ -49,6 +50,10 @@ func parseAnimationSpec(spec: String) -> RNFastAnimationTransactionSpec {
       // Duration
       if let duration = anim["duration"].double {
         aspec.duration = duration
+      }
+      
+      if let optional = anim["optional"].bool {
+        aspec.optional = optional
       }
       
       return aspec

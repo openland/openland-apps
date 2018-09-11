@@ -20,6 +20,8 @@ export interface FastHeaderTitleProps {
     headerBaseHeight: Animated.AnimatedInterpolation;
     headerHeight: Animated.AnimatedInterpolation;
     config: FastHeaderConfig;
+
+    route: string;
 }
 
 export class FastHeaderTitle extends React.PureComponent<FastHeaderTitleProps> {

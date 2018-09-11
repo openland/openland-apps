@@ -93,6 +93,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             headerBaseHeight={s.headerBottom}
                             searchProgress={s.route.searchProgress}
                             config={s.route.config}
+                            route={s.route.record.key}
                         />
                     </View>
                 );
