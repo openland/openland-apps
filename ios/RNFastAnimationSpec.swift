@@ -16,7 +16,7 @@ class RNFastAnimationTransactionSpec {
 
 enum RNFastAnimationType: String {
   case spring = "spring"
-  case linear = "linear"
+  case timing = "timing"
 }
 
 class RNFastAnimationSpec {

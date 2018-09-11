@@ -9,7 +9,7 @@ import { PageContainer } from './page/PageContainer';
 import { FastHistoryRecord } from '../FastHistoryRecord';
 import { FastHistoryState } from '../FastHistoryState';
 import { RouteViewState } from './RouteViewState';
-import { ASAnimatedView, animateTranslateX } from 'react-native-async-view/ASAnimatedView';
+import { ASAnimatedView, animateTranslateX, animateOpacity } from 'react-native-async-view/ASAnimatedView';
 
 const styles = StyleSheet.create({
     root: {
@@ -27,6 +27,15 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         left: 0
+    } as ViewStyle,
+    pageShadow: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        backgroundColor: '#000',
+        opacity: 0
     } as ViewStyle,
     header: {
         position: 'absolute',
@@ -136,6 +145,13 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         let unlock = this.props.historyManager.beginLock();
         setTimeout(unlock, FULL_TRASITION_DELAY);
 
+        // Commit changes
+        this.routes = [...this.routes, newRecord];
+        this.mounted = [...this.mounted, newRecord.record.key];
+        this.current = newRecord.record.key;
+        this.currentHistory = state;
+        this.setState({ mounted: this.mounted, routes: this.routes, transitioning: true });
+
         underlayHolder.progressValue.stopAnimation((v2: number) => {
             Animated.parallel([
                 animate(underlayHolder.progressValue, 1),
@@ -154,15 +170,9 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             });
         });
 
-        // Commit changes
-        this.routes = [...this.routes, newRecord];
-        this.mounted = [...this.mounted, newRecord.record.key];
-        this.current = newRecord.record.key;
-        this.currentHistory = state;
-        this.setState({ mounted: this.mounted, routes: this.routes, transitioning: true });
-
         animateTranslateX(375, 0, 'page--' + record.key);
-        animateTranslateX(0, -375, 'page--' + underlayHolder.record.key);
+        animateTranslateX(0, -375 * 0.3, 'page--' + underlayHolder.record.key);
+        animateOpacity(0, 0.3, 'page-shadow--' + underlayHolder.record.key);
     }
     onPopped = (record: FastHistoryRecord, state: FastHistoryState, args?: { immediate?: boolean }) => {
         Keyboard.dismiss();
@@ -194,9 +204,9 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         });
 
         this.setState({ mounted: this.mounted, transitioning: true });
-
-        animateTranslateX(0, 375, 'page--' + holder.record.key);
-        animateTranslateX(-375, 0, 'page--' + underlayHolder.record.key);
+        animateTranslateX(0, 375, 'page--' + record.key);
+        animateTranslateX(-375 * 0.3, 0, 'page--' + underlayHolder.record.key);
+        animateOpacity(0.3, 0, 'page-shadow--' + underlayHolder.record.key);
     }
     // onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
     //     if (this.currentHistory.history.length < 2) {
@@ -319,12 +329,17 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             <Animated.View style={styles.pages}>
                 {this.state.routes.map((v) => {
                     return (
-                        <ASAnimatedView name={'page--' + v.record.key} key={v.record.key} style={styles.page} pointerEvents="box-none">
+                        <ASAnimatedView name={'page--' + v.record.key} key={'page-' + v.record.key} style={styles.page} pointerEvents="box-none">
                             <PageContainer
                                 component={v.record.component}
                                 router={v.record.router}
-                                progress={v.progress}
                                 mounted={!!this.state.mounted.find((m) => v.record.key === m)}
+                            />
+                            <ASAnimatedView
+                                name={'page-shadow--' + v.record.key}
+                                key={'shadow-' + v.record.key}
+                                style={styles.pageShadow}
+                                pointerEvents="none"
                             />
                         </ASAnimatedView>
                     );

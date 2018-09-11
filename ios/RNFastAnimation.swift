@@ -14,9 +14,9 @@ import Foundation
 
 class RNFastAnimatedView: RCTView {
   
-  weak var manager: RNFastAnimatedViewManager!
-  var animatedKeyValue: String!
-  var lastTranslateX: CGFloat = 0.0
+  private weak var manager: RNFastAnimatedViewManager!
+  private var animatedKeyValue: String!
+  private var isRegistered = false
   
   init(manager: RNFastAnimatedViewManager) {
     self.manager = manager
@@ -29,14 +29,151 @@ class RNFastAnimatedView: RCTView {
   
   func setAnimatedKey(_ value: String) {
     self.animatedKeyValue = value
-    self.manager?.registeredViews.set(key: value, value: self)
+  }
+  
+  override func reactSetFrame(_ frame: CGRect) {
+    super.reactSetFrame(frame)
+    if !self.isRegistered {
+      self.isRegistered = true
+      self.manager?.registerView(key: self.animatedKeyValue, view: self)
+    }
   }
 }
 
 @objc(RNFastAnimatedViewManager)
-class RNFastAnimatedViewManager: RCTViewManager {
+class RNFastAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
   
-  var registeredViews = WeakMap<RNFastAnimatedView>()
+  //
+  // Registration of views
+  //
+  
+  private var registeredViews = WeakMap<RNFastAnimatedView>()
+  private var pendingAnimations: [RNFastAnimationTransactionSpec] = []
+  private var isRegistered = false
+  
+  func registerView(key: String, view: RNFastAnimatedView) {
+    self.registeredViews.set(key: key, value: view)
+  }
+  
+  //
+  // Exported methods
+  //
+  
+  @objc(animate:)
+  func animate(spec: String) {
+    let spec = parseAnimationSpec(spec: spec)
+    pendingAnimations.append(spec)
+    
+    if !self.isRegistered {
+      self.isRegistered = true
+      bridge.uiManager.observerCoordinator.add(self)
+      bridge.uiManager.addUIBlock { (m, u) in
+        self.resolvePendingAnimations()
+      }
+    }
+  }
+  
+  func uiManagerWillPerformMounting(_ manager: RCTUIManager!) {
+    bridge.uiManager.addUIBlock { (m, u) in
+      self.resolvePendingAnimations()
+    }
+  }
+  
+  private func resolvePendingAnimations() {
+    if self.pendingAnimations.count > 0 {
+      var missing: [RNFastAnimationTransactionSpec] = []
+      for spec in self.pendingAnimations {
+        let viewKeys = Set(spec.animations.map( { (spec) -> String in spec.viewKey }))
+        var views: [String: RNFastAnimatedView] = [:]
+        var allViews = true
+        for vk in viewKeys {
+          let registered = self.registeredViews.get(key: vk)
+          views[vk] = registered
+          if registered == nil {
+            allViews = false
+          }
+        }
+        
+        if allViews {
+          self.doAnimations(spec: spec, views: views)
+        } else {
+          missing.append(spec)
+        }
+      }
+      self.pendingAnimations = missing
+    }
+  }
+  
+  private func resolveDuration(source: Double) -> Double {
+    #if (arch(i386) || arch(x86_64)) && os(iOS)
+    return source * Double(UIAnimationDragCoefficient())
+    #else
+    return source
+    #endif
+  }
+  
+  private func doAnimations(spec: RNFastAnimationTransactionSpec, views: [String: RNFastAnimatedView]) {
+    CATransaction.begin()
+    
+    CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+    CATransaction.setAnimationDuration(resolveDuration(source: spec.duration))
+    for s in spec.animations {
+      if let view = views[s.viewKey] {
+        
+        // Resolving Key Path
+        let keyPath: String
+        if s.property == "opacity" {
+          keyPath = "opacity"
+        } else if s.property == "translateX" {
+          keyPath = "position.x"
+        } else if s.property == "translateY" {
+          keyPath = "position.y"
+        } else {
+          continue
+        }
+        
+        // Resolving Animation Type
+        let animation: CABasicAnimation
+        if s.type == RNFastAnimationType.timing {
+          animation = CABasicAnimation(keyPath: keyPath)
+        } else if s.type == RNFastAnimationType.spring {
+          let spring = CASpringAnimation(keyPath: keyPath)
+          spring.mass = 3.0
+          spring.stiffness = 1000.0
+          spring.damping = 500.0
+          spring.duration = resolveDuration(source: 0.5)
+          spring.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+          animation = spring
+        } else {
+          continue
+        }
+        
+        // Resolving values
+        animation.fromValue = s.from
+        animation.toValue = s.to
+        animation.isAdditive = true
+        animation.fillMode = kCAFillModeForwards
+        animation.isRemovedOnCompletion = false
+        
+        // Resolving parameters
+        if let duration = s.duration {
+          animation.duration = resolveDuration(source: duration)
+        }
+        
+        // Add animation to layer
+        view.layer.add(animation, forKey: "rn-native-" + s.property)
+        
+        print("animate " + s.viewKey + " - " + s.property)
+      } else {
+        print("animate " + s.viewKey + " FAILED")
+      }
+    }
+    CATransaction.commit()
+  }
+  
+  //
+  // Wiring
+  //
   
   static override func requiresMainQueueSetup() -> Bool {
     return false
@@ -50,56 +187,5 @@ class RNFastAnimatedViewManager: RCTViewManager {
   override var methodQueue: DispatchQueue! {
     get { return RCTGetUIManagerQueue() }
   }
-  
-  //
-  // Exported methods
-  //
-  
-  @objc(animate:)
-  func animate(spec: String) {
-    bridge.uiManager.addUIBlock { (m, u) in
-      let spec = parseAnimationSpec(spec: spec)
-      let viewKeys = Set(spec.animations.map( { (spec) -> String in spec.viewKey }))
-      var views: [String: RNFastAnimatedView] = [:]
-      for vk in viewKeys {
-        views[vk] = self.registeredViews.get(key: vk)
-      }
-      
-      CATransaction.begin()
-
-      #if (arch(i386) || arch(x86_64)) && os(iOS)
-      CATransaction.setAnimationDuration(spec.duration * Double(UIAnimationDragCoefficient()))
-      #else
-      CATransaction.setAnimationDuration(spec.duration)
-      #endif
-      
-      CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-      for s in spec.animations {
-        if let view = views[s.viewKey] {
-          if s.property == "opacity" {
-            let opacityAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
-            view.layer.opacity = Float(s.to)
-            opacityAnimation.fromValue = s.from - s.to
-            opacityAnimation.toValue = 0
-            opacityAnimation.isAdditive = true
-            view.layer.add(opacityAnimation, forKey: nil)
-          } else if s.property == "translateX" {
-            let opacityAnimation = CASpringAnimation(keyPath: "position.x")
-            opacityAnimation.fromValue = s.from
-            opacityAnimation.toValue = s.to
-            opacityAnimation.isAdditive = true
-            opacityAnimation.mass = 3.0
-            opacityAnimation.stiffness = 1000.0
-            opacityAnimation.damping = 500.0
-            opacityAnimation.duration = 0.5
-            opacityAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-            opacityAnimation.fillMode = kCAFillModeForwards
-            opacityAnimation.isRemovedOnCompletion = false
-            view.layer.add(opacityAnimation, forKey: "-x-translate")
-          }
-        }
-      }
-      CATransaction.commit()
-    }
-  }
 }
+
