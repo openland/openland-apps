@@ -11,7 +11,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
-import { XSwitcher } from 'openland-x/XSwitcher';
+// import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
@@ -107,29 +107,29 @@ const HeaderFeatured = Glamorous.div({
     margin: '1px 0 -1px',
 });
 
-const HeaderTabs = Glamorous(XSwitcher)({
-    border: 'none',
-    boxShadow: 'none',
-    padding: 0,
-    borderRadius: 0,
-    background: 'none',
-    margin: '0 0 -1px -7px',
-    '& > a': {
-        padding: '17px 7px 16px!important',
-        borderBottom: '3px solid transparent',
-        fontSize: 14,
-        lineHeight: '20px',
-        fontWeight: '500!important',
-        margin: '0 15px 0 0!important',
-        color: '#334562',
-        opacity: 0.5,
-        '&.is-active': {
-            opacity: 1,
-            color: '#334562',
-            borderBottomColor: '#1790ff'
-        }
-    }
-});
+// const HeaderTabs = Glamorous(XSwitcher)({
+//     border: 'none',
+//     boxShadow: 'none',
+//     padding: 0,
+//     borderRadius: 0,
+//     background: 'none',
+//     margin: '0 0 -1px -7px',
+//     '& > a': {
+//         padding: '17px 7px 16px!important',
+//         borderBottom: '3px solid transparent',
+//         fontSize: 14,
+//         lineHeight: '20px',
+//         fontWeight: '500!important',
+//         margin: '0 15px 0 0!important',
+//         color: '#334562',
+//         opacity: 0.5,
+//         '&.is-active': {
+//             opacity: 1,
+//             color: '#334562',
+//             borderBottomColor: '#1790ff'
+//         }
+//     }
+// });
 
 const HeaderTools = Glamorous.div({
     padding: 24

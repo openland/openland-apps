@@ -10,14 +10,13 @@ import { XRichTextInput } from 'openland-x/XRichTextInput';
 import PhotoIcon from '../icons/ic-photo.svg';
 import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
+import UloadIc from '../icons/file-upload.svg';
 import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 
-interface SendMessageWrapperProps {
-    onDrop: (e: any) => void;
-    dragOn: boolean;
-}
-
-const SendMessageWrapper = Glamorous(XHorizontal)<SendMessageWrapperProps>(props => ({
+const SendMessageWrapper = Glamorous.div({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'stretch',
     width: '100%',
     minHeight: 114,
     maxHeight: 200,
@@ -27,14 +26,10 @@ const SendMessageWrapper = Glamorous(XHorizontal)<SendMessageWrapperProps>(props
     paddingRight: 20,
     paddingTop: 12,
     paddingBottom: 12,
-    borderTop: '1px solid rgba(220, 222, 228, 0.45)',
-    '& > .dropArea': {
-        visibility: props.dragOn ? 'visible' : 'hidden',
-        backgroundColor: props.dragOn ? '#eef4fc' : 'transparent'
-    }
-}));
+    borderTop: '1px solid rgba(220, 222, 228, 0.45)'
+});
 
-const DropArea = Glamorous.div({
+const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
     position: 'absolute',
     display: 'flex',
     alignItems: 'center',
@@ -42,19 +37,55 @@ const DropArea = Glamorous.div({
     top: 0,
     left: 0,
     width: '100%',
-    height: '100%',
+    height: 'calc(100% - 115px)',
     zIndex: 2,
-    border: '1px dashed #1790ff',
-    borderBottom: 'none',
+    padding: 24,
+    visibility: props.dragOn ? 'visible' : 'hidden',
+    backgroundColor: props.dragOn ? '#fff' : 'transparent'
+}));
+
+const DropAreaContent = Glamorous.div<{dragUnder: boolean}>(props => ({
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '2px dashed',
+    borderColor: props.dragUnder ? 'rgba(23, 144, 255, 0.2)' : 'rgba(51, 69, 98, 0.1)',
+    borderRadius: 8,
+    backgroundColor: props.dragUnder ? 'rgba(23, 144, 255, 0.02)' : '#fff',
     '& > svg': {
-        width: 30,
-        height: 30
+        pointerEvents: 'none',
+        '& > g': {
+            stroke: props.dragUnder ? '#1790FF' : '#BCC3CC'
+        }
     }
+}));
+
+const DropAreaTitle = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.5,
+    letterSpacing: -0.3,
+    textAlign: 'center',
+    color: '#334562',
+    marginTop: 23,
+    marginBottom: 4
+});
+
+const DropAreaSubtitle = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 1.71,
+    letterSpacing: -0.4,
+    textAlign: 'center',
+    color: '#5c6a81'
 });
 
 const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
-    maxWidth: 1000,
+    maxWidth: 700,
     flexBasis: '100%',
     paddingLeft: 44,
     paddingRight: 44
@@ -126,7 +157,8 @@ export interface MessageComposeComponentProps {
 export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps> {
 
     state = {
-        dragOn: false
+        dragOn: false,
+        dragUnder: false
     };
 
     private input = React.createRef<XRichTextInput>();
@@ -186,7 +218,8 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         e.preventDefault();
 
         this.setState({
-            dragOn: false
+            dragOn: false,
+            dragUnder: false
         });
 
         let file = e.dataTransfer.files[0];
@@ -212,6 +245,18 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         });
     }
 
+    private handleDragOver = () => {
+        this.setState({
+            dragUnder: true
+        });
+    }
+
+    private handleDragLeave = () => {
+        this.setState({
+            dragUnder: false
+        });
+    }
+
     componentDidMount() {
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
@@ -229,14 +274,20 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
 
     render() {
         return (
-            <SendMessageWrapper
-                alignItems="stretch"
-                justifyContent="center"
-                onDrop={this.handleDrop}
-                dragOn={this.state.dragOn}
-            >
-                <DropArea className="dropArea">
-                    <PhotoIcon />
+            <SendMessageWrapper>
+                <DropArea
+                    dragOn={this.state.dragOn}
+                >
+                    <DropAreaContent
+                        onDrop={this.handleDrop}
+                        onDragOver={this.handleDragOver}
+                        onDragLeave={this.handleDragLeave}
+                        dragUnder={this.state.dragUnder}
+                    >
+                        <UloadIc />
+                        <DropAreaTitle>Drop files here</DropAreaTitle>
+                        <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
+                    </DropAreaContent>
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1}>

@@ -153,12 +153,12 @@ const AvatarBehaviour = [
 ];
 const StyledAvatarSrc = Glamorous.img<StyledAvatarProps>(AvatarBehaviour);
 const StyledAvatar = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
-(props: any) => ({
+() => ({
     overflow: 'hidden'
 })]);
 
 const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
-(props: any) => ({
+() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -184,7 +184,7 @@ const AvatarStub = Glamorous.div({
         backgroundImage: 'url(\'/static/img/avatars/org-small.svg\')',
     },
     '&.channel': {
-        backgroundImage: 'url(\'/static/img/avatars/community.svg\')',
+        backgroundImage: 'url(\'/static/img/avatars/channel.svg\')',
     },
     '&.group': {
         backgroundImage: 'url(\'/static/img/avatars/group.svg\')',
