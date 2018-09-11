@@ -4,10 +4,13 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+
 import cl.json.RNSharePackage;
 
 import com.korshakov.testing.openland.async.AsyncPackage;
+
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
+
 import com.korshakov.testing.openland.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -53,8 +56,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNSharePackage(),
-            new RCTImageCapInsetPackage(),
+                    new RNSharePackage(),
+                    new RCTImageCapInsetPackage(),
                     new RNReactNativeHapticFeedbackPackage(),
                     new RNGestureHandlerPackage(),
                     new LottiePackage(),

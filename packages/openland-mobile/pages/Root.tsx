@@ -28,11 +28,16 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
     }
     componentDidMount() {
         if (Platform.OS === 'android') {
-            try {
-                NativeModules.OPLBackgroundHack.removeBackground();
-            } catch (e) {
-                console.log(e);
-            }
+            setTimeout(
+                () => {
+                    try {
+                        NativeModules.OPLBackgroundHack.removeBackground();
+                    } catch (e) {
+                        console.log(e);
+                    }
+                },
+                1000
+            );
         }
         (async () => {
             let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
@@ -64,7 +69,6 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
             } else {
                 this.setState({ state: 'auth' });
             }
-            // this.props.navigation.navigate(userToken ? 'App' : 'Login');
         })();
     }
     render() {

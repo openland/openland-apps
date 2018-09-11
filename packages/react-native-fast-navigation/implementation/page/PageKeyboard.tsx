@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { NativeSyntheticEvent, StyleProp, ViewStyle, Platform } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, ViewStyle, Platform, View } from 'react-native';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { DeviceConfig } from '../../DeviceConfig';
 
@@ -41,11 +41,11 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
             );
         }
         return (
-            <ASKeyboardContext style={this.props.style} contextKey={this.props.contextKey} onKeyboardChanged={this.handleKeyboard}>
+            <View style={this.props.style}>
                 <ASSafeAreaProvider bottom={this.state.keyboardHeight + DeviceConfig.bottomNavigationBarInset} top={DeviceConfig.navigationBarContentInsetSmall}>
                     {this.props.children}
                 </ASSafeAreaProvider>
-            </ASKeyboardContext>
+            </View>
         );
     }
 }

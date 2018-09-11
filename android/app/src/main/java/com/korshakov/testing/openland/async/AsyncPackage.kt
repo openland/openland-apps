@@ -9,15 +9,19 @@ import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
 
 class AsyncPackage : ReactPackage {
+
     constructor() {
         ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
-        return mutableListOf(AsyncConfigManager(reactContext), AsyncDataViewManager(reactContext))
+        return mutableListOf(AsyncConfigManager(reactContext), AsyncDataViewManager(reactContext), AsyncAnimatedViewManager(reactContext))
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<ViewManager<View, ReactShadowNode<*>>> {
-        return mutableListOf(AsyncViewManager() as ViewManager<View, ReactShadowNode<*>>, AsyncListViewManager() as ViewManager<View, ReactShadowNode<*>>)
+        return mutableListOf(
+                AsyncViewManager() as ViewManager<View, ReactShadowNode<*>>,
+                AsyncListViewManager() as ViewManager<View, ReactShadowNode<*>>,
+                AsyncAnimatedViewViewManager() as ViewManager<View, ReactShadowNode<*>>)
     }
 }
