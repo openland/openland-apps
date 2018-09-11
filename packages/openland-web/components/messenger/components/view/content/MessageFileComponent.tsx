@@ -97,7 +97,7 @@ export const MessageFileComponent = (props: MessageFileComponentProps) => (
                 </FileText>
             </FileButton>
         )}
-        {props.file && (
+        {!props.file && (
             <FileButton
                 enabled={false}
             >
