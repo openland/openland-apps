@@ -4,11 +4,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
+import com.facebook.react.views.imagehelper.ImageSource
 import dk.madslee.imageCapInsets.utils.RCTResourceDrawableIdHelper
 import java.io.IOException
 import java.net.URL
@@ -173,16 +175,18 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
     (props["backgroundPatch"] as? JsonObject)?.let {
         val patch = AsyncPatch()
         var bitmap: Bitmap? = null
-
+        val url = it["source"] as String
         try {
-            val url = it["source"] as String
-            if (url.startsWith("http")) {
-                val loaded = URL(it["source"] as String).openStream()
+            var resUrl = ImageSource(context, url).uri.toString()
+            Log.d("SView", "Image source: $resUrl, from $url")
+            if (resUrl.startsWith("http://") || resUrl.startsWith("https://") || resUrl.startsWith("file://")) {
+                val loaded = URL(resUrl).openStream()
                 bitmap = BitmapFactory.decodeStream(loaded)
             } else {
-                bitmap = BitmapFactory.decodeResource(context.resources, helper.getResourceDrawableId(context, url))
+                bitmap = BitmapFactory.decodeResource(context.resources, helper.getResourceDrawableId(context, url))!!
             }
         } catch (e: IOException) {
+            Log.d("SView", "Unable to laod image: $url")
             e.printStackTrace()
         }
 
