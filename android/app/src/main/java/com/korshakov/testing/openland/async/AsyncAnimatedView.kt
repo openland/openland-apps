@@ -1,5 +1,6 @@
 package com.korshakov.testing.openland.async
 
+import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
@@ -36,15 +37,16 @@ class AsyncAnimatedView(val manager: AsyncAnimatedViewViewManager, context: Reac
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
         if (!isRegistered) {
             isRegistered = true
             AsyncAnimatedViewStorage.registerView(this.animatedKey!!, this)
         }
-        super.onLayout(changed, left, top, right, bottom)
     }
 }
 
-class AsyncAnimatedViewViewManager : ReactViewManager() {
+class AsyncAnimatedViewViewManager(val reactContext: ReactApplicationContext) : ReactViewManager() {
+
 
     override fun getName(): String {
         return "RNFastAnimatedView"
@@ -106,6 +108,7 @@ class AsyncAnimatedViewManager(reactContext: ReactApplicationContext) : ReactCon
 
                         if (view != null) {
                             val anim = view.animate()
+                                    .withLayer()
                             if (a.duration != null) {
                                 anim.duration = (a.duration!! * 1000).toLong()
                             } else {

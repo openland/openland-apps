@@ -12,6 +12,7 @@ class AsyncPackage : ReactPackage {
 
     constructor() {
         ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
+        ComponentsConfiguration.prewarmImageTexture = true
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
@@ -22,6 +23,6 @@ class AsyncPackage : ReactPackage {
         return mutableListOf(
                 AsyncViewManager() as ViewManager<View, ReactShadowNode<*>>,
                 AsyncListViewManager() as ViewManager<View, ReactShadowNode<*>>,
-                AsyncAnimatedViewViewManager() as ViewManager<View, ReactShadowNode<*>>)
+                AsyncAnimatedViewViewManager(reactContext) as ViewManager<View, ReactShadowNode<*>>)
     }
 }

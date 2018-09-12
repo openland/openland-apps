@@ -88,12 +88,12 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
         let size = this.props.appearance === 'large' ? 170 : this.props.appearance === 'small' ? 48 : 100;
         return (
             <View style={[styles.container, (this.props.transparent !== true) && styles.containerFilled]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
-                {this.state.visible && (
+                {/* {this.state.visible && (
                     <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
                         {this.props.appearance === 'small' && <FixedLottie source={require('assets/loader_small.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
                         {this.props.appearance !== 'small' && <FixedLottie source={require('assets/loader.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
                     </Animated.View>
-                )}
+                )} */}
             </View>
         );
     }

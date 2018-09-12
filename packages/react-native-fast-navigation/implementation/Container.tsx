@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 function prepareInitialRecords(routes: FastHistoryRecord[]): RouteViewState[] {
-    return routes.map((v, i) => new RouteViewState(v, new Animated.Value(i === routes.length - 1 ? 0 : 1)));
+    return routes.map((v, i) => new RouteViewState(v));
 }
 
 function animate(value: Animated.Value, to: number) {
@@ -140,8 +140,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
 
         let underlay = state.history[state.history.length - 2].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
-        let progress = new Animated.Value(-1);
-        let newRecord = new RouteViewState(record, progress);
+        let newRecord = new RouteViewState(record);
 
         // Start animation
         let unlock = this.props.historyManager.beginLock();
@@ -154,23 +153,36 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.currentHistory = state;
         this.setState({ mounted: this.mounted, routes: this.routes, transitioning: true });
 
-        underlayHolder.progressValue.stopAnimation((v2: number) => {
-            Animated.parallel([
-                animate(underlayHolder.progressValue, 1),
-                animate(progress, 0),
-            ]).start(() => {
+        // underlayHolder.progressValue.stopAnimation((v2: number) => {
+        //     Animated.parallel([
+        //         animate(underlayHolder.progressValue, 1),
+        //         animate(progress, 0),
+        //     ]).start(() => {
+        //         unlock();
+        //         // Unmount underlay when animation finished
+        //         // Ignore if we are aborted transition
+        //         if (this.removing.find((v) => v === record.key)) {
+        //             return;
+        //         }
+        //         underlayHolder.progressValue.setValue(1);
+        //         progress.setValue(0);
+        //         this.mounted = this.mounted.filter((v) => v !== underlay);
+        //         this.setState({ mounted: this.mounted, transitioning: false });
+        //     });
+        // });
+
+        setTimeout(
+            () => {
                 unlock();
                 // Unmount underlay when animation finished
                 // Ignore if we are aborted transition
                 if (this.removing.find((v) => v === record.key)) {
                     return;
                 }
-                underlayHolder.progressValue.setValue(1);
-                progress.setValue(0);
                 this.mounted = this.mounted.filter((v) => v !== underlay);
                 this.setState({ mounted: this.mounted, transitioning: false });
-            });
-        });
+            },
+            500);
 
         beginAnimationTransaction();
         if (Platform.OS === 'ios') {
@@ -179,7 +191,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         } else {
             animateTranslateX(SCREEN_WIDTH, 0, AnimatedViewKeys.page(record.key));
         }
-        animateOpacity(0, 0.3, AnimatedViewKeys.pageShadow(underlayHolder.record.key));
+        // animateOpacity(0, 0.3, AnimatedViewKeys.pageShadow(underlayHolder.record.key));
         FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
         commitAnimationTransaction();
     }
@@ -200,18 +212,28 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.removing = [...this.removing, holder.record.key];
         this.mounted = [...this.mounted, state.history[state.history.length - 1].key];
 
-        Animated.parallel([
-            animate(underlayHolder.progressValue, 0),
-            animate(holder.progressValue, -1)
-        ]).start(() => {
-            underlayHolder.progressValue.setValue(0);
-            holder.progressValue.setValue(-1);
-            this.removing = this.removing.filter((v) => v !== record.key);
-            this.mounted = this.mounted.filter((v) => v !== record.key);
-            this.routes = this.routes.filter((v) => v.record.key !== record.key);
-            this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
-            unlock();
-        });
+        // Animated.parallel([
+        //     animate(underlayHolder.progressValue, 0),
+        //     animate(holder.progressValue, -1)
+        // ]).start(() => {
+        //     underlayHolder.progressValue.setValue(0);
+        //     holder.progressValue.setValue(-1);
+        //     this.removing = this.removing.filter((v) => v !== record.key);
+        //     this.mounted = this.mounted.filter((v) => v !== record.key);
+        //     this.routes = this.routes.filter((v) => v.record.key !== record.key);
+        //     this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
+        //     unlock();
+        // });
+
+        setTimeout(
+            () => {
+                unlock();
+                this.removing = this.removing.filter((v) => v !== record.key);
+                this.mounted = this.mounted.filter((v) => v !== record.key);
+                this.routes = this.routes.filter((v) => v.record.key !== record.key);
+                this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
+            },
+            500);
 
         this.setState({ mounted: this.mounted, transitioning: true });
 

@@ -8,14 +8,11 @@ export interface NormalizedRoute {
     mounted: boolean;
     record: FastHistoryRecord;
     config: FastHeaderConfig;
-    progress: Animated.AnimatedInterpolation;
     searchProgress: Animated.AnimatedInterpolation;
 }
 
 export interface NormalizedRouteState {
     backgroundOffset: Animated.AnimatedInterpolation;
-    position: Animated.AnimatedInterpolation;
-    positionInverted: Animated.AnimatedInterpolation;
     hairlineOffset: Animated.AnimatedInterpolation;
     headerBottom: Animated.AnimatedInterpolation;
     hairlineOpacity: Animated.AnimatedInterpolation;
@@ -24,10 +21,6 @@ export interface NormalizedRouteState {
 }
 
 export interface NormalizedRouteContext {
-    position: Animated.AnimatedInterpolation;
-    positionContainer: Animated.AnimatedInterpolation;
-    positionContent: Animated.AnimatedInterpolation;
-    positionShadow: Animated.AnimatedInterpolation;
     backOpacity: Animated.AnimatedInterpolation;
     backgroundOffset: Animated.AnimatedInterpolation;
     hairlineOffset: Animated.AnimatedInterpolation;

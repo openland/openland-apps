@@ -23,7 +23,7 @@ export interface PageContainerProps {
 export class PageContainer extends React.PureComponent<PageContainerProps> {
     render() {
         return (
-            <View style={[styles.root, !this.props.mounted && styles.rootUnmounted]}>
+            <View style={[styles.root, !this.props.mounted && styles.rootUnmounted]} collapsable={false}>
                 <PageImmutableContainer component={this.props.component} router={this.props.router} />
             </View>
         );

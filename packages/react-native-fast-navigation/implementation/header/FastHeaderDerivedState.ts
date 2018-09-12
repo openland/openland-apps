@@ -16,7 +16,7 @@ const zeroValue = new Animated.Value(0);
 const zeroValueTracked = new FastScrollValue();
 const oneValue = new Animated.Value(1);
 
-export function buildDerivedState(route: NormalizedRoute, progress: Animated.AnimatedInterpolation): NormalizedRouteState {
+export function buildDerivedState(route: NormalizedRoute): NormalizedRouteState {
 
     // Screen config
     let config = route.config;
@@ -30,15 +30,15 @@ export function buildDerivedState(route: NormalizedRoute, progress: Animated.Ani
     let resolvedNavigationBarHeightLarge = DeviceConfig.navigationBarHeightLarge + DeviceConfig.statusBarHeight;
 
     // Calculate position offset
-    let position = progress;
-    let interpolated = progress.interpolate({
-        inputRange: [- 1, 0, 1],
-        outputRange: [0, 1, 0],
-        extrapolate: 'clamp'
-    });
+    // let position = progress;
+    // let interpolated = progress.interpolate({
+    //     inputRange: [- 1, 0, 1],
+    //     outputRange: [0, 1, 0],
+    //     extrapolate: 'clamp'
+    // });
 
     // Small title opacity
-    let titleOpacity: Animated.AnimatedInterpolation = interpolated;
+    // let titleOpacity: Animated.AnimatedInterpolation = interpolated;
 
     // Calculate navigation bar offset
     let computedOffset: Animated.AnimatedInterpolation = defaultBackgroundOffset;
@@ -114,29 +114,27 @@ export function buildDerivedState(route: NormalizedRoute, progress: Animated.Ani
         computedOffset = Animated.add(screenHairlineOffset, -BACKGROUND_SIZE);
     }
 
-    if (contentOffset || (config.appearance !== 'small')) {
-        // Update title opacity for hiding when bar is expanded
-        titleOpacity = Animated.multiply(interpolated, inputOffset.offset.interpolate({
-            inputRange: [0, resolvedTitleSwitchTreshold],
-            outputRange: [0, 1],
-            extrapolate: 'clamp'
-        }));
-    }
+    // if (contentOffset || (config.appearance !== 'small')) {
+    //     // Update title opacity for hiding when bar is expanded
+    //     titleOpacity = Animated.multiply(interpolated, inputOffset.offset.interpolate({
+    //         inputRange: [0, resolvedTitleSwitchTreshold],
+    //         outputRange: [0, 1],
+    //         extrapolate: 'clamp'
+    //     }));
+    // }
 
-    let screenHailineOpacity: Animated.AnimatedInterpolation = titleOpacity;
-    if (config.hairline === 'always') {
-        screenHailineOpacity = oneValue;
-    } else if (config.hairline === 'hidden') {
-        screenHailineOpacity = zeroValue;
-    }
-    if (config.search && config.searchActive) {
-        screenHailineOpacity = animatedInterpolate(route.searchProgress, screenHailineOpacity, oneValue);
-    }
+    let screenHailineOpacity: Animated.AnimatedInterpolation = zeroValue;
+    // if (config.hairline === 'always') {
+    //     screenHailineOpacity = oneValue;
+    // } else if (config.hairline === 'hidden') {
+    //     screenHailineOpacity = zeroValue;
+    // }
+    // if (config.search && config.searchActive) {
+    //     screenHailineOpacity = animatedInterpolate(route.searchProgress, screenHailineOpacity, oneValue);
+    // }
 
     return {
-        backgroundOffset: Animated.multiply(computedOffset, interpolated),
-        position: position,
-        positionInverted: interpolated,
+        backgroundOffset: computedOffset,
         hairlineOffset: screenHairlineOffset,
         headerBottom: screenHeaderBaseHeight,
         hairlineOpacity: screenHailineOpacity,
@@ -169,45 +167,30 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
     let res = contexts.map((v, i) => {
 
         let normalized = v.map((r, ri) => {
-            if (v.length === 1) {
-                return buildDerivedState(r, zeroValue);
-            } else if (ri === 0) {
-                return buildDerivedState(r, r.progress.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 1],
-                    extrapolate: 'clamp'
-                }));
-            } else if (ri === v.length - 1) {
-                return buildDerivedState(r, r.progress.interpolate({
-                    inputRange: [-1, 0],
-                    outputRange: [-1, 0],
-                    extrapolate: 'clamp'
-                }));
-            }
-            return buildDerivedState(r, r.progress);
+            return buildDerivedState(r);
         });
 
         let backOpacity: Animated.AnimatedInterpolation = new Animated.Value(0);
         let first = routes.find((r) => r.record.startIndex === 0);
-        if (first && (!(v.length === 1 && i === 0))) {
-            backOpacity = first.progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-                extrapolate: 'clamp'
-            });
-        }
+        // if (first && (!(v.length === 1 && i === 0))) {
+        //     backOpacity = first.progress.interpolate({
+        //         inputRange: [0, 1],
+        //         outputRange: [0, 1],
+        //         extrapolate: 'clamp'
+        //     });
+        // }
 
-        let position = Animated.add(
-            v[0].progress.interpolate({
-                inputRange: [- 1, 0],
-                outputRange: [-1, 0],
-                extrapolate: 'clamp'
-            }),
-            v[v.length - 1].progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-                extrapolate: 'clamp'
-            }));
+        // let position = Animated.add(
+        //     v[0].progress.interpolate({
+        //         inputRange: [- 1, 0],
+        //         outputRange: [-1, 0],
+        //         extrapolate: 'clamp'
+        //     }),
+        //     v[v.length - 1].progress.interpolate({
+        //         inputRange: [0, 1],
+        //         outputRange: [0, 1],
+        //         extrapolate: 'clamp'
+        //     }));
 
         let backgroundOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
         for (let f of normalized) {
@@ -215,33 +198,16 @@ export function buildDerivedContexts(routes: NormalizedRoute[]): NormalizedRoute
         }
 
         let hairlineOffset: Animated.AnimatedInterpolation = new Animated.Value(0);
-        for (let f of normalized) {
-            hairlineOffset = Animated.add(Animated.multiply(f.positionInverted, f.hairlineOffset), hairlineOffset);
-        }
+        // for (let f of normalized) {
+        //     hairlineOffset = Animated.add(Animated.multiply(f.positionInverted, f.hairlineOffset), hairlineOffset);
+        // }
 
         let hairlineOpacity: Animated.AnimatedInterpolation = new Animated.Value(0);
-        for (let f of normalized) {
-            hairlineOpacity = Animated.add(Animated.multiply(f.positionInverted, f.hairlineOpacity), hairlineOpacity);
-        }
-
-        let positionContainer = position.interpolate({
-            inputRange: [-1, 0, 1],
-            outputRange: [w, 0, -w],
-            extrapolate: 'clamp'
-        });
-        let positionContent = Animated.add(interpolateContent(position), Animated.multiply(positionContainer, -1));
-
-        let positionShadow = position.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 0.2],
-            extrapolate: 'clamp'
-        });
+        // for (let f of normalized) {
+        //     hairlineOpacity = Animated.add(Animated.multiply(f.positionInverted, f.hairlineOpacity), hairlineOpacity);
+        // }
 
         return {
-            position,
-            positionContent: positionContent,
-            positionContainer: positionContainer,
-            positionShadow: positionShadow,
             backOpacity,
             backgroundOffset,
             hairlineOffset,

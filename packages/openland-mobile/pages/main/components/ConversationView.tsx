@@ -60,7 +60,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         return (
             <View flexBasis={0} flexGrow={1}>
-                <ASView
+                {/* <ASView
                     style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                 >
                     <ASFlex
@@ -73,7 +73,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                             height={Dimensions.get('window').height}
                         />
                     </ASFlex>
-                </ASView>
+                </ASView> */}
                 <ConversationMessagesView
                     ref={this.listRef}
                     loaded={this.state.conversation.historyFullyLoaded}

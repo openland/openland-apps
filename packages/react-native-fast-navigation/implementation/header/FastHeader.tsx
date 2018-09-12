@@ -83,7 +83,6 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         <FastHeaderTitle
                             contentOffset={s.contentOffset}
                             index={1}
-                            progress={s.position}
                             headerAppearance={s.route.config.appearance || 'large'}
                             appearance={Platform.OS === 'android' ? 'android' : 'ios'}
                             titleText={headerText}
@@ -191,16 +190,12 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             top: 0,
                             bottom: 0,
                             // width: ''
-                            transform: [{ translateX: ctx.positionContainer }],
                             zIndex: 100
                         }}
                     >
                         <Animated.View
                             style={[
-                                styles.styleMainContainerTransparent,
-                                {
-                                    transform: [{ translateX: ctx.positionContent }]
-                                }
+                                styles.styleMainContainerTransparent
                             ]}
                         >
                             {content}
@@ -223,7 +218,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             {}
                         </Animated.View>
 
-                        <Animated.View
+                        {/* <Animated.View
                             key="shadow"
                             style={{
                                 position: 'absolute',
@@ -237,7 +232,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 transform: [{ translateY: ctx.backgroundOffset }],
                             }}
                             pointerEvents="none"
-                        />
+                        /> */}
                     </Animated.View>
                 );
             } else {
@@ -248,8 +243,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             flexDirection: 'row',
                             height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight,
                             backgroundColor: DeviceConfig.navigationBarBackgroundColor,
-                            paddingTop: DeviceConfig.statusBarHeight,
-                            transform: [{ translateX: ctx.positionContent }]
+                            paddingTop: DeviceConfig.statusBarHeight
                         }}
                     >
                         {content}

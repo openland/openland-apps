@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Animated } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { DeviceConfig } from '../../DeviceConfig';
 import { FastHeaderTitleProps } from './FastHeaderTitle';
+import { ASAnimatedView } from 'react-native-async-view/ASAnimatedView';
+import { AnimatedViewKeys } from '../AnimatedViewKeys';
 
 const styles = StyleSheet.create({
     container: {
@@ -38,13 +40,8 @@ const styles = StyleSheet.create({
 
 export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleProps> {
     render() {
-        let opacity = this.props.progress.interpolate({
-            inputRange: [-0.98, 0, 0.98],
-            outputRange: [0, 1, 0],
-            extrapolate: 'clamp'
-        });
         return (
-            <Animated.View style={[styles.container, this.props.index === 0 && styles.containerFirst, { opacity }]} pointerEvents="box-none" renderToHardwareTextureAndroid={true}>
+            <ASAnimatedView name={AnimatedViewKeys.headerContent(this.props.route)} style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none">
                 <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0}>
                     {this.props.titleView && (
                         <View
@@ -58,7 +55,6 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
                         <View
                             style={styles.titleContainer}
                             pointerEvents="box-none"
-                            renderToHardwareTextureAndroid={true}
                         >
                             {!this.props.titleView && (
                                 <View
@@ -79,7 +75,7 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
                 <View paddingRight={15} pointerEvents="box-none" renderToHardwareTextureAndroid={true}>
                     {this.props.rightView}
                 </View>
-            </Animated.View>
+            </ASAnimatedView>
         );
     }
 }

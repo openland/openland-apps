@@ -15,6 +15,9 @@ export const FastHeaderCoordinator = {
             animateTranslateX(0, -SCREEN_WIDTH, AnimatedViewKeys.headerTitle(current));
             animateTranslateX(0, -SCREEN_WIDTH, AnimatedViewKeys.headerTitleLarge(current), true);
             animateTranslateX(0, -SCREEN_WIDTH, AnimatedViewKeys.headerSearch(current), true);
+        } else {
+            animateOpacity(0, 1, AnimatedViewKeys.headerContent(next));
+            animateOpacity(1, 0, AnimatedViewKeys.headerContent(current));
         }
     },
 
@@ -28,6 +31,9 @@ export const FastHeaderCoordinator = {
             animateTranslateX(0, SCREEN_WIDTH, AnimatedViewKeys.headerTitle(current));
             animateTranslateX(0, -SCREEN_WIDTH, AnimatedViewKeys.headerTitleLarge(current), true);
             animateTranslateX(0, -SCREEN_WIDTH, AnimatedViewKeys.headerSearch(current), true);
+        } else {
+            animateOpacity(0, 1, AnimatedViewKeys.headerContent(previous));
+            animateOpacity(1, 0, AnimatedViewKeys.headerContent(current));
         }
     },
 };

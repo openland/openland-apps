@@ -14,7 +14,6 @@ export interface FastHeaderTitleProps {
     titleView?: any;
     rightView?: any;
 
-    progress: Animated.AnimatedInterpolation;
     searchProgress: Animated.AnimatedInterpolation;
     contentOffset: FastScrollValue;
     headerBaseHeight: Animated.AnimatedInterpolation;

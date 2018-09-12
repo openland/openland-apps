@@ -14,24 +14,43 @@ import com.facebook.react.uimanager.annotations.ReactProp
 class AsyncView(context: ReactContext) : FrameLayout(context) {
     private val asyncContext = ComponentContext(context)
     private val lithoView = LithoView(context)
+    private var spec: AsyncViewSpec? = null
+    private var inited = false
 
     init {
         this.addView(this.lithoView,
                 android.widget.FrameLayout.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT))
-        lithoView.setComponent(SolidColor.create(asyncContext).color(Color.RED).build())
+        lithoView.setComponent(SolidColor.create(asyncContext).color(Color.TRANSPARENT).build())
     }
 
     fun setConfigKey(src: String) {
-        specViews.set(src, this)
-        if (specs.containsKey(src)) {
-            this.setConfig(specs[src]!!)
+        specViews[src] = this
+        this.spec = specs[src]
+        if (inited) {
+            this.lithoView.setComponentAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
         }
+//        if (specs.containsKey(src)) {
+//            this.setConfig(specs[src]!!)
+//        }
     }
 
     fun setConfig(config: AsyncViewSpec) {
-        this.lithoView.setComponentAsync(resolveNode(this.asyncContext, config, context as ReactContext))
+        this.spec = config
+        if (this.inited) {
+            this.lithoView.setComponentAsync(resolveNode(this.asyncContext, config, context as ReactContext))
+        }
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        if (!this.inited) {
+            this.inited = true
+            if (this.spec != null) {
+                this.lithoView.setComponentAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
+            }
+        }
     }
 }
 
