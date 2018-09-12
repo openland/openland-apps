@@ -1,17 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { AutoSizer, InfiniteLoader, List, CellMeasurer, ListRowProps } from 'react-virtualized';
-import { CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
+import { AutoSizer, InfiniteLoader, List, CellMeasurer, ListRowProps, Index, CellMeasurerCache, IndexRange } from 'react-virtualized';
 
 interface XListProps {
     rowCount: number;
     itemRenderer: any;
-    autoHeight?: boolean;
-}
-
-interface XListInfiniteProps extends XListProps {
-    isRowLoaded: any;
-    loadMoreRows: any;
 }
 
 export class XList extends React.Component<XListProps> {
@@ -42,7 +35,6 @@ export class XList extends React.Component<XListProps> {
                 {({ height, width }) => (
                     <List
                         deferredMeasurementCache={this._cache}
-                        autoHeight={this.props.autoHeight}
                         rowCount={this.props.rowCount}
                         rowHeight={this._cache.rowHeight}
                         rowRenderer={this._rowRenderer}
@@ -55,13 +47,42 @@ export class XList extends React.Component<XListProps> {
     }
 }
 
-export class XListInfinite extends React.Component<XListInfiniteProps> {
+interface XListInfiniteProps {
+    itemRenderer: any;
+    hasNextPage: boolean;
+    isNextPageLoading: boolean;
+    list: any[];
+    loadNextPage: any;
+}
+
+interface XListInfiniteState {
+    rowCount: number;
+}
+
+export class XListInfinite extends React.Component<XListInfiniteProps, XListInfiniteState> {
     _cache = new CellMeasurerCache({
         fixedWidth: true,
         minHeight: 20,
     });
 
+    constructor(props: XListInfiniteProps) {
+        super(props);
+
+        this.state = {
+            rowCount: this.props.hasNextPage ? this.props.list.length + 1 : this.props.list.length
+        };
+    }
+
+    _isRowLoaded = (info: Index) => !this.props.hasNextPage || info.index < this.props.list.length;
     _rowRenderer = (info: ListRowProps) => {
+        let content;
+
+        if (!this._isRowLoaded({index: info.index})) {
+            content = 'Loading...';
+        } else {
+            content = this.props.itemRenderer(info.index);
+        }
+
         return (
             <CellMeasurer
                 cache={this._cache}
@@ -71,18 +92,28 @@ export class XListInfinite extends React.Component<XListInfiniteProps> {
                 parent={info.parent}
             >
                 <div style={info.style}>
-                    {this.props.itemRenderer(info.index)}
+                    {content}
                 </div>
             </CellMeasurer>
         );
     }
 
+    _loadMoreRows = (info: IndexRange) => {
+        if (!this.props.isNextPageLoading) {
+            return this.props.loadNextPage(info, () => {
+                this.setState({
+                    rowCount: this.props.hasNextPage ? this.props.list.length + 1 : this.props.list.length
+                });
+            });
+        }
+    }
+
     render() {
         return (
             <InfiniteLoader
-                isRowLoaded={this.props.isRowLoaded}
-                loadMoreRows={this.props.loadMoreRows}
-                rowCount={this.props.rowCount}
+                isRowLoaded={this._isRowLoaded}
+                loadMoreRows={this._loadMoreRows}
+                rowCount={this.state.rowCount}
             >
                 {({ onRowsRendered, registerChild }) => (
                     <AutoSizer>
@@ -91,8 +122,7 @@ export class XListInfinite extends React.Component<XListInfiniteProps> {
                                 onRowsRendered={onRowsRendered}
                                 ref={registerChild}
                                 deferredMeasurementCache={this._cache}
-                                autoHeight={this.props.autoHeight}
-                                rowCount={this.props.rowCount}
+                                rowCount={this.state.rowCount}
                                 rowHeight={this._cache.rowHeight}
                                 rowRenderer={this._rowRenderer}
                                 width={width}

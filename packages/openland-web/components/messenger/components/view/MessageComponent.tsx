@@ -181,8 +181,8 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XVertical separator={0} flexGrow={1}>
                         {content}
+                        {menu}
                     </XVertical>
-                    {menu}
                 </MessageContainer>
             );
         }

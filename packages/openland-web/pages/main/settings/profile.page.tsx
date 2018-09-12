@@ -166,8 +166,8 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                         )}
                     </Query>
                     <XVertical separator={18}>
-                        <HeadTitle>Super admin</HeadTitle>
                         <XWithRole role="super-admin">
+                            <HeadTitle>Super admin</HeadTitle>
                             <XHorizontal separator={8}>
                                 {props.data.profile && props.data.profile.joinedAt && (
                                     <CardText>

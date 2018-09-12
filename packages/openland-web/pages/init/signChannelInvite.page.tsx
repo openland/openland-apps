@@ -12,6 +12,7 @@ import { ChannelsInviteComponent } from '../../components/messenger/ChannelsInvi
 import { Sidebar } from './components/signChannelInviteComponents';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withUserInfo } from '../../components/UserInfo';
+import { AuthRouter } from '../../components/AuthRouter';
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -73,11 +74,11 @@ const InviteInfo = withChannelInviteInfo((props) => {
 export default withAppBase('Join Channel', withUserInfo((props) => {
     let uuid = props.router.routeQuery.uuid;
     return (
-        <>
+        <AuthRouter>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
-                <InviteInfo variables={{ uuid: uuid }} redirect={'/acceptChannelInvite/' + uuid} instantRedirect={props.isLoggedIn ? '/mail/joinChannel/' + uuid : undefined} />
+                <InviteInfo variables={{ uuid: uuid }} redirect={'/acceptChannelInvite/' + uuid} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + uuid : undefined} />
             </XTrack>
-        </>
+        </AuthRouter>
     );
 }));
