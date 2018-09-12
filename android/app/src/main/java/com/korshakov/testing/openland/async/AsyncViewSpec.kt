@@ -7,8 +7,13 @@ import android.graphics.drawable.BitmapDrawable
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContext
+import dk.madslee.imageCapInsets.utils.RCTResourceDrawableIdHelper
 import java.io.IOException
 import java.net.URL
+
+val helper = RCTResourceDrawableIdHelper()
 
 class AsyncPatch {
     var source: Bitmap? = null
@@ -95,27 +100,27 @@ class AsyncImageSpec(key: String, val url: String?) : AsyncViewSpec(key) {
     var touchableKey: String? = null
 }
 
-private fun resolveChildren(src: JsonObject): Array<AsyncViewSpec> {
+private fun resolveChildren(src: JsonObject, context: ReactContext): Array<AsyncViewSpec> {
     val res = src["children"] as JsonArray<JsonObject>?
     if (res == null || res.size == 0) {
         return emptyArray()
     }
-    return res.map { resolveSpec(it) }.toTypedArray()
+    return res.map { resolveSpec(it, context) }.toTypedArray()
 }
 
-private fun resolveTextChildren(src: JsonObject): List<Any> {
+private fun resolveTextChildren(src: JsonObject, context: ReactContext): List<Any> {
     val res = mutableListOf<Any>()
     for (item in src["children"] as JsonArray<JsonObject>) {
         when {
             item["type"] == "value" -> res.add(item["value"] as String)
-            item["type"] =="text" -> res.add(resolveSpec(item))
+            item["type"] == "text" -> res.add(resolveSpec(item, context))
             else -> error("Non-text value in text node")
         }
     }
-    return res;
+    return res
 }
 
-private fun resolveStyle(src: JsonObject, res: AsyncViewStyle) {
+private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactContext) {
     val props = src["props"] as JsonObject
 
     (props["width"] as? Number)?.let {
@@ -170,8 +175,13 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle) {
         var bitmap: Bitmap? = null
 
         try {
-            val loaded = URL(it["source"] as String).openStream()
-            bitmap = BitmapFactory.decodeStream(loaded)
+            val url = it["source"] as String
+            if (url.startsWith("http")) {
+                val loaded = URL(it["source"] as String).openStream()
+                bitmap = BitmapFactory.decodeStream(loaded)
+            } else {
+                bitmap = BitmapFactory.decodeResource(context.resources, helper.getResourceDrawableId(context, url))
+            }
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -188,13 +198,13 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle) {
     }
 }
 
-private fun resolveSpec(src: JsonObject): AsyncViewSpec {
+private fun resolveSpec(src: JsonObject, context: ReactContext): AsyncViewSpec {
     val type = src["type"] as String
     val key = src["key"] as String
     if (type == "flex") {
         val props = src["props"] as JsonObject
-        val res = AsyncFlexSpec(key, resolveChildren(src))
-        resolveStyle(src, res.style)
+        val res = AsyncFlexSpec(key, resolveChildren(src, context))
+        resolveStyle(src, res.style, context)
 
         // Direction
         res.direction = when (props["flexDirection"]) {
@@ -242,8 +252,8 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
         return res
     } else if (type == "text") {
         val props = src["props"] as JsonObject
-        val res = AsyncTextSpec(key, resolveTextChildren(src))
-        resolveStyle(src, res.style)
+        val res = AsyncTextSpec(key, resolveTextChildren(src, context))
+        resolveStyle(src, res.style, context)
 
         (props["fontSize"] as? Number)?.let { res.fontSize = it.toFloat() }
         (props["color"] as? Number)?.let { res.color = it.toInt() }
@@ -255,15 +265,15 @@ private fun resolveSpec(src: JsonObject): AsyncViewSpec {
         if (props["touchableKey"] is String) {
             res.touchableKey = props["touchableKey"] as String
         }
-        resolveStyle(src, res.style)
+        resolveStyle(src, res.style, context)
         return res
     }
 
     error("Unable to resolve spec: $type")
 }
 
-fun parseSpec(src: String): AsyncViewSpec {
+fun parseSpec(src: String, context: ReactContext): AsyncViewSpec {
     val parser = Parser()
     val parsed = parser.parse(StringBuilder(src)) as JsonObject
-    return resolveSpec(parsed)
+    return resolveSpec(parsed, context)
 }

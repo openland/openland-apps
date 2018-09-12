@@ -26,7 +26,7 @@ class AsyncDataView(val context: ReactContext, val key: String) {
             synchronized(listeners) {
                 val i = listeners.indexOf(handler)
                 if (i >= 0) {
-                    listeners.removeAt(i);
+                    listeners.removeAt(i)
                 }
             }
         }
@@ -116,18 +116,18 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
     fun dataViewInit(dataSourceKey: String, config: String, completed: Boolean) {
         val parser = Parser()
         val parsed = parser.parse(StringBuilder(config)) as JsonArray<JsonObject>
-        val items = parsed.map { AsyncDataViewItem(it["key"] as String, parseSpec(it["config"] as String)) }
+        val items = parsed.map { AsyncDataViewItem(it["key"] as String, parseSpec(it["config"] as String, reactApplicationContext)) }
         getDataView(dataSourceKey, this.reactApplicationContext).handleInit(items, completed)
     }
 
     @ReactMethod
     fun dataViewAddItem(dataSourceKey: String, key: String, config: String, index: Int) {
-        getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config)), index)
+        getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index)
     }
 
     @ReactMethod
     fun dataViewUpdateItem(dataSourceKey: String, key: String, config: String, index: Int) {
-        getDataView(dataSourceKey, this.reactApplicationContext).handleUpdateItem(AsyncDataViewItem(key, parseSpec(config)), index)
+        getDataView(dataSourceKey, this.reactApplicationContext).handleUpdateItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index)
     }
 
     @ReactMethod
@@ -144,7 +144,7 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
     fun dataViewLoadedMore(dataSourceKey: String, config: String, completed: Boolean) {
         val parser = Parser()
         val parsed = parser.parse(StringBuilder(config)) as JsonArray<JsonObject>
-        val items = parsed.map { AsyncDataViewItem(it["key"] as String, parseSpec(it["config"] as String)) }
+        val items = parsed.map { AsyncDataViewItem(it["key"] as String, parseSpec(it["config"] as String, reactApplicationContext)) }
         getDataView(dataSourceKey, this.reactApplicationContext).handleLoadedMore(items, completed)
     }
 

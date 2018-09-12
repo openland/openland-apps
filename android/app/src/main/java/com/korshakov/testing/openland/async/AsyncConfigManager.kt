@@ -14,7 +14,7 @@ class AsyncConfigManager(reactContext: ReactApplicationContext) : ReactContextBa
 
     @ReactMethod
     fun setConfig(key: String, config: String) {
-        val parsed = parseSpec(config)
+        val parsed = parseSpec(config, reactApplicationContext)
         specs[key] = parsed
         specViews[key]?.setConfig(parsed)
     }
