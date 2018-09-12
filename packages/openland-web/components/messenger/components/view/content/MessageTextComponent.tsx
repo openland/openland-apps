@@ -18,6 +18,7 @@ const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props)
     lineHeight: 1.57,
     letterSpacing: -0.2,
     color: '#1f3449',
+    maxWidth: '98%',
     '& .link': {
         color: '#1790ff',
         '&:hover': {

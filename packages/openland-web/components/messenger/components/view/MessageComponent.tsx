@@ -179,7 +179,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             return (
                 <MessageContainer className="compact-message" compact={true}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
-                    <XVertical separator={0} flexGrow={1}>
+                    <XVertical separator={0} flexGrow={1} maxWidth="calc(100% - 60px)">
                         {content}
                         {menu}
                     </XVertical>
