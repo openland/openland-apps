@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
+import { AutoSizer, InfiniteLoader, List, CellMeasurer, ListRowProps } from 'react-virtualized';
+import { CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 
 interface XListProps {
     rowCount: number;
-    rowRenderer: any;
+    itemRenderer: any;
     autoHeight?: boolean;
-    rowHeight: number;
 }
 
 interface XListInfiniteProps extends XListProps {
@@ -14,24 +14,38 @@ interface XListInfiniteProps extends XListProps {
     loadMoreRows: any;
 }
 
-export interface XListRowRendererProps {
-    isScrolling: boolean;
-    isVisible: boolean;
-    key: string;
-    index: number;
-    style: React.CSSProperties;
-}
-
 export class XList extends React.Component<XListProps> {
+    _cache = new CellMeasurerCache({
+        fixedWidth: true,
+        minHeight: 20,
+    });
+
+    _rowRenderer = (info: ListRowProps) => {
+        return (
+            <CellMeasurer
+                cache={this._cache}
+                columnIndex={0}
+                key={info.key}
+                rowIndex={info.index}
+                parent={info.parent}
+            >
+                <div style={info.style}>
+                    {this.props.itemRenderer(info.index)}
+                </div>
+            </CellMeasurer>
+        );
+    }
+
     render() {
         return (
             <AutoSizer>
                 {({ height, width }) => (
                     <List
+                        deferredMeasurementCache={this._cache}
                         autoHeight={this.props.autoHeight}
                         rowCount={this.props.rowCount}
-                        rowHeight={this.props.rowHeight}
-                        rowRenderer={this.props.rowRenderer}
+                        rowHeight={this._cache.rowHeight}
+                        rowRenderer={this._rowRenderer}
                         width={width}
                         height={height}
                     />
@@ -42,6 +56,27 @@ export class XList extends React.Component<XListProps> {
 }
 
 export class XListInfinite extends React.Component<XListInfiniteProps> {
+    _cache = new CellMeasurerCache({
+        fixedWidth: true,
+        minHeight: 20,
+    });
+
+    _rowRenderer = (info: ListRowProps) => {
+        return (
+            <CellMeasurer
+                cache={this._cache}
+                columnIndex={0}
+                key={info.key}
+                rowIndex={info.index}
+                parent={info.parent}
+            >
+                <div style={info.style}>
+                    {this.props.itemRenderer(info.index)}
+                </div>
+            </CellMeasurer>
+        );
+    }
+
     render() {
         return (
             <InfiniteLoader
@@ -53,13 +88,15 @@ export class XListInfinite extends React.Component<XListInfiniteProps> {
                     <AutoSizer>
                         {({ height, width }) => (
                             <List
-                                width={width}
-                                height={height}
                                 onRowsRendered={onRowsRendered}
                                 ref={registerChild}
+                                deferredMeasurementCache={this._cache}
+                                autoHeight={this.props.autoHeight}
                                 rowCount={this.props.rowCount}
-                                rowHeight={this.props.rowHeight}
-                                rowRenderer={this.props.rowRenderer}
+                                rowHeight={this._cache.rowHeight}
+                                rowRenderer={this._rowRenderer}
+                                width={width}
+                                height={height}
                             />
                         )}
                     </AutoSizer>
