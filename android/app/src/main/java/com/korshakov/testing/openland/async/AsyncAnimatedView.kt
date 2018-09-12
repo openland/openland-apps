@@ -1,10 +1,8 @@
 package com.korshakov.testing.openland.async
 
-import android.animation.AnimatorSet
-import android.graphics.Canvas
-import android.graphics.Paint
 import android.util.Log
 import android.view.ViewPropertyAnimator
+import android.view.animation.AnimationUtils
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -16,6 +14,7 @@ import com.facebook.react.uimanager.UIManagerModuleListener
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.views.view.ReactViewGroup
 import com.facebook.react.views.view.ReactViewManager
+import com.korshakov.testing.openland.async.anim.FastAnimationUtils
 
 object AsyncAnimatedViewStorage {
     var views = mutableMapOf<String, AsyncAnimatedView>()
@@ -104,13 +103,11 @@ class AsyncAnimatedViewManager(reactContext: ReactApplicationContext) : ReactCon
 
                 if (hasAllViews) {
                     toRemove.add(resolved)
-                    val pending = mutableListOf<ViewPropertyAnimator>()
+                    val pending = mutableSetOf<ViewPropertyAnimator>()
                     for (a in resolved.animations) {
                         val view = resolvedView[a.viewKey]
-
                         if (view != null) {
-                            val anim = view.animate()
-                                    .withLayer()
+                            val anim = FastAnimationUtils.fastAnimate(view)
                             if (a.duration != null) {
                                 anim.duration = (a.duration!! * 1000).toLong()
                             } else {
@@ -119,22 +116,16 @@ class AsyncAnimatedViewManager(reactContext: ReactApplicationContext) : ReactCon
                             if (a.property == "opacity") {
                                 view.alpha = a.from
                                 anim.alpha(a.to)
-                                // anim.alphaBy(a.to - a.from)
                             } else if (a.property == "translateX") {
-                                view.x = PixelUtil.toPixelFromDIP(a.from)
+                                view.translationX = PixelUtil.toPixelFromDIP(a.from)
                                 anim.translationX(PixelUtil.toPixelFromDIP(a.to))
-                                // anim.translationXBy(a.to - a.from)
+                            } else if (a.property == "translateY") {
+                                view.translationY = PixelUtil.toPixelFromDIP(a.from)
+                                anim.translationY(PixelUtil.toPixelFromDIP(a.to))
                             } else {
                                 continue
                             }
                             pending.add(anim)
-                            // anim.start()
-                        }
-                    }
-
-                    runOnUIThread {
-                        for(p in pending) {
-                            p.start()
                         }
                     }
                 }
