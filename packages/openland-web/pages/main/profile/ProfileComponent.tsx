@@ -255,6 +255,8 @@ const SocialIconWrapper = Glamorous.div({
     display: 'flex'
 });
 
+const LinkTag = makeNavigable(XTag);
+
 const About = (props: { organizationQuery: OrganizationQuery }) => {
     let org = props.organizationQuery.organization;
     let hasLinks = (org.linkedin || org.twitter || org.website);
@@ -367,14 +369,23 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                         )}
                     </XSubHeader>
                     <SectionContent withTags={true}>
-                        {(org.organizationType || []).map((l, i) => (
-                            <XTag
-                                key={l + i}
-                                size="large"
-                                rounded={true}
-                                text={l}
-                            />
-                        ))}
+                        {(org.organizationType || []).map((l, i) => {
+                            let clauses = [{
+                                type: 'organizationType',
+                                label: l,
+                                value: l
+                            }];
+
+                            return (
+                                <LinkTag
+                                    key={l + i}
+                                    path={'/directory?clauses=' + encodeURIComponent(JSON.stringify(clauses))}
+                                    size="large"
+                                    rounded={true}
+                                    text={l}
+                                />
+                            );
+                        })}
                     </SectionContent>
                 </>
             )}
@@ -390,14 +401,24 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                         )}
                     </XSubHeader>
                     <SectionContent withTags={true}>
-                        {(org.locations || []).map((l, i) => (
-                            <XTag
-                                key={l + i}
-                                size="large"
-                                rounded={true}
-                                text={l}
-                            />
-                        ))}
+                        {(org.locations || []).map((l, i) => {
+
+                            let clauses = [{
+                                type: 'location',
+                                label: l,
+                                value: l
+                            }];
+
+                            return (
+                                <LinkTag
+                                    key={l + i}
+                                    path={'/directory?clauses=' + encodeURIComponent(JSON.stringify(clauses))}
+                                    size="large"
+                                    rounded={true}
+                                    text={l}
+                                />
+                            );
+                        })}
                     </SectionContent>
                 </>
             )}
@@ -493,7 +514,6 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
 
     render() {
         const { user } = this.props;
-        console.log(user);
         return (
             <MemberCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
