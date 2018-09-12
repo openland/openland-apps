@@ -43,7 +43,8 @@ export function XLinkExternal(props: { href: string, content?: string, showIcon?
 
     return (
         <ExternalLinkDiv href={props.href} target="_blank" className={props.className}>
-            {content}{props.showIcon !== false && <ExternalLinkIcon icon="launch" />}
+            {content.length > 60 ? content.substring(0, 60) + '...' : content}
+            {props.showIcon !== false && <ExternalLinkIcon icon="launch" />}
         </ExternalLinkDiv>
     );
 }

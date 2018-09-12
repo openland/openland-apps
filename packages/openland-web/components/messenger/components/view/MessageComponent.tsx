@@ -27,7 +27,7 @@ interface MessageComponentProps {
 }
 
 const MessageWrapper = Glamorous(XVertical)({
-    width: '100%'
+    width: 'calc(100% - 60px)'
 });
 
 const Name = Glamorous.div({

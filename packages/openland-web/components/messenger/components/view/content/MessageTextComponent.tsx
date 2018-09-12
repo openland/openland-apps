@@ -1,7 +1,7 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
-import Glamorous from 'glamorous';
 import { emojify } from 'react-emojione';
 
 export interface MessageTextComponentProps {
@@ -12,6 +12,7 @@ export interface MessageTextComponentProps {
 const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props) => ({
     display: 'inline',
     whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
     opacity: props.isService ? 0.3 : 1,
     fontSize: props.big ? 44 : 14,
     lineHeight: 1.57,

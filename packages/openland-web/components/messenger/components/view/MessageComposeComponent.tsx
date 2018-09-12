@@ -290,7 +290,7 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
                     </DropAreaContent>
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
-                    <XVertical separator={6} flexGrow={1}>
+                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
                         <TextInputWrapper>
                             <XRichTextInput
                                 placeholder="Write a message..."
