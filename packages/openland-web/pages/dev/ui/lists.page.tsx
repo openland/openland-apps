@@ -10,7 +10,7 @@ import { XTitle } from 'openland-x/XTitle';
 
 const SampleData = [ 'Kimberlie Hammond', 'Cassi Spurrier', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.', 'Salley Bartman', 'Thora Thompkins', 'Cherlyn Jolley', 'Mckinley Mayle', 'Simona Gomer', 'Georgine Lama', 'Shamika Callison', 'Mahalia Sanmiguel', 'Phoebe Mink', 'Celinda Ealy', 'Myles Koth', 'Lavonna Owings', 'Serafina Mount', 'Melonie Stokley', 'Tara Ballas', 'Van Mccolley', 'Karie Kennelly', 'Jordon Valenti', 'Theresia Ronan', 'Allan Frerichs', 'Helena Ratcliffe', 'Ivelisse Sponaugle', 'Colette Dejonge', 'Nancey Black', 'Mariana Hanford', 'Alesha Frei', 'Dorinda Wolfe', 'Erline Logue', 'Nancee Horta', 'Alane Odle', 'Dustin Tunnell', 'Kera Sidle', 'Samara Utsey', 'Jina Mewborn', 'Pasquale Arzola', 'Tressie Raffield', 'Margarito Otwell', 'Carly Howze', 'Valentine Reineke', 'Michael Oaks', 'Gala Eye', 'Rosie Prange', 'Columbus Nicolas', 'Gilberte Finchum', 'Diego Merida', 'Lanie Manalo', 'Windy Dieckman' ];
 
-function row (index: number) {
+function itemRenderer (index: number) {
     return (
         <div style={{ borderBottom: '1px solid black' }}>
             {SampleData[index]}
@@ -42,14 +42,14 @@ export default withApp('UI Framework - Lists', 'viewer', (props) => {
                     <XHorizontal height={300}>
                         <XList
                             rowCount={SampleData.length}
-                            row={row}
+                            itemRenderer={itemRenderer}
                         />
                     </XHorizontal>
                     <XTitle>Infinite scroll</XTitle>
                     <XHorizontal height={300}>
                         <XListInfinite
                             rowCount={SampleData.length * 10}
-                            row={row}
+                            itemRenderer={itemRenderer}
                             isRowLoaded={isRowLoaded}
                             loadMoreRows={loadMoreRows}
                         />

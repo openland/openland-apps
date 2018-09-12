@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { AutoSizer, InfiniteLoader, List, Index, CellMeasurer } from 'react-virtualized';
-import { MeasuredCellParent, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
+import { AutoSizer, InfiniteLoader, List, CellMeasurer, ListRowProps } from 'react-virtualized';
+import { CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 
 interface XListProps {
     rowCount: number;
-    row: any;
+    itemRenderer: any;
     autoHeight?: boolean;
 }
 
@@ -14,22 +14,13 @@ interface XListInfiniteProps extends XListProps {
     loadMoreRows: any;
 }
 
-interface XListRowRendererProps {
-    isScrolling: boolean;
-    isVisible: boolean;
-    key: string;
-    index: number;
-    style: React.CSSProperties;
-    parent: MeasuredCellParent;
-}
-
 export class XList extends React.Component<XListProps> {
     _cache = new CellMeasurerCache({
         fixedWidth: true,
         minHeight: 20,
     });
 
-    _rowRenderer = (info: XListRowRendererProps) => {
+    _rowRenderer = (info: ListRowProps) => {
         return (
             <CellMeasurer
                 cache={this._cache}
@@ -39,7 +30,7 @@ export class XList extends React.Component<XListProps> {
                 parent={info.parent}
             >
                 <div style={info.style}>
-                    {this.props.row(info.index)}
+                    {this.props.itemRenderer(info.index)}
                 </div>
             </CellMeasurer>
         );
@@ -70,7 +61,7 @@ export class XListInfinite extends React.Component<XListInfiniteProps> {
         minHeight: 20,
     });
 
-    _rowRenderer = (info: XListRowRendererProps) => {
+    _rowRenderer = (info: ListRowProps) => {
         return (
             <CellMeasurer
                 cache={this._cache}
@@ -80,7 +71,7 @@ export class XListInfinite extends React.Component<XListInfiniteProps> {
                 parent={info.parent}
             >
                 <div style={info.style}>
-                    {this.props.row(info.index)}
+                    {this.props.itemRenderer(info.index)}
                 </div>
             </CellMeasurer>
         );
