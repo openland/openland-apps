@@ -1,8 +1,10 @@
 package com.korshakov.testing.openland.async
 
+import android.animation.AnimatorSet
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.Log
+import android.view.ViewPropertyAnimator
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -102,7 +104,7 @@ class AsyncAnimatedViewManager(reactContext: ReactApplicationContext) : ReactCon
 
                 if (hasAllViews) {
                     toRemove.add(resolved)
-
+                    val pending = mutableListOf<ViewPropertyAnimator>()
                     for (a in resolved.animations) {
                         val view = resolvedView[a.viewKey]
 
@@ -125,7 +127,14 @@ class AsyncAnimatedViewManager(reactContext: ReactApplicationContext) : ReactCon
                             } else {
                                 continue
                             }
-                            anim.start()
+                            pending.add(anim)
+                            // anim.start()
+                        }
+                    }
+
+                    runOnUIThread {
+                        for(p in pending) {
+                            p.start()
                         }
                     }
                 }

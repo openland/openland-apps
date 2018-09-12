@@ -171,6 +171,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         //     });
         // });
 
+        // TODO: use transaction callback inst3ead
         setTimeout(
             () => {
                 unlock();
@@ -182,7 +183,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 this.mounted = this.mounted.filter((v) => v !== underlay);
                 this.setState({ mounted: this.mounted, transitioning: false });
             },
-            500);
+            1000);
 
         beginAnimationTransaction();
         if (Platform.OS === 'ios') {
@@ -225,6 +226,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         //     unlock();
         // });
 
+        // TODO: use transaction callback inst3ead
         setTimeout(
             () => {
                 unlock();
@@ -233,7 +235,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
                 this.routes = this.routes.filter((v) => v.record.key !== record.key);
                 this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
             },
-            500);
+            1000);
 
         this.setState({ mounted: this.mounted, transitioning: true });
 
