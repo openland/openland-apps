@@ -21,7 +21,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var inited = false
     private var dataView: AsyncDataView? = null
     private var dataViewKey: String? = null
-    private var state: AsyncDataViewState? = null
+    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true)
     private var dataViewSibscription: (() -> Unit)? = null
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
@@ -31,6 +31,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                 android.widget.FrameLayout.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT))
+        lithoView.setComponent(SolidColor.create(asyncContext).color(Color.RED).build())
     }
 
     fun setInverted(inverted: Boolean) {
@@ -65,14 +66,14 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .disablePTR(true)
                 .section(LithoSection.create(SectionContext(asyncContext))
-                        .dataModel(this.state!!.items)
+                        .dataModel(this.state.items)
                         .headerPadding(this.headerPadding)
                         .reactContext(context as ReactContext)
-                        .loading(!this.state!!.competed)
+                        .loading(!this.state.competed)
                         .dataViewKey(this.dataViewKey!!))
                 .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
                 .build()
-        lithoView.setComponent(recycler)
+        lithoView.setComponentAsync(recycler)
     }
 
     fun dispose() {

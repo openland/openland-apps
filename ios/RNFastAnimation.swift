@@ -63,6 +63,8 @@ class RNFastAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
   @objc(animate:)
   func animate(spec: String) {
     let spec = parseAnimationSpec(spec: spec)
+    
+    // FIXME: RACE CONDITION WITH MAIN THREAD!!!!!!
     pendingAnimations.append(spec)
     
     if !self.isRegistered {

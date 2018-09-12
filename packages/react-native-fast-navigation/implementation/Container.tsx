@@ -173,8 +173,12 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         });
 
         beginAnimationTransaction();
-        animateTranslateX(SCREEN_WIDTH, 0, AnimatedViewKeys.page(record.key));
-        animateTranslateX(0, -SCREEN_WIDTH * 0.3, AnimatedViewKeys.page(underlayHolder.record.key));
+        if (Platform.OS === 'ios') {
+            animateTranslateX(SCREEN_WIDTH, 0, AnimatedViewKeys.page(record.key));
+            animateTranslateX(0, -SCREEN_WIDTH * 0.3, AnimatedViewKeys.page(underlayHolder.record.key));
+        } else {
+            animateTranslateX(SCREEN_WIDTH, 0, AnimatedViewKeys.page(record.key));
+        }
         animateOpacity(0, 0.3, AnimatedViewKeys.pageShadow(underlayHolder.record.key));
         FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
         commitAnimationTransaction();
@@ -212,8 +216,12 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.setState({ mounted: this.mounted, transitioning: true });
 
         beginAnimationTransaction();
-        animateTranslateX(0, SCREEN_WIDTH, AnimatedViewKeys.page(record.key));
-        animateTranslateX(-SCREEN_WIDTH * 0.3, 0, AnimatedViewKeys.page(underlayHolder.record.key));
+        if (Platform.OS === 'ios') {
+            animateTranslateX(0, SCREEN_WIDTH, AnimatedViewKeys.page(record.key));
+            animateTranslateX(-SCREEN_WIDTH * 0.3, 0, AnimatedViewKeys.page(underlayHolder.record.key));
+        } else {
+            animateTranslateX(0, SCREEN_WIDTH, AnimatedViewKeys.page(record.key));
+        }
         animateOpacity(0.3, 0, AnimatedViewKeys.pageShadow(underlayHolder.record.key));
         FastHeaderCoordinator.moveBackward(record.key, underlayHolder.record.key);
         commitAnimationTransaction();

@@ -1,9 +1,12 @@
 package com.korshakov.testing.openland.async
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.widget.FrameLayout
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
+import com.facebook.litho.widget.SolidColor
 import com.facebook.react.bridge.*
 import com.facebook.react.uimanager.annotations.ReactProp
 
@@ -17,6 +20,7 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
                 android.widget.FrameLayout.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT))
+        lithoView.setComponent(SolidColor.create(asyncContext).color(Color.RED).build())
     }
 
     fun setConfigKey(src: String) {
