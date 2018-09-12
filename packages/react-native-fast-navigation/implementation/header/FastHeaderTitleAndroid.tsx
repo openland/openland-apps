@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { DeviceConfig } from '../../DeviceConfig';
 import { FastHeaderTitleProps } from './FastHeaderTitle';
-import { ASAnimatedView } from 'react-native-async-view/ASAnimatedView';
 import { AnimatedViewKeys } from '../AnimatedViewKeys';
+import { SAnimated } from 'react-native-s/SAnimated';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleProps> {
     render() {
         return (
-            <ASAnimatedView name={AnimatedViewKeys.headerContent(this.props.route)} style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none">
+            <SAnimated.View name={AnimatedViewKeys.headerContent(this.props.route)} style={[styles.container, this.props.index === 0 && styles.containerFirst]} pointerEvents="box-none">
                 <View pointerEvents="box-none" flexDirection="row" flexGrow={1} flexBasis={0}>
                     {this.props.titleView && (
                         <View
@@ -75,7 +75,7 @@ export class FastHeaderTitleAndroid extends React.PureComponent<FastHeaderTitleP
                 <View paddingRight={15} pointerEvents="box-none" renderToHardwareTextureAndroid={true}>
                     {this.props.rightView}
                 </View>
-            </ASAnimatedView>
+            </SAnimated.View>
         );
     }
 }

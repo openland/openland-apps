@@ -12,6 +12,7 @@
                 ["module-resolver", {
                     "root": ["./build/native"],
                     "alias": {
+                        "react-native-s": "./build/native/react-native-s",
                         "react-native-async-view": "./build/native/react-native-async-view",
                         "react-native-fast-navigation": "./build/native/react-native-fast-navigation",
                         "openland-api": "./build/native/openland-api",
@@ -36,6 +37,7 @@
                 ["module-resolver", {
                     "root": ["."],
                     "alias": {
+                        "react-native-s": "./build/native/react-native-s",
                         "react-native-async-view": "./build/native/react-native-async-view",
                         "react-native-fast-navigation": "./build/native/react-native-fast-navigation",
                         "openland-api": "./build/native/openland-api",

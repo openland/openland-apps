@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland;
+package com.korshakov.testing.app;
 
 import android.app.Application;
 
@@ -7,11 +7,11 @@ import com.facebook.react.ReactApplication;
 
 import cl.json.RNSharePackage;
 
-import com.korshakov.testing.openland.async.AsyncPackage;
+import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
-import com.korshakov.testing.openland.hacks.Hacks;
+import com.korshakov.testing.app.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
@@ -75,7 +75,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new VectorIconsPackage(),
                     new A0Auth0Package(),
                     new Hacks(),
-                    new AsyncPackage()
+                    new RNSPackage()
             );
         }
 

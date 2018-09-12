@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.async
+package com.korshakov.testing.app.async
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.hacks;
+package com.korshakov.testing.app.hacks;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

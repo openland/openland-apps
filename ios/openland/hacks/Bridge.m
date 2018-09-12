@@ -3,7 +3,7 @@
 //  openland
 //
 //  Created by Steve Kite on 8/19/18.
-//  Copyright © 2018 Facebook. All rights reserved.
+//  Copyright © 2018 Openland. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -54,9 +54,4 @@ RCT_EXTERN_METHOD(dataViewRemoveItem:(NSString *)dataSourceKey key: (NSString *)
 RCT_EXTERN_METHOD(dataViewMoveItem:(NSString *)dataSourceKey key: (NSString *)key fromIndex: (nonnull NSNumber)fromIndex toIndex: (nonnull NSNumber)toIndex)
 RCT_EXTERN_METHOD(dataViewLoadedMore:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL) completed)
 RCT_EXTERN_METHOD(dataViewCompleted:(NSString *)dataSourceKey)
-@end
-
-@interface RCT_EXTERN_MODULE(RNFastAnimatedViewManager, RCTViewManager)
-RCT_EXPORT_VIEW_PROPERTY(animatedKey, NSString)
-RCT_EXTERN_METHOD(animate: (NSString *)spec)
 @end

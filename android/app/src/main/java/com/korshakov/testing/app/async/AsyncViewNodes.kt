@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.async
+package com.korshakov.testing.app.async
 
 import android.content.res.Resources
 import android.text.Layout
@@ -15,9 +15,9 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
-import com.korshakov.testing.openland.async.views.BackgroundSolidColorDrawable
-import com.korshakov.testing.openland.async.views.CustomLineHeightSpan
-import com.korshakov.testing.openland.async.views.LithoFlex
+import com.korshakov.testing.app.async.views.BackgroundSolidColorDrawable
+import com.korshakov.testing.app.async.views.CustomLineHeightSpan
+import com.korshakov.testing.app.async.views.LithoFlex
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {

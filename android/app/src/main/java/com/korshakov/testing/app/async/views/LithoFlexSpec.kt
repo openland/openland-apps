@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.async.views
+package com.korshakov.testing.app.async.views
 
 import android.graphics.drawable.RippleDrawable
 import android.view.View
@@ -11,7 +11,7 @@ import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.Prop
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaJustify
-import com.korshakov.testing.openland.async.*
+import com.korshakov.testing.app.async.*
 import com.facebook.litho.annotations.FromEvent
 import com.facebook.litho.ClickEvent
 import com.facebook.litho.annotations.OnEvent

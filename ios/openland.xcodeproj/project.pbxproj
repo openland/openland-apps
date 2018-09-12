@@ -66,6 +66,9 @@
 		A0C52DC8CE88418DB6A5F0E4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDCBF4B960B9464F89A8B561 /* Foundation.ttf */; };
 		AA006CD0211A581D0093F7EF /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA006C95211A58070093F7EF /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA5ACBC82107642B004798B4 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5ACBC521076417004798B4 /* libRCTPushNotification.a */; };
+		AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA67E25221492C8400AE9CAC /* RNSAnimatedViewManager.swift */; };
+		AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA67E25421492DBE00AE9CAC /* RNSUtils.swift */; };
+		AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */; };
 		AA90469D210F2F0600F989BC /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; };
 		AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA90469F210F2F0F00F989BC /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */; };
@@ -92,9 +95,9 @@
 		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
 		AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */; };
 		AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */; };
-		AAE50182214602D700BEAA04 /* RNFastAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50181214602D700BEAA04 /* RNFastAnimation.swift */; };
+		AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */; };
 		AAE501842146079E00BEAA04 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
-		AAE50186214607B600BEAA04 /* RNFastAnimationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50185214607B600BEAA04 /* RNFastAnimationSpec.swift */; };
+		AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */; };
 		AAE56C4F2127F467003706B3 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56C0E2127F447003706B3 /* libART.a */; };
 		AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
@@ -752,6 +755,10 @@
 		9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		AA67E25221492C8400AE9CAC /* RNSAnimatedViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedViewManager.swift; sourceTree = "<group>"; };
+		AA67E25421492DBE00AE9CAC /* RNSUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSUtils.swift; sourceTree = "<group>"; };
+		AA67E2562149315C00AE9CAC /* RNSAnimated-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAnimated-Bridge.h"; sourceTree = "<group>"; };
+		AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAnimated-Bridge.m"; sourceTree = "<group>"; };
 		AA904699210F2EDB00F989BC /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNTouchableNode.swift; sourceTree = "<group>"; };
@@ -777,8 +784,8 @@
 		AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardManager.swift; sourceTree = "<group>"; };
 		AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardViewManager.swift; sourceTree = "<group>"; };
 		AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardContext.swift; sourceTree = "<group>"; };
-		AAE50181214602D700BEAA04 /* RNFastAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNFastAnimation.swift; sourceTree = "<group>"; };
-		AAE50185214607B600BEAA04 /* RNFastAnimationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNFastAnimationSpec.swift; sourceTree = "<group>"; };
+		AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedView.swift; sourceTree = "<group>"; };
+		AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimationSpec.swift; sourceTree = "<group>"; };
 		AAE56C072127F447003706B3 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
 		AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AggressiveImage.swift; path = openland/hacks/AggressiveImage.swift; sourceTree = "<group>"; };
@@ -972,7 +979,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
-				AAE501832146078400BEAA04 /* RNFastAnimation */,
+				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
@@ -1346,13 +1353,17 @@
 			name = RNAsyncView;
 			sourceTree = "<group>";
 		};
-		AAE501832146078400BEAA04 /* RNFastAnimation */ = {
+		AAE501832146078400BEAA04 /* RNSAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				AAE50181214602D700BEAA04 /* RNFastAnimation.swift */,
-				AAE50185214607B600BEAA04 /* RNFastAnimationSpec.swift */,
+				AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */,
+				AA67E25221492C8400AE9CAC /* RNSAnimatedViewManager.swift */,
+				AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */,
+				AA67E25421492DBE00AE9CAC /* RNSUtils.swift */,
+				AA67E2562149315C00AE9CAC /* RNSAnimated-Bridge.h */,
+				AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */,
 			);
-			name = RNFastAnimation;
+			name = RNSAnimation;
 			sourceTree = "<group>";
 		};
 		AAE56C082127F447003706B3 /* Products */ = {
@@ -1518,7 +1529,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 610;
-				ORGANIZATIONNAME = Facebook;
+				ORGANIZATIONNAME = Openland;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -2365,6 +2376,7 @@
 				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
+				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
@@ -2374,9 +2386,11 @@
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
-				AAE50186214607B600BEAA04 /* RNFastAnimationSpec.swift in Sources */,
+				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
+				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
+				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
 				AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */,
 				AAB0EF87213719B300FBCB75 /* RNAsyncViewContext.swift in Sources */,
 				AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */,
@@ -2385,7 +2399,7 @@
 				AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */,
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
-				AAE50182214602D700BEAA04 /* RNFastAnimation.swift in Sources */,
+				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,

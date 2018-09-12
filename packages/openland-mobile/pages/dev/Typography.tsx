@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import ViewOverflow from 'react-native-view-overflow';
+import { View, Text, StyleSheet } from 'react-native';
 import { ZScrollView } from '../../components/ZScrollView';
-import { animateOpacity, ASAnimatedView } from 'react-native-async-view/ASAnimatedView';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+import { SAnimated } from 'react-native-s/SAnimated';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,15 +33,23 @@ export class Typography extends React.PureComponent {
                     title="Animate!"
                     onPress={() => {
                         if (this.hidden) {
-                            animateOpacity(0, 1, 'typography_container');
+                            SAnimated.timing('typography_container', {
+                                property: 'opacity',
+                                from: 0,
+                                to: 1
+                            });
                         } else {
-                            animateOpacity(1, 0, 'typography_container');
+                            SAnimated.timing('typography_container', {
+                                property: 'opacity',
+                                from: 1,
+                                to: 0
+                            });
                         }
                         this.hidden = !this.hidden;
                     }}
                 />
                 <ZScrollView>
-                    <ASAnimatedView name="typography_container">
+                    <SAnimated.View name="typography_container">
                         <View width="100%" height="100%" backgroundColor="#fff">
                             {/* <ScrollView width="100%" height="100%" backgroundColor="#fff"> */}
                             <View width="100%" paddingTop={8} paddingLeft={8} flexDirection="column">
@@ -97,7 +104,7 @@ export class Typography extends React.PureComponent {
                                 </View>
                             </View>
                         </View>
-                    </ASAnimatedView>
+                    </SAnimated.View>
                 </ZScrollView>
             </>
         );

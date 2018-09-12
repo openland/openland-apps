@@ -3,7 +3,7 @@
 //  openland
 //
 //  Created by Steve Kite on 8/28/18.
-//  Copyright © 2018 Facebook. All rights reserved.
+//  Copyright © 2018 Openland. All rights reserved.
 //
 
 import Foundation

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Animated, View, Text, LayoutChangeEvent, LayoutAnimation, StyleSheet, TextStyle, Dimensions, Image, Button, TouchableWithoutFeedback } from 'react-native';
+import { Animated, View, Text, StyleSheet, TextStyle, Dimensions, Image, Button, TouchableWithoutFeedback } from 'react-native';
 import { FastHeaderTitleProps } from './FastHeaderTitle';
 import { DeviceConfig } from '../../DeviceConfig';
 import { FastScrollValue } from '../../FastScrollValue';
 import { FastHeaderBackButton } from '../../views/FastHeaderBackButton';
-import { ASAnimatedView } from 'react-native-async-view/ASAnimatedView';
 import { AnimatedViewKeys } from '../AnimatedViewKeys';
+import { SAnimated } from 'react-native-s/SAnimated';
 
 const styles = StyleSheet.create({
     title: {
@@ -112,7 +112,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
         let invertedSearchProgress = Animated.add(1, Animated.multiply(this.props.searchProgress, -1));
 
         const mainHeader = (
-            <ASAnimatedView name={AnimatedViewKeys.headerContent(this.props.route)} style={{ opacity: 0, flexDirection: 'row', width: '100%' }} pointerEvents="box-none">
+            <SAnimated.View name={AnimatedViewKeys.headerContent(this.props.route)} style={{ opacity: 0, flexDirection: 'row', width: '100%' }} pointerEvents="box-none">
                 {/* <View key="main-header" style={{ flexDirection: 'row', flexWrap: 'nowrap' }} pointerEvents="box-none"> */}
                 <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 150 }} pointerEvents="none">
                     {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
@@ -120,11 +120,11 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                 </View>
                 {/* <View style={{ flexGrow: this.state.leftSize, flexBasis: this.state.leftSize }} pointerEvents="box-none" /> */}
                 {/* {this.state.rightSize - this.state.leftSize > 0 && <View style={{ flexGrow: this.state.rightSize - this.state.leftSize, flexBasis: this.state.rightSize - this.state.leftSize, flexShrink: 100000 }} pointerEvents="box-none" />} */}
-                <ASAnimatedView name={AnimatedViewKeys.headerTitle(this.props.route)} style={{ flexShrink: 1, flexGrow: 1, flexDirection: 'column' }} pointerEvents="box-none">
+                <SAnimated.View name={AnimatedViewKeys.headerTitle(this.props.route)} style={{ flexShrink: 1, flexGrow: 1, flexDirection: 'column' }} pointerEvents="box-none">
                     {!this.props.titleView && this.props.titleText && <Text style={styles.title}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
                     {this.props.titleView}
-                </ASAnimatedView>
+                </SAnimated.View>
                 {/* {this.state.rightSize - this.state.leftSize < 0 && <View style={{ flexGrow: -(this.state.rightSize - this.state.leftSize), flexBasis: -(this.state.rightSize - this.state.leftSize), flexShrink: 100000 }} pointerEvents="box-none" />} */}
                 {/* <View style={{ flexGrow: this.state.rightSize, flexBasis: this.state.rightSize }} pointerEvents="box-none" /> */}
                 <View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
@@ -140,11 +140,11 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                 {/* <View key="right-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} onLayout={this.handleRightLayout} pointerEvents="box-none">
                     {this.props.rightView}
                 </View> */}
-            </ASAnimatedView>
+            </SAnimated.View>
         );
 
         const largeHeader = this.props.headerAppearance === 'large' && (
-            <ASAnimatedView name={AnimatedViewKeys.headerTitleLarge(this.props.route)} key="large-header" style={{ overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
+            <SAnimated.View name={AnimatedViewKeys.headerTitleLarge(this.props.route)} key="large-header" style={{ overflow: 'hidden', position: 'absolute', top: DeviceConfig.navigationBarHeight, left: 0, right: 0, flexDirection: 'row', flexWrap: 'nowrap', height: Dimensions.get('window').height }} pointerEvents="none">
                 <Animated.View
                     style={{
                         flexShrink: 1,
@@ -162,7 +162,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                     {!this.props.titleView && this.props.titleText && <Text style={styles.titleLarge}>{this.props.titleText}</Text>}
                     {!this.props.titleView && this.props.subtitleText && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>}
                 </Animated.View>
-            </ASAnimatedView>
+            </SAnimated.View>
         );
 
         let search: any | undefined;
@@ -172,7 +172,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
             let translateStatic = this.props.config.searchActive ? DeviceConfig.statusBarHeight : 0;
             translateGlobal = this.props.config.searchActive ? -DeviceConfig.navigationBarHeightLarge - DeviceConfig.statusBarHeight : 0;
             search = (
-                <ASAnimatedView name={AnimatedViewKeys.headerSearch(this.props.route)} style={{ position: 'absolute', overflow: 'hidden', top: DeviceConfig.navigationBarHeightLarge + translateStatic, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
+                <SAnimated.View name={AnimatedViewKeys.headerSearch(this.props.route)} style={{ position: 'absolute', overflow: 'hidden', top: DeviceConfig.navigationBarHeightLarge + translateStatic, left: 0, right: 0, height: Dimensions.get('window').height }} pointerEvents="box-none">
                     <Animated.View style={{ lexDirection: 'column', alignItems: 'stretch', flexWrap: 'nowrap', height: 44, transform: [{ translateY: translate }] }} pointerEvents="box-none">
                         <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                             <TouchableWithoutFeedback onPress={this.props.config.searchPress}>
@@ -196,7 +196,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                             </View>
                         </View>
                     </Animated.View>
-                </ASAnimatedView>
+                </SAnimated.View>
             );
         }
 

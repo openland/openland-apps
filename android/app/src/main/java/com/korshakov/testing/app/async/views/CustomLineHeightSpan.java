@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.async.views;
+package com.korshakov.testing.app.async.views;
 
 import android.graphics.Paint;
 import android.text.style.LineHeightSpan;

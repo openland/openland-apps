@@ -124,6 +124,9 @@
       ],
       "react-native-fast-navigation": [
         "react-native-fast-navigation"
+      ],
+      "react-native-s": [
+        "react-native-s"
       ]
     },
     "importHelpers": true
@@ -176,6 +179,7 @@
     "./packages/openland-mac/src",
     "./packages/openland-shared",
     "./packages/react-native-async-view",
-    "./packages/react-native-fast-navigation"
+    "./packages/react-native-fast-navigation",
+    "./packages/react-native-s"
   ]
 }

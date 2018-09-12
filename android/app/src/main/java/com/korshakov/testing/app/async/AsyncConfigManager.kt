@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland.async
+package com.korshakov.testing.app.async
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule

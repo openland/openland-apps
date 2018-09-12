@@ -1,4 +1,4 @@
-package com.korshakov.testing.openland;
+package com.korshakov.testing.app;
 
 import android.os.Bundle;
 

@@ -8,9 +8,9 @@ import { PageContainer } from './page/PageContainer';
 import { FastHistoryRecord } from '../FastHistoryRecord';
 import { FastHistoryState } from '../FastHistoryState';
 import { RouteViewState } from './RouteViewState';
-import { ASAnimatedView, animateTranslateX, animateOpacity, beginAnimationTransaction, commitAnimationTransaction } from 'react-native-async-view/ASAnimatedView';
 import { AnimatedViewKeys } from './AnimatedViewKeys';
 import { FastHeaderCoordinator } from './header/FastHeaderCoordinator';
+import { SAnimated } from 'react-native-s/SAnimated';
 
 const styles = StyleSheet.create({
     root: {
@@ -185,16 +185,36 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             },
             1000);
 
-        beginAnimationTransaction();
+        //
+        // Animations
+        //
+        SAnimated.beginTransaction();
         if (Platform.OS === 'ios') {
-            animateTranslateX(SCREEN_WIDTH, 0, AnimatedViewKeys.page(record.key));
-            animateTranslateX(0, -SCREEN_WIDTH * 0.3, AnimatedViewKeys.page(underlayHolder.record.key));
+            SAnimated.spring(AnimatedViewKeys.page(record.key), {
+                property: 'translateX',
+                from: SCREEN_WIDTH,
+                to: 0
+            });
+            SAnimated.spring(AnimatedViewKeys.page(underlayHolder.record.key), {
+                property: 'translateX',
+                from: 0,
+                to: -SCREEN_WIDTH
+            });
         } else {
-            animateTranslateX(SCREEN_WIDTH, 0, AnimatedViewKeys.page(record.key));
+            SAnimated.timing(AnimatedViewKeys.page(record.key), {
+                property: 'translateX',
+                from: SCREEN_WIDTH,
+                to: 0,
+                easing: { bezier: [0.4, 0.0, 0.2, 1] }
+            });
         }
-        // animateOpacity(0, 0.3, AnimatedViewKeys.pageShadow(underlayHolder.record.key));
+        SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.record.key), {
+            property: 'opacity',
+            from: 0,
+            to: 0.3
+        });
         FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
-        commitAnimationTransaction();
+        SAnimated.commitTransaction();
     }
 
     onPopped = (record: FastHistoryRecord, state: FastHistoryState, args?: { immediate?: boolean }) => {
@@ -239,16 +259,33 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
 
         this.setState({ mounted: this.mounted, transitioning: true });
 
-        beginAnimationTransaction();
+        SAnimated.beginTransaction();
         if (Platform.OS === 'ios') {
-            animateTranslateX(0, SCREEN_WIDTH, AnimatedViewKeys.page(record.key));
-            animateTranslateX(-SCREEN_WIDTH * 0.3, 0, AnimatedViewKeys.page(underlayHolder.record.key));
+            SAnimated.spring(AnimatedViewKeys.page(record.key), {
+                property: 'translateX',
+                from: 0,
+                to: SCREEN_WIDTH
+            });
+            SAnimated.spring(AnimatedViewKeys.page(underlayHolder.record.key), {
+                property: 'translateX',
+                from: -SCREEN_WIDTH * 0.3,
+                to: 0
+            });
         } else {
-            animateTranslateX(0, SCREEN_WIDTH, AnimatedViewKeys.page(record.key));
+            SAnimated.timing(AnimatedViewKeys.page(record.key), {
+                property: 'translateX',
+                from: 0,
+                to: SCREEN_WIDTH,
+                easing: { bezier: [0.4, 0.0, 0.2, 1] }
+            });
         }
-        animateOpacity(0.3, 0, AnimatedViewKeys.pageShadow(underlayHolder.record.key));
+        SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.record.key), {
+            property: 'opacity',
+            from: 0.3,
+            to: 0
+        });
         FastHeaderCoordinator.moveBackward(record.key, underlayHolder.record.key);
-        commitAnimationTransaction();
+        SAnimated.commitTransaction();
     }
     // onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
     //     if (this.currentHistory.history.length < 2) {
@@ -371,19 +408,19 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
             <View style={styles.pages}>
                 {this.state.routes.map((v) => {
                     return (
-                        <ASAnimatedView name={AnimatedViewKeys.page(v.record.key)} key={'page-' + v.record.key} style={styles.page} pointerEvents="box-none">
+                        <SAnimated.View name={AnimatedViewKeys.page(v.record.key)} key={'page-' + v.record.key} style={styles.page} pointerEvents="box-none">
                             <PageContainer
                                 component={v.record.component}
                                 router={v.record.router}
                                 mounted={!!this.state.mounted.find((m) => v.record.key === m)}
                             />
-                            <ASAnimatedView
+                            <SAnimated.View
                                 name={AnimatedViewKeys.pageShadow(v.record.key)}
                                 key={'shadow-' + v.record.key}
                                 style={styles.pageShadow}
                                 pointerEvents="none"
                             />
-                        </ASAnimatedView>
+                        </SAnimated.View>
                     );
                 })}
             </View>
