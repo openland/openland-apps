@@ -251,7 +251,8 @@ const CategoryPicker = withTopCategories((props) => (
         onShow={(props as any).onShow}
         shown={(props as any).shown}
         noResultsText={(props as any).noResultsText}
-    />)) as React.ComponentType<SearchSelectProps>;
+    />
+)) as React.ComponentType<SearchSelectProps>;
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     input?: any;
@@ -349,6 +350,21 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         document.addEventListener('keydown', this.keydownHandler);
         if (this.props.router.query.clauses !== undefined) {
             this.routerParser();
+        }
+    }
+
+    componentWillReceiveProps(nextProps: XWithRouter) {
+        if (nextProps.router.query.clauses) {
+            let clauses: SearchCondition[] = JSON.parse(nextProps.router.query.clauses);
+            this.setState({ 
+                conditions: clauses, 
+                searchText: '' 
+            });
+        } else {
+            this.setState({ 
+                conditions: [], 
+                searchText: '' 
+            });
         }
     }
 
