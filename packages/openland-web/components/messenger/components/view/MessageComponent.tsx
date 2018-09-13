@@ -39,7 +39,7 @@ const Name = Glamorous.div({
 const Organization = makeNavigable(Glamorous.div({
     fontSize: 12,
     fontWeight: 500,
-    color: '#ADB4C0',
+    color: '#99A2B0',
     letterSpacing: -0.2,
     alignSelf: 'flex-end',
     marginBottom: -1,
@@ -55,7 +55,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     fontWeight: 500,
     letterSpacing: -0.2,
     whiteSpace: 'nowrap',
-    color: '#ADB4C0'
+    color: '#99A2B0'
 }));
 
 const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
