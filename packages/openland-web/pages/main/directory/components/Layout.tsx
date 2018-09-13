@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XIcon } from 'openland-x/XIcon';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 import RightIcon from '../icons/ic-arrow-rignt.svg';
@@ -118,12 +117,6 @@ export const SearchFormContent = Glamorous(XHorizontal)({
             opacity: 0.5
         },
     }
-});
-
-export const SearchFormIcon = Glamorous(XIcon)({
-    marginRight: 5,
-    fontSize: 20,
-    color: '#c1c7cf',
 });
 
 export const SearchInput = Glamorous.input({
