@@ -22,7 +22,6 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuItem, XMenuVertical } from 'openland-x/XMenuItem';
-import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
