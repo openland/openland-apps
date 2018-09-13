@@ -7,8 +7,11 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.UIManagerModuleListener
-import com.openland.react.async.runOnUIThreadDelayed
+import com.openland.react.runOnUIThreadDelayed
 
+/**
+ * RNSWindowManager removes window background right after first rendering of the application to avoid overdraw
+ */
 class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), LifecycleEventListener, UIManagerModuleListener {
 
     private var isActive = false

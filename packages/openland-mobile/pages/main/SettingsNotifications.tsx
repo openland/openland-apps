@@ -3,8 +3,8 @@ import { withApp } from '../../components/withApp';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { ZQuery } from '../../components/ZQuery';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { ZForm } from '../../components/ZForm';
@@ -23,8 +23,8 @@ class SettingsNotifciationsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <FastHeader title="Notifications" />
-                <FastHeaderButton title="Save" onPress={this.handleSave} />
+                {/* <FastHeader title="Notifications" />
+                <FastHeaderButton title="Save" onPress={this.handleSave} /> */}
                 <YMutation mutation={SettingsUpdateMutation}>
                     {save => (
                         <ZQuery query={SettingsQuery}>

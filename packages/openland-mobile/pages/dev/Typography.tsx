@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ZScrollView } from '../../components/ZScrollView';
 import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+// import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { SAnimated } from 'react-native-s/SAnimated';
 
 const styles = StyleSheet.create({
@@ -28,7 +28,7 @@ export class Typography extends React.PureComponent {
     render() {
         return (
             <>
-                <FastHeader title="Testing" />
+                {/* <FastHeader title="Testing" />
                 <FastHeaderButton
                     title="Animate!"
                     onPress={() => {
@@ -47,7 +47,7 @@ export class Typography extends React.PureComponent {
                         }
                         this.hidden = !this.hidden;
                     }}
-                />
+                /> */}
                 <ZScrollView>
                     <SAnimated.View name="typography_container">
                         <View width="100%" height="100%" backgroundColor="#fff">

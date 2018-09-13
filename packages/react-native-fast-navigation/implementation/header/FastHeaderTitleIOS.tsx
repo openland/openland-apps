@@ -3,9 +3,9 @@ import { Animated, View, Text, StyleSheet, TextStyle, Dimensions, Image, Button,
 import { FastHeaderTitleProps } from './FastHeaderTitle';
 import { DeviceConfig } from '../../DeviceConfig';
 import { FastScrollValue } from '../../FastScrollValue';
-import { FastHeaderBackButton } from '../../views/FastHeaderBackButton';
 import { AnimatedViewKeys } from '../AnimatedViewKeys';
 import { SAnimated } from 'react-native-s/SAnimated';
+import { SBackButton } from 'react-native-s/SBackButton';
 
 const styles = StyleSheet.create({
     title: {
@@ -116,7 +116,7 @@ export class FastHeaderTitleIOS extends React.PureComponent<FastHeaderTitleProps
                 {/* <View key="main-header" style={{ flexDirection: 'row', flexWrap: 'nowrap' }} pointerEvents="box-none"> */}
                 <View key="left-render" style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 150 }} pointerEvents="none">
                     {this.props.index === 0 && <View width={0} opacity={0} pointerEvents="none" />}
-                    {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><FastHeaderBackButton /></View>}
+                    {this.props.index !== 0 && <View pointerEvents="none" opacity={0}><SBackButton /></View>}
                 </View>
                 {/* <View style={{ flexGrow: this.state.leftSize, flexBasis: this.state.leftSize }} pointerEvents="box-none" /> */}
                 {/* {this.state.rightSize - this.state.leftSize > 0 && <View style={{ flexGrow: this.state.rightSize - this.state.leftSize, flexBasis: this.state.rightSize - this.state.leftSize, flexShrink: 100000 }} pointerEvents="box-none" />} */}

@@ -80,7 +80,7 @@ export class FastHeaderGuard extends React.PureComponent<FastHeaderContainerProp
             record: v.record,
             config: v.record.config.getState()!!,
             searchProgress: v.searchProgress
-        }));
+        } as NormalizedRoute));
     }
 
     render() {

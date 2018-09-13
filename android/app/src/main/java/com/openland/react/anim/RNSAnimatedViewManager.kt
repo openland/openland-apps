@@ -17,30 +17,6 @@ import com.openland.react.anim.hack.CubicBezierInterpolator
 import com.openland.react.anim.hack.MakeAnimationsFast
 
 
-class RNSAnimatedViewViewManager(val reactContext: ReactApplicationContext) : ReactViewManager() {
-
-    private val manager: RNSAnimatedViewManager by lazy {
-        reactContext.getNativeModule(RNSAnimatedViewManager::class.java)!!
-    }
-
-    override fun getName(): String {
-        return "RNSAnimatedView"
-    }
-
-    override fun createViewInstance(reactContext: ThemedReactContext): RNSAnimatedView {
-        return RNSAnimatedView(this, reactContext)
-    }
-
-    fun registerView(key: String, view: RNSAnimatedView) {
-        this.manager.registerView(key, view)
-    }
-
-    @ReactProp(name = "animatedKey")
-    fun setAnimatedKey(view: RNSAnimatedView, key: String) {
-        view.setAnimatedKey(key)
-    }
-}
-
 class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), UIManagerModuleListener {
 
     private var views = mutableMapOf<String, RNSAnimatedView>()
@@ -55,6 +31,9 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
         // Subscribe for mount events to catch right time to start animation
         val uiManager = reactApplicationContext.getNativeModule(UIManagerModule::class.java)
         uiManager.addUIManagerListener(this)
+
+        // Register in view view manager
+        RNSAnimatedViewViewManager.sharedInstance.registerViewManager(this)
     }
 
     /**

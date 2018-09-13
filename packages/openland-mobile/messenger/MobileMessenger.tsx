@@ -18,6 +18,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
 import { Clipboard } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
+import { SRouting } from 'react-native-s/SRouting';
 
 interface ASAvatarProps {
     size: number;
@@ -147,12 +148,12 @@ export const MobileMessengerContext = React.createContext<MobileMessenger>(undef
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
-    readonly history: FastHistoryManager;
+    readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
     private readonly modal: React.RefObject<ZPictureModal>;
 
-    constructor(engine: MessengerEngine, history: FastHistoryManager, modal: React.RefObject<ZPictureModal>) {
+    constructor(engine: MessengerEngine, history: SRouting, modal: React.RefObject<ZPictureModal>) {
         this.engine = engine;
         this.history = history;
         this.modal = modal;
@@ -204,14 +205,14 @@ export class MobileMessenger {
 
     private handleDocumentClick = (document: DataSourceMessageItem) => {
         // { config: { uuid, name, size }
-        this.history.push('FilePreview', { config: { uuid: document.file!!.fileId, name: document.file!!.fileName, size: document.file!!.fileSize } });
+        this.history.navigationManager.push('FilePreview', { config: { uuid: document.file!!.fileId, name: document.file!!.fileName, size: document.file!!.fileSize } });
     }
 
     private handleDialogClick = (id: string) => {
-        this.history.push('Conversation', { id });
+        this.history.navigationManager.push('Conversation', { id });
     }
     private handleAvatarClick = (id: string) => {
-        this.history.push('ProfileUser', { id });
+        this.history.navigationManager.push('ProfileUser', { id });
     }
 
     private handleMessageLongPress = (message: DataSourceMessageItem) => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Animated } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { PageImmutableContainer } from './PageImmutableContainer';
 import { FastRouter } from '../../FastRouter';
 

@@ -1,4 +1,4 @@
-package com.openland.react.async
+package com.openland.react
 
 import android.os.Handler
 import android.os.Looper

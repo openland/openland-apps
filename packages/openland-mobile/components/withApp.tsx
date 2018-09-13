@@ -1,11 +1,13 @@
 import * as React from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import { PageProps } from './PageProps';
-import { withRouter } from 'react-native-fast-navigation/withRouter';
-import { FastHeaderAppearance } from 'react-native-fast-navigation/FastHeaderAppearance';
-import { FastHeaderSafeArea } from 'react-native-fast-navigation/FastHeaderSafeArea';
+import { withRouter } from 'react-native-s/withRouter';
+import { SHeaderAppearance } from 'react-native-s/SHeader';
+// import { withRouter } from 'react-native-fast-navigation/withRouter';
+// import { FastHeaderAppearance } from 'react-native-fast-navigation/FastHeaderAppearance';
+// import { FastHeaderSafeArea } from 'react-native-fast-navigation/FastHeaderSafeArea';
 
-export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: FastHeaderAppearance }) => {
+export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: SHeaderAppearance }) => {
 
     let res = class WrappedPage extends React.Component<PageProps> {
         shouldComponentUpdate() {
@@ -13,9 +15,10 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
         }
         render() {
             return (
-                <FastHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                    <Wrapped {...this.props} />
-                </FastHeaderSafeArea>
+                // <FastHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                //     <Wrapped {...this.props} />
+                // </FastHeaderSafeArea>
+                <Wrapped {...this.props} />
             );
         }
     };

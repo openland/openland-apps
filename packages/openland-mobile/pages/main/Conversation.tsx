@@ -3,16 +3,16 @@ import { withApp } from '../../components/withApp';
 import { View, FlatList } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { ChatHeader } from './components/ChatHeader';
-import { ChatRight } from './components/ChatRight';
+// import { ChatHeader } from './components/ChatHeader';
+// import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 import { ConversationView } from './components/ConversationView';
 import { UploadManagerInstance, UploadState } from '../../files/UploadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { FastHeaderView } from 'react-native-fast-navigation/FastHeaderView';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+// import { FastHeaderView } from 'react-native-fast-navigation/FastHeaderView';
+// import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { PageProps } from '../../components/PageProps';
 import { ZQuery } from '../../components/ZQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
@@ -92,12 +92,12 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
     render() {
         return (
             <>
-                <FastHeaderView>
+                {/* <FastHeaderView>
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
                 </FastHeaderView>
                 <FastHeaderButton>
                     <ChatRight conversationId={this.engine.conversationId} router={this.props.router} />
-                </FastHeaderButton>
+                </FastHeaderButton> */}
                 <Deferred>
                     <View style={{ height: '100%', flexDirection: 'column' }}>
                         <ConversationView engine={this.engine} />

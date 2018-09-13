@@ -51,26 +51,6 @@ function prepareInitialRecords(routes: FastHistoryRecord[]): RouteViewState[] {
     return routes.map((v, i) => new RouteViewState(v));
 }
 
-function animate(value: Animated.Value, to: number) {
-    if (Platform.OS === 'ios') {
-        return Animated.spring(value, {
-            toValue: to,
-            stiffness: 1000,
-            damping: 500,
-            mass: 3,
-            useNativeDriver: true,
-            overshootClamping: true,
-            restDisplacementThreshold: 0.5
-        });
-    }
-    return Animated.timing(value, {
-        toValue: to,
-        duration: 260,
-        useNativeDriver: true,
-        easing: Easing.bezier(0.4, 0.0, 0.2, 1.0)
-    });
-}
-
 interface ContainerState {
     routes: RouteViewState[];
     mounted: string[];
@@ -90,24 +70,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
     private routes: RouteViewState[];
     private mounted: string[];
     private removing: string[];
-    private current: string;
     private currentHistory: FastHistoryState;
-    // private panOffset = new Animated.Value(0);
-    // private panOffsetCurrent = this.panOffset.interpolate({
-    //     inputRange: [0, Dimensions.get('window').width],
-    //     outputRange: [0, -1],
-    //     extrapolate: 'clamp'
-    // });
-    // private panOffsetPrev = this.panOffset.interpolate({
-    //     inputRange: [0, Dimensions.get('window').width],
-    //     outputRange: [1, 0],
-    //     extrapolate: 'clamp'
-    // });
-
-    // private panEvent = Animated.event([{ nativeEvent: { translationX: this.panOffset } }], { useNativeDriver: true });
-    // private swipeCurrent?: RouteViewState;
-    // private swipePrev?: RouteViewState;
-    // private swipeHistoryLock?: () => void;
 
     constructor(props: ContainerProps) {
         super(props);
@@ -115,8 +78,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         this.currentHistory = props.historyManager.getState();
         let h = this.currentHistory.history;
         this.routes = prepareInitialRecords(h);
-        this.current = h[h.length - 1].key;
-        this.mounted = [this.current];
+        this.mounted = [h[h.length - 1].key];
         this.removing = [];
         this.state = {
             routes: this.routes,
@@ -129,8 +91,7 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         if (this.currentHistory !== this.props.historyManager.getState()) {
             this.currentHistory = this.props.historyManager.getState();
             this.routes = prepareInitialRecords(this.currentHistory.history);
-            this.current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
-            this.mounted = [this.current];
+            this.mounted = [this.currentHistory.history[this.currentHistory.history.length - 1].key];
             this.setState({ routes: this.routes, mounted: this.mounted });
         }
     }
@@ -149,27 +110,8 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         // Commit changes
         this.routes = [...this.routes, newRecord];
         this.mounted = [...this.mounted, newRecord.record.key];
-        this.current = newRecord.record.key;
         this.currentHistory = state;
         this.setState({ mounted: this.mounted, routes: this.routes, transitioning: true });
-
-        // underlayHolder.progressValue.stopAnimation((v2: number) => {
-        //     Animated.parallel([
-        //         animate(underlayHolder.progressValue, 1),
-        //         animate(progress, 0),
-        //     ]).start(() => {
-        //         unlock();
-        //         // Unmount underlay when animation finished
-        //         // Ignore if we are aborted transition
-        //         if (this.removing.find((v) => v === record.key)) {
-        //             return;
-        //         }
-        //         underlayHolder.progressValue.setValue(1);
-        //         progress.setValue(0);
-        //         this.mounted = this.mounted.filter((v) => v !== underlay);
-        //         this.setState({ mounted: this.mounted, transitioning: false });
-        //     });
-        // });
 
         // TODO: use transaction callback inst3ead
         setTimeout(
@@ -223,28 +165,12 @@ export class Container extends React.PureComponent<ContainerProps, ContainerStat
         let holder = this.routes.find((v) => v.record.key === record.key)!!;
         let underlay = state.history[state.history.length - 1].key;
         let underlayHolder = this.routes.find((v) => v.record.key === underlay)!!;
-        this.current = state.history[state.history.length - 1].key;
         this.currentHistory = state;
 
-        // let alreadyRemoving = this.removing.find((v) => v === record.key);
-        // if (!alreadyRemoving) {
         let unlock = this.props.historyManager.beginLock();
         setTimeout(unlock, FULL_TRASITION_DELAY);
         this.removing = [...this.removing, holder.record.key];
         this.mounted = [...this.mounted, state.history[state.history.length - 1].key];
-
-        // Animated.parallel([
-        //     animate(underlayHolder.progressValue, 0),
-        //     animate(holder.progressValue, -1)
-        // ]).start(() => {
-        //     underlayHolder.progressValue.setValue(0);
-        //     holder.progressValue.setValue(-1);
-        //     this.removing = this.removing.filter((v) => v !== record.key);
-        //     this.mounted = this.mounted.filter((v) => v !== record.key);
-        //     this.routes = this.routes.filter((v) => v.record.key !== record.key);
-        //     this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
-        //     unlock();
-        // });
 
         // TODO: use transaction callback inst3ead
         setTimeout(

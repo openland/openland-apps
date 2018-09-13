@@ -1,5 +1,5 @@
-import { FastRouter } from 'react-native-fast-navigation/FastRouter';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface PageProps {
-    router: FastRouter;
+    router: SRouter;
 }

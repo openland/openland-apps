@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TouchableNativeFeedback, TouchableOpacity, View, Platform, ViewStyle, Insets } from 'react-native';
 
-export class FastTouchable extends React.PureComponent<{ onPress?: () => void, style?: ViewStyle, hitSlop?: Insets }> {
+export class STouchable extends React.PureComponent<{ onPress?: () => void, style?: ViewStyle, hitSlop?: Insets }> {
     render() {
         if (Platform.OS === 'android' && Platform.Version >= 21) {
             return (

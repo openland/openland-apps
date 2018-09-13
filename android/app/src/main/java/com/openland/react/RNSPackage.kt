@@ -32,12 +32,10 @@ class RNSPackage : ReactPackage {
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<ViewManager<View, ReactShadowNode<*>>> {
-        val animated = RNSAnimatedViewViewManager(reactContext)
-        animated.initialize()
         return mutableListOf(
                 AsyncViewManager(),
                 AsyncListViewManager(),
-                animated
+                RNSAnimatedViewViewManager.sharedInstance
         ) as MutableList<ViewManager<View, ReactShadowNode<*>>>
     }
 }

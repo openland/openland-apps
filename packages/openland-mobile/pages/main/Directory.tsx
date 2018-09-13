@@ -2,16 +2,17 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ExploreOrganizationsQuery } from 'openland-api';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { OrganizationSearchFragment } from 'openland-api/Types';
 import { XPStyles } from 'openland-xp/XPStyles';
-import { FastRouter } from 'react-native-fast-navigation/FastRouter';
+// import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
+import { SRouter } from 'react-native-s/SRouter';
 
-class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearchFragment, router: FastRouter }> {
+class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearchFragment, router: SRouter }> {
     render() {
         return (
             <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('ProfileOrganization', { id: this.props.item.id })}>
@@ -30,7 +31,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <FastHeader title="Organizations" />
+                {/* <FastHeader title="Organizations" /> */}
                 <ZAsyncRoutedList
                     style={{ flexGrow: 1 }}
                     query={ExploreOrganizationsQuery}

@@ -1,4 +1,4 @@
-import { Animated, Dimensions } from 'react-native';
+import { Animated, Dimensions, Platform } from 'react-native';
 import { DeviceConfig } from '../../DeviceConfig';
 import {
     defaultBackgroundOffset,
@@ -9,8 +9,6 @@ import {
     NormalizedRouteContext
 } from './types';
 import { FastScrollValue } from '../../FastScrollValue';
-import { interpolateContent } from '../utils/interpolateContent';
-import { animatedInterpolate } from '../utils/animatedInterpolate';
 
 const zeroValue = new Animated.Value(0);
 const zeroValueTracked = new FastScrollValue();

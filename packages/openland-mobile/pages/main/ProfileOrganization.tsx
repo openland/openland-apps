@@ -7,7 +7,7 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { ZScrollView } from '../../components/ZScrollView';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -18,7 +18,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <FastHeader title="Info" />
+                {/* <FastHeader title="Info" /> */}
                 <ZQuery query={OrganizationQuery} variables={{ organizationId: this.props.router.params.id }}>
                     {(resp) => {
                         return (

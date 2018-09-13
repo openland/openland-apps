@@ -14,8 +14,6 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
 class SettingsProfileComponent extends React.Component<PageProps, { loaded: boolean }> {
 
@@ -37,8 +35,8 @@ class SettingsProfileComponent extends React.Component<PageProps, { loaded: bool
     render() {
         return (
             <>
-                <FastHeader title="Edit profile" />
-                <FastHeaderButton title="Save" onPress={this.handleSave} />
+                {/* <FastHeader title="Edit profile" />
+                <FastHeaderButton title="Save" onPress={this.handleSave} /> */}
                 <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
                     {(save) => (
                         <ZQuery query={ProfileQuery} fetchPolicy="network-only">

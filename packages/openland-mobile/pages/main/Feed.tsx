@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ZScrollView } from '../../components/ZScrollView';
 import { View } from 'react-native';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
@@ -14,7 +14,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <FastHeader title="Feed" />
+                {/* <FastHeader title="Feed" /> */}
                 <ZScrollView style={{ flexGrow: 1 }}>
                     <View marginHorizontal={15} marginVertical={15}>
                         <ASView style={{ height: 345 }}>

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { View, LayoutAnimation } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { DialogListComponent } from './components/DialogListComponent';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { PageProps } from '../../components/PageProps';
 import { MobileMessengerContext } from '../../messenger/MobileMessenger';
-import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
-import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
+// import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHeaderConfigRegistrator';
+// import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 function startAnimation() {
@@ -46,7 +46,7 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
     render() {
         return (
             <>
-                <FastHeader title="Messages" />
+                {/* <FastHeader title="Messages" />
                 <FastHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
                 <FastHeaderConfigRegistrator
                     config={new FastHeaderConfig({
@@ -54,7 +54,7 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
                         searchActive: this.state.search,
                         searchClosed: this.handleSearchStop, searchPress: this.handleSearchStart
                     })}
-                />
+                /> */}
                 <ASSafeAreaProvider top={44}>
                     <View style={{ flexGrow: 1, marginTop: this.state.search ? -96 : 0 }}>
                         <MobileMessengerContext.Consumer>

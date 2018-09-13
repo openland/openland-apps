@@ -6,8 +6,8 @@ import { View, LayoutChangeEvent } from 'react-native';
 // import { ASText } from 'react-native-async-view/ASText';
 // import { ASFlex } from 'react-native-async-view/ASFlex';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 
 const TestContext = React.createContext<number[]>([0]);
 const TestContextSetter = React.createContext<((v: number) => void) | undefined>(undefined);
@@ -49,8 +49,8 @@ export class NavigationComponent extends React.PureComponent<PageProps, { layout
     render() {
         return (
             <>
-                <FastHeader title="Some title" />
-                <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: DeviceConfig.bottomNavigationBarInset, flexDirection: 'column', backgroundColor: '#fff' }} onLayout={this.handleLayout}>
+                {/* <FastHeader title="Some title" /> */}
+                <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', backgroundColor: '#fff' }} onLayout={this.handleLayout}>
                     <TestSetter>
                         <TestContextSetter.Consumer>
                             {v => {

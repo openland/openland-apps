@@ -16,7 +16,7 @@ import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { ConversationView } from '../components/ConversationView';
 import { PageProps } from '../../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
@@ -135,7 +135,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
     render() {
         return (
             <>
-                <FastHeader title="New message" hairline="always" />
+                {/* <FastHeader title="New message" hairline="always" /> */}
                 <View style={{ height: '100%', flexDirection: 'column', alignItems: 'stretch', backgroundColor: '#fff' }}>
                     {/* <ZListItemEdit title="Search" /> */}
                     <View style={{ flexGrow: 1, flexBasis: 0, flexDirection: 'column' }}>

@@ -14,10 +14,10 @@ import { TextEditModal } from './pages/main/modals/TextEditModal';
 import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { FilePreview } from './pages/main/modals/FilePreview';
-import { FastRoutesBuilder } from 'react-native-fast-navigation/FastRoutes';
 import { SettingsOrganizations } from './pages/main/SettingsOrganizations';
+import { SRoutes } from 'react-native-s/SRoutes';
 
-export const Routes = new FastRoutesBuilder()
+export const Routes = new SRoutes.Builder()
   .addRoute('Home', Home)
   .addRoute('Conversation', Conversation)
   .addRoute('ProfileUser', ProfileUser)
@@ -35,9 +35,3 @@ export const Routes = new FastRoutesBuilder()
   .addRoute('DevNavigation', Navigation)
   .addRoute('DevLoader', Loader)
   .build();
-
-//
-// Authentication Routes
-//
-
-export const LoginStack = Login;

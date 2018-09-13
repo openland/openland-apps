@@ -8,7 +8,7 @@ import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { Keyboard } from 'react-native';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { PageProps } from '../../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 class UserPickerComponent extends React.PureComponent<PageProps, { query: string }> {
 
@@ -33,7 +33,7 @@ class UserPickerComponent extends React.PureComponent<PageProps, { query: string
     render() {
         return (
             <>
-                <FastHeader title="Add member" />
+                {/* <FastHeader title="Add member" /> */}
                 <ZQuery query={UsersQuery} variables={{ query: this.state.query }}>
                     {(reponse) => (
                         <ZScrollView>

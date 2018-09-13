@@ -7,7 +7,7 @@ import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
-import { LoginStack, Routes } from '../routes';
+import { Routes } from '../routes';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
@@ -15,6 +15,9 @@ import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { FastRouterProvider } from 'react-native-fast-navigation/FastRouterProvider';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
 import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
+import { Login } from './auth/Login';
+import { SRouting } from 'react-native-s/SRouting';
+import { SNavigationView } from 'react-native-s/SNavigationView';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
 
     private ref = React.createRef<ZPictureModal>();
@@ -38,7 +41,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                     userToken = undefined;
                 } else {
                     let messenger = buildMessenger(client, res.data.me);
-                    let history = new FastHistoryManager(Routes);
+                    let history = new SRouting(Routes);
                     setMessenger(new MobileMessenger(messenger, history, this.ref));
                     saveClient(client);
                     await messenger.awaitLoading();
@@ -69,7 +72,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                         <MessengerContext.Provider value={getMessenger().engine}>
                             <View style={{ width: '100%', height: '100%' }}>
                                 <ZPictureModal ref={this.ref}>
-                                    <FastRouterProvider history={getMessenger().history} />
+                                    <SNavigationView routing={getMessenger().history} />
                                 </ZPictureModal>
                             </View>
                         </MessengerContext.Provider>
@@ -77,7 +80,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                 </YApolloProvider>
             );
         } else if (this.state.state === 'auth') {
-            return <LoginStack />;
+            return <Login />;
         }
 
         return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);

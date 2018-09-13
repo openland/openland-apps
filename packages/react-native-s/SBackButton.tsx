@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Image, View, Text, Platform } from 'react-native';
-import { FastTouchable } from '../implementation/utils/FastTouchable';
+import { STouchable } from './STouchable';
 
 let image = (inverted: boolean) => Platform.OS === 'android' ?
     (
         <Image
-            source={require('assets/ic-back.png')}
+            source={require('assets-s/ic-back.png')}
             style={{
                 height: 24,
                 width: 24,
@@ -16,7 +16,7 @@ let image = (inverted: boolean) => Platform.OS === 'android' ?
         />
     ) : (
         <Image
-            source={require('assets/ic-back.png')}
+            source={require('assets-s/ic-back.png')}
             style={{
                 height: 21,
                 width: 13,
@@ -28,15 +28,15 @@ let image = (inverted: boolean) => Platform.OS === 'android' ?
         />
     );
 
-export class FastHeaderBackButton extends React.PureComponent<{ inverted?: boolean, onPress?: () => void }> {
+export class SBackButton extends React.PureComponent<{ inverted?: boolean, onPress?: () => void }> {
     render() {
         return (
-            <FastTouchable onPress={this.props.onPress} style={{ margin: Platform.OS === 'android' ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={Platform.OS === 'android' ? { top: 13, left: 13, bottom: 13, right: 13 } : { top: 8, left: 8, bottom: 8, right: 8 }}>
+            <STouchable onPress={this.props.onPress} style={{ margin: Platform.OS === 'android' ? 13 : 0, backgroundColor: 'transparent' }} hitSlop={Platform.OS === 'android' ? { top: 13, left: 13, bottom: 13, right: 13 } : { top: 8, left: 8, bottom: 8, right: 8 }}>
                 <View style={{ backgroundColor: 'transparent', flexDirection: 'row' }}>
                     {image(this.props.inverted !== undefined ? this.props.inverted : false)}
                     {Platform.OS === 'ios' && <Text style={{ height: 44, lineHeight: 44, marginLeft: 3, fontSize: 16, paddingRight: 10, color: this.props.inverted ? '#fff' : '#4747ec' }}>Back</Text>}
                 </View>
-            </FastTouchable>
+            </STouchable>
         );
     }
 }

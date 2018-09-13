@@ -6,8 +6,8 @@ import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
 import { PageProps } from '../../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { formatBytes } from 'openland-shared/utils/formatBytes';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
@@ -60,8 +60,8 @@ class FilePreviewComponent extends React.PureComponent<PageProps> {
         const config = this.props.router.params.config;
         return (
             <>
-                <FastHeader title="Document" />
-                <FastHeaderButton title="Share" icon={require('assets/ic-export.png')} onPress={this.handlePress} />
+                {/* <FastHeader title="Document" />
+                <FastHeaderButton title="Share" icon={require('assets/ic-export.png')} onPress={this.handlePress} /> */}
                 <View backgroundColor="#fff" flexGrow={1}>
                     <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />

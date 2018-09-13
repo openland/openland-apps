@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { View, Animated, StyleSheet, ViewStyle, Dimensions, Image, Platform } from 'react-native';
+import { View, Animated, StyleSheet, ViewStyle, Dimensions, Platform } from 'react-native';
 import { DeviceConfig } from '../../DeviceConfig';
 import { FastHistoryManager } from '../../FastHistory';
-import { FastBlurredView } from '../utils/FastBlurView';
 import { FastHeaderTitle } from './FastHeaderTitle';
 import { NormalizedRoute, BACKGROUND_SIZE } from './types';
 import { buildDerivedContexts } from './FastHeaderDerivedState';
-import { FastHeaderBackButton } from '../../views/FastHeaderBackButton';
+import { SBackButton } from 'react-native-s/SBackButton';
 
 let styles = StyleSheet.create({
     titleWrapper: {
@@ -121,7 +120,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                             backgroundColor: Platform.OS === 'android' ? DeviceConfig.navigationBarBackgroundColor : undefined
                         }}
                     >
-                        <FastHeaderBackButton onPress={this.handleBack} />
+                        <SBackButton onPress={this.handleBack} />
                     </Animated.View>
 
                     {/* Content */}

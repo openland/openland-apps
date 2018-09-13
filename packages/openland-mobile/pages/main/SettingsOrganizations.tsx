@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ZScrollView } from '../../components/ZScrollView';
 import { ZQuery } from '../../components/ZQuery';
 import { AccountSettingsQuery } from 'openland-api';
@@ -13,7 +12,7 @@ class SettingsOrganizatonsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <FastHeader title="Organizations" />
+                {/* <FastHeader title="Organizations" /> */}
                 <ZScrollView>
                     <ZQuery query={AccountSettingsQuery}>
                         {resp => {

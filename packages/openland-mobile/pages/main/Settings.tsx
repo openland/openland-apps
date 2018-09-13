@@ -9,7 +9,7 @@ import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZScrollView } from '../../components/ZScrollView';
 import { PageProps } from '../../components/PageProps';
-import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
 
 function convertStatus(status: UpdateStatus) {
@@ -67,7 +67,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
     render() {
         return (
             <>
-                <FastHeader title="Settings" />
+                {/* <FastHeader title="Settings" /> */}
                 <ZQuery query={AccountSettingsQuery}>
                     {resp => {
                         let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;

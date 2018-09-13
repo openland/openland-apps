@@ -1,13 +1,10 @@
 import { FastHistoryRecord } from '../FastHistoryRecord';
-import { Animated, Easing } from 'react-native';
+import { Animated } from 'react-native';
 
 export class RouteViewState {
     readonly record: FastHistoryRecord;
     readonly searchProgress: Animated.Value;
     searchStarted: boolean = false;
-    // private readonly useProgress: Animated.Value = new Animated.Value(1);
-    // private readonly useSwipe: Animated.Value = new Animated.Value(0);
-    // private readonly useSwipePrev: Animated.Value = new Animated.Value(0);
 
     constructor(record: FastHistoryRecord) {
         this.record = record;
@@ -24,18 +21,6 @@ export class RouteViewState {
             }
         });
     }
-
-    // startSwipe() {
-    //     this.useProgress.setValue(0);
-    //     this.useSwipe.setValue(1);
-    //     this.useSwipePrev.setValue(0);
-    // }
-
-    // startSwipePrev() {
-    //     this.useProgress.setValue(0);
-    //     this.useSwipe.setValue(0);
-    //     this.useSwipePrev.setValue(1);
-    // }
 
     startSearch() {
         if (!this.searchStarted) {
