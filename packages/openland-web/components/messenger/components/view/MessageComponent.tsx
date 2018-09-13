@@ -67,7 +67,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     paddingTop: props.compact ? 3 : 7,
     paddingBottom: 3,
     width: '100%',
-    marginTop: props.compact ? undefined : 20,
+    marginTop: props.compact ? undefined : 12,
     // marginBottom: 12,
     borderRadius: 6,
     '&:hover': {
