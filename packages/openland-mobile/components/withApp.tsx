@@ -3,9 +3,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import { PageProps } from './PageProps';
 import { withRouter } from 'react-native-s/withRouter';
 import { SHeaderAppearance } from 'react-native-s/SHeader';
-// import { withRouter } from 'react-native-fast-navigation/withRouter';
-// import { FastHeaderAppearance } from 'react-native-fast-navigation/FastHeaderAppearance';
-// import { FastHeaderSafeArea } from 'react-native-fast-navigation/FastHeaderSafeArea';
+import { SHeaderSafeArea } from 'react-native-s/SHeaderSafeArea';
 
 export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: SHeaderAppearance }) => {
 
@@ -15,10 +13,9 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
         }
         render() {
             return (
-                // <FastHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                //     <Wrapped {...this.props} />
-                // </FastHeaderSafeArea>
-                <Wrapped {...this.props} />
+                <SHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                    <Wrapped {...this.props} />
+                </SHeaderSafeArea>
             );
         }
     };

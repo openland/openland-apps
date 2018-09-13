@@ -3,8 +3,7 @@ import { StyleSheet, ViewStyle, View } from 'react-native';
 import { SRouter } from '../../SRouter';
 import { SRouterContext } from '../../SRouterContext';
 import { HeaderContextDirect } from '../HeaderContextDirect';
-// import { FastRouter, FastRouterContext } from '../../FastRouter';
-// import { FastHeaderContextDirect } from '../../FastHeaderContextDirect';
+import { PageKeyboard } from './PageKeyboard';
 
 const styles = StyleSheet.create({
     root: {
@@ -39,13 +38,11 @@ export class PageImmutableContainer extends React.Component<PageImmutableContain
             <SRouterContext.Provider value={this.props.router}>
                 <HeaderContextDirect router={this.props.router}>
                     <View style={styles.root}>
-                        <Component />
+                        <PageKeyboard style={styles.root} contextKey={this.props.router.key}>
+                            <Component />
+                        </PageKeyboard>
                     </View>
                 </HeaderContextDirect>
-                {/* <FastHeaderContextDirect router={this.props.router}>
-                    <PageKeyboard style={styles.root} contextKey={this.props.router.key}> */}
-                {/* </PageKeyboard>
-                </FastHeaderContextDirect> */}
             </SRouterContext.Provider>
         );
     }
