@@ -34,7 +34,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
         let ampm = dt.getHours() < 12 ? ' AM' : ' PM';
         hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
         return (
-            <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+            <span>{hours}:{('0' + dt.getMinutes()).substr(-2)} {ampm}</span>
         );
     } else if (props.format === 'datetime_short') {
         if (canUseDOM) {
@@ -49,7 +49,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
                 let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
                 hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
                 return (
-                    <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+                    <span>{hours}:{('0' + dt.getMinutes()).substr(-2)} {ampm}</span>
                 );
             }
             return (
@@ -73,7 +73,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
                                 let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
                                 hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
                                 return (
-                                    <span>{hours}:{('0' + dt.getMinutes()).substr(-2)}{ampm}</span>
+                                    <span>{hours}:{('0' + dt.getMinutes()).substr(-2)} {ampm}</span>
                                 );
                             }
                             return (
@@ -91,7 +91,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
                                 let ampm = dt.hour() < 12 ? 'AM' : 'PM';
                                 hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
                                 return (
-                                    <span>{hours}:{('0' + dt.minute()).substr(-2)}{ampm}</span>
+                                    <span>{hours}:{('0' + dt.minute()).substr(-2)} {ampm}</span>
                                 );
                             }
                             return (
