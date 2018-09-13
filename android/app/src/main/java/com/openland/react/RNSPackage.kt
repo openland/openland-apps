@@ -13,26 +13,31 @@ import com.openland.react.async.AsyncListViewManager
 import com.openland.react.async.AsyncViewManager
 import com.openland.react.anim.RNSAnimatedViewManager
 import com.openland.react.anim.RNSAnimatedViewViewManager
+import com.openland.react.window.RNSWindowManager
 
 class RNSPackage : ReactPackage {
 
-    constructor() {
+    init {
         ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
         ComponentsConfiguration.prewarmImageTexture = true
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
-        return mutableListOf(AsyncConfigManager(reactContext), AsyncDataViewManager(reactContext), RNSAnimatedViewManager(reactContext))
+        return mutableListOf(
+                AsyncConfigManager(reactContext),
+                AsyncDataViewManager(reactContext),
+                RNSAnimatedViewManager(reactContext),
+                RNSWindowManager(reactContext)
+        )
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<ViewManager<View, ReactShadowNode<*>>> {
         val animated = RNSAnimatedViewViewManager(reactContext)
         animated.initialize()
         return mutableListOf(
-                AsyncViewManager() as ViewManager<View, ReactShadowNode<*>>,
-                AsyncListViewManager() as ViewManager<View, ReactShadowNode<*>>,
-                animated as ViewManager<View, ReactShadowNode<*>>)
+                AsyncViewManager(),
+                AsyncListViewManager(),
+                animated
+        ) as MutableList<ViewManager<View, ReactShadowNode<*>>>
     }
-
-
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View, Platform } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
@@ -12,7 +12,6 @@ import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
-import { NativeModules } from 'react-native';
 import { FastRouterProvider } from 'react-native-fast-navigation/FastRouterProvider';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
 import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
@@ -27,18 +26,6 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
         };
     }
     componentDidMount() {
-        if (Platform.OS === 'android') {
-            setTimeout(
-                () => {
-                    try {
-                        NativeModules.OPLBackgroundHack.removeBackground();
-                    } catch (e) {
-                        console.log(e);
-                    }
-                },
-                1000
-            );
-        }
         (async () => {
             let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
             if (userToken) {

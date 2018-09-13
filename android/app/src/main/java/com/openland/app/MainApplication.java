@@ -12,7 +12,6 @@ import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
-import com.openland.react.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
@@ -75,7 +74,6 @@ public class MainApplication extends Application implements ReactApplication {
                     new ReactNativePushNotificationPackage(),
                     new VectorIconsPackage(),
                     new A0Auth0Package(),
-                    new Hacks(),
                     new RNSPackage()
             );
         }

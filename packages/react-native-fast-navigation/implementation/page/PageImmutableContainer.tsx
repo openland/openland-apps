@@ -32,14 +32,14 @@ export class PageImmutableContainer extends React.Component<PageImmutableContain
         return false;
     }
 
-    componentWillMount() {
-        SAnimated.timing('page-content-container--' + this.props.router.key, {
-            property: 'opacity',
-            from: 0,
-            to: 1,
-            easing: 'material'
-        });
-    }
+    // componentWillMount() {
+    //     SAnimated.timing('page-content-container--' + this.props.router.key, {
+    //         property: 'opacity',
+    //         from: 0,
+    //         to: 1,
+    //         easing: 'material'
+    //     });
+    // }
 
     render() {
         let Component = this.props.component;
@@ -47,11 +47,11 @@ export class PageImmutableContainer extends React.Component<PageImmutableContain
         return (
             <FastRouterContext.Provider value={this.props.router}>
                 <FastHeaderContextDirect router={this.props.router}>
-                    <SAnimated.View name={'page-content-container--' + this.props.router.key} style={{ width: '100%', height: '100%' }}>
-                        <PageKeyboard style={styles.root} contextKey={this.props.router.key}>
-                            <Component />
-                        </PageKeyboard>
-                    </SAnimated.View>
+                    {/* <SAnimated.View name={'page-content-container--' + this.props.router.key} style={{ width: '100%', height: '100%' }}> */}
+                    <PageKeyboard style={styles.root} contextKey={this.props.router.key}>
+                        <Component />
+                    </PageKeyboard>
+                    {/* </SAnimated.View> */}
                 </FastHeaderContextDirect>
             </FastRouterContext.Provider>
         );
