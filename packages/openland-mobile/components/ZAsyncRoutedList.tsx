@@ -11,6 +11,8 @@ import { FastHeaderConfigRegistrator } from 'react-native-fast-navigation/FastHe
 import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
+import { STrackedValue } from 'react-native-s/STrackedValue';
 
 type ListQuery<Q> = {
     items: {
@@ -37,7 +39,7 @@ export interface ZAsyncRoutedListProps<Q, V> {
 }
 
 export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>> {
-    private contentOffset = new FastScrollValue();
+    private contentOffset = new STrackedValue();
 
     private isLoading = false;
     private nextCursor: string | undefined;
@@ -91,7 +93,7 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                 {area => {
                     return (
                         <>
-                            <FastHeaderConfigRegistrator config={new FastHeaderConfig({ contentOffset: this.contentOffset })} />
+                            <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
                                 style={[this.props.style, {
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),

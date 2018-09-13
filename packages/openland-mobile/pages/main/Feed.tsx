@@ -2,20 +2,20 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
-import { ZScrollView } from '../../components/ZScrollView';
 import { View } from 'react-native';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { ASText } from 'react-native-async-view/ASText';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 class FeedComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
                 {/* <FastHeader title="Feed" /> */}
-                <ZScrollView style={{ flexGrow: 1 }}>
+                <SScrollView style={{ flexGrow: 1 }}>
                     <View marginHorizontal={15} marginVertical={15}>
                         <ASView style={{ height: 345 }}>
                             <ASFlex flexDirection="column" backgroundGradient={{ start: '#3023ae', end: '#c86dd7' }} borderRadius={12} alignItems="stretch">
@@ -71,7 +71,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                         </View>
                     </View> */}
                     <ZListItemFooter />
-                </ZScrollView>
+                </SScrollView>
             </>
         );
     }

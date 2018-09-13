@@ -1,0 +1,100 @@
+import * as React from 'react';
+import { HeaderContextProvider, HeaderContext } from './HeaderContext';
+import { HeaderConfig, mergeConfigs, isConfigEquals } from './HeaderConfig';
+import UUID from 'uuid/v4';
+
+class HeaderContextChildComponent extends React.Component<{ enabled: boolean, provider: HeaderContextProvider }> implements HeaderContextProvider {
+    private configs = new Map<string, HeaderConfig>();
+    private lastConfig: HeaderConfig = {};
+    private unmounting = false;
+    private registrationId: string | undefined = undefined;
+
+    registerConfig = (config: HeaderConfig) => {
+        let key = UUID();
+        this.configs.set(key, config);
+        this.supplyConfig();
+        return key;
+    }
+    updateConfig = (key: string, config: HeaderConfig) => {
+        if (this.configs.has(key)) {
+            this.configs.set(key, config);
+        } else {
+            console.warn('Trying to update unknown config: ignoring');
+        }
+        this.supplyConfig();
+    }
+    removeConfig = (key: string) => {
+        if (this.configs.has(key)) {
+            this.configs.delete(key);
+        } else {
+            console.warn('Trying to unregister unknown config: ignoring');
+        }
+        this.supplyConfig();
+    }
+
+    supplyConfig = () => {
+        if (this.unmounting) {
+            return;
+        }
+
+        // Merge configs
+        let configs: HeaderConfig[] = [];
+        for (let k of this.configs.keys()) {
+            configs.push(this.configs.get(k)!!);
+        }
+        let merged = mergeConfigs(configs);
+
+        // Check if changed
+        if (isConfigEquals(merged, this.lastConfig)) {
+            return;
+        }
+
+        // Update config
+        this.lastConfig = merged;
+
+        if (this.props.enabled) {
+            if (this.registrationId) {
+                this.props.provider.updateConfig(this.registrationId, this.lastConfig);
+            } else {
+                this.registrationId = this.props.provider.registerConfig(this.lastConfig);
+            }
+        }
+    }
+
+    componentWillReceiveProps(nextProps: { enabled: boolean, provider: HeaderContextProvider }) {
+        if (nextProps.enabled !== this.props.enabled) {
+            if (nextProps.enabled) {
+                if (this.registrationId) {
+                    this.props.provider.updateConfig(this.registrationId, this.lastConfig);
+                } else {
+                    this.registrationId = this.props.provider.registerConfig(this.lastConfig);
+                }
+            } else {
+                if (this.registrationId) {
+                    this.props.provider.removeConfig(this.registrationId);
+                    this.registrationId = undefined;
+                }
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        this.unmounting = true;
+    }
+
+    render() {
+        return (
+            <HeaderContext.Provider value={this}>
+                {this.props.children}
+            </HeaderContext.Provider>
+        );
+    }
+}
+
+export const HeaderContextChild = (props: { enabled: boolean, children?: any }) => {
+    return (
+        <HeaderContext.Consumer>
+            {ctx => <HeaderContextChildComponent provider={ctx!!} enabled={props.enabled}>{props.children}</HeaderContextChildComponent>}
+        </HeaderContext.Consumer>
+    );
+};

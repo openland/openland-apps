@@ -52,7 +52,7 @@ export class HeaderContextDirect extends React.PureComponent<{ router: SRouter }
 
         // Update config
         this.lastConfig = merged;
-        (this.props.router as any).updateConfig(this.lastConfig);
+        (this.props.router as any).setConfig(this.lastConfig);
     }
 
     componentWillUnmount() {

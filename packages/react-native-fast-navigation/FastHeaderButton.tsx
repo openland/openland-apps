@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { Button, Platform } from 'react-native';
 import UUID from 'uuid/v4';
-import { FastHeaderActionButtonAndroid } from './views/FastHeaderActionButtonAndroid';
 import { FastHeaderConfigRegistrator } from './FastHeaderConfigRegistrator';
 import { FastHeaderConfig } from './FastHeaderConfig';
-import { FastHeaderActionButtonIOS } from './views/FastHeaderActionButtonIOS';
 
 export interface FastHeaderButtonDescription {
     id: string;
@@ -22,24 +19,29 @@ export class FastHeaderButton extends React.PureComponent<{ title?: string, icon
     }
 
     private renderButton = () => {
-        if (this.props.title) {
-            if (Platform.OS === 'android') {
-                return (
-                    <FastHeaderActionButtonAndroid title={this.props.title} onPress={this.handlePress} />
-                );
-            } else if (Platform.OS === 'ios') {
-                return (
-                    <FastHeaderActionButtonIOS title={this.props.title} icon={this.props.icon} onPress={this.handlePress} />
-                );
-            }
-            return (<Button color={'#000'} onPress={this.handlePress} title={this.props.title} />);
-        } else {
-            return (
-                <>
-                    {this.props.children}
-                </>
-            );
-        }
+        // if (this.props.title) {
+        //     if (Platform.OS === 'android') {
+        //         return (
+        //             <FastHeaderActionButtonAndroid title={this.props.title} onPress={this.handlePress} />
+        //         );
+        //     } else if (Platform.OS === 'ios') {
+        //         return (
+        //             <FastHeaderActionButtonIOS title={this.props.title} icon={this.props.icon} onPress={this.handlePress} />
+        //         );
+        //     }
+        //     return (<Button color={'#000'} onPress={this.handlePress} title={this.props.title} />);
+        // } else {
+        //     return (
+        //         <>
+        //             {this.props.children}
+        //         </>
+        //     );
+        // }
+        return (
+            <>
+                {this.props.children}
+            </>
+        );
     }
 
     render() {

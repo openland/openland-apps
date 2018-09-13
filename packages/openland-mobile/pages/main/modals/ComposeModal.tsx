@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { ZScrollView } from '../../../components/ZScrollView';
-import { View, LayoutChangeEvent } from 'react-native';
+import { View, LayoutChangeEvent, ScrollView } from 'react-native';
 import { ZBlurredView } from '../../../components/ZBlurredView';
 import { AppStyles } from '../../../styles/AppStyles';
 import { MessageInputBar } from '../components/MessageInputBar';
@@ -16,7 +15,6 @@ import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { ConversationView } from '../components/ConversationView';
 import { PageProps } from '../../../components/PageProps';
-// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
@@ -143,9 +141,9 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                             {(this.state.users.length === 0 || this.state.query !== '') && (
                                 <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                                     {r => (
-                                        <ZScrollView keyboardShouldPersistTaps={true} style={{ flexGrow: 1, flexBasis: 0 }} keyboardDismissMode="on-drag">
+                                        <ScrollView keyboardShouldPersistTaps={true} style={{ flexGrow: 1, flexBasis: 0 }} keyboardDismissMode="on-drag">
                                             {r.data.items.map((v) => (<ZUserListItem key={v.id} id={v.id} name={v.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v as UserShortFragment)} />))}
-                                        </ZScrollView>
+                                        </ScrollView>
                                     )}
                                 </ZQuery>
                             )}

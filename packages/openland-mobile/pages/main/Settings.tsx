@@ -7,10 +7,10 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZQuery } from '../../components/ZQuery';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
-import { ZScrollView } from '../../components/ZScrollView';
 import { PageProps } from '../../components/PageProps';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -78,7 +78,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                             secondaryFiltered.push(secondary[i]);
                         }
                         return (
-                            <ZScrollView>
+                            <SScrollView>
                                 <ZListItemHeader
                                     photo={resp.data!!.me!!.picture}
                                     id={resp.data!!.me!!.id}
@@ -123,7 +123,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                 </ZListItemGroup>
                                 <ZListItemFooter />
                                 <ZListItemFooter />
-                            </ZScrollView>
+                            </SScrollView>
                         );
                     }}
                 </ZQuery>

@@ -6,7 +6,6 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemBase } from '../../components/ZListItemBase';
-import { ZScrollView } from '../../components/ZScrollView';
 import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
@@ -14,6 +13,7 @@ import { ChatChangeGroupTitleMutation } from 'openland-api';
 import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
+import { SScrollView } from 'react-native-s/SScrollView';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 class ProfileGroupComponent extends React.Component<PageProps> {
@@ -32,8 +32,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                             throw Error('');
                         }
                         return (
-                            <ZScrollView>
-
+                            <SScrollView>
                                 <ZListItemHeader
                                     title={resp.data.chat.title}
                                     subtitle={resp.data.members.length + ' members'}
@@ -88,7 +87,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         </ZListItemBase>
                                     ))}
                                 </ZListItemGroup>
-                            </ZScrollView>
+                            </SScrollView>
                         );
                     }}
                 </ZQuery>

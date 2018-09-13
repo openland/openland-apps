@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { ZScrollView } from '../../components/ZScrollView';
 import { ZQuery } from '../../components/ZQuery';
 import { AccountSettingsQuery } from 'openland-api';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 class SettingsOrganizatonsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
                 {/* <FastHeader title="Organizations" /> */}
-                <ZScrollView>
+                <SScrollView>
                     <ZQuery query={AccountSettingsQuery}>
                         {resp => {
                             let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;
@@ -43,7 +43,7 @@ class SettingsOrganizatonsComponent extends React.Component<PageProps> {
                             );
                         }}
                     </ZQuery>
-                </ZScrollView>
+                </SScrollView>
             </>
         );
     }

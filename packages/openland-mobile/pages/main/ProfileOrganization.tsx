@@ -5,8 +5,8 @@ import { OrganizationQuery } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
-import { ZScrollView } from '../../components/ZScrollView';
 import { PageProps } from '../../components/PageProps';
+import { SScrollView } from 'react-native-s/SScrollView';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
@@ -23,7 +23,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                     {(resp) => {
                         return (
                             <>
-                                <ZScrollView backgroundColor={'#fff'}>
+                                <SScrollView backgroundColor={'#fff'}>
                                     <ZListItemHeader
                                         photo={resp.data.organization.photo}
                                         id={resp.data.organization.id}
@@ -56,7 +56,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             />
                                         ))}
                                     </ZListItemGroup>
-                                </ZScrollView>
+                                </SScrollView>
                             </>
                         );
                     }}

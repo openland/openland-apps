@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
-export class FastHeaderActionButtonAndroid extends React.PureComponent<{ title: string, onPress?: () => void }> {
+export class ActionButtonAndroid extends React.PureComponent<{ title: string, onPress?: () => void }> {
     render() {
         return (
             <View style={{ paddingVertical: 16, paddingLeft: 16, height: 56, alignItems: 'center', justifyContent: 'center' }}>

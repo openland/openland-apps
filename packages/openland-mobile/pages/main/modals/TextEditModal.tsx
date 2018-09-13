@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { ZScrollView } from '../../../components/ZScrollView';
 import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../../components/ZListItemEdit';
 import { stopLoader, startLoader } from '../../../components/ZGlobalLoader';
 import { Keyboard } from 'react-native';
 import { PageProps } from '../../../components/PageProps';
+import { SScrollView } from 'react-native-s/SScrollView';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 // import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
@@ -45,11 +45,11 @@ class TextEditModalComponent extends React.PureComponent<PageProps, { value: str
             <>
                 {/* <FastHeader title="Edit group name" />
                 <FastHeaderButton title="Save" onPress={this.handleSave} /> */}
-                <ZScrollView>
+                <SScrollView>
                     <ZListItemGroup header={null}>
                         <ZListItemEdit title="Group name" value={this.state.value} onChange={this.handleChange} autoFocus={true} />
                     </ZListItemGroup>
-                </ZScrollView>
+                </SScrollView>
             </>
         );
     }
