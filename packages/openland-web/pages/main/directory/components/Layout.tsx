@@ -6,6 +6,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 import RightIcon from '../icons/ic-arrow-rignt.svg';
+import ChannelIcon from '../icons/ic-circle.svg';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
@@ -149,11 +150,19 @@ export const ResetButton = Glamorous.div({
     },
 });
 
-export const SidebarItemHeadLink = (props: { isCommunity: boolean }) => (
-    <SidebarItemLink path={props.isCommunity ? '/directory/communities' : '/directory'}>
+interface SidebarItemHeadLinkProps {
+    path: string;
+    icon: 'communities' | 'organizations' | 'channels';
+    title: string;
+}
+
+export const SidebarItemHeadLink = (props: SidebarItemHeadLinkProps) => (
+    <SidebarItemLink path={props.path}>
         <XHorizontal separator={7} alignItems="center">
-            {props.isCommunity ? <CommunityIcon /> : <OrganizationsIcon />}
-            <span>{props.isCommunity ? 'Communities' : 'Organizations'}</span>
+            {props.icon === 'communities' && <CommunityIcon />}
+            {props.icon === 'organizations' && <OrganizationsIcon />}
+            {props.icon === 'channels' && <ChannelIcon />}
+            <span>{props.title}</span>
         </XHorizontal>
         <RightIcon />
     </SidebarItemLink>

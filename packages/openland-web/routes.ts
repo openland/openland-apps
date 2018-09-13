@@ -84,10 +84,14 @@ routes.add('/directory', '/main/directory/root');
 routes.add('/directory/', '/main/directory/root');
 routes.add('/directory/communities', '/main/directory/communities');
 routes.add('/directory/communities/', '/main/directory/communities');
+routes.add('/directory/channels', '/main/directory/channels');
+routes.add('/directory/channels/', '/main/directory/channels');
 routes.add('/directory/o/:organizationId', '/main/directory/root');
 routes.add('/directory/o/:organizationId/', '/main/directory/root');
 routes.add('/directory/c/:organizationId', '/main/directory/communities');
 routes.add('/directory/c/:organizationId/', '/main/directory/communities');
+routes.add('/directory/ch/:conversationId', '/main/directory/channels');
+routes.add('/directory/ch/:conversationId/', '/main/directory/channels');
 
 //
 // Profiles

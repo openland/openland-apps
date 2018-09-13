@@ -356,14 +356,14 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     componentWillReceiveProps(nextProps: XWithRouter) {
         if (nextProps.router.query.clauses) {
             let clauses: SearchCondition[] = JSON.parse(nextProps.router.query.clauses);
-            this.setState({ 
-                conditions: clauses, 
-                searchText: '' 
+            this.setState({
+                conditions: clauses,
+                searchText: ''
             });
         } else {
-            this.setState({ 
-                conditions: [], 
-                searchText: '' 
+            this.setState({
+                conditions: [],
+                searchText: ''
             });
         }
     }
@@ -401,7 +401,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <SidebarHeader>Directory</SidebarHeader>
                     <XVertical separator={0}>
                         <SidebarItemWrapper active={true}>
-                            <SidebarItemHeadLink isCommunity={false} />
+                            <SidebarItemHeadLink
+                                path="/directory"
+                                title="Organizations"
+                                icon="organizations"
+                            />
                             <SidebarItemBody>
                                 <CategoryPicker
                                     title="Category"
@@ -424,7 +428,18 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             </SidebarItemBody>
                         </SidebarItemWrapper>
                         <SidebarItemWrapper>
-                            <SidebarItemHeadLink isCommunity={true} />
+                            <SidebarItemHeadLink
+                                path="/directory/communities"
+                                title="Communities"
+                                icon="communities"
+                            />
+                        </SidebarItemWrapper>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink
+                                path="/directory/channels"
+                                title="Channels"
+                                icon="channels"
+                            />
                         </SidebarItemWrapper>
                     </XVertical>
                 </Sidebar>

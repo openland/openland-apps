@@ -153,10 +153,25 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <SidebarHeader>Directory</SidebarHeader>
                     <XVertical separator={0}>
                         <SidebarItemWrapper>
-                            <SidebarItemHeadLink isCommunity={false} />
+                            <SidebarItemHeadLink
+                                path="/directory"
+                                title="Organizations"
+                                icon="organizations"
+                            />
                         </SidebarItemWrapper>
                         <SidebarItemWrapper active={true}>
-                            <SidebarItemHeadLink isCommunity={true} />
+                            <SidebarItemHeadLink
+                                path="/directory/communities"
+                                title="Communities"
+                                icon="communities"
+                            />
+                        </SidebarItemWrapper>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink
+                                path="/directory/channels"
+                                title="Channels"
+                                icon="channels"
+                            />
                         </SidebarItemWrapper>
                     </XVertical>
                 </Sidebar>

@@ -53,7 +53,7 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
     flexBasis: '100%'
 });
 
-const Title = makeNavigable(Glamorous.div<{href?: string}>(props => ({
+const Title = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     fontSize: 16,
     fontWeight: 500,
     letterSpacing: -0.2,
@@ -381,7 +381,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     }
 
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
-        return <ChannelsInviteComponent channel={props.data.chat} />;
+        return <ChannelsInviteComponent channel={props.data.chat} onDirectory={(props as any).onDirectory} />;
     }
     let title = props.data.chat.__typename === 'ChannelConversation' ?
         ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' / ' : '') + props.data.chat.title) :
@@ -550,8 +550,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             </XWithRole>
         </XVertical>
     );
-}));
+})) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean }>;
 
-export const MessengerComponent = (props: { conversationId: string }) => {
-    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} />);
+export const MessengerComponent = (props: { conversationId: string, onDirectory?: boolean }) => {
+    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} onDirectory={props.onDirectory} />);
 };
