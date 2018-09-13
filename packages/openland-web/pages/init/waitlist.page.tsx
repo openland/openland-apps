@@ -10,8 +10,6 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../../components/AuthRouter';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { XButton } from 'openland-x/XButton';
-import { XModal } from 'openland-x-modal/XModal';
-import { OrganizationPicker } from '../../components/OrganizationPicker';
 import { InitTexts } from './_text';
 
 const InfoText = Glamorous.div({
@@ -75,14 +73,6 @@ export default withAppBase('Waitlist', (props) => {
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
                         <ButtonGroup>
                             <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" size="medium" flexGrow={1} />
-                            <XModal
-                                useTopCloser={true}
-                                size="small"
-                                title={TextGlobal.switch}
-                                target={<XButton text={TextGlobal.switch} size="medium" flexGrow={1} />}
-                            >
-                                <OrganizationPicker />
-                            </XModal>
                         </ButtonGroup>
                         <MailText>Questions? <a href="mailto:hello@openland.com">hello@openland.com</a></MailText>
                     </MessagePageContent>

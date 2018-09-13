@@ -168,17 +168,15 @@ const Header = (props: { organizationQuery: OrganizationQuery }) => {
                     <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
                 </HeaderTabs> */}
             </HeaderInfo>
-            {org.isMine && (
-                <XWithRole role="admin" orgPermission={true}>
-                    <HeaderTools>
-                        <XButton
-                            size="r-default"
-                            text="Edit profile"
-                            path="/settings/organization"
-                        />
-                    </HeaderTools>
-                </XWithRole>
-            )}
+            <XWithRole role="admin" orgPermission={org.id}>
+                <HeaderTools>
+                    <XButton
+                        size="r-default"
+                        text="Edit profile"
+                        path="/settings/organization"
+                    />
+                </HeaderTools>
+            </XWithRole>
         </HeaderWrapper>
     );
 };
@@ -266,7 +264,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
     return (
         <>
             {org.isMine && (
-                <XWithRole role="admin" orgPermission={true}>
+                <XWithRole role="admin" orgPermission={org.id}>
                     {(!org.about || !hasLinks || !hasLocations || !hasCategories) && (
                         <>
                             <XSubHeader title="Add sections" />
@@ -304,7 +302,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="About">
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -320,7 +318,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="Links">
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -361,7 +359,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="Organization category" counter={org.organizationType ? org.organizationType.length : undefined}>
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <CategoriesPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -393,7 +391,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="Locations" counter={org.locations ? org.locations.length : undefined}>
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <LocationPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -596,7 +594,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title={organization.isCommunity ? 'Admins' : 'Organization members'} counter={organization.members.length}>
                         {organization.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={organization.id}>
                                 <XSubHeaderRight>
                                     <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
                                 </XSubHeaderRight>

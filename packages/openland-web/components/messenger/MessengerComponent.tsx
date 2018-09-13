@@ -451,6 +451,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     </ChannelTab>
                                 </ChannelTabs>
                                 <InviteMembersModal
+                                    orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                                     channelTitle={title}
                                     channelId={props.data.chat.id}
                                     target={
@@ -503,7 +504,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             />
                         </XWithRole>}
                         {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']} negate={true}>
-                            <XWithRole role={['admin']} orgPermission={true}>
+                            <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
                                 <XOverflow
                                     flat={true}
                                     placement="bottom-end"
@@ -538,7 +539,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         variables={{ channelId: props.data.chat.id }}
                         description={props.data.chat.description}
                         longDescription={props.data.chat.longDescription}
-                        {...{ isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine }}
+                        orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                     />
                 )}
             </XHorizontal>

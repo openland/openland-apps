@@ -10,6 +10,7 @@ export const UserShort = gql`
         primaryOrganization: alphaPrimaryOrganization {
             id
             name
+            photo
         }
         role: alphaRole
         linkedin: alphaLinkedin

@@ -225,9 +225,9 @@ class ChannelMembersComponentInner extends React.Component<{
     data: ChannelMembersQuery,
     channelTitle: string,
     channelId: string,
-    isMyOrganization: boolean,
     description?: string,
     longDescription?: string,
+    orgId: string,
 
 }> {
     render() {
@@ -247,16 +247,14 @@ class ChannelMembersComponentInner extends React.Component<{
                         {this.props.longDescription && <AboutText>{this.props.longDescription}</AboutText>}
                     </>
                 )}
-                {this.props.isMyOrganization && requests.length > 0 && (
-                    <XWithRole role="admin" orgPermission={true}>
-                        <XSubHeader title="Requests" counter={requests.length} />
-                        <MembersView>
-                            {requests.map(m => (
-                                <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
-                            ))}
-                        </MembersView>
-                    </XWithRole>
-                )}
+                <XWithRole role="admin" orgPermission={this.props.orgId}>
+                    <XSubHeader title="Requests" counter={requests.length} />
+                    <MembersView>
+                        {requests.map(m => (
+                            <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                        ))}
+                    </MembersView>
+                </XWithRole>
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
                     {(members.length > 1) && members.map(m => (
@@ -265,6 +263,7 @@ class ChannelMembersComponentInner extends React.Component<{
                 </MembersView>
                 {(members.length <= 3) && (
                     <EmptyComponent
+                        orgId={this.props.orgId}
                         aloneMember={(members.length + requests.length) === 1}
                         smaller={members.length >= 2}
                         channelTitle={(this.props as any).channelTitle}
@@ -282,8 +281,8 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         data={props.data}
         channelTitle={(props as any).channelTitle}
         channelId={(props.variables as any).channelId}
-        isMyOrganization={(props as any).isMyOrganization}
         description={(props as any).description}
         longDescription={(props as any).longDescription}
+        orgId={(props as any).orgId}
     />
-)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string }>;
+)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;

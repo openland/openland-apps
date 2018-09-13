@@ -300,7 +300,6 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     <XWithRole role={['super-admin', 'software-developer']}>
                                         <XMenuItem style="primary-sky-blue" query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
                                     </XWithRole>
-                                    {this.props.hasMultipleOrganizations && <XMenuItem style="primary-sky-blue" query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>}
 
                                     <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 12 }} />
                                 </>
@@ -614,28 +613,6 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
 interface ScaffoldProps {
     sidebarBorderColor?: string;
 }
-
-const Home = withUserInfo((props) => {
-    return (
-        <XWithRole role="feature-marketplace" negate={true}>
-            <XPopper
-                placement="right"
-                showOnHoverContent={false}
-                showOnHover={true}
-                groupId="scaffold_tooltip"
-                style="dark"
-                padding={-2}
-                content={(
-                    <strong>{TextAppBar.items.home}</strong>
-                )}
-            >
-                <NavigatorItem path={'/directory/o/' + props.organization!!.id}>
-                    <HomeIcon />
-                </NavigatorItem>
-            </XPopper>
-        </XWithRole>
-    );
-});
 
 class AddMenu extends React.Component<{}, { show?: boolean }> {
     inner = 0;
@@ -990,15 +967,6 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
         return (
             <RootContainer>
-                <XModal
-                    useTopCloser={true}
-                    title={TextGlobal.switch}
-                    targetQuery="org"
-                    size="small"
-                    scrollableContent={true}
-                >
-                    <OrganizationPicker />
-                </XModal>
                 <NavigationWrapper activeSearch={this.state.search}>
                     <NavigationScroller sidebarBorderColor={this.props.sidebarBorderColor}>
                         <NavigationContainer>

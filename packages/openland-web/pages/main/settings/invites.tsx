@@ -309,7 +309,7 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
             <FooterWrap>
                 <XHorizontal flexGrow={1}>
                     {!this.state.showLink && (
-                        <XWithRole role="admin" orgPermission={true}>
+                        <XWithRole role="admin" orgPermission={'primary'}>
                             <InviteButton
                                 onClick={() => this.setState({ showLink: true })}
                                 icon={<LinkIcon />}
