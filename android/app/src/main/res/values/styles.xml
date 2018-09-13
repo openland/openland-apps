@@ -1,15 +1,14 @@
 <resources>
     <color name="primary">#4747EC</color>
+    <color name="status_bar">#3d0080</color>
+    <color name="navigation_bar">#f0f0f0</color>
     <color name="white">#fff</color>
-    <!-- Base application theme. -->
+    <color name="black">#6421E1</color>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!--<item name="android:statusBarColor">#3d3dcc</item>-->
+        <item name="android:statusBarColor">@color/status_bar</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
-        <item name="android:navigationBarColor">@color/primary</item>
-        <item name="android:statusBarColor">#000</item>
-        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <item name="android:navigationBarColor">@color/navigation_bar</item>
         <item name="android:windowBackground">@color/white</item>
     </style>
-
 </resources>

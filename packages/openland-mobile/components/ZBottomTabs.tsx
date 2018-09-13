@@ -139,6 +139,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                     backgroundColor: '#fff',
                     // borderRadius: 24,
                     height: 48,
+                    elevation: 16
                 }}
             >
                 {content}

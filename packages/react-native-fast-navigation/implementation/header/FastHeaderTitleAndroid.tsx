@@ -22,18 +22,18 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     title: {
         textAlign: 'left',
-        fontSize: 32,
+        fontSize: 20,
         fontWeight: '700',
         lineHeight: 56,
         height: 56,
-        color: '#040404'
+        color: '#fff'
     } as TextStyle,
     subtitle: {
         textAlign: 'left',
         fontSize: 13,
         fontWeight: '300',
         lineHeight: 20,
-        color: '#000',
+        color: '#fff',
         opacity: 0.4
     } as TextStyle
 });

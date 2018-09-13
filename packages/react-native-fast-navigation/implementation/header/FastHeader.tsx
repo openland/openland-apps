@@ -82,7 +82,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     <View style={styles.titleWrapper} pointerEvents="box-none" key={s.route.record.key}>
                         <FastHeaderTitle
                             contentOffset={s.contentOffset}
-                            index={1}
+                            index={s.route.record.startIndex}
                             headerAppearance={s.route.config.appearance || 'large'}
                             appearance={Platform.OS === 'android' ? 'android' : 'ios'}
                             titleText={headerText}
@@ -156,8 +156,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 <View
                                     style={{
                                         height: BACKGROUND_SIZE,
-                                        width: '100%',
-                                        backgroundColor: '#0f0'
+                                        width: '100%'
                                     }}
                                 />
                             )}
@@ -247,16 +246,16 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                         }}
                     >
                         {content}
-                        {Platform.OS === 'android' && (
-                            <View style={{ position: 'absolute', top: 0, left: 0, zIndex: 1000 }}>
-                                <Image source={require('assets/corner_left.png')} />
+                        {/* {Platform.OS === 'android' && (
+                            <View style={{ position: 'absolute', top: 0, left: 0, zIndex: 1000, overflow: 'visible', }}>
+                                <Image source={require('assets/corner_left.png')} style={{ tintColor: '#000' }} />
                             </View>
                         )}
                         {Platform.OS === 'android' && (
-                            <View style={{ position: 'absolute', top: 0, right: 0, zIndex: 1000 }}>
-                                <Image source={require('assets/corner_right.png')} />
+                            <View style={{ position: 'absolute', top: 0, right: 0, zIndex: 1000, overflow: 'visible', }}>
+                                <Image source={require('assets/corner_right.png')} style={{ tintColor: '#000' }} />
                             </View>
-                        )}
+                        )} */}
                     </Animated.View>
                 );
             }
