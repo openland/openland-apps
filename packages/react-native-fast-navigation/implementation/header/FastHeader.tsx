@@ -130,7 +130,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                     </View>
 
                     {/* Background */}
-                    <View style={[styles.backgroundContainer, searchActive && { marginTop: -88 }]} pointerEvents="box-none">
+                    {/* <View style={[styles.backgroundContainer, searchActive && { marginTop: -88 }]} pointerEvents="box-none">
                         <Animated.View
                             style={{
                                 position: 'absolute',
@@ -161,7 +161,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 />
                             )}
                         </Animated.View>
-                    </View>
+                    </View> */}
 
                     {/* Hairline */}
                     <Animated.View
@@ -236,13 +236,13 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                 );
             } else {
                 return (
-                    <Animated.View
+                    <View
                         style={{
                             overflow: 'visible',
                             flexDirection: 'row',
                             height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight,
-                            backgroundColor: DeviceConfig.navigationBarBackgroundColor,
-                            paddingTop: DeviceConfig.statusBarHeight
+                            paddingTop: DeviceConfig.statusBarHeight,
+                            backgroundColor: DeviceConfig.navigationBarBackgroundColor
                         }}
                     >
                         {content}
@@ -256,7 +256,7 @@ export class FastHeader extends React.PureComponent<FastHeaderProps> {
                                 <Image source={require('assets/corner_right.png')} style={{ tintColor: '#000' }} />
                             </View>
                         )} */}
-                    </Animated.View>
+                    </View>
                 );
             }
         });

@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         lineHeight: 56,
         height: 56,
-        color: '#fff'
+        color: '#49288f'
     } as TextStyle,
     subtitle: {
         textAlign: 'left',
         fontSize: 13,
         fontWeight: '300',
         lineHeight: 20,
-        color: '#fff',
+        color: '#49288f',
         opacity: 0.4
     } as TextStyle
 });

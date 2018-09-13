@@ -26,11 +26,12 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
             selectedColor = AppStyles.primaryColor;
             unselectedColor = '#C8C8F9';
         }
+        let size = 24;
 
         let content = (
             <View
                 style={{
-                    height: 48,
+                    height: 56,
 
                     // borderRadius: 24,
                     shadowColor: '#000',
@@ -42,29 +43,27 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                 <TouchableWithoutFeedback onPressIn={this.handlePress1} delayPressIn={0}>
                     <View
                         style={{
-                            flexGrow: 1,
-                            flexBasis: 0,
+                            width: 48,
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginLeft: 5
                         }}
                     >
-                        <Image source={require('assets/fire-11.png')} style={{ width: 25, height: 25 }} resizeMode="contain" />
+                        <Image source={require('assets/fire-11.png')} style={{ width: size, height: size, tintColor: '#fff' }} resizeMode="contain" />
                         {/* <Ionicons name={'ic-flame'} size={25} color={this.props.selected === 0 ? selectedColor : unselectedColor} /> */}
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress2} delayPressIn={0}>
                     <View
                         style={{
-                            flexGrow: 1,
-                            flexBasis: 0,
+                            width: 48,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}
                     >
                         <View style={{ width: 48, height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                             {/* <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? selectedColor : unselectedColor} /> */}
-                            <Image source={require('assets/messages-8.png')} style={{ width: 25, height: 25 }} resizeMode="contain" />
+                            <Image source={require('assets/messages-8.png')} style={{ width: size, height: size, tintColor: '#fff' }} resizeMode="contain" />
                             <View
                                 style={{
                                     position: 'absolute',
@@ -80,29 +79,27 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                 <TouchableWithoutFeedback onPressIn={this.handlePress3} delayPressIn={0}>
                     <View
                         style={{
-                            flexGrow: 1,
-                            flexBasis: 0,
+                            width: 48,
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginLeft: 5
                         }}
                     >
                         {/* <Ionicons name={'ios-contact'} size={25} color={this.props.selected === 2 ? selectedColor : unselectedColor} /> */}
-                        <Image source={require('assets/directory-8.png')} style={{ width: 25, height: 25 }} resizeMode="contain" />
+                        <Image source={require('assets/directory-8.png')} style={{ width: size, height: size, tintColor: '#fff' }} resizeMode="contain" />
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress4} delayPressIn={0}>
                     <View
                         style={{
-                            flexGrow: 1,
-                            flexBasis: 0,
+                            width: 48,
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginRight: 5
                         }}
                     >
                         {/* <Ionicons name={'ios-cog'} size={25} color={this.props.selected === 3 ? selectedColor : unselectedColor} /> */}
-                        <Image source={require('assets/settings-8.png')} style={{ width: 25, height: 25 }} resizeMode="contain" />
+                        <Image source={require('assets/settings-8.png')} style={{ width: size, height: size, tintColor: '#fff' }} resizeMode="contain" />
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -136,9 +133,9 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                     // marginBottom: 5,
                     // marginLeft: 10,
                     // marginRight: 10,
-                    backgroundColor: '#fff',
+                    backgroundColor: '#49288f',
                     // borderRadius: 24,
-                    height: 48,
+                    height: 56,
                     elevation: 16
                 }}
             >

@@ -1,7 +1,7 @@
 <resources>
     <color name="primary">#4747EC</color>
-    <color name="status_bar">#3d0080</color>
-    <color name="navigation_bar">#f0f0f0</color>
+    <color name="status_bar">#000</color>
+    <color name="navigation_bar">#3d0080</color>
     <color name="white">#fff</color>
     <color name="black">#6421E1</color>
 

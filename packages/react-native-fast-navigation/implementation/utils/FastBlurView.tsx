@@ -36,7 +36,7 @@ export class FastBlurredView extends React.PureComponent<ViewProps & { intensity
             );
         } else {
             return (
-                <View {...this.props} backgroundColor="#fff">
+                <View {...this.props} backgroundColor={DeviceConfig.navigationBarBackgroundColor}>
                     {this.props.children}
                 </View>
             );

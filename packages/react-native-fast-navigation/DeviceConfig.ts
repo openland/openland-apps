@@ -19,11 +19,11 @@ const enableBlur = Platform.OS === 'ios';
 
 export const DeviceConfig = {
     accentColor: '#000',
-    titleColor: Platform.OS === 'ios' ? '#000' : '#fff',
-    subtitleColor: Platform.OS === 'ios' ? '#000' : '#fff',
+    titleColor: Platform.OS === 'ios' ? '#000' : '#49288f',
+    subtitleColor: Platform.OS === 'ios' ? '#000' : '#49288f',
     statusBarHeight,
     navigationBarBackWidth,
-    navigationBarBackgroundColor: Platform.OS === 'ios' ? '#fff' : '#49288f',
+    navigationBarBackgroundColor: '#fff',
     navigationBarHeight,
     navigationBarHeightLarge,
     navigationBarContentInset,
