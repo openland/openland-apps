@@ -85,7 +85,7 @@ const DropAreaSubtitle = Glamorous.div({
 
 const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
-    maxWidth: 700,
+    maxWidth: 800,
     flexBasis: '100%',
     paddingLeft: 50,
     paddingRight: 50

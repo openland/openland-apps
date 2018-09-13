@@ -24,7 +24,7 @@ const TypingWrapper = Glamorous.div({
 const TypingContent = Glamorous(XHorizontal)({
     backgroundColor: '#fff',
     maxHeight: 33,
-    maxWidth: 700,
+    maxWidth: 800,
     paddingLeft: 40,
     paddingRight: 40,
     margin: 'auto',
