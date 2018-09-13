@@ -22,8 +22,8 @@ const SendMessageWrapper = Glamorous.div({
     maxHeight: 200,
     backgroundColor: '#f9fafb',
     flexShrink: 0,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 12,
     borderTop: '1px solid rgba(220, 222, 228, 0.45)'
@@ -87,8 +87,8 @@ const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
     maxWidth: 700,
     flexBasis: '100%',
-    paddingLeft: 44,
-    paddingRight: 44
+    paddingLeft: 50,
+    paddingRight: 50
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({

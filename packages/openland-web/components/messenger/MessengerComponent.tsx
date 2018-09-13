@@ -413,8 +413,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
+                        maxWidth="calc(100% - 380px)"
                     >
-                        <XHorizontal alignItems="center" separator={6}>
+                        <XHorizontal alignItems="center" separator={6} maxWidth="100%">
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
@@ -429,7 +430,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
                                 userId={props.data.chat.flexibleId}
                             />
-                            <XHorizontal alignItems="center" separator={6}>
+                            <XHorizontal alignItems="center" separator={6} maxWidth="calc(100% - 48px)">
                                 <Title>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             </XHorizontal>
@@ -547,7 +548,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <XWithRole role={['super-admin']}>
                 <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
             </XWithRole>
-
         </XVertical>
     );
 }));
