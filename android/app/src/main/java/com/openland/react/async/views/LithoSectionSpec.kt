@@ -1,7 +1,5 @@
-package com.korshakov.testing.app.async.views
+package com.openland.react.async.views
 
-import android.graphics.Color
-import android.util.Log
 import com.facebook.litho.Column
 import com.facebook.litho.Row
 import com.facebook.litho.annotations.FromEvent
@@ -21,7 +19,7 @@ import com.facebook.litho.widget.RenderInfo
 import com.facebook.react.bridge.ReactContext
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaJustify
-import com.korshakov.testing.app.async.*
+import com.openland.react.async.*
 
 @GroupSectionSpec
 object LithoSectionSpec {

@@ -1,4 +1,4 @@
-package com.korshakov.testing.app;
+package com.openland.app;
 
 import android.app.Application;
 
@@ -7,11 +7,12 @@ import com.facebook.react.ReactApplication;
 
 import cl.json.RNSharePackage;
 
+import com.korshakov.testing.app.BuildConfig;
 import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
-import com.korshakov.testing.app.hacks.Hacks;
+import com.openland.react.hacks.Hacks;
 import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;

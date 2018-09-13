@@ -1,4 +1,4 @@
-package com.korshakov.testing.app.async
+package com.openland.react.async
 
 import android.os.Handler
 import android.os.Looper

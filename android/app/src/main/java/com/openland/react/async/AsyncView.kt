@@ -1,7 +1,6 @@
-package com.korshakov.testing.app.async
+package com.openland.react.async
 
 import android.graphics.Color
-import android.graphics.Paint
 import android.widget.FrameLayout
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext

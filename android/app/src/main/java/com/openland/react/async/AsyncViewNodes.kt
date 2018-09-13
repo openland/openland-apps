@@ -1,7 +1,6 @@
-package com.korshakov.testing.app.async
+package com.openland.react.async
 
 import android.content.res.Resources
-import android.text.Layout
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
@@ -10,14 +9,13 @@ import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
 import com.facebook.litho.widget.Text
-import com.facebook.litho.widget.VerticalGravity
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
-import com.korshakov.testing.app.async.views.BackgroundSolidColorDrawable
-import com.korshakov.testing.app.async.views.CustomLineHeightSpan
-import com.korshakov.testing.app.async.views.LithoFlex
+import com.openland.react.async.views.BackgroundSolidColorDrawable
+import com.openland.react.async.views.CustomLineHeightSpan
+import com.openland.react.async.views.LithoFlex
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {

@@ -1,4 +1,4 @@
-package com.korshakov.testing.app.hacks;
+package com.openland.react.hacks;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;

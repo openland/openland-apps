@@ -1,14 +1,12 @@
-package com.korshakov.testing.app.async
+package com.openland.react.async
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
-import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.views.imagehelper.ImageSource
 import dk.madslee.imageCapInsets.utils.RCTResourceDrawableIdHelper

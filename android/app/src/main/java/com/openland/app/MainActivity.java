@@ -1,8 +1,9 @@
-package com.korshakov.testing.app;
+package com.openland.app;
 
 import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;
+import com.korshakov.testing.app.BuildConfig;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
@@ -23,7 +24,7 @@ public class MainActivity extends ReactActivity {
 
         // Starting App Center
         AppCenter.start(getApplication(),
-                "ca033019-79a5-4518-aefe-5d4e79d0e3f1",
+                "5a587893-2dae-4dd5-b737-118dfb623b8d",
                 Distribute.class,
                 Analytics.class,
                 Crashes.class);

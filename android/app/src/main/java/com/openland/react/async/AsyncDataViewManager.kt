@@ -1,4 +1,4 @@
-package com.korshakov.testing.app.async
+package com.openland.react.async
 
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject

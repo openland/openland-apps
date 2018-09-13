@@ -7,10 +7,10 @@ import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
-import com.korshakov.testing.app.async.AsyncConfigManager
-import com.korshakov.testing.app.async.AsyncDataViewManager
-import com.korshakov.testing.app.async.AsyncListViewManager
-import com.korshakov.testing.app.async.AsyncViewManager
+import com.openland.react.async.AsyncConfigManager
+import com.openland.react.async.AsyncDataViewManager
+import com.openland.react.async.AsyncListViewManager
+import com.openland.react.async.AsyncViewManager
 import com.openland.react.anim.RNSAnimatedViewManager
 import com.openland.react.anim.RNSAnimatedViewViewManager
 

@@ -1,4 +1,4 @@
-package com.korshakov.testing.app.async.views
+package com.openland.react.async.views
 
 import android.graphics.drawable.RippleDrawable
 import android.view.View
@@ -11,7 +11,7 @@ import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.Prop
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaJustify
-import com.korshakov.testing.app.async.*
+import com.openland.react.async.*
 import com.facebook.litho.annotations.FromEvent
 import com.facebook.litho.ClickEvent
 import com.facebook.litho.annotations.OnEvent
@@ -19,9 +19,6 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.WritableNativeMap
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.widget.RelativeLayout
 import com.facebook.yoga.YogaEdge
 import com.facebook.yoga.YogaPositionType
 

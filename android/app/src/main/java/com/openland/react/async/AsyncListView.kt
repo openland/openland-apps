@@ -1,4 +1,4 @@
-package com.korshakov.testing.app.async
+package com.openland.react.async
 
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.FrameLayout
@@ -9,7 +9,7 @@ import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.widget.*
 import com.facebook.react.bridge.*
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.korshakov.testing.app.async.views.LithoSection
+import com.openland.react.async.views.LithoSection
 
 
 class AsyncListView(context: ReactContext) : FrameLayout(context) {
