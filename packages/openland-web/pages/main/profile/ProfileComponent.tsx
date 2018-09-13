@@ -173,7 +173,7 @@ const Header = (props: { organizationQuery: OrganizationQuery }) => {
                     <XButton
                         size="r-default"
                         text="Edit profile"
-                        path="/settings/organization"
+                        path={'/settings/organization/' + org.id}
                     />
                 </HeaderTools>
             </XWithRole>
@@ -546,16 +546,19 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             <>
                                 <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
                                 <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                <XWithRole role={['super-admin']}>
+                                    <XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
+                                </XWithRole>
                             </>
                         }
                     />}
-                    <XWithRole role={['super-admin']}>
+                    {!this.props.iAmOwner && <XWithRole role={['super-admin']}>
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
                             content={<XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
                         />
-                    </XWithRole>
+                    </XWithRole>}
                 </MemberCardTools>
             </MemberCardWrapper>
         );

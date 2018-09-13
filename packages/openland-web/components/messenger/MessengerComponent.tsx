@@ -396,7 +396,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     } else if (props.data.chat.__typename === 'ChannelConversation') {
         subtitle = 'Channel';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
-        subtitle = 'Persion';
+        subtitle = 'Person';
         if (props.data.chat.user.primaryOrganization) {
             subtitle = props.data.chat.user.primaryOrganization.name;
             subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
