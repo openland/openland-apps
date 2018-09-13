@@ -19,6 +19,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
+import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -161,6 +162,7 @@ interface ConversationComponentProps {
         date: string,
         message: string | null,
         sender: {
+            id: string,
             firstName: string
         }
     } | null;
@@ -172,7 +174,7 @@ interface ConversationComponentProps {
     allowSelection: boolean;
 }
 
-class ConversationComponent extends React.Component<ConversationComponentProps> {
+class ConversationComponentInner extends React.Component<ConversationComponentProps & UserInfoComponentProps> {
     refComponent: any;
 
     componentWillReceiveProps(nextProps: ConversationComponentProps) {
@@ -202,6 +204,8 @@ class ConversationComponent extends React.Component<ConversationComponentProps> 
 
         let { props } = this;
 
+        let senderName = props.topMessage ? props.user && props.topMessage.sender.id === props.user.id ? 'You' : props.topMessage.sender.firstName : '';
+
         return (
             <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect} ref={this.handleRef}>
                 <XAvatar
@@ -224,10 +228,10 @@ class ConversationComponent extends React.Component<ConversationComponentProps> 
                     <Content>
                         <ContentText className="content">
                             {props.topMessage && props.topMessage.message && (
-                                <span>{props.topMessage.sender.firstName}: {props.topMessage.message}</span>
+                                <span>{senderName}: {props.topMessage.message}</span>
                             )}
                             {props.topMessage && !props.topMessage.message && (
-                                <span>{props.topMessage.sender.firstName}: File</span>
+                                <span>{senderName}: File</span>
                             )}
                         </ContentText>
                         {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
@@ -237,6 +241,8 @@ class ConversationComponent extends React.Component<ConversationComponentProps> 
         );
     }
 }
+
+const ConversationComponent = withUserInfo((props) => (<ConversationComponentInner {...props} />)) as React.ComponentType<ConversationComponentProps>;
 
 const PlaceholderEmpty = Glamorous(XText)({
     opacity: 0.5
