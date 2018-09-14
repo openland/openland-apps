@@ -13,6 +13,9 @@ class RNSAnimatedView: RCTView {
   private weak var manager: RNSAnimatedViewManager!
   private var animatedKeyValue: String!
   private var isRegistered = false
+  var wasSetTranslateX = false
+  var wasSetTranslateY = false
+  var wasSetOpacity = true
   
   init(manager: RNSAnimatedViewManager) {
     self.manager = manager

@@ -52,6 +52,14 @@ export class NavigationManager {
         return true;
     }
 
+    popWihtoutNotification = () => {
+        let r = [...this.state.history];
+        r.splice(r.length - 1, 1);
+        let nhistory = new NavigationState(r);
+        this.state = nhistory;
+        return nhistory;
+    }
+
     watch(watcher: NavigationManagerListener): WatchSubscription {
         this.watchers.push(watcher);
         return () => {

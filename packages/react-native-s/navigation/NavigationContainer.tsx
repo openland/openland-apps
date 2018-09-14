@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions } from 'react-native';
+import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions, PanResponder } from 'react-native';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { AnimatedViewKeys } from './AnimatedViewKeys';
 import { SAnimated } from 'react-native-s/SAnimated';
-import { DeviceConfig } from './DeviceConfig';
 import { NavigationPage } from './NavigationPage';
 import { NavigationState } from './NavigationState';
 import { NavigationManagerListener, NavigationManager } from './NavigationManager';
@@ -52,6 +51,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private removing: string[];
     private currentHistory: NavigationState;
     private pendingAction?: () => void;
+    private swipeLocker?: (() => void);
+    private swipeCurrentKey?: string;
+    private swipePrevKey?: string;
 
     constructor(props: NavigationContainerProps) {
         super(props);
@@ -137,12 +139,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
+                    SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 0,
+                        to: 0.3, easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
                 }
-                SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
-                    property: 'opacity',
-                    from: 0,
-                    to: 0.3
-                });
                 // FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
                 SAnimated.commitTransaction();
             }
@@ -205,6 +207,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         from: -SCREEN_WIDTH * 0.3,
                         to: 0
                     });
+                    SAnimated.spring(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 0.3,
+                        to: 0
+                    });
                 } else {
                     SAnimated.timing(AnimatedViewKeys.page(page.key), {
                         property: 'translateX',
@@ -212,125 +219,118 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: SCREEN_WIDTH,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
+                    SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 0.3,
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
                 }
-                SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
-                    property: 'opacity',
-                    from: 0.3,
-                    to: 0
-                });
                 // FastHeaderCoordinator.moveBackward(record.key, underlayHolder.record.key);
                 SAnimated.commitTransaction();
             }
         );
     }
-    // onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
-    //     if (this.currentHistory.history.length < 2) {
-    //         return;
-    //     }
-    //     if (event.nativeEvent.state === State.ACTIVE) {
-    //         Keyboard.dismiss();
-    //         this.swipeHistoryLock = this.props.historyManager.beginLock();
-    //         let current = this.currentHistory.history[this.currentHistory.history.length - 1].key;
-    //         let prev = this.currentHistory.history[this.currentHistory.history.length - 2].key;
-    //         this.swipeCurrent = this.routes.find((v) => v.record.key === current)!!;
-    //         this.swipePrev = this.routes.find((v) => v.record.key === prev)!!;
-    //         this.swipeCurrent.startSwipe();
-    //         this.swipePrev.startSwipePrev();
 
-    //         this.mounted = [...this.mounted, this.currentHistory.history[this.currentHistory.history.length - 2].key];
-    //         this.setState({ mounted: this.mounted });
-    //     } else if (event.nativeEvent.oldState === State.ACTIVE) {
-    //         let currentHolder = this.swipeCurrent!!;
-    //         let prevHolder = this.swipePrev!!;
+    panResponder = PanResponder.create({
 
-    //         let progress = Math.min(-event.nativeEvent.translationX / Dimensions.get('window').width, 0);
-    //         let velocity = Math.min(-event.nativeEvent.velocityX / Dimensions.get('window').width);
-    //         currentHolder.progressValue.setValue(progress);
-    //         prevHolder.progressValue.setValue(1 + progress);
+        onPanResponderGrant: () => {
+            Keyboard.dismiss();
+            this.swipeCurrentKey = this.currentHistory.history[this.currentHistory.history.length - 1].key;
+            this.swipePrevKey = this.currentHistory.history[this.currentHistory.history.length - 2].key;
+            this.mounted = [...this.mounted, this.swipePrevKey];
+            this.swipeLocker = this.props.manager.beginLock();
+            this.setState({ mounted: this.mounted });
+        },
+        onMoveShouldSetPanResponder: (event, gesture) => {
+            return this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
+        },
+        onPanResponderMove: (event, gesture) => {
+            let dx = gesture.dx;
+            if (dx < 0) {
+                dx = 0;
+            }
+            // SAnimated.beginTransaction();
+            SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
+            SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -SCREEN_WIDTH / 3 + dx / 3);
+            SAnimated.setValue(AnimatedViewKeys.pageShadow(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH) * 0.3);
+            // SAnimated.commitTransaction();
+        },
+        onPanResponderRelease: (event, gesture) => {
+            let dx = gesture.dx;
+            if (dx > 0) {
+                // SAnimated.beginTransaction();
+                if (gesture.vx > 0.5) {
+                    // Move back
+                    SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
+                        property: 'translateX',
+                        from: dx,
+                        to: SCREEN_WIDTH
+                    });
+                    SAnimated.spring(AnimatedViewKeys.page(this.swipePrevKey!), {
+                        property: 'translateX',
+                        from: -SCREEN_WIDTH / 3 + dx / 3,
+                        to: 0
+                    });
+                    SAnimated.spring(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+                        property: 'opacity',
+                        from: (1 - dx / SCREEN_WIDTH) * 0.3,
+                        to: 0
+                    });
 
-    //         var handled = false;
-    //         if (event.nativeEvent.state === State.END) {
-    //             let shouldMoveBack = false;
-    //             if (event.nativeEvent.translationX > Dimensions.get('window').width / 2) {
-    //                 shouldMoveBack = true;
-    //             } else if (velocity < -0.5) {
-    //                 shouldMoveBack = true;
-    //             }
-    //             if (shouldMoveBack) {
-    //                 if (this.swipeHistoryLock) {
-    //                     this.swipeHistoryLock();
-    //                     this.swipeHistoryLock = undefined;
-    //                 }
-    //                 handled = true;
-    //                 this.removing = [...this.removing, currentHolder.record.key];
-    //                 this.props.historyManager.pop();
-    //                 let unlock = this.props.historyManager.beginLock();
-    //                 setTimeout(unlock, 150);
-    //                 Animated.parallel([
-    //                     Animated.spring(currentHolder.progressValue, {
-    //                         toValue: -1,
-    //                         stiffness: 5000,
-    //                         damping: 600,
-    //                         mass: 3,
-    //                         useNativeDriver: true,
-    //                         overshootClamping: true,
-    //                         velocity: velocity
-    //                     }),
-    //                     Animated.spring(prevHolder.progressValue, {
-    //                         toValue: 0,
-    //                         stiffness: 5000,
-    //                         damping: 600,
-    //                         mass: 3,
-    //                         useNativeDriver: true,
-    //                         overshootClamping: true,
-    //                         velocity: velocity
-    //                     })
-    //                 ]).start(() => {
-    //                     unlock();
-    //                     this.removing = this.removing.filter((v) => v !== currentHolder.record.key);
-    //                     this.mounted = this.mounted.filter((v) => v !== currentHolder.record.key);
-    //                     this.routes = this.routes.filter((v) => v.record.key !== currentHolder.record.key);
-    //                     this.setState({ routes: this.routes, mounted: this.mounted, transitioning: false });
-    //                 });
-    //             }
-    //         }
+                    let nstate = this.props.manager.popWihtoutNotification();
+                    this.currentHistory = nstate;
 
-    //         if (!handled) {
-    //             let unlock = this.swipeHistoryLock;
-    //             this.swipeHistoryLock = undefined;
-    //             if (unlock) {
-    //                 setTimeout(unlock, FULL_TRASITION_DELAY);
-    //             }
-    //             Animated.parallel([
-    //                 Animated.spring(currentHolder.progressValue, {
-    //                     toValue: 0,
-    //                     stiffness: 5000,
-    //                     damping: 600,
-    //                     mass: 3,
-    //                     useNativeDriver: true,
-    //                     overshootClamping: true,
-    //                     velocity: velocity
-    //                 }),
-    //                 Animated.spring(prevHolder.progressValue, {
-    //                     toValue: 1,
-    //                     stiffness: 5000,
-    //                     damping: 600,
-    //                     mass: 3,
-    //                     useNativeDriver: true,
-    //                     overshootClamping: true,
-    //                     velocity: velocity
-    //                 })
-    //             ]).start(() => {
-    //                 if (unlock) {
-    //                     unlock();
-    //                 }
-    //             });
-    //         }
+                    setTimeout(
+                        () => {
+                            this.swipeLocker!!();
+                            this.swipeLocker = undefined;
 
-    //         currentHolder.stopSwipe();
-    //         prevHolder.stopSwipe();
-    //     }
-    // }
+                            this.removing = this.removing.filter((v) => v !== this.swipeCurrentKey);
+                            this.mounted = this.mounted.filter((v) => v !== this.swipeCurrentKey);
+                            this.routes = this.routes.filter((v) => v.key !== this.swipeCurrentKey);
+                            this.setState({ routes: this.routes, mounted: this.mounted });
+                        },
+                        1000);
+                } else {
+                    // Cancel gesture
+                    SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
+                        property: 'translateX',
+                        from: dx,
+                        to: 0
+                    });
+                    SAnimated.spring(AnimatedViewKeys.page(this.swipePrevKey!), {
+                        property: 'translateX',
+                        from: -SCREEN_WIDTH / 3 + dx / 3,
+                        to: -SCREEN_WIDTH / 3
+                    });
+                    SAnimated.spring(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+                        property: 'opacity',
+                        from: (1 - dx / SCREEN_WIDTH) * 0.3,
+                        to: 0.3
+                    });
+                    this.swipeLocker!!();
+                    this.swipeLocker = undefined;
+                }
+                // SAnimated.commitTransaction();
+            } else {
+                this.swipeLocker!!();
+                this.swipeLocker = undefined;
+            }
+        },
+        onPanResponderTerminate: () => {
+            // On terminate
+            // TODO: Reset to initial state
+            // console.log('terminate');
+            // SAnimated.setValue(AnimatedViewKeys.page(top), 'translateX', gesture.dx);
+        },
+
+        onPanResponderTerminationRequest: () => {
+            // Returning false will prevent other views from becoming responder while
+            // the navigation view is the responder (mid-gesture)
+            return false;
+        },
+    });
 
     componentWillUnmount() {
         if (this.subscription) {
@@ -388,28 +388,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             </View>
         );
 
-        // if (Platform.OS === 'ios') {
-        //     pages = (
-        //         <PanGestureHandler
-        //             onGestureEvent={this.panEvent}
-        //             onHandlerStateChange={this.onGestureChanged}
-        //             minOffsetX={10}
-        //             // maxDeltaY={20}
-        //             // maxPointers={2}
-        //             // avgTouches={true}
-        //             enabled={!this.state.transitioning}
-        //         >
-        //             {pages}
-        //         </PanGestureHandler>
-        //     );
-        // }
-
-        // Is navigation bar is opaque then shift content to match navigation bar
-
+        // Content offset for device
         let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top;
 
         return (
-            <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]}>
+            <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]} {...(Platform.OS === 'ios' && this.panResponder.panHandlers)}>
                 <ASSafeAreaProvider
                     top={this.props.style.isOpaque ? 0 : contentInset}
                     bottom={SDevice.safeArea.bottom}

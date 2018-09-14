@@ -4,17 +4,17 @@ import { ZBlurredView } from '../ZBlurredView';
 
 import { ASKeyboardTracker } from 'react-native-async-view/ASKeyboardTracker';
 import { ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
+import { SDevice } from 'react-native-s/SDevice';
 
 class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updateSize: (size: number) => void } }> {
 
     handleLayout = (event: LayoutChangeEvent) => {
         if (this.props.context) {
-            console.log('JS Keybard height: ' + (event.nativeEvent.layout.height - DeviceConfig.bottomNavigationBarInset));
+            console.log('JS Keybard height: ' + (event.nativeEvent.layout.height - SDevice.safeArea.bottom));
             if (Platform.OS === 'ios') {
-                this.props.context.updateSize(event.nativeEvent.layout.height - DeviceConfig.bottomNavigationBarInset);
+                this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
             } else {
-                this.props.context.updateSize(event.nativeEvent.layout.height - DeviceConfig.bottomNavigationBarInset);
+                this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
             }
         }
     }
@@ -38,7 +38,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
                             onLayout={this.handleLayout}
                         >
                             <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
-                            <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" paddingBottom={DeviceConfig.bottomNavigationBarInset}>
+                            <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" paddingBottom={SDevice.safeArea.bottom}>
                                 {this.props.children}
                             </ZBlurredView>
                         </View>
@@ -50,7 +50,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
             <View>
                 <View flexDirection="column" alignItems="stretch" onLayout={this.handleLayout}>
                     <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
-                    <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: DeviceConfig.bottomNavigationBarInset }}>
+                    <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: SDevice.safeArea.bottom }}>
                         {this.props.children}
                     </ZBlurredView>
                 </View>

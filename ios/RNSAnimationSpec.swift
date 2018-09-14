@@ -41,10 +41,26 @@ class RNSAnimationTransactionSpec {
         return aspec
       }
     }
+    if let valueSets = src["valueSetters"].array {
+      res.valueSets = valueSets.map({ (s) -> RNSValueSetSpec in
+        let aspec = RNSValueSetSpec()
+        aspec.viewKey = s["view"].string!
+        aspec.property = s["prop"].string!
+        aspec.value = CGFloat(s["to"].double!)
+        
+        // Can we ignore this animation if view is missing?
+        if let optional = s["optional"].bool {
+          aspec.optional = optional
+        }
+        
+        return aspec
+      })
+    }
     return res
   }
   
   var animations: [RNSAnimationSpec] = []
+  var valueSets: [RNSValueSetSpec] = []
   var duration: Double = 0.3
 }
 
@@ -53,12 +69,20 @@ enum RNSAnimationType: String {
   case timing = "timing"
 }
 
+class RNSValueSetSpec {
+  var viewKey: String!
+  var property: String!
+  var value: CGFloat!
+  var optional: Bool = false
+}
+
 class RNSAnimationSpec {
   var type: RNSAnimationType!
   var viewKey: String!
   var property: String!
   var to: CGFloat!
   var from: CGFloat!
+  var velocity: CGFloat!
   
   var duration: Double?
   var optional: Bool = false

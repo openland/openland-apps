@@ -3,10 +3,11 @@ import { NativeModules } from 'react-native';
 
 const RNFastAnimatedViewManager = NativeModules.RNSAnimatedViewManager as { animate: (config: string) => void };
 
-function postAnimations(duration: number, animations: any[]) {
+function postAnimations(duration: number, animations: any[], valueSetters: any[]) {
     RNFastAnimatedViewManager.animate(JSON.stringify({
         duration,
-        animations
+        animations,
+        valueSetters
     }));
 }
 
@@ -38,7 +39,7 @@ function resolveEasing(easing?: SAnimatedEasing) {
         return {
             type: 'material'
         };
-    } else  {
+    } else {
         return {
             type: 'bezier',
             bezier: easing.bezier
@@ -64,6 +65,7 @@ class SAnimatedImpl {
 
     private _inTransaction = false;
     private _pendingAnimations: any[] = [];
+    private _pendingSetters: any[] = [];
     private _transactionDuration = 0.25;
 
     beginTransaction = () => {
@@ -97,7 +99,7 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
         } else {
-            postAnimations(this._transactionDuration, [anim]);
+            postAnimations(this._transactionDuration, [anim], []);
         }
     }
 
@@ -113,7 +115,20 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
         } else {
-            postAnimations(this._transactionDuration, [anim]);
+            postAnimations(this._transactionDuration, [anim], []);
+        }
+    }
+
+    setValue = (name: string, property: SAnimatedProperty, value: number) => {
+        let v = {
+            view: name,
+            prop: property,
+            to: value
+        };
+        if (this._inTransaction) {
+            this._pendingSetters.push(v);
+        } else {
+            postAnimations(this._transactionDuration, [], [v]);
         }
     }
 
@@ -125,7 +140,7 @@ class SAnimatedImpl {
         this._transactionDuration = 0.25;
 
         if (this._pendingAnimations.length > 0) {
-            postAnimations(this._transactionDuration, this._pendingAnimations);
+            postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters);
             this._pendingAnimations = [];
         }
     }

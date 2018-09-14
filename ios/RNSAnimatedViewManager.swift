@@ -75,6 +75,16 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
               }
             }
           }
+          for a in spec.valueSets {
+            let registered = self.registeredViews.get(key: a.viewKey)
+            views[a.viewKey] = registered
+            if registered == nil {
+              if !a.optional {
+                allViews = false
+                print("unable to find view: " + a.viewKey)
+              }
+            }
+          }
           
           if allViews {
             self.doAnimations(spec: spec, views: views)
@@ -101,10 +111,22 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
         // Resolving Key Path
         let keyPath: String
         if s.property == "opacity" {
+          if view.wasSetOpacity {
+            view.wasSetOpacity = false
+            view.layer.opacity = 0.0
+          }
           keyPath = "opacity"
         } else if s.property == "translateX" {
+          if view.wasSetTranslateX {
+            view.wasSetTranslateX = false
+            view.layer.position.x = view.bounds.width/2
+          }
           keyPath = "position.x"
         } else if s.property == "translateY" {
+          if view.wasSetTranslateY {
+            view.wasSetTranslateY = false
+            view.layer.position.y = view.bounds.width/2
+          }
           keyPath = "position.y"
         } else {
           continue
@@ -140,6 +162,23 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
         
         // Add animation to layer
         view.layer.add(animation, forKey: "rn-native-" + s.property)
+      }
+    }
+    for s in spec.valueSets {
+      if let view = views[s.viewKey] {
+        if s.property == "opacity" {
+          view.layer.opacity = Float(s.value)
+          view.wasSetOpacity = true
+        } else if s.property == "translateX" {
+          view.layer.position.x = view.bounds.width/2 + s.value
+          view.wasSetTranslateX = true
+        } else if s.property == "translateY" {
+          view.layer.position.y = view.bounds.height/2 + s.value
+          view.wasSetTranslateY = true
+        } else {
+          continue
+        }
+        view.layer.removeAnimation(forKey: "rn-native-" + s.property)
       }
     }
     CATransaction.commit()

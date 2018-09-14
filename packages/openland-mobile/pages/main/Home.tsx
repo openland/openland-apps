@@ -11,6 +11,7 @@ import { Feed } from './Feed';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
+import { SDevice } from 'react-native-s/SDevice';
 
 export class Home extends React.PureComponent<{}, { tab: number }> {
     constructor(props: NavigationInjectedProps) {
@@ -53,7 +54,7 @@ export class Home extends React.PureComponent<{}, { tab: number }> {
                 </ASSafeAreaProvider>
                 <YQuery query={GlobalCounterQuery}>
                     {resp => (
-                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: DeviceConfig.bottomNavigationBarInset, left: 0, right: 0 }}>
+                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: SDevice.safeArea.bottom, left: 0, right: 0 }}>
                             <ZBottomTabs counter={resp.data && resp.data.counter.unreadCount || 0} selected={this.state.tab} onPress={this.handleTabChange} />
                         </View>
                     )}
