@@ -92,6 +92,8 @@ routes.add('/directory/c/:organizationId', '/main/directory/communities');
 routes.add('/directory/c/:organizationId/', '/main/directory/communities');
 routes.add('/directory/ch/:conversationId', '/main/directory/channels');
 routes.add('/directory/ch/:conversationId/', '/main/directory/channels');
+routes.add('/directory/u/:userId', '/main/directory/root');
+routes.add('/directory/u/:userId/', '/main/directory/root');
 
 //
 // Profiles

@@ -439,14 +439,15 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
     );
 };
 
-const MemberCardWrapper = Glamorous.div({
+const MemberCardWrapper = makeNavigable(Glamorous.div({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '16px 0 15px',
+    cursor: 'pointer',
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
-});
+}));
 
 const MemberCardAvatar = Glamorous.div({
     padding: '0 12px 0 24px'
@@ -532,6 +533,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
             <MemberCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
+                path={'/directory/u/' + user.id}
             >
                 <MemberCardAvatar>
                     <XAvatar cloudImageUuid={user.picture || undefined} userName={user.name} userId={user.id} style="colorus" />

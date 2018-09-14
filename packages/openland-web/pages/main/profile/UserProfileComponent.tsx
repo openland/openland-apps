@@ -10,7 +10,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
 import { XLink } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
-import { XTag } from 'openland-x/XTag';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
