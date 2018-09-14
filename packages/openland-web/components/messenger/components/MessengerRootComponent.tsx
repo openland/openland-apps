@@ -18,7 +18,7 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withEditMessage } from '../../../api/withEditMessage';
 import { isServerMessage } from 'openland-engines/messenger/types';
-import { XInput } from 'openland-x/XInput';
+import { XTextArea } from 'openland-x/XTextArea';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -69,7 +69,7 @@ const EditMessageComponent = withEditMessage((props) => {
             }}
             submitProps={{ succesText: 'done!' }}
         >
-            <XInput field="message" size="r-default" color="primary-sky-blue" autofocus={true}/>
+            <XTextArea valueStoreKey="fields.message" resize={false} autofocus={true}/>
         </XModalForm >
     );
 }) as React.ComponentType<{ conversation: ConversationEngine }>;
