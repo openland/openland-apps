@@ -455,6 +455,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             target={
                                                 <SearchInput
                                                     onFocus={this.onSearchFocus}
+                                                    autoFocus={true}
                                                     value={searchText}
                                                     onChange={this.handleSearchChange}
                                                     placeholder={TextDirectory.searchInputPlaceholder}
