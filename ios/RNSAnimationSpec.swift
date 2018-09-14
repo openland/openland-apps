@@ -33,6 +33,10 @@ class RNSAnimationTransactionSpec {
           aspec.duration = duration
         }
         
+        if let velocity = anim["velocity"].double {
+          aspec.velocity = CGFloat(velocity)
+        }
+        
         // Can we ignore this animation if view is missing?
         if let optional = anim["optional"].bool {
           aspec.optional = optional
@@ -82,7 +86,7 @@ class RNSAnimationSpec {
   var property: String!
   var to: CGFloat!
   var from: CGFloat!
-  var velocity: CGFloat!
+  var velocity: CGFloat?
   
   var duration: Double?
   var optional: Bool = false

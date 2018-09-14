@@ -260,22 +260,27 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             let dx = gesture.dx;
             if (dx > 0) {
                 // SAnimated.beginTransaction();
-                if (gesture.vx > 0.5) {
+                if (gesture.vx > 0.5 || gesture.dx > SCREEN_WIDTH / 3) {
+
                     // Move back
-                    SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
+                    let duration = Math.max(0.05, Math.min(0.2, Math.abs(-SCREEN_WIDTH / 3 + dx / 3) / Math.abs(gesture.vx * SCREEN_WIDTH)));
+                    SAnimated.timing(AnimatedViewKeys.page(this.swipeCurrentKey!), {
                         property: 'translateX',
                         from: dx,
-                        to: SCREEN_WIDTH
+                        to: SCREEN_WIDTH,
+                        duration: duration
                     });
-                    SAnimated.spring(AnimatedViewKeys.page(this.swipePrevKey!), {
+                    SAnimated.timing(AnimatedViewKeys.page(this.swipePrevKey!), {
                         property: 'translateX',
                         from: -SCREEN_WIDTH / 3 + dx / 3,
-                        to: 0
+                        to: 0,
+                        duration: duration
                     });
-                    SAnimated.spring(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+                    SAnimated.timing(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
                         property: 'opacity',
                         from: (1 - dx / SCREEN_WIDTH) * 0.3,
-                        to: 0
+                        to: 0,
+                        duration: duration
                     });
 
                     let nstate = this.props.manager.popWihtoutNotification();

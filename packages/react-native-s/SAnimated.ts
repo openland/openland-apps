@@ -58,6 +58,7 @@ export interface SAnimatedSpringConfig {
     duration?: number;
     delay?: number;
     optional?: boolean;
+    velocity?: number;
 }
 
 class SAnimatedImpl {
@@ -110,7 +111,8 @@ class SAnimatedImpl {
             prop: animation.property,
             from: animation.from,
             to: animation.to,
-            optional: animation.optional
+            optional: animation.optional,
+            velocity: animation.velocity
         };
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
