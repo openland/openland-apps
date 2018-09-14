@@ -422,6 +422,7 @@ export interface AccountQuery {
     isProfileCreated: boolean,
     isAccountActivated: boolean,
     isAccountExists: boolean,
+    // depricated
     isAccountPicked: boolean,
     isCompleted: boolean,
     isBlocked: boolean,
@@ -6324,6 +6325,18 @@ export interface SuperChatsStatsQuery {
     __typename: "ChatStats",
     messagesSent: number,
     usersActive: number,
+    usersMutedEmail: number,
+    messagesLeaderboard:  Array< {
+      __typename: "MessagesLeaderboardItem",
+      user:  {
+        __typename: "User",
+        id: string,
+        name: string,
+        photo: string | null,
+      },
+      count: number,
+    } >,
+    usersMutedOpenlandBeta: number,
   },
 };
 
@@ -8571,6 +8584,7 @@ export interface SessionStateFullFragment {
   isProfileCreated: boolean,
   isAccountActivated: boolean,
   isAccountExists: boolean,
+  // depricated
   isAccountPicked: boolean,
   isCompleted: boolean,
   isBlocked: boolean,

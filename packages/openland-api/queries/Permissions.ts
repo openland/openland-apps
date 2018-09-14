@@ -143,6 +143,16 @@ export const SuperChatsStatsQuery = gql`
         statsChats(fromDate: $fromDate, toDate: $toDate) {
             messagesSent
             usersActive
+            usersMutedEmail
+            messagesLeaderboard{
+                user{
+                    id
+                    name
+                    photo
+                }
+                count
+            }
+            usersMutedOpenlandBeta
         }
     }
 `;
