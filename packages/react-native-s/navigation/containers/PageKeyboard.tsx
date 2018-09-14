@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { NativeSyntheticEvent, StyleProp, ViewStyle, Platform, View } from 'react-native';
+import { NativeSyntheticEvent, Platform, View } from 'react-native';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { DeviceConfig } from '../DeviceConfig';
-import { SDevice } from '../../SDevice';
 import { SNavigationViewStyle } from '../../SNavigationView';
 
 export interface PageKeyboardProps {
@@ -33,8 +32,9 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
     render() {
         if (Platform.OS === 'ios') {
             return (
-                <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
+                <View style={{ width: '100%', height: '100%' }}>
                     <ASKeyboardContext
+                        style={{ width: '100%', height: '100%' }}
                         contextKey={this.props.contextKey}
                         onKeyboardChanged={this.handleKeyboard}
                         bottomSafeInset={DeviceConfig.bottomNavigationBarInset}
@@ -51,7 +51,7 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
             );
         }
         return (
-            <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
+            <View style={{ width: '100%', height: '100%' }}>
                 {this.props.children}
             </View>
         );

@@ -7,6 +7,7 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { View } from 'react-native';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 
 class ProfileUserComponent extends React.Component<PageProps> {
@@ -22,7 +23,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                 <ZQuery query={UserQuery} variables={{ userId: this.props.router.params.id }}>
                     {(resp) => {
                         return (
-                            <SScrollView style={{ backgroundColor: '#f00' }}>
+                            <SScrollView>
                                 <ZListItemHeader
                                     photo={resp.data.user.photo}
                                     id={resp.data.user.id}

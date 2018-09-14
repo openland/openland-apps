@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         opacity: 1,
-        backgroundColor: '#ff0'
+        backgroundColor: '#fff'
     } as ViewStyle,
     rootUnmounted: {
         opacity: 0

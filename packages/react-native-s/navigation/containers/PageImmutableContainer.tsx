@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
 export interface PageImmutableContainerProps {
     component: React.ComponentType<{}>;
@@ -18,7 +19,9 @@ export class PageImmutableContainer extends React.Component<PageImmutableContain
     render() {
         let Component = this.props.component;
         return (
-            <Component />
+            <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
+                <Component />
+            </View>
         );
     }
 }
