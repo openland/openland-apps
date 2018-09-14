@@ -502,6 +502,7 @@ interface MemberCardProps {
         twitter: string | null
     };
     iAmOwner: boolean;
+    isCommunity: boolean;
 }
 
 class MemberCard extends React.PureComponent<MemberCardProps> {
@@ -527,7 +528,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             {user.email && <MemberCardSocial href={'mailto:' + user.email}><EmailIcon /></MemberCardSocial>}
                             {user.linkedin && <MemberCardSocial href={user.linkedin}><LinkedinIcon /></MemberCardSocial>}
                             {user.twitter && <MemberCardSocial href={user.twitter}><TwitterIcon /></MemberCardSocial>}
-                            {user.primaryOrganization && <MemberCardOrg path={`/directory/o/${user.primaryOrganization.id}`}>{user.primaryOrganization.name}</MemberCardOrg>}
+                            {this.props.isCommunity && user.primaryOrganization && <MemberCardOrg path={`/directory/o/${user.primaryOrganization.id}`}>{user.primaryOrganization.name}</MemberCardOrg>}
                         </XHorizontal>
                         {user.role && <MemberCardRole>{user.role}</MemberCardRole>}
                     </XVertical>
@@ -606,7 +607,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                     </XSubHeader>
                     {(organization.members || []).map((member, i) => {
                         return (
-                            <MemberCard key={i} user={member.user} iAmOwner={organization.isOwner} />
+                            <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
                         );
                     })}
                 </>
