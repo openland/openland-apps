@@ -14,13 +14,16 @@ class RNSAnimationTransactionSpec {
   static func parse(spec: String) -> RNSAnimationTransactionSpec {
     let src = JSON(parseJSON: spec)
     let res = RNSAnimationTransactionSpec()
+    if let transactionKey = src["transactionKey"].string {
+      res.transactionKey = transactionKey
+    }
     if let duration = src["duration"].double {
       res.duration = duration
     }
     if let animations = src["animations"].array {
       res.animations = animations.map { (anim) -> RNSAnimationSpec in
         let aspec = RNSAnimationSpec()
-        
+      
         // Type and View
         aspec.type = RNSAnimationType(rawValue: anim["type"].stringValue)!
         aspec.viewKey = anim["view"].string!
@@ -63,6 +66,7 @@ class RNSAnimationTransactionSpec {
     return res
   }
   
+  var transactionKey: String?
   var animations: [RNSAnimationSpec] = []
   var valueSets: [RNSValueSetSpec] = []
   var duration: Double = 0.3

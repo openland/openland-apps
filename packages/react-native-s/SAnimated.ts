@@ -1,15 +1,11 @@
 import { SAnimatedView } from './SAnimatedView';
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
+import UUID from 'uuid/v4';
 
-const RNFastAnimatedViewManager = NativeModules.RNSAnimatedViewManager as { animate: (config: string) => void };
-
-function postAnimations(duration: number, animations: any[], valueSetters: any[]) {
-    RNFastAnimatedViewManager.animate(JSON.stringify({
-        duration,
-        animations,
-        valueSetters
-    }));
-}
+const RNSAnimatedViewManager = NativeModules.RNSAnimatedViewManager as {
+    animate: (config: string) => void,
+};
+const RNSAnimatedEventEmitter = new NativeEventEmitter(NativeModules.RNSAnimatedEventEmitter);
 
 export type SAnimatedProperty = 'translateX' | 'translateY' | 'opacity';
 
@@ -68,6 +64,17 @@ class SAnimatedImpl {
     private _pendingAnimations: any[] = [];
     private _pendingSetters: any[] = [];
     private _transactionDuration = 0.25;
+    private _callbacks = new Map<string, () => void>();
+
+    constructor() {
+        RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
+            let clb = this._callbacks.get(args.key);
+            if (clb) {
+                this._callbacks.delete(args.key);
+                clb();
+            }
+        });
+    }
 
     beginTransaction = () => {
         if (this._inTransaction) {
@@ -100,7 +107,7 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
         } else {
-            postAnimations(this._transactionDuration, [anim], []);
+            this._postAnimations(this._transactionDuration, [anim], []);
         }
     }
 
@@ -117,7 +124,7 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
         } else {
-            postAnimations(this._transactionDuration, [anim], []);
+            this._postAnimations(this._transactionDuration, [anim], []);
         }
     }
 
@@ -130,11 +137,11 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingSetters.push(v);
         } else {
-            postAnimations(this._transactionDuration, [], [v]);
+            this._postAnimations(this._transactionDuration, [], [v]);
         }
     }
 
-    commitTransaction = () => {
+    commitTransaction = (callback?: () => void) => {
         if (!this._inTransaction) {
             return;
         }
@@ -142,9 +149,24 @@ class SAnimatedImpl {
         this._transactionDuration = 0.25;
 
         if (this._pendingAnimations.length > 0) {
-            postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters);
+            this._postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters, callback);
             this._pendingAnimations = [];
         }
+    }
+
+    _postAnimations(duration: number, animations: any[], valueSetters: any[], callback?: () => void) {
+        let transactionKey: string | undefined = undefined;
+        if (callback) {
+            transactionKey = UUID();
+            this._callbacks.set(transactionKey, callback);
+        }
+        RNSAnimatedViewManager.animate(
+            JSON.stringify({
+                duration,
+                animations,
+                valueSetters,
+                transactionKey
+            }));
     }
 }
 

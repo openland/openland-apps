@@ -14,3 +14,7 @@
 RCT_EXPORT_VIEW_PROPERTY(animatedKey, NSString)
 RCT_EXTERN_METHOD(animate: (NSString *)spec)
 @end
+
+@interface RCT_EXTERN_MODULE(RNSAnimatedEventEmitter, RCTEventEmitter)
+RCT_EXTERN_METHOD(supportedEvents)
+@end

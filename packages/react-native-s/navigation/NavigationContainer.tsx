@@ -98,28 +98,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         this.setState(
             { mounted: this.mounted, routes: this.routes },
             () => {
-
-                //
-                // Start unlock timer
-                // TODO: use transaction callback inst3ead
-                //
-                setTimeout(unlock, FULL_TRASITION_DELAY);
-                setTimeout(
-                    () => {
-                        unlock();
-                        // Unmount underlay when animation finished
-                        // Ignore if we are aborted transition
-                        if (this.removing.find((v) => v === record.key)) {
-                            return;
-                        }
-                        this.mounted = this.mounted.filter((v) => v !== underlay);
-                        this.setState({ mounted: this.mounted });
-                    },
-                    1000);
-
-                //
-                // Run Animations
-                //
                 SAnimated.beginTransaction();
                 if (Platform.OS === 'ios') {
                     SAnimated.spring(AnimatedViewKeys.page(record.key), {
@@ -131,6 +109,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         property: 'translateX',
                         from: 0,
                         to: -SCREEN_WIDTH
+                    });
+                    SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 0,
+                        to: 0.3
                     });
                 } else {
                     SAnimated.timing(AnimatedViewKeys.page(record.key), {
@@ -146,7 +129,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                 }
                 // FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
-                SAnimated.commitTransaction();
+                SAnimated.commitTransaction(() => {
+                    console.log('Commit');
+                    unlock();
+                    this.mounted = this.mounted.filter((v) => v !== underlay);
+                    this.setState({ mounted: this.mounted });
+                });
             }
         );
     }
@@ -163,7 +151,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
         //
         // Lock navigation
-        // TODO: Better handling
         //
         let unlock = this.props.manager.beginLock();
 
@@ -174,27 +161,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         this.setState(
             { mounted: this.mounted },
             () => {
-
-                // Unlock touch events
-                setTimeout(unlock, FULL_TRASITION_DELAY);
-
-                //
-                // Remove popped on completion
-                // TODO: use transaction callback instead
-                //
-                setTimeout(
-                    () => {
-                        unlock();
-                        this.removing = this.removing.filter((v) => v !== page.key);
-                        this.mounted = this.mounted.filter((v) => v !== page.key);
-                        this.routes = this.routes.filter((v) => v.key !== page.key);
-                        this.setState({ routes: this.routes, mounted: this.mounted });
-                    },
-                    1000);
-
-                //
-                // Run Animations
-                //
                 SAnimated.beginTransaction();
                 if (Platform.OS === 'ios') {
                     SAnimated.spring(AnimatedViewKeys.page(page.key), {
@@ -226,8 +192,13 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
                 }
-                // FastHeaderCoordinator.moveBackward(record.key, underlayHolder.record.key);
-                SAnimated.commitTransaction();
+                SAnimated.commitTransaction(() => {
+                    unlock();
+                    this.removing = this.removing.filter((v) => v !== page.key);
+                    this.mounted = this.mounted.filter((v) => v !== page.key);
+                    this.routes = this.routes.filter((v) => v.key !== page.key);
+                    this.setState({ routes: this.routes, mounted: this.mounted });
+                });
             }
         );
     }
@@ -262,8 +233,15 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                 // SAnimated.beginTransaction();
                 if (gesture.vx > 0.5 || gesture.dx > SCREEN_WIDTH / 3) {
 
+                    // Pop history
+                    let nstate = this.props.manager.popWihtoutNotification();
+                    this.currentHistory = nstate;
+                    let unlock = this.swipeLocker!;
+                    this.swipeLocker = undefined;
+
                     // Move back
                     let duration = Math.max(0.05, Math.min(0.2, Math.abs(-SCREEN_WIDTH / 3 + dx / 3) / Math.abs(gesture.vx * SCREEN_WIDTH)));
+                    SAnimated.beginTransaction();
                     SAnimated.timing(AnimatedViewKeys.page(this.swipeCurrentKey!), {
                         property: 'translateX',
                         from: dx,
@@ -282,23 +260,19 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0,
                         duration: duration
                     });
+                    SAnimated.commitTransaction(() => {
+                        unlock();
 
-                    let nstate = this.props.manager.popWihtoutNotification();
-                    this.currentHistory = nstate;
-
-                    setTimeout(
-                        () => {
-                            this.swipeLocker!!();
-                            this.swipeLocker = undefined;
-
-                            this.removing = this.removing.filter((v) => v !== this.swipeCurrentKey);
-                            this.mounted = this.mounted.filter((v) => v !== this.swipeCurrentKey);
-                            this.routes = this.routes.filter((v) => v.key !== this.swipeCurrentKey);
-                            this.setState({ routes: this.routes, mounted: this.mounted });
-                        },
-                        1000);
+                        this.removing = this.removing.filter((v) => v !== this.swipeCurrentKey);
+                        this.mounted = this.mounted.filter((v) => v !== this.swipeCurrentKey);
+                        this.routes = this.routes.filter((v) => v.key !== this.swipeCurrentKey);
+                        this.setState({ routes: this.routes, mounted: this.mounted });
+                    });
                 } else {
                     // Cancel gesture
+                    let unlock = this.swipeLocker!;
+                    this.swipeLocker = undefined;
+                    SAnimated.beginTransaction();
                     SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
                         property: 'translateX',
                         from: dx,
@@ -314,8 +288,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         from: (1 - dx / SCREEN_WIDTH) * 0.3,
                         to: 0.3
                     });
-                    this.swipeLocker!!();
-                    this.swipeLocker = undefined;
+                    SAnimated.commitTransaction(() => {
+                        unlock();
+                    });
                 }
                 // SAnimated.commitTransaction();
             } else {

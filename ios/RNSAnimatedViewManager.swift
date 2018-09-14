@@ -26,7 +26,7 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
   }
   
   /*
-   * Main method to start animations
+   * Method to start animations
    * [BACKGROUND THREAD]
    */
   @objc(animate:)
@@ -102,71 +102,29 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
    */
   private func doAnimations(spec: RNSAnimationTransactionSpec, views: [String: RNSAnimatedView]) {
     
-    CATransaction.begin()
-    CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-    CATransaction.setAnimationDuration(resolveDuration(source: spec.duration))
+    // Reset Values
     for s in spec.animations {
       if let view = views[s.viewKey] {
-        
-        // Resolving Key Path
-        let keyPath: String
         if s.property == "opacity" {
           if view.wasSetOpacity {
             view.wasSetOpacity = false
             view.layer.opacity = 0.0
           }
-          keyPath = "opacity"
         } else if s.property == "translateX" {
           if view.wasSetTranslateX {
             view.wasSetTranslateX = false
             view.layer.position.x = view.bounds.width/2
           }
-          keyPath = "position.x"
         } else if s.property == "translateY" {
           if view.wasSetTranslateY {
             view.wasSetTranslateY = false
-            view.layer.position.y = view.bounds.width/2
+            view.layer.position.y = view.bounds.height/2
           }
-          keyPath = "position.y"
-        } else {
-          continue
         }
-        
-        // Resolving Animation Type
-        let animation: CABasicAnimation
-        if s.type == RNSAnimationType.timing {
-          animation = CABasicAnimation(keyPath: keyPath)
-        } else if s.type == RNSAnimationType.spring {
-          let spring = CASpringAnimation(keyPath: keyPath)
-          spring.mass = 3.0
-          spring.stiffness = 1000.0
-          spring.damping = 500.0
-          spring.duration = resolveDuration(source: 0.5)
-          spring.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-          if let velocity = s.velocity {
-            spring.initialVelocity = velocity
-          }
-          animation = spring
-        } else {
-          continue
-        }
-        
-        // Resolving values
-        animation.fromValue = s.from
-        animation.toValue = s.to
-        animation.isAdditive = true
-        animation.fillMode = kCAFillModeForwards
-        animation.isRemovedOnCompletion = false
-        
-        // Resolving parameters
-        if let duration = s.duration {
-          animation.duration = resolveDuration(source: duration)
-        }
-        
-        // Add animation to layer
-        view.layer.add(animation, forKey: "rn-native-" + s.property)
       }
     }
+    
+    // Set Values
     for s in spec.valueSets {
       if let view = views[s.viewKey] {
         if s.property == "opacity" {
@@ -184,7 +142,72 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
         view.layer.removeAnimation(forKey: "rn-native-" + s.property)
       }
     }
-    CATransaction.commit()
+    
+    if spec.animations.count > 0 {
+      CATransaction.begin()
+      if spec.transactionKey != nil {
+        CATransaction.setCompletionBlock {
+          RNSAnimatedEventEmitter.sharedInstance.onAnimationCompleted(key: spec.transactionKey!)
+        }
+      }
+      CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+      CATransaction.setAnimationDuration(resolveDuration(source: spec.duration))
+      for s in spec.animations {
+        if let view = views[s.viewKey] {
+          
+          // Resolving Key Path
+          let keyPath: String
+          if s.property == "opacity" {
+            keyPath = "opacity"
+          } else if s.property == "translateX" {
+            keyPath = "position.x"
+          } else if s.property == "translateY" {
+            keyPath = "position.y"
+          } else {
+            continue
+          }
+          
+          // Resolving Animation Type
+          let animation: CABasicAnimation
+          if s.type == RNSAnimationType.timing {
+            animation = CABasicAnimation(keyPath: keyPath)
+          } else if s.type == RNSAnimationType.spring {
+            let spring = CASpringAnimation(keyPath: keyPath)
+            spring.mass = 3.0
+            spring.stiffness = 1000.0
+            spring.damping = 500.0
+            spring.duration = resolveDuration(source: 0.5)
+            spring.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+            if let velocity = s.velocity {
+              spring.initialVelocity = velocity
+            }
+            animation = spring
+          } else {
+            continue
+          }
+          
+          // Resolving values
+          animation.fromValue = s.from
+          animation.toValue = s.to
+          animation.isAdditive = true
+          animation.fillMode = kCAFillModeForwards
+          animation.isRemovedOnCompletion = false
+          
+          // Resolving parameters
+          if let duration = s.duration {
+            animation.duration = resolveDuration(source: duration)
+          }
+          
+          // Add animation to layer
+          view.layer.add(animation, forKey: "rn-native-" + s.property)
+        }
+      }
+      CATransaction.commit()
+    } else {
+      if spec.transactionKey != nil {
+        RNSAnimatedEventEmitter.sharedInstance.onAnimationCompleted(key: spec.transactionKey!)
+      }
+    }
   }
   
   //
