@@ -83,6 +83,10 @@ const HeaderTools = Glamorous.div({
     padding: 24
 });
 
+const OrgName = makeNavigable(Glamorous(XHorizontal)({
+    cursor: 'pointer'
+}));
+
 const Header = (props: { userQuery: UserQuery }) => {
     let usr = props.userQuery.user;
 
@@ -102,14 +106,14 @@ const Header = (props: { userQuery: UserQuery }) => {
             <HeaderInfo flexGrow={1} separator={3}>
                 <HeaderTitle>{usr.name}</HeaderTitle>
                 {usr.primaryOrganization && (
-                    <XHorizontal separator={2.5} alignItems="center">
+                    <OrgName separator={2.5} alignItems="center" path={'/directory/o/' + usr.primaryOrganization.id}>
                         <XAvatar
                             cloudImageUuid={usr.primaryOrganization.photo || undefined}
                             style="organization"
                             size="x-small"
                         />
                         <HeaderOrgTitle>{usr.primaryOrganization.name}</HeaderOrgTitle>
-                    </XHorizontal>
+                    </OrgName>
                 )}
             </HeaderInfo>
             <HeaderTools>

@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { findChild } from './utils';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
 import { withSearch } from '../api/withSearch';
@@ -94,13 +93,16 @@ const NavigationScroller = Glamorous(XScrollView)<{ sidebarBorderColor?: string 
     // top: 0,
 }));
 
-const Logo = Glamorous(XPicture)({
-    height: 48,
-    width: 48,
+const Logo = Glamorous.div({
+    height: 26,
+    width: 38,
     marginTop: 12,
     marginBottom: 12,
     alignSelf: 'center',
-    flexShrink: 0
+    flexShrink: 0,
+    backgroundImage: 'url(\'/static/X/logo.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain'
 });
 
 const NavigationDivider = Glamorous.div({
@@ -970,7 +972,7 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
                     <NavigationScroller sidebarBorderColor={this.props.sidebarBorderColor}>
                         <NavigationContainer>
                             <XLink path="/">
-                                <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
+                                <Logo />
                             </XLink>
 
                             <NavigationDivider />
