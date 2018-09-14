@@ -18,6 +18,7 @@ import { ChannelsExploreComponent } from '../../../components/messenger/Channels
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
 import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { UserProfile } from '../profile/UserProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
@@ -112,8 +113,9 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
     let isChannels = props.router.path.endsWith('/channels');
     let isInvite = props.router.path.includes('joinChannel');
     let oid = props.router.routeQuery.organizationId;
+    let uid = props.router.routeQuery.userId;
 
-    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' = 'empty';
+    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
 
     if (isCompose && canUseDOM) {
         tab = 'compose';
@@ -139,6 +141,11 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
     if (oid) {
         tab = 'organization';
     }
+
+    if (uid) {
+        tab = 'user';
+    }
+
     return (
         <>
             <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
@@ -178,6 +185,11 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             {tab === 'organization' && (
                                 <OrganizationProfilContainer>
                                     <OrganizationProfile organizationId={oid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
+                                </OrganizationProfilContainer>
+                            )}
+                            {tab === 'user' && (
+                                <OrganizationProfilContainer>
+                                    <UserProfile userId={uid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
                                 </OrganizationProfilContainer>
                             )}
                         </ConversationContainer>

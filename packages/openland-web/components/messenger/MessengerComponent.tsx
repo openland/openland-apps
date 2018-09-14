@@ -386,6 +386,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let title = props.data.chat.__typename === 'ChannelConversation' ?
         ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' / ' : '') + props.data.chat.title) :
         props.data.chat.title;
+    let titlePath = undefined;
 
     let subtitle = '';
     let subtitlePath = undefined;
@@ -398,6 +399,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     } else if (props.data.chat.__typename === 'PrivateConversation') {
         subtitle = 'Person';
         if (props.data.chat.user.primaryOrganization) {
+            titlePath = '/mail/u/' + props.data.chat.user.id;
             subtitle = props.data.chat.user.primaryOrganization.name;
             subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
         }
@@ -431,7 +433,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 userId={props.data.chat.flexibleId}
                             />
                             <XHorizontal alignItems="center" separator={6} maxWidth="calc(100% - 48px)">
-                                <Title>{title}</Title>
+                                <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             </XHorizontal>
                         </XHorizontal>

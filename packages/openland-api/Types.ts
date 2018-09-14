@@ -422,6 +422,7 @@ export interface AccountQuery {
     isProfileCreated: boolean,
     isAccountActivated: boolean,
     isAccountExists: boolean,
+    // depricated
     isAccountPicked: boolean,
     isCompleted: boolean,
     isBlocked: boolean,
@@ -7623,12 +7624,21 @@ export interface UserQuery {
     about: string | null,
     location: string | null,
     isBot: boolean,
+    isYou: boolean,
     primaryOrganization:  {
       __typename: "Organization",
       id: string,
       name: string,
       photo: string | null,
     } | null,
+    linkedin: string | null,
+    channels:  Array< {
+      __typename: "ChannelConversation",
+      id: string,
+      title: string,
+      photos: Array< string >,
+      hidden: boolean,
+    } >,
   },
 };
 
@@ -8571,6 +8581,7 @@ export interface SessionStateFullFragment {
   isProfileCreated: boolean,
   isAccountActivated: boolean,
   isAccountExists: boolean,
+  // depricated
   isAccountPicked: boolean,
   isCompleted: boolean,
   isBlocked: boolean,

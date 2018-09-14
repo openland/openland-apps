@@ -224,6 +224,8 @@ routes.add('/mail/joinChannel/:uuid', '/main/mail/root');
 routes.add('/mail/joinChannel/:uuid/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
 routes.add('/mail/o/:organizationId/', '/main/mail/root');
+routes.add('/mail/u/:userId', '/main/mail/root');
+routes.add('/mail/u/:userId/', '/main/mail/root');
 
 //
 // Channel
