@@ -8,10 +8,12 @@ import { withQueryLoader } from '../../components/withQueryLoader';
 import { XText } from 'openland-x/XText';
 import { withChatsStats } from '../../api/withChatsStats';
 import { XTable } from 'openland-x/XTable';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XAvatar } from 'openland-x/XAvatar';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const Stats = withChatsStats((props) => (
     <>
-
         {props.data.statsChats && <XText >messages sent {props.data.statsChats.messagesSent}</XText>}
         {props.data.statsChats && <XText>users active {props.data.statsChats.usersActive}</XText>}
     </>
@@ -23,6 +25,36 @@ const MessagesCell = withChatsStats((props) => (
 
 const UsersCell = withChatsStats((props) => (
     props.data.statsChats ? <XTable.Cell > <XText > {props.data.statsChats.usersActive}</XText></XTable.Cell > : <XTable.Cell >...</XTable.Cell >
+));
+
+const AllTime = withChatsStats((props) => (
+    props.data.statsChats ?
+        (
+            <>
+                <XHeader text="Mutes" />
+                <XText >email mute {props.data.statsChats.usersMutedEmail}</XText>
+                <XText>openland beta mute {props.data.statsChats.usersMutedOpenlandBeta}</XText>
+                <XHeader text="Messages sent top" />
+                <XTable>
+                    <XTable.Body>
+                        {props.data.statsChats.messagesLeaderboard.map(u => (
+                            <XTable.Row>
+                                <XTable.Cell>
+                                    <XText>{u.count}</XText>
+                                </XTable.Cell>
+                                <XTable.Cell>
+                                    <XAvatar cloudImageUuid={u.user.photo || undefined} />
+                                </XTable.Cell>
+                                <XTable.Cell>
+                                    <XText>{u.user.name}</XText>
+                                </XTable.Cell>
+                            </XTable.Row>
+                        ))}
+                    </XTable.Body>
+                </XTable>
+
+            </>
+        ) : null
 ));
 
 export default withApp('Super Organizations', 'super-admin', withSuperCities(withQueryLoader((props) => {
@@ -69,6 +101,8 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
                 </XTable.Body>
 
             </XTable>
+
+            <AllTime variables={{ fromDate: '0', toDate: new Date().getTime().toString() }} />
         </DevToolsScaffold>
     );
 })));

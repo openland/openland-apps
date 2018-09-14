@@ -66,8 +66,8 @@ let sizeStyles = styleResolver({
         fontSize: 14
     },
     'x-small': {
-        height: 18,
-        width: 18,
+        height: 16,
+        width: 16,
         fontSize: 8
     }
 });

@@ -247,14 +247,14 @@ class ChannelMembersComponentInner extends React.Component<{
                         {this.props.longDescription && <AboutText>{this.props.longDescription}</AboutText>}
                     </>
                 )}
-                <XWithRole role="admin" orgPermission={this.props.orgId}>
+                {requests.length > 0 && < XWithRole role="admin" orgPermission={this.props.orgId}>
                     <XSubHeader title="Requests" counter={requests.length} />
                     <MembersView>
                         {requests.map(m => (
                             <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
                         ))}
                     </MembersView>
-                </XWithRole>
+                </XWithRole>}
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
                     {(members.length > 1) && members.map(m => (
@@ -271,7 +271,7 @@ class ChannelMembersComponentInner extends React.Component<{
                     />
                 )}
                 <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
-            </MembersWrapper>
+            </MembersWrapper >
         );
     }
 }

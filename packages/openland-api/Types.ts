@@ -3943,6 +3943,7 @@ export interface MyOrganizationQuery {
   myOrganization:  {
     __typename: "Organization",
     id: string,
+    superAccountId: string,
     isMine: boolean,
     isOwner: boolean,
     editorial: boolean,
@@ -4615,6 +4616,7 @@ export interface OrganizationQuery {
   organization:  {
     __typename: "Organization",
     id: string,
+    superAccountId: string,
     isMine: boolean,
     isOwner: boolean,
     editorial: boolean,
@@ -5086,6 +5088,7 @@ export interface ExploreOrganizationsQuery {
       node:  {
         __typename: "Organization",
         id: string,
+        superAccountId: string,
         name: string,
         photo: string | null,
         locations: Array< string > | null,
@@ -5139,6 +5142,7 @@ export interface ExploreComunityQuery {
       node:  {
         __typename: "Organization",
         id: string,
+        superAccountId: string,
         name: string,
         photo: string | null,
         locations: Array< string > | null,
@@ -5416,6 +5420,7 @@ export interface OrganizationAlterPublishedMutation {
   alphaAlterPublished:  {
     __typename: "Organization",
     id: string,
+    superAccountId: string,
     name: string,
     photo: string | null,
     locations: Array< string > | null,
@@ -5481,6 +5486,7 @@ export interface OrganizationByPrefixQuery {
   organizationByPrefix:  {
     __typename: "Organization",
     id: string,
+    superAccountId: string,
     name: string,
     photo: string | null,
     locations: Array< string > | null,
@@ -6325,6 +6331,18 @@ export interface SuperChatsStatsQuery {
     __typename: "ChatStats",
     messagesSent: number,
     usersActive: number,
+    usersMutedEmail: number,
+    messagesLeaderboard:  Array< {
+      __typename: "MessagesLeaderboardItem",
+      user:  {
+        __typename: "User",
+        id: string,
+        name: string,
+        photo: string | null,
+      },
+      count: number,
+    } >,
+    usersMutedOpenlandBeta: number,
   },
 };
 
@@ -8092,6 +8110,7 @@ export interface MessageFullFragment {
 export interface OrganizationFullFragment {
   __typename: "Organization",
   id: string,
+  superAccountId: string,
   isMine: boolean,
   isOwner: boolean,
   editorial: boolean,
@@ -8531,6 +8550,7 @@ export interface OrganizationProfileFullFragment {
 export interface OrganizationSearchFragment {
   __typename: "Organization",
   id: string,
+  superAccountId: string,
   name: string,
   photo: string | null,
   locations: Array< string > | null,

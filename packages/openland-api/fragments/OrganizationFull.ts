@@ -4,6 +4,7 @@ import { UserShort } from './UserShort';
 export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
         id
+        superAccountId
         isMine
         isOwner: alphaIsOwner
         editorial: alphaEditorial
