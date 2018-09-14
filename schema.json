@@ -4719,6 +4719,22 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
+              "name": "superAccountId",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
               "name": "isMine",
               "type": {
                 "kind": "NON_NULL",

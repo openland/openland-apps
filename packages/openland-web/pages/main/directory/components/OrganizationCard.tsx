@@ -126,6 +126,7 @@ export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) =>
 interface OrganizationCardProps {
     item: {
         id: string,
+        superAccountId: string,
         name: string,
         photo: string | null,
         locations: string[] | null,
@@ -252,6 +253,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
 
                                         <XWithRole role={['super-admin', 'editor']}>
                                             <AlterOrgPublishedButton orgId={this.props.item.id} published={this.props.item.published} />
+                                            <XMenuItem style="primary-sky-blue" href={'/super/orgs/' + this.props.item.superAccountId}>{TextDirectory.buttonSuperEdit}</XMenuItem>
                                         </XWithRole>
                                     </>
                                 )}

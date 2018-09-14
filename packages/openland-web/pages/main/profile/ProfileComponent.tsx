@@ -168,15 +168,30 @@ const Header = (props: { organizationQuery: OrganizationQuery }) => {
                     <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
                 </HeaderTabs> */}
             </HeaderInfo>
-            <XWithRole role="admin" orgPermission={org.id}>
-                <HeaderTools>
+            <HeaderTools>
+                <XWithRole role="admin" orgPermission={org.id}>
                     <XButton
                         size="r-default"
                         text="Edit profile"
                         path={'/settings/organization/' + org.id}
                     />
-                </HeaderTools>
-            </XWithRole>
+                </XWithRole>
+                <XWithRole role="super-admin">
+                    <XHorizontal>
+                        {!org.isMine && < XButton
+                            size="r-default"
+                            text="Edit profile"
+                            path={'/settings/organization/' + org.id}
+                        />}
+                        <XButton
+                            size="r-default"
+                            text="Super edit"
+                            path={'/super/orgs/' + org.superAccountId}
+                        />
+                    </XHorizontal>
+                </XWithRole>
+            </HeaderTools>
+
         </HeaderWrapper>
     );
 };
