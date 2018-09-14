@@ -70,7 +70,8 @@ const SubTitle = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     letterSpacing: -0.1,
     color: '#5c6a81',
     opacity: 0.5,
-    cursor: props.href ? 'pointer' : undefined
+    cursor: props.href ? 'pointer' : undefined,
+    marginBottom: -2
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
