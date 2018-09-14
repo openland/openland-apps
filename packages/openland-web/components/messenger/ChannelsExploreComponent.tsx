@@ -155,12 +155,12 @@ const Channels = withChatSearchChannels((props) => {
 }) as React.ComponentType<WithChatSearchChannelsProps>;
 
 const SearchWrapper = Glamorous(XHorizontal)({
-    height: 60,
+    height: 61,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     paddingRight: 24,
     paddingLeft: 20,
     '& > div > div': {
-        height: 58,
+        height: 59,
         border: 'none',
         fontSize: 16,
         fontWeight: 500,
