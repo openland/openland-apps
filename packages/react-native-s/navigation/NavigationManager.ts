@@ -85,6 +85,10 @@ export class NavigationManager {
         };
     }
 
+    isLocked = () => {
+        return this.locksCount > 0;
+    }
+
     resolvePath(route: string) {
         return this.routes.resolvePath(route);
     }

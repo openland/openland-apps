@@ -40,7 +40,6 @@ export interface NavigationContainerProps {
     style: SNavigationViewStyle;
 }
 
-const FULL_TRASITION_DELAY = 250;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export class NavigationContainer extends React.PureComponent<NavigationContainerProps, NavigationContainerState> implements NavigationManagerListener {
@@ -50,7 +49,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private mounted: string[];
     private removing: string[];
     private currentHistory: NavigationState;
-    private pendingAction?: () => void;
     private swipeLocker?: (() => void);
     private swipeCurrentKey?: string;
     private swipePrevKey?: string;
@@ -128,9 +126,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0.3, easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
                 }
-                // FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
                 SAnimated.commitTransaction(() => {
-                    console.log('Commit');
                     unlock();
                     this.mounted = this.mounted.filter((v) => v !== underlay);
                     this.setState({ mounted: this.mounted });
@@ -214,7 +210,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.setState({ mounted: this.mounted });
         },
         onMoveShouldSetPanResponder: (event, gesture) => {
-            return this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
+            return !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
         },
         onPanResponderMove: (event, gesture) => {
             let dx = gesture.dx;
@@ -316,20 +312,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         if (this.subscription) {
             this.subscription();
             this.subscription = undefined;
-        }
-    }
-
-    componentDidMount() {
-        if (this.pendingAction) {
-            this.pendingAction();
-            this.pendingAction = undefined;
-        }
-    }
-
-    componentDidUpdate() {
-        if (this.pendingAction) {
-            this.pendingAction();
-            this.pendingAction = undefined;
         }
     }
 
