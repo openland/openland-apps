@@ -25,7 +25,7 @@ const TypingContent = Glamorous(XHorizontal)({
     backgroundColor: '#fff',
     maxHeight: 33,
     maxWidth: 800,
-    paddingLeft: 40,
+    paddingLeft: 67,
     paddingRight: 40,
     margin: 'auto',
 });
@@ -71,12 +71,15 @@ const TypingComponent = (props: { chatId: string }) => (
                 {typing => (
                     <TypingContent separator={5} alignItems="center" flexGrow={1}>
                         {/* {console.log(typing)} */}
-                        {typing.pictures && (
+                        {typing.users && (
                             <TypingAvatarWrapper>
-                                {typing.pictures.map((i, j) => (
+                                {typing.users.map((i, j) => (
                                     <TypingAvatar
+                                        size="x-small"
                                         key={'typing_img_' + j}
-                                        cloudImageUuid={i || undefined}
+                                        style="colorus"
+                                        userName={i.userName}
+                                        cloudImageUuid={i.userPic || undefined}
                                     />
                                 ))}
                             </TypingAvatarWrapper>
