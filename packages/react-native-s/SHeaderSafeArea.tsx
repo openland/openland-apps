@@ -2,13 +2,19 @@ import * as React from 'react';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SHeaderAppearance } from './SHeader';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
-import { DeviceConfig } from './navigation/DeviceConfig';
+import { SDevice } from './SDevice';
 
 export const SHeaderSafeArea = (props: { appearance: SHeaderAppearance, children?: any }) => {
     return (
         <>
             <HeaderConfigRegistrator config={{ appearance: props.appearance }} />
-            <ASSafeAreaProvider top={props.appearance === 'large' ? DeviceConfig.navigationBarHeightLarge - DeviceConfig.navigationBarHeight : 0}>
+            <ASSafeAreaProvider
+                top={
+                    props.appearance === 'large'
+                        ? SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight /* Add difference from large and small headers*/
+                        : 0
+                }
+            >
                 {props.children}
             </ASSafeAreaProvider>
         </>

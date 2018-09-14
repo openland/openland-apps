@@ -5,6 +5,12 @@ import { NavigationContainer } from './navigation/NavigationContainer';
 
 export interface SNavigationViewProps {
     routing: SRouting;
+    navigationBarStyle?: Partial<SNavigationViewStyle>;
+}
+
+export interface SNavigationViewStyle {
+    backgroundColor: string;
+    isOpaque: boolean;
 }
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps> {
@@ -30,9 +36,17 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps> {
     }
 
     render() {
+
+        // Resolve style navigation bar style
+        let style: SNavigationViewStyle = {
+            backgroundColor: '#fff',
+            isOpaque: true,
+            ...this.props.navigationBarStyle
+        };
+
         return (
             <View height="100%" width="100%">
-                <NavigationContainer manager={this.routing.navigationManager} />
+                <NavigationContainer manager={this.routing.navigationManager} style={style} />
             </View>
         );
     }

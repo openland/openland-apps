@@ -22,7 +22,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                 <ZQuery query={UserQuery} variables={{ userId: this.props.router.params.id }}>
                     {(resp) => {
                         return (
-                            <SScrollView>
+                            <SScrollView style={{ backgroundColor: '#f00' }}>
                                 <ZListItemHeader
                                     photo={resp.data.user.photo}
                                     id={resp.data.user.id}

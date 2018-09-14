@@ -8,40 +8,27 @@ import { NavigationPage } from './NavigationPage';
 import { NavigationState } from './NavigationState';
 import { NavigationManagerListener, NavigationManager } from './NavigationManager';
 import { PageContainer } from './containers/PageContainer';
+import { SNavigationViewStyle } from '../SNavigationView';
+import { SDevice } from '../SDevice';
+import { HeaderComponent } from './header/HeaderComponent';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
-    root: {
-        width: '100%',
-        height: '100%',
-        paddingTop: DeviceConfig.navigationBarTransparent ? 0 : DeviceConfig.navigationBarHeight
-    } as ViewStyle,
-    pages: {
+    fill: {
         width: '100%',
         height: '100%',
     } as ViewStyle,
-    page: {
+    absoluteFill: {
         position: 'absolute',
         top: 0,
         bottom: 0,
         right: 0,
         left: 0
     } as ViewStyle,
-    pageShadow: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0,
+    shadow: {
         backgroundColor: '#000',
         opacity: 0
     } as ViewStyle,
-    header: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0
-    } as ViewStyle
 });
 
 interface NavigationContainerState {
@@ -51,6 +38,7 @@ interface NavigationContainerState {
 
 export interface NavigationContainerProps {
     manager: NavigationManager;
+    style: SNavigationViewStyle;
 }
 
 const FULL_TRASITION_DELAY = 250;
@@ -63,6 +51,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private mounted: string[];
     private removing: string[];
     private currentHistory: NavigationState;
+    private pendingAction?: () => void;
 
     constructor(props: NavigationContainerProps) {
         super(props);
@@ -99,65 +88,69 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
         // Lock navigation
         let unlock = this.props.manager.beginLock();
-        setTimeout(unlock, FULL_TRASITION_DELAY);
-
-        //
-        // Update mount on navigation
-        //
-        // TODO: use transaction callback inst3ead
-        setTimeout(
-            () => {
-                unlock();
-                // Unmount underlay when animation finished
-                // Ignore if we are aborted transition
-                if (this.removing.find((v) => v === record.key)) {
-                    return;
-                }
-                this.mounted = this.mounted.filter((v) => v !== underlay);
-                this.setState({ mounted: this.mounted });
-            },
-            1000);
 
         // Commit changes
         this.routes = [...this.routes, record];
         this.mounted = [...this.mounted, record.key];
         this.currentHistory = state;
-        this.setState({ mounted: this.mounted, routes: this.routes });
+        this.setState(
+            { mounted: this.mounted, routes: this.routes },
+            () => {
 
-        //
-        // Run Animations
-        //
-        SAnimated.beginTransaction();
-        if (Platform.OS === 'ios') {
-            SAnimated.spring(AnimatedViewKeys.page(record.key), {
-                property: 'translateX',
-                from: SCREEN_WIDTH,
-                to: 0
-            });
-            SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
-                property: 'translateX',
-                from: 0,
-                to: -SCREEN_WIDTH
-            });
-        } else {
-            SAnimated.timing(AnimatedViewKeys.page(record.key), {
-                property: 'translateX',
-                from: SCREEN_WIDTH,
-                to: 0,
-                easing: { bezier: [0.4, 0.0, 0.2, 1] }
-            });
-        }
-        SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
-            property: 'opacity',
-            from: 0,
-            to: 0.3
-        });
-        // FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
-        SAnimated.commitTransaction();
+                //
+                // Start unlock timer
+                // TODO: use transaction callback inst3ead
+                //
+                setTimeout(unlock, FULL_TRASITION_DELAY);
+                setTimeout(
+                    () => {
+                        unlock();
+                        // Unmount underlay when animation finished
+                        // Ignore if we are aborted transition
+                        if (this.removing.find((v) => v === record.key)) {
+                            return;
+                        }
+                        this.mounted = this.mounted.filter((v) => v !== underlay);
+                        this.setState({ mounted: this.mounted });
+                    },
+                    1000);
+
+                //
+                // Run Animations
+                //
+                SAnimated.beginTransaction();
+                if (Platform.OS === 'ios') {
+                    SAnimated.spring(AnimatedViewKeys.page(record.key), {
+                        property: 'translateX',
+                        from: SCREEN_WIDTH,
+                        to: 0
+                    });
+                    SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
+                        property: 'translateX',
+                        from: 0,
+                        to: -SCREEN_WIDTH
+                    });
+                } else {
+                    SAnimated.timing(AnimatedViewKeys.page(record.key), {
+                        property: 'translateX',
+                        from: SCREEN_WIDTH,
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                }
+                SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    property: 'opacity',
+                    from: 0,
+                    to: 0.3
+                });
+                // FastHeaderCoordinator.moveForward(underlayHolder.record.key, record.key);
+                SAnimated.commitTransaction();
+            }
+        );
     }
 
     onPopped = (page: NavigationPage, state: NavigationState) => {
-        
+
         // Dismiss keyboard on navigation
         Keyboard.dismiss();
 
@@ -171,58 +164,64 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         // TODO: Better handling
         //
         let unlock = this.props.manager.beginLock();
-        setTimeout(unlock, FULL_TRASITION_DELAY);
-
-        //
-        // Remove popped on completion
-        // TODO: use transaction callback instead
-        //
-        setTimeout(
-            () => {
-                unlock();
-                this.removing = this.removing.filter((v) => v !== page.key);
-                this.mounted = this.mounted.filter((v) => v !== page.key);
-                this.routes = this.routes.filter((v) => v.key !== page.key);
-                this.setState({ routes: this.routes, mounted: this.mounted });
-            },
-            1000);
 
         //
         // Mount next page and commit changes
         //
         this.mounted = [...this.mounted, state.history[state.history.length - 1].key];
-        this.setState({ mounted: this.mounted });
+        this.setState(
+            { mounted: this.mounted },
+            () => {
 
-        //
-        // Run Animations
-        //
-        SAnimated.beginTransaction();
-        if (Platform.OS === 'ios') {
-            SAnimated.spring(AnimatedViewKeys.page(page.key), {
-                property: 'translateX',
-                from: 0,
-                to: SCREEN_WIDTH
-            });
-            SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
-                property: 'translateX',
-                from: -SCREEN_WIDTH * 0.3,
-                to: 0
-            });
-        } else {
-            SAnimated.timing(AnimatedViewKeys.page(page.key), {
-                property: 'translateX',
-                from: 0,
-                to: SCREEN_WIDTH,
-                easing: { bezier: [0.4, 0.0, 0.2, 1] }
-            });
-        }
-        SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
-            property: 'opacity',
-            from: 0.3,
-            to: 0
-        });
-        // FastHeaderCoordinator.moveBackward(record.key, underlayHolder.record.key);
-        SAnimated.commitTransaction();
+                // Unlock touch events
+                setTimeout(unlock, FULL_TRASITION_DELAY);
+
+                //
+                // Remove popped on completion
+                // TODO: use transaction callback instead
+                //
+                setTimeout(
+                    () => {
+                        unlock();
+                        this.removing = this.removing.filter((v) => v !== page.key);
+                        this.mounted = this.mounted.filter((v) => v !== page.key);
+                        this.routes = this.routes.filter((v) => v.key !== page.key);
+                        this.setState({ routes: this.routes, mounted: this.mounted });
+                    },
+                    1000);
+
+                //
+                // Run Animations
+                //
+                SAnimated.beginTransaction();
+                if (Platform.OS === 'ios') {
+                    SAnimated.spring(AnimatedViewKeys.page(page.key), {
+                        property: 'translateX',
+                        from: 0,
+                        to: SCREEN_WIDTH
+                    });
+                    SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
+                        property: 'translateX',
+                        from: -SCREEN_WIDTH * 0.3,
+                        to: 0
+                    });
+                } else {
+                    SAnimated.timing(AnimatedViewKeys.page(page.key), {
+                        property: 'translateX',
+                        from: 0,
+                        to: SCREEN_WIDTH,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                }
+                SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    property: 'opacity',
+                    from: 0.3,
+                    to: 0
+                });
+                // FastHeaderCoordinator.moveBackward(record.key, underlayHolder.record.key);
+                SAnimated.commitTransaction();
+            }
+        );
     }
     // onGestureChanged = (event: PanGestureHandlerStateChangeEvent) => {
     //     if (this.currentHistory.history.length < 2) {
@@ -340,13 +339,33 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         }
     }
 
+    componentDidMount() {
+        if (this.pendingAction) {
+            this.pendingAction();
+            this.pendingAction = undefined;
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.pendingAction) {
+            this.pendingAction();
+            this.pendingAction = undefined;
+        }
+    }
+
     render() {
         let pages = (
-            <View style={styles.pages}>
+            <View style={styles.fill}>
                 {this.state.routes.map((v) => {
                     return (
-                        <SAnimated.View name={AnimatedViewKeys.page(v.key)} key={'page-' + v.key} style={styles.page} pointerEvents="box-none">
+                        <SAnimated.View
+                            name={AnimatedViewKeys.page(v.key)}
+                            key={'page-' + v.key}
+                            style={styles.absoluteFill}
+                            pointerEvents="box-none"
+                        >
                             <PageContainer
+                                style={this.props.style}
                                 component={v.component}
                                 router={v.router}
                                 mounted={!!this.state.mounted.find((m) => v.key === m)}
@@ -354,7 +373,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                             <SAnimated.View
                                 name={AnimatedViewKeys.pageShadow(v.key)}
                                 key={'shadow-' + v.key}
-                                style={styles.pageShadow}
+                                style={[styles.absoluteFill, styles.shadow]}
                                 pointerEvents="none"
                             />
                         </SAnimated.View>
@@ -363,15 +382,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             </View>
         );
 
-        // let header = (
-        //     <View style={styles.header} pointerEvents="box-none">
-        //         <FastHeaderGuard
-        //             routes={this.state.routes}
-        //             mounted={this.state.mounted}
-        //             history={this.props.historyManager}
-        //         />
-        //     </View>
-        // );
+        let header = (
+            <View style={styles.absoluteFill} pointerEvents="box-none">
+                <HeaderComponent style={this.props.style} />
+            </View>
+        );
 
         // if (Platform.OS === 'ios') {
         //     pages = (
@@ -389,10 +404,19 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         //     );
         // }
 
+        // Is navigation bar is opaque then shift content to match navigation bar
+
+        let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top;
+
         return (
-            <View style={styles.root}>
-                {pages}
-                {/* {header} */}
+            <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]}>
+                <ASSafeAreaProvider
+                    top={this.props.style.isOpaque ? 0 : contentInset}
+                    bottom={SDevice.safeArea.bottom}
+                >
+                    {pages}
+                    {header}
+                </ASSafeAreaProvider>
             </View>
         );
     }

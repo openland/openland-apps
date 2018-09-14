@@ -3,10 +3,12 @@ import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-a
 import { NativeSyntheticEvent, StyleProp, ViewStyle, Platform, View } from 'react-native';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { DeviceConfig } from '../DeviceConfig';
+import { SDevice } from '../../SDevice';
+import { SNavigationViewStyle } from '../../SNavigationView';
 
 export interface PageKeyboardProps {
     contextKey: string;
-    style?: StyleProp<ViewStyle>;
+    style: SNavigationViewStyle;
 }
 
 export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keyboardHeight: number, acessoryHeight: number }> {
@@ -31,20 +33,26 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
     render() {
         if (Platform.OS === 'ios') {
             return (
-                <ASKeyboardContext style={this.props.style} contextKey={this.props.contextKey} onKeyboardChanged={this.handleKeyboard} bottomSafeInset={DeviceConfig.bottomNavigationBarInset}>
-                    <ASSafeAreaProvider bottom={this.state.keyboardHeight + DeviceConfig.bottomNavigationBarInset} top={DeviceConfig.navigationBarContentInsetSmall}>
-                        <ASKeyboardAcessoryViewContext.Provider value={this}>
-                            {this.props.children}
-                        </ASKeyboardAcessoryViewContext.Provider>
-                    </ASSafeAreaProvider>
-                </ASKeyboardContext>
+                <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
+                    <ASKeyboardContext
+                        contextKey={this.props.contextKey}
+                        onKeyboardChanged={this.handleKeyboard}
+                        bottomSafeInset={DeviceConfig.bottomNavigationBarInset}
+                    >
+                        <ASSafeAreaProvider
+                            bottom={this.state.keyboardHeight}
+                        >
+                            <ASKeyboardAcessoryViewContext.Provider value={this}>
+                                {this.props.children}
+                            </ASKeyboardAcessoryViewContext.Provider>
+                        </ASSafeAreaProvider>
+                    </ASKeyboardContext>
+                </View>
             );
         }
         return (
-            <View style={this.props.style}>
-                <ASSafeAreaProvider bottom={this.state.keyboardHeight + DeviceConfig.bottomNavigationBarInset} top={DeviceConfig.navigationBarContentInsetSmall}>
-                    {this.props.children}
-                </ASSafeAreaProvider>
+            <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
+                {this.props.children}
             </View>
         );
     }
