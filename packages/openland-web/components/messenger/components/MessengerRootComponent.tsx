@@ -69,7 +69,7 @@ const EditMessageComponent = withEditMessage((props) => {
             }}
             submitProps={{ succesText: 'done!' }}
         >
-            <XTextArea valueStoreKey="fields.message" resize={false} autofocus={true}/>
+            <XTextArea valueStoreKey="fields.message" resize={false} autofocus={true} />
         </XModalForm >
     );
 }) as React.ComponentType<{ conversation: ConversationEngine }>;
@@ -139,6 +139,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 />
                 {this.state.hideInput === false && (
                     <MessageComposeComponent
+                        conversation={this.conversation}
                         onChange={this.handleChange}
                         onSend={this.handleSend}
                         onSendFile={this.handleSendFile}
