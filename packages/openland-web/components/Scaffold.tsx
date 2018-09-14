@@ -333,7 +333,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
                     logo={props.organization ? props.organization.photo : undefined}
                     organizationName={props.organization ? props.organization.name : undefined}
                     organizationId={props.organization ? props.organization.id : undefined}
-                    hasMultipleOrganizations={data.data && data.data.myOrganizations.length > 1}
+                    hasMultipleOrganizations={data.data && data.data.myOrganizations && data.data.myOrganizations.length > 1}
                 />
             }
         </Query>
