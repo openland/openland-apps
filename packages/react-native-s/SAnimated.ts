@@ -5,6 +5,7 @@ import { SAnimatedProperty } from './SAnimatedProperty';
 
 const RNSAnimatedViewManager = NativeModules.RNSAnimatedViewManager as {
     animate: (config: string) => void,
+    hasPending: (callback: (v: boolean) => void) => boolean
 };
 const RNSAnimatedEventEmitter = new NativeEventEmitter(NativeModules.RNSAnimatedEventEmitter);
 
@@ -57,6 +58,12 @@ export interface SAnimatedSpringConfig {
     delay?: number;
     optional?: boolean;
     velocity?: number;
+}
+
+export function hasPending() {
+    RNSAnimatedViewManager.hasPending((v) => {
+        console.log(v);
+    });
 }
 
 class SAnimatedImpl {

@@ -46,6 +46,13 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
     }
   }
   
+  @objc(hasPending:)
+  func hasPending(callback: RCTResponseSenderBlock) {
+    let a = self.bridge.module(for: RCTEventDispatcher) as! RCTEventDispatcher
+    let r = a.value(forKey: "_eventsDispatchScheduled") as! Bool
+    callback([r])
+  }
+  
   /*
    * Handling event before mounting views to be able to apply animations right before initial render
    */
