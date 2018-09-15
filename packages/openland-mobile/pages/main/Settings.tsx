@@ -8,9 +8,9 @@ import { ZQuery } from '../../components/ZQuery';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { PageProps } from '../../components/PageProps';
-// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { SHeader } from 'react-native-s/SHeader';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -67,7 +67,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
     render() {
         return (
             <>
-                {/* <FastHeader title="Settings" /> */}
+                <SHeader title="Settings" />
                 <ZQuery query={AccountSettingsQuery}>
                     {resp => {
                         let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SNavigationViewStyle } from '../../SNavigationView';
-import { View, Text, StyleSheet, TextStyle, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, Dimensions, TouchableWithoutFeedback, Image } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { SAnimated } from '../../SAnimated';
 import { SBackButton } from '../../SBackButton';
@@ -79,6 +79,35 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                                 <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents="none">
                                     <SAnimated.View name={'header-large--' + v.page.key}>
                                         <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.accentColor }]}>{v.config.title}</Text>
+                                    </SAnimated.View>
+                                </View>
+                            )}
+
+                            {(v.config.appearance === 'large' || !v.config.appearance) && (v.config.search) && (
+                                <View style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents="none">
+                                    <SAnimated.View name={'header-search--' + v.page.key}>
+                                        <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
+                                            <TouchableWithoutFeedback onPress={v.config.searchPress}>
+                                                <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
+                                                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
+                                                    <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
+                                                    <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                            <View
+                                                style={{
+                                                    opacity: v.config.searchActive ? 1 : 0,
+                                                    marginLeft: 15,
+                                                    marginRight: v.config.searchActive ? 0 : -70,
+                                                    width: 70 - 15
+                                                }}
+                                            >
+                                                {/* <Animated.View opacity={this.props.searchProgress}>
+                                                    <Button title="Close" onPress={this.props.config.searchClosed!!} />
+                                                </Animated.View> */}
+                                            </View>
+                                        </View>
+                                        {/* <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.accentColor }]}>{v.config.title}</Text> */}
                                     </SAnimated.View>
                                 </View>
                             )}

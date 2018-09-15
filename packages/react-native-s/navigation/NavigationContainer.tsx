@@ -272,12 +272,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
             SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -SCREEN_WIDTH / 3 + dx / 3);
             SAnimated.setValue(AnimatedViewKeys.pageShadow(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH) * 0.3);
-
             this.headerCoordinator.onSwipeProgress(this.currentHistory, dx / SCREEN_WIDTH);
-            // if (this.currentHistory.history.length === 2) {
-            //     HeaderCoordinator.setBackButtonProgress(dx / SCREEN_WIDTH);
-            // }
-
             // SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
@@ -368,7 +363,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
                     });
                 }
-                // SAnimated.commitTransaction();
             } else {
                 this.headerCoordinator.onTransitionStop();
                 this.swipeLocker!!();

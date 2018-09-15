@@ -20,6 +20,7 @@ class PageCoordinator {
     private translateLarge: SAnimatedProperty;
     private opacitySmall: SAnimatedProperty;
     private subscribedValue?: STrackedValue;
+    private searchTranslate: SAnimatedProperty;
     private subscription?: string;
     private smallHeaderHidden = false;
 
@@ -31,6 +32,7 @@ class PageCoordinator {
         this.opacitySmall = new SAnimatedProperty('header-small--' + this.key, 'opacity', 1);
         this.translate = new SAnimatedProperty('header--' + this.key, 'translateX', SCREEN_WIDTH);
         this.translateLarge = new SAnimatedProperty('header-large--' + this.key, 'translateY', 0);
+        this.searchTranslate = new SAnimatedProperty('header-search--' + this.key, 'translateY', 0);
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
         this.page.config.watch((cfg) => {
@@ -71,14 +73,47 @@ class PageCoordinator {
         this.translate.value = (progress) * SCREEN_WIDTH / 2;
 
         if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
-            let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
-            let titleOffset = -Math.abs(1 - progress) * offset;
+            // Content Offset
+            // Positive for overscroll
+            let contentOffset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
+
+            //
+            // Large title offset
+            //
+            let titleOffset = -contentOffset;
+            if (this.lastConfig.search) {
+                if (contentOffset < 0) {
+                    // Do nothing on overscroll
+                } else {
+                    if (contentOffset < 44) {
+                        titleOffset = 0;
+                    } else {
+                        titleOffset += 44;
+                    }
+                }
+            }
+            this.translateLarge.value = titleOffset;
+
+            //
+            // Search field
+            //
+            if (this.lastConfig.search) {
+                this.searchTranslate.value = -contentOffset - Math.abs(progress) * 44;
+            }
+
+            // Show/hide scroll depending if large title is visible
             if (titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12)) {
                 this.opacitySmall.value = 1;
             } else {
                 this.opacitySmall.value = 0;
             }
-            this.translateLarge.value = -Math.abs(progress) * (SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight) + titleOffset;
+        } else if (this.lastConfig.appearance === 'small-hidden') {
+            let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
+            if (offset > SDevice.navigationBarHeight) {
+                this.opacitySmall.value = 1;
+            } else {
+                this.opacitySmall.value = 0;
+            }
         } else {
             this.opacitySmall.value = 1;
         }
@@ -161,6 +196,9 @@ export class HeaderCoordinator {
         let res: number;
         if (config.appearance === 'large' || config.appearance === undefined) {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded);
+            if (config.search) {
+                res += 44;
+            }
         } else {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
         }

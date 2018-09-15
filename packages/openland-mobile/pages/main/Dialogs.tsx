@@ -49,6 +49,7 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
         return (
             <>
                 <SHeader title="Messages" />
+                <HeaderConfigRegistrator config={{ search: true }} />
                 {/* 
                 <FastHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
                 <FastHeaderConfigRegistrator
