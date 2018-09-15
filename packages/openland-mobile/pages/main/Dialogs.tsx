@@ -10,6 +10,7 @@ import { MobileMessengerContext } from '../../messenger/MobileMessenger';
 // import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SHeader } from 'react-native-s/SHeader';
+import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 
 function startAnimation() {
     LayoutAnimation.configureNext({

@@ -3,6 +3,7 @@ import { SAnimatedProperty } from '../../SAnimatedProperty';
 import { Dimensions } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { NavigationPage } from '../NavigationPage';
+import { HeaderConfig } from '../HeaderConfig';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -81,19 +82,9 @@ export class HeaderCoordinator {
 
         // Background
         let v: number = 0;
-        let config = state.history[state.history.length - 1].config.getState()!;
-        if (config.appearance === 'large' || config.appearance === undefined) {
-            v += Math.abs(1 - progress) * (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded);
-        } else {
-            v += Math.abs(1 - progress) * (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
-        }
+        v += Math.abs(1 - progress) * this.resolveHeaderHeight(state.history[state.history.length - 1].config.getState()!);
         if (state.history.length >= 2) {
-            let config2 = state.history[state.history.length - 2].config.getState()!;
-            if (config2.appearance === 'large' || config2.appearance === undefined) {
-                v += Math.abs(progress) * (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded);
-            } else {
-                v += Math.abs(progress) * (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
-            }
+            v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config.getState()!);
         }
         this.backgroundTranslate.value = v - SCREEN_HEIGHT;
 
@@ -106,10 +97,30 @@ export class HeaderCoordinator {
         }
     }
 
+    private resolveHeaderHeight(config: HeaderConfig) {
+        let res: number;
+        if (config.appearance === 'large' || config.appearance === undefined) {
+            res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded);
+        } else {
+            res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
+        }
+        if (config.contentOffset) {
+            res -= config.contentOffset.offsetValue;
+        }
+        return Math.max(res, SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
+    }
+
     private getPageCoordinator(page: NavigationPage) {
         if (!this.pages.has(page.key)) {
             this.pages.set(page.key, new PageCoordinator(page.key));
             page.config.watch((cfg) => {
+                if (cfg.contentOffset) {
+                    cfg.contentOffset!!.offset.addListener((v) => {
+                        if (page.key === this.state!!.history[this.state!!.history.length - 1].key && !this.isInTransition) {
+                            this.updateState(this.state!!, 0);
+                        }
+                    });
+                }
                 if (page.key === this.state!!.history[this.state!!.history.length - 1].key && !this.isInTransition) {
                     this.updateState(this.state!!, 0);
                 }
