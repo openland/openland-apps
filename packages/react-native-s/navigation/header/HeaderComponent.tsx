@@ -47,7 +47,6 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
             <>
                 <SAnimated.View name="header-background" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
                     <View style={{ width: '100%', height: SCREEN_HEIGHT, backgroundColor: '#f00' }} />
-                    {}
                 </SAnimated.View>
                 <View
                     style={{
@@ -63,17 +62,26 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
 
                     {this.props.pages.map((v) => (
                         <SAnimated.View name={'header--' + v.page.key} style={{ position: 'absolute', top: SDevice.statusBarHeight + SDevice.safeArea.top, right: 0, left: 0 }} pointerEvents={this.props.current === v.page.key ? 'box-none' : 'none'}>
-                            <View pointerEvents="box-none" flexDirection="row">
-                                <View opacity={0}>
-                                    <SBackButton onPress={this.props.manager.pop} />
+                            <SAnimated.View name={'header-small--' + v.page.key}>
+                                <View pointerEvents="box-none" flexDirection="row">
+                                    <View opacity={0}>
+                                        <SBackButton onPress={this.props.manager.pop} />
+                                    </View>
+                                    <View flexGrow={1} flexShrink={1} flexBasis={0}>
+                                        <Text numberOfLines={1} style={[styles.title, { color: this.props.style.accentColor }]}>{v.config.title}</Text>
+                                    </View>
+                                    <View opacity={0}>
+                                        <SBackButton onPress={this.props.manager.pop} />
+                                    </View>
                                 </View>
-                                <View flexGrow={1} flexShrink={1} flexBasis={0}>
-                                    <Text numberOfLines={1} style={[styles.title, { color: this.props.style.accentColor }]}>{v.config.title}</Text>
+                            </SAnimated.View>
+                            {(v.config.appearance === 'large' || !v.config.appearance) && (
+                                <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents="none">
+                                    <SAnimated.View name={'header-large--' + v.page.key}>
+                                        <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.accentColor }]}>{v.config.title}</Text>
+                                    </SAnimated.View>
                                 </View>
-                                <View opacity={0}>
-                                    <SBackButton onPress={this.props.manager.pop} />
-                                </View>
-                            </View>
+                            )}
                         </SAnimated.View>
                     ))}
                 </View>

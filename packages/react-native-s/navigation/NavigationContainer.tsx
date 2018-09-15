@@ -79,11 +79,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.currentHistory = this.props.manager.getState();
             this.routes = this.currentHistory.history;
             this.mounted = [this.currentHistory.history[this.currentHistory.history.length - 1].key];
-            this.setState({ routes: this.routes, mounted: this.mounted, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
         }
-
-        // Initialize Header state
-        this.headerCoordinator.setInitialState(this.currentHistory);
+        this.setState(
+            { routes: this.routes, mounted: this.mounted, current: this.currentHistory.history[this.currentHistory.history.length - 1].key },
+            () => {
+                this.headerCoordinator.setInitialState(this.currentHistory);
+            });
     }
 
     onPushed = (record: NavigationPage, state: NavigationState) => {
@@ -381,6 +382,8 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             // TODO: Reset to initial state
             // console.log('terminate');
             // SAnimated.setValue(AnimatedViewKeys.page(top), 'translateX', gesture.dx);
+            let unlock = this.swipeLocker!;
+            this.swipeLocker = undefined;
         },
 
         onPanResponderTerminationRequest: () => {
@@ -406,7 +409,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                             name={AnimatedViewKeys.page(v.key)}
                             key={'page-' + v.key}
                             style={styles.absoluteFill}
-                            pointerEvents={this.state.current === v.key ? 'box-none' : 'none'}
+                            pointerEvents={(this.state.current === v.key && !this.state.navigateFrom && !this.state.navigateTo) ? 'box-none' : 'none'}
                         >
                             <PageContainer
                                 style={this.props.style}

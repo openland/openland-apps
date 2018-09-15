@@ -4,24 +4,84 @@ import { Dimensions } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { NavigationPage } from '../NavigationPage';
 import { HeaderConfig } from '../HeaderConfig';
+import { STrackedValue } from '../../STrackedValue';
+import { SAnimated } from '../../SAnimated';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class PageCoordinator {
     readonly key: string;
+    readonly page: NavigationPage;
+    readonly coordinator: HeaderCoordinator;
+    private lastConfig: HeaderConfig;
     private opacity: SAnimatedProperty;
     private translate: SAnimatedProperty;
+    private translateLarge: SAnimatedProperty;
+    private opacitySmall: SAnimatedProperty;
+    private subscribedValue?: STrackedValue;
+    private subscription?: string;
+    private smallHeaderHidden = false;
 
-    constructor(key: string) {
-        this.key = key;
-        this.opacity = new SAnimatedProperty('header--' + key, 'opacity', 0);
-        this.translate = new SAnimatedProperty('header--' + key, 'translateX', SCREEN_WIDTH);
+    constructor(page: NavigationPage, coordinator: HeaderCoordinator) {
+        this.key = page.key;
+        this.page = page;
+        this.coordinator = coordinator;
+        this.opacity = new SAnimatedProperty('header--' + this.key, 'opacity', 0);
+        this.opacitySmall = new SAnimatedProperty('header-small--' + this.key, 'opacity', 1);
+        this.translate = new SAnimatedProperty('header--' + this.key, 'translateX', SCREEN_WIDTH);
+        this.translateLarge = new SAnimatedProperty('header-large--' + this.key, 'translateY', 0);
+        this.lastConfig = this.page.config.getState()!!;
+        let isStarting = true;
+        this.page.config.watch((cfg) => {
+            this.lastConfig = cfg;
+            if (this.lastConfig.contentOffset !== this.subscribedValue) {
+                if (this.subscribedValue) {
+                    this.subscribedValue.offset.removeListener(this.subscription!);
+                    this.subscribedValue = undefined;
+                }
+                if (this.lastConfig.contentOffset) {
+                    this.subscribedValue = this.lastConfig.contentOffset;
+                    this.subscription = this.lastConfig.contentOffset.offset.addListener((v) => {
+                        if (isStarting) {
+                            return;
+                        }
+                        if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === page.key) {
+                            SAnimated.beginTransaction();
+                            this.coordinator._updateState(this.coordinator.state!!, 0);
+                            SAnimated.commitTransaction();
+                        }
+                    });
+                }
+            }
+            if (isStarting) {
+                return;
+            }
+            if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === page.key) {
+                SAnimated.beginTransaction();
+                this.coordinator._updateState(this.coordinator.state!!, 0);
+                SAnimated.commitTransaction();
+            }
+        });
+        isStarting = false;
     }
 
     updateState = (progress: number) => {
         this.opacity.value = 1.5 - Math.abs(progress) * 2; // Meet in the center
         this.translate.value = (progress) * SCREEN_WIDTH / 2;
+
+        if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
+            let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
+            let titleOffset = -Math.abs(1 - progress) * offset;
+            if (titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12)) {
+                this.opacitySmall.value = 1;
+            } else {
+                this.opacitySmall.value = 0;
+            }
+            this.translateLarge.value = -Math.abs(progress) * (SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight) + titleOffset;
+        } else {
+            this.opacitySmall.value = 1;
+        }
     }
 }
 
@@ -30,12 +90,12 @@ export class HeaderCoordinator {
     private backOpacity = new SAnimatedProperty('header-back', 'opacity', 1);
     private backgroundTranslate = new SAnimatedProperty('header-background', 'translateY', -SCREEN_HEIGHT);
     private pages = new Map<string, PageCoordinator>();
-    private isInTransition = false;
-    private state?: NavigationState;
+    isInTransition = false;
+    state?: NavigationState;
 
     setInitialState = (state: NavigationState) => {
         this.state = state;
-        this.updateState(state, 0);
+        this._updateState(state, 0);
         this.getPageCoordinator(state.history[0]).updateState(0);
     }
 
@@ -49,27 +109,27 @@ export class HeaderCoordinator {
 
     onPushed = (state: NavigationState) => {
         this.state = state;
-        this.updateState(state, 0);
+        this._updateState(state, 0);
     }
     onPopped = (state: NavigationState, newState: NavigationState) => {
         this.state = newState;
-        this.updateState(state, 1);
+        this._updateState(state, 1);
     }
     onSwipeStarted = (state: NavigationState) => {
         // Nothing to do
     }
     onSwipeProgress = (state: NavigationState, progress: number) => {
-        this.updateState(state, progress);
+        this._updateState(state, progress);
     }
     onSwipeCancelled = (state: NavigationState) => {
-        this.updateState(state, 0);
+        this._updateState(state, 0);
     }
     onSwipeCompleted = (state: NavigationState, newState: NavigationState) => {
         this.state = newState;
-        this.updateState(state, 1);
+        this._updateState(state, 1);
     }
 
-    private updateState = (state: NavigationState, progress: number) => {
+    _updateState = (state: NavigationState, progress: number) => {
 
         // Back Button
         if (state.history.length === 1) {
@@ -112,19 +172,7 @@ export class HeaderCoordinator {
 
     private getPageCoordinator(page: NavigationPage) {
         if (!this.pages.has(page.key)) {
-            this.pages.set(page.key, new PageCoordinator(page.key));
-            page.config.watch((cfg) => {
-                if (cfg.contentOffset) {
-                    cfg.contentOffset!!.offset.addListener((v) => {
-                        if (page.key === this.state!!.history[this.state!!.history.length - 1].key && !this.isInTransition) {
-                            this.updateState(this.state!!, 0);
-                        }
-                    });
-                }
-                if (page.key === this.state!!.history[this.state!!.history.length - 1].key && !this.isInTransition) {
-                    this.updateState(this.state!!, 0);
-                }
-            });
+            this.pages.set(page.key, new PageCoordinator(page, this));
         }
         return this.pages.get(page.key)!;
     }
