@@ -11,6 +11,7 @@ import { XPStyles } from 'openland-xp/XPStyles';
 // import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { SRouter } from 'react-native-s/SRouter';
+import { SHeader } from 'react-native-s/SHeader';
 
 class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearchFragment, router: SRouter }> {
     render() {
@@ -31,7 +32,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                {/* <FastHeader title="Organizations" /> */}
+                <SHeader title="Organizations" />
                 <ZAsyncRoutedList
                     style={{ flexGrow: 1 }}
                     query={ExploreOrganizationsQuery}

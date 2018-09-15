@@ -9,8 +9,9 @@ import { NavigationManagerListener, NavigationManager } from './NavigationManage
 import { PageContainer } from './containers/PageContainer';
 import { SNavigationViewStyle } from '../SNavigationView';
 import { SDevice } from '../SDevice';
-import { HeaderComponent } from './header/HeaderComponent';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
+import { HeaderCoordinator } from './header/HeaderCoordinator';
+import { HeaderComponentLoader } from './header/HeaderComponentLoader';
 
 const styles = StyleSheet.create({
     fill: {
@@ -33,6 +34,9 @@ const styles = StyleSheet.create({
 interface NavigationContainerState {
     routes: NavigationPage[];
     mounted: string[];
+    current: string;
+    navigateTo?: string;
+    navigateFrom?: string;
 }
 
 export interface NavigationContainerProps {
@@ -52,6 +56,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private swipeLocker?: (() => void);
     private swipeCurrentKey?: string;
     private swipePrevKey?: string;
+    private headerCoordinator = new HeaderCoordinator();
 
     constructor(props: NavigationContainerProps) {
         super(props);
@@ -63,7 +68,8 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         this.removing = [];
         this.state = {
             routes: this.routes,
-            mounted: this.mounted
+            mounted: this.mounted,
+            current: h[h.length - 1].key
         };
     }
 
@@ -73,8 +79,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.currentHistory = this.props.manager.getState();
             this.routes = this.currentHistory.history;
             this.mounted = [this.currentHistory.history[this.currentHistory.history.length - 1].key];
-            this.setState({ routes: this.routes, mounted: this.mounted });
+            this.setState({ routes: this.routes, mounted: this.mounted, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
         }
+
+        // Initialize Header state
+        this.headerCoordinator.setInitialState(this.currentHistory);
     }
 
     onPushed = (record: NavigationPage, state: NavigationState) => {
@@ -93,11 +102,19 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         this.routes = [...this.routes, record];
         this.mounted = [...this.mounted, record.key];
         this.currentHistory = state;
+        this.headerCoordinator.onTransitionStart();
         this.setState(
-            { mounted: this.mounted, routes: this.routes },
+            { mounted: this.mounted, routes: this.routes, navigateTo: record.key, navigateFrom: underlay, current: record.key },
             () => {
                 SAnimated.beginTransaction();
                 if (Platform.OS === 'ios') {
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.spring(name, {
+                            property: prop,
+                            from: from,
+                            to: to
+                        });
+                    });
                     SAnimated.spring(AnimatedViewKeys.page(record.key), {
                         property: 'translateX',
                         from: SCREEN_WIDTH,
@@ -108,12 +125,20 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         from: 0,
                         to: -SCREEN_WIDTH
                     });
-                    SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    SAnimated.spring(AnimatedViewKeys.pageShadow(underlayHolder.key), {
                         property: 'opacity',
                         from: 0,
                         to: 0.3
                     });
                 } else {
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.timing(name, {
+                            property: prop,
+                            from: from,
+                            to: to,
+                            easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                        });
+                    });
                     SAnimated.timing(AnimatedViewKeys.page(record.key), {
                         property: 'translateX',
                         from: SCREEN_WIDTH,
@@ -126,10 +151,13 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0.3, easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
                 }
+                this.headerCoordinator.onPushed(this.currentHistory);
+
                 SAnimated.commitTransaction(() => {
                     unlock();
+                    this.headerCoordinator.onTransitionStop();
                     this.mounted = this.mounted.filter((v) => v !== underlay);
-                    this.setState({ mounted: this.mounted });
+                    this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined });
                 });
             }
         );
@@ -143,22 +171,31 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         // Update internal state
         let underlayKey = state.history[state.history.length - 1].key;
         let underlayHolder = this.routes.find((v) => v.key === underlayKey)!!;
+        let prevHistory = this.currentHistory;
         this.currentHistory = state;
 
         //
         // Lock navigation
         //
         let unlock = this.props.manager.beginLock();
+        this.headerCoordinator.onTransitionStart();
 
         //
         // Mount next page and commit changes
         //
         this.mounted = [...this.mounted, state.history[state.history.length - 1].key];
         this.setState(
-            { mounted: this.mounted },
+            { mounted: this.mounted, navigateTo: state.history[state.history.length - 1].key, navigateFrom: underlayKey, current: state.history[state.history.length - 1].key },
             () => {
                 SAnimated.beginTransaction();
                 if (Platform.OS === 'ios') {
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.spring(name, {
+                            property: prop,
+                            from: from,
+                            to: to
+                        });
+                    });
                     SAnimated.spring(AnimatedViewKeys.page(page.key), {
                         property: 'translateX',
                         from: 0,
@@ -175,6 +212,14 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0
                     });
                 } else {
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.timing(name, {
+                            property: prop,
+                            from: from,
+                            to: to,
+                            easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                        });
+                    });
                     SAnimated.timing(AnimatedViewKeys.page(page.key), {
                         property: 'translateX',
                         from: 0,
@@ -188,12 +233,15 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
                 }
+                this.headerCoordinator.onPopped(prevHistory, this.currentHistory);
+
                 SAnimated.commitTransaction(() => {
                     unlock();
+                    this.headerCoordinator.onTransitionStop();
                     this.removing = this.removing.filter((v) => v !== page.key);
                     this.mounted = this.mounted.filter((v) => v !== page.key);
                     this.routes = this.routes.filter((v) => v.key !== page.key);
-                    this.setState({ routes: this.routes, mounted: this.mounted });
+                    this.setState({ routes: this.routes, mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined });
                 });
             }
         );
@@ -207,7 +255,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.swipePrevKey = this.currentHistory.history[this.currentHistory.history.length - 2].key;
             this.mounted = [...this.mounted, this.swipePrevKey];
             this.swipeLocker = this.props.manager.beginLock();
-            this.setState({ mounted: this.mounted });
+            this.setState({ mounted: this.mounted, navigateTo: this.swipePrevKey, navigateFrom: this.swipeCurrentKey, current: this.currentHistory.history[this.currentHistory.history.length - 2].key });
+            this.headerCoordinator.onTransitionStart();
+            this.headerCoordinator.onSwipeStarted(this.currentHistory);
         },
         onMoveShouldSetPanResponder: (event, gesture) => {
             return !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
@@ -221,6 +271,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
             SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -SCREEN_WIDTH / 3 + dx / 3);
             SAnimated.setValue(AnimatedViewKeys.pageShadow(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH) * 0.3);
+
+            this.headerCoordinator.onSwipeProgress(this.currentHistory, dx / SCREEN_WIDTH);
+            // if (this.currentHistory.history.length === 2) {
+            //     HeaderCoordinator.setBackButtonProgress(dx / SCREEN_WIDTH);
+            // }
+
             // SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
@@ -231,44 +287,63 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
                     // Pop history
                     let nstate = this.props.manager.popWihtoutNotification();
+                    let prevState = this.currentHistory;
                     this.currentHistory = nstate;
                     let unlock = this.swipeLocker!;
                     this.swipeLocker = undefined;
+                    let progress = dx / SCREEN_WIDTH;
 
                     // Move back
                     let duration = Math.max(0.05, Math.min(0.2, Math.abs(-SCREEN_WIDTH / 3 + dx / 3) / Math.abs(gesture.vx * SCREEN_WIDTH)));
                     SAnimated.beginTransaction();
+                    SAnimated.setDuration(duration);
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.timing(name, {
+                            property: prop,
+                            from: from,
+                            to: to
+                        });
+                    });
                     SAnimated.timing(AnimatedViewKeys.page(this.swipeCurrentKey!), {
                         property: 'translateX',
                         from: dx,
-                        to: SCREEN_WIDTH,
-                        duration: duration
+                        to: SCREEN_WIDTH
                     });
                     SAnimated.timing(AnimatedViewKeys.page(this.swipePrevKey!), {
                         property: 'translateX',
                         from: -SCREEN_WIDTH / 3 + dx / 3,
-                        to: 0,
-                        duration: duration
+                        to: 0
                     });
                     SAnimated.timing(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
                         property: 'opacity',
-                        from: (1 - dx / SCREEN_WIDTH) * 0.3,
-                        to: 0,
-                        duration: duration
+                        from: (1 - progress) * 0.3,
+                        to: 0
                     });
+
+                    this.headerCoordinator.onSwipeCompleted(prevState, this.currentHistory);
+                    // if (this.currentHistory.history.length === 1) {
+                    //     HeaderCoordinator.hideBackButtonSwipe(progress);
+                    // }
                     SAnimated.commitTransaction(() => {
                         unlock();
-
+                        this.headerCoordinator.onTransitionStop();
                         this.removing = this.removing.filter((v) => v !== this.swipeCurrentKey);
                         this.mounted = this.mounted.filter((v) => v !== this.swipeCurrentKey);
                         this.routes = this.routes.filter((v) => v.key !== this.swipeCurrentKey);
-                        this.setState({ routes: this.routes, mounted: this.mounted });
+                        this.setState({ routes: this.routes, mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
                     });
                 } else {
                     // Cancel gesture
                     let unlock = this.swipeLocker!;
                     this.swipeLocker = undefined;
                     SAnimated.beginTransaction();
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.timing(name, {
+                            property: prop,
+                            from: from,
+                            to: to
+                        });
+                    });
                     SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
                         property: 'translateX',
                         from: dx,
@@ -284,14 +359,21 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         from: (1 - dx / SCREEN_WIDTH) * 0.3,
                         to: 0.3
                     });
+                    this.headerCoordinator.onSwipeCancelled(this.currentHistory);
                     SAnimated.commitTransaction(() => {
+                        this.headerCoordinator.onTransitionStop();
                         unlock();
+                        this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
+                        this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
                     });
                 }
                 // SAnimated.commitTransaction();
             } else {
+                this.headerCoordinator.onTransitionStop();
                 this.swipeLocker!!();
                 this.swipeLocker = undefined;
+                this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
+                this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
             }
         },
         onPanResponderTerminate: () => {
@@ -324,7 +406,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                             name={AnimatedViewKeys.page(v.key)}
                             key={'page-' + v.key}
                             style={styles.absoluteFill}
-                            pointerEvents="box-none"
+                            pointerEvents={this.state.current === v.key ? 'box-none' : 'none'}
                         >
                             <PageContainer
                                 style={this.props.style}
@@ -346,7 +428,14 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
         let header = (
             <View style={styles.absoluteFill} pointerEvents="box-none">
-                <HeaderComponent style={this.props.style} />
+                <HeaderComponentLoader
+                    style={this.props.style}
+                    manager={this.props.manager}
+                    navigateFrom={this.state.navigateFrom}
+                    navigateTo={this.state.navigateTo}
+                    pages={this.state.routes}
+                    current={this.state.current}
+                />
             </View>
         );
 

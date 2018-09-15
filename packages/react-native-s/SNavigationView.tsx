@@ -11,6 +11,7 @@ export interface SNavigationViewProps {
 export interface SNavigationViewStyle {
     backgroundColor: string;
     isOpaque: boolean;
+    accentColor: string;
 }
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps> {
@@ -41,6 +42,7 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps> {
         let style: SNavigationViewStyle = {
             backgroundColor: '#fff',
             isOpaque: true,
+            accentColor: '#000',
             ...this.props.navigationBarStyle
         };
 

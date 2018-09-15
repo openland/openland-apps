@@ -9,12 +9,13 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { ASText } from 'react-native-async-view/ASText';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { SHeader } from 'react-native-s/SHeader';
 
 class FeedComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                {/* <FastHeader title="Feed" /> */}
+                <SHeader title="Feed" />
                 <SScrollView style={{ flexGrow: 1 }}>
                     <View marginHorizontal={15} marginVertical={15}>
                         <ASView style={{ height: 345 }}>

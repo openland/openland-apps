@@ -1,13 +1,15 @@
 import { SAnimatedView } from './SAnimatedView';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import UUID from 'uuid/v4';
+import { SAnimatedProperty } from './SAnimatedProperty';
 
 const RNSAnimatedViewManager = NativeModules.RNSAnimatedViewManager as {
     animate: (config: string) => void,
 };
 const RNSAnimatedEventEmitter = new NativeEventEmitter(NativeModules.RNSAnimatedEventEmitter);
 
-export type SAnimatedProperty = 'translateX' | 'translateY' | 'opacity';
+export type SAnimatedPropertyName = 'translateX' | 'translateY' | 'opacity';
+export type SAnimatedPropertyAnimator = (name: string, property: SAnimatedPropertyName, from: number, to: number) => void;
 
 //
 // Timing
@@ -16,7 +18,7 @@ export type SAnimatedProperty = 'translateX' | 'translateY' | 'opacity';
 export type SAnimatedEasing = 'linear' | 'material' | { bezier: number[] };
 
 export interface SAnimatedTimingConfig {
-    property: SAnimatedProperty;
+    property: SAnimatedPropertyName;
     from: number;
     to: number;
     duration?: number;
@@ -48,7 +50,7 @@ function resolveEasing(easing?: SAnimatedEasing) {
 }
 
 export interface SAnimatedSpringConfig {
-    property: SAnimatedProperty;
+    property: SAnimatedPropertyName;
     from: number;
     to: number;
     duration?: number;
@@ -65,6 +67,8 @@ class SAnimatedImpl {
     private _pendingSetters: any[] = [];
     private _transactionDuration = 0.25;
     private _callbacks = new Map<string, () => void>();
+    private _propertyAnimator?: SAnimatedPropertyAnimator;
+    private _dirtyProperties = new Map<string, Map<SAnimatedPropertyName, { from: number, to: number }>>();
 
     constructor() {
         RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
@@ -76,6 +80,10 @@ class SAnimatedImpl {
         });
     }
 
+    get isInTransaction() {
+        return this._inTransaction;
+    }
+
     beginTransaction = () => {
         if (this._inTransaction) {
             return;
@@ -84,12 +92,36 @@ class SAnimatedImpl {
         this._transactionDuration = 0.25;
     }
 
+    onPropertyChanged = (property: SAnimatedProperty, oldValue: number) => {
+        if (this._inTransaction) {
+            if (!this._dirtyProperties.has(property.name)) {
+                this._dirtyProperties.set(property.name, new Map());
+            }
+            let m = this._dirtyProperties.get(property.name)!;
+            if (m.has(property.property)) {
+                m.get(property.property)!.to = property.value;
+            } else {
+                m.set(property.property, { from: oldValue, to: property.value });
+            }
+        } else {
+            this.setValue(property.name, property.property, property.value);
+        }
+    }
+
     setDuration = (duration: number) => {
         if (!this._inTransaction) {
             console.warn('You can\'t set global duration outside transaction');
             return;
         }
         this._transactionDuration = duration;
+    }
+
+    setPropertyAnimator = (animator: SAnimatedPropertyAnimator) => {
+        if (!this._inTransaction) {
+            console.warn('You can\'t set property animator duration outside transaction');
+            return;
+        }
+        this._propertyAnimator = animator;
     }
 
     timing = (name: string, animation: SAnimatedTimingConfig) => {
@@ -128,7 +160,7 @@ class SAnimatedImpl {
         }
     }
 
-    setValue = (name: string, property: SAnimatedProperty, value: number) => {
+    setValue = (name: string, property: SAnimatedPropertyName, value: number) => {
         let v = {
             view: name,
             prop: property,
@@ -148,13 +180,33 @@ class SAnimatedImpl {
         this._inTransaction = false;
         this._transactionDuration = 0.25;
 
-        if (this._pendingAnimations.length > 0) {
+        if (this._dirtyProperties.size !== 0) {
+            for (let p of this._dirtyProperties.keys()) {
+                let pmap = this._dirtyProperties.get(p)!;
+                for (let p2 of pmap.keys()) {
+                    let p3 = pmap.get(p2)!;
+                    if (this._propertyAnimator) {
+                        this._propertyAnimator(p, p2, p3.from, p3.to);
+                    } else {
+                        this.setValue(p, p2, p3.to);
+                    }
+                }
+            }
+            this._dirtyProperties.clear();
+        }
+
+        if (this._pendingAnimations.length > 0 || this._pendingSetters.length > 0) {
             this._postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters, callback);
             this._pendingAnimations = [];
+        } else {
+            if (callback) {
+                callback();
+            }
         }
+        this._propertyAnimator = undefined;
     }
 
-    _postAnimations(duration: number, animations: any[], valueSetters: any[], callback?: () => void) {
+    private _postAnimations(duration: number, animations: any[], valueSetters: any[], callback?: () => void) {
         let transactionKey: string | undefined = undefined;
         if (callback) {
             transactionKey = UUID();
