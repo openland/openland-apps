@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     title: {
         color: '#000',
         width: '100%',
-        height: '100%',
         textAlignVertical: 'center',
         textAlign: 'center',
         fontSize: 17,
@@ -30,13 +29,13 @@ const styles = StyleSheet.create({
     titleLarge: {
         color: '#000',
         width: '100%',
-        height: '100%',
         textAlign: 'left',
         textAlignVertical: 'center',
         fontSize: 34,
         fontWeight: 'bold',
         lineHeight: 52,
-        paddingLeft: 15
+        paddingLeft: 15,
+        paddingRight: 15
     } as TextStyle
 });
 
@@ -76,15 +75,15 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                                 </View>
                             </SAnimated.View>
                             {(v.config.appearance === 'large' || !v.config.appearance) && (
-                                <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents="none">
-                                    <SAnimated.View name={'header-large--' + v.page.key}>
+                                <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current === v.page.key ? 'box-none' : 'none'}>
+                                    <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current === v.page.key ? 'box-none' : 'none'}>
                                         <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.accentColor }]}>{v.config.title}</Text>
                                     </SAnimated.View>
                                 </View>
                             )}
 
                             {(v.config.appearance === 'large' || !v.config.appearance) && (v.config.search) && (
-                                <View style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents="none">
+                                <View style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current === v.page.key ? 'box-none' : 'none'}>
                                     <SAnimated.View name={'header-search--' + v.page.key}>
                                         <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                                             <TouchableWithoutFeedback onPress={v.config.searchPress}>

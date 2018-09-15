@@ -16,13 +16,15 @@ class PageCoordinator {
     readonly coordinator: HeaderCoordinator;
     private lastConfig: HeaderConfig;
     private opacity: SAnimatedProperty;
+    private opacityLarge: SAnimatedProperty;
     private translate: SAnimatedProperty;
+    private translateY: SAnimatedProperty;
     private translateLarge: SAnimatedProperty;
     private opacitySmall: SAnimatedProperty;
     private subscribedValue?: STrackedValue;
     private searchTranslate: SAnimatedProperty;
     private subscription?: string;
-    private smallHeaderHidden = false;
+    private searchShown = false;
 
     constructor(page: NavigationPage, coordinator: HeaderCoordinator) {
         this.key = page.key;
@@ -31,7 +33,9 @@ class PageCoordinator {
         this.opacity = new SAnimatedProperty('header--' + this.key, 'opacity', 0);
         this.opacitySmall = new SAnimatedProperty('header-small--' + this.key, 'opacity', 1);
         this.translate = new SAnimatedProperty('header--' + this.key, 'translateX', SCREEN_WIDTH);
+        this.translateY = new SAnimatedProperty('header--' + this.key, 'translateY', 0);
         this.translateLarge = new SAnimatedProperty('header-large--' + this.key, 'translateY', 0);
+        this.opacityLarge = new SAnimatedProperty('header-large--' + this.key, 'opacity', 1);
         this.searchTranslate = new SAnimatedProperty('header-search--' + this.key, 'translateY', 0);
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
@@ -106,6 +110,17 @@ class PageCoordinator {
                 this.opacitySmall.value = 1;
             } else {
                 this.opacitySmall.value = 0;
+            }
+
+            // Search
+            if (this.lastConfig.search) {
+                if (this.lastConfig.searchActive) {
+                    this.translateY.value = -56;
+                    this.opacityLarge.value = 0;
+                } else {
+                    this.translateY.value = 0;
+                    this.opacityLarge.value = 1;
+                }
             }
         } else if (this.lastConfig.appearance === 'small-hidden') {
             let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
@@ -197,7 +212,11 @@ export class HeaderCoordinator {
         if (config.appearance === 'large' || config.appearance === undefined) {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded);
             if (config.search) {
-                res += 44;
+                if (config.searchActive) {
+                    res -= 56;
+                } else {
+                    res += 44;
+                }
             }
         } else {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);

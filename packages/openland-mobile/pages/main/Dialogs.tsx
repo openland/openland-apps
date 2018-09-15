@@ -36,12 +36,12 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
     }
 
     handleSearchStart = () => {
-        startAnimation();
+        // startAnimation();
         this.setState({ search: true });
     }
 
     handleSearchStop = () => {
-        startAnimation();
+        // startAnimation();
         this.setState({ search: false });
     }
 
@@ -49,7 +49,14 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
         return (
             <>
                 <SHeader title="Messages" />
-                <HeaderConfigRegistrator config={{ search: true }} />
+                <HeaderConfigRegistrator
+                    config={{
+                        search: true,
+                        searchActive: this.state.search,
+                        searchClosed: this.handleSearchStop,
+                        searchPress: this.handleSearchStart
+                    }}
+                />
                 {/* 
                 <FastHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
                 <FastHeaderConfigRegistrator
