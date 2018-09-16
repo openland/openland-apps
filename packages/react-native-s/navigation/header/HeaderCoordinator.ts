@@ -24,6 +24,9 @@ class PageCoordinator {
     private opacitySmall: SAnimatedProperty;
     private subscribedValue?: STrackedValue;
     private searchTranslate: SAnimatedProperty;
+    private searchField: SAnimatedProperty;
+    private searchFieldX: SAnimatedProperty;
+    private searchButtonX: SAnimatedProperty;
     private subscription?: string;
     private searchShown = false;
     private translateYPage: SAnimatedProperty;
@@ -40,6 +43,9 @@ class PageCoordinator {
         this.opacityLarge = new SAnimatedProperty('header-large--' + this.key, 'opacity', 1);
         this.searchTranslate = new SAnimatedProperty('header-search--' + this.key, 'translateY', 0);
         this.translateYPage = new SAnimatedProperty(AnimatedViewKeys.page(this.key), 'translateY', 0);
+        this.searchField = new SAnimatedProperty('header-search-input--' + this.key, 'ios-width', 0);
+        this.searchFieldX = new SAnimatedProperty('header-search-input--' + this.key, 'translateX', 0);
+        this.searchButtonX = new SAnimatedProperty('header-search-button--' + this.key, 'translateX', 0);
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
         this.page.config.watch((cfg) => {
@@ -127,8 +133,14 @@ class PageCoordinator {
                 if (this.lastConfig.searchActive) {
                     this.translateY.value = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
                     this.translateYPage.value = -96;
+                    this.searchField.value = -70;
+                    this.searchButtonX.value = 0;
+                    this.searchFieldX.value = -35;
                     this.opacityLarge.value = 0;
                 } else {
+                    this.searchField.value = 0;
+                    this.searchFieldX.value = 0;
+                    this.searchButtonX.value = 70;
                     this.translateYPage.value = 0;
                     this.translateY.value = 0;
                     this.opacityLarge.value = 1;

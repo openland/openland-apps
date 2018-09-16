@@ -87,22 +87,24 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                                 <View style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current === v.page.key ? 'box-none' : 'none'}>
                                     <SAnimated.View name={'header-search--' + v.page.key}>
                                         <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
+                                            <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
                                             <TouchableWithoutFeedback onPress={v.config.searchPress}>
                                                 <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
-                                                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
                                                     <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
                                                     <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
                                                 </View>
                                             </TouchableWithoutFeedback>
-                                            <View
-                                                style={{
-                                                    opacity: v.config.searchActive ? 1 : 0,
-                                                    marginLeft: 15,
-                                                    marginRight: v.config.searchActive ? 0 : -70,
-                                                    width: 70 - 15
-                                                }}
-                                            >
-                                                <Button title="Close" onPress={v.config.searchClosed!!} />
+                                            <View style={{ marginLeft: -70 }}>
+                                                <SAnimated.View
+                                                    name={'header-search-button--' + v.page.key}
+                                                    style={{
+                                                        // opacity: v.config.searchActive ? 1 : 0,
+                                                        // marginRight: v.config.searchActive ? 0 : -70,
+                                                        width: 70 - 15
+                                                    }}
+                                                >
+                                                    <Button title="Close" onPress={v.config.searchClosed!!} />
+                                                </SAnimated.View>
                                             </View>
                                         </View>
                                     </SAnimated.View>

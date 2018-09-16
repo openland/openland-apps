@@ -156,6 +156,11 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
             view.layer.position.y = view.sourceCenter.y + s.to
             from = view.sourceCenter.y + s.from
             to = view.sourceCenter.y + s.to
+          } else if s.property == "ios-width" {
+            keyPath = "bounds.size.width"
+            view.layer.bounds.size.width = view.sourceSize.width + s.to
+            from = view.sourceSize.width + s.from
+            to = view.sourceSize.width + s.to
           } else {
             continue
           }
