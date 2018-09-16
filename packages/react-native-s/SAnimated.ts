@@ -1,5 +1,5 @@
 import { SAnimatedView } from './SAnimatedView';
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform, DeviceEventEmitter } from 'react-native';
 import UUID from 'uuid/v4';
 import { SAnimatedProperty } from './SAnimatedProperty';
 
@@ -72,13 +72,23 @@ class SAnimatedImpl {
     private _dirtyProperties = new Map<string, Map<SAnimatedPropertyName, { from: number, to: number }>>();
 
     constructor() {
-        RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
-            let clb = this._callbacks.get(args.key);
-            if (clb) {
-                this._callbacks.delete(args.key);
-                clb();
-            }
-        });
+        if (Platform.OS === 'ios') {
+            RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
+                let clb = this._callbacks.get(args.key);
+                if (clb) {
+                    this._callbacks.delete(args.key);
+                    clb();
+                }
+            });
+        } else if (Platform.OS === 'android') {
+            DeviceEventEmitter.addListener('react_s_animation_completed', (args: { key: string }) => {
+                let clb = this._callbacks.get(args.key);
+                if (clb) {
+                    this._callbacks.delete(args.key);
+                    clb();
+                }
+            });
+        }
     }
 
     get isInTransaction() {

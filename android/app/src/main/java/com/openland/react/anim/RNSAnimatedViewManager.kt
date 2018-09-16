@@ -7,6 +7,8 @@ import android.view.animation.LinearInterpolator
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.WritableNativeMap
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerModule
@@ -15,6 +17,8 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.views.view.ReactViewManager
 import com.openland.react.anim.hack.CubicBezierInterpolator
 import com.openland.react.anim.hack.MakeAnimationsFast
+import com.openland.react.runOnUIThread
+import com.openland.react.runOnUIThreadDelayed
 
 
 class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), UIManagerModuleListener {
@@ -91,6 +95,17 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                         resolvedView[a.viewKey] = view
                     }
                 }
+                for (a in resolved.valueSets) {
+                    val view = views[a.viewKey]
+                    if (view == null) {
+                        if (!a.optional) {
+                            hasAllViews = false
+                            Log.d("ANIMATIONS", "Unable to find " + a.viewKey)
+                        }
+                    } else {
+                        resolvedView[a.viewKey] = view
+                    }
+                }
 
                 if (hasAllViews) {
                     toRemove.add(resolved)
@@ -109,6 +124,23 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
     }
 
     private fun doAnimations(spec: RNSAnimationTransactionSpec, views: Map<String, RNSAnimatedView>) {
+        for(s in spec.valueSets) {
+            val view = views[s.viewKey]
+            if (view != null) {
+                when {
+                    s.property == "opacity" -> {
+                        view.alpha = s.value
+                    }
+                    s.property == "translateX" -> {
+                        view.translationX = PixelUtil.toPixelFromDIP(s.value)
+                    }
+                    s.property == "translateY" -> {
+                        view.translationY = PixelUtil.toPixelFromDIP(s.value)
+                    }
+                }
+            }
+        }
+        var maxDuration = 0.0f
         for (a in spec.animations) {
             val view = views[a.viewKey]
             if (view != null) {
@@ -117,8 +149,10 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                 // Set duration
                 if (a.duration != null) {
                     anim.duration = (a.duration!! * 1000).toLong()
+                    maxDuration = Math.max(a.duration!!, maxDuration)
                 } else {
                     anim.duration = (spec.duration * 1000).toLong()
+                    maxDuration = Math.max(spec.duration, maxDuration)
                 }
 
                 // Easing
@@ -146,5 +180,25 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                 }
             }
         }
+        
+        if (spec.transactionKey != null) {
+            if (spec.animations.size == 0) {
+                onCompleted(spec.transactionKey!!)
+            } else {
+                runOnUIThread {
+                    runOnUIThreadDelayed((maxDuration * 1000).toInt()) {
+                        onCompleted(spec.transactionKey!!)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onCompleted(key:String) {
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        this.reactApplicationContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("react_s_animation_completed", map)
     }
 }

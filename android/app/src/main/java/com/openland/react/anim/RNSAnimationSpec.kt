@@ -6,8 +6,10 @@ import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 
 class RNSAnimationTransactionSpec {
+    var transactionKey: String? = null
     var duration: Float = 0.3f
-    var animations = mutableListOf<RNFastAnimationSpec>()
+    var animations = mutableListOf<RNSAnimationSpec>()
+    var valueSets = mutableListOf<RNSValueSet>()
 }
 
 enum class RNSAnimationType {
@@ -25,7 +27,7 @@ class RNSEasing {
     var bezier: Array<Float>? = null
 }
 
-class RNFastAnimationSpec {
+class RNSAnimationSpec {
     var type: RNSAnimationType = RNSAnimationType.timing
     var easing: RNSEasing = RNSEasing()
     var viewKey: String = ""
@@ -37,6 +39,13 @@ class RNFastAnimationSpec {
     var optional: Boolean = false
 }
 
+class RNSValueSet {
+    var viewKey: String = ""
+    var property: String = ""
+    var value: Float = 0.0f
+    var optional: Boolean = false
+}
+
 fun parseAnimationSpec(spec: String): RNSAnimationTransactionSpec {
     val res = RNSAnimationTransactionSpec()
     val parser = Parser()
@@ -44,8 +53,11 @@ fun parseAnimationSpec(spec: String): RNSAnimationTransactionSpec {
     if (parsed["duration"] is Number) {
         res.duration = (parsed["duration"] as Number).toFloat()
     }
+    if (parsed["transactionKey"] is String) {
+        res.transactionKey = parsed["transactionKey"] as String
+    }
     for (anim in parsed["animations"] as JsonArray<JsonObject>) {
-        val aspec = RNFastAnimationSpec()
+        val aspec = RNSAnimationSpec()
         when (anim["type"] as String) {
             "spring" -> {
                 Log.d("RNSAnimated", "Spring animations are not supported on Android")
@@ -79,6 +91,16 @@ fun parseAnimationSpec(spec: String): RNSAnimationTransactionSpec {
         }
 
         res.animations.add(aspec)
+    }
+    for (setter in parsed["valueSetters"] as JsonArray<JsonObject>) {
+        val aspec = RNSValueSet()
+        aspec.viewKey = setter["view"] as String
+        aspec.property = setter["prop"] as String
+        aspec.value = (setter["to"] as Number).toFloat()
+        if (setter["optional"] is Boolean) {
+            aspec.optional = setter["optional"] as Boolean
+        }
+        res.valueSets.add(aspec)
     }
     return res
 }

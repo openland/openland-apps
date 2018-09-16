@@ -29,6 +29,9 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps> {
     }
 
     private handleHardwareBack = () => {
+        if (this.routing.navigationManager.isLocked()) {
+            return true;
+        }
         return this.routing.navigationManager.pop();
     }
 
