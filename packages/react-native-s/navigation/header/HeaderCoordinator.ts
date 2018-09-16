@@ -4,9 +4,6 @@ import { Dimensions, Platform } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { NavigationPage } from '../NavigationPage';
 import { HeaderConfig } from '../HeaderConfig';
-import { STrackedValue } from '../../STrackedValue';
-import { SAnimated } from '../../SAnimated';
-import { AnimatedViewKeys } from '../AnimatedViewKeys';
 import { SAnimatedShadowView } from '../../SAnimatedShadowView';
 import { HeaderTitleViewCoordinator } from './HeaderTitleViewCoordinator';
 
@@ -17,6 +14,7 @@ export class HeaderCoordinator {
 
     private backOpacity = new SAnimatedProperty('header-back', 'opacity', 1);
     private backgroundTranslate = new SAnimatedProperty('header-background', 'translateY', -SCREEN_HEIGHT);
+    private hairline = new SAnimatedShadowView('header-hairline');
     private pages = new Map<string, HeaderTitleViewCoordinator>();
     isInTransition = false;
     state?: NavigationState;
@@ -76,6 +74,11 @@ export class HeaderCoordinator {
                 v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config.getState()!);
             }
             this.backgroundTranslate.value = v - SCREEN_HEIGHT;
+            this.hairline.translateY = v;
+            this.hairline.opacity = 1;
+        } else {
+            this.hairline.translateX = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
+            this.hairline.opacity = 1;
         }
 
         // Pages

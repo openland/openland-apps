@@ -225,7 +225,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         // }]
                     }}
                 >
-                    <SBackButton inverted={true} onPress={this.handleCloseClick} />
+                    <SBackButton tintColor="#fff" onPress={this.handleCloseClick} />
                 </Animated.View>
             </View>
         );

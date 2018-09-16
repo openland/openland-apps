@@ -7,7 +7,7 @@ export class SAnimatedShadowView {
     private readonly _translateY: SAnimatedProperty;
     private readonly _iosWidth: SAnimatedProperty;
 
-    get opactiy() {
+    get opacity() {
         return this._opacity.value;
     }
     set opacity(value: number) {

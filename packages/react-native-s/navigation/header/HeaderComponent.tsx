@@ -7,6 +7,7 @@ import { SBackButton } from '../../SBackButton';
 import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { HeaderTitleView } from './HeaderTitleView';
+import { SBlurView } from '../../SBlurView';
 
 export interface HeaderComponentProps {
     style: SNavigationViewStyle;
@@ -46,7 +47,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
         return (
             <>
                 <SAnimated.View name="header-background" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                    <View style={{ width: '100%', height: Platform.OS === 'ios' ? SCREEN_HEIGHT : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, backgroundColor: '#f00' }} />
+                    <SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? SCREEN_HEIGHT : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} />
                 </SAnimated.View>
                 <View
                     style={{
@@ -58,13 +59,16 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                     pointerEvents={(!!this.props.navigateFrom || !!this.props.navigateTo) ? 'none' : 'box-none'}
                 >
                     <SAnimated.View name="header-back" style={{ zIndex: 100, width: 100 }}>
-                        <SBackButton onPress={this.props.manager.pop} inverted={true} />
+                        <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />
                     </SAnimated.View>
 
                     {this.props.pages.map((v) => (
                         <HeaderTitleView manager={this.props.manager} page={v} current={this.props.current === v.page.key} style={this.props.style} />
                     ))}
                 </View>
+                <SAnimated.View name="header-hairline" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
+                    <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: 1 }} />
+                </SAnimated.View>
             </>
         );
     }

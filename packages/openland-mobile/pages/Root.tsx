@@ -75,8 +75,9 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                                     <SNavigationView
                                         routing={getMessenger().history}
                                         navigationBarStyle={{
-                                            backgroundColor: '#4256f4',
-                                            accentColor: '#fff'
+                                            backgroundColor: '#fff',
+                                            accentColor: '#000',
+                                            isOpaque: false
                                         }}
                                     />
                                 </ZPictureModal>

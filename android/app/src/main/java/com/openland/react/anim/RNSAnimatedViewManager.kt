@@ -180,7 +180,7 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                 }
             }
         }
-        
+
         if (spec.transactionKey != null) {
             if (spec.animations.size == 0) {
                 onCompleted(spec.transactionKey!!)
