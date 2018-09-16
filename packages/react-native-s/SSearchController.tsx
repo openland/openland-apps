@@ -33,13 +33,15 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
 
         const content = Platform.OS === 'ios'
             ? (
-                <SAnimatedView name={this.containerShadowView.name} style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
-                    <ASSafeAreaProvider top={44}>
-                        <View style={{ flexGrow: 1, flexBasis: 0, width: '100%', marginBottom: this.state.search ? -96 : 0 }}>
-                            {this.props.children}
-                        </View>
-                    </ASSafeAreaProvider>
-                </SAnimatedView>
+                <>
+                    <SAnimatedView name={this.containerShadowView.name} style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
+                        <ASSafeAreaProvider top={44}>
+                            <View style={{ flexGrow: 1, flexBasis: 0, width: '100%', marginBottom: this.state.search ? -96 : 0 }}>
+                                {this.props.children}
+                            </View>
+                        </ASSafeAreaProvider>
+                    </SAnimatedView>
+                </>
             )
             : (
                 <View style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>

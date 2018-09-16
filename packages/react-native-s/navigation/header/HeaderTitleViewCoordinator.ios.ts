@@ -6,6 +6,7 @@ import { STrackedValue } from '../../STrackedValue';
 import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
 import { Dimensions } from 'react-native';
+import { AnimatedViewKeys } from '../AnimatedViewKeys';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -22,6 +23,7 @@ export class HeaderTitleViewCoordinator {
     private searchView: SAnimatedShadowView;
     private searchInputBackgroundView: SAnimatedShadowView;
     private searchCancelView: SAnimatedShadowView;
+    private searchContainerView: SAnimatedShadowView;
 
     private subscribedValue?: STrackedValue;
     private subscription?: string;
@@ -36,6 +38,7 @@ export class HeaderTitleViewCoordinator {
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
+        this.searchContainerView =  new SAnimatedShadowView(AnimatedViewKeys.pageSearch(this.key));
 
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
@@ -130,6 +133,7 @@ export class HeaderTitleViewCoordinator {
                     this.searchInputBackgroundView.translateX = -35;
                     this.searchCancelView.translateX = 0;
                     this.titleLargeView.opacity = 0;
+                    this.searchContainerView.opacity = 1;
                 } else {
                     this.searchInputBackgroundView.iosWidth = 0;
                     this.searchInputBackgroundView.translateX = 0;
@@ -139,6 +143,7 @@ export class HeaderTitleViewCoordinator {
                     }
                     this.headerView.translateY = 0;
                     this.titleLargeView.opacity = 1;
+                    this.searchContainerView.opacity = 0;
                 }
             } else {
                 if (this.lastConfig.searchUnderlay) {

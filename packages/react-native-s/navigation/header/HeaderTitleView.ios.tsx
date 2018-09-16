@@ -6,6 +6,7 @@ import { View, Text, TouchableWithoutFeedback, Image, TextInput, Button, StyleSh
 import { SBackButton } from '../../SBackButton';
 import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
+import { SSafeAreaContext } from '../../SSafeArea';
 
 const styles = StyleSheet.create({
     title: {
@@ -123,11 +124,13 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         </View>
                     )}
 
-                    {(v.config.search && v.config.searchActive) && (
-                        <View style={{ position: 'absolute', left: 0, top: SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded + SDevice.safeArea.top, right: 0, bottom: -96, backgroundColor: '#000', opacity: 0.3, flexDirection: 'column' }}>
-                            <SearchComponent query={this.state.searchText} />
+                    {/* {(v.config.search && v.config.searchActive) && (
+                        <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: -96, backgroundColor: '#000', opacity: 0.3, flexDirection: 'column' }}>
+                            <SSafeAreaContext.Provider value={{ top: SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded + SDevice.safeArea.top, bottom: SDevice.safeArea.bottom }}>
+                                <SearchComponent query={this.state.searchText} />
+                            </SSafeAreaContext.Provider>
                         </View>
-                    )}
+                    )} */}
                 </SAnimated.View>
             </>
         );

@@ -19,7 +19,7 @@ class DialogsComponent extends React.Component<PageProps> {
             <>
                 <SHeader title="Messages" />
                 <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
-                <SSearchControler searchRender={(q) => <View><Text>{q.query}</Text></View>}>
+                <SSearchControler searchRender={(q) => <View marginTop={200} backgroundColor="#f00"><Text>{q.query}</Text></View>}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent engine={engine} />)}
                     </MobileMessengerContext.Consumer>

@@ -12,6 +12,7 @@ import { SDevice } from '../SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderCoordinator } from './header/HeaderCoordinator';
 import { HeaderComponentLoader } from './header/HeaderComponentLoader';
+import { SearchContainer } from './containers/SearchContainer';
 
 const styles = StyleSheet.create({
     fill: {
@@ -410,6 +411,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                                 component={v.component}
                                 router={v.router}
                                 mounted={!!this.state.mounted.find((m) => v.key === m)}
+                            />
+                            <SearchContainer
+                                page={v}
                             />
                             <SAnimated.View
                                 name={AnimatedViewKeys.pageShadow(v.key)}

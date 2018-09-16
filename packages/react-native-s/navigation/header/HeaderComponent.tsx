@@ -46,8 +46,12 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
     render() {
         return (
             <>
+                {/* Background and Hairline */}
                 <SAnimated.View name="header-background" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
                     <SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? SCREEN_HEIGHT : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} />
+                </SAnimated.View>
+                <SAnimated.View name="header-hairline" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
+                    <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: 1 }} />
                 </SAnimated.View>
                 <View
                     style={{
@@ -64,12 +68,9 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                     </SAnimated.View>
 
                     {this.props.pages.map((v) => (
-                        <HeaderTitleView manager={this.props.manager} page={v} current={this.props.current === v.page.key} style={this.props.style} />
+                        <HeaderTitleView key={v.page.key} manager={this.props.manager} page={v} current={this.props.current === v.page.key} style={this.props.style} />
                     ))}
                 </View>
-                <SAnimated.View name="header-hairline" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                    <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: 1 }} />
-                </SAnimated.View>
             </>
         );
     }
