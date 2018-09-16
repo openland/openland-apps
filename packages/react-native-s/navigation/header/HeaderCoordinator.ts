@@ -75,7 +75,13 @@ export class HeaderCoordinator {
             }
             this.backgroundTranslate.value = v - SCREEN_HEIGHT;
             this.hairline.translateY = v;
-            this.hairline.opacity = 1;
+
+            let op: number = 0;
+            op += Math.abs(1 - progress) * this.resolveHairlineOpacity(state.history[state.history.length - 1].config);
+            if (state.history.length >= 2) {
+                op += Math.abs(progress) * this.resolveHairlineOpacity(state.history[state.history.length - 2].config);
+            }
+            this.hairline.opacity = op;
         } else {
             this.hairline.translateX = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
             this.hairline.opacity = 1;
@@ -101,13 +107,30 @@ export class HeaderCoordinator {
                     res += 44;
                 }
             }
+            if (config.contentOffset) {
+                res -= config.contentOffset.offsetValue;
+            }
         } else {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
         }
-        if (config.contentOffset) {
-            res -= config.contentOffset.offsetValue;
-        }
         return Math.max(res, SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
+    }
+
+    private resolveHairlineOpacity(config: HeaderConfig) {
+        let res: number = 1;
+        if (config.appearance === 'large' || config.appearance === undefined) {
+            if (config.search && config.searchActive) {
+                res = 1;
+            } else if (config.contentOffset) {
+                res = config.contentOffset.offsetValue < 44 ? 0 : 1;
+            }
+        } else if (config.appearance === 'small-hidden') {
+            if (config.contentOffset) {
+                res = config.contentOffset.offsetValue < 44 ? 0 : 1;
+            }
+        }
+
+        return res;
     }
 
     private getPageCoordinator(page: NavigationPage) {

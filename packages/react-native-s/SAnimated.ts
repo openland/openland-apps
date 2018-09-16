@@ -118,7 +118,6 @@ class SAnimatedImpl {
         if (!this._knownComponents.has(property.name)) {
             this._knownComponents.add(property.name);
             this.setValue(property.name, property.property, property.value);
-            console.log('detect new: ' + property.name);
         } else if (property.value !== oldValue) {
             if (this._inTransaction) {
                 if (!this._dirtyProperties.has(property.name)) {
@@ -133,8 +132,6 @@ class SAnimatedImpl {
             } else {
                 this.setValue(property.name, property.property, property.value);
             }
-        } else {
-            console.log('Not changed (' + oldValue + '): ' + property.name);
         }
     }
 
@@ -262,7 +259,6 @@ class SAnimatedImpl {
     }
 
     private _postAnimations(duration: number, animations: any[], valueSetters: any[], transactionKey: string | undefined) {
-        console.log(valueSetters);
         RNSAnimatedViewManager.animate(
             JSON.stringify({
                 duration,
@@ -273,7 +269,6 @@ class SAnimatedImpl {
     }
 
     onViewUnmounted = (name: string) => {
-        console.log('unmounted: ' + name);
         this._knownComponents.delete(name);
     }
 }
