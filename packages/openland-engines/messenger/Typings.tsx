@@ -32,9 +32,9 @@ export class TypingsWatcher {
         }
     } = {};
     private sub?: ZenObservable.Subscription = undefined;
-    private onChange: (conversationId: string, data?: { typing: string, pictures: (string | null)[] }) => void;
+    private onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null }[] }) => void;
 
-    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, pictures: (string | null)[] }) => void, currentUserId: string) {
+    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null }[] }) => void, currentUserId: string) {
         this.onChange = onChange;
         let typingSubscription = client.client.subscribe({
             query: SUBSCRIBE_TYPINGS
@@ -57,7 +57,7 @@ export class TypingsWatcher {
                     };
                     this.typings[cId] = existing;
 
-                    this.onChange(cId, this.renderString(cId));
+                    this.onChange(cId, this.renderTypings(cId));
                 }
 
                 // clear scehduled typing clear
@@ -67,7 +67,7 @@ export class TypingsWatcher {
                 existingTimeouts[event.data.alphaSubscribeTypings.user.id] = setTimeout(
                     () => {
                         existing[event.data.alphaSubscribeTypings.user.id] = undefined;
-                        onChange(cId, this.renderString(cId));
+                        onChange(cId, this.renderTypings(cId));
                     },
                     event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
                 this.timeouts[cId] = existingTimeouts;
@@ -76,17 +76,16 @@ export class TypingsWatcher {
 
     }
 
-    renderString = (cId: string) => {
-        let usersTyping = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => u);
+    renderTypings = (cId: string) => {
+        let usersTyping: { userName: string, userPic: string | null }[] = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic }));
 
         let userNames = usersTyping.map(u => u!.userName);
-        let usersPic = usersTyping.map(u => u!.userPic);
 
         let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing...';
 
         let data = {
             typing: str,
-            pictures: usersPic,
+            users: usersTyping,
         };
 
         return usersTyping.length > 0 ? data : undefined;
@@ -100,21 +99,21 @@ export class TypingsWatcher {
 }
 
 export class TypingEngine {
-    listeners: ((typing?: string, pictures?: (string | null)[]) => void)[] = [];
+    listeners: ((typing?: string, users?: { userName: string, userPic: string | null }[]) => void)[] = [];
     typing?: string;
-    pictures?: (string | null)[];
+    users?: { userName: string, userPic: string | null }[];
 
-    onTyping = (data?: {typing: string, pictures: (string | null)[]}) => {
-        this.typing = data !== undefined ?  data.typing : undefined;
-        this.pictures = data !== undefined ?  data.pictures : undefined;
+    onTyping = (data?: { typing: string, users: { userName: string, userPic: string | null }[] }) => {
+        this.typing = data !== undefined ? data.typing : undefined;
+        this.users = data !== undefined ? data.users : undefined;
         for (let l of this.listeners) {
-            l(this.typing, this.pictures);
+            l(this.typing, this.users);
         }
     }
 
-    subcribe = (listener: (typing?: string, pictures?: (string | null)[]) => void) => {
+    subcribe = (listener: (typing?: string, users?: { userName: string, userPic: string | null }[]) => void) => {
         this.listeners.push(listener);
-        listener(this.typing, this.pictures);
+        listener(this.typing, this.users);
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {

@@ -53,7 +53,7 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
     flexBasis: '100%'
 });
 
-const Title = makeNavigable(Glamorous.div<{href?: string}>(props => ({
+const Title = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     fontSize: 16,
     fontWeight: 500,
     letterSpacing: -0.2,
@@ -70,7 +70,8 @@ const SubTitle = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     letterSpacing: -0.1,
     color: '#5c6a81',
     opacity: 0.5,
-    cursor: props.href ? 'pointer' : undefined
+    cursor: props.href ? 'pointer' : undefined,
+    marginBottom: -2
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
@@ -381,11 +382,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     }
 
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
-        return <ChannelsInviteComponent channel={props.data.chat} />;
+        return <ChannelsInviteComponent channel={props.data.chat} onDirectory={(props as any).onDirectory} />;
     }
     let title = props.data.chat.__typename === 'ChannelConversation' ?
         ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' / ' : '') + props.data.chat.title) :
         props.data.chat.title;
+    let titlePath = undefined;
 
     let subtitle = '';
     let subtitlePath = undefined;
@@ -396,8 +398,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     } else if (props.data.chat.__typename === 'ChannelConversation') {
         subtitle = 'Channel';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
-        subtitle = 'Persion';
+        subtitle = 'Person';
         if (props.data.chat.user.primaryOrganization) {
+            titlePath = '/mail/u/' + props.data.chat.user.id;
             subtitle = props.data.chat.user.primaryOrganization.name;
             subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
         }
@@ -413,8 +416,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
+                        maxWidth="calc(100% - 380px)"
                     >
-                        <XHorizontal alignItems="center" separator={6}>
+                        <XHorizontal alignItems="center" separator={6} maxWidth="100%">
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
@@ -429,8 +433,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
                                 userId={props.data.chat.flexibleId}
                             />
-                            <XHorizontal alignItems="center" separator={6}>
-                                <Title>{title}</Title>
+                            <XHorizontal alignItems="center" separator={6} maxWidth="calc(100% - 48px)">
+                                <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             </XHorizontal>
                         </XHorizontal>
@@ -450,6 +454,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     </ChannelTab>
                                 </ChannelTabs>
                                 <InviteMembersModal
+                                    orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                                     channelTitle={title}
                                     channelId={props.data.chat.id}
                                     target={
@@ -502,7 +507,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             />
                         </XWithRole>}
                         {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']} negate={true}>
-                            <XWithRole role={['admin']} orgPermission={true}>
+                            <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
                                 <XOverflow
                                     flat={true}
                                     placement="bottom-end"
@@ -537,7 +542,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         variables={{ channelId: props.data.chat.id }}
                         description={props.data.chat.description}
                         longDescription={props.data.chat.longDescription}
-                        {...{ isMyOrganization: props.data.chat.organization && props.data.chat.organization.isMine }}
+                        orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                     />
                 )}
             </XHorizontal>
@@ -547,11 +552,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <XWithRole role={['super-admin']}>
                 <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
             </XWithRole>
-
         </XVertical>
     );
-}));
+})) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean }>;
 
-export const MessengerComponent = (props: { conversationId: string }) => {
-    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} />);
+export const MessengerComponent = (props: { conversationId: string, onDirectory?: boolean }) => {
+    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} onDirectory={props.onDirectory} />);
 };

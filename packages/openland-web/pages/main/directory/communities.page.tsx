@@ -16,6 +16,7 @@ import { SortPicker } from './sortPicker';
 import { CommunityCard } from './components/CommunityCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
+import SearchIcon from './icons/ic-search-small.svg';
 import {
     RootWrapper,
     Sidebar,
@@ -26,7 +27,6 @@ import {
     Results,
     SearchFormWrapper,
     SearchFormContent,
-    SearchFormIcon,
     SearchInput,
     ResetButton,
     SidebarItemHeadLink
@@ -153,10 +153,25 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <SidebarHeader>Directory</SidebarHeader>
                     <XVertical separator={0}>
                         <SidebarItemWrapper>
-                            <SidebarItemHeadLink isCommunity={false} />
+                            <SidebarItemHeadLink
+                                path="/directory"
+                                title="Organizations"
+                                icon="organizations"
+                            />
                         </SidebarItemWrapper>
                         <SidebarItemWrapper active={true}>
-                            <SidebarItemHeadLink isCommunity={true} />
+                            <SidebarItemHeadLink
+                                path="/directory/communities"
+                                title="Communities"
+                                icon="communities"
+                            />
+                        </SidebarItemWrapper>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink
+                                path="/directory/channels"
+                                title="Channels"
+                                icon="channels"
+                            />
                         </SidebarItemWrapper>
                     </XVertical>
                 </Sidebar>
@@ -166,7 +181,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             <SearchRow>
                                 <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
                                     <SearchFormContent separator={4} flexGrow={1}>
-                                        <SearchFormIcon icon="search" />
+                                        <SearchIcon />
                                         <SearchInput
                                             value={this.state.searchText}
                                             onChange={this.handleSearchChange}

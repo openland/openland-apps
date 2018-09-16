@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { findChild } from './utils';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XPicture } from 'openland-x/XPicture';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
 import { withSearch } from '../api/withSearch';
@@ -22,7 +21,6 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuItem, XMenuVertical } from 'openland-x/XMenuItem';
-import { OrganizationPicker } from './OrganizationPicker';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
@@ -95,13 +93,16 @@ const NavigationScroller = Glamorous(XScrollView)<{ sidebarBorderColor?: string 
     // top: 0,
 }));
 
-const Logo = Glamorous(XPicture)({
-    height: 48,
-    width: 48,
+const Logo = Glamorous.div({
+    height: 26,
+    width: 38,
     marginTop: 12,
     marginBottom: 12,
     alignSelf: 'center',
-    flexShrink: 0
+    flexShrink: 0,
+    backgroundImage: 'url(\'/static/X/logo.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain'
 });
 
 const NavigationDivider = Glamorous.div({
@@ -300,7 +301,6 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                                     <XWithRole role={['super-admin', 'software-developer']}>
                                         <XMenuItem style="primary-sky-blue" query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
                                     </XWithRole>
-                                    {this.props.hasMultipleOrganizations && <XMenuItem style="primary-sky-blue" query={{ field: 'org', value: 'true' }} autoClose={true}>{TextGlobal.switch}</XMenuItem>}
 
                                     <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 12 }} />
                                 </>
@@ -335,7 +335,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
                     logo={props.organization ? props.organization.photo : undefined}
                     organizationName={props.organization ? props.organization.name : undefined}
                     organizationId={props.organization ? props.organization.id : undefined}
-                    hasMultipleOrganizations={data.data && data.data.myOrganizations.length > 1}
+                    hasMultipleOrganizations={data.data && data.data.myOrganizations && data.data.myOrganizations.length > 1}
                 />
             }
         </Query>
@@ -614,28 +614,6 @@ class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?
 interface ScaffoldProps {
     sidebarBorderColor?: string;
 }
-
-const Home = withUserInfo((props) => {
-    return (
-        <XWithRole role="feature-marketplace" negate={true}>
-            <XPopper
-                placement="right"
-                showOnHoverContent={false}
-                showOnHover={true}
-                groupId="scaffold_tooltip"
-                style="dark"
-                padding={-2}
-                content={(
-                    <strong>{TextAppBar.items.home}</strong>
-                )}
-            >
-                <NavigatorItem path={'/directory/o/' + props.organization!!.id}>
-                    <HomeIcon />
-                </NavigatorItem>
-            </XPopper>
-        </XWithRole>
-    );
-});
 
 class AddMenu extends React.Component<{}, { show?: boolean }> {
     inner = 0;
@@ -990,20 +968,11 @@ export class Scaffold extends React.Component<ScaffoldProps, { search: boolean, 
 
         return (
             <RootContainer>
-                <XModal
-                    useTopCloser={true}
-                    title={TextGlobal.switch}
-                    targetQuery="org"
-                    size="small"
-                    scrollableContent={true}
-                >
-                    <OrganizationPicker />
-                </XModal>
                 <NavigationWrapper activeSearch={this.state.search}>
                     <NavigationScroller sidebarBorderColor={this.props.sidebarBorderColor}>
                         <NavigationContainer>
                             <XLink path="/">
-                                <Logo picture={{ url: '/static/branding/logo_inverted_squared.png', retina: '/static/branding/logo_inverted_squared@2x.png' }} />
+                                <Logo />
                             </XLink>
 
                             <NavigationDivider />

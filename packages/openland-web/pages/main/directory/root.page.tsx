@@ -36,6 +36,7 @@ import {
     SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { UserProfile } from '../profile/UserProfileComponent';
 import { withTopCategories } from '../../../api/withTopCategories';
 
 export interface SearchCondition {
@@ -356,14 +357,14 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     componentWillReceiveProps(nextProps: XWithRouter) {
         if (nextProps.router.query.clauses) {
             let clauses: SearchCondition[] = JSON.parse(nextProps.router.query.clauses);
-            this.setState({ 
-                conditions: clauses, 
-                searchText: '' 
+            this.setState({
+                conditions: clauses,
+                searchText: ''
             });
         } else {
-            this.setState({ 
-                conditions: [], 
-                searchText: '' 
+            this.setState({
+                conditions: [],
+                searchText: ''
             });
         }
     }
@@ -394,6 +395,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     render() {
         const { searchText, conditions, orgCount } = this.state;
         let oid = this.props.router.routeQuery.organizationId;
+        let uid = this.props.router.routeQuery.userId;
 
         return (
             <RootWrapper>
@@ -401,7 +403,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <SidebarHeader>Directory</SidebarHeader>
                     <XVertical separator={0}>
                         <SidebarItemWrapper active={true}>
-                            <SidebarItemHeadLink isCommunity={false} />
+                            <SidebarItemHeadLink
+                                path="/directory"
+                                title="Organizations"
+                                icon="organizations"
+                            />
                             <SidebarItemBody>
                                 <CategoryPicker
                                     title="Category"
@@ -424,12 +430,23 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             </SidebarItemBody>
                         </SidebarItemWrapper>
                         <SidebarItemWrapper>
-                            <SidebarItemHeadLink isCommunity={true} />
+                            <SidebarItemHeadLink
+                                path="/directory/communities"
+                                title="Communities"
+                                icon="communities"
+                            />
+                        </SidebarItemWrapper>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink
+                                path="/directory/channels"
+                                title="Channels"
+                                icon="channels"
+                            />
                         </SidebarItemWrapper>
                     </XVertical>
                 </Sidebar>
                 <Container>
-                    {!oid && (
+                    {(!oid && !uid) && (
                         <XVertical separator={0}>
                             <SearchRow>
                                 <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
@@ -440,6 +457,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             target={
                                                 <SearchInput
                                                     onFocus={this.onSearchFocus}
+                                                    autoFocus={true}
                                                     value={searchText}
                                                     onChange={this.handleSearchChange}
                                                     placeholder={TextDirectory.searchInputPlaceholder}
@@ -497,7 +515,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             />
                         </XVertical>
                     )}
-                    {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} />}
+                    {(oid && !uid) && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} />}
+                    {(!oid && uid) && <UserProfile userId={uid} onBack={() => this.props.router.push('/directory')} />}
                 </Container>
 
                 <CreateOrganization />

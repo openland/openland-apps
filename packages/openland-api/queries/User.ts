@@ -25,8 +25,16 @@ export const UserQuery = gql`
             about
             location
             isBot
-            primaryOrganization: alphaPrimaryOrganization{
+            isYou
+            primaryOrganization: alphaPrimaryOrganization {
                 ...OrganizationShort
+            }
+            linkedin: alphaLinkedin
+            channels: channelsJoined {
+                id
+                title
+                photos
+                hidden
             }
         }
     }

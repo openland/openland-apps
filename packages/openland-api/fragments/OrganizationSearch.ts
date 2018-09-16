@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const OrganizationSearch = gql`
     fragment OrganizationSearch on Organization {
         id
+        superAccountId
         name
         photo
         locations: alphaLocations

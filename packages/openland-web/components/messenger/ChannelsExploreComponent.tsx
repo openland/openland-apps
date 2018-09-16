@@ -85,6 +85,14 @@ const MembersText = Glamorous.div({
     color: '#99a2b0'
 });
 
+interface WithChatSearchChannelsProps {
+    onDirectory?: boolean;
+    variables: {
+        query: string,
+        sort: string
+    };
+}
+
 const Channels = withChatSearchChannels((props) => {
     return (
         props.data && props.data.channels ? props.data.channels.edges.length
@@ -93,8 +101,19 @@ const Channels = withChatSearchChannels((props) => {
                     {props.data.channels.edges.map(c => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' / ') : '') + channel.title;
+
+                        let path = '/mail/' + channel.id;
+
+                        if ((props as any).onDirectory && channel.myStatus !== 'member') {
+                            path = '/directory/ch/' + channel.id;
+                        }
+
                         return (
-                            <ChannelItemWrapper path={'/mail/' + channel.id} key={c.node.id} alignItems="center">
+                            <ChannelItemWrapper
+                                path={path}
+                                key={c.node.id}
+                                alignItems="center"
+                            >
                                 <XHorizontal separator={6} alignItems="center" flexGrow={1}>
                                     <Avatar
                                         style="channel"
@@ -107,7 +126,7 @@ const Channels = withChatSearchChannels((props) => {
                                 </XHorizontal>
                                 <XButton
                                     text={StatusTitleMap[channel.myStatus]}
-                                    path={'/mail/' + channel.id}
+                                    path={path}
                                     style="ghost"
                                     size="r-default"
                                     className={channel.myStatus}
@@ -130,20 +149,18 @@ const Channels = withChatSearchChannels((props) => {
                     })}
                 </>
             )
-            : (
-                <EmptyComponent />
-            )
-            : (<XLoader loading={true} />)
+            : <EmptyComponent />
+            : <XLoader loading={true} />
     );
-});
+}) as React.ComponentType<WithChatSearchChannelsProps>;
 
 const SearchWrapper = Glamorous(XHorizontal)({
-    height: 60,
+    height: 61,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     paddingRight: 24,
     paddingLeft: 20,
     '& > div > div': {
-        height: 58,
+        height: 59,
         border: 'none',
         fontSize: 16,
         fontWeight: 500,
@@ -175,11 +192,16 @@ const CounterText = Glamorous.div({
     color: '#5c6a81'
 });
 
-export class ChannelsExploreComponent extends React.Component<{}, {
-    query: string,
-    sort: { orderBy: string, featured: boolean };
-}> {
-    constructor(props: {}) {
+interface ChannelsExploreComponentState {
+    query: string;
+    sort: {
+        orderBy: string,
+        featured: boolean
+    };
+}
+
+export class ChannelsExploreComponent extends React.Component<{ onDirectory?: boolean }, ChannelsExploreComponentState> {
+    constructor(props: { onDirectory?: boolean }) {
         super(props);
         this.state = {
             query: '', sort: { orderBy: 'membersCount', featured: true }
@@ -240,7 +262,10 @@ export class ChannelsExploreComponent extends React.Component<{}, {
                 </XVertical>
                 <ChannelsListWrapper>
                     <XVertical separator={0} flexGrow={1} flexShrink={0}>
-                        <Channels variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }} />
+                        <Channels
+                            variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }}
+                            onDirectory={this.props.onDirectory}
+                        />
                     </XVertical>
                 </ChannelsListWrapper>
             </Root>

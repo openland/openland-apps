@@ -209,18 +209,20 @@ interface ChannelsInviteComponentProps {
         }
     };
     noLogin?: boolean;
+    onDirectory?: boolean;
 }
 
 export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
     render() {
         let joinText = this.props.channel.myStatus === 'none' ? (this.props.channel.organization && this.props.channel.organization.isMine ? 'Join channel' : 'Request invite') : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
+        let closePath = this.props.onDirectory ? '/directory/channels' : '/mail/channels';
         return (
             <Root>
                 <Reactangle />
                 <MainContent>
                     {!this.props.noLogin && (
                         <XHorizontal justifyContent="flex-end">
-                            <Close path="/mail/channels">
+                            <Close path={closePath}>
                                 <CloseIcon />
                             </Close>
                         </XHorizontal>

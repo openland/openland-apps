@@ -12,6 +12,10 @@ import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
 import UloadIc from '../icons/file-upload.svg';
 import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { isServerMessage } from 'openland-engines/messenger/types';
+import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -22,8 +26,8 @@ const SendMessageWrapper = Glamorous.div({
     maxHeight: 200,
     backgroundColor: '#f9fafb',
     flexShrink: 0,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 12,
     borderTop: '1px solid rgba(220, 222, 228, 0.45)'
@@ -44,7 +48,7 @@ const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
     backgroundColor: props.dragOn ? '#fff' : 'transparent'
 }));
 
-const DropAreaContent = Glamorous.div<{dragUnder: boolean}>(props => ({
+const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -85,10 +89,10 @@ const DropAreaSubtitle = Glamorous.div({
 
 const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
-    maxWidth: 700,
+    maxWidth: 800,
     flexBasis: '100%',
-    paddingLeft: 44,
-    paddingRight: 44
+    paddingLeft: 50,
+    paddingRight: 50
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
@@ -148,13 +152,14 @@ const TextInputWrapper = Glamorous.div({
 export interface MessageComposeComponentProps {
     conversationType?: string;
     conversationId?: string;
+    conversation?: ConversationEngine;
     enabled?: boolean;
     onSend?: (text: string) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
 }
 
-export class MessageComposeComponent extends React.PureComponent<MessageComposeComponentProps> {
+class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentProps & XWithRouter & UserInfoComponentProps> {
 
     state = {
         dragOn: false,
@@ -257,15 +262,29 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         });
     }
 
+    keydownHandler = (e: any) => {
+        if (e.code === 'ArrowUp' && this.message.length === 0 && this.input.current && this.input.current.state.editorState.getSelection().getHasFocus() && this.props.conversation) {
+            let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && this.props.user && m.sender.id === this.props.user.id);
+            let message = messages[messages.length - 1];
+            if (message && isServerMessage(message)) {
+                e.preventDefault();
+                this.props.router.replaceQueryParams({ editMessage: message.id });
+            }
+
+        }
+    }
+
     componentDidMount() {
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
+        window.addEventListener('keydown', this.keydownHandler);
     }
 
     componentWillUnmount() {
         window.removeEventListener('dragover', this.handleWindowDragover);
         window.removeEventListener('drop', this.handleWindowDrop);
+        window.removeEventListener('keydown', this.keydownHandler);
     }
 
     componentDidUpdate() {
@@ -346,3 +365,5 @@ export class MessageComposeComponent extends React.PureComponent<MessageComposeC
         );
     }
 }
+
+export let MessageComposeComponent = withUserInfo(withRouter((props) => <MessageComposeComponentInner {...props} />)) as React.ComponentType<MessageComposeComponentProps>;

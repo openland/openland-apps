@@ -51,7 +51,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     width: props.small ? 56 : 62,
     marginBottom: props.small ? undefined : -1,
     fontSize: 11,
-    paddingTop: props.small ? 3 : undefined,
+    paddingTop: props.small ? 3 : 1,
     fontWeight: 500,
     letterSpacing: -0.2,
     whiteSpace: 'nowrap',

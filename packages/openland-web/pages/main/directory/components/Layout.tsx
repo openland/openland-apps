@@ -3,10 +3,10 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XIcon } from 'openland-x/XIcon';
 import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 import RightIcon from '../icons/ic-arrow-rignt.svg';
+import ChannelIcon from '../icons/channel_icons.svg';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
@@ -64,17 +64,27 @@ export const SidebarItemLink = Glamorous(XLink)({
 
         '& > div > svg > *': {
             opacity: 0.5,
-            fill: '#1790ff',
+            fill: '#1790ff'
         },
         '& > svg > g > path:last-child': {
             opacity: 0.5,
-            fill: '#1790ff',
-        },
+            fill: '#1790ff'
+        }
     },
     '&:hover': {
         color: '#5c6a81',
         cursor: 'default !important'
-    }
+    },
+    '&.channels:hover': {
+        '& > div > svg > g > path:first-child': {
+            fill: '#BCC3CC'
+        }
+    },
+    '&.channels:not(.is-active):hover': {
+        '& > div > svg > g > path:first-child': {
+            fill: '#1790ff'
+        }
+    },
 });
 
 export const SidebarItemBody = Glamorous.div({
@@ -120,12 +130,6 @@ export const SearchFormContent = Glamorous(XHorizontal)({
     }
 });
 
-export const SearchFormIcon = Glamorous(XIcon)({
-    marginRight: 5,
-    fontSize: 20,
-    color: '#c1c7cf',
-});
-
 export const SearchInput = Glamorous.input({
     height: '100%',
     minHeight: 40,
@@ -156,11 +160,19 @@ export const ResetButton = Glamorous.div({
     },
 });
 
-export const SidebarItemHeadLink = (props: { isCommunity: boolean }) => (
-    <SidebarItemLink path={props.isCommunity ? '/directory/communities' : '/directory'}>
+interface SidebarItemHeadLinkProps {
+    path: string;
+    icon: 'communities' | 'organizations' | 'channels';
+    title: string;
+}
+
+export const SidebarItemHeadLink = (props: SidebarItemHeadLinkProps) => (
+    <SidebarItemLink path={props.path} className={props.icon}>
         <XHorizontal separator={7} alignItems="center">
-            {props.isCommunity ? <CommunityIcon /> : <OrganizationsIcon />}
-            <span>{props.isCommunity ? 'Communities' : 'Organizations'}</span>
+            {props.icon === 'communities' && <CommunityIcon />}
+            {props.icon === 'organizations' && <OrganizationsIcon />}
+            {props.icon === 'channels' && <ChannelIcon />}
+            <span>{props.title}</span>
         </XHorizontal>
         <RightIcon />
     </SidebarItemLink>

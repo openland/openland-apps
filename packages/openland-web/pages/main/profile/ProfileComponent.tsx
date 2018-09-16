@@ -168,17 +168,30 @@ const Header = (props: { organizationQuery: OrganizationQuery }) => {
                     <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
                 </HeaderTabs> */}
             </HeaderInfo>
-            {org.isMine && (
-                <XWithRole role="admin" orgPermission={true}>
-                    <HeaderTools>
-                        <XButton
+            <HeaderTools>
+                <XWithRole role="admin" orgPermission={org.id}>
+                    <XButton
+                        size="r-default"
+                        text="Edit profile"
+                        path={'/settings/organization/' + org.id}
+                    />
+                </XWithRole>
+                <XWithRole role="super-admin">
+                    <XHorizontal>
+                        {!org.isMine && < XButton
                             size="r-default"
                             text="Edit profile"
-                            path="/settings/organization"
+                            path={'/settings/organization/' + org.id}
+                        />}
+                        <XButton
+                            size="r-default"
+                            text="Super edit"
+                            path={'/super/orgs/' + org.superAccountId}
                         />
-                    </HeaderTools>
+                    </XHorizontal>
                 </XWithRole>
-            )}
+            </HeaderTools>
+
         </HeaderWrapper>
     );
 };
@@ -266,7 +279,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
     return (
         <>
             {org.isMine && (
-                <XWithRole role="admin" orgPermission={true}>
+                <XWithRole role="admin" orgPermission={org.id}>
                     {(!org.about || !hasLinks || !hasLocations || !hasCategories) && (
                         <>
                             <XSubHeader title="Add sections" />
@@ -304,7 +317,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="About">
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -320,7 +333,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="Links">
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -361,7 +374,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="Organization category" counter={org.organizationType ? org.organizationType.length : undefined}>
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <CategoriesPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -393,7 +406,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title="Locations" counter={org.locations ? org.locations.length : undefined}>
                         {org.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
                                     <LocationPlaceholder target={<EditButton>Edit</EditButton>} />
                                 </XSubHeaderRight>
@@ -426,14 +439,15 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
     );
 };
 
-const MemberCardWrapper = Glamorous.div({
+const MemberCardWrapper = makeNavigable(Glamorous.div({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '16px 0 15px',
+    cursor: 'pointer',
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
-});
+}));
 
 const MemberCardAvatar = Glamorous.div({
     padding: '0 12px 0 24px'
@@ -504,6 +518,7 @@ interface MemberCardProps {
         twitter: string | null
     };
     iAmOwner: boolean;
+    isCommunity: boolean;
 }
 
 class MemberCard extends React.PureComponent<MemberCardProps> {
@@ -518,6 +533,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
             <MemberCardWrapper
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
+                path={'/directory/u/' + user.id}
             >
                 <MemberCardAvatar>
                     <XAvatar cloudImageUuid={user.picture || undefined} userName={user.name} userId={user.id} style="colorus" />
@@ -529,7 +545,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             {user.email && <MemberCardSocial href={'mailto:' + user.email}><EmailIcon /></MemberCardSocial>}
                             {user.linkedin && <MemberCardSocial href={user.linkedin}><LinkedinIcon /></MemberCardSocial>}
                             {user.twitter && <MemberCardSocial href={user.twitter}><TwitterIcon /></MemberCardSocial>}
-                            {user.primaryOrganization && <MemberCardOrg path={`/directory/o/${user.primaryOrganization.id}`}>{user.primaryOrganization.name}</MemberCardOrg>}
+                            {this.props.isCommunity && user.primaryOrganization && <MemberCardOrg path={`/directory/o/${user.primaryOrganization.id}`}>{user.primaryOrganization.name}</MemberCardOrg>}
                         </XHorizontal>
                         {user.role && <MemberCardRole>{user.role}</MemberCardRole>}
                     </XVertical>
@@ -548,16 +564,19 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             <>
                                 <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
                                 <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                <XWithRole role={['super-admin']}>
+                                    <XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
+                                </XWithRole>
                             </>
                         }
                     />}
-                    <XWithRole role={['super-admin']}>
+                    {!this.props.iAmOwner && <XWithRole role={['super-admin']}>
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
                             content={<XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
                         />
-                    </XWithRole>
+                    </XWithRole>}
                 </MemberCardTools>
             </MemberCardWrapper>
         );
@@ -596,7 +615,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                 <>
                     <XSubHeader title={organization.isCommunity ? 'Admins' : 'Organization members'} counter={organization.members.length}>
                         {organization.isMine && (
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={organization.id}>
                                 <XSubHeaderRight>
                                     <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
                                 </XSubHeaderRight>
@@ -605,7 +624,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                     </XSubHeader>
                     {(organization.members || []).map((member, i) => {
                         return (
-                            <MemberCard key={i} user={member.user} iAmOwner={organization.isOwner} />
+                            <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
                         );
                     })}
                 </>

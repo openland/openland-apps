@@ -72,7 +72,7 @@ const InfoText = Glamorous.div({
     marginBottom: 32
 });
 
-export const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean, channelTitle: string, chatId: string }) => (
+export const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean, channelTitle: string, chatId: string, orgId: string }) => (
     <EmptyRoot>
         <Reactangle />
         <EmptyContent>
@@ -82,6 +82,7 @@ export const EmptyComponent = (props: { aloneMember: boolean, smaller: boolean, 
             {props.aloneMember && <Text>Grow this channel</Text>}
             <InfoText>To grow the community, invite people to this channel</InfoText>
             <InviteMembersModal
+                orgId={props.orgId}
                 channelTitle={props.channelTitle}
                 channelId={props.chatId}
                 target={

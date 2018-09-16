@@ -5,7 +5,7 @@ import { TypingEngine } from 'openland-engines/messenger/Typings';
 
 interface TypingContextProps {
     typing?: string;
-    pictures?: (string | null)[];
+    users?: { userName: string, userPic: string | null }[];
 }
 
 export const TypingContext = React.createContext<TypingContextProps>({});
@@ -14,17 +14,17 @@ interface TypingsWrapperProps {
     engine: TypingEngine;
 }
 
-class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, pictures?: (string | null)[] }> {
+class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, users?: { userName: string, userPic: string | null }[] }> {
     private destructor?: () => void;
     constructor(props: TypingsWrapperProps) {
         super(props);
         this.state = {};
     }
 
-    onTyping = (typing?: string, pictures?: (string | null)[]) => {
+    onTyping = (typing?: string, users?: { userName: string, userPic: string | null }[]) => {
         this.setState({
             typing: typing,
-            pictures: pictures
+            users: users
         });
     }
 
@@ -43,7 +43,7 @@ class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?:
             <TypingContext.Provider
                 value={{
                     typing: this.state.typing,
-                    pictures: this.state.pictures
+                    users: this.state.users
                 }}
             >
                 {this.props.children}

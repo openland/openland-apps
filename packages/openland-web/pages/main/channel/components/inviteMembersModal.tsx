@@ -251,7 +251,7 @@ const RenewInviteLinkButton = withChannelnviteLink((props) => (
     <XMutation mutation={props.renew}><RenewButton text="Renew link" style="link" /></XMutation>
 )) as React.ComponentType<{ variables: { channelId: string }, refetchVars: { channelId: string } }>;
 
-class InviteMembersModalRaw extends React.Component<{ channelTitle: string, channelId: string, sendInviteMutation: any, target: any }, InvitesMoadalRawState> {
+class InviteMembersModalRaw extends React.Component<{ channelTitle: string, channelId: string, sendInviteMutation: any, target: any, orgId: string }, InvitesMoadalRawState> {
     linkComponent?: any;
 
     constructor(props: any) {
@@ -296,7 +296,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
             <FooterWrap>
                 <XHorizontal flexGrow={1}>
                     {!this.state.showLink && (
-                        <XWithRole role="admin" orgPermission={true}>
+                        <XWithRole role="admin" orgPermission={this.props.orgId}>
                             {!this.state.showLink && (
                                 <InviteButton
                                     onClick={() => this.setState({ showLink: true })}
@@ -436,5 +436,5 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
 }
 
 export const InviteMembersModal = withChanneSendlnviteLink((props) => (
-    <InviteMembersModalRaw channelTitle={(props as any).channelTitle} channelId={(props as any).channelId} sendInviteMutation={props.send} target={(props as any).target} />
-)) as React.ComponentType<{ channelTitle: string, channelId: string, target: any }>;
+    <InviteMembersModalRaw channelTitle={(props as any).channelTitle} channelId={(props as any).channelId} sendInviteMutation={props.send} target={(props as any).target} orgId={(props as any).orgId}/>
+)) as React.ComponentType<{ channelTitle: string, channelId: string, target: any, orgId: string }>;

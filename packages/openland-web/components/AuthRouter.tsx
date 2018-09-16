@@ -125,17 +125,6 @@ export const AuthRouter = withUserInfo((props) => {
         handled = true;
     }
 
-    // Redirect to organization picker
-    if (!handled && props.isAccountExists && !props.isAccountPicked) {
-        handled = true;
-        if ([
-            '/pickOrganization',
-        ].indexOf(props.router.path) < 0) {
-            console.warn('NoPickedOrganization');
-            return <XPageRedirect path={'/pickOrganization' + redirect} />;
-        }
-    }
-
     // Redirect to organization add
     if (!handled && !props.isAccountExists) {
         handled = true;
@@ -178,7 +167,6 @@ export const AuthRouter = withUserInfo((props) => {
             '/suspended',
             '/createProfile',
             // '/createProfileAndOrganization',
-            '/pickOrganization',
             // '/createOrganization', // Do not redirect to createOrganization
             '/signin',
             '/signup'

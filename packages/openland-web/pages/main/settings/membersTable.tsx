@@ -195,7 +195,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
             }}
         >
             <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} style="colorus"/>
+                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} style="colorus" />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>
                     {member.email && <XText opacity={0.5} >{member.email}</XText>}
@@ -312,7 +312,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                         <Row>
                             <XTable.Cell>
                                 <XHorizontal separator={7} alignItems="center">
-                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={( m.user.picture) || undefined} userName={m.user.name} userId={m.user.id} style="colorus"/>}
+                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={(m.user.picture) || undefined} userName={m.user.name} userId={m.user.id} style="colorus" />}
                                     {m.__typename === 'OrganizationIvitedMember' && <XAvatar size="small" cloudImageUuid={undefined} />}
                                     <XVertical separator={1} justifyContent="center">
                                         <Title>{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</Title>
@@ -321,7 +321,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                 </XHorizontal>
                             </XTable.Cell>
                             <XTable.Cell>
-                                <XWithRole role="admin" orgPermission={true}>
+                                <XWithRole role="admin" orgPermission={'primary'}>
                                     {m.__typename === 'OrganizationJoinedMember' && (
                                         <PermissionCell justifyContent="center" separator={1}>
                                             <Title>Role</Title>
@@ -336,7 +336,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                         </XVertical>
                                     )}
                                 </XWithRole>
-                                <XWithRole role="admin" orgPermission={true} negate={true}>
+                                <XWithRole role="admin" orgPermission={'primary'} negate={true}>
                                     <Text>{m.role}</Text>
                                 </XWithRole>
 
@@ -351,7 +351,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                                     {m.__typename === 'OrganizationJoinedMember' ? (m.joinedAt ? DateFormater(m.joinedAt) : 'always been here') : 'not joined yet'}
                                 </TableTag> */}
                             </XTable.Cell>
-                            <XWithRole role="admin" orgPermission={true}>
+                            <XWithRole role="admin" orgPermission={'primary'}>
                                 <XTable.Cell textAlign="center" width="80">
                                     <XOverflow
                                         placement="bottom-end"
