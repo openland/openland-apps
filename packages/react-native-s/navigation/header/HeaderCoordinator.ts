@@ -69,9 +69,9 @@ export class HeaderCoordinator {
         // Background
         if (Platform.OS === 'ios') {
             let v: number = 0;
-            v += Math.abs(1 - progress) * this.resolveHeaderHeight(state.history[state.history.length - 1].config.getState()!);
+            v += Math.abs(1 - progress) * this.resolveHeaderHeight(state.history[state.history.length - 1].config);
             if (state.history.length >= 2) {
-                v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config.getState()!);
+                v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config);
             }
             this.backgroundTranslate.value = v - SCREEN_HEIGHT;
             this.hairline.translateY = v;

@@ -57,7 +57,7 @@ export class HeaderComponentLoader extends React.PureComponent<HeaderComponentLo
         // Create new subscriptions
         for (let w of routes) {
             if (!this.subscriptions.has(w.key)) {
-                let subs = w.config.watch((config: HeaderConfig) => {
+                let subs = w.watchConfig((config: HeaderConfig) => {
                     if (config !== this.lastConfigs.get(w.key)) {
                         let n = this.normalizeRoutes(this.props);
                         for (let l of n) {
@@ -81,7 +81,7 @@ export class HeaderComponentLoader extends React.PureComponent<HeaderComponentLo
     normalizeRoutes(props: HeaderComponentLoaderProps) {
         return props.pages.map((v) => ({
             page: v,
-            config: v.config.getState()!
+            config: v.config
         } as HeaderPage));
     }
 

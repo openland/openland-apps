@@ -17,9 +17,9 @@ export class HeaderTitleViewCoordinator {
         this.coordinator = coordinator;
         this.headerView = new SAnimatedShadowView('header--' + this.key);
 
-        this.lastConfig = this.page.config.getState()!!;
+        this.lastConfig = this.page.config;
         let isStarting = true;
-        this.page.config.watch((cfg) => {
+        this.page.watchConfig((cfg) => {
             if (isStarting) {
                 return;
             }

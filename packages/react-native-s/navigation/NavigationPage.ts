@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SRouter } from '../SRouter';
-import { Watcher } from 'openland-y-utils/Watcher';
+import { Watcher, WatchSubscription } from 'openland-y-utils/Watcher';
 import UUID from 'uuid/v4';
 import { HeaderConfig } from './HeaderConfig';
 import { NavigationManager } from './NavigationManager';
@@ -13,10 +13,11 @@ export class NavigationPage {
     readonly params: any;
     readonly component: React.ComponentType<{}>;
     readonly router: SRouter;
-    readonly config: Watcher<HeaderConfig>;
-    readonly state: Watcher<HeaderState>;
+    config: HeaderConfig;
     readonly prevKey?: string;
     readonly startIndex: number;
+
+    private watchers: ((config: HeaderConfig, animated?: boolean) => void)[] = [];
 
     searchStarted: boolean = false;
 
@@ -34,23 +35,32 @@ export class NavigationPage {
             back: () => {
                 return manager.pop();
             },
-            setConfig: (config: HeaderConfig) => {
-                this.config.setState(config);
+            setConfig: (config: HeaderConfig, animated?: boolean) => {
+                this.config = config;
+                for (let w of this.watchers) {
+                    w(config, animated);
+                }
             },
             prevKey
         } as SRouter;
-        let cfg = new Watcher<HeaderConfig>();
-        let c = {};
-        cfg.setState(c);
-        let st = new Watcher<HeaderState>();
-        st.setState({ searchMounted: false, searchQuery: '' });
-        this.state = st;
         this.route = route;
         this.params = params || {};
         this.startIndex = index;
         this.router = router;
         this.key = key;
         this.component = component;
-        this.config = cfg;
+        this.config = {};
+    }
+
+    watchConfig(handler: (config: HeaderConfig, animated?: boolean) => void): WatchSubscription {
+        this.watchers.push(handler);
+        return () => {
+            let index = this.watchers.indexOf(handler);
+            if (index < 0) {
+                console.warn('Double unsubscribe detected!');
+            } else {
+                this.watchers.splice(index, 1);
+            }
+        };
     }
 }

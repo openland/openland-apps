@@ -65,13 +65,13 @@ class HeaderContextChildComponent extends React.Component<{ enabled: boolean, pr
         if (nextProps.enabled !== this.props.enabled) {
             if (nextProps.enabled) {
                 if (this.registrationId) {
-                    this.props.provider.updateConfig(this.registrationId, this.lastConfig);
+                    this.props.provider.updateConfig(this.registrationId, this.lastConfig, false);
                 } else {
-                    this.registrationId = this.props.provider.registerConfig(this.lastConfig);
+                    this.registrationId = this.props.provider.registerConfig(this.lastConfig, false);
                 }
             } else {
                 if (this.registrationId) {
-                    this.props.provider.removeConfig(this.registrationId);
+                    this.props.provider.removeConfig(this.registrationId, false);
                     this.registrationId = undefined;
                 }
             }

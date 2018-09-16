@@ -6,7 +6,6 @@ import { STrackedValue } from '../../STrackedValue';
 import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
 import { Dimensions } from 'react-native';
-import { AnimatedViewKeys } from '../AnimatedViewKeys';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -39,34 +38,40 @@ export class HeaderTitleViewCoordinator {
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
 
-        this.lastConfig = this.page.config.getState()!!;
-        let isStarting = true;
-        this.page.config.watch((cfg) => {
-            this.lastConfig = cfg;
-            if (this.lastConfig.contentOffset !== this.subscribedValue) {
-                if (this.subscribedValue) {
-                    this.subscribedValue.offset.removeListener(this.subscription!);
-                    this.subscribedValue = undefined;
-                }
-                if (this.lastConfig.contentOffset) {
-                    this.subscribedValue = this.lastConfig.contentOffset;
-                    this.subscription = this.lastConfig.contentOffset.offset.addListener((v) => {
-                        if (isStarting) {
-                            return;
-                        }
-                        if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === page.key) {
-                            SAnimated.beginTransaction();
-                            this.coordinator._updateState(this.coordinator.state!!, 0);
-                            SAnimated.commitTransaction();
-                        }
-                    });
-                }
+        this.lastConfig = this.page.config;
+        this.page.watchConfig((cfg, animated) => {
+            this.handleState(cfg, animated !== undefined ? animated : true, false);
+        });
+        this.handleState(this.page.config, false, true);
+    }
+
+    private handleState = (config: HeaderConfig, animated: boolean, initial: boolean) => {
+        this.lastConfig = config;
+        if (this.lastConfig.contentOffset !== this.subscribedValue) {
+            if (this.subscribedValue) {
+                this.subscribedValue.offset.removeListener(this.subscription!);
+                this.subscribedValue = undefined;
             }
-            if (isStarting) {
-                return;
+            if (this.lastConfig.contentOffset) {
+                this.subscribedValue = this.lastConfig.contentOffset;
+                this.subscription = this.lastConfig.contentOffset.offset.addListener((v) => {
+                    if (initial) {
+                        return;
+                    }
+                    if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
+                        SAnimated.beginTransaction();
+                        this.coordinator._updateState(this.coordinator.state!!, 0);
+                        SAnimated.commitTransaction();
+                    }
+                });
             }
-            if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === page.key) {
-                SAnimated.beginTransaction();
+        }
+        if (initial) {
+            return;
+        }
+        if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
+            SAnimated.beginTransaction();
+            if (animated) {
                 SAnimated.setPropertyAnimator((name, prop, from, to) => {
                     SAnimated.spring(name, {
                         property: prop,
@@ -74,11 +79,10 @@ export class HeaderTitleViewCoordinator {
                         to: to
                     });
                 });
-                this.coordinator._updateState(this.coordinator.state!!, 0);
-                SAnimated.commitTransaction();
             }
-        });
-        isStarting = false;
+            this.coordinator._updateState(this.coordinator.state!!, 0);
+            SAnimated.commitTransaction();
+        }
     }
 
     updateState = (progress: number) => {
@@ -126,7 +130,6 @@ export class HeaderTitleViewCoordinator {
                 if (this.lastConfig.searchActive) {
                     if (!this.searchVisible) {
                         this.searchVisible = true;
-                        this.page.state.setState({ searchMounted: true, searchQuery: this.page.state.getState()!.searchQuery });
                     }
                     this.headerView.translateY = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
                     if (this.lastConfig.searchUnderlay) {
@@ -145,7 +148,6 @@ export class HeaderTitleViewCoordinator {
                             if (clb) {
                                 clb();
                             }
-                            this.page.state.setState({ searchMounted: false, searchQuery: this.page.state.getState()!.searchQuery });
                         });
                     }
                     this.searchInputBackgroundView.iosWidth = 0;
