@@ -6,6 +6,7 @@ import { MobileMessengerContext } from '../../messenger/MobileMessenger';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SSearchControler } from 'react-native-s/SSearchController';
+import { View, Text } from 'react-native';
 
 class DialogsComponent extends React.Component<PageProps> {
 
@@ -18,7 +19,7 @@ class DialogsComponent extends React.Component<PageProps> {
             <>
                 <SHeader title="Messages" />
                 <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
-                <SSearchControler>
+                <SSearchControler searchRender={(q) => <View><Text>{q.query}</Text></View>}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent engine={engine} />)}
                     </MobileMessengerContext.Consumer>

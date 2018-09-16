@@ -51,8 +51,9 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                 </SAnimated.View>
                 <View
                     style={{
+                        position: 'absolute', top: 0, right: 0, left: 0, bottom: 0,
                         flexDirection: 'column',
-                        height: SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top,
+                        // height: SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top,
                         paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
                         width: '100%'
                     }}

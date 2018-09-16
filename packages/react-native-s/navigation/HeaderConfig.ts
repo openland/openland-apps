@@ -23,6 +23,7 @@ export interface HeaderConfig {
     searchActive?: boolean;
     searchPress?: () => void;
     searchClosed?: () => void;
+    searchRender?: React.ComponentType<{ query: string }>;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
@@ -38,6 +39,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let searchPress: (() => void) | undefined;
     let searchClosed: (() => void) | undefined;
     let searchUnderlay: SAnimatedShadowView | undefined;
+    let searchRender: React.ComponentType<{ query: string }> | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -75,11 +77,17 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.searchUnderlay) {
             searchUnderlay = c.searchUnderlay;
         }
+        if (c.searchRender) {
+            searchRender = c.searchRender;
+        }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchRender };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
+    if (a.searchRender !== b.searchRender) {
+        return false;
+    }
     if (a.searchUnderlay !== b.searchUnderlay) {
         return false;
     }

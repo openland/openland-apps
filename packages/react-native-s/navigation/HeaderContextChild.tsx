@@ -9,30 +9,30 @@ class HeaderContextChildComponent extends React.Component<{ enabled: boolean, pr
     private unmounting = false;
     private registrationId: string | undefined = undefined;
 
-    registerConfig = (config: HeaderConfig) => {
+    registerConfig = (config: HeaderConfig, animated?: boolean) => {
         let key = UUID();
         this.configs.set(key, config);
-        this.supplyConfig();
+        this.supplyConfig(animated);
         return key;
     }
-    updateConfig = (key: string, config: HeaderConfig) => {
+    updateConfig = (key: string, config: HeaderConfig, animated?: boolean) => {
         if (this.configs.has(key)) {
             this.configs.set(key, config);
         } else {
             console.warn('Trying to update unknown config: ignoring');
         }
-        this.supplyConfig();
+        this.supplyConfig(animated);
     }
-    removeConfig = (key: string) => {
+    removeConfig = (key: string, animated?: boolean) => {
         if (this.configs.has(key)) {
             this.configs.delete(key);
         } else {
             console.warn('Trying to unregister unknown config: ignoring');
         }
-        this.supplyConfig();
+        this.supplyConfig(animated);
     }
 
-    supplyConfig = () => {
+    supplyConfig = (animated?: boolean) => {
         if (this.unmounting) {
             return;
         }
@@ -54,9 +54,9 @@ class HeaderContextChildComponent extends React.Component<{ enabled: boolean, pr
 
         if (this.props.enabled) {
             if (this.registrationId) {
-                this.props.provider.updateConfig(this.registrationId, this.lastConfig);
+                this.props.provider.updateConfig(this.registrationId, this.lastConfig, animated);
             } else {
-                this.registrationId = this.props.provider.registerConfig(this.lastConfig);
+                this.registrationId = this.props.provider.registerConfig(this.lastConfig, animated);
             }
         }
     }

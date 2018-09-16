@@ -6,11 +6,15 @@ import { SAnimatedView } from './SAnimatedView';
 import UUID from 'uuid/v4';
 import { SAnimatedShadowView } from './SAnimatedShadowView';
 
-export class SSearchControler extends React.PureComponent<{}, { search: boolean }> {
+export interface SSearchControlerProps {
+    searchRender: React.ComponentType<{ query: string }>;
+}
+
+export class SSearchControler extends React.PureComponent<SSearchControlerProps, { search: boolean }> {
 
     private containerShadowView = new SAnimatedShadowView(UUID());
 
-    constructor(props: {}) {
+    constructor(props: SSearchControlerProps) {
         super(props);
         this.state = {
             search: false
@@ -51,7 +55,8 @@ export class SSearchControler extends React.PureComponent<{}, { search: boolean 
                         searchActive: this.state.search,
                         searchClosed: this.handleSearchStop,
                         searchPress: this.handleSearchStart,
-                        searchUnderlay: this.containerShadowView
+                        searchUnderlay: this.containerShadowView,
+                        searchRender: this.props.searchRender
                     }}
                 />
                 {content}
