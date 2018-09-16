@@ -111,12 +111,12 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
   if let v = spec.style.height {
     res.style.height = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.style.borderRadius {
-    if let g = source as? ASDisplayNode {
-      g.cornerRadius = CGFloat(v)
-      g.cornerRoundingType = .precomposited
-    }
-  }
+//  if let v = spec.style.borderRadius {
+//    if let g = source as? ASDisplayNode {
+//      g.cornerRadius = CGFloat(v)
+//      g.cornerRoundingType = .precomposited
+//    }
+//  }
   
   if let v = spec.style.backgroundPatch {
     let g = context.fetchCached(key: spec.key+"-bg-patch") { () -> RNPatchNode in
@@ -125,14 +125,18 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
     g.setSpec(spec: v)
     res = ASBackgroundLayoutSpec(child: res, background: g)
   } else if let v = spec.style.backgroundGradient {
-    let g = context.fetchCached(key: spec.key+"-bg-gradient") { () -> RNAsyncGradient in
-      return RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
-    }
-    g.update(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v)
+    var bgr: CGFloat = 0.0
     if let br = spec.style.borderRadius {
-      g.cornerRadius = CGFloat(br)
-      g.cornerRoundingType = .precomposited
+      bgr = CGFloat(br)
     }
+    let g = context.fetchCached(key: spec.key+"-bg-gradient") { () -> RNAsyncGradient in
+      return RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v, borderRadius: bgr)
+    }
+    g.update(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v,borderRadius: bgr)
+//    if let br = spec.style.borderRadius {
+//      g.cornerRadius = CGFloat(br)
+//      g.cornerRoundingType = .precomposited
+//    }
     res = ASBackgroundLayoutSpec(child: res, background: g)
   } else if let v = spec.style.backgroundColor {
     let g = context.fetchCached(key: spec.key+"-bg-color") { () -> RNAsyncBackground in

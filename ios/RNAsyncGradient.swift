@@ -13,12 +13,14 @@ class RNAsyncGradientParams: NSObject {
   let endUnitPoint: CGPoint;
   let colors: [UIColor];
   let locations: [CGFloat]?;
+  let borderRadius: CGFloat
   
-  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
+  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil, borderRadius: CGFloat) {
     self.startUnitPoint = startUnitPoint
     self.endUnitPoint = endUnitPoint
     self.colors = colors
     self.locations = locations
+    self.borderRadius = borderRadius
   }
 }
 
@@ -26,8 +28,8 @@ class RNAsyncGradient: ASDisplayNode {
   
   private var params: RNAsyncGradientParams
 
-  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
-    self.params = RNAsyncGradientParams(startingAt: startUnitPoint, endingAt: endUnitPoint, with: colors, for: locations)
+  init(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil, borderRadius: CGFloat) {
+    self.params = RNAsyncGradientParams(startingAt: startUnitPoint, endingAt: endUnitPoint, with: colors, for: locations, borderRadius: borderRadius)
     super.init()
     self.isLayerBacked = true
     self.isOpaque = false
@@ -37,13 +39,12 @@ class RNAsyncGradient: ASDisplayNode {
     return self.params
   }
   
-  func update(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil) {
-    self.params = RNAsyncGradientParams(startingAt: startUnitPoint, endingAt: endUnitPoint, with: colors, for: locations)
+  func update(startingAt startUnitPoint: CGPoint, endingAt endUnitPoint: CGPoint, with colors: [UIColor], for locations: [CGFloat]? = nil,borderRadius: CGFloat) {
+    self.params = RNAsyncGradientParams(startingAt: startUnitPoint, endingAt: endUnitPoint, with: colors, for: locations,borderRadius: borderRadius)
     self.setNeedsDisplay()
   }
   
   override class func draw(_ bounds: CGRect, withParameters parameters: Any?, isCancelled isCancelledBlock: () -> Bool, isRasterizing: Bool) {
-    
     guard let parameters = parameters as? RNAsyncGradientParams else {
       // CCLog.assert("Expected type SimpleGradientNode to be returned")
       return
@@ -55,12 +56,15 @@ class RNAsyncGradient: ASDisplayNode {
     let endUnitX = parameters.endUnitPoint.x
     let endUnitY = parameters.endUnitPoint.y
     
+    // [[UIBezierPath bezierPathWithRoundedRect:boundingBox cornerRadius:cornerRadius] addClip];
+    
+    
     let startPoint = CGPoint(x: bounds.width * startUnitX + bounds.minX, y: bounds.height * startUnitY + bounds.minY)
     let endPoint = CGPoint(x: bounds.width * endUnitX + bounds.minX, y: bounds.height * endUnitY + bounds.minY)
     
     let context = UIGraphicsGetCurrentContext()!
     context.saveGState()
-    context.clip(to: bounds)
+    UIBezierPath(roundedRect: bounds, cornerRadius: parameters.borderRadius).addClip()
     
     guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
                                     colors: parameters.colors.map { $0.cgColor } as CFArray,

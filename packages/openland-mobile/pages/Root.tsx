@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Platform } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
@@ -77,7 +77,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                                         navigationBarStyle={{
                                             backgroundColor: '#fff',
                                             accentColor: '#000',
-                                            isOpaque: false
+                                            isOpaque: Platform.OS === 'ios' ? false : true
                                         }}
                                     />
                                 </ZPictureModal>

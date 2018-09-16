@@ -28,12 +28,13 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
             selectedColor = AppStyles.primaryColor;
             unselectedColor = '#C8C8F9';
         }
-        let size = 29;
+        let size = 24;
+        let tintColor = '#fff';
 
         let content = (
             <View
                 style={{
-                    height: 56,
+                    height: 49,
 
                     // borderRadius: 24,
                     // shadowColor: '#000',
@@ -52,8 +53,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                             marginLeft: 5
                         }}
                     >
-                        <Image source={require('assets/ic-home-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 0 ? 1 : 0.6 }} resizeMode="contain" />
-                        <Text style={{ color: '#fff', fontSize: 12, marginTop: 2, opacity: this.props.selected === 0 ? 1 : 0.6 }}>Feed</Text>
+                        <Image source={require('assets/ic-home-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 0 ? 1 : 0.6, tintColor }} resizeMode="contain" />
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 0 ? 1 : 0.6 }}>Feed</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress2} delayPressIn={0}>
@@ -65,9 +66,9 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                             justifyContent: 'center'
                         }}
                     >
-                        <View style={{ width: 29, height: 29, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: 25, height: 25, alignItems: 'center', justifyContent: 'center' }}>
                             {/* <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? selectedColor : unselectedColor} /> */}
-                            <Image source={require('assets/ic-messages-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 1 ? 1 : 0.6 }} resizeMode="contain" />
+                            <Image source={require('assets/ic-messages-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 1 ? 1 : 0.6, tintColor }} resizeMode="contain" />
                             <View
                                 style={{
                                     position: 'absolute',
@@ -78,7 +79,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                                 <ZCounter value={this.props.counter} appearance="contrast" />
                             </View>
                         </View>
-                        <Text style={{ color: '#fff', fontSize: 12, marginTop: 2, opacity: this.props.selected === 1 ? 1 : 0.6 }}>Messages</Text>
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 1 ? 1 : 0.6 }}>Messages</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress3} delayPressIn={0}>
@@ -92,8 +93,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                         }}
                     >
                         {/* <Ionicons name={'ios-contact'} size={25} color={this.props.selected === 2 ? selectedColor : unselectedColor} /> */}
-                        <Image source={require('assets/ic-directory-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 2 ? 1 : 0.6 }} resizeMode="contain" />
-                        <Text style={{ color: '#fff', fontSize: 12, marginTop: 2, opacity: this.props.selected === 2 ? 1 : 0.6 }}>Directory</Text>
+                        <Image source={require('assets/ic-directory-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 2 ? 1 : 0.6, tintColor }} resizeMode="contain" />
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 2 ? 1 : 0.6 }}>Directory</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress4} delayPressIn={0}>
@@ -107,8 +108,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                         }}
                     >
                         {/* <Ionicons name={'ios-cog'} size={25} color={this.props.selected === 3 ? selectedColor : unselectedColor} /> */}
-                        <Image source={require('assets/ic-settings-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 3 ? 1 : 0.6 }} resizeMode="contain" />
-                        <Text style={{ color: '#fff', fontSize: 12, marginTop: 2, opacity: this.props.selected === 3 ? 1 : 0.6 }}>Settings</Text>
+                        <Image source={require('assets/ic-settings-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 3 ? 1 : 0.6, tintColor }} resizeMode="contain" />
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 3 ? 1 : 0.6 }}>Settings</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -117,10 +118,13 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
         return (
             <View
                 style={{
-                    backgroundColor: '#49288f',
-                    height: 56 + SDevice.safeArea.bottom,
+                    backgroundColor: '#4256f4',
+                    // height: 49 + SDevice.safeArea.bottom,
                     paddingBottom: SDevice.safeArea.bottom,
-                    elevation: 12
+                    elevation: 12,
+                    shadowColor: '#000',
+                    shadowOpacity: 0.2,
+                    shadowOffset: { width: 0, height: -1 }
                 }}
             >
                 {content}
