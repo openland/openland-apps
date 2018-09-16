@@ -9,11 +9,9 @@ export class SAnimatedProperty {
         return this._value;
     }
     set value(newValue: number) {
-        if (newValue !== this._value) {
-            let oldValue = this._value;
-            this._value = newValue;
-            SAnimated.onPropertyChanged(this, oldValue);
-        }
+        let oldValue = this._value;
+        this._value = newValue;
+        SAnimated.onPropertyChanged(this, oldValue);
     }
 
     constructor(name: string, property: SAnimatedPropertyName, value: number) {

@@ -74,11 +74,11 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                             <View opacity={0}>
                                 <SBackButton onPress={this.props.manager.pop} />
                             </View>
-                            <View flexGrow={1} flexShrink={1} flexBasis={0} flexDirection="column">
+                            <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                                 {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.accentColor }]}>{v.config.title}</Text>}
                                 {/* {!v.config.titleView && v.config. && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>} */}
                                 {v.config.titleView && v.config.titleView()}
-                            </View>
+                            </SAnimated.View>
                             <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
                                 {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render()}</View>))}
                             </View>

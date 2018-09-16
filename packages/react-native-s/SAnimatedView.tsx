@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native';
+import { SAnimated } from './SAnimated';
 
 //
 // Native View
 //
 
-type PointerEvents = 'box-none' | 'none' | 'box-only' | 'auto'; 
+type PointerEvents = 'box-none' | 'none' | 'box-only' | 'auto';
 
 interface RNFastAnimatedViewProps {
     style?: StyleProp<ViewStyle>;
@@ -26,6 +27,9 @@ export interface SAnimatedViewProps {
 }
 
 export class SAnimatedView extends React.PureComponent<SAnimatedViewProps> {
+    componentWillUnmount() {
+        SAnimated.onViewUnmounted(this.props.name);
+    }
     render() {
         return (
             <RNFastAnimatedView

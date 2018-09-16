@@ -71,6 +71,7 @@ class SAnimatedImpl {
     private _propertyAnimator?: SAnimatedPropertyAnimator;
     private _dirtyProperties = new Map<string, Map<SAnimatedPropertyName, { from: number, to: number }>>();
     private _transactionKey?: string;
+    private _knownComponents = new Set<string>();
 
     constructor() {
         if (Platform.OS === 'ios') {
@@ -100,6 +101,10 @@ class SAnimatedImpl {
         return this._inTransaction;
     }
 
+    get isInAnimatedTransaction() {
+        return this._inTransaction && !!this._propertyAnimator;
+    }
+
     beginTransaction = () => {
         if (this._inTransaction) {
             return;
@@ -110,18 +115,26 @@ class SAnimatedImpl {
     }
 
     onPropertyChanged = (property: SAnimatedProperty, oldValue: number) => {
-        if (this._inTransaction) {
-            if (!this._dirtyProperties.has(property.name)) {
-                this._dirtyProperties.set(property.name, new Map());
-            }
-            let m = this._dirtyProperties.get(property.name)!;
-            if (m.has(property.property)) {
-                m.get(property.property)!.to = property.value;
+        if (!this._knownComponents.has(property.name)) {
+            this._knownComponents.add(property.name);
+            this.setValue(property.name, property.property, property.value);
+            console.log('detect new: ' + property.name);
+        } else if (property.value !== oldValue) {
+            if (this._inTransaction) {
+                if (!this._dirtyProperties.has(property.name)) {
+                    this._dirtyProperties.set(property.name, new Map());
+                }
+                let m = this._dirtyProperties.get(property.name)!;
+                if (m.has(property.property)) {
+                    m.get(property.property)!.to = property.value;
+                } else {
+                    m.set(property.property, { from: oldValue, to: property.value });
+                }
             } else {
-                m.set(property.property, { from: oldValue, to: property.value });
+                this.setValue(property.name, property.property, property.value);
             }
         } else {
-            this.setValue(property.name, property.property, property.value);
+            console.log('Not changed (' + oldValue + '): ' + property.name);
         }
     }
 
@@ -249,6 +262,7 @@ class SAnimatedImpl {
     }
 
     private _postAnimations(duration: number, animations: any[], valueSetters: any[], transactionKey: string | undefined) {
+        console.log(valueSetters);
         RNSAnimatedViewManager.animate(
             JSON.stringify({
                 duration,
@@ -256,6 +270,11 @@ class SAnimatedImpl {
                 valueSetters,
                 transactionKey
             }));
+    }
+
+    onViewUnmounted = (name: string) => {
+        console.log('unmounted: ' + name);
+        this._knownComponents.delete(name);
     }
 }
 

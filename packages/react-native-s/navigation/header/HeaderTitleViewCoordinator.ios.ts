@@ -17,6 +17,7 @@ export class HeaderTitleViewCoordinator {
     private lastConfig: HeaderConfig;
 
     private headerView: SAnimatedShadowView;
+    private containerView: SAnimatedShadowView;
     private titleView: SAnimatedShadowView;
     private titleLargeView: SAnimatedShadowView;
     private searchView: SAnimatedShadowView;
@@ -32,7 +33,8 @@ export class HeaderTitleViewCoordinator {
         this.page = page;
         this.coordinator = coordinator;
         this.headerView = new SAnimatedShadowView('header--' + this.key);
-        this.titleView = new SAnimatedShadowView('header-small--' + this.key);
+        this.containerView = new SAnimatedShadowView('header-small--' + this.key);
+        this.titleView = new SAnimatedShadowView('header-title--' + this.key);
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key);
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
@@ -46,6 +48,7 @@ export class HeaderTitleViewCoordinator {
     }
 
     private handleState = (config: HeaderConfig, animated: boolean, initial: boolean) => {
+        let isInitial = initial;
         this.lastConfig = config;
         if (this.lastConfig.contentOffset !== this.subscribedValue) {
             if (this.subscribedValue) {
@@ -55,7 +58,7 @@ export class HeaderTitleViewCoordinator {
             if (this.lastConfig.contentOffset) {
                 this.subscribedValue = this.lastConfig.contentOffset;
                 this.subscription = this.lastConfig.contentOffset.offset.addListener((v) => {
-                    if (initial) {
+                    if (isInitial) {
                         return;
                     }
                     if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
@@ -66,7 +69,8 @@ export class HeaderTitleViewCoordinator {
                 });
             }
         }
-        if (initial) {
+        if (isInitial) {
+            isInitial = false;
             return;
         }
         if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
@@ -110,6 +114,10 @@ export class HeaderTitleViewCoordinator {
                 }
             }
             this.titleLargeView.translateY = titleOffset;
+
+            // Random hotfix
+            this.titleLargeView.opacity++;
+            this.titleLargeView.opacity--;
 
             //
             // Search field
