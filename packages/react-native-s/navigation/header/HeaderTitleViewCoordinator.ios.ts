@@ -23,7 +23,6 @@ export class HeaderTitleViewCoordinator {
     private searchView: SAnimatedShadowView;
     private searchInputBackgroundView: SAnimatedShadowView;
     private searchCancelView: SAnimatedShadowView;
-    private searchContainerView: SAnimatedShadowView;
 
     private subscribedValue?: STrackedValue;
     private subscription?: string;
@@ -39,7 +38,6 @@ export class HeaderTitleViewCoordinator {
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
-        this.searchContainerView = new SAnimatedShadowView(AnimatedViewKeys.pageSearch(this.key));
 
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
@@ -138,11 +136,15 @@ export class HeaderTitleViewCoordinator {
                     this.searchInputBackgroundView.translateX = -35;
                     this.searchCancelView.translateX = 0;
                     this.titleLargeView.opacity = 0;
-                    this.searchContainerView.opacity = 1;
+                    this.lastConfig.searchContainer!.opacity = 1;
                 } else {
                     if (this.searchVisible) {
                         this.searchVisible = false;
+                        let clb = this.lastConfig.searchClosingCompleted;
                         SAnimated.addTransactionCallback(() => {
+                            if (clb) {
+                                clb();
+                            }
                             this.page.state.setState({ searchMounted: false, searchQuery: this.page.state.getState()!.searchQuery });
                         });
                     }
@@ -154,7 +156,7 @@ export class HeaderTitleViewCoordinator {
                     }
                     this.headerView.translateY = 0;
                     this.titleLargeView.opacity = 1;
-                    this.searchContainerView.opacity = 0;
+                    this.lastConfig.searchContainer!.opacity = 0;
                 }
             } else {
                 if (this.lastConfig.searchUnderlay) {

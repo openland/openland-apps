@@ -203,16 +203,9 @@ class SAnimatedImpl {
     }
 
     commitTransaction = (callback?: () => void) => {
-
         if (callback) {
             this.addTransactionCallback(callback);
         }
-
-        if (!this._inTransaction) {
-            return;
-        }
-        this._inTransaction = false;
-        this._transactionDuration = 0.25;
 
         if (this._dirtyProperties.size !== 0) {
             for (let p of this._dirtyProperties.keys()) {
@@ -229,6 +222,12 @@ class SAnimatedImpl {
             this._dirtyProperties.clear();
         }
 
+        if (!this._inTransaction) {
+            return;
+        }
+        this._inTransaction = false;
+        this._transactionDuration = 0.25;
+
         if (this._pendingAnimations.length > 0 || this._pendingSetters.length > 0) {
             let transactionKey: string | undefined = undefined;
             if (this._callbacks.get(this._transactionKey!)) {
@@ -236,9 +235,14 @@ class SAnimatedImpl {
             }
             this._postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters, transactionKey);
             this._pendingAnimations = [];
+            this._pendingSetters = [];
         } else {
-            if (callback) {
-                callback();
+            let clb = this._callbacks.get(this._transactionKey!);
+            if (clb) {
+                this._callbacks.delete(this._transactionKey!);
+                for (let c of clb) {
+                    c();
+                }
             }
         }
         this._propertyAnimator = undefined;

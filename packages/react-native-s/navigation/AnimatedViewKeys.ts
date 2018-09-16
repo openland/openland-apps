@@ -1,11 +1,8 @@
 export const AnimatedViewKeys = {
     page: (key: string) => {
-        return key + 'page--';
+        return 'page--' + key;
     },
     pageShadow: (key: string) => {
-        return key + 'page-shadow--';
-    },
-    pageSearch: (key: string) => {
-        return key + 'page-search--';
+        return 'page-shadow--' + key;
     },
 };

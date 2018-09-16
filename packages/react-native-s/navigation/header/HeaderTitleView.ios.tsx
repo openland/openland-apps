@@ -51,12 +51,18 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
     handleTextChange = (text: string) => {
         this.setState({ searchText: text });
         this.props.page.page.state.setState({ searchMounted: this.props.page.page.state.getState()!.searchMounted, searchQuery: text });
+        if (this.props.page.config.searchChanged) {
+            this.props.page.config.searchChanged(text);
+        }
     }
 
     componentWillReceiveProps(nextProps: HeaderTitleViewProps) {
         if (this.state.searchText !== '' && !nextProps.page.config.searchActive) {
             this.setState({ searchText: '' });
             this.props.page.page.state.setState({ searchMounted: this.props.page.page.state.getState()!.searchMounted, searchQuery: '' });
+            if (this.props.page.config.searchChanged) {
+                this.props.page.config.searchChanged('');
+            }
         }
     }
 

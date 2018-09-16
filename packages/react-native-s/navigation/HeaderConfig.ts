@@ -20,10 +20,12 @@ export interface HeaderConfig {
 
     search?: boolean;
     searchUnderlay?: SAnimatedShadowView;
+    searchContainer?: SAnimatedShadowView;
     searchActive?: boolean;
+    searchChanged?: (text: string) => void;
     searchPress?: () => void;
     searchClosed?: () => void;
-    searchRender?: React.ComponentType<{ query: string }>;
+    searchClosingCompleted?: () => void;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
@@ -36,10 +38,12 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let headerHidden: boolean | undefined;
     let search: boolean | undefined;
     let searchActive: boolean | undefined;
+    let searchChanged: ((text: string) => void) | undefined;
     let searchPress: (() => void) | undefined;
     let searchClosed: (() => void) | undefined;
+    let searchClosingCompleted: (() => void) | undefined;
     let searchUnderlay: SAnimatedShadowView | undefined;
-    let searchRender: React.ComponentType<{ query: string }> | undefined;
+    let searchContainer: SAnimatedShadowView | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -77,15 +81,24 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.searchUnderlay) {
             searchUnderlay = c.searchUnderlay;
         }
-        if (c.searchRender) {
-            searchRender = c.searchRender;
+        if (c.searchContainer) {
+            searchContainer = c.searchContainer;
+        }
+        if (c.searchClosingCompleted) {
+            searchClosingCompleted = c.searchClosingCompleted;
+        }
+        if (c.searchChanged) {
+            searchChanged = c.searchChanged;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchRender };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
-    if (a.searchRender !== b.searchRender) {
+    if (a.searchClosingCompleted !== b.searchClosingCompleted) {
+        return false;
+    }
+    if (a.searchContainer !== b.searchContainer) {
         return false;
     }
     if (a.searchUnderlay !== b.searchUnderlay) {
@@ -122,6 +135,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.headerHidden !== b.headerHidden) {
+        return false;
+    }
+    if (a.searchChanged !== b.searchChanged) {
         return false;
     }
 
