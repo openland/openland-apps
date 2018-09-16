@@ -60,12 +60,6 @@ export interface SAnimatedSpringConfig {
     velocity?: number;
 }
 
-export function hasPending() {
-    RNSAnimatedViewManager.hasPending((v) => {
-        console.log(v);
-    });
-}
-
 class SAnimatedImpl {
     View = SAnimatedView;
 

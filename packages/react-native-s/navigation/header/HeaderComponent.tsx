@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SNavigationViewStyle } from '../../SNavigationView';
-import { View, Text, StyleSheet, TextStyle, Dimensions, TouchableWithoutFeedback, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, Dimensions, TouchableWithoutFeedback, Image, Button, TextInput } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { SAnimated } from '../../SAnimated';
 import { SBackButton } from '../../SBackButton';
@@ -88,12 +88,21 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                                     <SAnimated.View name={'header-search--' + v.page.key}>
                                         <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                                             <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
-                                            <TouchableWithoutFeedback onPress={v.config.searchPress}>
-                                                <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
+                                            {!v.config.searchActive && (
+                                                <TouchableWithoutFeedback onPress={v.config.searchPress}>
+                                                    <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
+                                                        <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
+                                                        <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Search</Text>
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            )}
+                                            {v.config.searchActive && (
+                                                <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1, marginRight: 70 }}>
                                                     <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
-                                                    <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Seach</Text>
+                                                    <TextInput autoFocus={true} style={{ fontSize: 16, lineHeight: 22, flexGrow: 1, flexBasis: 0, marginRight: 20 }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" />
                                                 </View>
-                                            </TouchableWithoutFeedback>
+                                            )}
+
                                             <View style={{ marginLeft: -70 }}>
                                                 <SAnimated.View
                                                     name={'header-search-button--' + v.page.key}
