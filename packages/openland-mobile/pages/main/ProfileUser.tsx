@@ -12,7 +12,7 @@ import { SHeader } from 'react-native-s/SHeader';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
-        this.props.router.push('Conversation', { 'id': this.props.router.params.id });
+        this.props.router.push('Conversation', { 'flexibleId': this.props.router.params.id });
     }
 
     render() {

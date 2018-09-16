@@ -95,14 +95,18 @@ class ConversationComponent extends React.Component<PageProps> {
                         {modal => (
                             <MessengerContext.Consumer>
                                 {messenger => {
-                                    return (
-                                        <ZQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.id }}>
-                                            {resp => (
-                                                <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />
-                                            )}
+                                    if (this.props.router.params.flexibleId) {
+                                        return (
+                                            <ZQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.flexibleId }}>
+                                                {resp => (
+                                                    <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />
+                                                )}
 
-                                        </ZQuery>
-                                    );
+                                            </ZQuery>
+                                        );
+                                    } else {
+                                        return (<ConversationRoot provider={modal!!} key={this.props.router.params.id} router={this.props.router} engine={messenger!!} conversationId={this.props.router.params.id} />);
+                                    }
                                 }}
                             </MessengerContext.Consumer>
                         )}
