@@ -1,5 +1,6 @@
 import { STrackedValue } from '../STrackedValue';
 import { SHeaderAppearance, SHeaderHairline } from '../SHeader';
+import { SAnimatedShadowView } from '../SAnimatedShadowView';
 
 export interface HeaderButtonDescription {
     id: string;
@@ -18,6 +19,7 @@ export interface HeaderConfig {
     hairline?: SHeaderHairline;
 
     search?: boolean;
+    searchUnderlay?: SAnimatedShadowView;
     searchActive?: boolean;
     searchPress?: () => void;
     searchClosed?: () => void;
@@ -35,6 +37,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let searchActive: boolean | undefined;
     let searchPress: (() => void) | undefined;
     let searchClosed: (() => void) | undefined;
+    let searchUnderlay: SAnimatedShadowView | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -69,11 +72,17 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.buttons) {
             buttons.push(...c.buttons);
         }
+        if (c.searchUnderlay) {
+            searchUnderlay = c.searchUnderlay;
+        }
     }
-    return { title, buttons, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
+    if (a.searchUnderlay !== b.searchUnderlay) {
+        return false;
+    }
     if (a.title !== b.title) {
         return false;
     }

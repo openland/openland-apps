@@ -3,7 +3,6 @@ import { HeaderCoordinator } from './HeaderCoordinator';
 import { HeaderConfig } from '../HeaderConfig';
 import { SAnimatedShadowView } from '../../SAnimatedShadowView';
 import { STrackedValue } from '../../STrackedValue';
-import { AnimatedViewKeys } from '../AnimatedViewKeys';
 import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
 import { Dimensions } from 'react-native';
@@ -23,7 +22,6 @@ export class HeaderTitleViewCoordinator {
     private searchView: SAnimatedShadowView;
     private searchInputBackgroundView: SAnimatedShadowView;
     private searchCancelView: SAnimatedShadowView;
-    private pageView: SAnimatedShadowView;
 
     private subscribedValue?: STrackedValue;
     private subscription?: string;
@@ -35,7 +33,6 @@ export class HeaderTitleViewCoordinator {
         this.headerView = new SAnimatedShadowView('header--' + this.key);
         this.titleView = new SAnimatedShadowView('header-small--' + this.key);
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key);
-        this.pageView = new SAnimatedShadowView(AnimatedViewKeys.page(this.key));
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
@@ -126,7 +123,9 @@ export class HeaderTitleViewCoordinator {
             if (this.lastConfig.search) {
                 if (this.lastConfig.searchActive) {
                     this.headerView.translateY = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
-                    this.pageView.translateY = -96;
+                    if (this.lastConfig.searchUnderlay) {
+                        this.lastConfig.searchUnderlay!!.translateY = -96;
+                    }
                     this.searchInputBackgroundView.iosWidth = -70;
                     this.searchInputBackgroundView.translateX = -35;
                     this.searchCancelView.translateX = 0;
@@ -135,12 +134,16 @@ export class HeaderTitleViewCoordinator {
                     this.searchInputBackgroundView.iosWidth = 0;
                     this.searchInputBackgroundView.translateX = 0;
                     this.searchCancelView.translateX = 70;
-                    this.pageView.translateY = 0;
+                    if (this.lastConfig.searchUnderlay) {
+                        this.lastConfig.searchUnderlay!!.translateY = 0;
+                    }
                     this.headerView.translateY = 0;
                     this.titleLargeView.opacity = 1;
                 }
             } else {
-                this.pageView.translateY = 0;
+                if (this.lastConfig.searchUnderlay) {
+                    this.lastConfig.searchUnderlay!!.translateY = 0;
+                }
                 this.headerView.translateY = 0;
             }
         } else if (this.lastConfig.appearance === 'small-hidden') {
