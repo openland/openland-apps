@@ -15,9 +15,9 @@ import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { FilePreview } from './pages/main/modals/FilePreview';
 import { SettingsOrganizations } from './pages/main/SettingsOrganizations';
-import { SRoutes } from 'react-native-s/SRoutes';
+import { SRoutesBuilder } from 'react-native-s/SRoutes';
 
-export const Routes = new SRoutes.Builder()
+export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
   .addRoute('Conversation', Conversation)
   .addRoute('ProfileUser', ProfileUser)
