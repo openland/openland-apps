@@ -53,7 +53,7 @@ export class Home extends React.PureComponent<{}, { tab: number }> {
                 </ASSafeAreaProvider>
                 <YQuery query={GlobalCounterQuery}>
                     {resp => (
-                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: SDevice.safeArea.bottom, left: 0, right: 0 }}>
+                        <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: 0, left: 0, right: 0 }}>
                             <ZBottomTabs counter={resp.data && resp.data.counter.unreadCount || 0} selected={this.state.tab} onPress={this.handleTabChange} />
                         </View>
                     )}
