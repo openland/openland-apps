@@ -109,40 +109,15 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
    */
   private func doAnimations(spec: RNSAnimationTransactionSpec, views: [String: RNSAnimatedView]) {
     
-    // Reset Values
-    for s in spec.animations {
-      if let view = views[s.viewKey] {
-        if s.property == "opacity" {
-          if view.wasSetOpacity {
-            view.wasSetOpacity = false
-            view.layer.opacity = 0.0
-          }
-        } else if s.property == "translateX" {
-          if view.wasSetTranslateX {
-            view.wasSetTranslateX = false
-            view.layer.position.x = view.bounds.width/2
-          }
-        } else if s.property == "translateY" {
-          if view.wasSetTranslateY {
-            view.wasSetTranslateY = false
-            view.layer.position.y = view.bounds.height/2
-          }
-        }
-      }
-    }
-    
     // Set Values
     for s in spec.valueSets {
       if let view = views[s.viewKey] {
         if s.property == "opacity" {
           view.layer.opacity = Float(s.value)
-          view.wasSetOpacity = true
         } else if s.property == "translateX" {
-          view.layer.position.x = view.bounds.width/2 + s.value
-          view.wasSetTranslateX = true
+          view.layer.position.x = view.sourceCenter.x + s.value
         } else if s.property == "translateY" {
-          view.layer.position.y = view.bounds.height/2 + s.value
-          view.wasSetTranslateY = true
+          view.layer.position.y = view.sourceCenter.y + s.value
         } else {
           continue
         }
@@ -164,12 +139,23 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           
           // Resolving Key Path
           let keyPath: String
+          let from: CGFloat
+          let to: CGFloat
           if s.property == "opacity" {
             keyPath = "opacity"
+            view.layer.opacity = Float(s.to)
+            from = s.from
+            to = s.to
           } else if s.property == "translateX" {
             keyPath = "position.x"
+            view.layer.position.x = view.sourceCenter.x + s.to
+            from = view.sourceCenter.x + s.from
+            to = view.sourceCenter.x + s.to
           } else if s.property == "translateY" {
             keyPath = "position.y"
+            view.layer.position.y = view.sourceCenter.y + s.to
+            from = view.sourceCenter.y + s.from
+            to = view.sourceCenter.y + s.to
           } else {
             continue
           }
@@ -194,11 +180,8 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           }
           
           // Resolving values
-          animation.fromValue = s.from
-          animation.toValue = s.to
-          animation.isAdditive = true
-          animation.fillMode = kCAFillModeForwards
-          animation.isRemovedOnCompletion = false
+          animation.fromValue = from
+          animation.toValue = to
           
           // Resolving parameters
           if let duration = s.duration {

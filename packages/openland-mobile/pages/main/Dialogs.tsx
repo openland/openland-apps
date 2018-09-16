@@ -67,7 +67,7 @@ class DialogsComponent extends React.Component<PageProps, { search: boolean }> {
                     })}
                 /> */}
                 <ASSafeAreaProvider top={44}>
-                    <View style={{ flexGrow: 1, marginTop: this.state.search ? -96 : 0 }}>
+                    <View style={{ flexGrow: 1, marginBottom: this.state.search ? -96 : 0 }}>
                         <MobileMessengerContext.Consumer>
                             {engine => (<DialogListComponent engine={engine} />)}
                         </MobileMessengerContext.Consumer>

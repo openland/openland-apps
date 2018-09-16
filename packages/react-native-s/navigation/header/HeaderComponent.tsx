@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SNavigationViewStyle } from '../../SNavigationView';
-import { View, Text, StyleSheet, TextStyle, Dimensions, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, Dimensions, TouchableWithoutFeedback, Image, Button } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { SAnimated } from '../../SAnimated';
 import { SBackButton } from '../../SBackButton';
@@ -49,13 +49,14 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                 </SAnimated.View>
                 <View
                     style={{
+                        flexDirection: 'column',
                         height: SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top,
                         paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
                         width: '100%'
                     }}
                     pointerEvents={(!!this.props.navigateFrom || !!this.props.navigateTo) ? 'none' : 'box-none'}
                 >
-                    <SAnimated.View name="header-back" style={{ zIndex: 100 }}>
+                    <SAnimated.View name="header-back" style={{ zIndex: 100, width: 100 }}>
                         <SBackButton onPress={this.props.manager.pop} inverted={true} />
                     </SAnimated.View>
 
@@ -101,12 +102,9 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                                                     width: 70 - 15
                                                 }}
                                             >
-                                                {/* <Animated.View opacity={this.props.searchProgress}>
-                                                    <Button title="Close" onPress={this.props.config.searchClosed!!} />
-                                                </Animated.View> */}
+                                                <Button title="Close" onPress={v.config.searchClosed!!} />
                                             </View>
                                         </View>
-                                        {/* <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.accentColor }]}>{v.config.title}</Text> */}
                                     </SAnimated.View>
                                 </View>
                             )}

@@ -6,6 +6,7 @@ import { NavigationPage } from '../NavigationPage';
 import { HeaderConfig } from '../HeaderConfig';
 import { STrackedValue } from '../../STrackedValue';
 import { SAnimated } from '../../SAnimated';
+import { AnimatedViewKeys } from '../AnimatedViewKeys';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -25,6 +26,7 @@ class PageCoordinator {
     private searchTranslate: SAnimatedProperty;
     private subscription?: string;
     private searchShown = false;
+    private translateYPage: SAnimatedProperty;
 
     constructor(page: NavigationPage, coordinator: HeaderCoordinator) {
         this.key = page.key;
@@ -37,6 +39,7 @@ class PageCoordinator {
         this.translateLarge = new SAnimatedProperty('header-large--' + this.key, 'translateY', 0);
         this.opacityLarge = new SAnimatedProperty('header-large--' + this.key, 'opacity', 1);
         this.searchTranslate = new SAnimatedProperty('header-search--' + this.key, 'translateY', 0);
+        this.translateYPage = new SAnimatedProperty(AnimatedViewKeys.page(this.key), 'translateY', 0);
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
         this.page.config.watch((cfg) => {
@@ -65,6 +68,13 @@ class PageCoordinator {
             }
             if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === page.key) {
                 SAnimated.beginTransaction();
+                SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                    SAnimated.spring(name, {
+                        property: prop,
+                        from: from,
+                        to: to
+                    });
+                });
                 this.coordinator._updateState(this.coordinator.state!!, 0);
                 SAnimated.commitTransaction();
             }
@@ -115,12 +125,17 @@ class PageCoordinator {
             // Search
             if (this.lastConfig.search) {
                 if (this.lastConfig.searchActive) {
-                    this.translateY.value = -56;
+                    this.translateY.value = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
+                    this.translateYPage.value = -96;
                     this.opacityLarge.value = 0;
                 } else {
+                    this.translateYPage.value = 0;
                     this.translateY.value = 0;
                     this.opacityLarge.value = 1;
                 }
+            } else {
+                this.translateYPage.value = 0;
+                this.translateY.value = 0;
             }
         } else if (this.lastConfig.appearance === 'small-hidden') {
             let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
