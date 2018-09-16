@@ -3,20 +3,20 @@ import { withApp } from '../../components/withApp';
 import { View, FlatList } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-// import { ChatHeader } from './components/ChatHeader';
-// import { ChatRight } from './components/ChatRight';
 import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 import { ConversationView } from './components/ConversationView';
 import { UploadManagerInstance, UploadState } from '../../files/UploadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-// import { FastHeaderView } from 'react-native-fast-navigation/FastHeaderView';
-// import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { PageProps } from '../../components/PageProps';
 import { ZQuery } from '../../components/ZQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { Deferred } from '../../components/Deferred';
+import { SHeaderView } from 'react-native-s/SHeaderView';
+import { ChatHeader } from './components/ChatHeader';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { ChatRight } from './components/ChatRight';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -57,47 +57,18 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
                 return;
             }
             UploadManagerInstance.registerUpload(this.props.conversationId, response.fileName || 'image.jpg', response.uri);
-            // this.engine.sendFile(new UploadCareDirectUploading(response.fileName || 'image.jpg', response.uri));
         });
     }
-
-    // handlePhotoPress = (message: MessageFullFragment, view?: View) => {
-    //     if (message.fileMetadata!!.imageFormat === 'GIF') {
-    //         return;
-    //     }
-    //     const optimalSize = layoutMedia(message.fileMetadata!!.imageWidth!!, message.fileMetadata!!.imageHeight!!, 1024, 1024);
-    //     view!!.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-    //         this.props.provider.showModal({
-    //             url: DownloadManagerInstance.resolvePath(message.file!!, optimalSize),
-    //             width: message.fileMetadata!!.imageWidth!!,
-    //             height: message.fileMetadata!!.imageHeight!!,
-    //             isGif: message.fileMetadata!!.imageFormat === 'GIF',
-    //             animate: { x: pageX, y: pageY, width, height, view: view!!, borderRadius: 10 },
-    //             onBegin: () => {
-    //                 view!!.setNativeProps({ 'opacity': 0 });
-    //             },
-    //             onEnd: () => {
-    //                 view!!.setNativeProps({ 'opacity': 1 });
-    //             },
-    //         });
-    //     });
-    // }
-    // handleDocumentPress = (message: MessageFullFragment) => {
-    //     if (!message.file || !message.fileMetadata || !message.fileMetadata.name || !message.fileMetadata.size) {
-    //         return;
-    //     }
-    //     // Modals.showFilePreview(this.props.router, message.file, message.fileMetadata.name, message.fileMetadata.size);
-    // }
 
     render() {
         return (
             <>
-                {/* <FastHeaderView>
+                <SHeaderView>
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
-                </FastHeaderView>
-                <FastHeaderButton>
+                </SHeaderView>
+                <SHeaderButton>
                     <ChatRight conversationId={this.engine.conversationId} router={this.props.router} />
-                </FastHeaderButton> */}
+                </SHeaderButton>
                 <Deferred>
                     <View style={{ height: '100%', flexDirection: 'column' }}>
                         <ConversationView engine={this.engine} />

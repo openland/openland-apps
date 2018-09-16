@@ -2,13 +2,11 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ExploreOrganizationsQuery } from 'openland-api';
 import { PageProps } from '../../components/PageProps';
-// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { OrganizationSearchFragment } from 'openland-api/Types';
 import { XPStyles } from 'openland-xp/XPStyles';
-// import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
@@ -42,24 +40,6 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
                         );
                     }}
                 />
-                {/* <ZQuery query={ExploreOrganizationsQuery} variables={{ sort: '[{"featured":{"order":"desc"}},{"createdAt":{"order":"desc"}}]' }}>
-                    {resp => (
-                        <ZScrollView backgroundColor="#fff">
-                            <ZListItemGroup>
-                                {resp.data.items.edges.map((v) => (
-                                    <ZListItemBase separator={false} height={56} key={v.node.id} onPress={() => this.props.router.push('ProfileOrganization', { id: v.node.id })}>
-                                        <View paddingTop={12} paddingLeft={15} paddingRight={15}>
-                                            <XPAvatar size={32} src={v.node.photo} placeholderKey={v.node.id} placeholderTitle={v.node.name} />
-                                        </View>
-                                        <View flexGrow={1} flexBasis={0} alignItems="center" flexDirection="row">
-                                            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.node.name}</Text>
-                                        </View>
-                                    </ZListItemBase>
-                                ))}
-                            </ZListItemGroup>
-                        </ZScrollView>
-                    )}
-                </ZQuery> */}
             </>
         );
     }

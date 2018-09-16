@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { UploadState } from '../../../files/UploadManager';

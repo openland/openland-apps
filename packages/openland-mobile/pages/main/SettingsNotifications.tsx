@@ -10,6 +10,8 @@ import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { SettingsUpdateMutation } from 'openland-api/SettingsUpdateMutation';
+import { SHeader } from 'react-native-s/SHeader';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 class SettingsNotifciationsComponent extends React.Component<PageProps> {
     private ref = React.createRef<ZForm>();
@@ -23,8 +25,8 @@ class SettingsNotifciationsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                {/* <FastHeader title="Notifications" />
-                <FastHeaderButton title="Save" onPress={this.handleSave} /> */}
+                <SHeader title="Notifications" />
+                <SHeaderButton title="Save" onPress={this.handleSave} />
                 <YMutation mutation={SettingsUpdateMutation}>
                     {save => (
                         <ZQuery query={SettingsQuery}>

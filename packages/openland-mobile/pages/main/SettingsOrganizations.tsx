@@ -7,12 +7,13 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { SHeader } from 'react-native-s/SHeader';
 
 class SettingsOrganizatonsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                {/* <FastHeader title="Organizations" /> */}
+                <SHeader title="Organizations" />
                 <SScrollView>
                     <ZQuery query={AccountSettingsQuery}>
                         {resp => {

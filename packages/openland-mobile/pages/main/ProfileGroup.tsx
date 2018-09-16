@@ -14,7 +14,7 @@ import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
-// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { SHeader } from 'react-native-s/SHeader';
 
 class ProfileGroupComponent extends React.Component<PageProps> {
 
@@ -25,7 +25,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                {/* <FastHeader title="Info" /> */}
+                <SHeader title="Info" />
                 <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.router.params.id }}>
                     {(resp) => {
                         if (resp.data.chat.__typename !== 'GroupConversation') {

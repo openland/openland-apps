@@ -7,7 +7,13 @@ import { StyleSheet, ViewStyle, TextStyle, View, Text } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 
 const styles = StyleSheet.create({
-    containerFirst: {
+    root: {
+        position: 'absolute',
+        top: SDevice.statusBarHeight + SDevice.safeArea.top,
+        right: 0,
+        left: 56
+    } as ViewStyle,
+    rootFirst: {
         paddingLeft: 16
     } as ViewStyle,
     titleContainer: {
@@ -37,11 +43,8 @@ const styles = StyleSheet.create({
 export class HeaderTitleView extends React.PureComponent<{ manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }> {
     render() {
         return (
-            <SAnimated.View name={'header--' + this.props.page.page.key} style={{ position: 'absolute', top: SDevice.statusBarHeight + SDevice.safeArea.top, right: 0, left: 56 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
-                <View
-                    style={styles.titleContainer}
-                    pointerEvents="box-none"
-                >
+            <SAnimated.View name={'header--' + this.props.page.page.key} style={[styles.root, this.props.page.page.startIndex === 0 && styles.rootFirst]} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+                <View style={styles.titleContainer} pointerEvents="box-none">
                     <View
                         style={{
                             position: 'absolute',

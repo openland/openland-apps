@@ -9,7 +9,6 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
 import { Feed } from './Feed';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
 import { SDevice } from 'react-native-s/SDevice';
 

@@ -14,6 +14,8 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
+import { SHeader } from 'react-native-s/SHeader';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 class SettingsProfileComponent extends React.Component<PageProps, { loaded: boolean }> {
 
@@ -35,8 +37,8 @@ class SettingsProfileComponent extends React.Component<PageProps, { loaded: bool
     render() {
         return (
             <>
-                {/* <FastHeader title="Edit profile" />
-                <FastHeaderButton title="Save" onPress={this.handleSave} /> */}
+                <SHeader title="Edit profile" />
+                <SHeaderButton title="Save" onPress={this.handleSave} />
                 <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountQuery]}>
                     {(save) => (
                         <ZQuery query={ProfileQuery} fetchPolicy="network-only">

@@ -3,24 +3,12 @@ import { View, Text, TouchableHighlight } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
-import { FastRouter } from 'react-native-fast-navigation/FastRouter';
 import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
+import { SRouter } from 'react-native-s/SRouter';
 
-export class ChatHeader extends React.PureComponent<{ conversationId: string, router: FastRouter }, { loading: boolean }> {
-    state = {
-        loading: false
-    };
-
-    componentDidMount() {
-        window.setTimeout(() => {
-            this.setState({ loading: true });
-        });
-    }
+export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }> {
 
     render() {
-        if (!this.state.loading) {
-            return null;
-        }
         return (
             <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                 {res => {

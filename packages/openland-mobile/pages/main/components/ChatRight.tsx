@@ -2,26 +2,12 @@ import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
-import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
-import { FastRouter } from 'react-native-fast-navigation/FastRouter';
+import { SRouter } from 'react-native-s/SRouter';
 
-export class ChatRight extends React.PureComponent<{ conversationId: string, router: FastRouter }, { loading: boolean }> {
-
-    state = {
-        loading: false
-    };
-
-    componentDidMount() {
-        window.setTimeout(() => {
-            this.setState({ loading: true });
-        });
-    }
+export class ChatRight extends React.PureComponent<{ conversationId: string, router: SRouter }> {
 
     render() {
-        if (!this.state.loading) {
-            return <View width={30} />;
-        }
         return (
             <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
                 {res => {

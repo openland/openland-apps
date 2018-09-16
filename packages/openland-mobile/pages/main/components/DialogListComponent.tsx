@@ -2,8 +2,6 @@ import * as React from 'react';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { MobileMessenger } from '../../../messenger/MobileMessenger';
 import { Animated } from 'react-native';
-// import { FastHeaderConfig } from 'react-native-fast-navigation/FastHeaderConfig';
-// import { FastScrollValue } from 'react-native-fast-navigation/FastScrollValue';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { STrackedValue } from 'react-native-s/STrackedValue';
