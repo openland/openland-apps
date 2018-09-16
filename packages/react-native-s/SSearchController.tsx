@@ -8,6 +8,7 @@ import { SAnimatedShadowView } from './SAnimatedShadowView';
 import { HeaderContextNone } from './navigation/HeaderContextNone';
 
 export interface SSearchControlerProps {
+    backgroundColor?: string;
     searchRender: React.ComponentType<{ query: string }>;
 }
 
@@ -54,7 +55,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                                 {this.props.children}
                                 <SAnimatedView
                                     name={this.searchShadowView.name}
-                                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.3)' }}
+                                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || '#fff' }}
                                     pointerEvents="box-none"
                                 >
                                     {this.state.searchMounted && (
