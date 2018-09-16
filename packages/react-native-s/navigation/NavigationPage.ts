@@ -4,6 +4,7 @@ import { Watcher } from 'openland-y-utils/Watcher';
 import UUID from 'uuid/v4';
 import { HeaderConfig } from './HeaderConfig';
 import { NavigationManager } from './NavigationManager';
+import { HeaderState } from './HeaderState';
 
 export class NavigationPage {
 
@@ -13,6 +14,7 @@ export class NavigationPage {
     readonly component: React.ComponentType<{}>;
     readonly router: SRouter;
     readonly config: Watcher<HeaderConfig>;
+    readonly state: Watcher<HeaderState>;
     readonly prevKey?: string;
     readonly startIndex: number;
 
@@ -40,6 +42,9 @@ export class NavigationPage {
         let cfg = new Watcher<HeaderConfig>();
         let c = {};
         cfg.setState(c);
+        let st = new Watcher<HeaderState>();
+        st.setState({ searchMounted: false, searchQuery: '' });
+        this.state = st;
         this.route = route;
         this.params = params || {};
         this.startIndex = index;

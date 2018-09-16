@@ -7,6 +7,17 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { View, Text } from 'react-native';
+import { SScrollView } from 'react-native-s/SScrollView';
+
+class DialogsSearch extends React.Component<{ query: string }> {
+    render() {
+        return (
+            <SScrollView keyboardDismissMode="on-drag">
+                <View marginTop={0} backgroundColor="#f00"><Text>{this.props.query}</Text></View>
+            </SScrollView>
+        );
+    }
+}
 
 class DialogsComponent extends React.Component<PageProps> {
 
@@ -19,7 +30,7 @@ class DialogsComponent extends React.Component<PageProps> {
             <>
                 <SHeader title="Messages" />
                 <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
-                <SSearchControler searchRender={(q) => <View marginTop={200} backgroundColor="#f00"><Text>{q.query}</Text></View>}>
+                <SSearchControler searchRender={DialogsSearch}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent engine={engine} />)}
                     </MobileMessengerContext.Consumer>

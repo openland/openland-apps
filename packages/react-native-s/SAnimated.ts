@@ -67,9 +67,10 @@ class SAnimatedImpl {
     private _pendingAnimations: any[] = [];
     private _pendingSetters: any[] = [];
     private _transactionDuration = 0.25;
-    private _callbacks = new Map<string, () => void>();
+    private _callbacks = new Map<string, (() => void)[]>();
     private _propertyAnimator?: SAnimatedPropertyAnimator;
     private _dirtyProperties = new Map<string, Map<SAnimatedPropertyName, { from: number, to: number }>>();
+    private _transactionKey?: string;
 
     constructor() {
         if (Platform.OS === 'ios') {
@@ -77,7 +78,9 @@ class SAnimatedImpl {
                 let clb = this._callbacks.get(args.key);
                 if (clb) {
                     this._callbacks.delete(args.key);
-                    clb();
+                    for (let c of clb) {
+                        c();
+                    }
                 }
             });
         } else if (Platform.OS === 'android') {
@@ -85,7 +88,9 @@ class SAnimatedImpl {
                 let clb = this._callbacks.get(args.key);
                 if (clb) {
                     this._callbacks.delete(args.key);
-                    clb();
+                    for (let c of clb) {
+                        c();
+                    }
                 }
             });
         }
@@ -101,6 +106,7 @@ class SAnimatedImpl {
         }
         this._inTransaction = true;
         this._transactionDuration = 0.25;
+        this._transactionKey = UUID();
     }
 
     onPropertyChanged = (property: SAnimatedProperty, oldValue: number) => {
@@ -135,6 +141,18 @@ class SAnimatedImpl {
         this._propertyAnimator = animator;
     }
 
+    addTransactionCallback = (callback: () => void) => {
+        if (!this._inTransaction) {
+            callback();
+        }
+
+        if (this._callbacks.has(this._transactionKey!)) {
+            this._callbacks.get(this._transactionKey!)!.push(callback);
+        } else {
+            this._callbacks.set(this._transactionKey!, [callback]);
+        }
+    }
+
     timing = (name: string, animation: SAnimatedTimingConfig) => {
         let anim = {
             view: name,
@@ -150,7 +168,7 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
         } else {
-            this._postAnimations(this._transactionDuration, [anim], []);
+            this._postAnimations(this._transactionDuration, [anim], [], undefined);
         }
     }
 
@@ -167,7 +185,7 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);
         } else {
-            this._postAnimations(this._transactionDuration, [anim], []);
+            this._postAnimations(this._transactionDuration, [anim], [], undefined);
         }
     }
 
@@ -180,11 +198,16 @@ class SAnimatedImpl {
         if (this._inTransaction) {
             this._pendingSetters.push(v);
         } else {
-            this._postAnimations(this._transactionDuration, [], [v]);
+            this._postAnimations(this._transactionDuration, [], [v], undefined);
         }
     }
 
     commitTransaction = (callback?: () => void) => {
+
+        if (callback) {
+            this.addTransactionCallback(callback);
+        }
+
         if (!this._inTransaction) {
             return;
         }
@@ -207,7 +230,11 @@ class SAnimatedImpl {
         }
 
         if (this._pendingAnimations.length > 0 || this._pendingSetters.length > 0) {
-            this._postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters, callback);
+            let transactionKey: string | undefined = undefined;
+            if (this._callbacks.get(this._transactionKey!)) {
+                transactionKey = this._transactionKey!!;
+            }
+            this._postAnimations(this._transactionDuration, this._pendingAnimations, this._pendingSetters, transactionKey);
             this._pendingAnimations = [];
         } else {
             if (callback) {
@@ -217,12 +244,7 @@ class SAnimatedImpl {
         this._propertyAnimator = undefined;
     }
 
-    private _postAnimations(duration: number, animations: any[], valueSetters: any[], callback?: () => void) {
-        let transactionKey: string | undefined = undefined;
-        if (callback) {
-            transactionKey = UUID();
-            this._callbacks.set(transactionKey, callback);
-        }
+    private _postAnimations(duration: number, animations: any[], valueSetters: any[], transactionKey: string | undefined) {
         RNSAnimatedViewManager.animate(
             JSON.stringify({
                 duration,

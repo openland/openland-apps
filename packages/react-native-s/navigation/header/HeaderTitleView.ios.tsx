@@ -50,17 +50,18 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
 
     handleTextChange = (text: string) => {
         this.setState({ searchText: text });
+        this.props.page.page.state.setState({ searchMounted: this.props.page.page.state.getState()!.searchMounted, searchQuery: text });
     }
 
     componentWillReceiveProps(nextProps: HeaderTitleViewProps) {
         if (this.state.searchText !== '' && !nextProps.page.config.searchActive) {
             this.setState({ searchText: '' });
+            this.props.page.page.state.setState({ searchMounted: this.props.page.page.state.getState()!.searchMounted, searchQuery: '' });
         }
     }
 
     render() {
         let v = this.props.page;
-        let SearchComponent = v.config.searchRender!!;
         return (
             <>
                 <SAnimated.View name={'header--' + v.page.key} style={{ position: 'absolute', top: SDevice.statusBarHeight + SDevice.safeArea.top, right: 0, left: 0, bottom: 0 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
@@ -111,8 +112,6 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <SAnimated.View
                                             name={'header-search-button--' + v.page.key}
                                             style={{
-                                                // opacity: v.config.searchActive ? 1 : 0,
-                                                // marginRight: v.config.searchActive ? 0 : -70,
                                                 width: 70 - 15
                                             }}
                                         >
@@ -123,14 +122,6 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                             </SAnimated.View>
                         </View>
                     )}
-
-                    {/* {(v.config.search && v.config.searchActive) && (
-                        <View style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: -96, backgroundColor: '#000', opacity: 0.3, flexDirection: 'column' }}>
-                            <SSafeAreaContext.Provider value={{ top: SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded + SDevice.safeArea.top, bottom: SDevice.safeArea.bottom }}>
-                                <SearchComponent query={this.state.searchText} />
-                            </SSafeAreaContext.Provider>
-                        </View>
-                    )} */}
                 </SAnimated.View>
             </>
         );

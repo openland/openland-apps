@@ -27,6 +27,7 @@ export class HeaderTitleViewCoordinator {
 
     private subscribedValue?: STrackedValue;
     private subscription?: string;
+    private searchVisible: boolean = false;
 
     constructor(page: NavigationPage, coordinator: HeaderCoordinator) {
         this.key = page.key;
@@ -38,7 +39,7 @@ export class HeaderTitleViewCoordinator {
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
-        this.searchContainerView =  new SAnimatedShadowView(AnimatedViewKeys.pageSearch(this.key));
+        this.searchContainerView = new SAnimatedShadowView(AnimatedViewKeys.pageSearch(this.key));
 
         this.lastConfig = this.page.config.getState()!!;
         let isStarting = true;
@@ -125,6 +126,10 @@ export class HeaderTitleViewCoordinator {
             // Search
             if (this.lastConfig.search) {
                 if (this.lastConfig.searchActive) {
+                    if (!this.searchVisible) {
+                        this.searchVisible = true;
+                        this.page.state.setState({ searchMounted: true, searchQuery: this.page.state.getState()!.searchQuery });
+                    }
                     this.headerView.translateY = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
                     if (this.lastConfig.searchUnderlay) {
                         this.lastConfig.searchUnderlay!!.translateY = -96;
@@ -135,6 +140,12 @@ export class HeaderTitleViewCoordinator {
                     this.titleLargeView.opacity = 0;
                     this.searchContainerView.opacity = 1;
                 } else {
+                    if (this.searchVisible) {
+                        this.searchVisible = false;
+                        SAnimated.addTransactionCallback(() => {
+                            this.page.state.setState({ searchMounted: false, searchQuery: this.page.state.getState()!.searchQuery });
+                        });
+                    }
                     this.searchInputBackgroundView.iosWidth = 0;
                     this.searchInputBackgroundView.translateX = 0;
                     this.searchCancelView.translateX = 70;
