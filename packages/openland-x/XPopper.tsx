@@ -96,8 +96,6 @@ export const XPopperInvalidator = () => {
 export class XPopperGrouped extends React.Component<PopperRendererProps & { parent: XPopper }, { currentPopper: XPopper }> {
     static activePoppers = new Map<string, Set<XPopperGrouped>>();
     static currnetPopper = new Map<string, XPopper>();
-    prevAnimation?: string;
-
     static getGroup(groupId: string) {
         let group = XPopperGrouped.activePoppers[groupId];
         if (group === undefined) {
@@ -106,6 +104,8 @@ export class XPopperGrouped extends React.Component<PopperRendererProps & { pare
         }
         return group;
     }
+
+    prevAnimation?: string;
 
     constructor(props: PopperRendererProps & { parent: XPopper }) {
         super(props);
