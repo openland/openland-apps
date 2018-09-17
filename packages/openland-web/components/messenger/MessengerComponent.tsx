@@ -416,9 +416,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
-                        maxWidth="calc(100% - 380px)"
+                        maxWidth={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
+                        width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
-                        <XHorizontal alignItems="center" separator={6} maxWidth="100%">
+                        <XHorizontal alignItems="center" separator={6} maxWidth="100%" width="100%">
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                                 size="small"
