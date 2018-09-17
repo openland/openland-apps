@@ -30,29 +30,3 @@ export function getToken(context: any) {
         return getServerToken(context);
     }
 }
-
-export function getClientOrg() {
-    return Cookie.get('x-openland-org');
-}
-
-export function getServerOrg(context: any) {
-    if (context.headers.cookie) {
-        let cookie = context.headers.cookie as string;
-        let rk = cookie.split(';').find((c: string) => c.trim().startsWith('x-openland-org='));
-        if (rk) {
-            return rk.split('=')[1];
-        } else {
-            return undefined;
-        }
-    } else {
-        return undefined;
-    }
-}
-
-export function getOrg(context: any) {
-    if (canUseDOM) {
-        return getClientOrg();
-    } else {
-        return getServerOrg(context);
-    }
-}

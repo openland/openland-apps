@@ -5,7 +5,7 @@ import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { trackPage } from 'openland-x-analytics';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
-import { getToken, getOrg } from 'openland-x-graphql/auth';
+import { getToken } from 'openland-x-graphql/auth';
 import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { RootErrorBoundary } from './RootErrorBoundary';
@@ -40,7 +40,6 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
 
         static async getInitialProps(ctx: any) {
             let token = getToken(ctx.req);
-            let org = getOrg(ctx.req);
             let serverState = { apollo: {} };
             let host: string;
             let protocol: string;
@@ -64,7 +63,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
             // Run all GraphQL queries in the component tree
             // and extract the resulting data
             if (!canUseDOM && ENABLE_PRELOADING) {
-                const apollo = apolloClient(serverState, token, org);
+                const apollo = apolloClient(serverState, token);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
 
@@ -103,12 +102,11 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                 serverState = {
                     apollo: {
                         data: apollo.client.extract(),
-                        token: token,
-                        org: org
+                        token: token
                     }
                 };
             } else if (canUseDOM && isPageChanged({ query: ctx.query, pathname: ctx.pathname, asPath: ctx.asPath }) && ENABLE_PRELOADING) {
-                const apollo = apolloClient(serverState, token, org);
+                const apollo = apolloClient(serverState, token);
                 // Provide the `url` prop data in case a GraphQL query uses it
                 // const url = { query: ctx.query, pathname: ctx.pathname }
                 try {
@@ -132,15 +130,13 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
                 }
                 serverState = {
                     apollo: {
-                        token: token,
-                        org: org
+                        token: token
                     }
                 };
             } else {
                 serverState = {
                     apollo: {
-                        token: token,
-                        org: org
+                        token: token
                     }
                 };
             }
@@ -156,7 +152,7 @@ export const withData = (name: String, ComposedComponent: React.ComponentType) =
 
         constructor(props: WithDataProps) {
             super(props);
-            this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token, this.props.serverState.apollo.org);
+            this.apollo = apolloClient(this.props.serverState.apollo.data, this.props.serverState.apollo.token);
 
             // Guess Timezone
             if (canUseDOM) {

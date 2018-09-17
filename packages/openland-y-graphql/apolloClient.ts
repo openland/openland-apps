@@ -74,7 +74,7 @@ export class OpenApolloClient {
     }
 }
 
-export function buildClient(config: { endpoint: string, wsEndpoint?: string, token?: string, organization?: string, initialState?: any, ssrMode?: boolean, fetch?: any }) {
+export function buildClient(config: { endpoint: string, wsEndpoint?: string, token?: string, initialState?: any, ssrMode?: boolean, fetch?: any }) {
 
     //
     // Status
@@ -103,9 +103,6 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
     if (config.token) {
         headers['x-openland-token'] = config.token;
     }
-    if (config.organization) {
-        headers['x-openland-org'] = config.organization;
-    }
 
     let link: ApolloLink;
     if (!config.wsEndpoint) {
@@ -126,8 +123,7 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         let subscriptionClient = new SubscriptionClient(config.wsEndpoint, {
             reconnect: true,
             connectionParams: () => ({
-                'x-openland-token': config.token,
-                'x-openland-org': config.organization
+                'x-openland-token': config.token
             })
         });
         subscriptionClient.onConnecting(() => {
