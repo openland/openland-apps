@@ -36,8 +36,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                             <TouchableHighlight onPress={() => this.props.router.push('ConversationInfo', { id: this.props.conversationId })}>
                                 <View flexDirection="row" alignSelf="flex-start" height={56} alignItems="center">
                                     <View flexDirection="column" marginTop={-6}>
-                                        <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: '#fff', letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                                        <Text style={{ fontSize: 14, height: 16, color: '#fff', opacity: 0.6, marginTop: -4 }} numberOfLines={1} ellipsizeMode="tail">{subtitle}</Text>
+                                        <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: '#000', letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                                        <Text style={{ fontSize: 14, height: 16, color: '#000', opacity: 0.6, marginTop: -4 }} numberOfLines={1} ellipsizeMode="tail">{subtitle}</Text>
                                     </View>
                                 </View>
                             </TouchableHighlight>
@@ -46,8 +46,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
                     return (
                         <View flexDirection="column" alignItems="center" justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
-                            <Text style={{ fontSize: 15, height: 18, color:  '#fff', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            <Text style={{ fontSize: 12, height: 14, color:  '#fff', opacity: 0.6 }}>{subtitle}</Text>
+                            <Text style={{ fontSize: 15, height: 18, color:  '#000', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                            <Text style={{ fontSize: 12, height: 14, color:  '#000', opacity: 0.6 }}>{subtitle}</Text>
                         </View>
                     );
                 }}
