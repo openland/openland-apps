@@ -524,7 +524,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                             <SAnimated.View
                                 name={AnimatedViewKeys.pageShadowSide(v.key)}
                                 key={'shadow-side-' + v.key}
-                                style={[styles.absoluteFill]}
+                                style={[styles.absoluteFill, { opacity: 0 }]}
                                 pointerEvents="none"
                             >
                                 <Image source={require('assets-s/swipe-shadow.png')} resizeMode="stretch" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, height: SCREEN_HEIGHT }} />
