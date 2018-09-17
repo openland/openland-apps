@@ -11,7 +11,7 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { CreateOrganizationMutation } from 'openland-api';
+import { CreateOrganizationMutation, AccountSettingsQuery } from 'openland-api';
 
 class NewOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
@@ -20,7 +20,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
             <>
                 <SHeader title="New organization" />
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
-                <YMutation mutation={CreateOrganizationMutation}>
+                <YMutation mutation={CreateOrganizationMutation} refetchQueries={[AccountSettingsQuery]}>
                     {create => (
                         <ZForm ref={this.ref} action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }} onSuccess={() => { this.props.router.back(); }}>
                             <ZListItemGroup>

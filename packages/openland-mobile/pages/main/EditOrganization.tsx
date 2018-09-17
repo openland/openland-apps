@@ -11,7 +11,7 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { CreateOrganizationMutation, UpdateOrganizationMutation, OrganizationProfileQuery } from 'openland-api';
+import { CreateOrganizationMutation, UpdateOrganizationMutation, OrganizationProfileQuery, ProfileQuery, AccountSettingsQuery } from 'openland-api';
 import { ZQuery } from '../../components/ZQuery';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 
@@ -22,7 +22,7 @@ class EditOrganizationComponent extends React.PureComponent<PageProps> {
             <>
                 <SHeader title="Edit organization" />
                 <SHeaderButton title="Save" onPress={() => { this.ref.current!.submitForm(); }} />
-                <YMutation mutation={UpdateOrganizationMutation}>
+                <YMutation mutation={UpdateOrganizationMutation} refetchQueries={[AccountSettingsQuery]}>
                     {save => (
                         <ZQuery
                             query={OrganizationProfileQuery}
