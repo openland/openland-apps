@@ -13,10 +13,10 @@ export interface DialogDataSourceItem {
     photo?: string;
     unread: number;
 
-    date: number;
-    message: string;
-    sender: string;
-    isOut: boolean;
+    date?: number;
+    message?: string;
+    sender?: string;
+    isOut?: boolean;
 }
 
 function formatMessage(message: any): string {
@@ -77,10 +77,10 @@ export class DialogListEngine {
                 title: c.title,
                 photo: c.photos.length > 0 ? c.photos[0] : undefined,
                 unread: c.unreadCount,
-                isOut: c.topMessage!!.sender.id === this.engine.user.id,
-                sender: c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name,
-                message: formatMessage(c.topMessage),
-                date: parseInt(c.topMessage!!.date, 10)
+                isOut: c.topMessage ? c.topMessage!!.sender.id === this.engine.user.id : undefined,
+                sender: c.topMessage ? (c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name) : undefined,
+                message: c.topMessage ? formatMessage(c.topMessage) : undefined,
+                date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
             })),
             next === null);
 
@@ -176,10 +176,10 @@ export class DialogListEngine {
                 title: c.title,
                 photo: c.photos.length > 0 ? c.photos[0] : undefined,
                 unread: c.unreadCount,
-                isOut: c.topMessage!!.sender.id === this.engine.user.id,
-                sender: c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name,
-                message: formatMessage(c.topMessage),
-                date: parseInt(c.topMessage!!.date, 10)
+                isOut: c.topMessage ? c.topMessage!!.sender.id === this.engine.user.id : undefined,
+                sender: c.topMessage ? (c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name) : undefined,
+                message: c.topMessage ? formatMessage(c.topMessage) : undefined,
+                date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
             }));
             this.dataSource.loadedMore(converted, !this.next);
 

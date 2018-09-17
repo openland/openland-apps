@@ -124,7 +124,7 @@ class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceIt
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={18}>
                         <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
-                        <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>
+                        {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
                     </ASFlex>
                     <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
