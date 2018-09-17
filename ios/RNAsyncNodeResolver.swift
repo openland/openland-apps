@@ -111,6 +111,20 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
   if let v = spec.style.height {
     res.style.height = ASDimension(unit: .points, value: CGFloat(v))
   }
+  
+  if let v = spec.style.minWidth {
+    res.style.minWidth = ASDimension(unit: .points, value: CGFloat(v))
+  }
+  if let v = spec.style.minHeight {
+    res.style.minHeight = ASDimension(unit: .points, value: CGFloat(v))
+  }
+  if let v = spec.style.maxWidth {
+    res.style.maxWidth = ASDimension(unit: .points, value: CGFloat(v))
+  }
+  if let v = spec.style.maxHeight {
+    res.style.maxHeight = ASDimension(unit: .points, value: CGFloat(v))
+  }
+  
 //  if let v = spec.style.borderRadius {
 //    if let g = source as? ASDisplayNode {
 //      g.cornerRadius = CGFloat(v)

@@ -93,8 +93,10 @@ class ASAvatar extends React.PureComponent<ASAvatarProps> {
 class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
-            <ASFlex borderRadius={8} backgroundColor={XPStyles.colors.brand} height={16}>
-                <ASText marginLeft={4} marginRight={4} marginTop={3} color="#fff" lineHeight={12} fontSize={12}>{this.props.value + ''}</ASText>
+            <ASFlex borderRadius={9} backgroundColor={XPStyles.colors.brand} height={18} minWidth={18} justifyContent="center">
+                <ASFlex justifyContent="center" marginLeft={4} marginRight={4}>
+                    <ASText color="#fff" lineHeight={16} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
+                </ASFlex>
             </ASFlex>
         );
     }
@@ -121,8 +123,8 @@ class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceIt
                 </ASFlex>
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={18}>
-                        <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0}>{item.title}</ASText>
-                        <ASText fontSize={13} height={18} color="#aaaaaa">{formatDate(item.date)}</ASText>
+                        <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                        <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>
                     </ASFlex>
                     <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>

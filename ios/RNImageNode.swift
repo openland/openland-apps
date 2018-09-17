@@ -41,7 +41,7 @@ class RNImageNode: ASDisplayNode {
       }
       self.url = spec.url
       if spec.url != "" {
-        let targetSize = CGSize(width: CGFloat(spec.style.width!), height: CGFloat(spec.style.height!))
+        let targetSize = CGSize(width: CGFloat(spec.style.width!) * UIScreen.main.scale, height: CGFloat(spec.style.height!) * UIScreen.main.scale)
         let targetUrl = URL(string: spec.url)!
         let targetContentMode = ImageDecompressor.ContentMode.aspectFill
         let targetRequest = ImageRequest(url: targetUrl, targetSize: targetSize, contentMode: targetContentMode)

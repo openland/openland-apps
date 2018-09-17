@@ -60,7 +60,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
     componentWillReceiveProps(nextProps: HeaderTitleViewProps) {
         if (!nextProps.page.config.search) {
             if (this.state.searchText !== '') {
-                this.setState({ searchText: ''});
+                this.setState({ searchText: '' });
             }
         } else {
             this.setState({ searchText: nextProps.page.config.searchContext!.value });
@@ -93,7 +93,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     {(v.config.appearance === 'large' || !v.config.appearance) && (
                         <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current ? 'box-none' : 'none'}>
-                                <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.textColor }]}>{v.config.title}</Text>
+                                <Text numberOfLines={1} style={[styles.titleLarge, { marginTop: -2, color: this.props.style.textColor }]}>{v.config.title}</Text>
                             </SAnimated.View>
                         </View>
                     )}
@@ -101,7 +101,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     {(v.config.appearance === 'large' || !v.config.appearance) && (v.config.search) && (
                         <View style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-search--' + v.page.key}>
-                                <View style={{ flexDirection: 'row', height: 36, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
+                                <View style={{ flexDirection: 'row', height: 36, marginTop: 1, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                                     <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
                                     {!v.config.searchActive && (
                                         <TouchableWithoutFeedback onPress={v.config.searchPress}>

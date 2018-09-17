@@ -1,6 +1,10 @@
 export interface ASViewStyle {
     height?: number;
     width?: number;
+    minWidth?: number;
+    minHeight?: number;
+    maxWidth?: number;
+    maxHeight?: number;
     flexGrow?: number;
     flexShrink?: number;
     flexBasis?: number;

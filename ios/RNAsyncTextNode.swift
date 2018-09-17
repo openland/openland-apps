@@ -98,6 +98,8 @@ class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
     } else {
       self.alpha = CGFloat(1)
     }
+    
+    self.truncationMode = .byTruncatingTail
   }
 
   func textNode(_ textNode: ASTextNode!, shouldHighlightLinkAttribute attribute: String!, value: Any!, at point: CGPoint) -> Bool {

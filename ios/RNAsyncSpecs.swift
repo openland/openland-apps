@@ -90,6 +90,10 @@ class AsyncImageSpec: AsyncViewSpec {
 class AsyncStyleSpec {
   var height: Float?
   var width: Float?
+  var minWidth: Float?
+  var minHeight: Float?
+  var maxWidth: Float?
+  var maxHeight: Float?
   var flexGrow: Float?
   var flexShrink: Float?
   var flexBasis: Float?
@@ -130,6 +134,18 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
   }
   if let v = src["props"]["height"].float {
     res.height = v
+  }
+  if let v = src["props"]["minWidth"].float {
+    res.minWidth = v
+  }
+  if let v = src["props"]["minHeight"].float {
+    res.minHeight = v
+  }
+  if let v = src["props"]["maxWidth"].float {
+    res.maxWidth = v
+  }
+  if let v = src["props"]["maxHeight"].float {
+    res.maxHeight = v
   }
   if let v = src["props"]["flexGrow"].float {
     res.flexGrow = v
