@@ -7,6 +7,7 @@ import { SBackButton } from '../../SBackButton';
 import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SSafeAreaContext } from '../../SSafeArea';
+import { SEquisiteCentered } from '../../SExquisiteCentered';
 
 const styles = StyleSheet.create({
     title: {
@@ -70,7 +71,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
             <>
                 <SAnimated.View name={'header--' + v.page.key} style={{ position: 'absolute', top: SDevice.statusBarHeight + SDevice.safeArea.top, right: 0, left: 0, bottom: 0 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                     <SAnimated.View name={'header-small--' + v.page.key} style={{ width: '100%' }}>
-                        <View pointerEvents="box-none" flexDirection="row" width="100%">
+                        <SEquisiteCentered style={{ width: '100%' }}>
                             <View opacity={0}>
                                 <SBackButton onPress={this.props.manager.pop} />
                             </View>
@@ -82,7 +83,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                             <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
                                 {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                             </View>
-                        </View>
+                        </SEquisiteCentered>
                     </SAnimated.View>
                     {(v.config.appearance === 'large' || !v.config.appearance) && (
                         <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
