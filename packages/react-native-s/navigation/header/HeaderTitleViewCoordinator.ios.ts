@@ -90,7 +90,7 @@ export class HeaderTitleViewCoordinator {
     }
 
     updateState = (progress: number) => {
-        this.headerView.opacity = 1.5 - Math.abs(progress) * 2; // Meet in the center
+        this.headerView.opacity = 2 - Math.abs(progress) * 4;
         this.headerView.translateX = (progress) * SCREEN_WIDTH / 2;
 
         if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
