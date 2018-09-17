@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Auth0Client } from '../../index';
 import { ZLoader } from '../../components/ZLoader';
@@ -31,14 +31,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 56,
         width: 335,
-        backgroundColor: '#fff',
-        color: '#000',
-        borderRadius: 5
+        backgroundColor: '#4747ec',
+        color: '#fff',
+        borderRadius: 56 / 2
     } as ViewStyle,
     buttonTitle: {
         fontSize: 15,
         fontWeight: '600',
-        color: '#000',
+        color: '#fff',
         height: 56,
         lineHeight: 56,
         flexGrow: 1,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center'
     } as TextStyle,
     footer: {
-        color: '#fff',
+        color: '#000',
         opacity: 0.6,
         fontSize: 12,
         width: '100%',
@@ -64,9 +64,6 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
     handlePress = async () => {
         try {
             this.setState({ loading: true });
-            if (!isAndroid) {
-                StatusBar.setBarStyle('dark-content');
-            }
             let res = await Auth0Client.webAuth.authorize({
                 scope: 'openid profile email',
                 audience: 'https://statecraft.auth0.com/userinfo',
@@ -116,41 +113,43 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
             Alert.alert(e.message + '\n' + JSON.stringify(e));
         } finally {
             this.setState({ loading: false });
-            if (!isAndroid) {
-                StatusBar.setBarStyle('light-content');
-            }
         }
     }
 
     render() {
         return (
-            <View style={{ backgroundColor: AppStyles.primaryColor, width: '100%', height: '100%' }}>
-                <Image source={require('assets/img-back.png')} style={{ width: '100%', height: '100%', opacity: this.state.initing ? 0 : 1 }} fadeDuration={0} onLoadEnd={() => this.setState({ initing: false })} />
-                {!this.state.initing && (
-                    <SafeAreaView style={styles.container}>
-                        {/* {this.state.loading && <ZLoader />} */}
-                        <Text style={styles.title}>Welcome to Openland!</Text>
-                        <View flexDirection="column" style={{ marginTop: 35 }}>
-                            <TouchableOpacity onPress={this.handlePress} disabled={this.state.loading}>
-                                <View style={styles.button}>
-                                    <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                                        {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
-                                    </View>
-                                    <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Google'}</Text>
-                                    <View style={{ width: 70, height: 70 }}>
-                                        {}
-                                    </View>
+            <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
+                <Image source={require('assets/auth-bg.png')} style={{ width: '100%', height: '100%' }} fadeDuration={0} onLoadEnd={() => this.setState({ initing: false })} />
+                <SafeAreaView style={styles.container}>
+                    {/* {this.state.loading && <ZLoader />} */}
+                    <Text style={styles.title}>Welcome to Openland!</Text>
+                    <View flexDirection="column" style={{ marginTop: 56 }}>
+                        <TouchableOpacity onPress={this.handlePress} disabled={this.state.loading}>
+                            <View style={styles.button}>
+                                <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                                    {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
                                 </View>
-                            </TouchableOpacity>
-                            {this.state.loading && <ZLoader transparent={true} />}
-                        </View>
-                        <View style={{ flexGrow: 1 }} />
-                        <View flexDirection="column" paddingBottom={20} alignItems="center">
-                            <Text style={styles.footer}>By creating an account you are accepting our</Text>
-                            <Text style={styles.footer}>Terms of Service and Privacy Policy</Text>
-                        </View>
-                    </SafeAreaView>
-                )}
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Google'}</Text>
+                                <View style={{ width: 70, height: 70 }}>
+                                    {}
+                                </View>
+                                {this.state.loading && <View style={{ position: 'absolute' }}> <ActivityIndicator /> </View>}
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View flexDirection="column" style={{ marginTop: 15 }}>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Email'}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flexGrow: 1 }} />
+                    <View flexDirection="column" paddingBottom={20} alignItems="center">
+                        <Text style={styles.footer}>By creating an account you are accepting our</Text>
+                        <Text style={styles.footer}>Terms of Service and Privacy Policy</Text>
+                    </View>
+                </SafeAreaView>
             </View>
         );
     }
