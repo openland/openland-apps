@@ -6,26 +6,34 @@ import { MobileMessengerContext } from '../../messenger/MobileMessenger';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZQuery } from '../../components/ZQuery';
 import { ChatSearchTextQuery } from 'openland-api';
+import { SRouter } from 'react-native-s/SRouter';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
         if (this.props.query.trim().length > 0) {
             return (
-                <ZQuery query={ChatSearchTextQuery} variables={{ query: this.props.query }}>
-                    {resp => {
-                        return (
-                            <SScrollView keyboardDismissMode="on-drag">
-                                {resp.data.items.map((v) => (
-                                    <View marginTop={0} height={56}><Text>{v.title}</Text></View>
-                                ))}
-                            </SScrollView>
-                        );
-                    }}
-                </ZQuery>
+                <SRouterContext.Consumer>
+                    {r => (
+                        <ZQuery query={ChatSearchTextQuery} variables={{ query: this.props.query }}>
+                            {resp => {
+                                return (
+                                    <SScrollView keyboardDismissMode="on-drag">
+                                        {resp.data.items.map((v) => (
+                                            <TouchableOpacity onPress={() => r!!.push('Conversation', { id: v.id })}>
+                                                <View marginTop={0} height={56}><Text>{v.title}</Text></View>
+                                            </TouchableOpacity>
+                                        ))}
+                                    </SScrollView>
+                                );
+                            }}
+                        </ZQuery>
+                    )}
+                </SRouterContext.Consumer>
             );
         } else {
             return null;

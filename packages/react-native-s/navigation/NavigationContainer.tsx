@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions, PanResponder } from 'react-native';
+import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions, PanResponder, Image } from 'react-native';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { AnimatedViewKeys } from './AnimatedViewKeys';
 import { SAnimated } from 'react-native-s/SAnimated';
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     shadow: {
         backgroundColor: '#000',
-        opacity: 0
+        opacity: 0.1
     } as ViewStyle,
 });
 
@@ -45,6 +45,8 @@ export interface NavigationContainerProps {
 }
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+// const SHADOW_OPACITY = 0.3
 
 export class NavigationContainer extends React.PureComponent<NavigationContainerProps, NavigationContainerState> implements NavigationManagerListener {
 
@@ -124,12 +126,23 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
                         property: 'translateX',
                         from: 0,
-                        to: -SCREEN_WIDTH
+                        to: -SCREEN_WIDTH / 3
                     });
-                    SAnimated.spring(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+
+                    SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'opacity',
                         from: 0,
-                        to: 0.3
+                        to: 1,
+                    });
+                    SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
+                        property: 'translateX',
+                        from: 0,
+                        to: - 2 * SCREEN_WIDTH / 3,
+                    });
+                    SAnimated.spring(AnimatedViewKeys.pageShadowOverlay(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 0,
+                        to: 1
                     });
                 } else {
                     SAnimated.setPropertyAnimator((name, prop, from, to) => {
@@ -146,11 +159,29 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
-                    SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'opacity',
                         from: 0,
-                        to: 0.3, easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                        to: 1,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
+                        property: 'translateX',
+                        from: - 2 * SCREEN_WIDTH / 3,
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 0,
+                        to: 1,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                    // SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    //     property: 'opacity',
+                    //     from: 0,
+                    //     to: 1, easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    // });
                 }
                 this.headerCoordinator.onPushed(this.currentHistory);
 
@@ -204,12 +235,22 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
                         property: 'translateX',
-                        from: -SCREEN_WIDTH * 0.3,
+                        from: -SCREEN_WIDTH / 3,
                         to: 0
                     });
-                    SAnimated.spring(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'opacity',
-                        from: 0.3,
+                        from: 1,
+                        to: 0,
+                    });
+                    SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
+                        property: 'translateX',
+                        from: - 2 * SCREEN_WIDTH / 3,
+                        to: 0,
+                    });
+                    SAnimated.spring(AnimatedViewKeys.pageShadowOverlay(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 1,
                         to: 0
                     });
                 } else {
@@ -227,12 +268,31 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: SCREEN_WIDTH,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
-                    SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'opacity',
-                        from: 0.3,
+                        from: 1,
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
+                        property: 'translateX',
+                        from: - 2 * SCREEN_WIDTH / 3,
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(underlayHolder.key), {
+                        property: 'opacity',
+                        from: 1,
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                    // SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
+                    //     property: 'opacity',
+                    //     from: 1,
+                    //     to: 0,
+                    //     easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    // });
                 }
                 this.headerCoordinator.onPopped(prevHistory, this.currentHistory);
 
@@ -268,12 +328,14 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             if (dx < 0) {
                 dx = 0;
             }
-            // SAnimated.beginTransaction();
+            SAnimated.beginTransaction();
             SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
             SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -SCREEN_WIDTH / 3 + dx / 3);
-            SAnimated.setValue(AnimatedViewKeys.pageShadow(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH) * 0.3);
+            SAnimated.setValue(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH));
+            SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH));
+            SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'translateX', - 2 * SCREEN_WIDTH / 3 + 2 * dx / 3);
             this.headerCoordinator.onSwipeProgress(this.currentHistory, dx / SCREEN_WIDTH);
-            // SAnimated.commitTransaction();
+            SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
             let dx = gesture.dx;
@@ -310,11 +372,31 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         from: -SCREEN_WIDTH / 3 + dx / 3,
                         to: 0
                     });
-                    SAnimated.timing(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
                         property: 'opacity',
-                        from: (1 - progress) * 0.3,
-                        to: 0
+                        from: (1 - progress),
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
+                        property: 'translateX',
+                        from: - 2 * SCREEN_WIDTH / 3 + 2 * dx / 3,
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), {
+                        property: 'opacity',
+                        from: (1 - progress),
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+
+                    // SAnimated.timing(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+                    //     property: 'opacity',
+                    //     from: (1 - progress),
+                    //     to: 0
+                    // });
 
                     this.headerCoordinator.onSwipeCompleted(prevState, this.currentHistory);
                     // if (this.currentHistory.history.length === 1) {
@@ -350,11 +432,31 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         from: -SCREEN_WIDTH / 3 + dx / 3,
                         to: -SCREEN_WIDTH / 3
                     });
-                    SAnimated.spring(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
                         property: 'opacity',
-                        from: (1 - dx / SCREEN_WIDTH) * 0.3,
-                        to: 0.3
+                        from: (1 - dx / SCREEN_WIDTH),
+                        to: 0,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
+                        property: 'translateX',
+                        from: - 2 * SCREEN_WIDTH / 3 + 2 * dx / 3,
+                        to: - 2 * SCREEN_WIDTH / 3,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+                    SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), {
+                        property: 'opacity',
+                        from: (1 - dx / SCREEN_WIDTH),
+                        to: 1,
+                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    });
+
+                    // SAnimated.spring(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
+                    //     property: 'opacity',
+                    //     from: (1 - dx / SCREEN_WIDTH),
+                    //     to: 0.3
+                    // });
                     this.headerCoordinator.onSwipeCancelled(this.currentHistory);
                     SAnimated.commitTransaction(() => {
                         this.headerCoordinator.onTransitionStop();
@@ -412,11 +514,21 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                                 mounted={!!this.state.mounted.find((m) => v.key === m)}
                             />
                             <SAnimated.View
-                                name={AnimatedViewKeys.pageShadow(v.key)}
+                                name={AnimatedViewKeys.pageShadowOverlay(v.key)}
                                 key={'shadow-' + v.key}
-                                style={[styles.absoluteFill, styles.shadow]}
+                                style={[styles.absoluteFill, { opacity: 0 }]}
                                 pointerEvents="none"
-                            />
+                            >
+                                <View style={[styles.fill, styles.shadow]} />
+                            </SAnimated.View>
+                            <SAnimated.View
+                                name={AnimatedViewKeys.pageShadowSide(v.key)}
+                                key={'shadow-side-' + v.key}
+                                style={[styles.absoluteFill]}
+                                pointerEvents="none"
+                            >
+                                <Image source={require('assets-s/swipe-shadow.png')} resizeMode="stretch" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, height: SCREEN_HEIGHT }} />
+                            </SAnimated.View>
                         </SAnimated.View>
                     );
                 })}
