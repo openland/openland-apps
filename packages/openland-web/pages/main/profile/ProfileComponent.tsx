@@ -34,6 +34,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
+import { XInput } from 'openland-x/XInput';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -594,6 +595,8 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
                     await props.updateProfile({
                         variables: {
                             input: {
+                                firstName: data.input.firstName,
+                                lastName: data.input.lastName,
                                 photoRef: sanitizeIamgeRef(data.input.photoRef)
                             },
                             uid: uid
@@ -602,7 +605,11 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
                 }
             }
         >
-            <XAvatarUpload field="input.photoRef" />
+            <XVertical>
+                <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
+                <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                <XAvatarUpload field="input.photoRef" />
+            </XVertical>
         </XModalForm>
     );
 });
