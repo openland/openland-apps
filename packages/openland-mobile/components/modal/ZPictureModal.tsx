@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ZPictureModalContext, ZPictureModalProvider } from './ZPictureModalContext';
 import { ZPictureOverlay } from './ZPictureOverlay';
-import { View } from 'react-native';
+import { View, Keyboard } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 
 export class ZPictureModal extends React.PureComponent<{}, { config?: ZPictureTransitionConfig }> implements ZPictureModalProvider {
@@ -14,7 +14,7 @@ export class ZPictureModal extends React.PureComponent<{}, { config?: ZPictureTr
     }
 
     showModal = (config: ZPictureTransitionConfig) => {
-        //
+        Keyboard.dismiss();
         this.setState({ config });
     }
 
