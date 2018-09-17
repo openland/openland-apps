@@ -17,7 +17,6 @@ export class HeaderTitleViewCoordinator {
     private lastConfig: HeaderConfig;
 
     private headerView: SAnimatedShadowView;
-    private containerView: SAnimatedShadowView;
     private titleView: SAnimatedShadowView;
     private titleLargeView: SAnimatedShadowView;
     private searchView: SAnimatedShadowView;
@@ -32,8 +31,7 @@ export class HeaderTitleViewCoordinator {
         this.key = page.key;
         this.page = page;
         this.coordinator = coordinator;
-        this.headerView = new SAnimatedShadowView('header--' + this.key);
-        this.containerView = new SAnimatedShadowView('header-small--' + this.key);
+        this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
         this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0 });
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key);
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
