@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ViewProps, View } from 'react-native';
 import { BlurView } from 'react-native-blur';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
+import { SDevice } from 'react-native-s/SDevice';
 
 export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 'normal' | 'high' }> {
     render() {
         let { intensity, ...other } = this.props;
-        if (DeviceConfig.enableBlur) {
+        if (SDevice.renderBlurSupported) {
             return (
                 <View {...other}>
                     <View
@@ -16,7 +16,7 @@ export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 
                             right: 0,
                             top: 0,
                             bottom: 0,
-                            backgroundColor: DeviceConfig.navigationBarBackgroundColor,
+                            backgroundColor: '#fff',
                             opacity: intensity === 'high' ? 0.9 : 0.8
                         }}
                     />

@@ -3,7 +3,6 @@ import { View, Text, TouchableHighlight } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 import { SRouter } from 'react-native-s/SRouter';
 
 export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }> {
@@ -37,8 +36,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                             <TouchableHighlight onPress={() => this.props.router.push('ConversationInfo', { id: this.props.conversationId })}>
                                 <View flexDirection="row" alignSelf="flex-start" height={56} alignItems="center">
                                     <View flexDirection="column" marginTop={-6}>
-                                        <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: DeviceConfig.titleColor, letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                                        <Text style={{ fontSize: 14, height: 16, color: DeviceConfig.subtitleColor, opacity: 0.6, marginTop: -4 }} numberOfLines={1} ellipsizeMode="tail">{subtitle}</Text>
+                                        <Text style={{ fontWeight: '500', fontSize: 18, height: 24, color: '#fff', letterSpacing: 0.3, marginBottom: 1 }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                                        <Text style={{ fontSize: 14, height: 16, color: '#fff', opacity: 0.6, marginTop: -4 }} numberOfLines={1} ellipsizeMode="tail">{subtitle}</Text>
                                     </View>
                                 </View>
                             </TouchableHighlight>
@@ -47,8 +46,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
                     return (
                         <View flexDirection="column" alignItems="center" justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
-                            <Text style={{ fontSize: 15, height: 18, color: DeviceConfig.titleColor, fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            <Text style={{ fontSize: 12, height: 14, color: DeviceConfig.subtitleColor, opacity: 0.6 }}>{subtitle}</Text>
+                            <Text style={{ fontSize: 15, height: 18, color:  '#fff', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                            <Text style={{ fontSize: 12, height: 14, color:  '#fff', opacity: 0.6 }}>{subtitle}</Text>
                         </View>
                     );
                 }}

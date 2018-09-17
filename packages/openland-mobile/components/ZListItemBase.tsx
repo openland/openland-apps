@@ -3,8 +3,8 @@ import { View, Image } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { isAndroid } from '../utils/isAndroid';
 import { RectButton } from 'react-native-gesture-handler';
-import { FastRouter } from 'react-native-fast-navigation/FastRouter';
-import { withRouter } from 'react-native-fast-navigation/withRouter';
+import { withRouter } from 'react-native-s/withRouter';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
@@ -17,7 +17,7 @@ export interface ZListItemBaseProps {
     enabled?: boolean;
 }
 
-class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: FastRouter }> {
+class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: SRouter }> {
 
     handlePress = () => {
         if (this.props.onPress) {

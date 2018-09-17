@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { withRouter, FastRouterInjectedProps } from 'react-native-fast-navigation/withRouter';
 import { AppStyles } from '../styles/AppStyles';
+import { withRouter } from 'react-native-s/withRouter';
+import { SRouter } from 'react-native-s/SRouter';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +27,7 @@ export interface ZRoundedButtonProps {
     path?: string;
 }
 
-class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & FastRouterInjectedProps> {
+class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & { router: SRouter }> {
     handlePress = () => {
         if (this.props.onPress) {
             this.props.onPress();

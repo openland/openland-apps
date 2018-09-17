@@ -9,7 +9,6 @@ import { formatDate } from '../utils/formatDate';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
 import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { ZPictureModal } from '../components/modal/ZPictureModal';

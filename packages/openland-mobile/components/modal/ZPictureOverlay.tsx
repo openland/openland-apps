@@ -4,8 +4,8 @@ import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
-import { DeviceConfig } from 'react-native-fast-navigation/DeviceConfig';
 import { SBackButton } from 'react-native-s/SBackButton';
+import { SDevice } from 'react-native-s/SDevice';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -213,8 +213,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
                 <Animated.View
                     style={{
-                        height: DeviceConfig.navigationBarHeight + DeviceConfig.statusBarHeight,
-                        paddingTop: DeviceConfig.statusBarHeight,
+                        height: SDevice.navigationBarHeight + SDevice.statusBarHeight,
+                        paddingTop: SDevice.statusBarHeight,
                         backgroundColor: 'rgba(0,0,0,0.6)',
                         opacity: Animated.multiply(this.progressLinear, this.barOpacity)
                         // transform: [{
