@@ -91,7 +91,11 @@ export class HeaderTitleViewCoordinator {
 
     updateState = (progress: number) => {
         this.headerView.opacity = 2 - Math.abs(progress) * 4;
-        this.headerView.translateX = (progress) * SCREEN_WIDTH / 2;
+        if (this.lastConfig.search && this.lastConfig.searchActive) {
+            this.headerView.translateX = (progress) * SCREEN_WIDTH;
+        } else {
+            this.headerView.translateX = (progress) * SCREEN_WIDTH / 2;
+        }
 
         if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
             // Content Offset
@@ -123,7 +127,11 @@ export class HeaderTitleViewCoordinator {
             // Search field
             //
             if (this.lastConfig.search) {
-                this.searchView.translateY = -contentOffset - Math.abs(progress) * 44;
+                if (this.lastConfig.searchActive) {
+                    this.searchView.translateY = 0;
+                } else {
+                    this.searchView.translateY = -contentOffset - Math.abs(progress) * 44;
+                }
             }
 
             // Show/hide scroll depending if large title is visible
