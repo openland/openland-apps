@@ -30,6 +30,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
         }
         let size = 24;
         let tintColor = '#fff';
+        let inactiveOpacity = 0.7;
+        let inactiveOpacityIcon = 0.6;
 
         let content = (
             <View
@@ -53,8 +55,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                             marginLeft: 5
                         }}
                     >
-                        <Image source={require('assets/ic-home-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 0 ? 1 : 0.6, tintColor }} resizeMode="contain" />
-                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 0 ? 1 : 0.6 }}>Feed</Text>
+                        <Image source={require('assets/ic-home-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 0 ? 1 : inactiveOpacityIcon, tintColor }} resizeMode="contain" />
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 0 ? 1 : inactiveOpacity }}>Feed</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress2} delayPressIn={0}>
@@ -68,7 +70,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                     >
                         <View style={{ width: 25, height: 25, alignItems: 'center', justifyContent: 'center' }}>
                             {/* <Ionicons name={'ios-chatbubbles'} size={25} color={this.props.selected === 1 ? selectedColor : unselectedColor} /> */}
-                            <Image source={require('assets/ic-messages-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 1 ? 1 : 0.6, tintColor }} resizeMode="contain" />
+                            <Image source={require('assets/ic-messages-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 1 ? 1 : inactiveOpacityIcon, tintColor }} resizeMode="contain" />
                             <View
                                 style={{
                                     position: 'absolute',
@@ -79,7 +81,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                                 <ZCounter value={this.props.counter} appearance="contrast" />
                             </View>
                         </View>
-                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 1 ? 1 : 0.6 }}>Messages</Text>
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 1 ? 1 : inactiveOpacity }}>Messages</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress3} delayPressIn={0}>
@@ -93,8 +95,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                         }}
                     >
                         {/* <Ionicons name={'ios-contact'} size={25} color={this.props.selected === 2 ? selectedColor : unselectedColor} /> */}
-                        <Image source={require('assets/ic-directory-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 2 ? 1 : 0.6, tintColor }} resizeMode="contain" />
-                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 2 ? 1 : 0.6 }}>Directory</Text>
+                        <Image source={require('assets/ic-directory-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 2 ? 1 : inactiveOpacityIcon, tintColor }} resizeMode="contain" />
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 2 ? 1 : inactiveOpacity }}>Directory</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={this.handlePress4} delayPressIn={0}>
@@ -108,8 +110,8 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
                         }}
                     >
                         {/* <Ionicons name={'ios-cog'} size={25} color={this.props.selected === 3 ? selectedColor : unselectedColor} /> */}
-                        <Image source={require('assets/ic-settings-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 3 ? 1 : 0.6, tintColor }} resizeMode="contain" />
-                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 3 ? 1 : 0.6 }}>Settings</Text>
+                        <Image source={require('assets/ic-settings-ios.png')} style={{ width: size, height: size, opacity: this.props.selected === 3 ? 1 : inactiveOpacityIcon, tintColor }} resizeMode="contain" />
+                        <Text style={{ color: tintColor, fontSize: 12, marginTop: 2, opacity: this.props.selected === 3 ? 1 : inactiveOpacity }}>Settings</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -118,7 +120,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
         return (
             <View
                 style={{
-                    backgroundColor: '#364AE3',
+                    backgroundColor: AppStyles.primaryColor,
                     // height: 49 + SDevice.safeArea.bottom,
                     paddingBottom: SDevice.safeArea.bottom,
                     elevation: 12,

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { withRouter, FastRouterInjectedProps } from 'react-native-fast-navigation/withRouter';
+import { AppStyles } from '../styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#4747ec',
+        backgroundColor: AppStyles.primaryColor,
         borderRadius: 13,
         height: 26,
         paddingLeft: 12,

@@ -18,6 +18,7 @@ import { FastHistoryManager } from 'react-native-fast-navigation/FastHistory';
 import { Login } from './auth/Login';
 import { SRouting } from 'react-native-s/SRouting';
 import { SNavigationView } from 'react-native-s/SNavigationView';
+import { AppStyles } from '../styles/AppStyles';
 export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
 
     private ref = React.createRef<ZPictureModal>();
@@ -75,6 +76,7 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                                     <SNavigationView
                                         routing={getMessenger().history}
                                         navigationBarStyle={{
+                                            accentColor: AppStyles.primaryColor,
                                             backgroundColor: '#fff',
                                             isOpaque: Platform.OS === 'ios' ? false : true
                                         }}
