@@ -27,13 +27,16 @@ export class HeaderTitleViewCoordinator {
     private subscription?: string;
     private searchVisible: boolean = false;
 
+    private titleVisible: boolean = true;
+    private isInScrollHandler: boolean = false;
+
     constructor(page: NavigationPage, coordinator: HeaderCoordinator) {
         this.key = page.key;
         this.page = page;
         this.coordinator = coordinator;
         this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
-        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0 });
-        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key);
+        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 1 });
+        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 1 });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
@@ -60,9 +63,11 @@ export class HeaderTitleViewCoordinator {
                         return;
                     }
                     if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
+                        this.isInScrollHandler = true;
                         SAnimated.beginTransaction();
                         this.coordinator._updateState(this.coordinator.state!!, 0);
                         SAnimated.commitTransaction();
+                        this.isInScrollHandler = false;
                     }
                 });
             }
@@ -84,6 +89,55 @@ export class HeaderTitleViewCoordinator {
             }
             this.coordinator._updateState(this.coordinator.state!!, 0);
             SAnimated.commitTransaction();
+        }
+    }
+
+    updateSmallTitleState = (smallVisible: boolean) => {
+        if (this.titleVisible === smallVisible) {
+            return;
+        }
+        this.titleVisible = smallVisible;
+
+        if (smallVisible) {
+            if (SAnimated.isInAnimatedTransaction || !this.isInScrollHandler) {
+                this.titleView.opacity = 1;
+                this.titleLargeView.opacity = 0;
+            } else {
+                setTimeout(() => {
+                    SAnimated.beginTransaction();
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.timing(name, {
+                            property: prop,
+                            from: from,
+                            to: to,
+                            duration: 0.2
+                        });
+                    });
+                    this.titleView.opacity = 1;
+                    this.titleLargeView.opacity = 0;
+                    SAnimated.commitTransaction();
+                });
+            }
+        } else {
+            if (SAnimated.isInAnimatedTransaction || !this.isInScrollHandler) {
+                this.titleView.opacity = 0;
+                this.titleLargeView.opacity = 1;
+            } else {
+                setTimeout(() => {
+                    SAnimated.beginTransaction();
+                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                        SAnimated.timing(name, {
+                            property: prop,
+                            from: from,
+                            to: to,
+                            duration: 0.2
+                        });
+                    });
+                    this.titleView.opacity = 0;
+                    this.titleLargeView.opacity = 1;
+                    SAnimated.commitTransaction();
+                });
+            }
         }
     }
 
@@ -125,8 +179,8 @@ export class HeaderTitleViewCoordinator {
             this.titleLargeView.translateY = titleOffset;
 
             // Random hotfix
-            this.titleLargeView.opacity++;
-            this.titleLargeView.opacity--;
+            // this.titleLargeView.opacity++;
+            // this.titleLargeView.opacity--;
 
             //
             // Search field
@@ -137,13 +191,6 @@ export class HeaderTitleViewCoordinator {
                 } else {
                     this.searchView.translateY = -contentOffset - Math.abs(progress) * 44;
                 }
-            }
-
-            // Show/hide scroll depending if large title is visible
-            if (titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12)) {
-                this.titleView.opacity = 1;
-            } else {
-                this.titleView.opacity = 0;
             }
 
             // Search
@@ -159,7 +206,9 @@ export class HeaderTitleViewCoordinator {
                     this.searchInputBackgroundView.iosWidth = -70;
                     this.searchInputBackgroundView.translateX = -35;
                     this.searchCancelView.translateX = 0;
+                    this.titleVisible = true;
                     this.titleLargeView.opacity = 0;
+                    this.titleView.opacity = 0;
                     this.lastConfig.searchContainer!.opacity = 1;
                 } else {
                     if (this.searchVisible) {
@@ -178,11 +227,16 @@ export class HeaderTitleViewCoordinator {
                         this.lastConfig.searchUnderlay!!.translateY = 0;
                     }
                     this.headerView.translateY = 0;
-                    this.titleLargeView.opacity = 1;
+                    // this.titleLargeView.opacity = 1;
                     this.lastConfig.searchContainer!.opacity = 0;
+
+                    // Show/hide scroll depending if large title is visible
+                    this.updateSmallTitleState(titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12));
                 }
+
             } else {
-                this.titleLargeView.opacity = 1;
+                // this.titleLargeView.opacity = 1;
+                this.updateSmallTitleState(titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12));
                 if (this.lastConfig.searchUnderlay) {
                     this.lastConfig.searchUnderlay!!.translateY = 0;
                 }
@@ -192,10 +246,13 @@ export class HeaderTitleViewCoordinator {
             let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
             if (offset > SDevice.navigationBarHeight) {
                 this.titleView.opacity = 1;
+                this.titleVisible = true;
             } else {
                 this.titleView.opacity = 0;
+                this.titleVisible = false;
             }
         } else {
+            this.titleVisible = true;
             this.titleView.opacity = 1;
         }
     }
