@@ -69,10 +69,6 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                 audience: 'https://statecraft.auth0.com/userinfo',
                 connection: 'google-oauth2',
             });
-            if (!isAndroid) {
-                StatusBar.setBarStyle('light-content');
-            }
-
             let idToken = res.idToken;
             let accessToken = res.accessToken;
 
