@@ -125,12 +125,12 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
     res.style.maxHeight = ASDimension(unit: .points, value: CGFloat(v))
   }
   
-//  if let v = spec.style.borderRadius {
-//    if let g = source as? ASDisplayNode {
-//      g.cornerRadius = CGFloat(v)
-//      g.cornerRoundingType = .precomposited
-//    }
-//  }
+  if let v = spec.style.borderRadius {
+    if let g = source as? ASDisplayNode {
+      g.cornerRadius = CGFloat(v)
+      g.cornerRoundingType = .precomposited
+    }
+  }
   
   if let v = spec.style.backgroundPatch {
     let g = context.fetchCached(key: spec.key+"-bg-patch") { () -> RNPatchNode in
@@ -153,13 +153,13 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
 //    }
     res = ASBackgroundLayoutSpec(child: res, background: g)
   } else if let v = spec.style.backgroundColor {
-    let g = context.fetchCached(key: spec.key+"-bg-color") { () -> RNAsyncBackground in
-      return RNAsyncBackground(v)
+    let g = context.fetchCached(key: spec.key+"-bg-color") { () -> RNAsyncColor in
+      return RNAsyncColor(v)
     }
     g.update(color: v)
     if let br = spec.style.borderRadius {
       g.cornerRadius = CGFloat(br)
-      g.cornerRoundingType = .precomposited
+      g.cornerRoundingType = .defaultSlowCALayer // WTF?
     }
     res = ASBackgroundLayoutSpec(child: res, background: g)
   }

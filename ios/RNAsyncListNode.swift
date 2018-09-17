@@ -408,7 +408,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           openland.lock(lockObj, blk: {
             let ex = self.activeCells.get(key: itm.key)
             if ex != nil {
-              fatalError("Item already exists!")
+              fatalError("Item already exists: \(itm.key)")
             }
           })
           let cell = RNAsyncCell(spec: itm.config, context: self.context)
@@ -421,19 +421,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
       myGroup.wait()
       
-      for i in from..<from+count {
-        print("onLoadedMore: " + state.items[i].key)
-        let itm = state.items[i]
-        let ex = self.activeCells.get(key: itm.key)
-        if ex != nil {
-          // ex!.setSpec(spec: itm.config)
-          fatalError("Item already exists!")
-        }
-        
-        let cell = RNAsyncCell(spec: itm.config, context: self.context)
-        self.activeCellsStrong[itm.key] = cell
-        pendingCells[itm.key] = cell
-      }
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
           let wasCompleted = self.state.completed

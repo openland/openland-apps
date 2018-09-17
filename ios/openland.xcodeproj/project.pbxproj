@@ -77,7 +77,7 @@
 		AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */; };
 		AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47D72212C45FA00E71A74 /* RNAsyncNodeResolver.swift */; };
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
-		AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */; };
+		AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */; };
 		AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */; };
 		AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0219321429D8800927CF0 /* RNAsyncCell.swift */; };
 		AAB021962142ACB300927CF0 /* RNPatchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB021952142ACB300927CF0 /* RNPatchNode.swift */; };
@@ -766,7 +766,7 @@
 		AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNTouchableNode.swift; sourceTree = "<group>"; };
 		AAA47D72212C45FA00E71A74 /* RNAsyncNodeResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncNodeResolver.swift; sourceTree = "<group>"; };
 		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
-		AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncBackground.swift; sourceTree = "<group>"; };
+		AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncColor.swift; sourceTree = "<group>"; };
 		AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListNode.swift; sourceTree = "<group>"; };
 		AAB0219321429D8800927CF0 /* RNAsyncCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncCell.swift; sourceTree = "<group>"; };
 		AAB021952142ACB300927CF0 /* RNPatchNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPatchNode.swift; sourceTree = "<group>"; };
@@ -1297,7 +1297,7 @@
 			children = (
 				AAA47D72212C45FA00E71A74 /* RNAsyncNodeResolver.swift */,
 				AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */,
-				AAA47DC2212CB2BC00E71A74 /* RNAsyncBackground.swift */,
+				AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */,
 				AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */,
 				AAB0219321429D8800927CF0 /* RNAsyncCell.swift */,
 				AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */,
@@ -2383,7 +2383,7 @@
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
-				AAA47DC3212CB2BC00E71A74 /* RNAsyncBackground.swift in Sources */,
+				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
 				AAB0EF852137197B00FBCB75 /* RNAsyncConfigManager.swift in Sources */,
 				AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
