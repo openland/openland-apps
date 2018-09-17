@@ -25,6 +25,9 @@ export class SEquisiteCentered extends React.PureComponent<SEquisiteCenteredProp
             throw Error('SEquisiteCentered need exactly three children');
         }
 
+        let inited = this.state.rightWidth !== undefined && this.state.leftWidth !== undefined;
+        let padding = inited ? Math.max(this.state.leftWidth!, this.state.rightWidth!) : 0;
+
         return (
             <View style={[this.props.style, { flexDirection: 'row', justifyContent: 'space-between' }]}>
                 <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 100 }} onLayout={this.handleLeftLayout}>
@@ -33,11 +36,9 @@ export class SEquisiteCentered extends React.PureComponent<SEquisiteCenteredProp
                 <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 100 }} onLayout={this.handleRightLayout}>
                     {child[2]}
                 </View>
-                {this.state.rightWidth !== undefined && this.state.leftWidth !== undefined && (
-                    <View style={{ position: 'absolute', left: Math.max(this.state.leftWidth, this.state.rightWidth), right: Math.max(this.state.leftWidth, this.state.rightWidth), top: 0, flexDirection: 'row' }}>
-                        {child[1]}
-                    </View>
-                )}
+                <View style={{ position: 'absolute', left: padding, right: padding, top: 0, flexDirection: 'row', opacity: inited ? 1 : 0 }}>
+                    {child[1]}
+                </View>
             </View>
         );
     }

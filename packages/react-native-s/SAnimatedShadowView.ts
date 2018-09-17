@@ -35,9 +35,9 @@ export class SAnimatedShadowView {
         this._iosWidth.value = value;
     }
 
-    constructor(name: string) {
+    constructor(name: string, initial?: { opacity?: number }) {
         this.name = name;
-        this._opacity = new SAnimatedProperty(name, 'opacity', 1);
+        this._opacity = new SAnimatedProperty(name, 'opacity', initial && initial.opacity !== undefined ? initial.opacity : 1);
         this._translateX = new SAnimatedProperty(name, 'translateX', 0);
         this._translateY = new SAnimatedProperty(name, 'translateY', 0);
         this._iosWidth = new SAnimatedProperty(name, 'ios-width', 0);

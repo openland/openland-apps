@@ -119,10 +119,8 @@ class SAnimatedImpl {
             this._knownComponents.set(property.name, new Set());
         }
         let known = this._knownComponents.get(property.name)!;
-        if (!known.has(property.property)) {
+        if (property.value !== oldValue || !known.has(property.property)) {
             known.add(property.property);
-            this.setValue(property.name, property.property, property.value);
-        } else if (property.value !== oldValue) {
             if (this._inTransaction) {
                 if (!this._dirtyProperties.has(property.name)) {
                     this._dirtyProperties.set(property.name, new Map());
