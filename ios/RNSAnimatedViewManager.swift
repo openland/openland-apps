@@ -111,6 +111,8 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           view.layer.position.x = view.sourceCenter.x + s.value
         } else if s.property == "translateY" {
           view.layer.position.y = view.sourceCenter.y + s.value
+        } else if s.property == "ios-width" {
+          view.layer.bounds.size.width = view.sourceSize.width + s.value
         } else {
           continue
         }

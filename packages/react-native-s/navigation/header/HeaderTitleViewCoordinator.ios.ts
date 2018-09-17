@@ -169,6 +169,7 @@ export class HeaderTitleViewCoordinator {
                     this.lastConfig.searchContainer!.opacity = 0;
                 }
             } else {
+                this.titleLargeView.opacity = 1;
                 if (this.lastConfig.searchUnderlay) {
                     this.lastConfig.searchUnderlay!!.translateY = 0;
                 }

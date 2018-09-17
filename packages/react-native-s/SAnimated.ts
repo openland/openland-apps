@@ -71,7 +71,7 @@ class SAnimatedImpl {
     private _propertyAnimator?: SAnimatedPropertyAnimator;
     private _dirtyProperties = new Map<string, Map<SAnimatedPropertyName, { from: number, to: number }>>();
     private _transactionKey?: string;
-    private _knownComponents = new Set<string>();
+    private _knownComponents = new Map<string, Set<string>>();
 
     constructor() {
         if (Platform.OS === 'ios') {
@@ -116,7 +116,11 @@ class SAnimatedImpl {
 
     onPropertyChanged = (property: SAnimatedProperty, oldValue: number) => {
         if (!this._knownComponents.has(property.name)) {
-            this._knownComponents.add(property.name);
+            this._knownComponents.set(property.name, new Set());
+        }
+        let known = this._knownComponents.get(property.name)!;
+        if (!known.has(property.property)) {
+            known.add(property.property);
             this.setValue(property.name, property.property, property.value);
         } else if (property.value !== oldValue) {
             if (this._inTransaction) {
