@@ -118,7 +118,7 @@ export class ZBottomTabs extends React.PureComponent<{ selected: number, counter
         return (
             <View
                 style={{
-                    backgroundColor: '#4256f4',
+                    backgroundColor: '#364AE3',
                     // height: 49 + SDevice.safeArea.bottom,
                     paddingBottom: SDevice.safeArea.bottom,
                     elevation: 12,

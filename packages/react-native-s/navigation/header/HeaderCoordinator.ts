@@ -127,6 +127,8 @@ export class HeaderCoordinator {
         } else if (config.appearance === 'small-hidden') {
             if (config.contentOffset) {
                 res = config.contentOffset.offsetValue < 44 ? 0 : 1;
+            } else {
+                res = 0;
             }
         }
 
