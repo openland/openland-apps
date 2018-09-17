@@ -586,10 +586,22 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
 
 const UpdateUserProfileModal = withUserProfileUpdate((props) => {
     let uid = props.router.query.editUser;
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === uid)[0];
+    if (!member) {
+        return null;
+    }
+
     return (
         <XModalForm
             title="Edit profile"
             targetQuery="editUser"
+            defaultData={{
+                input: {
+                    firstName: member.user.firstName,
+                    lastName: member.user.lastName,
+                    photoRef: sanitizeIamgeRef(member.user.photoRef)
+                }
+            }}
             defaultAction={
                 async (data) => {
                     await props.updateProfile({
@@ -612,7 +624,7 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
             </XVertical>
         </XModalForm>
     );
-});
+}) as React.ComponentType<{ members: any[] }>;
 
 const Members = (props: { organizationQuery: OrganizationQuery }) => {
     let organization = props.organizationQuery.organization;
@@ -638,7 +650,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
             )}
             <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
             <PermissionsModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
-            <UpdateUserProfileModal />
+            <UpdateUserProfileModal members={organization.members} />
         </>
     );
 };

@@ -4665,6 +4665,17 @@ export interface OrganizationQuery {
         role: string | null,
         linkedin: string | null,
         twitter: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
       },
     } >,
     organizationType: Array< string > | null,

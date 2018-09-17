@@ -37,6 +37,16 @@ export const OrganizationFull = gql`
             role
             user{
                 ...UserShort
+
+                photoRef {
+                    uuid
+                    crop {
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
             }
         }
 
