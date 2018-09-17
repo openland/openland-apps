@@ -310,7 +310,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
     panResponder = PanResponder.create({
 
+        onPanResponderStart: () => {
+            console.log('start');
+        },
         onPanResponderGrant: () => {
+            console.log('grant');
             Keyboard.dismiss();
             this.swipeCurrentKey = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             this.swipePrevKey = this.currentHistory.history[this.currentHistory.history.length - 2].key;
@@ -321,9 +325,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.headerCoordinator.onSwipeStarted(this.currentHistory);
         },
         onMoveShouldSetPanResponder: (event, gesture) => {
-            return !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
+            let res = !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
+            console.log('shouldSet:' + res);
+            return res;
         },
         onPanResponderMove: (event, gesture) => {
+            console.log('move');
             let dx = gesture.dx;
             if (dx < 0) {
                 dx = 0;
@@ -338,6 +345,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
+            console.log('release');
             let dx = gesture.dx;
             if (dx > 0) {
                 // SAnimated.beginTransaction();
@@ -476,13 +484,22 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         onPanResponderTerminate: () => {
             // On terminate
             // TODO: Reset to initial state
-            // console.log('terminate');
+            console.log('terminate');
             // SAnimated.setValue(AnimatedViewKeys.page(top), 'translateX', gesture.dx);
             let unlock = this.swipeLocker!;
+            unlock();
+            this.swipeLocker = undefined;
+        },
+        onPanResponderReject: () => {
+            this.headerCoordinator.onTransitionStop();
+            console.log('reject');
+            let unlock = this.swipeLocker!;
+            unlock();
             this.swipeLocker = undefined;
         },
 
         onPanResponderTerminationRequest: () => {
+            console.log('tr');
             // Returning false will prevent other views from becoming responder while
             // the navigation view is the responder (mid-gesture)
             return false;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollViewProps, Animated } from 'react-native';
+import { ScrollViewProps, Animated, Platform } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
@@ -24,6 +24,7 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                                 keyboardDismissMode="interactive"
                                 {...other}
                                 style={[other.style, {
+                                    backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
                                     // Work-around for freezing navive animation driver
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset))
                                 }]}
