@@ -2,6 +2,7 @@ import { STrackedValue } from '../STrackedValue';
 import { SHeaderAppearance, SHeaderHairline } from '../SHeader';
 import { SAnimatedShadowView } from '../SAnimatedShadowView';
 import { SNavigationViewStyle } from '../SNavigationView';
+import { SearchContext } from './SearchContext';
 
 export interface HeaderButtonDescription {
     id: string;
@@ -19,6 +20,7 @@ export interface HeaderConfig {
     appearance?: SHeaderAppearance;
     hairline?: SHeaderHairline;
 
+    searchContext?: SearchContext;
     search?: boolean;
     searchUnderlay?: SAnimatedShadowView;
     searchContainer?: SAnimatedShadowView;
@@ -45,6 +47,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let searchClosingCompleted: (() => void) | undefined;
     let searchUnderlay: SAnimatedShadowView | undefined;
     let searchContainer: SAnimatedShadowView | undefined;
+    let searchContext: SearchContext | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -91,11 +94,17 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.searchChanged) {
             searchChanged = c.searchChanged;
         }
+        if (c.searchContext) {
+            searchContext = c.searchContext;
+        }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
+    if (a.searchContext !== b.searchContext) {
+        return false;
+    }
     if (a.searchClosingCompleted !== b.searchClosingCompleted) {
         return false;
     }

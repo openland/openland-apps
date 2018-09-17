@@ -6,6 +6,7 @@ import { SAnimatedView } from './SAnimatedView';
 import UUID from 'uuid/v4';
 import { SAnimatedShadowView } from './SAnimatedShadowView';
 import { HeaderContextNone } from './navigation/HeaderContextNone';
+import { SearchContext } from './navigation/SearchContext';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
@@ -16,6 +17,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
 
     private containerShadowView = new SAnimatedShadowView(UUID());
     private searchShadowView = new SAnimatedShadowView(UUID());
+    private searchContext = new SearchContext();
 
     constructor(props: SSearchControlerProps) {
         super(props);
@@ -98,7 +100,8 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                         searchPress: this.handleSearchStart,
                         searchUnderlay: this.containerShadowView,
                         searchContainer: this.searchShadowView,
-                        searchChanged: this.handleSearchChanged
+                        searchChanged: this.handleSearchChanged,
+                        searchContext: this.searchContext
                     }}
                 />
                 {content}
