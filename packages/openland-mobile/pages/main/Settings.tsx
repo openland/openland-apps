@@ -104,6 +104,11 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                         />
                                     ))}
                                     {secondaryFiltered.length < secondary.length && <ZListItem text="More" path="SettingsOrganizations" />}
+                                    <ZListItem
+                                        text="New organization"
+                                        onPress={() => this.props.router.push('NewOrganization')}
+                                        appearance="action"
+                                    />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
                                     <ZListItem text="Notifications" path="SettingsNotifications" />
