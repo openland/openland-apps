@@ -157,6 +157,7 @@ export const SuperAccountMemberRemoveMutation = typedMutation<Types.SuperAccount
 export const SuperAdminAddMutation = typedMutation<Types.SuperAdminAddMutation, Types.SuperAdminAddMutationVariables>(Permissions.SuperAdminAddMutation);
 export const SuperAdminRemoveMutation = typedMutation<Types.SuperAdminRemoveMutation, Types.SuperAdminRemoveMutationVariables>(Permissions.SuperAdminRemoveMutation);
 export const SuperChatsStatsQuery = typedQuery<Types.SuperChatsStatsQuery, Types.SuperChatsStatsQueryVariables>(Permissions.SuperChatsStatsQuery);
+export const SuperMessagesSentStatsQuery = typedQuery<Types.SuperMessagesSentStatsQuery, Types.SuperMessagesSentStatsQueryVariables>(Permissions.SuperMessagesSentStatsQuery);
 export const PermitQuery = typedQuery<Types.PermitQuery, Types.PermitQueryVariables>(Permits.PermitQuery);
 export const PermitsConnectionQuery = typedQuery<Types.PermitsConnectionQuery, Types.PermitsConnectionQueryVariables>(Permits.PermitsConnectionQuery);
 export const SearchQuery = typedQuery<Types.SearchQuery, Types.SearchQueryVariables>(Search.SearchQuery);

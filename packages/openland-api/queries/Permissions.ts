@@ -156,3 +156,12 @@ export const SuperChatsStatsQuery = gql`
         }
     }
 `;
+
+export const SuperMessagesSentStatsQuery = gql`
+    query SuperMessagesSentStats($fromDate: String!, $toDate: String!, $trunc: String) {
+        messagesSentStats(fromDate: $fromDate, toDate: $toDate, trunc: $trunc){
+            date
+            count
+        }
+    }
+`;

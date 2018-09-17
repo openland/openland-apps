@@ -6357,6 +6357,20 @@ export interface SuperChatsStatsQuery {
   },
 };
 
+export interface SuperMessagesSentStatsQueryVariables {
+  fromDate: string,
+  toDate: string,
+  trunc?: string | null,
+};
+
+export interface SuperMessagesSentStatsQuery {
+  messagesSentStats:  Array< {
+    __typename: "MessagesSentEntry",
+    date: string,
+    count: number,
+  } >,
+};
+
 export interface PermitQueryVariables {
   permitId: string,
 };
