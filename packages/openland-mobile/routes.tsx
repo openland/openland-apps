@@ -17,6 +17,7 @@ import { FilePreview } from './pages/main/modals/FilePreview';
 import { SettingsOrganizations } from './pages/main/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
+import { EditOrganization } from './pages/main/EditOrganization';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -28,6 +29,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('NewOrganization', NewOrganization)
+  .addRoute('EditOrganization', EditOrganization)
   .addRoute('UserPicker', UserPicker)
   .addRoute('TextEditModal', TextEditModal)
   .addRoute('ComposeModal', ComposeModal)
