@@ -126,7 +126,7 @@ export class DataSource<T extends DataSourceItem> {
                 w.onDataSourceItemUpdated(removed, i);
             }
         } else {
-            console.warn('Trying to remove non-existent item');
+            throw Error('Trying to remove non-existent item');
         }
     }
     moveItem(key: string, index: number) {
@@ -153,7 +153,7 @@ export class DataSource<T extends DataSourceItem> {
                 w.onDataSourceItemMoved(ex, i, index);
             }
         } else {
-            console.warn('Trying to move non-existent item');
+            throw Error('Trying to move non-existent item');
         }
     }
 

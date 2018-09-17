@@ -173,7 +173,7 @@ export class ConversationEngine implements MessageSendHandler {
                 let d = new Date(parseInt(prevDate, 10));
                 dsItems.push({
                     type: 'date',
-                    key: 'date-' + d.getFullYear() + d.getMonth() + d.getDay(),
+                    key: 'date-' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
                     date: d.getDate(),
                     month: d.getMonth(),
                     year: d.getFullYear()
@@ -188,7 +188,7 @@ export class ConversationEngine implements MessageSendHandler {
             let d = new Date(parseInt(prevDate, 10));
             dsItems.push({
                 type: 'date',
-                key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
+                key: 'date-' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
                 date: d.getDate(),
                 month: d.getMonth(),
                 year: d.getFullYear()
