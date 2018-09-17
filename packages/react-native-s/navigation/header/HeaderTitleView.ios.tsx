@@ -75,19 +75,19 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                 <SBackButton onPress={this.props.manager.pop} />
                             </View>
                             <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
-                                {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.accentColor }]}>{v.config.title}</Text>}
+                                {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]}>{v.config.title}</Text>}
                                 {/* {!v.config.titleView && v.config. && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>} */}
                                 {v.config.titleView && v.config.titleView()}
                             </SAnimated.View>
                             <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
-                                {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render()}</View>))}
+                                {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                             </View>
                         </View>
                     </SAnimated.View>
                     {(v.config.appearance === 'large' || !v.config.appearance) && (
                         <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current ? 'box-none' : 'none'}>
-                                <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.accentColor }]}>{v.config.title}</Text>
+                                <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.textColor }]}>{v.config.title}</Text>
                             </SAnimated.View>
                         </View>
                     )}
@@ -119,7 +119,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                                 width: 70 - 15
                                             }}
                                         >
-                                            <Button title="Close" onPress={v.config.searchClosed!!} />
+                                            <Button title="Close" onPress={v.config.searchClosed!!} color={this.props.style.accentColor} />
                                         </SAnimated.View>
                                     </View>
                                 </View>

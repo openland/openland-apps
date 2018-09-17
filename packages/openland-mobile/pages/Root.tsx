@@ -76,7 +76,6 @@ export class Root extends React.Component<NavigationInjectedProps, { state: 'sta
                                         routing={getMessenger().history}
                                         navigationBarStyle={{
                                             backgroundColor: '#fff',
-                                            accentColor: '#000',
                                             isOpaque: Platform.OS === 'ios' ? false : true
                                         }}
                                     />

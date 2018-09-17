@@ -1,10 +1,11 @@
 import { STrackedValue } from '../STrackedValue';
 import { SHeaderAppearance, SHeaderHairline } from '../SHeader';
 import { SAnimatedShadowView } from '../SAnimatedShadowView';
+import { SNavigationViewStyle } from '../SNavigationView';
 
 export interface HeaderButtonDescription {
     id: string;
-    render: () => React.ReactElement<{}>;
+    render: (style: SNavigationViewStyle) => React.ReactElement<{}>;
 }
 
 export interface HeaderConfig {

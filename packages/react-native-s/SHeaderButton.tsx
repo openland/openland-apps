@@ -4,6 +4,7 @@ import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { Platform, Button } from 'react-native';
 import { ActionButtonAndroid } from './navigation/buttons/ActionButtonAndroid';
 import { ActionButtonIOS } from './navigation/buttons/ActionButtonIOS';
+import { SNavigationViewStyle } from './SNavigationView';
 
 export interface FastHeaderButtonDescription {
     id: string;
@@ -20,18 +21,18 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
         }
     }
 
-    private renderButton = () => {
+    private renderButton = (style: SNavigationViewStyle) => {
         if (this.props.title) {
             if (Platform.OS === 'android') {
                 return (
-                    <ActionButtonAndroid title={this.props.title} onPress={this.handlePress} />
+                    <ActionButtonAndroid title={this.props.title} onPress={this.handlePress} tintColor={style.accentColor} />
                 );
             } else if (Platform.OS === 'ios') {
                 return (
-                    <ActionButtonIOS title={this.props.title} icon={this.props.icon} onPress={this.handlePress} />
+                    <ActionButtonIOS title={this.props.title} icon={this.props.icon} tintColor={style.accentColor} onPress={this.handlePress} />
                 );
             }
-            return (<Button color={'#000'} onPress={this.handlePress} title={this.props.title} />);
+            return (<Button color={style.accentColor} onPress={this.handlePress} title={this.props.title} />);
         } else {
             return (
                 <>
