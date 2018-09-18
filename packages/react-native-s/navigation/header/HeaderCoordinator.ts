@@ -12,12 +12,18 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export class HeaderCoordinator {
 
-    private backOpacity = new SAnimatedProperty('header-back', 'opacity', 1);
-    private backgroundTranslate = new SAnimatedProperty('header-background', 'translateY', -SCREEN_HEIGHT);
-    private hairline = new SAnimatedShadowView('header-hairline');
+    private backOpacity: SAnimatedProperty;
+    private backgroundTranslate: SAnimatedProperty;
+    private hairline: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
     isInTransition = false;
     state?: NavigationState;
+
+    constructor(key: string) {
+        this.backOpacity = new SAnimatedProperty('header-back-' + key, 'opacity', 1);
+        this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -SCREEN_HEIGHT);
+        this.hairline = new SAnimatedShadowView('header-hairline-' + key);
+    }
 
     setInitialState = (state: NavigationState) => {
         this.state = state;

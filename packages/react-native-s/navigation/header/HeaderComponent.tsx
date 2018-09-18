@@ -18,41 +18,18 @@ export interface HeaderComponentProps {
     pages: HeaderPage[];
 }
 
-const styles = StyleSheet.create({
-    title: {
-        color: '#000',
-        width: '100%',
-        textAlignVertical: 'center',
-        textAlign: 'center',
-        fontSize: 17,
-        fontWeight: '600',
-        lineHeight: 44
-    } as TextStyle,
-    titleLarge: {
-        color: '#000',
-        width: '100%',
-        textAlign: 'left',
-        textAlignVertical: 'center',
-        fontSize: 34,
-        fontWeight: 'bold',
-        lineHeight: 52,
-        paddingLeft: 15,
-        paddingRight: 15
-    } as TextStyle
-});
-
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
     render() {
         return (
             <>
                 {/* Background and Hairline */}
-                <SAnimated.View name="header-background" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
+                <SAnimated.View name={'header-background-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
                     {this.props.style.isOpaque && (<View style={{ width: '100%', height: Platform.OS === 'ios' ? SCREEN_HEIGHT : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, backgroundColor: this.props.style.backgroundColor }} />)}
                     {!this.props.style.isOpaque && (<SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? SCREEN_HEIGHT : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} />)}
 
                 </SAnimated.View>
-                <SAnimated.View name="header-hairline" style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
+                <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
                     <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: 1 }} />
                 </SAnimated.View>
                 <View
@@ -65,7 +42,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                     }}
                     pointerEvents={(!!this.props.navigateFrom || !!this.props.navigateTo) ? 'none' : 'box-none'}
                 >
-                    <SAnimated.View name="header-back" style={{ zIndex: 100, width: 100 }}>
+                    <SAnimated.View name={'header-back-' + this.props.manager.key} style={{ zIndex: 100, width: 100 }}>
                         <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />
                     </SAnimated.View>
 

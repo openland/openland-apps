@@ -3,6 +3,7 @@ import { NavigationState } from './NavigationState';
 import { NavigationPage } from './NavigationPage';
 import { SRoutes } from '../SRoutes';
 import { PresentationManager } from './PresentationManager';
+import { randomKey } from '../utils/randomKey';
 
 export interface NavigationManagerListener {
     onPushed(page: NavigationPage, state: NavigationState): void;
@@ -10,10 +11,11 @@ export interface NavigationManagerListener {
 }
 
 export class NavigationManager {
+    readonly key = randomKey();
     readonly routes: SRoutes;
     readonly parent?: NavigationManager;
     presentationManager?: PresentationManager;
-    
+
     private state: NavigationState;
     private watchers: NavigationManagerListener[] = [];
     private locksCount = 0;
@@ -44,6 +46,10 @@ export class NavigationManager {
             return;
         }
         if (this.state.history.length <= 1) {
+            if (this.parent && this.parent.presentationManager) {
+                this.parent.presentationManager.dismiss();
+                return true;
+            }
             return false;
         }
         let removed = this.state.history[this.state.history.length - 1];

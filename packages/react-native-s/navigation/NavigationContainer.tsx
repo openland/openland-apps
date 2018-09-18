@@ -58,11 +58,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private swipeLocker?: (() => void);
     private swipeCurrentKey?: string;
     private swipePrevKey?: string;
-    private headerCoordinator = new HeaderCoordinator();
+    private headerCoordinator: HeaderCoordinator;
 
     constructor(props: NavigationContainerProps) {
         super(props);
 
+        this.headerCoordinator = new HeaderCoordinator(props.manager.key);
         this.currentHistory = props.manager.getState();
         let h = this.currentHistory.history;
         this.routes = h;
@@ -309,12 +310,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     }
 
     panResponder = PanResponder.create({
-
-        onPanResponderStart: () => {
-            console.log('start');
-        },
         onPanResponderGrant: () => {
-            console.log('grant');
             Keyboard.dismiss();
             this.swipeCurrentKey = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             this.swipePrevKey = this.currentHistory.history[this.currentHistory.history.length - 2].key;
@@ -325,12 +321,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.headerCoordinator.onSwipeStarted(this.currentHistory);
         },
         onMoveShouldSetPanResponder: (event, gesture) => {
-            let res = !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
-            console.log('shouldSet:' + res);
-            return res;
+            return !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
         },
         onPanResponderMove: (event, gesture) => {
-            console.log('move');
             let dx = gesture.dx;
             if (dx < 0) {
                 dx = 0;
@@ -345,7 +338,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
-            console.log('release');
             let dx = gesture.dx;
             if (dx > 0) {
                 // SAnimated.beginTransaction();
