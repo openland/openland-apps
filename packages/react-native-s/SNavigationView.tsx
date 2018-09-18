@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, BackHandler } from 'react-native';
+import { View, BackHandler, Dimensions } from 'react-native';
 import { SRouting } from './SRouting';
 import { NavigationContainer } from './navigation/NavigationContainer';
 import { PresentationManager } from './navigation/PresentationManager';
@@ -33,16 +33,33 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
     }
 
     private handlePresented = (manager: NavigationManager) => {
+        let unlock1 = this.props.routing.navigationManager.beginLock();
+        let unlock2 = manager.beginLock();
+        SAnimated.beginTransaction();
         SAnimated.spring('presented-' + this.key, {
             property: 'translateY',
-            from: 500,
+            from: Dimensions.get('window').height,
             to: 0
+        });
+        SAnimated.commitTransaction(() => {
+            unlock1();
+            unlock2();
         });
         this.setState({ presented: manager });
     }
 
     private handleDismissed = () => {
-        this.setState({ presented: undefined });
+        let unlock1 = this.props.routing.navigationManager.beginLock();
+        SAnimated.beginTransaction();
+        SAnimated.spring('presented-' + this.key, {
+            property: 'translateY',
+            from: 0,
+            to: Dimensions.get('window').height
+        });
+        SAnimated.commitTransaction(() => {
+            unlock1();
+            this.setState({ presented: undefined });
+        });
     }
 
     componentDidMount() {

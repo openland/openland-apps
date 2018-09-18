@@ -16,10 +16,12 @@ export class HeaderCoordinator {
     private backgroundTranslate: SAnimatedProperty;
     private hairline: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
+    private isModal: boolean;
     isInTransition = false;
     state?: NavigationState;
 
-    constructor(key: string) {
+    constructor(key: string, isModal: boolean) {
+        this.isModal = isModal;
         this.backOpacity = new SAnimatedProperty('header-back-' + key, 'opacity', 1);
         this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -SCREEN_HEIGHT);
         this.hairline = new SAnimatedShadowView('header-hairline-' + key);
@@ -64,12 +66,14 @@ export class HeaderCoordinator {
     _updateState = (state: NavigationState, progress: number) => {
 
         // Back Button
-        if (state.history.length === 1) {
-            this.backOpacity.value = -0.3;
-        } else if (state.history.length === 2) {
-            this.backOpacity.value = 1.0 - Math.abs(progress) * 1.3;
-        } else {
-            this.backOpacity.value = 1;
+        if (!this.isModal) {
+            if (state.history.length === 1) {
+                this.backOpacity.value = -0.3;
+            } else if (state.history.length === 2) {
+                this.backOpacity.value = 1.0 - Math.abs(progress) * 1.3;
+            } else {
+                this.backOpacity.value = 1;
+            }
         }
 
         // Background

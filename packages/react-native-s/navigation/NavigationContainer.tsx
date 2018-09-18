@@ -63,7 +63,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     constructor(props: NavigationContainerProps) {
         super(props);
 
-        this.headerCoordinator = new HeaderCoordinator(props.manager.key);
+        this.headerCoordinator = new HeaderCoordinator(props.manager.key, !!props.manager.parent);
         this.currentHistory = props.manager.getState();
         let h = this.currentHistory.history;
         this.routes = h;
