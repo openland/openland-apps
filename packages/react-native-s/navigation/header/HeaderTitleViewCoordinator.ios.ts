@@ -19,6 +19,7 @@ export class HeaderTitleViewCoordinator {
     private headerSmallView: SAnimatedShadowView;
     private headerView: SAnimatedShadowView;
     private titleView: SAnimatedShadowView;
+    private rightView: SAnimatedShadowView;
     private titleLargeView: SAnimatedShadowView;
     private searchView: SAnimatedShadowView;
     private searchViewContainer: SAnimatedShadowView;
@@ -39,6 +40,7 @@ export class HeaderTitleViewCoordinator {
         this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
         this.headerSmallView = new SAnimatedShadowView('header-small--' + this.key, { opacity: 0 });
         this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0 });
+        this.rightView = new SAnimatedShadowView('header-right--' + this.key, { translateX: SCREEN_WIDTH });
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key);
@@ -163,6 +165,7 @@ export class HeaderTitleViewCoordinator {
 
         // Small header
         this.headerSmallView.opacity = opacitySimple; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
+        this.rightView.opacity = opacityDelayedDouble;
         if (isInSearch) {
             this.headerSmallView.translateX = (progress) * SCREEN_WIDTH;
         } else {
