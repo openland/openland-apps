@@ -47,8 +47,6 @@ const MessagesChart = withMessagesStats((props) => {
 
     let data = [...props.data.messagesSentStats].sort((a, b) => Number(a.date) - Number(b.date)).map(e => ({ count: e.count, date: (props.variables as any)!.trunc === 'week' ? getWeekNumber(new Date(Number(e.date))) : DateFormater(Number(e.date)) }));
 
-    console.warn(props.data.messagesSentStats);
-
     return (
         <LineChart
             width={1000}
