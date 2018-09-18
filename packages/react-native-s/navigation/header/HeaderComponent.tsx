@@ -22,7 +22,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
     render() {
         return (
-            <SAnimated.View name={'header-container-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0, height: Platform.OS === 'ios' ? 0 : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, overflow: 'hidden' }} pointerEvents="box-none">
+            <SAnimated.View name={'header-container-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0, height: SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top + 1, overflow: 'hidden' }} pointerEvents="box-none">
                 {/* Background and Hairline */}
                 <SAnimated.View name={'header-background-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
                     {this.props.style.isOpaque && (<View style={{ width: '100%', height: Platform.OS === 'ios' ? SCREEN_HEIGHT : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, backgroundColor: this.props.style.backgroundColor }} />)}

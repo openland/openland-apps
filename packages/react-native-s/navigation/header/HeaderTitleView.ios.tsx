@@ -124,7 +124,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <SAnimated.View
                                             name={'header-search-button--' + v.page.key}
                                             style={{
-                                                width: 70 - 15
+                                                width: 70 - 15,
                                             }}
                                         >
                                             <Button title="Close" onPress={v.config.searchClosed!!} color={this.props.style.accentColor} />

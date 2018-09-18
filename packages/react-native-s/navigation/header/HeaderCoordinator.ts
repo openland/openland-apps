@@ -87,8 +87,9 @@ export class HeaderCoordinator {
             this.backgroundTranslate.value = v - SCREEN_HEIGHT;
             this.hairline.translateY = v;
 
-            this.container.iosHeight = v + 1;
-            this.container.translateY = v / 2;
+            let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top) + 1;
+            this.container.iosHeight = d;
+            this.container.translateY = d / 2;
 
             let op: number = 0;
             op += Math.abs(1 - progress) * this.resolveHairlineOpacity(state.history[state.history.length - 1].config);
