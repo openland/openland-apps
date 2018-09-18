@@ -15,6 +15,7 @@ export class HeaderCoordinator {
     private backOpacity: SAnimatedProperty;
     private backgroundTranslate: SAnimatedProperty;
     private hairline: SAnimatedShadowView;
+    private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
     private isModal: boolean;
     isInTransition = false;
@@ -25,6 +26,8 @@ export class HeaderCoordinator {
         this.backOpacity = new SAnimatedProperty('header-back-' + key, 'opacity', 1);
         this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -SCREEN_HEIGHT);
         this.hairline = new SAnimatedShadowView('header-hairline-' + key);
+        this.container = new SAnimatedShadowView('header-container-' + key);
+        // this.container.iosHeight = 0;
     }
 
     setInitialState = (state: NavigationState) => {
@@ -83,6 +86,9 @@ export class HeaderCoordinator {
             }
             this.backgroundTranslate.value = v - SCREEN_HEIGHT;
             this.hairline.translateY = v;
+
+            this.container.iosHeight = v + 1;
+            this.container.translateY = v / 2;
 
             let op: number = 0;
             op += Math.abs(1 - progress) * this.resolveHairlineOpacity(state.history[state.history.length - 1].config);
