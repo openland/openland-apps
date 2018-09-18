@@ -8,7 +8,7 @@ import { OrganizationSettigs } from './organizationBase';
 
 const Root = withOrganizationProfile((props) => {
     return (
-        <OrganizationSettigs data={{ organizationProfile: props.data.organizationProfile }} updateOrganizaton={props.updateOrganizaton} router={props.router} />
+        <OrganizationSettigs data={{ organizationProfile: props.data.organizationProfile }} updateOrganizaton={props.updateOrganizaton} router={props.router} hideMembers={true} />
     );
 }) as React.ComponentType<{ refetchVars: { organizationId: string } }>;
 
