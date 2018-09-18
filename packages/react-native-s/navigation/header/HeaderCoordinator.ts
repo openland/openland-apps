@@ -66,14 +66,12 @@ export class HeaderCoordinator {
     _updateState = (state: NavigationState, progress: number) => {
 
         // Back Button
-        if (!this.isModal) {
-            if (state.history.length === 1) {
-                this.backOpacity.value = -0.3;
-            } else if (state.history.length === 2) {
-                this.backOpacity.value = 1.0 - Math.abs(progress) * 1.3;
-            } else {
-                this.backOpacity.value = 1;
-            }
+        if (state.history.length === 1) {
+            this.backOpacity.value = -0.3;
+        } else if (state.history.length === 2) {
+            this.backOpacity.value = 1.0 - Math.abs(progress) * 1.3;
+        } else {
+            this.backOpacity.value = 1;
         }
 
         // Background

@@ -42,8 +42,10 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                     }}
                     pointerEvents={(!!this.props.navigateFrom || !!this.props.navigateTo) ? 'none' : 'box-none'}
                 >
-                    <SAnimated.View name={'header-back-' + this.props.manager.key} style={{ zIndex: 100, width: 100 }}>
-                        <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />
+                    <SAnimated.View name={'header-back-' + this.props.manager.key} style={{ zIndex: 100, width: 100 }} pointerEvents={'box-none'}>
+                        <View pointerEvents={this.props.pages.length === 1 ? 'none' : 'box-none'}>
+                            <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />
+                        </View>
                     </SAnimated.View>
 
                     {this.props.pages.map((v) => (
