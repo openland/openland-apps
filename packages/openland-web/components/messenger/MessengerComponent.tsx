@@ -253,11 +253,6 @@ const ChannelTab = Glamorous(XLink)({
     }
 });
 
-const AvatarUpload = Glamorous(XAvatarUpload)({
-    width: 96,
-    height: 96,
-});
-
 export const ChannelEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
@@ -300,7 +295,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
         >
             <XVertical>
                 <XHorizontal>
-                    <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                    <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                     <XVertical flexGrow={1}>
                         <XInput field="input.title" placeholder="Title" color="primary-sky-blue" size="r-default" />
                         <XInput field="input.description" placeholder="Short Description" color="primary-sky-blue" size="r-default" />
@@ -342,7 +337,7 @@ export const ChatEditComponent = withAlterChat((props) => {
             }}
         >
             <XHorizontal>
-                <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                 <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default" />
             </XHorizontal>
         </XModalForm>

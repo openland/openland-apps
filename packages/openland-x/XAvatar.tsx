@@ -142,7 +142,12 @@ const AvatarBehaviour = [
         border: props.avatarBorder ? props.avatarBorder : (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
         cursor: (props as any).enabled === false ? 'default' : 'pointer',
         src: props.src,
-        flexShrink: 0
+        flexShrink: 0,
+
+        '& img': {
+            marginTop: (props.avatarBorde || (props as any).avatarStyle !== 'organization') ? -1 : 0,
+            marginLeft: (props.avatarBorde || (props as any).avatarStyle !== 'organization') ? -1 : 0,
+        }
     }),
     (props: any) => applyFlex(props),
     (props: any) => ({

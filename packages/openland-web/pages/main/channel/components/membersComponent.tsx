@@ -185,7 +185,6 @@ const RemoveMemberModal = withConversationKick((props) => {
     if (!member) {
         return null;
     }
-    console.warn(member);
     return (
         <XModalForm
             submitProps={{
@@ -235,7 +234,6 @@ class ChannelMembersComponentInner extends React.Component<{
             return <XLoader loading={true} />;
         }
 
-        console.warn(this.props.data.members);
         let requests = this.props.data.members.filter(m => m.status === 'requested');
         let members = this.props.data.members.filter(m => m.status === 'member');
 

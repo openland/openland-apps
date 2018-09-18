@@ -4,40 +4,52 @@ import Glamorous from 'glamorous';
 import { XIcon } from '../XIcon';
 import { XCloudImage } from '../XCloudImage';
 import { XLoader } from '../XLoader';
+import { styleResolver } from 'openland-x-utils/styleResolver';
 
 export interface XAvatarUploadBasicProps {
     placeholder?: { add: any, change: any };
     file?: UploadedFile | null;
     onChanged?: (file: UploadedFile | null) => void;
-    size?: 'normal' | 'large';
+    size?: 'small' | 'normal' | 'large';
     initialUrl?: string | null;
     cropParams?: string;
 }
 
-const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'normal' | 'large' }>((props) => ({
-    position: 'relative',
-    width: props.avatarSize === 'large' ? 240 : 160,
-    height: props.avatarSize === 'large' ? 240 : 160,
-
-    backgroundColor: '#ffffff',
-    overflow: 'hidden',
-
-    borderRadius: 12,
-    border: '1px solid rgba(220, 222, 228, 0.45)',
-
-    cursor: 'pointer',
-
-    '&:hover': {
-        border: '1px solid #45a6ff'
+let DrowAreaSize = styleResolver({
+    'small': {
+        width: 96,
+        height: 96
     },
+    'normal': {
+        width: 160,
+        height: 160
+    },
+    'large': {
+        width: 240,
+        height: 240
+    },
+});
 
-    display: 'flex',
-    flexDirection: 'column',
+const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'small' | 'normal' | 'large' }>([
+    {
+        position: 'relative',
+        backgroundColor: '#ffffff',
+        overflow: 'hidden',
+        borderRadius: 12,
+        border: '1px solid rgba(220, 222, 228, 0.45)',
+        cursor: 'pointer',
 
-    justifyContent: 'center',
-    alignItems: 'stretch',
+        '&:hover': {
+            border: '1px solid #45a6ff'
+        },
 
-}));
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+    },
+    (props) => DrowAreaSize(props.avatarSize || 'normal'),
+]);
 
 const AvatarImage = Glamorous(XCloudImage)({
     position: 'absolute',
@@ -83,11 +95,22 @@ function prepareSrc(uuid: string, crop: XImageCrop | null) {
     return res;
 }
 
-class AvatarRender extends React.PureComponent<
-    XFileUploadRenderProps & { placeholder?: { add: any, change: any }, size?: 'normal' | 'large'; },
-    { srcLoading: boolean }> {
+interface AvatarRenderProps extends XFileUploadRenderProps {
+    placeholder?: {
+        add: any,
+        change: any
+    };
+    size?: 'small' | 'normal' | 'large';
+}
 
-    constructor(props: XFileUploadRenderProps & { placeholder?: { add: any, change: any }, size?: 'normal' | 'large'; }) {
+let AvatarImageSize = {
+    'small': 96,
+    'normal': 159,
+    'large': 241,
+};
+
+class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: boolean }> {
+    constructor(props: AvatarRenderProps) {
         super(props);
         this.state = { srcLoading: false };
         // if (props.uuid) {
@@ -121,8 +144,8 @@ class AvatarRender extends React.PureComponent<
                 className={(this.props as any).className}
             >
                 {hasImage && <AvatarImage
-                    width={this.props.size === 'large' ? 241 : 159}
-                    height={this.props.size === 'large' ? 241 : 159}
+                    width={AvatarImageSize[this.props.size || 'normal']}
+                    height={AvatarImageSize[this.props.size || 'normal']}
                     srcCloud={prepareSrc(this.props.file!!.uuid, this.props.file!!.crop)}
                     resize={isFreeCrop ? undefined : 'fill'}
                     onLoad={this.handleOnLoad}
