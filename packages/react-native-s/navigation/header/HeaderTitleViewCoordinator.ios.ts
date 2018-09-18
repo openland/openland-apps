@@ -35,8 +35,8 @@ export class HeaderTitleViewCoordinator {
         this.page = page;
         this.coordinator = coordinator;
         this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
-        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 1 });
-        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 1 });
+        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0 });
+        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0 });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
