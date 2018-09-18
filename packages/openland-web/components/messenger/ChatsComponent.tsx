@@ -338,7 +338,7 @@ const ExploreChannels = Glamorous(XMenuItem)({
     paddingRight: 13,
     paddingTop: 1,
     paddingBottom: 0,
-    backgroundColor: '#F3F5F6',
+    backgroundColor: '#f0f2f4',
     color: '#5c6a81',
     fontWeight: 600,
     letterSpacing: -0.1,
@@ -521,15 +521,6 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     onFocus={this.inputFocusHandler}
                 />
 
-                {search && (
-                    <SearchChats
-                        variables={{ query: this.state.query!! }}
-                        onSelect={this.onSelect}
-                        itemsCount={this.itemsCount}
-                        selectedItem={this.state.select}
-                        allowSelection={this.state.allowShortKeys}
-                    />
-                )}
                 {!search && (
                     <ExploreChannels path={'/mail/channels'}>
                         <XHorizontal alignItems="center" justifyContent="space-between">
@@ -538,25 +529,37 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                         </XHorizontal>
                     </ExploreChannels>
                 )}
-                {!search && this.props.data && this.props.data.chats &&
-                    this.props.data.chats.conversations.map((i, j) => (
-                        <ConversationComponent
-                            key={i.id}
-                            id={i.id}
+
+                <XScrollView height="100%">
+                    {search && (
+                        <SearchChats
+                            variables={{ query: this.state.query!! }}
                             onSelect={this.onSelect}
-                            flexibleId={i.flexibleId}
-                            typename={i.__typename}
-                            title={i.title}
-                            photos={i.photos}
-                            photo={(i as any).photo}
-                            topMessage={i.topMessage}
-                            unreadCount={i.unreadCount}
-                            settings={i.settings}
-                            selectedItem={this.state.select === j}
+                            itemsCount={this.itemsCount}
+                            selectedItem={this.state.select}
                             allowSelection={this.state.allowShortKeys}
                         />
-                    ))
-                }
+                    )}
+                    {!search && this.props.data && this.props.data.chats &&
+                        this.props.data.chats.conversations.map((i, j) => (
+                            <ConversationComponent
+                                key={i.id}
+                                id={i.id}
+                                onSelect={this.onSelect}
+                                flexibleId={i.flexibleId}
+                                typename={i.__typename}
+                                title={i.title}
+                                photos={i.photos}
+                                photo={(i as any).photo}
+                                topMessage={i.topMessage}
+                                unreadCount={i.unreadCount}
+                                settings={i.settings}
+                                selectedItem={this.state.select === j}
+                                allowSelection={this.state.allowShortKeys}
+                            />
+                        ))
+                    }
+                </XScrollView>
             </XVertical>
         );
     }
@@ -564,8 +567,6 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
 
 export const ChatsComponent = withChatsAll(withRouter((props) => {
     return (
-        <XScrollView height="100%">
-            <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} router={props.router} />
-        </XScrollView>
+        <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} router={props.router} />
     );
 })) as React.ComponentType<{ emptyState: boolean }>;
