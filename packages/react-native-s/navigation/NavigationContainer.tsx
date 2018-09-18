@@ -352,7 +352,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     let progress = dx / SCREEN_WIDTH;
 
                     // Move back
-                    let duration = Math.max(0.05, Math.min(0.2, Math.abs(-SCREEN_WIDTH / 3 + dx / 3) / Math.abs(gesture.vx * SCREEN_WIDTH)));
+                    let duration = Math.max(0.05, Math.min(0.2, Math.abs(dx) / Math.abs(SCREEN_WIDTH)));
                     SAnimated.beginTransaction();
                     SAnimated.setDuration(duration);
                     SAnimated.setPropertyAnimator((name, prop, from, to) => {

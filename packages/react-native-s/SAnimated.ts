@@ -237,8 +237,6 @@ class SAnimatedImpl {
         if (!this._inTransaction) {
             return;
         }
-        this._inTransaction = false;
-        this._transactionDuration = 0.25;
 
         if (this._pendingAnimations.length > 0 || this._pendingSetters.length > 0) {
             let transactionKey: string | undefined = undefined;
@@ -257,6 +255,9 @@ class SAnimatedImpl {
                 }
             }
         }
+
+        this._inTransaction = false;
+        this._transactionDuration = 0.25;
         this._propertyAnimator = undefined;
     }
 
