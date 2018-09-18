@@ -529,7 +529,7 @@ const MenuView = Glamorous(XScrollView)({
     width: 278,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#FAFAFC',
+    backgroundColor: '#ffffff',
     // backgroundColor: 'transparent',
     // position: 'sticky',
     // top: 0,
@@ -1128,7 +1128,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                     {menu}
                 </NavigationWrapper>
                 <ContentView
-                    marginLeft={menu !== undefined ? 350 : 64}
+                    marginLeft={menu !== undefined ? 342 : 64}
                     innerRef={this.handleContentRef}
                 >
                     {content}
