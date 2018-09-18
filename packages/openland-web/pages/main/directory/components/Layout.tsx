@@ -16,8 +16,8 @@ export const RootWrapper = Glamorous.div({
 export const Sidebar = Glamorous.div({
     width: 300,
     height: '100%',
-    background: '#f9fafb',
-    borderRight: '1px solid rgba(216, 218, 229, 0.7)'
+    borderRight: '1px solid rgba(216, 218, 229, 0.7)',
+    backgroundColor: '#ffffff',
 });
 
 export const SidebarHeader = Glamorous.div({
