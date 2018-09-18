@@ -26,7 +26,7 @@ export const SidebarHeader = Glamorous.div({
     lineHeight: '24px',
     letterSpacing: -0.5,
     color: '#334562',
-    padding: '16px 16px 19px'
+    padding: '16px 16px 20px'
 });
 
 export const SidebarItemWrapper = Glamorous.div<{ active?: boolean }>([
