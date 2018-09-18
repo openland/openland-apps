@@ -2,6 +2,8 @@ import * as React from 'react';
 import { View, BackHandler } from 'react-native';
 import { SRouting } from './SRouting';
 import { NavigationContainer } from './navigation/NavigationContainer';
+import { PresentationManager } from './navigation/PresentationManager';
+import { NavigationManager } from './navigation/NavigationManager';
 
 export interface SNavigationViewProps {
     routing: SRouting;
@@ -18,11 +20,20 @@ export interface SNavigationViewStyle {
 export class SNavigationView extends React.PureComponent<SNavigationViewProps> {
 
     private routing: SRouting;
+    private presentationManager: PresentationManager;
 
     constructor(props: SNavigationViewProps) {
         super(props);
-
+        this.presentationManager = new PresentationManager(this.props.routing.navigationManager, this.handlePresented, this.handleDismissed);
         this.routing = props.routing;
+    }
+
+    private handlePresented = (manager: NavigationManager) => {
+        //
+    }
+
+    private handleDismissed = () => {
+        //
     }
 
     componentDidMount() {

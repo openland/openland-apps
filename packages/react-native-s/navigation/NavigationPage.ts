@@ -29,6 +29,14 @@ export class NavigationPage {
             index,
             key,
             params: params || {},
+            dismiss: () => {
+                //  
+            },
+            present: (destRoute: string, destParams?: any) => {
+                if (manager.presentationManager) {
+                    manager.presentationManager.present(destRoute, destParams);
+                }
+            },
             push: (destRoute: string, destParams?: any) => {
                 manager.push(destRoute, destParams);
             },

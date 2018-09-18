@@ -2,6 +2,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { NavigationState } from './NavigationState';
 import { NavigationPage } from './NavigationPage';
 import { SRoutes } from '../SRoutes';
+import { PresentationManager } from './PresentationManager';
 
 export interface NavigationManagerListener {
     onPushed(page: NavigationPage, state: NavigationState): void;
@@ -10,13 +11,17 @@ export interface NavigationManagerListener {
 
 export class NavigationManager {
     readonly routes: SRoutes;
+    readonly parent?: NavigationManager;
+    presentationManager?: PresentationManager;
+    
     private state: NavigationState;
     private watchers: NavigationManagerListener[] = [];
     private locksCount = 0;
 
-    constructor(routes: SRoutes) {
+    constructor(routes: SRoutes, route?: string, params?: any, parent?: NavigationManager) {
+        this.parent = parent;
         this.routes = routes;
-        this.state = new NavigationState([new NavigationPage(this, 0, routes.defaultRoute)]);
+        this.state = new NavigationState([new NavigationPage(this, 0, route || routes.defaultRoute, params)]);
     }
 
     getState() {
@@ -91,5 +96,9 @@ export class NavigationManager {
 
     resolvePath(route: string) {
         return this.routes.resolvePath(route);
+    }
+
+    setPresentationManager(manager: PresentationManager) {
+        this.presentationManager = manager;
     }
 }
