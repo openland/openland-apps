@@ -976,7 +976,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
 
                                 )}
                             >
-                                <NavigatorItem path="/directory">
+                                <NavigatorItem path="/directory" activateForSubpaths={true}>
                                     <DirecoryIcon />
                                 </NavigatorItem>
                             </XPopper>
