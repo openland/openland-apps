@@ -15,6 +15,7 @@ export const TextDirectory = {
 
     buttonViewProfile: 'View profile',
     buttonEdit: 'Edit',
+    buttonCreateChannel: 'Create channel',
     buttonSuperEdit : 'Super edit',
     buttonFollow: 'Follow',
     buttonFollowing: 'Following',

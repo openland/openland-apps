@@ -122,6 +122,10 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                                     <>
                                         <XMenuItem style="primary-sky-blue" href={'/directory/c/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
+                                        {this.props.item.isMine && (
+                                            <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
+                                        )}
+
                                         <XWithRole role="admin" orgPermission={this.props.item.id}>
                                             <XMenuItem style="primary-sky-blue" href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
                                         </XWithRole>
