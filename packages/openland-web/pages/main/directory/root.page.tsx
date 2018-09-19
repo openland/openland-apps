@@ -248,7 +248,7 @@ const CategoryPicker = withTopCategories((props) => (
         title={(props as any).title}
         conditionType={(props as any).conditionType}
         onPick={(props as any).onPick}
-        options={props.data.topCategories.map(c => ({ label: c, value: c }))}
+        options={[...props.data.topCategories].reverse().map(c => ({ label: c, value: c }))}
         onShow={(props as any).onShow}
         shown={(props as any).shown}
         noResultsText={(props as any).noResultsText}
