@@ -19,6 +19,8 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
+import PhotoIcon from './components/icons/ic-photo.svg';
+import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
 
 const ItemContainer = Glamorous.a({
@@ -42,6 +44,10 @@ const ItemContainer = Glamorous.a({
         '& .title, .date, .content': {
             color: '#1790ff !important',
             opacity: '1 !important'
+        },
+        '& .content svg *': {
+            fill: '#1790ff !important',
+            opacity: '0.5 !important'
         }
     },
     '&:hover, &:focus': {
@@ -53,6 +59,10 @@ const ItemContainer = Glamorous.a({
         '& .title, .date, .content': {
             color: '#1790ff !important',
             opacity: '1 !important'
+        },
+        '& .content svg *': {
+            fill: '#1790ff !important',
+            opacity: '0.5 !important'
         }
     }
 });
@@ -113,8 +123,16 @@ const Date = Glamorous.div({
 const Content = Glamorous.div<{ counterColor?: string }>(props => ({
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
-
+    alignItems: 'center',
+    '& svg': {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        margin: '1px 5px -1px 1px',
+        '&.document': {
+            marginTop: 0,
+            marginBottom: 0
+        }
+    },
 }));
 
 const ContentText = Glamorous.div({
@@ -164,7 +182,12 @@ interface ConversationComponentProps {
         sender: {
             id: string,
             firstName: string
-        }
+        },
+        file: string | null,
+        fileMetadata:  {
+          name: string,
+          isImage: boolean,
+        } | null,
     } | null;
     unreadCount: number;
     settings: {
@@ -230,8 +253,11 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                             {props.topMessage && props.topMessage.message && (
                                 <span>{senderName}: {props.topMessage.message}</span>
                             )}
-                            {props.topMessage && !props.topMessage.message && (
-                                <span>{senderName}: File</span>
+                            {props.topMessage && !props.topMessage.message && props.topMessage.file && props.topMessage.fileMetadata!.isImage && (
+                                <span>{senderName}: <PhotoIcon />Image</span>
+                            )}
+                            {props.topMessage && !props.topMessage.message && props.topMessage.file && !props.topMessage.fileMetadata!.isImage && (
+                                <span>{senderName}: <FileIcon className="document" />Document</span>
                             )}
                         </ContentText>
                         {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
