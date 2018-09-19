@@ -3992,6 +3992,17 @@ export interface MyOrganizationQuery {
         role: string | null,
         linkedin: string | null,
         twitter: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
       },
     } >,
     organizationType: Array< string > | null,
@@ -5332,6 +5343,7 @@ export interface OrganizationMembersQuery {
 export interface OrganizationChangeMemberRoleMutationVariables {
   memberId: string,
   newRole: OrganizationMemberRole,
+  organizationId: string,
 };
 
 export interface OrganizationChangeMemberRoleMutation {
@@ -5340,6 +5352,7 @@ export interface OrganizationChangeMemberRoleMutation {
 
 export interface OrganizationRemoveMemberMutationVariables {
   memberId: string,
+  organizationId: string,
 };
 
 export interface OrganizationRemoveMemberMutation {
@@ -8184,6 +8197,17 @@ export interface OrganizationFullFragment {
       role: string | null,
       linkedin: string | null,
       twitter: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     },
   } >,
   organizationType: Array< string > | null,

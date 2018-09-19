@@ -189,6 +189,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
                 await props.remove({
                     variables: {
                         memberId: member.user.id,
+                        organizationId: (props as any).orgId
                     }
                 });
 
@@ -203,7 +204,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
             </XHorizontal>
         </XModalForm>
     );
-}) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string, organizationId: string } }>;
+}) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string, organizationId: string } }>;
 
 const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
     let member = (props as any).members.filter((m: any) => m.inviteId === props.router.query.remove || '')[0];
@@ -256,7 +257,8 @@ export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((pro
                 await props.changeRole({
                     variables: {
                         memberId: member.user.id,
-                        newRole: data.role as OrganizationMemberRole
+                        newRole: data.role as OrganizationMemberRole,
+                        organizationId: (props as any).orgId
                     }
                 });
 
@@ -276,7 +278,7 @@ export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((pro
             </XVertical>
         </XModalForm>
     );
-})) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string } }>;
+})) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string } }>;
 
 const SwitchMemberIsContact = withAlterMemberIsContact((props) => {
     console.warn(props);
@@ -376,8 +378,8 @@ const OrgMembers = withOrganizationMembers((props) => {
             {
                 props.data.alphaOrganizationMembers && (
                     <>
-                        <PermissionsModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
-                        <RemoveJoinedModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId, organizationId: props.variables && (props.variables as any).orgId }} />
+                        <PermissionsModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} orgId={(props.variables as any).orgId} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                        <RemoveJoinedModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} orgId={(props.variables as any).orgId} refetchVars={{ orgId: props.variables && (props.variables as any).orgId, organizationId: props.variables && (props.variables as any).orgId }} />
                         <RemoveInviteddModal members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
                     </>
                 )

@@ -30,7 +30,6 @@ class DialogsSearch extends React.Component<{ query: string }> {
                                             <ASView style={{ height: 100 }}>
                                                 <DialogItemViewAsync item={item} onPress={() => r!!.push('Conversation', { id: item.key })} />
                                             </ASView>
-                                            // <View><Text>{item.key}</Text></View>
                                         ))}
                                     </View>
 

@@ -652,8 +652,8 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                     })}
                 </>
             )}
-            <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
-            <PermissionsModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
+            <RemoveJoinedModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
+            <PermissionsModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id }} />
             <UpdateUserProfileModal members={organization.members} />
         </>
     );

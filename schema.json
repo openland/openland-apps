@@ -4842,6 +4842,30 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "phones",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              }
             }
           ],
           "inputFields": null,
@@ -19346,6 +19370,78 @@
                 {
                   "defaultValue": null,
                   "description": "",
+                  "name": "phoneNumber",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                }
+              ],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "alphaPhoneSendCode",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "phoneNumber",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": "",
+                  "name": "code",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              ],
+              "deprecationReason": null,
+              "description": "",
+              "isDeprecated": false,
+              "name": "alphaPhoneVerify",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": "",
                   "name": "hits",
                   "type": {
                     "kind": "NON_NULL",
@@ -20344,11 +20440,15 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
                   }
                 }
               ],
@@ -20399,11 +20499,15 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
                   }
                 }
               ],
@@ -20448,7 +20552,7 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
                     "kind": "SCALAR",
                     "name": "ID",
@@ -20485,7 +20589,7 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
                     "kind": "SCALAR",
                     "name": "ID",
@@ -20512,7 +20616,7 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
                     "kind": "SCALAR",
                     "name": "ID",
@@ -20561,7 +20665,7 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
                     "kind": "SCALAR",
                     "name": "ID",
@@ -20598,7 +20702,7 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
                     "kind": "SCALAR",
                     "name": "ID",
@@ -20625,7 +20729,7 @@
                 {
                   "defaultValue": null,
                   "description": "",
-                  "name": "oid",
+                  "name": "organizationId",
                   "type": {
                     "kind": "SCALAR",
                     "name": "ID",
