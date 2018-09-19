@@ -1,20 +1,18 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { ZQuery } from '../../../components/ZQuery';
-import { UsersQuery } from 'openland-api';
-import { ZListItem } from '../../../components/ZListItem';
-import { ZListItemEdit } from '../../../components/ZListItemEdit';
+import { ChatSearchForComposeMobileQuery } from 'openland-api';
 import { Keyboard } from 'react-native';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { PageProps } from '../../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
-// import { FastHeader } from 'react-native-fast-navigation/FastHeader';
+import { UserView } from '../ProfileGroup';
+import { ZListItemGroup } from '../../../components/ZListItemGroup';
+import { SSearchControler } from 'react-native-s/SSearchController';
+import { SHeader } from 'react-native-s/SHeader';
+import { SRouter } from 'react-native-s/SRouter';
 
-class UserPickerComponent extends React.PureComponent<PageProps, { query: string }> {
-
-    state = {
-        query: ''
-    };
+class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 
     handlePicked = async (id: string) => {
         let action = this.props.router.params.action as (value: string) => any;
@@ -32,21 +30,34 @@ class UserPickerComponent extends React.PureComponent<PageProps, { query: string
 
     render() {
         return (
-            <>
-                {/* <FastHeader title="Add member" /> */}
-                <ZQuery query={UsersQuery} variables={{ query: this.state.query }}>
-                    {(reponse) => (
-                        <SScrollView>
-                            <ZListItemEdit title="Search" value={this.state.query} onChange={(v) => this.setState({ query: v })} />
-                            {reponse.data.items.map((v) => (
-                                <ZListItem key={v.id} text={v.title} onPress={() => this.handlePicked(v.id)} />
+            <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ query: this.props.query, organizations: false, limit: 100 }}>
+                {(reponse) => (
+                    <SScrollView>
+                        <ZListItemGroup>
+                            {reponse.data.items.filter(u => u.__typename === 'User').map((v) => (
+                                <UserView key={v.id} user={v as any} role={(v as any).primaryOrganization ? (v as any).primaryOrganization.name : undefined} onPress={() => this.handlePicked(v.id)} />
                             ))}
-                        </SScrollView>
-                    )}
-                </ZQuery>
+                        </ZListItemGroup>
+
+                    </SScrollView>
+                )}
+            </ZQuery>
+        );
+    }
+}
+class UserPickerComponent extends React.PureComponent<PageProps> {
+
+    render() {
+        let searchRender = <UserSearch query="" router={this.props.router} />;
+        return (
+            <>
+                <SHeader title="Add user" />
+                <SSearchControler searchRender={searchRender} >
+                    {searchRender}
+                </SSearchControler>
             </>
         );
     }
 }
 
-export const UserPicker = withApp(UserPickerComponent, { navigationAppearance: 'small' });
+export const UserPicker = withApp(UserPickerComponent, { navigationAppearance: 'large' });

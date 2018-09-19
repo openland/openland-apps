@@ -16,6 +16,7 @@ export enum OrganizationMemberRole {
 
 export enum EmailFrequency {
   HOUR_1 = "HOUR_1",
+  HOUR_24 = "HOUR_24",
   MIN_15 = "MIN_15",
   NEVER = "NEVER",
 }
@@ -1549,6 +1550,7 @@ export interface ChatSearchForComposeQuery {
 export interface ChatSearchForComposeMobileQueryVariables {
   query: string,
   organizations: boolean,
+  limit?: number | null,
 };
 
 export interface ChatSearchForComposeMobileQuery {

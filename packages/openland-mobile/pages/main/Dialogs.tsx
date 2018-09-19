@@ -88,7 +88,7 @@ class DialogsComponent extends React.Component<PageProps> {
             <>
                 <SHeader title="Messages" />
                 <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
-                <SSearchControler searchRender={DialogsSearch}>
+                <SSearchControler searchRender={<DialogsSearch query="" />}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent dialogs={engine.dialogs} />)}
                     </MobileMessengerContext.Consumer>

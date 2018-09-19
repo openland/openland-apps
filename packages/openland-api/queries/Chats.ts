@@ -261,8 +261,8 @@ export const ChatSearchForComposeQuery = gql`
 `;
 
 export const ChatSearchForComposeMobileQuery = gql`
-    query ChatSearchForComposeMobile($query: String!, $organizations: Boolean!) {
-        items: alphaChatsSearchForCompose(query: $query, organizations: $organizations) {
+    query ChatSearchForComposeMobile($query: String!, $organizations: Boolean!, $limit: Int) {
+        items: alphaChatsSearchForCompose(query: $query, organizations: $organizations, limit: $limit) {
             ... on User {
                 ...UserShort
             }
