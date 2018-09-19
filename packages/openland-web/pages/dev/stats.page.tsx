@@ -38,9 +38,6 @@ function getWeekNumber(d: Date) {
 }
 
 const MessagesChart = withMessagesStats((props) => {
-    if (props.data) {
-        console.warn(props.data);
-    }
     if (!props.data || !props.data.messagesSentStats || !props.variables) {
         return null;
     }
@@ -107,7 +104,6 @@ const AllTime = withChatsStats((props) => (
 ));
 
 export default withApp('Super Organizations', 'super-admin', withSuperCities(withQueryLoader((props) => {
-    console.warn(props);
 
     let header: any = [(<XTable.Cell >{''}</XTable.Cell >), (<XTable.Cell >{'10 w ago'}</XTable.Cell >)];
     let messagesStats: any = [(<XTable.Cell ><XText>Messages</XText></XTable.Cell >)];
