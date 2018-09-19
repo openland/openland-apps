@@ -227,7 +227,7 @@ class ChannelMembersComponentInner extends React.Component<{
     description?: string,
     longDescription?: string,
     orgId: string,
-
+    emptyText: string,
 }> {
     render() {
         if (!this.props.data || !this.props.data.members) {
@@ -266,6 +266,7 @@ class ChannelMembersComponentInner extends React.Component<{
                         smaller={members.length >= 2}
                         channelTitle={(this.props as any).channelTitle}
                         chatId={this.props.channelId}
+                        text={this.props.emptyText}
                     />
                 )}
                 <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
@@ -282,5 +283,6 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         description={(props as any).description}
         longDescription={(props as any).longDescription}
         orgId={(props as any).orgId}
+        emptyText={(props as any).emptyText}
     />
-)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ emptyText: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;

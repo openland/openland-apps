@@ -466,6 +466,15 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             </XHorizontal>
                         )}
 
+                        {props.data.chat.__typename === 'GroupConversation' && (
+                            <XHorizontal separator={14}>
+                                <ChannelTabs>
+                                    <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
+                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
+                                </ChannelTabs>
+                            </XHorizontal>
+                        )}
+
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
@@ -539,6 +548,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         description={props.data.chat.description}
                         longDescription={props.data.chat.longDescription}
                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
+                        emptyText="To grow the community, invite people to this channel"
                     />
                 )}
                  {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
@@ -549,6 +559,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         description={undefined}
                         longDescription={undefined}
                         orgId={''}
+                        emptyText="To grow the community, invite people to this group"
                     />
                 )}
             </XHorizontal>
