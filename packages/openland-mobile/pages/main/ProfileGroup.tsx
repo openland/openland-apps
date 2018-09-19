@@ -17,6 +17,18 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { UserShortFragment } from 'openland-api/Types';
 
+export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void }) => (
+    <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress}>
+        <View paddingTop={12} paddingLeft={15} paddingRight={15}>
+            <XPAvatar size={32} src={props.user.picture} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
+        </View>
+        <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
+            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.user.name}</Text>
+            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.role}</Text>
+        </View>
+    </ZListItemBase>
+);
+
 class ProfileGroupComponent extends React.Component<PageProps> {
 
     handleAddMember = () => {
@@ -97,17 +109,5 @@ class ProfileGroupComponent extends React.Component<PageProps> {
         );
     }
 }
-
-export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void }) => (
-    <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress}>
-        <View paddingTop={12} paddingLeft={15} paddingRight={15}>
-            <XPAvatar size={32} src={props.user.picture} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
-        </View>
-        <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
-            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.user.name}</Text>
-            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.role}</Text>
-        </View>
-    </ZListItemBase>
-);
 
 export const ProfileGroup = withApp(ProfileGroupComponent, { navigationAppearance: 'small-hidden' });
