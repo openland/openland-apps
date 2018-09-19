@@ -15,6 +15,8 @@ class RNSAnimatedView: RCTView {
   private var isRegistered = false
   var sourceSize = CGSize.zero
   var sourceCenter = CGPoint.zero
+  var currentTranslateX: CGFloat = 0.0
+  var currentTranslateY: CGFloat = 0.0
   
   init(manager: RNSAnimatedViewManager) {
     self.manager = manager
@@ -56,7 +58,7 @@ class RNSAnimatedView: RCTView {
 //    let dx = self.sourceCenter.x - self.center.x
 //    self.layer.position.x += dx
 //    self.layer.position.y += dy
-    self.center = sourceCenter
+    self.center = CGPoint(x: self.currentTranslateX + self.sourceCenter.x, y: self.currentTranslateY + self.sourceCenter.y)
     self.bounds = CGRect(origin: CGPoint.zero, size: sourceSize)
   }
   

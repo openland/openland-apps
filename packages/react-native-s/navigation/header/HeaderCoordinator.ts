@@ -138,6 +138,8 @@ export class HeaderCoordinator {
                 res = 1;
             } else if (config.contentOffset) {
                 res = config.contentOffset.offsetValue < 44 ? 0 : 1;
+            } else {
+                res = 0;
             }
         } else if (config.appearance === 'small-hidden') {
             if (config.contentOffset) {

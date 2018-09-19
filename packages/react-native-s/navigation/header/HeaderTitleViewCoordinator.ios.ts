@@ -39,8 +39,8 @@ export class HeaderTitleViewCoordinator {
         this.coordinator = coordinator;
         this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
         this.headerSmallView = new SAnimatedShadowView('header-small--' + this.key, { opacity: 0 });
-        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0 });
-        this.rightView = new SAnimatedShadowView('header-right--' + this.key, { translateX: SCREEN_WIDTH });
+        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
+        this.rightView = new SAnimatedShadowView('header-right--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key);
@@ -158,19 +158,24 @@ export class HeaderTitleViewCoordinator {
         let opacitySimple = (1 - Math.abs(progress)) * (1 - Math.abs(progress));
         let opacityDelayed = (1 - Math.abs(progress) * 2);
         let opacityDelayedDouble = (1 - Math.abs(progress) * 4);
+        let opacityDelayedClamped = opacityDelayed;
+        let opacityDelayedDoubleClamped = opacityDelayed;
+        if (opacityDelayedDoubleClamped < 0) {
+            opacityDelayedDoubleClamped = 0;
+        }
+        if (opacityDelayedDoubleClamped > 1) {
+            opacityDelayedDoubleClamped = 1;
+        }
+        if (opacityDelayedClamped < 0) {
+            opacityDelayedClamped = 0;
+        }
+        if (opacityDelayedClamped > 1) {
+            opacityDelayedClamped = 1;
+        }
         // if (progress > 0.5) {
         //     progress = 0;
         // }
         let isInSearch = this.lastConfig.search && this.lastConfig.searchActive;
-
-        // Small header
-        this.headerSmallView.opacity = opacitySimple; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
-        this.rightView.opacity = opacityDelayedDouble;
-        if (isInSearch) {
-            this.headerSmallView.translateX = (progress) * SCREEN_WIDTH;
-        } else {
-            this.headerSmallView.translateX = (progress) * SCREEN_WIDTH / 2;
-        }
 
         if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
 
@@ -179,7 +184,7 @@ export class HeaderTitleViewCoordinator {
             } else {
                 this.titleLargeView.translateX = 0;
             }
-            this.titleLargeView.opacity = opacityDelayed;
+            this.titleLargeView.opacity = opacityDelayedClamped;
 
             // Content Offset
             // Positive for overscroll
@@ -217,7 +222,7 @@ export class HeaderTitleViewCoordinator {
                     this.searchView.translateY = -contentOffset;
                     this.searchViewContainer.translateY = - Math.abs(progress) * 44;
                 }
-                this.searchView.opacity = opacityDelayedDouble;
+                this.searchView.opacity = opacityDelayedDoubleClamped;
             }
 
             // Search
@@ -282,5 +287,17 @@ export class HeaderTitleViewCoordinator {
             this.titleVisible = true;
             this.titleView.opacity = 1;
         }
+
+        // Small header
+        this.titleView.opacity *= opacityDelayed; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
+        this.rightView.opacity = opacitySimple;
+        if (isInSearch) {
+            this.headerSmallView.translateX = (progress) * SCREEN_WIDTH;
+            this.titleView.translateX = 0;
+        } else {
+            this.headerSmallView.translateX = 0;
+            this.titleView.translateX = (progress) * SCREEN_WIDTH / 2;
+        }
     }
+
 }
