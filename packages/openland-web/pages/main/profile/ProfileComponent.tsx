@@ -170,16 +170,20 @@ const Header = (props: { organizationQuery: OrganizationQuery }) => {
                 </HeaderTabs> */}
             </HeaderInfo>
             <HeaderTools>
-                <XWithRole role="admin" orgPermission={org.id}>
-                    <XButton
-                        size="r-default"
-                        text="Edit profile"
-                        path={'/settings/organization/' + org.id}
-                    />
+                <XWithRole role="super-admin" negate={true}>
+
+                    <XWithRole role="admin" orgPermission={org.id}>
+                        <XButton
+                            size="r-default"
+                            text="Edit profile"
+                            path={'/settings/organization/' + org.id}
+                        />
+                    </XWithRole>
                 </XWithRole>
+
                 <XWithRole role="super-admin">
                     <XHorizontal>
-                        {!org.isMine && < XButton
+                        {< XButton
                             size="r-default"
                             text="Edit profile"
                             path={'/settings/organization/' + org.id}
@@ -373,7 +377,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
             )}
             {hasCategories && (
                 <>
-                    <XSubHeader title="Organization category" counter={org.organizationType ? org.organizationType.length : undefined}>
+                    <XSubHeader title="Categories" counter={org.organizationType ? org.organizationType.length : undefined}>
                         {org.isMine && (
                             <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
@@ -648,7 +652,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                     })}
                 </>
             )}
-            <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
+            <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
             <PermissionsModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
             <UpdateUserProfileModal members={organization.members} />
         </>

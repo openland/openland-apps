@@ -203,7 +203,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
             </XHorizontal>
         </XModalForm>
     );
-}) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string } }>;
+}) as React.ComponentType<{ orgName: string, members: any[], refetchVars: { orgId: string, organizationId: string } }>;
 
 const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
     let member = (props as any).members.filter((m: any) => m.inviteId === props.router.query.remove || '')[0];

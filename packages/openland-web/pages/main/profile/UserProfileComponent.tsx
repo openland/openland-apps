@@ -285,7 +285,7 @@ class ChannelCard extends React.Component<ChannelCardProps> {
             >
                 <ChannelCardInfo>
                     <ChannelCardTitle>{channel.title}</ChannelCardTitle>
-                    <ChannelCardRole>member</ChannelCardRole>
+                    <ChannelCardRole>Member</ChannelCardRole>
                 </ChannelCardInfo>
                 <ChannelCardTools separator={5}>
                     <XButton

@@ -541,6 +541,16 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                     />
                 )}
+                 {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
+                    <ChannelMembersComponent
+                        channelTitle={title}
+                        key={props.data.chat.id + '_members'}
+                        variables={{ channelId: props.data.chat.id }}
+                        description={undefined}
+                        longDescription={undefined}
+                        orgId={''}
+                    />
+                )}
             </XHorizontal>
             {<ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
             {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
