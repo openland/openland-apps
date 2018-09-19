@@ -22,7 +22,8 @@ export class TypingsWatcher {
         [conversationId: string]: {
             [userId: string]: {
                 userName: string,
-                userPic: string | null
+                userPic: string | null,
+                userId: string
             } | undefined
         }
     } = {};
@@ -32,9 +33,9 @@ export class TypingsWatcher {
         }
     } = {};
     private sub?: ZenObservable.Subscription = undefined;
-    private onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null }[] }) => void;
+    private onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => void;
 
-    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null }[] }) => void, currentUserId: string) {
+    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => void, currentuserId: string) {
         this.onChange = onChange;
         let typingSubscription = client.client.subscribe({
             query: SUBSCRIBE_TYPINGS
@@ -42,7 +43,7 @@ export class TypingsWatcher {
 
         this.sub = typingSubscription.subscribe({
             next: (event) => {
-                if (event.data.alphaSubscribeTypings.user.id === currentUserId) {
+                if (event.data.alphaSubscribeTypings.user.id === currentuserId) {
                     return;
                 }
                 let cId: string = event.data.alphaSubscribeTypings.conversation.id;
@@ -53,7 +54,8 @@ export class TypingsWatcher {
                 if (!event.data.alphaSubscribeTypings.cancel) {
                     existing[event.data.alphaSubscribeTypings.user.id] = {
                         userName: event.data.alphaSubscribeTypings.user.name,
-                        userPic: event.data.alphaSubscribeTypings.user.picture
+                        userPic: event.data.alphaSubscribeTypings.user.picture,
+                        userId: event.data.alphaSubscribeTypings.user.id
                     };
                     this.typings[cId] = existing;
 
@@ -77,7 +79,7 @@ export class TypingsWatcher {
     }
 
     renderTypings = (cId: string) => {
-        let usersTyping: { userName: string, userPic: string | null }[] = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic }));
+        let usersTyping: { userName: string, userPic: string | null, userId: string }[] = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic, userId: u!.userId }));
 
         let userNames = usersTyping.map(u => u!.userName);
 
@@ -99,11 +101,11 @@ export class TypingsWatcher {
 }
 
 export class TypingEngine {
-    listeners: ((typing?: string, users?: { userName: string, userPic: string | null }[]) => void)[] = [];
+    listeners: ((typing?: string, users?: { userName: string, userPic: string | null, userId: string }[]) => void)[] = [];
     typing?: string;
-    users?: { userName: string, userPic: string | null }[];
+    users?: { userName: string, userPic: string | null, userId: string }[];
 
-    onTyping = (data?: { typing: string, users: { userName: string, userPic: string | null }[] }) => {
+    onTyping = (data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {
         this.typing = data !== undefined ? data.typing : undefined;
         this.users = data !== undefined ? data.users : undefined;
         for (let l of this.listeners) {
@@ -111,7 +113,7 @@ export class TypingEngine {
         }
     }
 
-    subcribe = (listener: (typing?: string, users?: { userName: string, userPic: string | null }[]) => void) => {
+    subcribe = (listener: (typing?: string, users?: { userName: string, userPic: string | null, userId: string }[]) => void) => {
         this.listeners.push(listener);
         listener(this.typing, this.users);
         return () => {

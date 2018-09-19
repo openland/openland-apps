@@ -3,9 +3,15 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { TypingEngine } from 'openland-engines/messenger/Typings';
 
+interface TypingsUser {
+    userName: string;
+    userPic: string | null;
+    userId: string;
+}
+
 interface TypingContextProps {
     typing?: string;
-    users?: { userName: string, userPic: string | null }[];
+    users?: TypingsUser[];
 }
 
 export const TypingContext = React.createContext<TypingContextProps>({});
@@ -14,14 +20,14 @@ interface TypingsWrapperProps {
     engine: TypingEngine;
 }
 
-class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, users?: { userName: string, userPic: string | null }[] }> {
+class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, users?: TypingsUser[] }> {
     private destructor?: () => void;
     constructor(props: TypingsWrapperProps) {
         super(props);
         this.state = {};
     }
 
-    onTyping = (typing?: string, users?: { userName: string, userPic: string | null }[]) => {
+    onTyping = (typing?: string, users?: TypingsUser[]) => {
         this.setState({
             typing: typing,
             users: users

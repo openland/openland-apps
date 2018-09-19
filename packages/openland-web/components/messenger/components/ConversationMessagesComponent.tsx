@@ -79,6 +79,7 @@ const TypingComponent = (props: { chatId: string }) => (
                                         key={'typing_img_' + j}
                                         style="colorus"
                                         userName={i.userName}
+                                        userId={i.userId}
                                         cloudImageUuid={i.userPic || undefined}
                                     />
                                 ))}

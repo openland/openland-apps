@@ -52,7 +52,7 @@ export class MessengerEngine {
         await this.global.start();
     }
 
-    handleTyping = (conversationId: string, data?: {typing: string, users: { userName: string, userPic: string | null }[]}) => {
+    handleTyping = (conversationId: string, data?: {typing: string, users: { userName: string, userPic: string | null, userId: string }[]}) => {
         this.getTypings(conversationId).onTyping(data);
     }
 
