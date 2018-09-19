@@ -17,7 +17,7 @@ export class HeaderCoordinator {
     private hairline: SAnimatedShadowView;
     private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
-    private isModal: boolean;
+    readonly isModal: boolean;
     isInTransition = false;
     state?: NavigationState;
 
