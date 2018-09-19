@@ -8,11 +8,10 @@ import { withQueryLoader } from '../../components/withQueryLoader';
 import { XText } from 'openland-x/XText';
 import { withChatsStats, withMessagesStats } from '../../api/withChatsStats';
 import { XTable } from 'openland-x/XTable';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { LineChart, XAxis, Line, CartesianGrid, Tooltip, AreaChart, Brush, YAxis, Area } from 'recharts';
 import { DateFormater } from 'openland-x-format/XDate';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const Stats = withChatsStats((props) => (
     <>
@@ -38,7 +37,7 @@ function getWeekNumber(d: Date) {
 }
 
 const MessagesChart = withMessagesStats((props) => {
-    if (!props.data || !props.data.messagesSentStats || !props.variables) {
+    if (!props.data || !props.data.messagesSentStats || !props.variables || !canUseDOM) {
         return null;
     }
 
