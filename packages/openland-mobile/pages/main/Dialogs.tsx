@@ -12,32 +12,65 @@ import { ZQuery } from '../../components/ZQuery';
 import { ChatSearchTextQuery } from 'openland-api';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ASView } from 'react-native-async-view/ASView';
+import { DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
+import { ZLoader } from '../../components/ZLoader';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
         return this.props.query.trim().length > 0 ? (
             <SRouterContext.Consumer>
                 {r => (
-                    <ZQuery query={ChatSearchTextQuery} variables={{ query: this.props.query }}>
-                        {resp => {
-                            let data = resp.data.items.map(d => ({ key: d.flexibleId, title: d.title, type: d.__typename, unread: d.unreadCount }));
-                            console.warn(resp.data.items);
+                    <MobileMessengerContext.Consumer>
+                        {engine => (
+                            <ZQuery query={ChatSearchTextQuery} variables={{ query: this.props.query }}>
+                                {resp => {
 
-                            return (
-                                <SScrollView keyboardDismissMode="on-drag">
-                                    <View style={{ flexDirection: 'column', width: '100%'}}>
-                                        {data.map((item) => (
-                                            <ASView style={{ height: 100 }}>
-                                                <DialogItemViewAsync item={item} onPress={() => r!!.push('Conversation', { id: item.key })} />
-                                            </ASView>
-                                        ))}
-                                    </View>
+                                    if (resp.loading) {
+                                        return <ZLoader />;
+                                    }
 
-                                </SScrollView>
+                                    if (resp.data.items.length === 0) {
+                                        return (
+                                            <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                                <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>No chats found 🤷‍♂️</Text>
+                                            </View>
+                                        );
 
-                            );
-                        }}
-                    </ZQuery>
+                                    }
+
+                                    let data: DialogDataSourceItem[] = resp.data.items.map(d => {
+                                        let isOut = d.topMessage ? d.topMessage.sender.id === engine.engine.user.id : undefined;
+                                        let sender = d.topMessage ? isOut ? 'You' : d.topMessage.sender.name : undefined;
+                                        return {
+                                            key: d.id,
+                                            title: d.title,
+                                            type: d.__typename,
+                                            unread: d.unreadCount,
+                                            photo: d.photos[0],
+                                            sender: sender,
+                                            message: d.topMessage ? formatMessage(d.topMessage) : undefined,
+                                            date: d.topMessage ? parseInt(d.topMessage.date, 10) : undefined,
+                                        };
+                                    });
+                                    console.warn(resp.data.items);
+
+                                    return (
+                                        <SScrollView keyboardDismissMode="on-drag">
+                                            <View style={{ flexDirection: 'column', width: '100%' }}>
+                                                {data.map((item) => (
+                                                    <ASView style={{ height: 80 }}>
+                                                        <DialogItemViewAsync item={item} onPress={() => r!!.push('Conversation', { id: item.key })} />
+                                                    </ASView>
+                                                ))}
+                                            </View>
+
+                                        </SScrollView>
+
+                                    );
+                                }}
+                            </ZQuery>
+                        )}
+                    </MobileMessengerContext.Consumer>
                 )}
             </SRouterContext.Consumer>
         ) : null;

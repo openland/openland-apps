@@ -292,7 +292,7 @@ const Image = Glamorous.div({
 });
 
 const SearchChats = withChatSearchText((props) => {
-    let items = (props.data && props.data.items ? props.data.items : []).filter(c => c.topMessage).reduce(
+    let items = (props.data && props.data.items ? props.data.items : []).reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
                 p.push(x);
