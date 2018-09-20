@@ -135,9 +135,9 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
     return (
         <DevToolsScaffold title="Stats">
-            <XHeader text="Message/day" />
+            <XHeader text=" Messages daily" />
             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'day' }} />
-            <XHeader text="Message/week" />
+            <XHeader text=" Messages weekly" />
             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'week' }} />
 
             <XHeader text="Total" />
