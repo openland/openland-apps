@@ -51,7 +51,7 @@ const MessagesChart = withMessagesStats((props) => {
             margin={{ top: 40, right: 100, bottom: 20, left: 100 }}
         >
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="date"/>
+            <XAxis dataKey="date" />
             <YAxis domain={['auto', 'auto']} />
             <Tooltip
                 wrapperStyle={{
@@ -72,14 +72,22 @@ const MessagesChart = withMessagesStats((props) => {
     );
 });
 
-const AllTime = withChatsStats((props) => (
+const Mutes = withChatsStats((props) => (
     props.data.statsChats ?
         (
             <>
                 <XHeader text="Mutes" />
                 <XText >email mute {props.data.statsChats.usersMutedEmail}</XText>
                 <XText>openland beta mute {props.data.statsChats.usersMutedOpenlandBeta}</XText>
-                <XHeader text="Messages sent top" />
+            </>
+        ) : null
+));
+
+const LeaderBoard = withChatsStats((props) => (
+    props.data.statsChats ?
+        (
+            <>
+                <XHeader text="Messages sent in 2 weeks" />
                 <XTable>
                     <XTable.Body>
                         {props.data.statsChats.messagesLeaderboard.map(u => (
@@ -127,9 +135,9 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
     return (
         <DevToolsScaffold title="Stats">
-            <XHeader text="Message/day" />
+            <XHeader text=" Messages daily" />
             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'day' }} />
-            <XHeader text="Message/week" />
+            <XHeader text=" Messages weekly" />
             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'week' }} />
 
             <XHeader text="Total" />
@@ -151,7 +159,8 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
             </XTable>
 
-            <AllTime variables={{ fromDate: '0', toDate: new Date().getTime().toString() }} />
+            <Mutes variables={{ fromDate: '0', toDate: new Date().getTime().toString() }} />
+            <LeaderBoard variables={{ fromDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * 2).toString(), toDate: new Date().getTime().toString() }} />
 
         </DevToolsScaffold>
     );
