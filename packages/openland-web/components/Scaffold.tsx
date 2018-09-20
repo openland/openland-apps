@@ -690,6 +690,7 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo((props) => {
             return (
                 <>
+                    <XMenuItem style="primary-sky-blue" path="/super/stats">{TextAppBar.items.stats}</XMenuItem>
                     <XMenuItem style="primary-sky-blue" path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
                     <XMenuItem style="primary-sky-blue" path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
                 </>

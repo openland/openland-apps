@@ -15,5 +15,6 @@ export const TextAppBar = {
         devTools: 'DevTools',
         adminMenu: 'Super admin',
         xFramework: 'Design system',
+        stats: 'Stats'
     }
 };
