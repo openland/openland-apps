@@ -193,7 +193,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
                     stopLoading: false
                 });
 
-            }, 1000);
+            },                       1000);
         }
 
         if (!this.state.firstLoad && ((this.state.scrollTop + this.state.clientHeight - 200) < this.state.scrollHeight)) {
@@ -286,7 +286,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
 
         this.timer = setTimeout(() => {
             this.props.loadBefore(this.state.lastMessageId);
-        }, 500);
+        },                      500);
         return new Promise(resolve => done = resolve);
     }
 
@@ -301,7 +301,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
             this.setState({
                 firstLoad: false
             });
-        }, 100);
+        },                      100);
 
         this.setState({
             scrollTop: info.scrollTop,
