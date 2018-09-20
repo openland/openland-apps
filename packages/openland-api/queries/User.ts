@@ -33,8 +33,12 @@ export const UserQuery = gql`
             channels: channelsJoined {
                 id
                 title
-                photos
                 hidden
+                photos
+                photo
+                organization{
+                    ...OrganizationShort
+                }
             }
         }
     }

@@ -7694,8 +7694,15 @@ export interface UserQuery {
       __typename: "ChannelConversation",
       id: string,
       title: string,
-      photos: Array< string >,
       hidden: boolean,
+      photos: Array< string >,
+      photo: string | null,
+      organization:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+        photo: string | null,
+      } | null,
     } >,
   },
 };
