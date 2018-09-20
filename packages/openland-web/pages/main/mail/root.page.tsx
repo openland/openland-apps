@@ -128,7 +128,10 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
 
     if (!isCompose && props.router.routeQuery.conversationId) {
         tab = 'conversation';
-        returnPath = props.router.path;
+        // returnPath = props.router.path;
+
+        let r = props.router;
+        returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
     }
 
     if (isInvite) {

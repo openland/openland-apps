@@ -21,6 +21,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
 import CloseIcon from './icons/ic-close-1.svg';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
@@ -29,7 +30,8 @@ const MembersWrapper = Glamorous(XScrollView)({
 
 const MembersView = Glamorous.div({});
 
-const Member = Glamorous.div({
+const Member = makeNavigable(Glamorous.div({
+    cursor: 'pointer',
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '16px 18px 15px 24px',
@@ -39,7 +41,7 @@ const Member = Glamorous.div({
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
-});
+}));
 
 const MemberAvatar = Glamorous(XAvatar)({
     marginRight: 12
@@ -144,6 +146,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
             <Member
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
+                path={'/mail/u/' + item.id}
             >
                 <MemberAvatar
                     cloudImageUuid={item.picture || undefined}
