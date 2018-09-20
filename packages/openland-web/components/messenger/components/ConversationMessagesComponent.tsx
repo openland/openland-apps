@@ -111,18 +111,6 @@ interface ConversationMessagesComponentState {
     messages: ModelMessage[];
 }
 
-const MessagesWrapper = Glamorous.div({
-    display: 'flex',
-    flexGrow: 1,
-    maxWidth: 800,
-    height: '100%',
-    margin: 'auto',
-    flexBasis: '100%',
-    '& .ReactVirtualized__Grid.ReactVirtualized__List': {
-        paddingBottom: 40
-    }
-});
-
 export class ConversationMessagesComponent extends React.Component<ConversationMessagesComponentProps, ConversationMessagesComponentState> implements ConversationStateHandler {
 
     messagesList = React.createRef<MessageListComponent>();

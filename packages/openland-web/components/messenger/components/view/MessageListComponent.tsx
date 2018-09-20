@@ -184,8 +184,6 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
             clearInterval(this.timer3);
         }
 
-        // this.cache.clear(0, 0);
-
         if (this.state.loading && this.props.conversation.conversationId === newProps.conversation.conversationId) {
             this.timer3 = setTimeout(() => {
                 this.cache.clearAll();
