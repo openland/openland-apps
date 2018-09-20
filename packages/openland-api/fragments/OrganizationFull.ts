@@ -59,6 +59,7 @@ export const OrganizationFull = gql`
             isRoot
             title
             photos
+            photo
             membersCount
             memberRequestsCount
             hidden

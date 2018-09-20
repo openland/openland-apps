@@ -4700,6 +4700,7 @@ export interface OrganizationQuery {
       isRoot: boolean,
       title: string,
       photos: Array< string >,
+      photo: string | null,
       membersCount: number,
       memberRequestsCount: number,
       hidden: boolean,

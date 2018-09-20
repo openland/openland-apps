@@ -694,6 +694,10 @@ const ChannelCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
+const ChannelAvatar = Glamorous(XAvatar)({
+    margin: '0 12px 0 -5px'
+});
+
 interface ChannelCardProps {
     channel: {
         id: string;
@@ -703,9 +707,12 @@ interface ChannelCardProps {
         memberRequestsCount: number;
         hidden: boolean;
         featured: boolean;
+        photos: string[];
+        photo?: string;
     };
     organization: {
-        isOwner?: boolean
+        isOwner?: boolean;
+        photo?: string;
     };
 }
 
@@ -726,6 +733,10 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
+                <ChannelAvatar
+                    style="channel"
+                    cloudImageUuid={channel.photo || channel.photos[0] || (organization.photo ? organization.photo : undefined)}
+                />
                 <ChannelCardInfo>
                     <ChannelCardTitle>{(channel.isRoot ? '' : '/') + channel.title}</ChannelCardTitle>
                     <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>
