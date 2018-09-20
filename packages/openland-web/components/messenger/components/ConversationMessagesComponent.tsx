@@ -104,7 +104,25 @@ interface ConversationMessagesComponentProps {
     me?: UserShortFragment | null;
 }
 
-export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
+interface ConversationMessagesComponentState {
+    mounted: boolean;
+    loading: boolean;
+    messages: ModelMessage[];
+}
+
+const MessagesWrapper = Glamorous.div({
+    display: 'flex',
+    flexGrow: 1,
+    maxWidth: 800,
+    height: '100%',
+    margin: 'auto',
+    flexBasis: '100%',
+    '& .ReactVirtualized__Grid.ReactVirtualized__List': {
+        paddingBottom: 40
+    }
+});
+
+export class ConversationMessagesComponent extends React.Component<ConversationMessagesComponentProps, ConversationMessagesComponentState> implements ConversationStateHandler {
 
     messagesList = React.createRef<MessageListComponent>();
     unmounter: (() => void) | null = null;
@@ -127,8 +145,12 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
     }
 
     onConversationUpdated = (state: ConversationState) => {
-        this.setState({ loading: state.loading, messages: state.messages });
+        this.setState({
+            loading: state.loading,
+            messages: state.messages
+        });
     }
+
     onMessageSend = () => {
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
@@ -162,7 +184,7 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
                 />
-                <XLoader loading={!this.state.mounted || this.state.loading} />
+                {(!this.state.mounted || this.state.loading) && <XLoader loading={true} />}
                 <TypingComponent chatId={this.props.conversationId} />
             </MessagesContainer>
         );
