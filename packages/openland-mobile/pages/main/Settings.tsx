@@ -112,6 +112,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
                                     <ZListItem text="Notifications" path="SettingsNotifications" />
+                                    <ZListItem text="Phone" description={'verify phone'} path="PhoneVerify" />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Application">
                                     <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />

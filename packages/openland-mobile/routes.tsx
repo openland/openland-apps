@@ -18,6 +18,7 @@ import { SettingsOrganizations } from './pages/main/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
+import { PhoneVerify, CountryPicker } from './pages/auth/PhoneVerify';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -38,4 +39,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevComponents', Components)
   .addRoute('DevNavigation', Navigation)
   .addRoute('DevLoader', Loader)
+  .addRoute('PhoneVerify', PhoneVerify)
+  .addRoute('CountryPicker', CountryPicker)
   .build();

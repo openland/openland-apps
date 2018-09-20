@@ -7,6 +7,9 @@ export const Modals = {
     showUserPicker(router: SRouter, action: (value: string) => any) {
         router.push('UserPicker', { 'action': action });
     },
+    showCountryPicker(router: SRouter, action: (value: string) => any) {
+        router.push('CountryPicker', { 'action': action });
+    },
     showPicturePreview(router: SRouter, uuid: string, width: number, height: number, animate?: { x: number, y: number, width: number, height: number }) {
         router.push('PicturePreview', { uuid, width, height, animate });
     },
