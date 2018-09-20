@@ -101,7 +101,7 @@ class ASCounter extends React.PureComponent<{ value: number | string, muted?: bo
     }
 }
 
-class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceItem, onPress: (id: string) => void }> {
+export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceItem, onPress: (id: string) => void }> {
 
     handlePress = () => {
         this.props.onPress(this.props.item.key);

@@ -168,8 +168,8 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         placement="bottom-end"
                         content={
                             <>
-                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: this.props.message.id }}>delete</XMenuItem>
-                                {this.props.message.message && <XMenuItem style="primary-sky-blue" query={{ field: 'editMessage', value: this.props.message.id }}>edit</XMenuItem>}
+                                {this.props.message.message && <XMenuItem style="primary-sky-blue" query={{ field: 'editMessage', value: this.props.message.id }}>Edit</XMenuItem>}
+                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: this.props.message.id }}>Delete</XMenuItem>
                             </>
                         }
                     />

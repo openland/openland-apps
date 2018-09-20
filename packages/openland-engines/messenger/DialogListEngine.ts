@@ -19,7 +19,7 @@ export interface DialogDataSourceItem {
     isOut?: boolean;
 }
 
-function formatMessage(message: any): string {
+export function formatMessage(message: any): string {
     if (message.message) {
         return message.message;
     } else if (message.file) {

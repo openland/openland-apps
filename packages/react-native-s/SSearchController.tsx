@@ -10,7 +10,7 @@ import { SearchContext } from './navigation/SearchContext';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
-    searchRender: React.ComponentType<{ query: string }>;
+    searchRender: React.ReactElement<{ query: string }>;
 }
 
 export class SSearchControler extends React.PureComponent<SSearchControlerProps, { search: boolean, searchMounted: boolean, query: string }> {
@@ -46,8 +46,6 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
 
     render() {
 
-        const SearchComponent = this.props.searchRender;
-
         const content = Platform.OS === 'ios'
             ? (
                 <>
@@ -63,7 +61,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                                     {this.state.searchMounted && (
                                         <HeaderContextNone>
                                             <View width="100%" height="100%">
-                                                <SearchComponent query={this.state.query} />
+                                                {React.cloneElement(this.props.searchRender, { query: this.state.query })}
                                             </View>
                                         </HeaderContextNone>
                                     )}
@@ -82,7 +80,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                             style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.3)' }}
                         >
                             <HeaderContextNone>
-                                <SearchComponent query={this.state.query} />
+                                {React.cloneElement(this.props.searchRender, { query: this.state.query })}
                             </HeaderContextNone>
                         </SAnimatedView>
                     )}

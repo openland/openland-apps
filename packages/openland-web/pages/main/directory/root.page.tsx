@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
+import { Scaffold, CreateOrganization, CreateChannel } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
@@ -248,7 +248,7 @@ const CategoryPicker = withTopCategories((props) => (
         title={(props as any).title}
         conditionType={(props as any).conditionType}
         onPick={(props as any).onPick}
-        options={props.data.topCategories.map(c => ({ label: c, value: c }))}
+        options={[...props.data.topCategories].reverse().map(c => ({ label: c, value: c }))}
         onShow={(props as any).onShow}
         shown={(props as any).shown}
         noResultsText={(props as any).noResultsText}
@@ -520,6 +520,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 </Container>
 
                 <CreateOrganization />
+                <CreateChannel />
             </RootWrapper>
         );
     }

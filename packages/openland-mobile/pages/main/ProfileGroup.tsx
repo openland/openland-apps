@@ -15,6 +15,19 @@ import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
+import { UserShortFragment } from 'openland-api/Types';
+
+export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void }) => (
+    <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress}>
+        <View paddingTop={12} paddingLeft={15} paddingRight={15}>
+            <XPAvatar size={32} src={props.user.picture} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
+        </View>
+        <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
+            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.user.name}</Text>
+            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.role}</Text>
+        </View>
+    </ZListItemBase>
+);
 
 class ProfileGroupComponent extends React.Component<PageProps> {
 
@@ -28,7 +41,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                 <SHeader title="Info" />
                 <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.router.params.id }}>
                     {(resp) => {
-                        if (resp.data.chat.__typename !== 'GroupConversation') {
+                        if (resp.data.chat.__typename !== 'GroupConversation' && resp.data.chat.__typename !== 'ChannelConversation') {
                             throw Error('');
                         }
                         return (
@@ -61,7 +74,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 </ZListItemGroup>
 
                                 <ZListItemGroup header="Members">
-                                    <YMutation mutation={ChatAddMemberMutation}>
+                                    <YMutation mutation={ChatAddMemberMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]} >
                                         {(add) => (
                                             <ZListItem
                                                 appearance="action"
@@ -69,22 +82,23 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                 onPress={() => {
                                                     Modals.showUserPicker(
                                                         this.props.router,
-                                                        async (src) => await add({ variables: { userId: src, conversationId: resp.data.chat.id } })
+                                                        async (src) => {
+                                                            try {
+                                                                let res = await add({ variables: { userId: src, conversationId: resp.data.chat.id } });
+                                                                console.warn('boom', res);
+                                                            } catch (e) {
+                                                                console.warn('boom', e);
+                                                                throw e;
+                                                            }
+
+                                                        }
                                                     );
                                                 }}
                                             />
                                         )}
                                     </YMutation>
                                     {resp.data.members.map((v) => (
-                                        <ZListItemBase key={v.user.id} separator={false} height={56} onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}>
-                                            <View paddingTop={12} paddingLeft={15} paddingRight={15}>
-                                                <XPAvatar size={32} src={v.user.picture} placeholderKey={v.user.id} placeholderTitle={v.user.name} />
-                                            </View>
-                                            <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
-                                                <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.user.name}</Text>
-                                                <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{v.role}</Text>
-                                            </View>
-                                        </ZListItemBase>
+                                        <UserView user={v.user} role={v.role} onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })} />
                                     ))}
                                 </ZListItemGroup>
                             </SScrollView>

@@ -34,6 +34,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
+import { XInput } from 'openland-x/XInput';
 
 const BackWrapper = Glamorous.div({
     background: '#f9fafb',
@@ -169,16 +170,20 @@ const Header = (props: { organizationQuery: OrganizationQuery }) => {
                 </HeaderTabs> */}
             </HeaderInfo>
             <HeaderTools>
-                <XWithRole role="admin" orgPermission={org.id}>
-                    <XButton
-                        size="r-default"
-                        text="Edit profile"
-                        path={'/settings/organization/' + org.id}
-                    />
+                <XWithRole role="super-admin" negate={true}>
+
+                    <XWithRole role="admin" orgPermission={org.id}>
+                        <XButton
+                            size="r-default"
+                            text="Edit profile"
+                            path={'/settings/organization/' + org.id}
+                        />
+                    </XWithRole>
                 </XWithRole>
+
                 <XWithRole role="super-admin">
                     <XHorizontal>
-                        {!org.isMine && < XButton
+                        {< XButton
                             size="r-default"
                             text="Edit profile"
                             path={'/settings/organization/' + org.id}
@@ -372,7 +377,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
             )}
             {hasCategories && (
                 <>
-                    <XSubHeader title="Organization category" counter={org.organizationType ? org.organizationType.length : undefined}>
+                    <XSubHeader title="Categories" counter={org.organizationType ? org.organizationType.length : undefined}>
                         {org.isMine && (
                             <XWithRole role="admin" orgPermission={org.id}>
                                 <XSubHeaderRight>
@@ -585,15 +590,29 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
 
 const UpdateUserProfileModal = withUserProfileUpdate((props) => {
     let uid = props.router.query.editUser;
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === uid)[0];
+    if (!member) {
+        return null;
+    }
+
     return (
         <XModalForm
             title="Edit profile"
             targetQuery="editUser"
+            defaultData={{
+                input: {
+                    firstName: member.user.firstName,
+                    lastName: member.user.lastName,
+                    photoRef: sanitizeIamgeRef(member.user.photoRef)
+                }
+            }}
             defaultAction={
                 async (data) => {
                     await props.updateProfile({
                         variables: {
                             input: {
+                                firstName: data.input.firstName,
+                                lastName: data.input.lastName,
                                 photoRef: sanitizeIamgeRef(data.input.photoRef)
                             },
                             uid: uid
@@ -602,10 +621,14 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
                 }
             }
         >
-            <XAvatarUpload field="input.photoRef" />
+            <XVertical>
+                <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
+                <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                <XAvatarUpload field="input.photoRef" />
+            </XVertical>
         </XModalForm>
     );
-});
+}) as React.ComponentType<{ members: any[] }>;
 
 const Members = (props: { organizationQuery: OrganizationQuery }) => {
     let organization = props.organizationQuery.organization;
@@ -629,9 +652,9 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
                     })}
                 </>
             )}
-            <RemoveJoinedModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
-            <PermissionsModal members={organization.members} orgName={organization.name} refetchVars={{ orgId: organization.id }} />
-            <UpdateUserProfileModal />
+            <RemoveJoinedModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
+            <PermissionsModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id }} />
+            <UpdateUserProfileModal members={organization.members} />
         </>
     );
 };
@@ -671,6 +694,10 @@ const ChannelCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
+const ChannelAvatar = Glamorous(XAvatar)({
+    margin: '0 12px 0 -5px'
+});
+
 interface ChannelCardProps {
     channel: {
         id: string;
@@ -680,9 +707,12 @@ interface ChannelCardProps {
         memberRequestsCount: number;
         hidden: boolean;
         featured: boolean;
+        photos: string[];
+        photo?: string;
     };
     organization: {
-        isOwner?: boolean
+        isOwner?: boolean;
+        photo?: string;
     };
 }
 
@@ -703,6 +733,10 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
+                <ChannelAvatar
+                    style="channel"
+                    cloudImageUuid={channel.photo || channel.photos[0] || (organization.photo ? organization.photo : undefined)}
+                />
                 <ChannelCardInfo>
                     <ChannelCardTitle>{(channel.isRoot ? '' : '/') + channel.title}</ChannelCardTitle>
                     <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>

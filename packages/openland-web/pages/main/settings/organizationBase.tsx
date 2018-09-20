@@ -274,10 +274,12 @@ export const OrganizationSettigs = ((props: any) => {
                         </XForm>
                     </XVertical>
 
-                    <XVertical separator={12}>
-                        <CategoryTitle id="members">Members</CategoryTitle>
-                        <MembersTable/>
-                    </XVertical>
+                    {!props.hideMembers && (
+                        <XVertical separator={12}>
+                            <CategoryTitle id="members">Members</CategoryTitle>
+                            <MembersTable/>
+                        </XVertical>
+                    )}
 
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>
@@ -298,4 +300,4 @@ export const OrganizationSettigs = ((props: any) => {
             </Content>
         </Navigation >
     );
-}) as React.ComponentType<XWithRouter & { updateOrganizaton: any, data: { organizationProfile: any }, orgId?: string }>;
+}) as React.ComponentType<XWithRouter & { updateOrganizaton: any, data: { organizationProfile: any }, orgId?: string, hideMembers?: boolean }>;

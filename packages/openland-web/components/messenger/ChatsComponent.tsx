@@ -19,6 +19,8 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
+import PhotoIcon from './components/icons/ic-photo.svg';
+import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
 
 const ItemContainer = Glamorous.a({
@@ -42,6 +44,10 @@ const ItemContainer = Glamorous.a({
         '& .title, .date, .content': {
             color: '#1790ff !important',
             opacity: '1 !important'
+        },
+        '& .content svg *': {
+            fill: '#1790ff !important',
+            opacity: '0.5 !important'
         }
     },
     '&:hover, &:focus': {
@@ -53,6 +59,10 @@ const ItemContainer = Glamorous.a({
         '& .title, .date, .content': {
             color: '#1790ff !important',
             opacity: '1 !important'
+        },
+        '& .content svg *': {
+            fill: '#1790ff !important',
+            opacity: '0.5 !important'
         }
     }
 });
@@ -113,8 +123,16 @@ const Date = Glamorous.div({
 const Content = Glamorous.div<{ counterColor?: string }>(props => ({
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
-
+    alignItems: 'center',
+    '& svg': {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        margin: '1px 5px -1px 1px',
+        '&.document': {
+            marginTop: 0,
+            marginBottom: 0
+        }
+    },
 }));
 
 const ContentText = Glamorous.div({
@@ -164,7 +182,12 @@ interface ConversationComponentProps {
         sender: {
             id: string,
             firstName: string
-        }
+        },
+        file: string | null,
+        fileMetadata:  {
+          name: string,
+          isImage: boolean,
+        } | null,
     } | null;
     unreadCount: number;
     settings: {
@@ -230,8 +253,11 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                             {props.topMessage && props.topMessage.message && (
                                 <span>{senderName}: {props.topMessage.message}</span>
                             )}
-                            {props.topMessage && !props.topMessage.message && (
-                                <span>{senderName}: File</span>
+                            {props.topMessage && !props.topMessage.message && props.topMessage.file && props.topMessage.fileMetadata!.isImage && (
+                                <span>{senderName}: <PhotoIcon />Image</span>
+                            )}
+                            {props.topMessage && !props.topMessage.message && props.topMessage.file && !props.topMessage.fileMetadata!.isImage && (
+                                <span>{senderName}: <FileIcon className="document" />Document</span>
                             )}
                         </ContentText>
                         {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
@@ -266,7 +292,7 @@ const Image = Glamorous.div({
 });
 
 const SearchChats = withChatSearchText((props) => {
-    let items = (props.data && props.data.items ? props.data.items : []).filter(c => c.topMessage).reduce(
+    let items = (props.data && props.data.items ? props.data.items : []).reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
                 p.push(x);
@@ -338,7 +364,7 @@ const ExploreChannels = Glamorous(XMenuItem)({
     paddingRight: 13,
     paddingTop: 1,
     paddingBottom: 0,
-    backgroundColor: '#F3F5F6',
+    backgroundColor: '#f0f2f4',
     color: '#5c6a81',
     fontWeight: 600,
     letterSpacing: -0.1,
@@ -521,15 +547,6 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     onFocus={this.inputFocusHandler}
                 />
 
-                {search && (
-                    <SearchChats
-                        variables={{ query: this.state.query!! }}
-                        onSelect={this.onSelect}
-                        itemsCount={this.itemsCount}
-                        selectedItem={this.state.select}
-                        allowSelection={this.state.allowShortKeys}
-                    />
-                )}
                 {!search && (
                     <ExploreChannels path={'/mail/channels'}>
                         <XHorizontal alignItems="center" justifyContent="space-between">
@@ -538,25 +555,37 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                         </XHorizontal>
                     </ExploreChannels>
                 )}
-                {!search && this.props.data && this.props.data.chats &&
-                    this.props.data.chats.conversations.map((i, j) => (
-                        <ConversationComponent
-                            key={i.id}
-                            id={i.id}
+
+                <XScrollView height="100%">
+                    {search && (
+                        <SearchChats
+                            variables={{ query: this.state.query!! }}
                             onSelect={this.onSelect}
-                            flexibleId={i.flexibleId}
-                            typename={i.__typename}
-                            title={i.title}
-                            photos={i.photos}
-                            photo={(i as any).photo}
-                            topMessage={i.topMessage}
-                            unreadCount={i.unreadCount}
-                            settings={i.settings}
-                            selectedItem={this.state.select === j}
+                            itemsCount={this.itemsCount}
+                            selectedItem={this.state.select}
                             allowSelection={this.state.allowShortKeys}
                         />
-                    ))
-                }
+                    )}
+                    {!search && this.props.data && this.props.data.chats &&
+                        this.props.data.chats.conversations.map((i, j) => (
+                            <ConversationComponent
+                                key={i.id}
+                                id={i.id}
+                                onSelect={this.onSelect}
+                                flexibleId={i.flexibleId}
+                                typename={i.__typename}
+                                title={i.title}
+                                photos={i.photos}
+                                photo={(i as any).photo}
+                                topMessage={i.topMessage}
+                                unreadCount={i.unreadCount}
+                                settings={i.settings}
+                                selectedItem={this.state.select === j}
+                                allowSelection={this.state.allowShortKeys}
+                            />
+                        ))
+                    }
+                </XScrollView>
             </XVertical>
         );
     }
@@ -564,8 +593,6 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
 
 export const ChatsComponent = withChatsAll(withRouter((props) => {
     return (
-        <XScrollView height="100%">
-            <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} router={props.router} />
-        </XScrollView>
+        <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} router={props.router} />
     );
 })) as React.ComponentType<{ emptyState: boolean }>;

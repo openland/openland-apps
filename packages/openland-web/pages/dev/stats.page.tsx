@@ -6,11 +6,12 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XHeader } from 'openland-x/XHeader';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { XText } from 'openland-x/XText';
-import { withChatsStats } from '../../api/withChatsStats';
+import { withChatsStats, withMessagesStats } from '../../api/withChatsStats';
 import { XTable } from 'openland-x/XTable';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { LineChart, XAxis, Line, CartesianGrid, Tooltip, AreaChart, Brush, YAxis, Area } from 'recharts';
+import { DateFormater } from 'openland-x-format/XDate';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const Stats = withChatsStats((props) => (
     <>
@@ -27,14 +28,66 @@ const UsersCell = withChatsStats((props) => (
     props.data.statsChats ? <XTable.Cell > <XText > {props.data.statsChats.usersActive}</XText></XTable.Cell > : <XTable.Cell >...</XTable.Cell >
 ));
 
-const AllTime = withChatsStats((props) => (
+function getWeekNumber(d: Date) {
+    var d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+}
+
+const MessagesChart = withMessagesStats((props) => {
+    if (!props.data || !props.data.messagesSentStats || !props.variables || !canUseDOM) {
+        return null;
+    }
+
+    let data = [...props.data.messagesSentStats].sort((a, b) => Number(a.date) - Number(b.date)).map(e => ({ count: e.count, date: (props.variables as any)!.trunc === 'week' ? getWeekNumber(new Date(Number(e.date))) : DateFormater(Number(e.date)) }));
+
+    return (
+        <LineChart
+            width={1000}
+            height={400}
+            data={data}
+            margin={{ top: 40, right: 100, bottom: 20, left: 100 }}
+        >
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="date" />
+            <YAxis domain={['auto', 'auto']} />
+            <Tooltip
+                wrapperStyle={{
+                    borderColor: 'white',
+                    boxShadow: '2px 2px 3px 0px rgb(204, 204, 204)',
+                }}
+            />
+            <Line dataKey="count" stroke="#ff7300" dot={false} />
+            {/* <Brush dataKey="date" startIndex={data.length - 40}>
+                <AreaChart>
+                    <CartesianGrid />
+                    <YAxis hide domain={['auto', 'auto']} />
+                    <Area dataKey="count" stroke="#ff7300" fill="#ff7300" dot={false} />
+                </AreaChart>
+            </Brush> */}
+        </LineChart>
+
+    );
+});
+
+const Mutes = withChatsStats((props) => (
     props.data.statsChats ?
         (
             <>
                 <XHeader text="Mutes" />
                 <XText >email mute {props.data.statsChats.usersMutedEmail}</XText>
                 <XText>openland beta mute {props.data.statsChats.usersMutedOpenlandBeta}</XText>
-                <XHeader text="Messages sent top" />
+            </>
+        ) : null
+));
+
+const LeaderBoard = withChatsStats((props) => (
+    props.data.statsChats ?
+        (
+            <>
+                <XHeader text="Messages sent in 2 weeks" />
                 <XTable>
                     <XTable.Body>
                         {props.data.statsChats.messagesLeaderboard.map(u => (
@@ -58,7 +111,6 @@ const AllTime = withChatsStats((props) => (
 ));
 
 export default withApp('Super Organizations', 'super-admin', withSuperCities(withQueryLoader((props) => {
-    console.warn(props);
 
     let header: any = [(<XTable.Cell >{''}</XTable.Cell >), (<XTable.Cell >{'10 w ago'}</XTable.Cell >)];
     let messagesStats: any = [(<XTable.Cell ><XText>Messages</XText></XTable.Cell >)];
@@ -83,6 +135,11 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
     return (
         <DevToolsScaffold title="Stats">
+            <XHeader text=" Messages daily" />
+            <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'day' }} />
+            <XHeader text=" Messages weekly" />
+            <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'week' }} />
+
             <XHeader text="Total" />
             <Stats variables={{ fromDate: (new Date(0).getTime()).toString(), toDate: (new Date().getTime()).toString() }} />
 
@@ -102,7 +159,9 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
             </XTable>
 
-            <AllTime variables={{ fromDate: '0', toDate: new Date().getTime().toString() }} />
+            <Mutes variables={{ fromDate: '0', toDate: new Date().getTime().toString() }} />
+            <LeaderBoard variables={{ fromDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * 2).toString(), toDate: new Date().getTime().toString() }} />
+
         </DevToolsScaffold>
     );
 })));

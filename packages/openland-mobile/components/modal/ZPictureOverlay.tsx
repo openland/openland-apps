@@ -4,8 +4,8 @@ import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { FastImageViewer } from 'react-native-fast-image-viewer';
-import { SBackButton } from 'react-native-s/SBackButton';
 import { SDevice } from 'react-native-s/SDevice';
+import { SCloseButton } from 'react-native-s/SCloseButton';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -213,8 +213,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
                 <Animated.View
                     style={{
-                        height: SDevice.navigationBarHeight + SDevice.statusBarHeight,
-                        paddingTop: SDevice.statusBarHeight,
+                        height: SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top,
+                        paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
                         backgroundColor: 'rgba(0,0,0,0.6)',
                         opacity: Animated.multiply(this.progressLinear, this.barOpacity)
                         // transform: [{
@@ -225,7 +225,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         // }]
                     }}
                 >
-                    <SBackButton tintColor="#fff" onPress={this.handleCloseClick} />
+                    <SCloseButton tintColor="#fff" onPress={this.handleCloseClick} />
                 </Animated.View>
             </View>
         );

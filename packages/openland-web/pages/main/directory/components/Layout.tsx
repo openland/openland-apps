@@ -16,12 +16,11 @@ export const RootWrapper = Glamorous.div({
 export const Sidebar = Glamorous.div({
     width: 300,
     height: '100%',
-    background: '#f9fafb',
-    borderRight: '1px solid rgba(216, 218, 229, 0.7)'
+    borderRight: '1px solid rgba(216, 218, 229, 0.7)',
+    backgroundColor: '#ffffff',
 });
 
 export const SidebarHeader = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     fontSize: 18,
     fontWeight: 500,
     lineHeight: '24px',
@@ -32,10 +31,14 @@ export const SidebarHeader = Glamorous.div({
 
 export const SidebarItemWrapper = Glamorous.div<{ active?: boolean }>([
     {
-        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+        borderTop: '1px solid transparent',
+        borderBottom: '1px solid transparent',
+        marginBottom: 2,
     },
     (props) => (props.active) ? {
         background: 'rgba(245, 246, 247, 0.42)',
+        borderTopColor: 'rgba(220, 222, 228, 0.45)',
+        borderBottomColor: 'rgba(220, 222, 228, 0.45)'
     } : {}
 ]);
 
@@ -44,10 +47,22 @@ export const SidebarItemLink = Glamorous(XLink)({
     alignItems: 'center',
     justifyContent: 'space-between',
     color: '#5c6a81',
-    paddingTop: 14,
+    paddingTop: 10,
     paddingRight: 15,
-    paddingBottom: 13,
-    paddingLeft: 17,
+    paddingBottom: 10,
+    paddingLeft: 44,
+    position: 'relative',
+
+    '& .icon-wrapper': {
+        position: 'absolute',
+        top: 0,
+        left: 14,
+        bottom: 0,
+        width: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 
     '& span': {
         flex: 1,
@@ -55,6 +70,8 @@ export const SidebarItemLink = Glamorous(XLink)({
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         fontWeight: 500,
+        letterSpacing: -0.4,
+        paddingRight: 10,
     },
 
     '&:not(.is-active):hover': {
@@ -168,12 +185,12 @@ interface SidebarItemHeadLinkProps {
 
 export const SidebarItemHeadLink = (props: SidebarItemHeadLinkProps) => (
     <SidebarItemLink path={props.path} className={props.icon}>
-        <XHorizontal separator={7} alignItems="center">
+        <div className="icon-wrapper">
             {props.icon === 'communities' && <CommunityIcon />}
             {props.icon === 'organizations' && <OrganizationsIcon />}
             {props.icon === 'channels' && <ChannelIcon />}
-            <span>{props.title}</span>
-        </XHorizontal>
+        </div>
+        <span>{props.title}</span>
         <RightIcon />
     </SidebarItemLink>
 );

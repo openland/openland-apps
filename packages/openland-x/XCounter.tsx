@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 
-const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string }>((props) => ({
+const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string, borderColor?: string }>((props) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -13,7 +13,7 @@ const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string }>((prop
     lineHeight: '13px',
     borderRadius: 21,
     backgroundColor: props.bgColor || '#e22a2a',
-    border: '1px solid white',
+    border: '1px solid ' + (props.borderColor ? props.borderColor : 'white'),
     fontSize: 10,
     fontWeight: 500,
     color: props.color || '#ffffff'
@@ -38,15 +38,15 @@ const XCounterBig = Glamorous(XCounterStyled)<{ color?: string, bgColor?: string
 
 }));
 
-export const XCounter = (props: { count: number, color?: string, bgColor?: string, big?: boolean }) => (
+export const XCounter = (props: { count: number, color?: string, bgColor?: string, borderColor?: string, big?: boolean }) => (
     !props.big ?
         (
-            <XCounterStyled className="counter" color={props.color} bgColor={props.bgColor}>
+            <XCounterStyled className="counter" color={props.color} bgColor={props.bgColor} borderColor={props.borderColor}>
                 <span>{props.count}</span>
             </XCounterStyled>
         ) :
         (
-            <XCounterBig className="counter" color={props.color} bgColor={props.bgColor}>
+            <XCounterBig className="counter" color={props.color} bgColor={props.bgColor} borderColor={props.borderColor}>
                 <span>{props.count}</span>
             </XCounterBig>
         )

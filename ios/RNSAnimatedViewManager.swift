@@ -108,11 +108,15 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
         if s.property == "opacity" {
           view.layer.opacity = Float(s.value)
         } else if s.property == "translateX" {
+          view.currentTranslateX = s.value
           view.layer.position.x = view.sourceCenter.x + s.value
         } else if s.property == "translateY" {
+          view.currentTranslateY = s.value
           view.layer.position.y = view.sourceCenter.y + s.value
         } else if s.property == "ios-width" {
           view.layer.bounds.size.width = view.sourceSize.width + s.value
+        } else if s.property == "ios-height" {
+          view.layer.bounds.size.height = view.sourceSize.height + s.value
         } else {
           continue
         }
@@ -136,18 +140,22 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           let keyPath: String
           let from: CGFloat
           let to: CGFloat
+          var additive = true
           if s.property == "opacity" {
             keyPath = "opacity"
             view.layer.opacity = Float(s.to)
             from = s.from
             to = s.to
+            additive = false
           } else if s.property == "translateX" {
             keyPath = "position.x"
+            view.currentTranslateX = s.to
             view.layer.position.x = view.sourceCenter.x + s.to
             from = view.sourceCenter.x + s.from
             to = view.sourceCenter.x + s.to
           } else if s.property == "translateY" {
             keyPath = "position.y"
+            view.currentTranslateY = s.to
             view.layer.position.y = view.sourceCenter.y + s.to
             from = view.sourceCenter.y + s.from
             to = view.sourceCenter.y + s.to
@@ -156,6 +164,11 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
             view.layer.bounds.size.width = view.sourceSize.width + s.to
             from = view.sourceSize.width + s.from
             to = view.sourceSize.width + s.to
+          } else if s.property == "ios-height" {
+            keyPath = "bounds.size.height"
+            view.layer.bounds.size.height = view.sourceSize.height + s.to
+            from = view.sourceSize.height + s.from
+            to = view.sourceSize.height + s.to
           } else {
             continue
           }
@@ -180,8 +193,14 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           }
           
           // Resolving values
-          animation.fromValue = from
-          animation.toValue = to
+          animation.isAdditive = additive
+          if additive {
+            animation.fromValue = from - to
+            animation.toValue = 0
+          } else {
+            animation.fromValue = from
+            animation.toValue = to
+          }
           
           // Resolving parameters
           if let duration = s.duration {

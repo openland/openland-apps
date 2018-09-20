@@ -253,11 +253,6 @@ const ChannelTab = Glamorous(XLink)({
     }
 });
 
-const AvatarUpload = Glamorous(XAvatarUpload)({
-    width: 96,
-    height: 96,
-});
-
 export const ChannelEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
@@ -300,7 +295,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
         >
             <XVertical>
                 <XHorizontal>
-                    <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                    <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                     <XVertical flexGrow={1}>
                         <XInput field="input.title" placeholder="Title" color="primary-sky-blue" size="r-default" />
                         <XInput field="input.description" placeholder="Short Description" color="primary-sky-blue" size="r-default" />
@@ -342,7 +337,7 @@ export const ChatEditComponent = withAlterChat((props) => {
             }}
         >
             <XHorizontal>
-                <AvatarUpload field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                 <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default" />
             </XHorizontal>
         </XModalForm>
@@ -471,6 +466,15 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                             </XHorizontal>
                         )}
 
+                        {props.data.chat.__typename === 'GroupConversation' && (
+                            <XHorizontal separator={14}>
+                                <ChannelTabs>
+                                    <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
+                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
+                                </ChannelTabs>
+                            </XHorizontal>
+                        )}
+
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
@@ -544,6 +548,18 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         description={props.data.chat.description}
                         longDescription={props.data.chat.longDescription}
                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
+                        emptyText="To grow the community, invite people to this channel"
+                    />
+                )}
+                 {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
+                    <ChannelMembersComponent
+                        channelTitle={title}
+                        key={props.data.chat.id + '_members'}
+                        variables={{ channelId: props.data.chat.id }}
+                        description={undefined}
+                        longDescription={undefined}
+                        orgId={''}
+                        emptyText="To grow the community, invite people to this group"
                     />
                 )}
             </XHorizontal>

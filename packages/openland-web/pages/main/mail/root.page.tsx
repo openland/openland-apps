@@ -41,8 +41,8 @@ let ChatListContainer = Glamorous.div({
     height: '100vh',
     width: 300,
     flexShrink: 0,
-    borderRight: '1px solid #e2e3e8',
-    backgroundColor: '#f9fafb',
+    borderRight: '1px solid rgba(216, 218, 229, 0.7)',
+    backgroundColor: '#ffffff',
     '@media (max-width: 950px)': {
         width: 200
     }
@@ -67,8 +67,9 @@ const Header = Glamorous(XHorizontal)({
     height: 48,
     paddingLeft: 16,
     paddingRight: 12,
-    marginTop: 5,
-    marginBottom: 6,
+    marginTop: 3,
+    marginBottom: 4,
+    flexShrink: 0,
 });
 
 const Title = Glamorous.div({
@@ -127,7 +128,10 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
 
     if (!isCompose && props.router.routeQuery.conversationId) {
         tab = 'conversation';
-        returnPath = props.router.path;
+        // returnPath = props.router.path;
+
+        let r = props.router;
+        returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
     }
 
     if (isInvite) {

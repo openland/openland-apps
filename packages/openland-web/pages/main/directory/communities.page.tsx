@@ -4,7 +4,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withExploreCommunities } from '../../../api/withExploreCommunities';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
+import { Scaffold, CreateOrganization, CreateChannel } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
@@ -236,6 +236,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 </Container>
 
                 <CreateOrganization />
+                <CreateChannel />
             </RootWrapper>
         );
     }

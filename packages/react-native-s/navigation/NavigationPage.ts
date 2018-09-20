@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { SRouter } from '../SRouter';
-import { Watcher, WatchSubscription } from 'openland-y-utils/Watcher';
-import UUID from 'uuid/v4';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { HeaderConfig } from './HeaderConfig';
 import { NavigationManager } from './NavigationManager';
-import { HeaderState } from './HeaderState';
+import { randomKey } from '../utils/randomKey';
 
 export class NavigationPage {
 
@@ -22,13 +21,23 @@ export class NavigationPage {
     searchStarted: boolean = false;
 
     constructor(manager: NavigationManager, index: number, route: string, params?: any, prevKey?: string) {
-        let key = 'page-' + index + '-' + UUID();
+        let key = 'page-' + index + '-' + randomKey();
         let component = manager.resolvePath(route);
         let router = {
             route,
             index,
             key,
             params: params || {},
+            dismiss: () => {
+                if (manager.parent && manager.parent.presentationManager) {
+                    manager.parent.presentationManager.dismiss();
+                }
+            },
+            present: (destRoute: string, destParams?: any) => {
+                if (manager.presentationManager) {
+                    manager.presentationManager.present(destRoute, destParams);
+                }
+            },
             push: (destRoute: string, destParams?: any) => {
                 manager.push(destRoute, destParams);
             },

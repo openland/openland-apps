@@ -221,14 +221,14 @@ export const OrganizationMembersQuery = gql`
 `;
 
 export const OrganizationChangeMemberRoleMutation = gql`
-    mutation OrganizationChangeMemberRole($memberId: ID!, $newRole: OrganizationMemberRole!) {
-        alphaOrganizationChangeMemberRole(memberId: $memberId, newRole: $newRole)
+    mutation OrganizationChangeMemberRole($memberId: ID!, $newRole: OrganizationMemberRole!, $organizationId: ID!) {
+        alphaOrganizationChangeMemberRole(memberId: $memberId, newRole: $newRole, organizationId: $organizationId)
     }
 `;
 
 export const OrganizationRemoveMemberMutation = gql`
-    mutation OrganizationRemoveMember($memberId: ID!) {
-        alphaOrganizationRemoveMember(memberId: $memberId)
+    mutation OrganizationRemoveMember($memberId: ID!, $organizationId: ID!) {
+        alphaOrganizationRemoveMember(memberId: $memberId, organizationId: $organizationId)
     }
 `;
 

@@ -21,6 +21,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
 import CloseIcon from './icons/ic-close-1.svg';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
@@ -29,7 +30,8 @@ const MembersWrapper = Glamorous(XScrollView)({
 
 const MembersView = Glamorous.div({});
 
-const Member = Glamorous.div({
+const Member = makeNavigable(Glamorous.div({
+    cursor: 'pointer',
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '16px 18px 15px 24px',
@@ -39,7 +41,7 @@ const Member = Glamorous.div({
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
-});
+}));
 
 const MemberAvatar = Glamorous(XAvatar)({
     marginRight: 12
@@ -144,6 +146,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
             <Member
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
+                path={'/mail/u/' + item.id}
             >
                 <MemberAvatar
                     cloudImageUuid={item.picture || undefined}
@@ -185,7 +188,6 @@ const RemoveMemberModal = withConversationKick((props) => {
     if (!member) {
         return null;
     }
-    console.warn(member);
     return (
         <XModalForm
             submitProps={{
@@ -228,14 +230,13 @@ class ChannelMembersComponentInner extends React.Component<{
     description?: string,
     longDescription?: string,
     orgId: string,
-
+    emptyText: string,
 }> {
     render() {
         if (!this.props.data || !this.props.data.members) {
             return <XLoader loading={true} />;
         }
 
-        console.warn(this.props.data.members);
         let requests = this.props.data.members.filter(m => m.status === 'requested');
         let members = this.props.data.members.filter(m => m.status === 'member');
 
@@ -268,6 +269,7 @@ class ChannelMembersComponentInner extends React.Component<{
                         smaller={members.length >= 2}
                         channelTitle={(this.props as any).channelTitle}
                         chatId={this.props.channelId}
+                        text={this.props.emptyText}
                     />
                 )}
                 <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
@@ -284,5 +286,6 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         description={(props as any).description}
         longDescription={(props as any).longDescription}
         orgId={(props as any).orgId}
+        emptyText={(props as any).emptyText}
     />
-)) as React.ComponentType<{ channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ emptyText: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;

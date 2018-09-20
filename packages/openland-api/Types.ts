@@ -16,6 +16,7 @@ export enum OrganizationMemberRole {
 
 export enum EmailFrequency {
   HOUR_1 = "HOUR_1",
+  HOUR_24 = "HOUR_24",
   MIN_15 = "MIN_15",
   NEVER = "NEVER",
 }
@@ -1549,6 +1550,7 @@ export interface ChatSearchForComposeQuery {
 export interface ChatSearchForComposeMobileQueryVariables {
   query: string,
   organizations: boolean,
+  limit?: number | null,
 };
 
 export interface ChatSearchForComposeMobileQuery {
@@ -3992,6 +3994,17 @@ export interface MyOrganizationQuery {
         role: string | null,
         linkedin: string | null,
         twitter: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
       },
     } >,
     organizationType: Array< string > | null,
@@ -4665,6 +4678,17 @@ export interface OrganizationQuery {
         role: string | null,
         linkedin: string | null,
         twitter: string | null,
+        photoRef:  {
+          __typename: "ImageRef",
+          uuid: string,
+          crop:  {
+            __typename: "ImageCrop",
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+          } | null,
+        } | null,
       },
     } >,
     organizationType: Array< string > | null,
@@ -4676,6 +4700,7 @@ export interface OrganizationQuery {
       isRoot: boolean,
       title: string,
       photos: Array< string >,
+      photo: string | null,
       membersCount: number,
       memberRequestsCount: number,
       hidden: boolean,
@@ -5321,6 +5346,7 @@ export interface OrganizationMembersQuery {
 export interface OrganizationChangeMemberRoleMutationVariables {
   memberId: string,
   newRole: OrganizationMemberRole,
+  organizationId: string,
 };
 
 export interface OrganizationChangeMemberRoleMutation {
@@ -5329,6 +5355,7 @@ export interface OrganizationChangeMemberRoleMutation {
 
 export interface OrganizationRemoveMemberMutationVariables {
   memberId: string,
+  organizationId: string,
 };
 
 export interface OrganizationRemoveMemberMutation {
@@ -6344,6 +6371,20 @@ export interface SuperChatsStatsQuery {
     } >,
     usersMutedOpenlandBeta: number,
   },
+};
+
+export interface SuperMessagesSentStatsQueryVariables {
+  fromDate: string,
+  toDate: string,
+  trunc?: string | null,
+};
+
+export interface SuperMessagesSentStatsQuery {
+  messagesSentStats:  Array< {
+    __typename: "MessagesSentEntry",
+    date: string,
+    count: number,
+  } >,
 };
 
 export interface PermitQueryVariables {
@@ -7654,8 +7695,15 @@ export interface UserQuery {
       __typename: "ChannelConversation",
       id: string,
       title: string,
-      photos: Array< string >,
       hidden: boolean,
+      photos: Array< string >,
+      photo: string | null,
+      organization:  {
+        __typename: "Organization",
+        id: string,
+        name: string,
+        photo: string | null,
+      } | null,
     } >,
   },
 };
@@ -8159,6 +8207,17 @@ export interface OrganizationFullFragment {
       role: string | null,
       linkedin: string | null,
       twitter: string | null,
+      photoRef:  {
+        __typename: "ImageRef",
+        uuid: string,
+        crop:  {
+          __typename: "ImageCrop",
+          x: number,
+          y: number,
+          w: number,
+          h: number,
+        } | null,
+      } | null,
     },
   } >,
   organizationType: Array< string > | null,

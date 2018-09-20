@@ -34,7 +34,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                     />
                                     {(resp.data.organization.isMine || resp.data.organization.isOwner) && (
                                         <ZListItemGroup header={null}>
-                                            <ZListItem text="Edit info" appearance="action" />
+                                            <ZListItem text="Edit info" appearance="action" onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })} />
                                             <ZListItem text="Make primary" appearance="action" />
                                             <ZListItem text="Manage members" appearance="action" />
                                         </ZListItemGroup>

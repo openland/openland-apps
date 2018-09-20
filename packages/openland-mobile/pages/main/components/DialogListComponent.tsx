@@ -5,8 +5,10 @@ import { Animated } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { STrackedValue } from 'react-native-s/STrackedValue';
+import { ASDataView } from 'react-native-async-view/ASDataView';
+import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 
-export class DialogListComponent extends React.PureComponent<{ engine: MobileMessenger }> {
+export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataView<DialogDataSourceItem> }> {
     private contentOffset = new STrackedValue();
 
     render() {
@@ -19,7 +21,7 @@ export class DialogListComponent extends React.PureComponent<{ engine: MobileMes
                             <ASListView
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
-                                dataView={this.props.engine.dialogs}
+                                dataView={this.props.dialogs}
                                 style={[{ flexGrow: 1 }, {
                                     // Work-around for freezing navive animation driver
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),

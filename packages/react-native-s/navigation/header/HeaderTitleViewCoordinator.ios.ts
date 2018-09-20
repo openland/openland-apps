@@ -16,10 +16,14 @@ export class HeaderTitleViewCoordinator {
     readonly coordinator: HeaderCoordinator;
     private lastConfig: HeaderConfig;
 
+    private headerSmallView: SAnimatedShadowView;
     private headerView: SAnimatedShadowView;
     private titleView: SAnimatedShadowView;
+    private rightView: SAnimatedShadowView;
+    private leftView: SAnimatedShadowView;
     private titleLargeView: SAnimatedShadowView;
     private searchView: SAnimatedShadowView;
+    private searchViewContainer: SAnimatedShadowView;
     private searchInputBackgroundView: SAnimatedShadowView;
     private searchCancelView: SAnimatedShadowView;
 
@@ -35,9 +39,13 @@ export class HeaderTitleViewCoordinator {
         this.page = page;
         this.coordinator = coordinator;
         this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
-        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 1 });
-        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 1 });
+        this.headerSmallView = new SAnimatedShadowView('header-small--' + this.key, { opacity: 0 });
+        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
+        this.rightView = new SAnimatedShadowView('header-right--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
+        this.leftView = new SAnimatedShadowView('header-left--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
+        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
+        this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
 
@@ -149,14 +157,37 @@ export class HeaderTitleViewCoordinator {
         // 1 0.66 0.33 0
         // -2    -1    0  1
 
-        this.headerView.opacity = (1 - Math.abs(progress)) * (1 - Math.abs(progress)); // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
-        if (this.lastConfig.search && this.lastConfig.searchActive) {
-            this.headerView.translateX = (progress) * SCREEN_WIDTH;
-        } else {
-            this.headerView.translateX = (progress) * SCREEN_WIDTH / 2;
+        let opacitySimple = (1 - Math.abs(progress)) * (1 - Math.abs(progress));
+        let opacityDelayed = (1 - Math.abs(progress) * 2);
+        let opacityDelayedDouble = (1 - Math.abs(progress) * 4);
+        let opacityDelayedClamped = opacityDelayed;
+        let opacityDelayedDoubleClamped = opacityDelayed;
+        if (opacityDelayedDoubleClamped < 0) {
+            opacityDelayedDoubleClamped = 0;
         }
+        if (opacityDelayedDoubleClamped > 1) {
+            opacityDelayedDoubleClamped = 1;
+        }
+        if (opacityDelayedClamped < 0) {
+            opacityDelayedClamped = 0;
+        }
+        if (opacityDelayedClamped > 1) {
+            opacityDelayedClamped = 1;
+        }
+        // if (progress > 0.5) {
+        //     progress = 0;
+        // }
+        let isInSearch = this.lastConfig.search && this.lastConfig.searchActive;
 
         if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
+
+            if (progress > 0) {
+                this.titleLargeView.translateX = (progress) * SCREEN_WIDTH;
+            } else {
+                this.titleLargeView.translateX = 0;
+            }
+            this.titleLargeView.opacity = opacityDelayedClamped;
+
             // Content Offset
             // Positive for overscroll
             let contentOffset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
@@ -188,9 +219,12 @@ export class HeaderTitleViewCoordinator {
             if (this.lastConfig.search) {
                 if (this.lastConfig.searchActive) {
                     this.searchView.translateY = 0;
+                    this.searchViewContainer.translateY = 0;
                 } else {
-                    this.searchView.translateY = -contentOffset - Math.abs(progress) * 44;
+                    this.searchView.translateY = -contentOffset;
+                    this.searchViewContainer.translateY = - Math.abs(progress) * 44;
                 }
+                this.searchView.opacity = opacityDelayedDoubleClamped;
             }
 
             // Search
@@ -255,5 +289,22 @@ export class HeaderTitleViewCoordinator {
             this.titleVisible = true;
             this.titleView.opacity = 1;
         }
+
+        // Small header
+        this.titleView.opacity *= opacityDelayed; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
+        this.rightView.opacity = opacitySimple;
+        if (this.coordinator.isModal && this.page.startIndex === 0) {
+            this.leftView.opacity = opacitySimple;
+        } else {
+            this.leftView.opacity = 0;
+        }
+        if (isInSearch) {
+            this.headerSmallView.translateX = (progress) * SCREEN_WIDTH;
+            this.titleView.translateX = 0;
+        } else {
+            this.headerSmallView.translateX = 0;
+            this.titleView.translateX = (progress) * SCREEN_WIDTH / 2;
+        }
     }
+
 }

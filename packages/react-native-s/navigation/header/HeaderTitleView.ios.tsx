@@ -8,6 +8,7 @@ import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SSafeAreaContext } from '../../SSafeArea';
 import { SEquisiteCentered } from '../../SExquisiteCentered';
+import { SCloseButton } from '../../SCloseButton';
 
 const styles = StyleSheet.create({
     title: {
@@ -77,16 +78,19 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                 <SAnimated.View name={'header--' + v.page.key} style={{ position: 'absolute', top: SDevice.statusBarHeight + SDevice.safeArea.top, right: 0, left: 0, bottom: 0 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                     <SAnimated.View name={'header-small--' + v.page.key} style={{ width: '100%' }}>
                         <SEquisiteCentered style={{ width: '100%' }}>
-                            <View opacity={0}>
-                                <SBackButton onPress={this.props.manager.pop} />
-                            </View>
+                            <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={v.page.startIndex === 0 && !!this.props.manager.parent ? 'box-none' : 'none'}>
+                                {this.props.manager.parent && v.page.startIndex === 0 && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                                {!(this.props.manager.parent && v.page.startIndex === 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                            </SAnimated.View>
                             <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                                 {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]}>{v.config.title}</Text>}
                                 {/* {!v.config.titleView && v.config. && <Text style={{ textAlign: 'center' }}>{this.props.subtitleText}</Text>} */}
                                 {v.config.titleView && v.config.titleView()}
                             </SAnimated.View>
                             <View style={{ flexGrow: 0, flexDirection: 'row', maxWidth: 100, paddingRight: 15, alignItems: 'center' }} pointerEvents="box-none">
-                                {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
+                                <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none">
+                                    {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
+                                </SAnimated.View>
                             </View>
                         </SEquisiteCentered>
                     </SAnimated.View>
@@ -99,7 +103,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     )}
 
                     {(v.config.appearance === 'large' || !v.config.appearance) && (v.config.search) && (
-                        <View style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+                        <SAnimated.View name={'header-search-container--' + v.page.key} style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-search--' + v.page.key}>
                                 <View style={{ flexDirection: 'row', height: 36, marginTop: 1, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                                     <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
@@ -122,7 +126,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <SAnimated.View
                                             name={'header-search-button--' + v.page.key}
                                             style={{
-                                                width: 70 - 15
+                                                width: 70 - 15,
                                             }}
                                         >
                                             <Button title="Close" onPress={v.config.searchClosed!!} color={this.props.style.accentColor} />
@@ -130,7 +134,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                     </View>
                                 </View>
                             </SAnimated.View>
-                        </View>
+                        </SAnimated.View>
                     )}
                 </SAnimated.View>
             </>
