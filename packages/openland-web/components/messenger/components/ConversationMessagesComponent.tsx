@@ -70,7 +70,6 @@ const TypingComponent = (props: { chatId: string }) => (
             <TypingContext.Consumer>
                 {typing => (
                     <TypingContent separator={5} alignItems="center" flexGrow={1}>
-                        {/* {console.log(typing)} */}
                         {typing.users && (
                             <TypingAvatarWrapper>
                                 {typing.users.map((i, j) => (

@@ -240,7 +240,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                                 ? 'channel' : 'colorus'
                     )}
                     userName={props.title}
-                    userId={props.id}
+                    userId={props.flexibleId}
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
                 />
                 <Header>
