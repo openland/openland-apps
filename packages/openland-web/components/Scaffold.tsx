@@ -131,7 +131,7 @@ const NavigatorItem = Glamorous(XLink)({
 
     '.is-active': {
         color: '#99a2b0',
-        backgroundColor: 'rgba(0, 0, 0, 0.06)!important',
+        backgroundColor: 'rgba(42, 70, 97, 0.06)!important',
         '& > svg *': {
             fill: '#99a2b0',
         },
@@ -144,7 +144,7 @@ const NavigatorItem = Glamorous(XLink)({
     },
     '&:hover': {
         color: '#99a2b0',
-        backgroundColor: 'rgba(0, 0, 0, 0.03)',
+        backgroundColor: 'rgba(42, 70, 97, 0.03)',
         '& > svg *': {
             fill: '#99a2b0',
         },
