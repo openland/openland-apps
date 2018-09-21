@@ -75,24 +75,22 @@ const NavigationContainer = Glamorous.div({
     alignItems: 'center',
     flexDirection: 'column',
     paddingTop: 11,
+    paddingBottom: 14,
 });
 
 const NavigationScroller = Glamorous(XScrollView)({
     minHeight: '100vh',
     height: '100%',
     width: 64,
-    backgroundColor: '#4256f4',
-    // backgroundColor: 'transparent',
+    backgroundColor: '#f5f7f9',
     flexShrink: 0,
-    // position: 'sticky',
-    // top: 0,
 });
 
 const Logo = Glamorous.div({
     height: 38,
     width: 38,
     marginTop: 0,
-    marginBottom: 8,
+    marginBottom: 11,
     alignSelf: 'center',
     flexShrink: 0,
     backgroundImage: 'url(\'/static/X/logo-2.svg\')',
@@ -103,11 +101,10 @@ const Logo = Glamorous.div({
 const NavigationDivider = Glamorous.div<{top?: number, bottom?: number}>((props) => ({
     width: 38,
     height: 1,
-    marginTop: props.top ? props.top : 3,
-    marginBottom: props.bottom ? props.bottom : 3,
+    marginTop: (typeof props.top !== undefined) ? props.top : 3,
+    marginBottom: (typeof props.bottom !== undefined) ? props.bottom : 3,
     alignSelf: 'center',
-    backgroundColor: '#ffffff',
-    opacity: 0.15,
+    backgroundColor: 'rgba(220, 222, 228, 0.6)',
     flexShrink: 0,
 }));
 
@@ -116,29 +113,27 @@ const NavigatorIcon = Glamorous(XIcon)({
     textAlign: 'center'
 });
 
-const NavigatorItem = Glamorous(XLink)<{ withPadding?: boolean }>((props) => ({
+const NavigatorItem = Glamorous(XLink)({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
-    height: props.withPadding ? undefined : 56,
-    paddingTop: props.withPadding ? 22 : undefined,
-    paddingBottom: props.withPadding ? 22 : undefined,
+    height: 55,
     flexShrink: 0,
     cursor: 'pointer',
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: '#99a2b0',
 
     '& > svg *': {
-        fill: 'rgba(255, 255, 255, 0.7)',
+        fill: '#99a2b0',
     },
 
     '.is-active': {
-        color: '#ffffff',
-        backgroundColor: '#3347e6',
+        color: '#99a2b0',
+        backgroundColor: 'rgba(0, 0, 0, 0.06)!important',
         '& > svg *': {
-            fill: '#ffffff',
+            fill: '#99a2b0',
         },
         '& > .reports .hover': {
             display: 'block'
@@ -148,9 +143,10 @@ const NavigatorItem = Glamorous(XLink)<{ withPadding?: boolean }>((props) => ({
         },
     },
     '&:hover': {
-        color: '#ffffff',
+        color: '#99a2b0',
+        backgroundColor: 'rgba(0, 0, 0, 0.03)',
         '& > svg *': {
-            fill: '#ffffff',
+            fill: '#99a2b0',
         },
         '& > .reports .hover': {
             display: 'block'
@@ -176,7 +172,7 @@ const NavigatorItem = Glamorous(XLink)<{ withPadding?: boolean }>((props) => ({
         right: 14,
         top: 12
     }
-}));
+});
 
 const BottomNavigation = Glamorous.div({
     display: 'flex',
@@ -654,7 +650,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         return (
             <XPopper
                 contentContainer={<XMenuVertical />}
-                placement="right-start"
+                placement="right-end"
                 show={this.state.show}
                 marginTop={5}
                 marginLeft={16}
@@ -731,7 +727,7 @@ export const ChannelButton = withNotificationCounter((props) => {
         >
             <NavigatorItem path="/channel" activateForSubpaths={true}>
                 <ChannelIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#4256f4" count={props.data.counter.unreadCount} />}
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#f5f7f9" count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
     );
@@ -752,7 +748,7 @@ export const MessengerButton = withNotificationCounter((props) => {
         >
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <MessagesIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#4256f4" count={props.data.counter.unreadCount} />}
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#f5f7f9" count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
     );
@@ -959,9 +955,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 <Logo />
                             </XLink>
 
-                            <NavigationDivider />
-                            <AddMenu />
-                            <NavigationDivider bottom={17} />
+                            <NavigationDivider top={0} bottom={16} />
 
                             <MessengerButton />
 
@@ -1102,11 +1096,12 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 </XPopper>
                             </XWithRole>
                             <BottomNavigation>
-
+                                <AddMenu />
                                 <XWithRole role={['super-admin', 'software-developer']}>
                                     <AdminMenu />
                                 </XWithRole>
-                                <NavigatorItem withPadding={true}>
+                                <NavigationDivider top={10} bottom={10} />
+                                <NavigatorItem>
                                     <UserProfile />
                                 </NavigatorItem>
                             </BottomNavigation>
