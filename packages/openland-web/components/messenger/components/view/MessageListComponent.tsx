@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from './MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
@@ -87,13 +88,21 @@ interface MessageListProps {
     me?: UserShortFragment | null;
 }
 
-export class MessageListComponent extends React.PureComponent<MessageListProps> {
+const getScrollView = () => {
+    return document.getElementsByClassName('messages-wrapper')[0].getElementsByClassName('simplebar-scroll-content')[0];
+};
+
+export class MessageListComponent extends React.Component<MessageListProps, { scrollTop: number }> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
     constructor(props: MessageListProps) {
         super(props);
         // this.checkEmptyState();
+
+        this.state = {
+            scrollTop: 200
+        };
     }
 
     scrollToBottom = () => {
@@ -106,6 +115,29 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.unshifted = true;
         }
         // this.checkEmptyState();
+    }
+
+    componentDidMount() {
+        if (!canUseDOM) {
+            return;
+        }
+        getScrollView().addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        getScrollView().removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll = (e: any) => {
+        this.setState({
+            scrollTop: e.target.scrollTop
+        });
+    }
+
+    loadMoreMessages = (id: string) => {
+        if (this.state.scrollTop < 50) {
+            this.props.loadBefore(id);
+        }
     }
 
     componentDidUpdate() {
@@ -189,7 +221,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
         if (!this.props.conversation.historyFullyLoaded && lastMessage) {
             let id = (lastMessage as MessageFullFragment).id;
-            messages.unshift(<XButton alignSelf="center" style="flat" key={'load_more_' + id} text="Load more" onClick={() => this.props.loadBefore(id)} />);
+            this.loadMoreMessages(id);
+            messages.unshift(<XButton alignSelf="center" style="flat" key={'load_more_' + id} text="Load more" loading={true} />);
         }
 
         return (

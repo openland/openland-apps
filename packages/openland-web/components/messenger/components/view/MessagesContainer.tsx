@@ -47,7 +47,7 @@ const MessagesContainerInner = Glamorous.div({
 export const MessagesContainer = (props: { children?: any }) => {
     return (
         <ChatContainer>
-            <MessagesContainerInner>
+            <MessagesContainerInner className="messages-wrapper">
                 {props.children}
             </MessagesContainerInner>
         </ChatContainer>
