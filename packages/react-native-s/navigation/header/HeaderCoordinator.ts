@@ -7,8 +7,7 @@ import { HeaderConfig } from '../HeaderConfig';
 import { SAnimatedShadowView } from '../../SAnimatedShadowView';
 import { HeaderTitleViewCoordinator } from './HeaderTitleViewCoordinator';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('window').width);
 
 export class HeaderCoordinator {
 
@@ -17,17 +16,23 @@ export class HeaderCoordinator {
     private hairline: SAnimatedShadowView;
     private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
+    private getSize: () => { width: number, height: number };
     readonly isModal: boolean;
     isInTransition = false;
     state?: NavigationState;
 
-    constructor(key: string, isModal: boolean) {
+    constructor(key: string, isModal: boolean, size: () => { width: number, height: number }) {
         this.isModal = isModal;
+        this.getSize = size;
         this.backOpacity = new SAnimatedProperty('header-back-' + key, 'opacity', 1);
-        this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -SCREEN_HEIGHT);
+        this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -MAX_SIZE);
         this.hairline = new SAnimatedShadowView('header-hairline-' + key);
         this.container = new SAnimatedShadowView('header-container-' + key);
         // this.container.iosHeight = 0;
+    }
+
+    get size() {
+        return this.getSize();
     }
 
     setInitialState = (state: NavigationState) => {
@@ -84,7 +89,7 @@ export class HeaderCoordinator {
             if (state.history.length >= 2) {
                 v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config);
             }
-            this.backgroundTranslate.value = v - SCREEN_HEIGHT;
+            this.backgroundTranslate.value = v - MAX_SIZE;
             this.hairline.translateY = v;
 
             let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top) + 1;

@@ -24,5 +24,5 @@ if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimat
 // import Routes from './routes';
 import { withUpdateTracker } from './utils/UpdateTracker';
 import { withGlobalLoader } from './components/ZGlobalLoader';
-import { Root } from './pages/Root';
-AppRegistry.registerComponent('openland', () => withUpdateTracker(withGlobalLoader(Root)));
+import { Init } from './pages/Init';
+AppRegistry.registerComponent('openland', () => withUpdateTracker(withGlobalLoader(Init)));
