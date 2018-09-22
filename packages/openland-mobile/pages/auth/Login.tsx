@@ -119,13 +119,13 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                     <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                         <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
-                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of business networking</Text>
+                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of professional networking</Text>
                         </View>
                     </View>
                     <View flexDirection="column" style={{ marginTop: 8, marginBottom: 12 }}>
                         <TouchableOpacity>
                             <View style={styles.button}>
-                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Phone'}</Text>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Start networking'}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
