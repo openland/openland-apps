@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 56,
+        height: 48,
         width: 335,
         backgroundColor: '#4747ec',
         color: '#fff',
-        borderRadius: 56 / 2
+        borderRadius: 12
     } as ViewStyle,
     buttonTitle: {
         fontSize: 15,
@@ -121,31 +121,35 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                             <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
                             <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of business networking</Text>
                         </View>
-                        <View flexDirection="column" style={{ marginTop: 32 }}>
-                            <TouchableOpacity onPress={this.handlePress} disabled={this.state.loading}>
-                                <View style={styles.button}>
-                                    <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                                        {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
-                                    </View>
-                                    <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Google'}</Text>
-                                    <View style={{ width: 70, height: 70 }}>
-                                        {}
-                                    </View>
-                                    {this.state.loading && <View style={{ position: 'absolute' }}><ActivityIndicator /></View>}
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View flexDirection="column" style={{ marginTop: 15 }}>
-                            <TouchableOpacity>
-                                <View style={styles.button}>
-                                    <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Email'}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
                     </View>
-                    <View flexDirection="column" paddingBottom={20} alignItems="center">
-                        <Text style={styles.footer}>By creating an account you are accepting our</Text>
-                        <Text style={styles.footer}>Terms of Service and Privacy Policy</Text>
+                    <View flexDirection="column" style={{ marginTop: 8, marginBottom: 12 }}>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Phone'}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <Text>— or —</Text>
+                    <View flexDirection="column" style={{ marginTop: 12 }}>
+                        <TouchableOpacity onPress={this.handlePress} disabled={this.state.loading}>
+                            <View style={styles.button}>
+                                <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                                    {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
+                                </View>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Google'}</Text>
+                                <View style={{ width: 70, height: 70 }}>
+                                    {}
+                                </View>
+                                {this.state.loading && <View style={{ position: 'absolute' }}><ActivityIndicator /></View>}
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View flexDirection="column" style={{ marginTop: 8 }}>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Email'}</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </SafeAreaView>
             </View>
