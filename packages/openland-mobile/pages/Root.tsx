@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SRouting } from 'react-native-s/SRouting';
-import { Platform, Dimensions, View, LayoutChangeEvent } from 'react-native';
+import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
 import { SNavigationView } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
 
@@ -18,6 +18,11 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     }
 
     private handleLayoutChange = (e: LayoutChangeEvent) => {
+        if (Platform.OS === 'ios') {
+            LayoutAnimation.configureNext({
+                duration: 500
+            });
+        }
         this.setState({ width: Dimensions.get('window').width, height: Dimensions.get('window').height });
     }
 
@@ -27,7 +32,7 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
             return (
                 <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
                     <SNavigationView
-                        width={375}
+                        width={300}
                         height={this.state.height}
                         routing={this.props.routing}
                         navigationBarStyle={{
@@ -36,6 +41,10 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                             isOpaque: Platform.OS === 'ios' ? false : true
                         }}
                     />
+                    <View height={'100%'} width={0.5} backgroundColor={AppStyles.separatorColor} />
+                    <View width={this.state.width - 300} height={'100%'}>
+                        {}
+                    </View>
                 </View>
             );
         }
