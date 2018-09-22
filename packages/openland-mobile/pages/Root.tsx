@@ -3,30 +3,45 @@ import { SRouting } from 'react-native-s/SRouting';
 import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
 import { SNavigationView } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
+import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
+import { randomKey } from 'react-native-s/utils/randomKey';
 
 export interface RootProps {
     routing: SRouting;
 }
 
-export class Root extends React.PureComponent<RootProps, { width: number, height: number }> {
+export class Root extends React.PureComponent<RootProps, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
+
     constructor(props: RootProps) {
         super(props);
         this.state = {
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height
         };
+
+        this.props.routing.navigationManager.setPushHandler(this.handlePush);
+    }
+
+    private handlePush = (route: string, params?: any) => {
+        let man = new NavigationManager(this.props.routing.navigationManager.routes, route, params);
+        this.setState({ masterRouting: new SRouting(man), masterKey: randomKey() });
+        return true;
     }
 
     private handleLayoutChange = (e: LayoutChangeEvent) => {
+        let w = Dimensions.get('window').width;
+        let h = Dimensions.get('window').height;
         if (Platform.OS === 'ios') {
-            LayoutAnimation.configureNext({
-                duration: 250,
-                update: {
-                    type: 'linear'
-                }
-            });
+            if (this.state.width !== w || this.state.height !== h) {
+                LayoutAnimation.configureNext({
+                    duration: 250,
+                    update: {
+                        type: 'linear'
+                    }
+                });
+            }
         }
-        this.setState({ width: Dimensions.get('window').width, height: Dimensions.get('window').height });
+        this.setState({ width: w, height: h });
     }
 
     render() {
@@ -46,7 +61,19 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                     />
                     <View height={'100%'} width={0.5} backgroundColor={AppStyles.separatorColor} />
                     <View width={this.state.width - 300} height={'100%'}>
-                        {}
+                        {this.state.masterRouting && (
+                            <SNavigationView
+                                key={this.state.masterKey!!}
+                                width={this.state.width - 300}
+                                height={this.state.height}
+                                routing={this.state.masterRouting}
+                                navigationBarStyle={{
+                                    accentColor: AppStyles.primaryColor,
+                                    backgroundColor: '#fff',
+                                    isOpaque: Platform.OS === 'ios' ? false : true
+                                }}
+                            />
+                        )}
                     </View>
                 </View>
             );

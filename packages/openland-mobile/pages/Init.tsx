@@ -42,7 +42,7 @@ export class Init extends React.Component<NavigationInjectedProps, { state: 'sta
                     userToken = undefined;
                 } else {
                     let messenger = buildMessenger(client, res.data.me);
-                    let history = new SRouting(Routes);
+                    let history = SRouting.create(Routes);
                     setMessenger(new MobileMessenger(messenger, history, this.ref));
                     saveClient(client);
                     await messenger.awaitLoading();

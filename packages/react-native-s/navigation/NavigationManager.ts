@@ -19,6 +19,7 @@ export class NavigationManager {
     private state: NavigationState;
     private watchers: NavigationManagerListener[] = [];
     private locksCount = 0;
+    private customHandler?: ((route: string, params?: any) => boolean);
 
     constructor(routes: SRoutes, route?: string, params?: any, parent?: NavigationManager) {
         this.parent = parent;
@@ -26,11 +27,20 @@ export class NavigationManager {
         this.state = new NavigationState([new NavigationPage(this, 0, route || routes.defaultRoute, params)]);
     }
 
+    setPushHandler = (handler: (route: string, params?: any) => boolean) => {
+        this.customHandler = handler;
+    }
+
     getState() {
         return this.state;
     }
 
     push = (route: string, params?: any) => {
+        if (this.customHandler) {
+            if (this.customHandler(route, params)) {
+                return;
+            }
+        }
         if (this.locksCount > 0) {
             return;
         }
