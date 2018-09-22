@@ -10,6 +10,8 @@ export interface RootProps {
     routing: SRouting;
 }
 
+let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
+
 export class Root extends React.PureComponent<RootProps, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
 
     constructor(props: RootProps) {
@@ -19,7 +21,9 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
             height: Dimensions.get('window').height
         };
 
-        this.props.routing.navigationManager.setPushHandler(this.handlePush);
+        if (isPad) {
+            this.props.routing.navigationManager.setPushHandler(this.handlePush);
+        }
     }
 
     private handlePush = (route: string, params?: any) => {
@@ -45,7 +49,6 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     }
 
     render() {
-        let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
         if (isPad) {
             return (
                 <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
