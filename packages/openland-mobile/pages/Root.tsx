@@ -20,7 +20,10 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     private handleLayoutChange = (e: LayoutChangeEvent) => {
         if (Platform.OS === 'ios') {
             LayoutAnimation.configureNext({
-                duration: 500
+                duration: 250,
+                update: {
+                    type: 'linear'
+                }
             });
         }
         this.setState({ width: Dimensions.get('window').width, height: Dimensions.get('window').height });
