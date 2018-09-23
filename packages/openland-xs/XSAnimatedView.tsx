@@ -6,7 +6,7 @@ const TRANSITION_DURATION = '500ms';
 
 const Container = Glamorous.div({
     transition: 'transform ' + TRANSITION_DURATION + ' cubic-bezier(0.2833, 0.99, 0.31833, 0.99), opacity ' + TRANSITION_DURATION + ' cubic-bezier(0.2833, 0.99, 0.31833, 0.99)', /* iOS Spring Interpolation */
-    willChange: 'transform'
+    willChange: 'transform, opacity'
 });
 
 export class XSAnimatedView extends React.PureComponent<{ className?: string, shadow: XSAnimatedShadowView }> {
@@ -22,7 +22,7 @@ export class XSAnimatedView extends React.PureComponent<{ className?: string, sh
 
     componentDidMount() {
         // For some reason running animations in did mount prevents animations
-        setTimeout(() => { this.props.shadow.onMount(this.element!!); }, 1);
+        requestAnimationFrame(() => { requestAnimationFrame(() => { this.props.shadow.onMount(this.element!!); }); });
     }
 
     componentWillUnmount() {
