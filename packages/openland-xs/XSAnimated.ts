@@ -9,11 +9,18 @@ class XSAnimatedImplementation {
         this._isAnimating = value;
     }
 
-    animate = (callback: () => void) => {
+    animate = (callback: () => void, completed?: () => void) => {
         let prev = this._isAnimating;
         this._isAnimating = true;
         callback();
         this._isAnimating = prev;
+        if (completed) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => { completed(); }, 500);
+                });
+            });
+        }
     }
 }
 

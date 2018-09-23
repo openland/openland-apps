@@ -61,6 +61,7 @@ interface NavigationPage {
 export class XSNaivgationView extends React.PureComponent<{}, { screens: NavigationPage[] }> {
 
     private screens: NavigationPage[] = [];
+    private isNavigating = false;
 
     constructor(props: {}) {
         super(props);
@@ -76,6 +77,9 @@ export class XSNaivgationView extends React.PureComponent<{}, { screens: Navigat
     }
 
     private handlePush = () => {
+        if (this.isNavigating) {
+            return;
+        }
         let prev = this.screens[this.screens.length - 1];
         let item = {
             key: randomKey(),
@@ -85,27 +89,47 @@ export class XSNaivgationView extends React.PureComponent<{}, { screens: Navigat
         };
 
         // Animate
-        XSAnimated.animate(() => {
-            prev.container.translateX = '-33%';
-            prev.shadowOverlay.opacity = 0.1;
-            item.container.translateX = '0%';
-            item.content.opacity = 1;
-        });
+        this.isNavigating = true;
+        XSAnimated.animate(
+            () => {
+                prev.container.translateX = '-33%';
+                prev.shadowOverlay.opacity = 0.1;
+                prev.content.opacity = 0;
+                item.container.translateX = '0%';
+                item.content.opacity = 1;
+            },
+            () => {
+                this.isNavigating = false;
+            });
 
         this.screens = [...this.screens, item];
         this.setState({ screens: this.screens });
     }
 
     private handlePop = () => {
+        if (this.isNavigating) {
+            return;
+        }
         if (this.screens.length >= 2) {
             let item = this.screens[this.screens.length - 2];
             let last = this.screens[this.screens.length - 1];
 
             // Animate
-            XSAnimated.animate(() => {
-                last.container.translateX = '100%';
-                item.container.translateX = '0%';
-            });
+            this.isNavigating = true;
+            XSAnimated.animate(
+                () => {
+                    last.container.translateX = '100%';
+                    item.container.translateX = '0%';
+                    item.shadowOverlay.opacity = 0;
+                    item.content.opacity = 1;
+                },
+                () => {
+                    let s = [...this.screens];
+                    s.splice(s.length - 1);
+                    this.screens = s;
+                    this.setState({ screens: this.screens });
+                    this.isNavigating = false;
+                });
         }
     }
 
