@@ -11,7 +11,16 @@ type XInputSize = 'large' | 'medium' | 'default' | 'small' | 'r-default' | 'r-sm
 type XInputAttach = 'left' | 'right' | 'both';
 type XInputStyle = 'default' | 'primary-sky-blue';
 
+// top: -12px;
+// position: absolute;
+// /* top: -10px; */
+// left: 12px;
+// padding-left: 4px;
+// background-color: white;
+// padding-right: 4px;
+
 export interface XInputBasicProps extends XFlexStyles {
+    title?: string;
     type?: string;
     pattern?: string;
     placeholder?: string;
@@ -340,6 +349,26 @@ let colorStyles = styleResolver({
     }
 });
 
+const Title = Glamorous.div({
+    top: '-13px',
+    position: 'absolute',
+    left: '12px',
+    paddingLeft: '4px',
+    paddingRight: '4px',
+    backgroundColor: 'white',
+    height: 24,
+    fontSize: 14,
+    lineHeight: '24px',
+    color: 'rgba(0,0,0,0.4)'
+    // top: -12px;
+    // position: absolute;
+    // /* top: -10px; */
+    // left: 12px;
+    // padding-left: 4px;
+    // background-color: white;
+    // padding-right: 4px;
+});
+
 const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyle, invalid?: boolean, format?: XInputSize, attach?: XInputAttach }>([
     (props) => ({
         position: 'relative',
@@ -526,6 +555,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
             color,
             cleansable,
             onFocus,
+            title,
             ...other
         } = this.props;
 
@@ -542,6 +572,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
                 invalid={invalid}
                 disabled={disabled}
             >
+                {title && (<Title>{title}</Title>)}
                 {icon && (
                     typeof (icon) === 'string'
                         ? <XIcon icon={icon} className="icon" />
