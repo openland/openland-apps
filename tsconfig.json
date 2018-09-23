@@ -127,6 +127,9 @@
       ],
       "react-native-s": [
         "react-native-s"
+      ],
+      "openland-xs": [
+        "openland-xs"
       ]
     },
     "importHelpers": true
@@ -178,6 +181,7 @@
     "./packages/openland-y-runtime-mac",
     "./packages/openland-mac/src",
     "./packages/openland-shared",
+    "./packages/openland-xs",
     "./packages/react-native-async-view",
     "./packages/react-native-fast-navigation",
     "./packages/react-native-s"
