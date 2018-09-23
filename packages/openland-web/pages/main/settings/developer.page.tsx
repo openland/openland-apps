@@ -13,7 +13,7 @@ export default withApp('DevCenter', 'viewer', withPersonalTokens((props) => {
             <XSContainer>
                 <XSHeader
                     title="Development Center"
-                    subtitle="Here you can create personal tokens to access to API of Openland in your behalf by external services."
+                    subtitle="Personal access tokens are used to access the Openland API on your behalf."
                 />
                 <XSGroup title="Personal access tokens">
                     {props.data.devPersonalTokens.map((v) => (
