@@ -60,13 +60,6 @@ routes.add('/settings/dev', '/main/settings/developer');
 routes.add('/settings/dev/', '/main/settings/developer');
 
 //
-// Create account
-//
-
-routes.add('/account', '/main/account/root');
-routes.add('/account/', '/main/account/root');
-
-//
 // Home
 //
 
@@ -103,6 +96,7 @@ routes.add('/o/:organizationId/listings/', '/main/profile/organization');
 routes.add('/o/:organizationId/listings', '/main/profile/organization');
 routes.add('/o/:organizationId/listings/all', '/main/profile/organization');
 routes.add('/o/:organizationId/listings/all/', '/main/profile/organization');
+
 //
 // Marketplace
 //
@@ -111,99 +105,6 @@ routes.add('/marketplace', '/main/marketplace/main');
 routes.add('/marketplace/', '/main/marketplace/main');
 routes.add('/marketplace/organization/:organizationId', '/main/marketplace/organization');
 routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/organization');
-//
-// Parcels
-//
-
-routes.add('/parcels', '/main/parcels/list');
-routes.add('/parcels/', '/main/parcels/list');
-routes.add('/parcels/:parcelId', '/main/parcels/item');
-routes.add('/parcels/:parcelId/', '/main/parcels/item');
-routes.add('/parcels/:parcelId/links', '/main/parcels/item');
-routes.add('/parcels/:parcelId/links/', '/main/parcels/item');
-routes.add('/parcels/:parcelId/permits', '/main/parcels/item');
-routes.add('/parcels/:parcelId/permits/', '/main/parcels/item');
-routes.add('/parcels/:parcelId/nearby_transit', '/main/parcels/item');
-routes.add('/parcels/:parcelId/nearby_transit/', '/main/parcels/item');
-routes.add('/parcels/:parcelId/notes', '/main/parcels/item');
-routes.add('/parcels/:parcelId/notes/', '/main/parcels/item');
-routes.add('/parcels/:parcelId/zoning', '/main/parcels/item');
-routes.add('/parcels/:parcelId/zoning/', '/main/parcels/item');
-routes.add('/parcels/:parcelId/edit', '/main/parcels/edit');
-routes.add('/parcels/:parcelId/edit/', '/main/parcels/edit');
-
-//
-// Deals
-//
-
-routes.add('/deals', '/main/deals/root');
-routes.add('/deals/', '/main/deals/root');
-routes.add('/deals/:dealId', '/main/deals/view');
-routes.add('/deals/:dealId/', '/main/deals/view');
-
-//
-// Reports
-//
-routes.add('/reports/urbyn_mho_nyc', '/main/reports/urbynmho');
-routes.add('/reports/urbyn_mho_nyc/', '/main/reports/urbynmho');
-
-//
-// Sourcing
-//
-
-routes.add('/prospecting', '/main/prospecting/root');
-routes.add('/prospecting/', '/main/prospecting/root');
-routes.add('/prospecting/rejected', '/main/prospecting/rejected');
-routes.add('/prospecting/rejected/', '/main/prospecting/rejected');
-routes.add('/prospecting/approved', '/main/prospecting/approved');
-routes.add('/prospecting/approved/', '/main/prospecting/approved');
-routes.add('/prospecting/snoozed', '/main/prospecting/snoozed');
-routes.add('/prospecting/snoozed/', '/main/prospecting/snoozed');
-routes.add('/prospecting/zoning', '/main/prospecting/zoning');
-routes.add('/prospecting/zoning/', '/main/prospecting/zoning');
-routes.add('/prospecting/unit', '/main/prospecting/unit');
-routes.add('/prospecting/unit/', '/main/prospecting/unit');
-routes.add('/prospecting/review', '/main/prospecting/review');
-routes.add('/prospecting/review/', '/main/prospecting/review');
-routes.add('/prospecting/map', '/main/prospecting/map');
-routes.add('/prospecting/map/', '/main/prospecting/map');
-
-routes.add('/prospecting/review/links', '/main/prospecting/review');
-routes.add('/prospecting/review/links/', '/main/prospecting/review');
-routes.add('/prospecting/review/notes', '/main/prospecting/review');
-routes.add('/prospecting/review/notes/', '/main/prospecting/review');
-routes.add('/prospecting/review/zoning', '/main/prospecting/review');
-routes.add('/prospecting/review/zoning/', '/main/prospecting/review');
-
-// Hack
-routes.add('/prospecting/nyc', '/main/prospecting/snoozed');
-routes.add('/prospecting/nyc/', '/main/prospecting/snoozed');
-
-//
-// Folders
-//
-routes.add('/folders', '/main/folders/all');
-routes.add('/folders/', '/main/folders/all');
-routes.add('/folders/:folderId', '/main/folders/all');
-routes.add('/folders/:folderId/', '/main/folders/all');
-
-//
-// Projects
-//
-
-routes.add('/projects', '/main/projects/list');
-routes.add('/projects/', '/main/projects/list');
-routes.add('/projects/:projectId', '/main/projects/view');
-routes.add('/projects/:projectId/', '/main/projects/view');
-
-//
-// Extras
-//
-
-routes.add('/favorites', '/main/favorites/root');
-routes.add('/favorites/', '/main/favorites/root');
-routes.add('/inquiries', '/main/inquiries/root');
-routes.add('/inquiries/', '/main/inquiries/root');
 
 //
 // Mail

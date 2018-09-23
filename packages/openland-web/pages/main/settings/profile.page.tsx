@@ -56,7 +56,7 @@ const CardText = Glamorous.div({
 
 export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
-        <Navigation title="Your profile">
+        <Navigation title="My profile">
             <Content>
                 <XVertical separator={21}>
                     <Query query={MyOrganizationsQuery.document}>
@@ -91,7 +91,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     defaultLayout={false}
                                 >
                                     <XVertical separator={12}>
-                                        <HeadTitle>User</HeadTitle>
+                                        <HeadTitle>My profile</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical separator={12}>
                                             <XFormLoadingContent>

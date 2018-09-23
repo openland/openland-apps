@@ -16,6 +16,6 @@ export const TextGlobal = {
     sendInvites: 'Send invites',
     invitePeopleTo: 'Invite people to',
     joinYourOrganization: 'Invite people to your organization',
-    joinOpenland: 'Invite other organizations',
+    joinOpenland: 'Invite people',
     startChat: 'New chat',
 };
