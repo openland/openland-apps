@@ -12,7 +12,8 @@ const Wrapper = Glamorous.div({
 });
 
 const Title = Glamorous.div({
-    fontSize: 22,
+    fontSize: 28,
+    fontWeight: 400,
     paddingLeft: _styles.paddingHorizontal,
     paddingRight: _styles.paddingHorizontal,
 });

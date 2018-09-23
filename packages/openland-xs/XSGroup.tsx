@@ -8,9 +8,11 @@ const Wrapper = Glamorous.div({
     flexDirection: 'column',
     flexShrink: 0,
     alignItems: 'stretch',
+    paddingTop: '8px',
+    marginBottom: '16px'
 });
 
-const Title = Glamorous.div({
+const Description = Glamorous.div({
     fontSize: 16,
     fontWeight: 'bold',
     lineHeight: 1.25,
@@ -21,7 +23,6 @@ const Title = Glamorous.div({
 });
 
 export interface XSGroupProps {
-    title?: string;
     description?: string;
     className?: string;
     css?: CSSPropertiesRecursive;
@@ -31,7 +32,7 @@ export class XSGroup extends React.PureComponent<XSGroupProps> {
     render() {
         return (
             <Wrapper css={this.props.css} className={this.props.className}>
-                {this.props.title && (<Title>{this.props.title}</Title>)}
+                {this.props.description && (<Description>{this.props.description}</Description>)}
                 {this.props.children}
             </Wrapper>
         );

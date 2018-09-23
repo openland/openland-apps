@@ -1,3 +1,3 @@
 export const _styles = {
-    paddingHorizontal: 15
+    paddingHorizontal: 24
 };
