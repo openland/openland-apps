@@ -6,8 +6,6 @@ import { XSAnimatedView } from './XSAnimatedView';
 import { XSAnimatedShadowView } from './XSAnimatedShadowView';
 import { XSAnimated } from './XSAnimated';
 
-const TRANSITION_DURATION = '500ms';
-
 const Container = Glamorous.div({
     position: 'relative',
     display: 'flex',
@@ -30,10 +28,11 @@ const ScreenContainer = Glamorous(XSAnimatedView)({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
+    backgroundColor: '#fff'
 });
 
-const ScreenContainerInner = Glamorous.div({
+const ScreenContainerInner = Glamorous(XSAnimatedView)({
     display: 'flex',
     position: 'relative',
     width: '100%',
@@ -42,25 +41,35 @@ const ScreenContainerInner = Glamorous.div({
     backgroundColor: 'white',
 });
 
-const ScreenShadow = Glamorous.div({
+const ScreenShadow = Glamorous(XSAnimatedView)({
     display: 'flex',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#000',
-    transition: 'opacity ' + TRANSITION_DURATION + ' cubic-bezier(0.2833, 0.99, 0.31833, 0.99)', /* iOS Spring Interpolation */
-    willChange: 'opacity'
+    backgroundColor: '#000'
 });
 
-export class XSNaivgationView extends React.PureComponent<{}, { screens: { key: string, shadow: XSAnimatedShadowView }[] }> {
+interface NavigationPage {
+    key: string;
+    container: XSAnimatedShadowView;
+    content: XSAnimatedShadowView;
+    shadowOverlay: XSAnimatedShadowView;
+}
 
-    private screens: { key: string, shadow: XSAnimatedShadowView }[] = [];
+export class XSNaivgationView extends React.PureComponent<{}, { screens: NavigationPage[] }> {
+
+    private screens: NavigationPage[] = [];
 
     constructor(props: {}) {
         super(props);
-        this.screens = [{ key: 'initial', shadow: new XSAnimatedShadowView({ translateX: '0%' }) }];
+        this.screens = [{
+            key: 'initial',
+            container: new XSAnimatedShadowView({ translateX: '0%' }),
+            content: new XSAnimatedShadowView({ translateX: '0%', opacity: 1 }),
+            shadowOverlay: new XSAnimatedShadowView({ opacity: 0 })
+        }];
         this.state = {
             screens: this.screens
         };
@@ -68,12 +77,19 @@ export class XSNaivgationView extends React.PureComponent<{}, { screens: { key: 
 
     private handlePush = () => {
         let prev = this.screens[this.screens.length - 1];
-        let item = { key: randomKey(), shadow: new XSAnimatedShadowView({ translateX: '100%' }) };
+        let item = {
+            key: randomKey(),
+            container: new XSAnimatedShadowView({ translateX: '100%' }),
+            content: new XSAnimatedShadowView({ translateX: '0%', opacity: 0 }),
+            shadowOverlay: new XSAnimatedShadowView({ opacity: 0 })
+        };
 
         // Animate
         XSAnimated.animate(() => {
-            prev.shadow.translateX = '-33%';
-            item.shadow.translateX = '0%';
+            prev.container.translateX = '-33%';
+            prev.shadowOverlay.opacity = 0.1;
+            item.container.translateX = '0%';
+            item.content.opacity = 1;
         });
 
         this.screens = [...this.screens, item];
@@ -84,11 +100,11 @@ export class XSNaivgationView extends React.PureComponent<{}, { screens: { key: 
         if (this.screens.length >= 2) {
             let item = this.screens[this.screens.length - 2];
             let last = this.screens[this.screens.length - 1];
-            
+
             // Animate
             XSAnimated.animate(() => {
-                last.shadow.translateX = '100%';
-                item.shadow.translateX = '0%';
+                last.container.translateX = '100%';
+                item.container.translateX = '0%';
             });
         }
     }
@@ -97,11 +113,11 @@ export class XSNaivgationView extends React.PureComponent<{}, { screens: { key: 
         return (
             <Container>
                 {this.state.screens.map((v) => (
-                    <ScreenContainer shadow={v.shadow}>
-                        <ScreenContainerInner>
+                    <ScreenContainer shadow={v.container}>
+                        <ScreenContainerInner shadow={v.content}>
                             Hello - {v.key}
                         </ScreenContainerInner>
-                        {/* <ScreenShadow css={{ opacity: v.opacity }} /> */}
+                        <ScreenShadow shadow={v.shadowOverlay} />
                     </ScreenContainer>
                 ))}
                 <Controls>

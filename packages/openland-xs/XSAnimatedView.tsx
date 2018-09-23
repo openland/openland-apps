@@ -6,7 +6,6 @@ const TRANSITION_DURATION = '500ms';
 
 const Container = Glamorous.div({
     transition: 'transform ' + TRANSITION_DURATION + ' cubic-bezier(0.2833, 0.99, 0.31833, 0.99), opacity ' + TRANSITION_DURATION + ' cubic-bezier(0.2833, 0.99, 0.31833, 0.99)', /* iOS Spring Interpolation */
-    willChange: 'transform, opacity'
 });
 
 export class XSAnimatedView extends React.PureComponent<{ className?: string, shadow: XSAnimatedShadowView }> {
@@ -30,6 +29,6 @@ export class XSAnimatedView extends React.PureComponent<{ className?: string, sh
     }
 
     render() {
-        return (<Container innerRef={this.handleInnerRef} className={this.props.className}>{this.props.children}</Container>);
+        return (<Container innerRef={this.handleInnerRef} className={this.props.className} style={{ opacity: this.props.shadow.opacity }}>{this.props.children}</Container>);
     }
 }
