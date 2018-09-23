@@ -9,7 +9,8 @@ const Wrapper = Glamorous.div({
     flexShrink: 0,
     alignItems: 'stretch',
     paddingTop: '8px',
-    marginBottom: '16px'
+    marginBottom: '16px',
+    maxWidth: _styles.contentMaxWidth
 });
 
 const Description = Glamorous.div({

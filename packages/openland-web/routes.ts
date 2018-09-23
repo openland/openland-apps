@@ -67,6 +67,11 @@ routes.add('/home', '/main/home/main');
 routes.add('/home/', '/main/home/main');
 
 //
+// Onbouarding
+//
+routes.add('/new/invite', '/main/onboarding/invite');
+
+//
 // Directory
 //
 
