@@ -7,6 +7,7 @@ import { XSContainer } from 'openland-xs/XSContainer';
 import { XSDialog } from 'openland-xs/XSDialog';
 import { XSDialogTitle } from 'openland-xs/XSDialogTitle';
 import { XButton } from 'openland-x/XButton';
+import { XSNaivgationView } from 'openland-xs/XSNavigationView';
 
 export default withApp('Invite', 'viewer', () => {
     return (
@@ -15,8 +16,9 @@ export default withApp('Invite', 'viewer', () => {
                 <XSContainer>
                     <XSDialog>
                         <XSDialogTitle>Invite people</XSDialogTitle>
-                        <XButton text="Invite to my organization" />
-                        <XButton text="Invite other organization" />
+                        <XSNaivgationView />
+                        {/* <XButton text="Invite to my organization" />
+                        <XButton text="Invite other organization" /> */}
                     </XSDialog>
                 </XSContainer>
             </Scaffold.Content>
