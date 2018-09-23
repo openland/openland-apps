@@ -10,13 +10,6 @@ export const Navigation = (props: { title: string, children?: any }) => (
         <Scaffold>
             <Scaffold.Menu>
                 <Sidebar title="Settings">
-                    <Sidebar.Item path="/settings/organization">Organization</Sidebar.Item>
-                    <Sidebar.Subitem anchor="/settings/organization#general">General</Sidebar.Subitem>
-                    <Sidebar.Subitem anchor="/settings/organization#links">Links</Sidebar.Subitem>
-                    <XWithRole role={['super-admin', 'software-developer']}>
-                        <Sidebar.Subitem anchor="/settings/organization#members">Members</Sidebar.Subitem>
-                        <Sidebar.Subitem anchor="/settings/organization#super-admin">Super admin</Sidebar.Subitem>
-                    </XWithRole >
                     <Sidebar.Item path="/settings/profile">User</Sidebar.Item>
                     <Sidebar.Item path="/settings/invites">Invites</Sidebar.Item>
                     <Sidebar.Item path="/settings/notifications">Notifications</Sidebar.Item>
