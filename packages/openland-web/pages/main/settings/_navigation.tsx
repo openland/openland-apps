@@ -20,6 +20,7 @@ export const Navigation = (props: { title: string, children?: any }) => (
                     <Sidebar.Item path="/settings/profile">User</Sidebar.Item>
                     <Sidebar.Item path="/settings/invites">Invites</Sidebar.Item>
                     <Sidebar.Item path="/settings/notifications">Notifications</Sidebar.Item>
+                    <Sidebar.Item path="/settings/dev">Development Center</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false}>

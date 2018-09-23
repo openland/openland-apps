@@ -3588,6 +3588,15 @@ export interface DebugSendWelcomeEmailMutation {
   debugSendWelcomeEmail: string,
 };
 
+export interface PersonalTokensQuery {
+  devPersonalTokens:  Array< {
+    __typename: "PersonalToken",
+    id: string,
+    token: string,
+    createdAt: string,
+  } >,
+};
+
 export interface FeatureFlagsQuery {
   featureFlags:  Array< {
     __typename: "FeatureFlag",
@@ -4016,6 +4025,7 @@ export interface MyOrganizationQuery {
       isRoot: boolean,
       title: string,
       photos: Array< string >,
+      photo: string | null,
       membersCount: number,
       memberRequestsCount: number,
       hidden: boolean,
@@ -8229,6 +8239,7 @@ export interface OrganizationFullFragment {
     isRoot: boolean,
     title: string,
     photos: Array< string >,
+    photo: string | null,
     membersCount: number,
     memberRequestsCount: number,
     hidden: boolean,
