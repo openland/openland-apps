@@ -139,6 +139,7 @@ const ContentText = Glamorous.div({
     lineHeight: '17px',
     opacity: 0.6,
     color: '#121e2b',
+    fontWeight: 400,
     '& span': {
         display: 'block',
         height: '100%',
