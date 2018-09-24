@@ -211,12 +211,12 @@ interface ConversationComponentProps {
 
 const OnlineDot = Glamorous.div({
     position: 'absolute',
-    width: 8,
-    height: 8,
+    width: 9,
+    height: 9,
     backgroundColor: '#69d06d',
     border: 'solid 1px #f9fafb',
     borderRadius: 50,
-    left: 49,
+    left: 50,
     top: 46
 });
 
