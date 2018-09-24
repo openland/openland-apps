@@ -271,31 +271,15 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                 content={(
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
-                            {this.props.organizationId && (
-                                <>
-                                    <OrganizationTitleContainer path={'/directory/o/' + this.props.organizationId} autoClose={true}>
-                                        <XAvatar path={'/directory/o/' + this.props.organizationId} cloudImageUuid={this.props.logo || undefined} style="organization" />
-                                        <XVertical separator={1}>
-                                            <ProfileTitle >{this.props.organizationName}</ProfileTitle>
-                                            <ProfileSubTitle>{TextGlobal.viewProfile}</ProfileSubTitle>
-                                        </XVertical>
-                                    </OrganizationTitleContainer>
-                                    <XMenuItem style="primary-sky-blue" path="/settings/organization" autoClose={true}>{TextGlobal.editProfile}</XMenuItem>
-                                    <XWithRole role={['super-admin', 'software-developer']}>
-                                        <XMenuItem style="primary-sky-blue" query={{ field: 'invite', value: 'true' }} autoClose={true}>{TextInvites.inviteButton}</XMenuItem>
-                                    </XWithRole>
-
-                                    <div style={{ borderTop: '1px solid rgba(220, 222, 228, 0.6)', marginTop: 12 }} />
-                                </>
-                            )}
-
                             <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
                                 <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" userName={this.props.name} userId={this.props.id}/>
                                 <XVertical separator={1}>
                                     <ProfileTitle >{this.props.name}</ProfileTitle>
-                                    <ProfileSubTitle>{TextGlobal.settings}</ProfileSubTitle>
+                                    <ProfileSubTitle>{TextGlobal.editProfile}</ProfileSubTitle>
                                 </XVertical>
                             </ProfileNaviTitleContainer>
+                            <XMenuItem style="primary-sky-blue" path="/settings/profile">{TextGlobal.settings}</XMenuItem>
+                            <XMenuItem style="primary-sky-blue" query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
                             <XMenuItem style="primary-sky-blue" path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
                         </XVertical>
                     </XModalContext.Provider>
@@ -622,24 +606,6 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo((props) => {
             return (
                 <>
-                    <XMenuItem style="primary-sky-blue" path="/mail/new">{TextGlobal.startChat}</XMenuItem>
-                    <XWithRole role={['super-admin', 'software-developer']}>
-                        <XPopper
-                            contentContainer={<XMenuVertical />}
-                            placement="right-start"
-                            showOnHover={true}
-                            padding={0}
-                            marginTop={-8}
-                            content={(
-                                <div ref={this.onInner}>
-                                    <XMenuItem style="primary-sky-blue" query={{ field: 'invite', value: 'true' }}>{TextGlobal.joinYourOrganization}</XMenuItem>
-                                    <XMenuItem style="primary-sky-blue" query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
-                                </div>
-                            )}
-                        >
-                            <XMenuItem style="primary-sky-blue" iconRight="x-right">{TextGlobal.sendInvites}</XMenuItem>
-                        </XPopper>
-                    </XWithRole>
                     <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
                     <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'community' }}>{TextGlobal.addCommunity}</XMenuItem>
                     <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</XMenuItem>
@@ -975,126 +941,6 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                     <DirecoryIcon />
                                 </NavigatorItem>
                             </XPopper>
-
-                            <XWithRole role={['feature-search-global']}>
-                                <NavigatorItem onClick={this.handleSearch} active={this.state.search}>
-                                    <NavigatorIcon icon={this.state.search ? 'close' : 'search'} />
-                                </NavigatorItem>
-                            </XWithRole>
-
-                            <XWithRole role={['feature-map']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    style="dark"
-                                    padding={-2}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.map}</strong>
-
-                                    )}
-                                >
-                                    <NavigatorItem path="/map">
-                                        <NavigatorIcon icon="map" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-                            <XWithRole role={['feature-folders']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    style="dark"
-                                    padding={-2}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.folders}</strong>
-
-                                    )}
-                                >
-                                    <NavigatorItem path="/folders" activateForSubpaths={true}>
-                                        <NavigatorIcon icon="folder" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-
-                            <XWithRole role={['feature-prospecting']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    style="dark"
-                                    padding={-2}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.prospecting}</strong>
-
-                                    )}
-                                >
-                                    <NavigatorItem path="/prospecting" activateForSubpaths={true}>
-                                        <NavigatorIcon icon="sort" />
-                                    </NavigatorItem>
-
-                                </XPopper>
-                            </XWithRole>
-                            <XWithRole role={['feature-deals']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    groupId="scaffold_tooltip"
-                                    style="dark"
-                                    padding={-2}
-                                    content={(
-                                        <strong>{TextAppBar.items.deals}</strong>
-                                    )}
-                                >
-                                    <NavigatorItem path="/deals" activateForSubpaths={true}>
-                                        <NavigatorIcon icon="business_center" />
-                                    </NavigatorItem>
-                                </XPopper>
-                            </XWithRole>
-                            <XWithRole role={['feature-customer-kassita']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    style="dark"
-                                    padding={-2}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.reports}</strong>
-                                    )}
-                                >
-
-                                    <NavigatorItem path="/reports/urbyn_mho_nyc" activateForSubpaths={true}>
-                                        <div className="reports">
-                                            <img src="/static/img/icons/reports/dh-icon-black.svg" className="no-hover" />
-                                            <img src="/static/img/icons/reports/sh-iconblue.svg" className="hover" />
-                                        </div>
-                                    </NavigatorItem>
-
-                                </XPopper>
-                            </XWithRole>
-                            <XWithRole role={['feature-favorites']}>
-                                <XPopper
-                                    placement="right"
-                                    showOnHoverContent={false}
-                                    showOnHover={true}
-                                    style="dark"
-                                    padding={-2}
-                                    groupId="scaffold_tooltip"
-                                    content={(
-                                        <strong>{TextAppBar.items.favorites}</strong>
-                                    )}
-                                >
-                                    <NavigatorItem path="/favorites" activateForSubpaths={true}>
-                                        <NavigatorIcon icon="favorite" />
-                                    </NavigatorItem>
-
-                                </XPopper>
-                            </XWithRole>
                             <BottomNavigation>
                                 <AddMenu />
                                 <XWithRole role={['super-admin', 'software-developer']}>

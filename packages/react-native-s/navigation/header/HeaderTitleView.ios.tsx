@@ -6,7 +6,6 @@ import { View, Text, TouchableWithoutFeedback, Image, TextInput, Button, StyleSh
 import { SBackButton } from '../../SBackButton';
 import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
-import { SSafeAreaContext } from '../../SSafeArea';
 import { SEquisiteCentered } from '../../SExquisiteCentered';
 import { SCloseButton } from '../../SCloseButton';
 
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('window').width);
 
 export interface HeaderTitleViewProps {
     manager: NavigationManager;
@@ -95,7 +94,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         </SEquisiteCentered>
                     </SAnimated.View>
                     {(v.config.appearance === 'large' || !v.config.appearance) && (
-                        <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+                        <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: MAX_SIZE, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                                 <Text numberOfLines={1} style={[styles.titleLarge, { marginTop: -2, color: this.props.style.textColor }]}>{v.config.title}</Text>
                             </SAnimated.View>
@@ -103,7 +102,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     )}
 
                     {(v.config.appearance === 'large' || !v.config.appearance) && (v.config.search) && (
-                        <SAnimated.View name={'header-search-container--' + v.page.key} style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: SCREEN_HEIGHT, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+                        <SAnimated.View name={'header-search-container--' + v.page.key} style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: MAX_SIZE, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-search--' + v.page.key}>
                                 <View style={{ flexDirection: 'row', height: 36, marginTop: 1, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
                                     <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />

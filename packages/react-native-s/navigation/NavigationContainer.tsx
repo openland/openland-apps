@@ -40,13 +40,11 @@ interface NavigationContainerState {
 }
 
 export interface NavigationContainerProps {
+    width: number;
+    height: number;
     manager: NavigationManager;
     style: SNavigationViewStyle;
 }
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-// const SHADOW_OPACITY = 0.3
 
 export class NavigationContainer extends React.PureComponent<NavigationContainerProps, NavigationContainerState> implements NavigationManagerListener {
 
@@ -63,7 +61,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     constructor(props: NavigationContainerProps) {
         super(props);
 
-        this.headerCoordinator = new HeaderCoordinator(props.manager.key, !!props.manager.parent);
+        this.headerCoordinator = new HeaderCoordinator(props.manager.key, !!props.manager.parent, () => {
+            return {
+                width: this.props.width,
+                height: this.props.height
+            };
+        });
         this.currentHistory = props.manager.getState();
         let h = this.currentHistory.history;
         this.routes = h;
@@ -121,13 +124,13 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.spring(AnimatedViewKeys.page(record.key), {
                         property: 'translateX',
-                        from: SCREEN_WIDTH,
+                        from: this.props.width,
                         to: 0
                     });
                     SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
                         property: 'translateX',
                         from: 0,
-                        to: -SCREEN_WIDTH / 3
+                        to: -this.props.width / 3
                     });
 
                     SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
@@ -138,7 +141,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'translateX',
                         from: 0,
-                        to: - 2 * SCREEN_WIDTH / 3,
+                        to: - 2 * this.props.width / 3,
                     });
                     SAnimated.spring(AnimatedViewKeys.pageShadowOverlay(underlayHolder.key), {
                         property: 'opacity',
@@ -156,7 +159,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.timing(AnimatedViewKeys.page(record.key), {
                         property: 'translateX',
-                        from: SCREEN_WIDTH,
+                        from: this.props.width,
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
@@ -168,7 +171,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.timing(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'translateX',
-                        from: - 2 * SCREEN_WIDTH / 3,
+                        from: - 2 * this.props.width / 3,
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
@@ -232,11 +235,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     SAnimated.spring(AnimatedViewKeys.page(page.key), {
                         property: 'translateX',
                         from: 0,
-                        to: SCREEN_WIDTH
+                        to: this.props.width
                     });
                     SAnimated.spring(AnimatedViewKeys.page(underlayHolder.key), {
                         property: 'translateX',
-                        from: -SCREEN_WIDTH / 3,
+                        from: -this.props.width / 3,
                         to: 0
                     });
                     SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
@@ -246,7 +249,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.spring(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'translateX',
-                        from: - 2 * SCREEN_WIDTH / 3,
+                        from: - 2 * this.props.width / 3,
                         to: 0,
                     });
                     SAnimated.spring(AnimatedViewKeys.pageShadowOverlay(underlayHolder.key), {
@@ -266,7 +269,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     SAnimated.timing(AnimatedViewKeys.page(page.key), {
                         property: 'translateX',
                         from: 0,
-                        to: SCREEN_WIDTH,
+                        to: this.props.width,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
 
@@ -278,7 +281,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.timing(AnimatedViewKeys.pageShadowSide(underlayHolder.key), {
                         property: 'translateX',
-                        from: - 2 * SCREEN_WIDTH / 3,
+                        from: - 2 * this.props.width / 3,
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
@@ -330,18 +333,18 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             }
             SAnimated.beginTransaction();
             SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
-            SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -SCREEN_WIDTH / 3 + dx / 3);
-            SAnimated.setValue(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH));
-            SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'opacity', (1 - dx / SCREEN_WIDTH));
-            SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'translateX', - 2 * SCREEN_WIDTH / 3 + 2 * dx / 3);
-            this.headerCoordinator.onSwipeProgress(this.currentHistory, dx / SCREEN_WIDTH);
+            SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -this.props.width / 3 + dx / 3);
+            SAnimated.setValue(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), 'opacity', (1 - dx / this.props.width));
+            SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'opacity', (1 - dx / this.props.width));
+            SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'translateX', - 2 * this.props.width / 3 + 2 * dx / 3);
+            this.headerCoordinator.onSwipeProgress(this.currentHistory, dx / this.props.width);
             SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
             let dx = gesture.dx;
             if (dx > 0) {
                 // SAnimated.beginTransaction();
-                if (gesture.vx > 0.5 || gesture.dx > SCREEN_WIDTH / 3) {
+                if (gesture.vx > 0.5 || gesture.dx > this.props.width / 3) {
 
                     // Pop history
                     let nstate = this.props.manager.popWihtoutNotification();
@@ -349,10 +352,10 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     this.currentHistory = nstate;
                     let unlock = this.swipeLocker!;
                     this.swipeLocker = undefined;
-                    let progress = dx / SCREEN_WIDTH;
+                    let progress = dx / this.props.width;
 
                     // Move back
-                    let duration = Math.max(0.05, Math.min(0.2, Math.abs(-SCREEN_WIDTH / 3 + dx / 3) / Math.abs(gesture.vx * SCREEN_WIDTH)));
+                    let duration = Math.max(0.05, Math.min(0.2, Math.abs(-this.props.width / 3 + dx / 3) / Math.abs(gesture.vx * this.props.width)));
                     SAnimated.beginTransaction();
                     SAnimated.setDuration(duration);
                     SAnimated.setPropertyAnimator((name, prop, from, to) => {
@@ -365,11 +368,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     SAnimated.timing(AnimatedViewKeys.page(this.swipeCurrentKey!), {
                         property: 'translateX',
                         from: dx,
-                        to: SCREEN_WIDTH
+                        to: this.props.width
                     });
                     SAnimated.timing(AnimatedViewKeys.page(this.swipePrevKey!), {
                         property: 'translateX',
-                        from: -SCREEN_WIDTH / 3 + dx / 3,
+                        from: -this.props.width / 3 + dx / 3,
                         to: 0
                     });
 
@@ -381,7 +384,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
                         property: 'translateX',
-                        from: - 2 * SCREEN_WIDTH / 3 + 2 * dx / 3,
+                        from: - 2 * this.props.width / 3 + 2 * dx / 3,
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
@@ -429,25 +432,25 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     });
                     SAnimated.spring(AnimatedViewKeys.page(this.swipePrevKey!), {
                         property: 'translateX',
-                        from: -SCREEN_WIDTH / 3 + dx / 3,
-                        to: -SCREEN_WIDTH / 3
+                        from: -this.props.width / 3 + dx / 3,
+                        to: -this.props.width / 3
                     });
 
                     SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
                         property: 'opacity',
-                        from: (1 - dx / SCREEN_WIDTH),
+                        from: (1 - dx / this.props.width),
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
                     SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
                         property: 'translateX',
-                        from: - 2 * SCREEN_WIDTH / 3 + 2 * dx / 3,
-                        to: - 2 * SCREEN_WIDTH / 3,
+                        from: - 2 * this.props.width / 3 + 2 * dx / 3,
+                        to: - 2 * this.props.width / 3,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
                     SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), {
                         property: 'opacity',
-                        from: (1 - dx / SCREEN_WIDTH),
+                        from: (1 - dx / this.props.width),
                         to: 1,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
@@ -536,7 +539,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                                 style={[styles.absoluteFill, { opacity: 0 }]}
                                 pointerEvents="none"
                             >
-                                <Image source={require('assets-s/swipe-shadow.png')} resizeMode="stretch" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, height: SCREEN_HEIGHT }} />
+                                <Image source={require('assets-s/swipe-shadow.png')} resizeMode="stretch" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, height: this.props.height }} />
                             </SAnimated.View>
                         </SAnimated.View>
                     );

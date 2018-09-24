@@ -5,6 +5,8 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import RightIcon from './icons/ic-right-1.svg';
+import DrowdownChatIcon from './icons/ic-dropdown-message.svg';
+import DrowdownChannelIcon from './icons/ic-dropdown-channel.svg';
 
 type XMenuItemStyle = 'danger' | 'primary-sky-blue' | 'default';
 
@@ -81,6 +83,10 @@ const XMenuItemStyled = Glamorous(XLink)<{ colorTheme?: XMenuItemStyle }>([
         padding: '0 16px',
         display: 'flex',
         alignItems: 'center',
+
+        '& .svg-icon-left': {
+            marginRight: 10
+        }
     },
     (props) => XMenuItemColorStyles(props.colorTheme)
 ]);
@@ -110,14 +116,14 @@ const XMenuItemText = Glamorous.div({
 });
 
 export class XMenuItem extends React.Component<XMenuItemProps> {
-    CustomIcons = ['x-right'];
+    CustomIcons = ['x-right', 'x-dropdown-chat', 'x-dropdown-channel'];
 
-    getCustomIcon (i: string) {
+    getCustomIcon (i: string, position?: string) {
         switch (i) {
-            case this.CustomIcons[0]:
-                return <RightIcon />;
-            default:
-                return undefined;
+            case this.CustomIcons[0]: return <RightIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            case this.CustomIcons[1]: return <DrowdownChatIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            case this.CustomIcons[2]: return <DrowdownChannelIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            default: return undefined;
         }
     }
 
@@ -131,7 +137,7 @@ export class XMenuItem extends React.Component<XMenuItemProps> {
                 {...this.props}
                 colorTheme={this.props.style}
             >
-                {this.props.icon && this.isCustomIcon(this.props.icon) && this.getCustomIcon(this.props.icon)}
+                {this.props.icon && this.isCustomIcon(this.props.icon) && this.getCustomIcon(this.props.icon, 'left')}
                 {this.props.icon && !this.isCustomIcon(this.props.icon) && (
                     <XMenuItemIcon icon={this.props.icon} className="icon icon-left" />
                 )}

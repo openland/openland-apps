@@ -8,6 +8,8 @@ import { SAnimated } from './SAnimated';
 import { randomKey } from './utils/randomKey';
 
 export interface SNavigationViewProps {
+    width: number;
+    height: number;
     routing: SRouting;
     navigationBarStyle?: Partial<SNavigationViewStyle>;
 }
@@ -89,11 +91,11 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
         };
 
         return (
-            <View height="100%" width="100%">
-                <NavigationContainer manager={this.routing.navigationManager} style={style} />
+            <View height={this.props.height} width={this.props.width} overflow="hidden">
+                <NavigationContainer manager={this.routing.navigationManager} style={style} width={this.props.width} height={this.props.height} />
                 {this.state.presented && (
                     <SAnimated.View name={'presented-' + this.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                        <NavigationContainer manager={this.state.presented} style={style} />
+                        <NavigationContainer manager={this.state.presented} style={style} width={this.props.width} height={this.props.height} />
                     </SAnimated.View>
                 )}
             </View>

@@ -8,6 +8,7 @@ import * as Addressing from './queries/Addressing';
 import * as Chats from './queries/Chats';
 import * as Deals from './queries/Deals';
 import * as Debug from './queries/Debug';
+import * as Development from './queries/Development';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as Folder from './queries/Folder';
 import * as Organization from './queries/Organization';
@@ -81,6 +82,7 @@ export const AlterDealMutation = typedMutation<Types.AlterDealMutation, Types.Al
 export const RemoveDealMutation = typedMutation<Types.RemoveDealMutation, Types.RemoveDealMutationVariables>(Deals.RemoveDealMutation);
 export const DebugReadedStatesQuery = typedQuery<Types.DebugReadedStatesQuery, {}>(Debug.DebugReadedStatesQuery);
 export const DebugSendWelcomeEmailMutation = typedMutation<Types.DebugSendWelcomeEmailMutation, {}>(Debug.DebugSendWelcomeEmailMutation);
+export const PersonalTokensQuery = typedQuery<Types.PersonalTokensQuery, {}>(Development.PersonalTokensQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlagsQuery, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAddMutation, Types.FeatureFlagAddMutationVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnableMutation, Types.FeatureFlagEnableMutationVariables>(FeatureFlag.FeatureFlagEnableMutation);

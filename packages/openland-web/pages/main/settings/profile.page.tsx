@@ -56,7 +56,7 @@ const CardText = Glamorous.div({
 
 export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
-        <Navigation title="Your profile">
+        <Navigation title="My profile">
             <Content>
                 <XVertical separator={21}>
                     <Query query={MyOrganizationsQuery.document}>
@@ -91,14 +91,14 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     defaultLayout={false}
                                 >
                                     <XVertical separator={12}>
-                                        <HeadTitle>User</HeadTitle>
+                                        <HeadTitle>My profile</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical separator={12}>
                                             <XFormLoadingContent>
                                                 <XHorizontal separator={12}>
                                                     <XVertical flexGrow={1} maxWidth={480}>
-                                                        <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
-                                                        <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                                                        <XInput title="First name" field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
+                                                        <XInput title="Last name" field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
                                                         <XSelect
                                                             rounded={true}
                                                             field="input.primaryOrganizationId"

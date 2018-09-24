@@ -11,7 +11,6 @@ import Foundation
 class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelegate, RNAsyncDataViewDelegate, RNAsyncKeyboardManagerDelegate {
   
   weak var parent: RNAsyncListView!
-  private let width = UIScreen.main.bounds.width // Screen width
   private let context: RNAsyncViewContext = RNAsyncViewContext()
   private var node: ASCollectionNode!
   private let queue: DispatchQueue
@@ -509,7 +508,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
-    return ASSizeRange(min: CGSize(width: self.width, height: 0), max: CGSize(width: self.width, height: 10000))
+    return ASSizeRange(min: CGSize(width: self.bounds.size.width, height: 0), max: CGSize(width: self.bounds.size.width, height: 10000))
   }
   
   func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
@@ -527,7 +526,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
     } else if indexPath.section == 2 {
       let hideLoader = self.state.completed || !self.state.inited
-      let w = self.width
+      let w = self.bounds.size.width
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.automaticallyManagesSubnodes = true
@@ -548,7 +547,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
     } else if indexPath.section == 0 {
       let padding = self.headerPadding
-      let w = self.width
+      let w = self.bounds.size.width
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.automaticallyManagesSubnodes = true

@@ -10,7 +10,7 @@ import { AppUpdateTracker } from '../../utils/UpdateTracker';
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: 400,
+        top: 0,
         left: 0,
         right: 0,
         bottom: 0,
@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 56,
+        height: 48,
         width: 335,
         backgroundColor: '#4747ec',
         color: '#fff',
-        borderRadius: 56 / 2
+        borderRadius: 12
     } as ViewStyle,
     buttonTitle: {
         fontSize: 15,
@@ -115,11 +115,22 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
     render() {
         return (
             <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
-                <Image source={require('assets/auth-bg.png')} style={{ width: '100%', height: '100%' }} fadeDuration={0} onLoadEnd={() => this.setState({ initing: false })} />
                 <SafeAreaView style={styles.container}>
-                    {/* {this.state.loading && <ZLoader />} */}
-                    <Text style={styles.title}>Welcome to Openland!</Text>
-                    <View flexDirection="column" style={{ marginTop: 56 }}>
+                    <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+                        <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
+                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of professional networking</Text>
+                        </View>
+                    </View>
+                    <View flexDirection="column" style={{ marginTop: 8, marginBottom: 12 }}>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Start networking'}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <Text>— or —</Text>
+                    <View flexDirection="column" style={{ marginTop: 12 }}>
                         <TouchableOpacity onPress={this.handlePress} disabled={this.state.loading}>
                             <View style={styles.button}>
                                 <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
@@ -129,21 +140,16 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                                 <View style={{ width: 70, height: 70 }}>
                                     {}
                                 </View>
-                                {this.state.loading && <View style={{ position: 'absolute' }}> <ActivityIndicator /> </View>}
+                                {this.state.loading && <View style={{ position: 'absolute' }}><ActivityIndicator /></View>}
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View flexDirection="column" style={{ marginTop: 15 }}>
+                    <View flexDirection="column" style={{ marginTop: 8 }}>
                         <TouchableOpacity>
                             <View style={styles.button}>
                                 <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Email'}</Text>
                             </View>
                         </TouchableOpacity>
-                    </View>
-                    <View style={{ flexGrow: 1 }} />
-                    <View flexDirection="column" paddingBottom={20} alignItems="center">
-                        <Text style={styles.footer}>By creating an account you are accepting our</Text>
-                        <Text style={styles.footer}>Terms of Service and Privacy Policy</Text>
                     </View>
                 </SafeAreaView>
             </View>

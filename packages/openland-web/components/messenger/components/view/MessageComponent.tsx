@@ -33,7 +33,7 @@ const MessageWrapper = Glamorous(XVertical)({
 const Name = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
-    color: '#334562'
+    color: '#121e2b'
 });
 
 const Organization = makeNavigable(Glamorous.div({

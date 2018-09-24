@@ -1,94 +1,100 @@
 import * as React from 'react';
-import { AsyncStorage, View, Platform } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
-import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
-import { AccountQuery } from 'openland-api';
-import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
-import { ZLoader } from '../components/ZLoader';
-import { AppBadge } from 'openland-y-runtime/AppBadge';
-import { backoff } from 'openland-y-utils/timer';
-import { Routes } from '../routes';
-import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { PushManager } from '../components/PushManager';
-import { ZPictureModal } from '../components/modal/ZPictureModal';
-import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
-import { Login } from './auth/Login';
 import { SRouting } from 'react-native-s/SRouting';
+import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
 import { SNavigationView } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
-export class Root extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
+import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
+import { randomKey } from 'react-native-s/utils/randomKey';
 
-    private ref = React.createRef<ZPictureModal>();
+export interface RootProps {
+    routing: SRouting;
+}
 
-    constructor(props: NavigationInjectedProps) {
+let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
+
+export class Root extends React.PureComponent<RootProps, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
+
+    constructor(props: RootProps) {
         super(props);
         this.state = {
-            state: 'start'
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height
         };
-    }
-    componentDidMount() {
-        (async () => {
-            let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
-            if (userToken) {
-                this.setState({ state: 'loading' });
-                let client = buildNativeClient(userToken);
-                let res = await backoff(async () => await client.client.query<any>({
-                    query: AccountQuery.document
-                }));
-                if (!res.data.me) {
-                    userToken = undefined;
-                } else {
-                    let messenger = buildMessenger(client, res.data.me);
-                    let history = new SRouting(Routes);
-                    setMessenger(new MobileMessenger(messenger, history, this.ref));
-                    saveClient(client);
-                    await messenger.awaitLoading();
-                }
-            }
 
-            // Reset badge if not authenticated
-            if (!userToken) {
-                AppBadge.setBadge(0);
-            }
-
-            // Launch app or login sequence
-            if (userToken) {
-                this.setState({ state: 'app' });
-            } else {
-                this.setState({ state: 'auth' });
-            }
-        })();
+        if (isPad) {
+            this.props.routing.navigationManager.setPushHandler(this.handlePush);
+        }
     }
+
+    private handlePush = (route: string, params?: any) => {
+        let man = new NavigationManager(this.props.routing.navigationManager.routes, route, params);
+        this.setState({ masterRouting: new SRouting(man), masterKey: randomKey() });
+        return true;
+    }
+
+    private handleLayoutChange = (e: LayoutChangeEvent) => {
+        let w = Dimensions.get('window').width;
+        let h = Dimensions.get('window').height;
+        if (Platform.OS === 'ios') {
+            if (this.state.width !== w || this.state.height !== h) {
+                LayoutAnimation.configureNext({
+                    duration: 250,
+                    update: {
+                        type: 'linear'
+                    }
+                });
+            }
+        }
+        this.setState({ width: w, height: h });
+    }
+
     render() {
-        if (this.state.state === 'loading') {
-            return <ZLoader appearance="large" />;
-        } else if (this.state.state === 'app') {
+        if (isPad) {
             return (
-                <YApolloProvider client={getClient()}>
-                    <PushManager client={getClient()} />
-                    <MobileMessengerContext.Provider value={getMessenger()}>
-                        <MessengerContext.Provider value={getMessenger().engine}>
-                            <View style={{ width: '100%', height: '100%' }}>
-                                <ZPictureModal ref={this.ref}>
-                                    <SNavigationView
-                                        routing={getMessenger().history}
-                                        navigationBarStyle={{
-                                            accentColor: AppStyles.primaryColor,
-                                            backgroundColor: '#fff',
-                                            isOpaque: Platform.OS === 'ios' ? false : true
-                                        }}
-                                    />
-                                </ZPictureModal>
-                            </View>
-                        </MessengerContext.Provider>
-                    </MobileMessengerContext.Provider>
-                </YApolloProvider>
+                <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
+                    <SNavigationView
+                        width={300}
+                        height={this.state.height}
+                        routing={this.props.routing}
+                        navigationBarStyle={{
+                            accentColor: AppStyles.primaryColor,
+                            backgroundColor: '#fff',
+                            isOpaque: Platform.OS === 'ios' ? false : true
+                        }}
+                    />
+                    <View height={'100%'} width={0.5} backgroundColor={AppStyles.separatorColor} />
+                    <View width={this.state.width - 300} height={'100%'}>
+                        {this.state.masterRouting && (
+                            <SNavigationView
+                                key={this.state.masterKey!!}
+                                width={this.state.width - 300}
+                                height={this.state.height}
+                                routing={this.state.masterRouting}
+                                navigationBarStyle={{
+                                    accentColor: AppStyles.primaryColor,
+                                    backgroundColor: '#fff',
+                                    isOpaque: Platform.OS === 'ios' ? false : true
+                                }}
+                            />
+                        )}
+                    </View>
+                </View>
             );
-        } else if (this.state.state === 'auth') {
-            return <Login />;
         }
 
-        return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
+        return (
+            <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
+                <SNavigationView
+                    width={this.state.width}
+                    height={this.state.height}
+                    routing={this.props.routing}
+                    navigationBarStyle={{
+                        accentColor: AppStyles.primaryColor,
+                        backgroundColor: '#fff',
+                        isOpaque: Platform.OS === 'ios' ? false : true
+                    }}
+                />
+            </View>
+        );
     }
 }

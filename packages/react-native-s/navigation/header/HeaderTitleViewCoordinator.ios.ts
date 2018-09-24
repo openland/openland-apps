@@ -7,9 +7,6 @@ import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
 import { Dimensions } from 'react-native';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-
 export class HeaderTitleViewCoordinator {
     readonly key: string;
     readonly page: NavigationPage;
@@ -38,12 +35,13 @@ export class HeaderTitleViewCoordinator {
         this.key = page.key;
         this.page = page;
         this.coordinator = coordinator;
-        this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: SCREEN_WIDTH / 2 });
+        let w = coordinator.size.width;
+        this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: w / 2 });
         this.headerSmallView = new SAnimatedShadowView('header-small--' + this.key, { opacity: 0 });
-        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
-        this.rightView = new SAnimatedShadowView('header-right--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
-        this.leftView = new SAnimatedShadowView('header-left--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
-        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: SCREEN_WIDTH });
+        this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0, translateX: w });
+        this.rightView = new SAnimatedShadowView('header-right--' + this.key, { opacity: 0, translateX: w });
+        this.leftView = new SAnimatedShadowView('header-left--' + this.key, { opacity: 0, translateX: w });
+        this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: w });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key);
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
@@ -182,7 +180,7 @@ export class HeaderTitleViewCoordinator {
         if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
 
             if (progress > 0) {
-                this.titleLargeView.translateX = (progress) * SCREEN_WIDTH;
+                this.titleLargeView.translateX = (progress) * this.coordinator.size.width;
             } else {
                 this.titleLargeView.translateX = 0;
             }
@@ -299,11 +297,11 @@ export class HeaderTitleViewCoordinator {
             this.leftView.opacity = 0;
         }
         if (isInSearch) {
-            this.headerSmallView.translateX = (progress) * SCREEN_WIDTH;
+            this.headerSmallView.translateX = (progress) * this.coordinator.size.width;
             this.titleView.translateX = 0;
         } else {
             this.headerSmallView.translateX = 0;
-            this.titleView.translateX = (progress) * SCREEN_WIDTH / 2;
+            this.titleView.translateX = (progress) * this.coordinator.size.width / 2;
         }
     }
 
