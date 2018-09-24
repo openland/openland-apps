@@ -1,15 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XOverflow } from '../../../../components/Incubator/XOverflow';
-import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { TextDirectory } from 'openland-text/TextDirectory';
 import { makeNavigable } from 'openland-x/Navigable';
-import { AlterOrgPublishedButton } from './OrganizationCard';
 
 interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';

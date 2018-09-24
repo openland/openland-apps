@@ -30,7 +30,6 @@ import {
     ResetButton,
     SidebarItemHeadLink
 } from './components/Layout';
-import { OrganizationProfile } from '../profile/ProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 
 interface CommunitiesCardsProps {
