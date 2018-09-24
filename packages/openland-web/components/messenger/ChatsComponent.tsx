@@ -35,6 +35,7 @@ const ItemContainer = Glamorous.a({
     paddingRight: 0,
     paddingTop: 12,
     paddingBottom: 0,
+    position: 'relative',
     '&.is-active': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
         '&:hover': {
