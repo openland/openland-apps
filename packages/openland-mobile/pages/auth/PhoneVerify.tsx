@@ -26,6 +26,8 @@ import { STrackedValue } from 'react-native-s/STrackedValue';
 import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
 import { ExploreOrganizationsQuery } from 'openland-api';
 import { DirectoryItemComponent } from '../main/Directory';
+import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 class PhoneVerifyComponent extends React.Component<PageProps, { phone: string, code: string }> {
     constructor(props: PageProps) {
@@ -84,13 +86,13 @@ class PhoneVerifyComponent extends React.Component<PageProps, { phone: string, c
 
 export const PhoneVerify = withApp(PhoneVerifyComponent, { navigationAppearance: 'small-hidden' });
 
-class CountrySearch extends React.Component<{ query: string, router: SRouter }> {
+class CountrySearch extends React.Component<{ query: string, router: SRouter, data: ASDataView<{ key: string, name: string, phone: string, code: string }>, dataSource: DataSource<{ key: string, name: string, phone: string, code: string }> }> {
 
     constructor(props: any) {
         super(props);
     }
 
-    // private contentOffset = new STrackedValue();
+    private contentOffset = new STrackedValue();
 
     handlePicked = async (id: string) => {
         let action = this.props.router.params.action as (value: string) => any;
@@ -99,13 +101,14 @@ class CountrySearch extends React.Component<{ query: string, router: SRouter }> 
         this.props.router.back();
     }
 
-    render() {
-        let q = this.props.query;
+    componentWillReceiveProps(next: {}) {
+        //
+    }
 
+    render() {
         return (
             <>
-                {/* <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} /> */}
-                {/* <ASListView
+                <ASListView
                     contentPaddingTop={0}
                     contentPaddingBottom={52}
                     dataView={this.props.data}
@@ -115,9 +118,9 @@ class CountrySearch extends React.Component<{ query: string, router: SRouter }> 
                     } as any]}
                     onScroll={this.contentOffset.event}
                     headerPadding={4}
-                /> */}
+                />
 
-                <SScrollView>
+                {/* <SScrollView>
                     <ZListItemGroup>
                         {countries.filter(e => !this.props.query || ([...e.name.split(' '), e.name]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0).map((c) => (
                             // <ASView style={{ height: 38 }}>
@@ -131,7 +134,7 @@ class CountrySearch extends React.Component<{ query: string, router: SRouter }> 
                             <ZListItem text={c.name} description={c.phone} onPress={() => this.handlePicked(c.phone)} />
                         ))}
                     </ZListItemGroup>
-                </SScrollView>
+                </SScrollView> */}
             </>
 
         );
@@ -139,34 +142,47 @@ class CountrySearch extends React.Component<{ query: string, router: SRouter }> 
 }
 
 class CountryPickerComponent extends React.Component<PageProps> {
+
+    dataView: ASDataView<{ key: string, name: string, phone: string, code: string }>;
+    dataSource: DataSource<{ key: string, name: string, phone: string, code: string }>;
+
+    handlePicked = async (id: string) => {
+        let action = this.props.router.params.action as (value: string) => any;
+        Keyboard.dismiss();
+        await action(id);
+        this.props.router.back();
+    }
+
     constructor(props: any) {
         super(props);
-        // let q = '';
-        // let list = countries.filter(e => !q || ([...e.name.split(' '), e.name]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
-        // let ds = new DataSource<{ key: string, name: string, phone: string, code: string }>(() => false);
-        // ds.initialize(list.map(c => ({ ...c, key: c.code })), true);
-        // let dataView = new ASDataView(ds, (c) => (
-        //     <ASView style={{ height: 38 }}>
-        //         <ASFlex key={c.key} height={56} onPress={() => this.handlePicked(c.phone)}>
-        //             <ASFlex flexDirection="row" flexGrow={1} >
-        //                 <ASText color="#000" flexGrow={1}>{c.name}</ASText>
-        //                 <ASText color="#000">+{c.phone}</ASText>
-        //             </ASFlex>
-        //         </ASFlex>
-        //     </ASView>
-        // ));
+        let q = '';
+        let list = countries.filter(e => !q || ([...e.name.split(' '), e.name]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
+        this.dataSource = new DataSource<{ key: string, name: string, phone: string, code: string }>(() => false);
+        this.dataSource.initialize(list.map(c => ({ ...c, key: c.code })), true);
+        this.dataView = new ASDataView(this.dataSource, (c) => (
+            <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.handlePicked(c.phone)}>
+                <ASFlex marginLeft={15} marginRight={15} flexDirection="row" alignItems="center" flexGrow={1} >
+                    <ASText color="#000" flexGrow={1}>{c.name}</ASText>
+                    <ASText color="#000">+{c.phone}</ASText>
+                </ASFlex>
+                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.selectedListItem} />
+                </ASFlex>
+            </ASFlex>
+        ));
     }
 
     render() {
-        let searchRender = <CountrySearch query="" router={this.props.router} />;
+        let searchRender = <CountrySearch query="" router={this.props.router} data={this.dataView} dataSource={this.dataSource} />;
         return (
             <>
-                <SHeader title="Country" />
+                <SHeader title="Country_" />
                 <SSearchControler searchRender={searchRender} >
                     {searchRender}
                 </SSearchControler>
 
             </>
+
         );
     }
 }
