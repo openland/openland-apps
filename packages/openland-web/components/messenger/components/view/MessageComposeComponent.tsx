@@ -11,11 +11,13 @@ import PhotoIcon from '../icons/ic-photo.svg';
 import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
 import UloadIc from '../icons/file-upload.svg';
+import ShortcutsIcon from '../icons/ic-attach-shortcuts-2.svg';
 import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
+import { XModal } from 'openland-x-modal/XModal';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -122,6 +124,10 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
             fill: props.disable ? '#c1c7cf' : 'rgba(23, 144, 255, 0.5)'
         }
     },
+    '&.shortcuts-button > svg': {
+        marginTop: 1,
+        marginBottom: -1
+    },
     '& > svg': {
         flexShrink: 0,
         marginRight: 11
@@ -148,6 +154,53 @@ const TextInputWrapper = Glamorous.div({
         }
     }
 });
+
+const KeyboardShortcuts = Glamorous.div({
+    padding: '7px 0 9px'
+});
+
+const KeyboardShortcut = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: '20px',
+    letterSpacing: -0.4,
+    color: '#121e2b',
+    marginBottom: 15,
+
+    '& span': {
+        margin: '-1px 5px -1px 0',
+        padding: '2px 8px 1px',
+        display: 'inline-block',
+        fontSize: 12,
+        fontWeight: 500,
+        letterSpacing: 0.1,
+        color: 'rgba(18, 30, 43, 0.5)',
+        borderRadius: 12,
+        backgroundColor: 'rgba(193, 199, 207, 0.3)'
+    }
+});
+
+const ShortcutsModal = () => {
+    return (
+        <XModal
+            title="Keyboard shortcuts"
+            useTopCloser={true}
+            target={(
+                <AttachmentButton className="shortcuts-button">
+                    <ShortcutsIcon />
+                    <span>Shortcuts</span>
+                </AttachmentButton>
+            )}
+        >
+            <KeyboardShortcuts>
+                <KeyboardShortcut><span>Ctrl + S</span> search</KeyboardShortcut>
+                <KeyboardShortcut><span>Esc</span> close chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Arrow Up</span> edit last message</KeyboardShortcut>
+                <KeyboardShortcut><span>Cmd + Enter</span> confirm lightbox</KeyboardShortcut>
+            </KeyboardShortcuts>
+        </XModal>
+    );
+};
 
 export interface MessageComposeComponentProps {
     conversationType?: string;
@@ -348,6 +401,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <FileIcon />
                                     <span>Document</span>
                                 </AttachmentButton>
+                                <ShortcutsModal />
                             </XHorizontal>
                             <XButton
                                 text="Send"
