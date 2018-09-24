@@ -1,5 +1,5 @@
-import { apolloClient } from 'openland-x-graphql/apolloClient';
 import gql from 'graphql-tag';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
 const SUBSCRIBE_ONLINES = gql`
     subscription SubscribeOnlines($conversations: [ID!]!) {
@@ -18,9 +18,13 @@ export class OnlineWatcher {
     private sub?: ZenObservable.Subscription = undefined;
 
     private listeners: ((data: {}) => void)[] = [];
+    private client: OpenApolloClient;
+    constructor(client: OpenApolloClient) {
+        this.client = client;
+    }
 
     onDialogListChange(conversations: string[]) {
-        let onlineSubscription = apolloClient().client.subscribe({
+        let onlineSubscription = this.client.client.subscribe({
             query: SUBSCRIBE_ONLINES,
             variables: { conversations }
         });

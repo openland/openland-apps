@@ -31,7 +31,7 @@ export class MessengerEngine {
 
     constructor(client: OpenApolloClient, user: UserShortFragment) {
         // Onlines
-        this.onlineWatcher = new OnlineWatcher;
+        this.onlineWatcher = new OnlineWatcher(client);
 
         this.client = client;
         this.user = user;
