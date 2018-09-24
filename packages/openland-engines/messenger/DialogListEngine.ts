@@ -48,8 +48,12 @@ export class DialogListEngine {
     // private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
     private next?: string;
     private loading: boolean = true;
-    constructor(engine: MessengerEngine) {
+    private dialogListCallback: (convs: string[]) => void;
+
+    constructor(engine: MessengerEngine, cb: (convs: string[]) => void) {
         this.engine = engine;
+        this.dialogListCallback = cb;
+
         this.dataSource = new DataSource<DialogDataSourceItem>(() => {
             this.loadNext();
         });
@@ -63,6 +67,8 @@ export class DialogListEngine {
     handleInitialConversations = (conversations: any[], next: string) => {
 
         this.conversations = conversations;
+
+        this.dialogListCallback(this.conversations.map(i => i.id));
 
         // Improve conversation resolving
         for (let c of this.conversations) {
@@ -168,6 +174,8 @@ export class DialogListEngine {
                 query: ChatListQuery.document,
                 data: { ...initialDialogs, chats: { ...initialDialogs.data.chats, conversations: [...this.conversations] } },
             });
+
+            this.dialogListCallback(this.conversations.map(i => i.id));
 
             // Write to datasource
             let converted = initialDialogs.data.chats.conversations.map((c: any) => ({

@@ -17,6 +17,12 @@ const SUBSCRIBE_TYPINGS = gql`
     }
 `;
 
+interface TypingsUser {
+    userName: string;
+    userPic: string | null;
+    userId: string;
+}
+
 export class TypingsWatcher {
     private typings: {
         [conversationId: string]: {
@@ -33,9 +39,9 @@ export class TypingsWatcher {
         }
     } = {};
     private sub?: ZenObservable.Subscription = undefined;
-    private onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => void;
+    private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
 
-    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => void, currentuserId: string) {
+    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
         let typingSubscription = client.client.subscribe({
             query: SUBSCRIBE_TYPINGS
@@ -79,7 +85,7 @@ export class TypingsWatcher {
     }
 
     renderTypings = (cId: string) => {
-        let usersTyping: { userName: string, userPic: string | null, userId: string }[] = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic, userId: u!.userId }));
+        let usersTyping: TypingsUser[] = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic, userId: u!.userId }));
 
         let userNames = usersTyping.map(u => u!.userName);
 
@@ -101,11 +107,11 @@ export class TypingsWatcher {
 }
 
 export class TypingEngine {
-    listeners: ((typing?: string, users?: { userName: string, userPic: string | null, userId: string }[]) => void)[] = [];
+    listeners: ((typing?: string, users?: TypingsUser[]) => void)[] = [];
     typing?: string;
-    users?: { userName: string, userPic: string | null, userId: string }[];
+    users?: TypingsUser[];
 
-    onTyping = (data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {
+    onTyping = (data?: { typing: string, users: TypingsUser[] }) => {
         this.typing = data !== undefined ? data.typing : undefined;
         this.users = data !== undefined ? data.users : undefined;
         for (let l of this.listeners) {
@@ -113,7 +119,7 @@ export class TypingEngine {
         }
     }
 
-    subcribe = (listener: (typing?: string, users?: { userName: string, userPic: string | null, userId: string }[]) => void) => {
+    subcribe = (listener: (typing?: string, users?: TypingsUser[]) => void) => {
         this.listeners.push(listener);
         listener(this.typing, this.users);
         return () => {

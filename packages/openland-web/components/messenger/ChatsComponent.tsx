@@ -17,6 +17,7 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
+import { OnlinesComponent, OnlineContext } from './components/OnlineComponent';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
 import PhotoIcon from './components/icons/ic-photo.svg';
@@ -64,7 +65,8 @@ const ItemContainer = Glamorous.a({
             fill: '#1790ff !important',
             opacity: '0.5 !important'
         }
-    }
+    },
+    position: 'relative'
 });
 
 const Header = Glamorous.div({
@@ -184,9 +186,9 @@ interface ConversationComponentProps {
             firstName: string
         },
         file: string | null,
-        fileMetadata:  {
-          name: string,
-          isImage: boolean,
+        fileMetadata: {
+            name: string,
+            isImage: boolean,
         } | null,
     } | null;
     unreadCount: number;
@@ -195,7 +197,20 @@ interface ConversationComponentProps {
     };
     selectedItem: boolean;
     allowSelection: boolean;
+
+    online: boolean;
 }
+
+const OnlineDot = Glamorous.div({
+    position: 'absolute',
+    width: 8,
+    height: 8,
+    backgroundColor: '#69d06d',
+    border: 'solid 1px #f9fafb',
+    borderRadius: 50,
+    left: 48,
+    top: 42
+});
 
 class ConversationComponentInner extends React.Component<ConversationComponentProps & UserInfoComponentProps> {
     refComponent: any;
@@ -243,6 +258,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     userId={props.flexibleId}
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
                 />
+                {this.props.online && <OnlineDot />}
                 <Header>
                     <Main>
                         <Title className="title"><span>{props.title}</span></Title>
@@ -326,6 +342,8 @@ const SearchChats = withChatSearchText((props) => {
                                 settings={i.settings}
                                 selectedItem={(props as any).selectedItem === j}
                                 allowSelection={(props as any).allowSelection}
+
+                                online={false}
                             />
                         ))}
                     </>
@@ -546,7 +564,6 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     innerRef={this.handleRef}
                     onFocus={this.inputFocusHandler}
                 />
-
                 {!search && (
                     <ExploreChannels path={'/mail/channels'}>
                         <XHorizontal alignItems="center" justifyContent="space-between">
@@ -566,25 +583,52 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                             allowSelection={this.state.allowShortKeys}
                         />
                     )}
-                    {!search && this.props.data && this.props.data.chats &&
-                        this.props.data.chats.conversations.map((i, j) => (
-                            <ConversationComponent
-                                key={i.id}
-                                id={i.id}
-                                onSelect={this.onSelect}
-                                flexibleId={i.flexibleId}
-                                typename={i.__typename}
-                                title={i.title}
-                                photos={i.photos}
-                                photo={(i as any).photo}
-                                topMessage={i.topMessage}
-                                unreadCount={i.unreadCount}
-                                settings={i.settings}
-                                selectedItem={this.state.select === j}
-                                allowSelection={this.state.allowShortKeys}
-                            />
-                        ))
-                    }
+                    {!search && this.props.data && this.props.data.chats && (
+                        <OnlinesComponent>
+                            <OnlineContext.Consumer>
+                                {onlines => {
+                                    let onlinesArray: string[] = [];
+
+                                    if (onlines !== undefined && onlines.onlines) {
+                                        Array.from(onlines.onlines).map(i => onlinesArray.push(i[0]));
+                                    }
+                                    return (
+                                        <>
+                                            {this.props.data.chats.conversations.map((i, j) => {
+                                                let isOnline = false;
+
+                                                for (let item of onlinesArray) {
+                                                    if (item === i.flexibleId) {
+                                                        isOnline = true;
+                                                    }
+                                                }
+
+                                                return (
+                                                    <ConversationComponent
+                                                        key={i.id}
+                                                        id={i.id}
+                                                        onSelect={this.onSelect}
+                                                        flexibleId={i.flexibleId}
+                                                        typename={i.__typename}
+                                                        title={i.title}
+                                                        photos={i.photos}
+                                                        photo={(i as any).photo}
+                                                        topMessage={i.topMessage}
+                                                        unreadCount={i.unreadCount}
+                                                        settings={i.settings}
+                                                        selectedItem={this.state.select === j}
+                                                        allowSelection={this.state.allowShortKeys}
+
+                                                        online={isOnline}
+                                                    />
+                                                );
+                                            })}
+                                        </>
+                                    );
+                                }}
+                            </OnlineContext.Consumer>
+                        </OnlinesComponent>
+                    )}
                 </XScrollView>
             </XVertical>
         );

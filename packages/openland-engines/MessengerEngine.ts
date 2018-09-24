@@ -7,6 +7,7 @@ import { NotificationsEngine } from './NotificationsEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
+import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
 
 export class MessengerEngine {
@@ -20,16 +21,25 @@ export class MessengerEngine {
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
+    // private readonly activeOnlines = new Map<string, OnlineWatcher>();
 
     private isVisible = true;
     private close: any = null;
     private loadingPromise: Promise<void>;
     private typingsWatcher?: TypingsWatcher;
+    private onlineWatcher: OnlineWatcher;
 
     constructor(client: OpenApolloClient, user: UserShortFragment) {
+        // Onlines
+        this.onlineWatcher = new OnlineWatcher;
+
         this.client = client;
         this.user = user;
-        this.dialogList = new DialogListEngine(this);
+
+        this.dialogList = new DialogListEngine(this, (data) => {
+            this.onlineWatcher.onDialogListChange(data);
+        });
+
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
 
@@ -52,7 +62,7 @@ export class MessengerEngine {
         await this.global.start();
     }
 
-    handleTyping = (conversationId: string, data?: {typing: string, users: { userName: string, userPic: string | null, userId: string }[]}) => {
+    handleTyping = (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {
         this.getTypings(conversationId).onTyping(data);
     }
 
@@ -80,6 +90,10 @@ export class MessengerEngine {
             this.activeTypings.set(conversationId, engine);
         }
         return this.activeTypings.get(conversationId)!!;
+    }
+
+    getOnlines() {
+        return this.onlineWatcher;
     }
 
     mountConversation(conversationId: string): () => void {
