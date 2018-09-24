@@ -23,6 +23,9 @@ import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import PlusIcon from '../../../components/icons/ic-add-medium.svg';
+import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
+import { withUserInfo } from '../../../components/UserInfo';
+import { XPopper } from 'openland-x/XPopper';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -96,8 +99,11 @@ const ChannelInviteFromLink = withChannelInviteInfo((props) => (
         : <XLoader loading={true} />
 ));
 
-const AddButton = Glamorous(XButton)({
+const CreateButtonWrapper = Glamorous.div({
     marginTop: 5,
+});
+
+const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
         transition: 'all .2s'
     },
@@ -107,6 +113,57 @@ const AddButton = Glamorous(XButton)({
 });
 
 let returnPath: string | undefined = undefined;
+
+class CreateButton extends React.Component<{}, { show?: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { show: false };
+    }
+    switch = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    closer = () => {
+        this.setState({
+            show: false
+        });
+    }
+
+    render() {
+        let AddListingContent = withUserInfo((props) => {
+            return (
+                <div style={{ width: 200 }}>
+                    <XMenuItem onClick={this.closer} style="primary-sky-blue" path="/mail/new" icon="x-dropdown-chat">New chat</XMenuItem>
+                    <XMenuItem onClick={this.closer} style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }} icon="x-dropdown-channel">New channel</XMenuItem>
+                </div>
+            );
+        });
+
+        return (
+            <CreateButtonWrapper>
+                <XPopper
+                    contentContainer={<XMenuVertical />}
+                    placement="bottom-end"
+                    show={this.state.show}
+                    marginTop={7}
+                    marginRight={-3}
+                    content={<AddListingContent />}
+                    onClickOutside={this.closer}
+                    arrow={null}
+                >
+                    <AddButton
+                        onClick={this.switch}
+                        text="New"
+                        icon={<PlusIcon />}
+                        size="r-small"
+                    />
+                </XPopper>
+            </CreateButtonWrapper>
+        );
+    }
+}
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
 
@@ -159,12 +216,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                         <ChatListContainer>
                             <Header alignItems="center" justifyContent="space-between">
                                 <Title>Messenger</Title>
-                                <AddButton
-                                    path="/mail/new"
-                                    text="New chat"
-                                    icon={<PlusIcon />}
-                                    size="r-small"
-                                />
+                                <CreateButton />
                             </Header>
                             <ChatsComponent emptyState={tab === 'empty'} />
                         </ChatListContainer>
