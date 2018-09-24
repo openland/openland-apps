@@ -25,30 +25,25 @@ import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
-    height: 64,
+    height: 77,
     fontSize: 15,
     fontWeight: 500,
     color: '#334562',
     flexDirection: 'row',
     paddingLeft: 16,
-    paddingRight: 12,
+    paddingRight: 0,
     paddingTop: 12,
-    paddingBottom: 12,
-    alignItems: 'center',
+    paddingBottom: 0,
     '&.is-active': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
         '&:hover': {
             backgroundColor: 'rgba(23, 144, 255, 0.05)',
             color: '#334562'
         },
-        '& .title, .date, .content': {
+        '& .title, .date': {
             color: '#1790ff !important',
             opacity: '1 !important'
         },
-        '& .content svg *': {
-            fill: '#1790ff !important',
-            opacity: '0.5 !important'
-        }
     },
     '&:hover, &:focus': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
@@ -56,24 +51,30 @@ const ItemContainer = Glamorous.a({
             backgroundColor: 'rgba(23, 144, 255, 0.05)',
             color: '#334562'
         },
-        '& .title, .date, .content': {
+        '& .title, .date': {
             color: '#1790ff !important',
             opacity: '1 !important'
         },
-        '& .content svg *': {
-            fill: '#1790ff !important',
-            opacity: '0.5 !important'
-        }
     }
 });
 
 const Header = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: 12,
     flexGrow: 1,
     alignItems: 'stretch',
-    maxWidth: 'calc(100% - 40px)'
+    paddingLeft: 11,
+    paddingRight: 12,
+    maxWidth: 'calc(100% - 46px)',
+    position: 'relative',
+    '&:before': {
+        content: ' ',
+        display: 'block',
+        position: 'absolute',
+        left: 11, bottom: 0, right: 0,
+        height: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.04)'
+    }
 });
 
 const Main = Glamorous.div({
@@ -83,7 +84,7 @@ const Main = Glamorous.div({
     flexGrow: 0,
     flexShrink: 1,
     height: 16,
-    marginBottom: 6
+    marginBottom: 4
 });
 
 const Title = Glamorous.div({
@@ -93,9 +94,9 @@ const Title = Glamorous.div({
     flexBasis: '0px',
     fontSize: 14,
     height: 16,
-    fontWeight: 600,
-    lineHeight: 1.14,
-    color: '#5c6a81',
+    fontWeight: 500,
+    lineHeight: '16px',
+    color: '#121e2b',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -113,17 +114,14 @@ const Date = Glamorous.div({
     flexShrink: 0,
     fontSize: 12,
     fontWeight: 500,
-    lineHeight: 1.33,
+    lineHeight: '16px',
     letterSpacing: -0.1,
-    color: '#5c6a81',
-    opacity: 0.5,
+    color: '#121e2b',
+    opacity: 0.3,
     marginLeft: 5
 });
 
 const Content = Glamorous.div<{ counterColor?: string }>(props => ({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
     '& svg': {
         display: 'inline-block',
         verticalAlign: 'top',
@@ -136,23 +134,32 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
 }));
 
 const ContentText = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
-    flexBasis: '0px',
-    height: 16,
-    fontSize: 14,
-    lineHeight: 1.14,
-    opacity: 0.5,
-    color: '#5c6a81',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '& > span': {
-        whiteSpace: 'nowrap',
+    height: 34,
+    fontSize: 13,
+    lineHeight: '17px',
+    opacity: 0.6,
+    color: '#121e2b',
+    '& span': {
+        display: 'block',
+        height: '100%',
         overflow: 'hidden',
-        textOverflow: 'ellipsis',
+    },
+
+    // Webkit line clamp
+    '& > span': {
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+    },
+    '&.with-unread': {
+        paddingRight: 32,
     }
+});
+
+const ContentCounter = Glamorous.div({
+    position: 'absolute',
+    right: 11,
+    bottom: 10,
 });
 
 let Item = makeNavigable((props) => (
@@ -241,6 +248,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     )}
                     userName={props.title}
                     userId={props.flexibleId}
+                    size="medium"
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
                 />
                 <Header>
@@ -249,7 +257,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                         {props.topMessage && <Date className="date"><XDate value={props.topMessage!!.date} format="datetime_short" /></Date>}
                     </Main>
                     <Content>
-                        <ContentText className="content">
+                        <ContentText className={'content' + ((props.unreadCount > 0) ? ' with-unread' : '')}>
                             {props.topMessage && props.topMessage.message && (
                                 <span>{senderName}: {props.topMessage.message}</span>
                             )}
@@ -260,7 +268,11 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                                 <span>{senderName}: <FileIcon className="document" />Document</span>
                             )}
                         </ContentText>
-                        {props.unreadCount > 0 && <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />}
+                        {props.unreadCount > 0 && (
+                            <ContentCounter>
+                                <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />
+                            </ContentCounter>
+                        )}
                     </Content>
                 </Header>
             </Item>
