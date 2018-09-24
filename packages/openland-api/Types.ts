@@ -7718,6 +7718,51 @@ export interface UserQuery {
   },
 };
 
+export interface ExplorePeopleQueryVariables {
+  query?: string | null,
+  sort?: string | null,
+  page?: number | null,
+  after?: string | null,
+};
+
+export interface ExplorePeopleQuery {
+  items:  {
+    __typename: "UserConnection",
+    edges:  Array< {
+      __typename: "UserEdge",
+      node:  {
+        __typename: "User",
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string | null,
+        picture: string | null,
+        email: string | null,
+        primaryOrganization:  {
+          __typename: "Organization",
+          id: string,
+          name: string,
+          photo: string | null,
+        } | null,
+        role: string | null,
+        linkedin: string | null,
+        twitter: string | null,
+        isYou: boolean,
+      },
+      cursor: string,
+    } >,
+    pageInfo:  {
+      __typename: "PageInfo",
+      hasNextPage: boolean,
+      hasPreviousPage: boolean,
+      itemsCount: number,
+      currentPage: number,
+      pagesCount: number,
+      openEnded: boolean,
+    },
+  },
+};
+
 export interface ChartFullFragment {
   __typename: "Chart",
   labels: Array< string >,

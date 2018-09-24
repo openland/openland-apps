@@ -70,7 +70,7 @@ const CheckboxWrap = Glamorous.div({
     borderTop: '1px solid #f1f2f5',
 });
 
-export class SortPicker extends React.Component<{ sort: { orderBy: string, featured: boolean }, onPick: (sort: { orderBy: string, featured: boolean }) => void, options?: { label: string, values: { label: string, value: string }[] } }, { popper: boolean, featured: boolean }> {
+export class SortPicker extends React.Component<{ withoutFeatured?: boolean, sort: { orderBy: string, featured: boolean }, onPick: (sort: { orderBy: string, featured: boolean }) => void, options?: { label: string, values: { label: string, value: string }[] } }, { popper: boolean, featured: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { popper: false, featured: props.sort.featured };
@@ -104,9 +104,11 @@ export class SortPicker extends React.Component<{ sort: { orderBy: string, featu
                         <SortControlledPicker onPick={this.onPick} options={this.props.options || options} />
                     </PickerEntries>
                 </PickerWrapper>
-                <CheckboxWrap>
-                    <XCheckboxBasic label="Featured first" value={this.state.featured ? 'f' : ''} trueValue="f" onChange={this.onFeturedChange} />
-                </CheckboxWrap>
+                {!this.props.withoutFeatured && (
+                    <CheckboxWrap>
+                        <XCheckboxBasic label="Featured first" value={this.state.featured ? 'f' : ''} trueValue="f" onChange={this.onFeturedChange} />
+                    </CheckboxWrap>
+                )}
             </>
         );
         let selected = (this.props.options || options).values.find(v => v.value === this.props.sort.orderBy);

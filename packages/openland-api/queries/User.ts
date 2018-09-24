@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { UserShort } from '../fragments/UserShort';
 
 export const UsersQuery = gql`
     query Users($query: String!) {
@@ -43,4 +44,27 @@ export const UserQuery = gql`
         }
     }
     ${OrganizationShort}
+`;
+
+export const ExplorePeopleQuery = gql`
+    query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
+        items: alphaProfiles(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
+            edges {
+                node {
+                    ...UserShort
+                    isYou
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                currentPage
+                pagesCount
+                openEnded
+            }
+        }
+    }
+    ${UserShort}
 `;

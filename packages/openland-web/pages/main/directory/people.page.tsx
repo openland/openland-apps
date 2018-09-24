@@ -2,18 +2,17 @@ import '../../init';
 import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { withExploreCommunities } from '../../../api/withExploreCommunities';
+import { withExplorePeople } from '../../../api/withExplorePeople';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold, CreateOrganization, CreateChannel } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XIcon } from 'openland-x/XIcon';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
-import { XSubHeader, XSubHeaderLink, XSubHeaderRight } from 'openland-x/XSubHeader';
+import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
-import { CommunityCard } from './components/CommunityCard';
+import { ProfileCard } from './components/ProfileCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import SearchIcon from './icons/ic-search-small.svg';
@@ -32,13 +31,14 @@ import {
     SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { UserProfile } from '../profile/UserProfileComponent';
 
 interface CommunitiesCardsProps {
     variables: { query?: string, sort?: string };
     tagsCount: (n: number) => void;
 }
 
-const CommunitiesCards = withExploreCommunities((props) => {
+const CommunitiesCards = withExplorePeople((props) => {
     if (!(props.data && props.data.items)) {
         return null;
     }
@@ -48,13 +48,13 @@ const CommunitiesCards = withExploreCommunities((props) => {
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
                 <>
                     {props.data.items.edges.map((i, j) => (
-                        <CommunityCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
+                        <ProfileCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
                     }
-                    <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/communities" />
+                    <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/people" />
                 </>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
-                <EmptySearchBlock text="No community matches your search" />
+                <EmptySearchBlock text="No people matches your search" />
             )}
         </>
     );
@@ -74,9 +74,6 @@ class Communities extends React.PureComponent<CommunitiesProps> {
 
     render() {
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
-        if (this.props.featuredFirst) {
-            sort.unshift({ ['featured']: { order: 'desc' } });
-        }
 
         return (
             <CommunitiesCards
@@ -145,7 +142,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     render() {
         const { orgCount } = this.state;
-        let oid = this.props.router.routeQuery.organizationId;
+        let uid = this.props.router.routeQuery.userId;
 
         return (
             <RootWrapper>
@@ -159,7 +156,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 icon="organizations"
                             />
                         </SidebarItemWrapper>
-                        <SidebarItemWrapper active={true}>
+                        <SidebarItemWrapper>
                             <SidebarItemHeadLink
                                 path="/directory/communities"
                                 title="Communities"
@@ -173,7 +170,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 icon="channels"
                             />
                         </SidebarItemWrapper>
-                        <SidebarItemWrapper>
+                        <SidebarItemWrapper active={true}>
                             <SidebarItemHeadLink
                                 path="/directory/people"
                                 title="People"
@@ -183,7 +180,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     </XVertical>
                 </Sidebar>
                 <Container>
-                    {!oid && (
+                    {!uid && (
                         <XVertical separator={0}>
                             <SearchRow>
                                 <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
@@ -192,7 +189,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                         <SearchInput
                                             value={this.state.searchText}
                                             onChange={this.handleSearchChange}
-                                            placeholder="Search communities"
+                                            placeholder="Search people"
                                         />
                                     </SearchFormContent>
                                     <XHorizontal separator={2}>
@@ -209,20 +206,16 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 </SearchFormWrapper>
                             </SearchRow>
                             {(this.state.searchText.length <= 0) && (
-                                <XSubHeader title="All communities">
-                                    <XSubHeaderLink query={{ field: 'createOrganization', value: 'community' }}>
-                                        <XIcon icon="add" />
-                                        New community
-                                    </XSubHeaderLink>
+                                <XSubHeader title="All people">
                                     <XSubHeaderRight>
-                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
                                     </XSubHeaderRight>
                                 </XSubHeader>
                             )}
                             {(this.state.searchText.length > 0) && (orgCount > 0) && (
-                                <XSubHeader title="Communities" counter={orgCount}>
+                                <XSubHeader title="People" counter={orgCount}>
                                     <XSubHeaderRight>
-                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} />
+                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
                                     </XSubHeaderRight>
                                 </XSubHeader>
                             )}
@@ -239,7 +232,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             </Results>
                         </XVertical>
                     )}
-                    {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory/communities')} />}
+                    {uid && <UserProfile userId={uid} onBack={() => this.props.router.push('/directory/people')} />}
                 </Container>
 
                 <CreateOrganization />

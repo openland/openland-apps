@@ -7,6 +7,7 @@ import OrganizationsIcon from '../icons/ic-organization-small.svg';
 import CommunityIcon from '../icons/ic-community.svg';
 import RightIcon from '../icons/ic-arrow-rignt.svg';
 import ChannelIcon from '../icons/channel_icons.svg';
+import PeopleIcon from '../icons/ic-people.svg';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
@@ -179,7 +180,7 @@ export const ResetButton = Glamorous.div({
 
 interface SidebarItemHeadLinkProps {
     path: string;
-    icon: 'communities' | 'organizations' | 'channels';
+    icon: 'communities' | 'organizations' | 'channels' | 'people';
     title: string;
 }
 
@@ -189,6 +190,7 @@ export const SidebarItemHeadLink = (props: SidebarItemHeadLinkProps) => (
             {props.icon === 'communities' && <CommunityIcon />}
             {props.icon === 'organizations' && <OrganizationsIcon />}
             {props.icon === 'channels' && <ChannelIcon />}
+            {props.icon === 'people' && <PeopleIcon />}
         </div>
         <span>{props.title}</span>
         <RightIcon />

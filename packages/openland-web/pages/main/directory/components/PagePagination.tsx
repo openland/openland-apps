@@ -54,6 +54,7 @@ const PaginationDotted = Glamorous.div({
 });
 
 interface PagePaginationProps {
+    currentRoute?: string;
     pageInfo: {
         hasNextPage: boolean;
         itemsCount: number;
@@ -95,7 +96,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                 }
             }
             rangeWithDots.push(
-                <PaginationButton onClick={this.props.onPageChange} key={'pag2_' + i + right} current={i === currentPage} path={'/directory?page=' + i.toString() + '#'}>
+                <PaginationButton onClick={this.props.onPageChange} key={'pag2_' + i + right} current={i === currentPage} path={(this.props.currentRoute ? this.props.currentRoute : '/directory') + '?page=' + i.toString() + '#'}>
                     {i}
                 </PaginationButton>
             );

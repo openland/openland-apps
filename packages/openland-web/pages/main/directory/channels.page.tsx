@@ -53,6 +53,13 @@ class RootComponent extends React.Component<XWithRouter> {
                                 icon="channels"
                             />
                         </SidebarItemWrapper>
+                        <SidebarItemWrapper>
+                            <SidebarItemHeadLink
+                                path="/directory/people"
+                                title="People"
+                                icon="people"
+                            />
+                        </SidebarItemWrapper>
                     </XVertical>
                 </Sidebar>
                 <Container>

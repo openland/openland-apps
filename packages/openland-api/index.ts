@@ -187,3 +187,4 @@ export const OwnersQuery = typedQuery<Types.OwnersQuery, Types.OwnersQueryVariab
 export const SuperCitiesQuery = typedQuery<Types.SuperCitiesQuery, {}>(SuperCity.SuperCitiesQuery);
 export const UsersQuery = typedQuery<Types.UsersQuery, Types.UsersQueryVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.UserQuery, Types.UserQueryVariables>(User.UserQuery);
+export const ExplorePeopleQuery = typedQuery<Types.ExplorePeopleQuery, Types.ExplorePeopleQueryVariables>(User.ExplorePeopleQuery);
