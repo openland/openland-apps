@@ -94,7 +94,7 @@ const getScrollView = () => {
 
 let lastMessageId = '';
 
-export class MessageListComponent extends React.Component<MessageListProps> {
+export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
