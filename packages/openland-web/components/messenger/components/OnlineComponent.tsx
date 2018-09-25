@@ -3,26 +3,24 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { OnlineWatcher } from 'openland-engines/messenger/Online';
 
-export const OnlineContext = React.createContext<{ onlines?: { id: string }[] }>({});
+export const OnlineContext = React.createContext<{ onlines?: Map<string, boolean> }>({});
 
 interface OnlineWrapperProps {
     engine: OnlineWatcher;
 }
 
 interface OnlinesWrapperState {
-    onlines?: {
-        id: string
-    }[];
+    onlines?: Map<string, boolean>;
 }
 
-class OnlinesWrapper extends React.PureComponent<OnlineWrapperProps, OnlinesWrapperState> {
+class OnlinesWrapper extends React.Component<OnlineWrapperProps, OnlinesWrapperState> {
     private destructor?: () => void;
     constructor(props: OnlineWrapperProps) {
         super(props);
         this.state = {};
     }
 
-    getOnlines = (onlines: { id: string, online: string }[]) => {
+    getOnlines = (onlines: Map<string, boolean>) => {
         this.setState({
             onlines: onlines,
         });

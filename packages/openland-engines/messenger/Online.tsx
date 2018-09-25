@@ -14,8 +14,10 @@ const SUBSCRIBE_ONLINES = gql`
 `;
 
 export class OnlineWatcher {
-    private onlinesData = new Map<string, string>();
+    private onlinesData = new Map<string, boolean>();
     private sub?: ZenObservable.Subscription = undefined;
+
+    private timeouts = new Map<string, number>();
 
     private listeners: ((data: {}) => void)[] = [];
     private client: OpenApolloClient;
@@ -24,6 +26,8 @@ export class OnlineWatcher {
     }
 
     onDialogListChange(conversations: string[]) {
+        this.destroy();
+
         let onlineSubscription = this.client.client.subscribe({
             query: SUBSCRIBE_ONLINES,
             variables: { conversations }
@@ -36,33 +40,39 @@ export class OnlineWatcher {
 
                 this.onlinesData.set(
                     userId,
-                    evData.type
+                    evData.type === 'online' ? true : false
                 );
 
-                // if (evData.type === 'online') {
-                //     setTimeout(
-                //         () => {
-                //             this.onlinesData.set(
-                //                 userId, 
-                //                 evData.type
-                //             );
-                //         }, 
-                //         evData.timeout
-                //     );
-                // }
+                if (this.timeouts.has(userId)) {
+                    clearTimeout(this.timeouts.get(userId));
+                }
+
+                if (evData.type === 'online') {
+                    this.timeouts.set(
+                        userId,
+                        setTimeout(
+                            () => {
+                                this.onlinesData.set(
+                                    userId,
+                                    false
+                                );
+                            },
+                            evData.timeout
+                        )
+                    );
+                }
 
                 this.listeners.forEach(l => l(this.onlinesData));
-                // console.log(this.onlinesData);
             }
         });
     }
 
-    onChange(cb: (onlines: { id: string, online: string }[]) => void) {
+    onChange(cb: (onlines: Map<string, boolean>) => void) {
         this.listeners.push(cb);
 
         return () => {
             let index = this.listeners.indexOf(cb);
-            if (index > 0) {
+            if (index > -1) {
                 this.listeners.splice(index, 1);
             }
         };
