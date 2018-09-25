@@ -67,6 +67,11 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else {
             this.setState({ state: 'initial' });
         }
+
+        // for testing
+        // this.setState({ state: 'initial', sessionState: res.data.sessionState });
+        // this.setState({ state: 'auth', sessionState: res.data.sessionState });
+
     }
 
     onSignupComplete = () => {

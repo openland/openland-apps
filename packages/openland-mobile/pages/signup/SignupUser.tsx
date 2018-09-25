@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button, Alert } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button, Alert, Image } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
@@ -8,7 +8,7 @@ import { ZLoader } from '../../components/ZLoader';
 import { getClient } from '../../utils/apolloClient';
 import { ProfileCreateMutation } from 'openland-api';
 
-const styles = StyleSheet.create({
+export const signupStyles = StyleSheet.create({
     container: {
         position: 'absolute',
         top: 0,
@@ -16,41 +16,55 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         flex: 1,
-        // backgroundColor: '#fff',
+        paddingLeft: 20,
+        paddingRight: 15,
         alignItems: 'center',
         justifyContent: 'flex-start',
     } as ViewStyle,
+    logo: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        flex: 1,
+        marginTop: 10,
+        alignItems: 'center',
+    } as ViewStyle,
     title: {
-        fontWeight: '500',
+        fontWeight: '600',
         color: '#000',
-        fontSize: 22,
-        height: 26,
-        lineHeight: 26,
+        fontSize: 28,
+        height: 28,
+        lineHeight: 28,
         textAlign: 'left',
         alignSelf: 'flex-start',
-        marginBottom: 20
+        marginTop: 22,
+        marginBottom: 32,
     } as TextStyle,
     input: {
-        fontWeight: '500',
+        fontWeight: '300',
         color: '#000',
-        fontSize: 22,
-        height: 26,
-        lineHeight: 26,
+        fontSize: 18,
+        height: 52,
+        lineHeight: 52,
         textAlign: 'left',
         alignSelf: 'flex-start',
-        marginBottom: 20
+        marginBottom: 15,
+        borderBottomColor: '#e0e3e7',
+        borderBottomWidth: 0.5
 
     } as TextStyle,
 });
 
-const HeaderButton = (props: { title: string, handlePress: () => void }) => {
+export const HeaderButton = (props: { title: string, handlePress: () => void }) => {
     if (Platform.OS === 'android') {
         return (
-            <ActionButtonAndroid title={props.title} onPress={props.handlePress} tintColor="#000" />
+            <ActionButtonAndroid title={props.title} onPress={props.handlePress} tintColor="#4747ec" />
         );
     } else if (Platform.OS === 'ios') {
         return (
-            <ActionButtonIOS title={props.title} tintColor="#000" onPress={props.handlePress} />
+            <ActionButtonIOS title={props.title} tintColor="#4747ec" onPress={props.handlePress} />
         );
     }
     return (<Button color="#000" onPress={props.handlePress} title={props.title} />);
@@ -93,12 +107,15 @@ export class SignupUser extends React.PureComponent<{ onComplete: () => void }, 
             return <ZLoader appearance="large" />;
         }
         return (
-            <View style={{ backgroundColor: '#fff', width: '100%', height: '100%', flexDirection: 'column', margin: 20, marginTop: 102, alignContent: 'flex-start' }}>
-                <SSafeAreaView style={styles.container} >
-                    <HeaderButton title="Next" handlePress={this.onComplete} />
-                    <Text style={styles.title}>Your full name</Text>
-                    <ZTextInput placeholder="First name" style={styles.input} value={this.state.firstName} onChangeText={this.nameChange} width="100%" />
-                    <ZTextInput placeholder="Last name" style={styles.input} value={this.state.lastName} onChangeText={this.lastNameChange} width="100%" />
+            <View style={{ backgroundColor: '#fff', width: '100%', height: '100%', flexDirection: 'column', marginTop: 42, alignContent: 'flex-start' }}>
+                <SSafeAreaView style={signupStyles.container} >
+                    <View style={signupStyles.logo}><Image source={require('assets/logo.png')} style={{ width: 38, height: 24 }} /></View>
+                    <View flexDirection="row" alignSelf="flex-end" >
+                        <HeaderButton title="Next" handlePress={this.onComplete} />
+                    </View>
+                    <Text style={signupStyles.title}>Your full name</Text>
+                    <ZTextInput placeholder="First name" style={signupStyles.input} value={this.state.firstName} onChangeText={this.nameChange} width="100%" />
+                    <ZTextInput placeholder="Last name" style={signupStyles.input} value={this.state.lastName} onChangeText={this.lastNameChange} width="100%" />
                 </SSafeAreaView>
             </View>
         );

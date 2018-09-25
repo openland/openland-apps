@@ -24,16 +24,18 @@ export class Signup extends React.Component<{ initialSessionState: SessionStateF
     }
 
     resolveState(session: SessionStateFullFragment): 'user' | 'org' | 'complete' | 'loading' | 'pending' {
-        if (!session.isProfileCreated) {
-            return 'user';
-        } else if (!session.isAccountExists) {
-            return 'org';
-        } else if (!session.isAccountActivated) {
-            return 'pending';
-        } else if (session.isCompleted) {
-            this.props.onComplete();
-        }
-        return 'loading';
+        // if (!session.isProfileCreated) {
+        //     return 'user';
+        // } else if (!session.isAccountExists) {
+        //     return 'org';
+        // } else if (!session.isAccountActivated) {
+        //     return 'pending';
+        // } else if (session.isCompleted) {
+        //     this.props.onComplete();
+        // }
+        // return 'loading';
+
+        return 'pending';
 
     }
 
