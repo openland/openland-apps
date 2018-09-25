@@ -53,11 +53,11 @@
 		51D70AEAB6A747C08BE764A3 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */; };
 		549581E2E64549E4915281B0 /* libRNViewOverflow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E68240253A49F7AD8DDC9B /* libRNViewOverflow.a */; };
 		55D599EBBE1841FC8E8B5FF1 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8FCC122D9489FA4F5334B /* libCodePush.a */; };
-		5CE2B360BA7317D6120A70DD /* libPods-openland.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBBF9E88B6BE46073C4FE7B /* libPods-openland.a */; };
 		5E4DE43B3861435D86A03954 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADCC97C91984930BD1B8081 /* libz.tbd */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6DA947124120484DA2DD9B89 /* libLottie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DDC5D7B8BC46629B7918F3 /* libLottie.a */; };
 		70089A5B001040609BA9578A /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1364232686B4C9CBE4687ED /* libRNGestureHandler.a */; };
+		77C26823F63D9A6C64F8159B /* Pods_openland.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11517B79440836F86B074F22 /* Pods_openland.framework */; };
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
 		7F84D057DBB04B27B8CCE27C /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAAA4AB6AD64489A91C5865D /* Ionicons.ttf */; };
 		8115FE48D4DC485DAE7428F3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 473236E03F424B88939D75C4 /* libRNVectorIcons.a */; };
@@ -708,6 +708,7 @@
 		00E356F21AD99517003FC87E /* openlandTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = openlandTests.m; sourceTree = "<group>"; };
 		0108360DD22B4C14A6750E7D /* RNShare.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNShare.xcodeproj; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; };
 		06D920A8D7C04BD3A4D151B9 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		11517B79440836F86B074F22 /* Pods_openland.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_openland.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11CF1EB852534FFE9B2F6C6F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -797,7 +798,6 @@
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
 		AAF27DE52113F5FA00F9FCD5 /* KeyboardTrackingView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KeyboardTrackingView.xcodeproj; path = "../node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingView.xcodeproj"; sourceTree = "<group>"; };
-		ADBBF9E88B6BE46073C4FE7B /* libPods-openland.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openland.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		B47A0635150046B7B0F3B1CE /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
@@ -870,7 +870,7 @@
 				31BF43914ABF488487ED441A /* libRNReactNativeHapticFeedback.a in Frameworks */,
 				AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */,
 				0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */,
-				5CE2B360BA7317D6120A70DD /* libPods-openland.a in Frameworks */,
+				77C26823F63D9A6C64F8159B /* Pods_openland.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1032,7 +1032,7 @@
 				AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				3ADCC97C91984930BD1B8081 /* libz.tbd */,
-				ADBBF9E88B6BE46073C4FE7B /* libPods-openland.a */,
+				11517B79440836F86B074F22 /* Pods_openland.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1480,6 +1480,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				AA904695210F2C2900F989BC /* Embed Frameworks */,
 				AA6B24902142386800DFF3E7 /* ShellScript */,
+				BF41E56CD0EBA26F6D97F99D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2364,6 +2365,40 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 17daeaf4b6ee95da896b68c467e1e7dbcd465449 e352aa899b85941dc8a9771c82db5966090e2638b0bd75839a1191d28d363f20";
 		};
+		BF41E56CD0EBA26F6D97F99D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Auth0/Auth0.framework",
+				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
+				"${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework",
+				"${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SimpleKeychain/SimpleKeychain.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Auth0.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINOperation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINRemoteImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleKeychain.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2571,6 +2606,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ATWUYU6747;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"YOGA=false",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
@@ -2620,6 +2660,11 @@
 				CODE_SIGN_ENTITLEMENTS = openland/openland.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ATWUYU6747;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"YOGA=false",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
