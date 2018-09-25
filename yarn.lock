@@ -9615,9 +9615,9 @@ react-native-view-overflow@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/react-native-view-overflow/-/react-native-view-overflow-0.0.3.tgz#d7b08e8c1e5047a2cf07f3ece82025899f930674"
 
-react-native-web@^0.8.9:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.8.11.tgz#e569af7076527af40ae7b4e6ce81e0544913a7c7"
+react-native-web@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.9.0.tgz#293bcc109165b62e2f8f1796208b0b8f8eb8751f"
   dependencies:
     array-find-index "^1.0.2"
     create-react-class "^15.6.2"
