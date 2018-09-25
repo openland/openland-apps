@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View, Platform } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import { AsyncStorage, View } from 'react-native';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
@@ -15,15 +14,14 @@ import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
 import { Login } from './auth/Login';
 import { SRouting } from 'react-native-s/SRouting';
-import { SNavigationView } from 'react-native-s/SNavigationView';
-import { AppStyles } from '../styles/AppStyles';
 import { Root } from './Root';
+import { PageProps } from '../components/PageProps';
 
-export class Init extends React.Component<NavigationInjectedProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
 
     private ref = React.createRef<ZPictureModal>();
 
-    constructor(props: NavigationInjectedProps) {
+    constructor(props: PageProps) {
         super(props);
         this.state = {
             state: 'start'

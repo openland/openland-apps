@@ -67,7 +67,7 @@ const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
         color: '#979EAA',
         border: '1px solid transparent'
     }
-}));
+}) as any) as any;
 
 const ChannelName = Glamorous.div({
     fontSize: 14,

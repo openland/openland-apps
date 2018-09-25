@@ -19,7 +19,7 @@ import { AboutPlaceholder, SocialPlaceholder, LocationPlaceholder, CategoriesPla
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem, XMenuTitle } from 'openland-x/XMenuItem';
 import { XScrollView } from 'openland-x/XScrollView';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
@@ -444,7 +444,7 @@ const About = (props: { organizationQuery: OrganizationQuery }) => {
     );
 };
 
-const MemberCardWrapper = makeNavigable(Glamorous.div({
+const MemberCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '16px 0 15px',
@@ -452,7 +452,7 @@ const MemberCardWrapper = makeNavigable(Glamorous.div({
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
-}));
+})));
 
 const MemberCardAvatar = Glamorous.div({
     padding: '0 12px 0 24px'
@@ -659,7 +659,7 @@ const Members = (props: { organizationQuery: OrganizationQuery }) => {
     );
 };
 
-const ChannelCardWrapper = makeNavigable(Glamorous.div({
+const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
@@ -667,7 +667,7 @@ const ChannelCardWrapper = makeNavigable(Glamorous.div({
         backgroundColor: '#f9fafb'
     },
     cursor: 'pointer'
-}));
+})));
 
 const ChannelCardInfo = Glamorous.div({
     flex: 1,

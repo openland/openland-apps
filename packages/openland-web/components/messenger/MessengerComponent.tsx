@@ -7,7 +7,7 @@ import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XButton } from 'openland-x/XButton';
@@ -53,7 +53,7 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
     flexBasis: '100%'
 });
 
-const Title = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
+const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontSize: 16,
     fontWeight: 500,
     letterSpacing: -0.2,
@@ -64,7 +64,7 @@ const Title = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
     cursor: props.href ? 'pointer' : undefined
 })));
 
-const SubTitle = makeNavigable(Glamorous.div<{ href?: string }>(props => ({
+const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontSize: 14,
     fontWeight: 500,
     letterSpacing: -0.1,

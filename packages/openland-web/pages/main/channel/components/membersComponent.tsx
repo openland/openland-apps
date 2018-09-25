@@ -21,7 +21,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
 import CloseIcon from './icons/ic-close-1.svg';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
@@ -30,7 +30,7 @@ const MembersWrapper = Glamorous(XScrollView)({
 
 const MembersView = Glamorous.div({});
 
-const Member = makeNavigable(Glamorous.div({
+const Member = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
@@ -41,7 +41,7 @@ const Member = makeNavigable(Glamorous.div({
     '&:hover': {
         backgroundColor: '#f9fafb'
     }
-}));
+})));
 
 const MemberAvatar = Glamorous(XAvatar)({
     marginRight: 12

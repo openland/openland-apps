@@ -14,7 +14,7 @@ import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XOverflow } from '../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 
@@ -36,7 +36,7 @@ const Name = Glamorous.div({
     color: '#121e2b'
 });
 
-const Organization = makeNavigable(Glamorous.div({
+const Organization = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     fontSize: 12,
     fontWeight: 500,
     color: '#99A2B0',
@@ -44,7 +44,7 @@ const Organization = makeNavigable(Glamorous.div({
     alignSelf: 'flex-end',
     marginBottom: -1,
     cursor: 'pointer'
-}));
+})));
 
 const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     flexShrink: 0,

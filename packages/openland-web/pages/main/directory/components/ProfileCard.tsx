@@ -4,7 +4,7 @@ import { XLink } from 'openland-x/XLink';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 
 interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -12,7 +12,7 @@ interface SearchCondition {
     label: string;
 }
 
-const ProfileCardWrapper = makeNavigable(Glamorous.div({
+const ProfileCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
     padding: '11px 24px 10px 23px',
@@ -20,7 +20,7 @@ const ProfileCardWrapper = makeNavigable(Glamorous.div({
         backgroundColor: '#f9fafb'
     },
     cursor: 'pointer'
-}));
+})));
 
 const ProfileContentWrapper = Glamorous(XHorizontal)({
     flexGrow: 1,
@@ -66,10 +66,10 @@ interface ProfileCardProps {
         lastName: string | null,
         picture: string | null,
         email: string | null,
-        primaryOrganization:  {
-          id: string,
-          name: string,
-          photo: string | null,
+        primaryOrganization: {
+            id: string,
+            name: string,
+            photo: string | null,
         } | null,
         role: string | null,
         linkedin: string | null,

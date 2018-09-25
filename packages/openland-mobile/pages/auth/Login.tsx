@@ -1,11 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { Auth0Client } from '../../index';
-import { ZLoader } from '../../components/ZLoader';
-import { AppStyles } from '../../styles/AppStyles';
-import { isAndroid } from '../../utils/isAndroid';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
+import { SSafeAreaView } from 'react-native-s/SSafeArea';
 
 const styles = StyleSheet.create({
     container: {
@@ -115,7 +112,7 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
     render() {
         return (
             <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
-                <SafeAreaView style={styles.container}>
+                <SSafeAreaView style={styles.container}>
                     <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                         <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
@@ -151,7 +148,7 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                             </View>
                         </TouchableOpacity>
                     </View>
-                </SafeAreaView>
+                </SSafeAreaView>
             </View>
         );
     }

@@ -8,7 +8,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { AlterOrgPublishedButton } from './OrganizationCard';
 
 interface SearchCondition {
@@ -17,7 +17,7 @@ interface SearchCondition {
     label: string;
 }
 
-const CommunityCardWrapper = makeNavigable(Glamorous.div({
+const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
     padding: '16px 25px 15px 20px',
@@ -25,7 +25,7 @@ const CommunityCardWrapper = makeNavigable(Glamorous.div({
         backgroundColor: '#f9fafb'
     },
     cursor: 'pointer'
-}));
+})));
 
 const CommunityContentWrapper = Glamorous(XHorizontal)({
     flexGrow: 1,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
 import { View, Platform } from 'react-native';
 import { ZBottomTabs } from '../../components/ZBottomTabs';
 import { Directory } from './Directory';
@@ -10,10 +9,10 @@ import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
 import { Feed } from './Feed';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
-import { SDevice } from 'react-native-s/SDevice';
+import { PageProps } from '../../components/PageProps';
 
-export class Home extends React.PureComponent<{}, { tab: number }> {
-    constructor(props: NavigationInjectedProps) {
+export class Home extends React.PureComponent<PageProps, { tab: number }> {
+    constructor(props: PageProps) {
         super(props);
         this.state = {
             tab: 1

@@ -15,7 +15,7 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import PhoneIcon from './icons/ic-phone.svg';
@@ -85,7 +85,7 @@ const HeaderTools = Glamorous.div({
 
 const OrgName = makeNavigable(Glamorous(XHorizontal)({
     cursor: 'pointer'
-}));
+}) as any) as any;
 
 const Header = (props: { userQuery: UserQuery }) => {
     let usr = props.userQuery.user;
@@ -225,7 +225,7 @@ const About = (props: { userQuery: UserQuery }) => {
     );
 };
 
-const ChannelCardWrapper = makeNavigable(Glamorous.div({
+const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
@@ -233,7 +233,7 @@ const ChannelCardWrapper = makeNavigable(Glamorous.div({
         backgroundColor: '#f9fafb'
     },
     cursor: 'pointer'
-}));
+})));
 
 const ChannelCardInfo = Glamorous.div({
     flex: 1,
@@ -271,10 +271,10 @@ interface ChannelCardProps {
         hidden: boolean,
         photos: string[],
         photo?: string,
-        organization:  {
-          id: string,
-          name: string,
-          photo?: string,
+        organization: {
+            id: string,
+            name: string,
+            photo?: string,
         },
     };
 }

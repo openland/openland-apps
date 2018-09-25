@@ -8,7 +8,7 @@ import { TextDirectoryData } from 'openland-text/TextDirectory';
 import DirecoryIcon from './icons/directory.1.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withOrganizationByPrefix } from '../../../api/withOrganizationByPrefix';
-import { makeNavigable } from 'openland-x/Navigable';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import SearchIcon from './icons/ic-search-small.svg';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
@@ -62,7 +62,7 @@ const EntriesWrap = Glamorous.div({
     marginBottom: 9,
 });
 
-const OrgWrap = makeNavigable(Glamorous.div(props => ({
+const OrgWrap = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     height: 40,
     display: 'flex',
     alignItems: 'center',
