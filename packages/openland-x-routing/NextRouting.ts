@@ -62,7 +62,11 @@ export function stopProgress(src: number) {
     }
 }
 
-(NRouter as any).onRouteChangeStart = (url: any) => {
+NRouter.onRouteChangeStart = (url: any) => {
+    // tslint:disable
+    console.log(`onRouteChangeStart`);
+    // tslint:enable
+
     // Hotfix Current Url (for initial render)
     if (currentPath == null) {
         currentPath = (NRouter as any as RouterProps).asPath!!;
@@ -76,7 +80,7 @@ export function stopProgress(src: number) {
     startProgress(0);
 };
 
-(NRouter as any).onRouteChangeComplete = () => {
+NRouter.onRouteChangeComplete = () => {
     // tslint:disable
     console.log(`Naviating Complete`);
     // tslint:enable
@@ -89,7 +93,11 @@ export function stopProgress(src: number) {
     trackPage();
 };
 
-(NRouter as any).onRouteChangeError = (error: any) => {
+NRouter.onRouteChangeError = (error: any) => {
+    // tslint:disable
+    console.log(`onRouteChangeError`);
+    // tslint:enable
+
     // Ignore if route canceled
     if ('' + error === 'Error: Route Cancelled') {
         return;

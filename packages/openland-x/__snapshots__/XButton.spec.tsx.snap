@@ -137,9 +137,6 @@ exports[`XButton should render correctly 1`] = `
 
 <a
   className="css-0 css-nil"
-  href={undefined}
-  onClick={undefined}
-  target={undefined}
 >
   <div
     className="css-4 button-content"
