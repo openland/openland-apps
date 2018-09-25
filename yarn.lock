@@ -1075,7 +1075,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/next@^6.0.0":
+"@types/next@^6.1.8":
   version "6.1.8"
   resolved "https://registry.yarnpkg.com/@types/next/-/next-6.1.8.tgz#6859a2a9ae9b3b93b8294bc1bb65e9f78b7f3df5"
   dependencies:

@@ -21,7 +21,7 @@ class BadgeStub implements AppBadgeAPi {
                 let els = document.querySelectorAll('link[rel=icon]');
                 let res = [];
                 for (let i = 0; i < els.length; i++) {
-                    res.push(new (v as any)({
+                    res.push(new (v.default as any)({
                         position: 'topright',
                         animation: 'none',
                         element: els.item(i)

@@ -11,12 +11,17 @@ let config = buildConfig();
 export default class StateDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
-        const styles = renderStaticOptimized(() => page.html || page.errorHtml);
-        return {
-            ...page,
-            glamCss: styles.css,
-            ids: styles.ids
-        };
+        const content = page.html || page.errorHtml;
+        if (!content) {
+            return page;
+        } else {
+            const styles = renderStaticOptimized(() => content);
+            return {
+                ...page,
+                glamCss: styles.css,
+                ids: styles.ids
+            };
+        }
     }
 
     constructor(props: DocumentProps) {
