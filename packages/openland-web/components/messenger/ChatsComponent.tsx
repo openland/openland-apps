@@ -395,16 +395,25 @@ const ExploreChannels = Glamorous(XMenuItem)({
     paddingRight: 13,
     paddingTop: 1,
     paddingBottom: 0,
-    backgroundColor: '#f0f2f4',
-    color: '#5c6a81',
+    backgroundColor: '#f3f3f5',
+    color: '#334562',
     fontWeight: 600,
     letterSpacing: -0.1,
+    transition: 'box-shadow 0.08s ease-in 0s, color 0.08s ease-in 0s, border 0s ease 0s, all 0.15s ease 0s',
+    '& svg > path': {
+        fill: '#BCC3CC',
+        transition: 'all 0.2s ease 0s',
+    },
     '&:hover': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        color: '#1790ff',
+        backgroundColor: '#ecedf0',
+        color: '#334562',
+    },
+    '&:active': {
+        backgroundColor: '#117fe4',
+        color: '#ffffff',
         '& svg > path': {
-            fill: 'rgba(23, 144, 255, 0.5)'
-        }
+            fill: '#ffffff',
+        },
     }
 });
 
