@@ -1,18 +1,12 @@
 // const webpack = require('webpack');
-const withSourceMaps = require('@zeit/next-source-maps')
-const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const path = require('path');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const withTypescript = require('@zeit/next-typescript')
+const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withCSS = require('@zeit/next-css')
-// const StatsPlugin = require('stats-webpack-plugin');
-// const HappyPack = require('happypack');
-const NewUglify = require('uglifyjs-webpack-plugin');
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
-
-        console.log(config);
 
         const cacheDir = path.resolve(__dirname + '/../../node_modules/.cache');
 
@@ -42,25 +36,43 @@ const config = {
 
         // Ask babel to handle typescript files
         // Modules are not loading by default since root folder is out of scope
-        let tsLoader = defaultLoaders.babel;
-        if (!isServer && !dev) {
-            tsLoader = [{
-                    loader: 'cache-loader',
-                    options: {
-                        cacheDirectory: cacheDir + '/cache-loader'
-                    }
-                },
-                defaultLoaders.babel
-            ];
-        }
+        // let tsLoader = defaultLoaders.babel;
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
             include: [
                 path.resolve(dir + '/../')
             ],
             exclude: /node_modules/,
-            use: tsLoader,
-        })
+            use: defaultLoaders.babel,
+        });
+
+        // HACK: Quick fix to resolve the custom babel config in root
+        config.module.rules.forEach((rule) => {
+            if (rule.use.loader === 'next-babel-loader') {
+                rule.use.options.cwd = undefined;
+            }
+        });
+
+        // if (dev && !isServer) {
+        //     config.module.rules.push({
+        //         test: /\.(ts|tsx)$/,
+        //         include: defaultLoaders.hotSelfAccept.options.include,
+        //         exclude: /node_modules/,
+        //         use: defaultLoaders.hotSelfAccept
+        //     })
+        // }
+
+        // if (!isServer && !dev) {
+        //     tsLoader = [{
+        //             loader: 'cache-loader',
+        //             options: {
+        //                 cacheDirectory: cacheDir + '/cache-loader'
+        //             }
+        //         },
+        //         defaultLoaders.babel
+        //     ];
+        // }
+
         // config.module.rules.unshift({
         //     test: /\.(js|jsx)$/,
         //     include: [
@@ -69,15 +81,6 @@ const config = {
         //     // exclude: /node_modules/,
         //     use: defaultLoaders.babel,
         // });
-
-        if (dev && !isServer) {
-            config.module.rules.push({
-                test: /\.(ts|tsx)$/,
-                include: defaultLoaders.hotSelfAccept.options.include,
-                exclude: /node_modules/,
-                use: defaultLoaders.hotSelfAccept
-            })
-        }
 
         // Disable babel cache
         // defaultLoaders.babel.options.cacheDirectory = false
@@ -100,9 +103,9 @@ const config = {
         // )
 
         // Disable uglify
-        config.plugins = config.plugins.filter(
-            (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
-        )
+        // config.plugins = config.plugins.filter(
+        //     (plugin) => (plugin.constructor.name !== 'UglifyJsPlugin')
+        // )
 
         // Enable uglify cache
         // let uglify = config.plugins.find((plugin) => (plugin.constructor.name === 'UglifyJsPlugin'))
@@ -111,18 +114,18 @@ const config = {
         // }
 
         // New Uglify
-        if (!isServer && !dev) {
-            config.plugins.push(new NewUglify({
-                cache: true,
-                parallel: true,
-                sourceMap: true,
-                uglifyOptions: {
-                    mangle: {
-                        safari10: true
-                    }
-                }
-            }));
-        }
+        // if (!isServer && !dev) {
+        //     config.plugins.push(new NewUglify({
+        //         cache: true,
+        //         parallel: true,
+        //         sourceMap: true,
+        //         uglifyOptions: {
+        //             mangle: {
+        //                 safari10: true
+        //             }
+        //         }
+        //     }));
+        // }
 
         // Disable sourcemaps for server
         // if (isServer && !dev) {

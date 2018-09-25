@@ -2,7 +2,7 @@
     "env": {
         "default": {
             "presets": ["next/babel", "@zeit/next-typescript/babel"],
-            "plugins": ["transform-react-stateless-component-name", "inline-react-svg", ["react-native-web", {
+            "plugins": ["inline-react-svg", ["react-native-web", {
                 "commonjs": true
             }]]
         },

@@ -3,9 +3,9 @@ import { View, Animated, StatusBar, Dimensions, Platform } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
-import { FastImageViewer } from 'react-native-fast-image-viewer';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
+import { FastImageViewer } from 'react-native-s/FastImageViewer';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 

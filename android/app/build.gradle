@@ -116,8 +116,8 @@ android {
         applicationId "com.openland.app"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 40
-        versionName "1.0.36"
+        versionCode 41
+        versionName "1.0.37"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
