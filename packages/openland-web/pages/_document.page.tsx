@@ -13,7 +13,11 @@ export default class StateDocument extends Document {
         const page = props.renderPage();
         const content = page.html || page.errorHtml;
         if (!content) {
-            return page;
+            return {
+                ...page,
+                glamCss: '',
+                ids: []
+            };
         } else {
             const styles = renderStaticOptimized(() => content);
             return {
