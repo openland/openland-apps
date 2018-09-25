@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button, Alert } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
@@ -81,6 +81,7 @@ export class SignupUser extends React.PureComponent<{ onComplete: () => void }, 
                 this.props.onComplete();
 
             } catch (e) {
+                Alert.alert('Error', e.message);
                 this.setState({ loading: false });
             }
 
