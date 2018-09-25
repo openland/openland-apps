@@ -92,17 +92,15 @@ const getScrollView = () => {
     return document.getElementsByClassName('messages-wrapper')[0].getElementsByClassName('simplebar-scroll-content')[0];
 };
 
-export class MessageListComponent extends React.Component<MessageListProps, { scrollTop: number }> {
+let lastMessageId = '';
+
+export class MessageListComponent extends React.Component<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
     constructor(props: MessageListProps) {
         super(props);
         // this.checkEmptyState();
-
-        this.state = {
-            scrollTop: 200
-        };
     }
 
     scrollToBottom = () => {
@@ -129,14 +127,8 @@ export class MessageListComponent extends React.Component<MessageListProps, { sc
     }
 
     handleScroll = (e: any) => {
-        this.setState({
-            scrollTop: e.target.scrollTop
-        });
-    }
-
-    loadMoreMessages = (id: string) => {
-        if (this.state.scrollTop < 50) {
-            this.props.loadBefore(id);
+        if (lastMessageId !== '' && e.target.scrollTop < 50) {
+            this.props.loadBefore(lastMessageId);
         }
     }
 
@@ -219,9 +211,11 @@ export class MessageListComponent extends React.Component<MessageListProps, { sc
         let serverMessages = this.props.messages.filter(m => isServerMessage(m));
         let lastMessage = serverMessages[0];
 
+        lastMessageId = '';
+
         if (!this.props.conversation.historyFullyLoaded && lastMessage) {
             let id = (lastMessage as MessageFullFragment).id;
-            this.loadMoreMessages(id);
+            lastMessageId = id;
             messages.unshift(<XButton alignSelf="center" style="flat" key={'load_more_' + id} text="Load more" loading={true} />);
         }
 
