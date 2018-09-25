@@ -2,8 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
-import 'draft-js/dist/Draft.css';
-import 'draft-js-emoji-plugin/lib/plugin.css';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';

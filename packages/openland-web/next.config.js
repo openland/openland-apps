@@ -1,8 +1,7 @@
 // const webpack = require('webpack');
 const path = require('path');
-const withTypescript = require('@zeit/next-typescript')
+const withTypescript = require('@zeit/next-typescript');
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
-const withCSS = require('@zeit/next-css')
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -198,4 +197,4 @@ const config = {
     assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
 };
 
-module.exports = withCSS(withBundleAnalyzer(config));
+module.exports = withBundleAnalyzer(config);
