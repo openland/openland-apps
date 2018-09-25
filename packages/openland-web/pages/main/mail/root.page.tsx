@@ -215,7 +215,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                     <ChatContainer>
                         <ChatListContainer>
                             <Header alignItems="center" justifyContent="space-between">
-                                <Title>Messenger</Title>
+                                <Title>Messages</Title>
                                 <CreateButton />
                             </Header>
                             <ChatsComponent emptyState={tab === 'empty'} />
