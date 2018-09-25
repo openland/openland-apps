@@ -220,7 +220,8 @@
 		"**/@types/react-native": "0.56.4",
 		"**/@babel/core": "7.0.0",
 		"**/@babel/plugin-proposal-class-properties": "7.0.0",
-		"**/core-js": "2.5.1"
+		"**/core-js": "2.5.1",
+		"**/jest-haste-map": "23.1.0"
 	},
 	"scripts": {
 		"dev": "BABEL_ENV=default API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
