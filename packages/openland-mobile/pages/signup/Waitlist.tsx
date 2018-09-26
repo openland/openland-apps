@@ -1,26 +1,28 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button, AsyncStorage } from 'react-native';
-import { SSafeAreaView } from 'react-native-s/SSafeArea';
-import { AppUpdateTracker } from '../../utils/UpdateTracker';
-import { signupStyles } from './SignupUser';
+import { getSignupModel } from './signup';
+import { withApp } from '../../components/withApp';
+import { PageProps } from '../../components/PageProps';
+import { SHeader } from 'react-native-s/SHeader';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
-export class Waitlist extends React.PureComponent {
+export class WaitlistComponent extends React.PureComponent<PageProps> {
 
     handleLogout = () => {
-        (async () => {
-            AsyncStorage.clear();
-            AppUpdateTracker.restartApp();
-        })();
+        // (async () => {
+        //     AsyncStorage.clear();
+        //     AppUpdateTracker.restartApp();
+        // })();
+        getSignupModel().onComplete();
     }
 
     render() {
         return (
-            <View style={{ backgroundColor: '#fff', width: '100%', height: '100%', marginTop: 42, alignContent: 'flex-start' }}>
-                <SSafeAreaView style={signupStyles.container} >
-                    <Text style={signupStyles.title}>You have joined the waitlist</Text>
-                    <Text style={signupStyles.title} onPress={this.handleLogout}>Logout</Text>
-                </SSafeAreaView>
-            </View>
+            <>
+                <SHeader title="Waitlist" />
+                <SHeaderButton title="Logout" onPress={() => this.handleLogout()} />
+            </>
         );
     }
 }
+
+export const Waitlist = withApp(WaitlistComponent);

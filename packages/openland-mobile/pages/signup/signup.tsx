@@ -1,65 +1,62 @@
-import * as React from 'react';
-import { Platform } from 'react-native';
+import { SessionStateFullFragment } from 'openland-api/Types';
+import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
-import { ZLoader } from '../../components/ZLoader';
-import { backoff } from 'openland-y-utils/timer';
-import { ZPictureModal } from '../../components/modal/ZPictureModal';
-import { SessionStateFullFragment } from 'openland-api/Types';
-import { SignupUser } from './SignupUser';
-import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
-import { SignupOrg } from './SignupOrg';
-import { Waitlist } from './Waitlist';
 
-export class Signup extends React.Component<{ initialSessionState: SessionStateFullFragment, onComplete: () => void }, { state: 'loading' | 'user' | 'org' | 'complete' | 'pending' }> {
+let cachedSignupModel: SignupModel | null = null;
 
-    private ref = React.createRef<ZPictureModal>();
+export function initSignupModel(session: SessionStateFullFragment, onComplete: () => void) {
+    cachedSignupModel = new SignupModel(session, onComplete);
 
-    constructor(props: { initialSessionState: SessionStateFullFragment, onComplete: () => void }) {
-        super(props);
+    return cachedSignupModel!!;
+}
+export function getSignupModel() {
+    if (!cachedSignupModel) {
+        throw Error('SignupModel is not inited');
+    }
+    return cachedSignupModel!!;
+}
 
-        this.state = {
-            state: this.resolveState(props.initialSessionState)
-        };
+export class SignupModel {
+    page = 'init';
+    onComplete: () => void;
+    constructor(session: SessionStateFullFragment, onComplete: () => void) {
+        this.page = this.resolveNextPage(session);
+        this.onComplete = onComplete;
     }
 
-    resolveState(session: SessionStateFullFragment): 'user' | 'org' | 'complete' | 'loading' | 'pending' {
-        if (!session.isProfileCreated) {
-            return 'user';
-        } else if (!session.isAccountExists) {
-            return 'org';
-        } else if (!session.isAccountActivated) {
-            return 'pending';
-        } else if (session.isCompleted) {
-            this.props.onComplete();
+    next = async () => {
+        let res = await backoff(async () => await getClient().client.query<any>({
+            query: AccountQuery.document,
+            fetchPolicy: 'network-only'
+        }));
+        let nextPage = this.resolveNextPage(res.data.sessionState);
+        if (nextPage === 'complete') {
+            this.onComplete();
+        } else {
+            this.page = nextPage;
         }
-        return 'loading';
-
+        return this.page;
     }
 
-    next = () => {
-        (async () => {
-            this.setState({ state: 'loading' });
-            let res = await backoff(async () => await getClient().client.query<any>({
-                query: AccountQuery.document,
-                fetchPolicy: 'network-only'
-            }));
-            this.setState({ state: this.resolveState(res.data.sessionState) });
-        })();
-    }
-
-    render() {
-        return (
-            <>
-                <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 54 : 0} top={Platform.OS === 'ios' ? 152 : 0}>
-                    {this.state.state === 'loading' && <ZLoader appearance="large" />}
-                    {this.state.state === 'user' && <SignupUser onComplete={this.next} />}
-                    {this.state.state === 'org' && <SignupOrg onComplete={this.next} />}
-                    {this.state.state === 'pending' && <Waitlist />}
-
-                </ASSafeAreaProvider>
-            </>
-        );
-
+    private resolveNextPage: (session: SessionStateFullFragment) => string = (session: SessionStateFullFragment) => {
+        // if (!session.isProfileCreated) {
+        //     return 'SignupUser';
+        // } else if (!session.isAccountExists) {
+        //     return 'SignupOrg';
+        // } else if (!session.isAccountActivated) {
+        //     return 'Waitlist';
+        // } else if (session.isCompleted) {
+        //     return 'complete';
+        // }
+        // throw new Error('inconsistnet state');
+        if (this.page === 'init') {
+            return 'SignupUser';
+        } else if (this.page === 'SignupUser') {
+            return 'SignupOrg';
+        } else if (this.page === 'SignupOrg') {
+            return 'Waitlist';
+        }
+        return 'complete';
     }
 }

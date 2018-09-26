@@ -16,8 +16,9 @@ import { Login } from './auth/Login';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
-import { Signup } from './signup/signup';
 import { SessionStateFullFragment } from 'openland-api/Types';
+import { SignupRoutes } from './signup/routes';
+import { initSignupModel } from './signup/signup';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'auth' | 'app', sessionState?: SessionStateFullFragment }> {
 
@@ -60,7 +61,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         // Launch app or login sequence
         if (userToken) {
             if (res && !res.data.sessionState.isCompleted) {
-                this.setState({ state: 'auth', sessionState: res.data.sessionState });
+                initSignupModel(res.data.sessionState, this.onSignupComplete);
+                this.setState({ state: 'auth' });
             } else {
                 this.setState({ state: 'app' });
             }
@@ -70,7 +72,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         // for testing
         // this.setState({ state: 'initial', sessionState: res.data.sessionState });
-        // this.setState({ state: 'auth', sessionState: res.data.sessionState });
+        initSignupModel(res.data.sessionState, this.onSignupComplete);
+        this.setState({ state: 'auth' });
 
     }
 
@@ -79,7 +82,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     }
 
     render() {
-        console.warn(this.state);
         if (this.state.state === 'loading') {
             return <ZLoader appearance="large" />;
         } else if (this.state.state === 'app') {
@@ -100,7 +102,11 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'initial') {
             return <Login />;
         } else if (this.state.state === 'auth') {
-            return <Signup initialSessionState={this.state.sessionState!} onComplete={this.onSignupComplete} />;
+            return (
+                <YApolloProvider client={getClient()}>
+                    <Root routing={SRouting.create(SignupRoutes)} />
+            </YApolloProvider>
+            );
         }
 
         return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);

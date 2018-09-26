@@ -7,47 +7,22 @@ import { ActionButtonIOS } from 'react-native-s/navigation/buttons/ActionButtonI
 import { ZLoader } from '../../components/ZLoader';
 import { getClient } from '../../utils/apolloClient';
 import { ProfileCreateMutation } from 'openland-api';
+import { withApp } from '../../components/withApp';
+import { PageProps } from '../../components/PageProps';
+import { getSignupModel } from './signup';
+import { SHeader } from 'react-native-s/SHeader';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { ZForm } from '../../components/ZForm';
+import { YMutation } from 'openland-y-graphql/YMutation';
+import { delay } from 'openland-y-utils/timer';
 
 export const signupStyles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        paddingLeft: 20,
-        paddingRight: 15,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    } as ViewStyle,
-    logo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        marginTop: 10,
-        alignItems: 'center',
-    } as ViewStyle,
-    title: {
-        fontWeight: '600',
-        color: '#000',
-        fontSize: 28,
-        height: 28,
-        lineHeight: 28,
-        textAlign: 'left',
-        alignSelf: 'flex-start',
-        marginTop: 22,
-        marginBottom: 32,
-    } as TextStyle,
     input: {
         fontWeight: '300',
         color: '#000',
         fontSize: 18,
         height: 52,
-        lineHeight: 52,
+        lineHeight: 18,
         textAlign: 'left',
         alignSelf: 'flex-start',
         marginBottom: 15,
@@ -69,55 +44,38 @@ export const HeaderButton = (props: { title: string, handlePress: () => void }) 
     }
     return (<Button color="#000" onPress={props.handlePress} title={props.title} />);
 };
-
-export class SignupUser extends React.PureComponent<{ onComplete: () => void }, { firstName: string, lastName: string, loading: boolean }> {
-    constructor(props: any) {
+class SignupUserComponent extends React.PureComponent<PageProps> {
+    constructor(props: PageProps & { onComplete: () => void }) {
         super(props);
-        this.state = { firstName: '', lastName: '', loading: false };
+        if (getSignupModel().page !== 'SignupUser') {
+            props.router.push(getSignupModel().page);
+        }
     }
-
-    nameChange = (name: string) => {
-        this.setState({ firstName: name });
-    }
-
-    lastNameChange = (name: string) => {
-        this.setState({ lastName: name });
-    }
-
-    onComplete = () => {
-        (async () => {
-            this.setState({ loading: true });
-            try {
-                await getClient().client.mutate<any>({
-                    mutation: ProfileCreateMutation.document,
-                    variables: { input: { firstName: this.state.firstName, lastName: this.state.lastName } }
-                });
-                this.props.onComplete();
-
-            } catch (e) {
-                Alert.alert('Error', e.message);
-                this.setState({ loading: false });
-            }
-
-        })();
-    }
+    private ref = React.createRef<ZForm>();
 
     render() {
-        if (this.state.loading) {
-            return <ZLoader appearance="large" />;
-        }
         return (
-            <View style={{ backgroundColor: '#fff', width: '100%', height: '100%', flexDirection: 'column', marginTop: 42, alignContent: 'flex-start' }}>
-                <SSafeAreaView style={signupStyles.container} >
-                    <View style={signupStyles.logo}><Image source={require('assets/logo.png')} style={{ width: 38, height: 24 }} /></View>
-                    <View flexDirection="row" alignSelf="flex-end" >
-                        <HeaderButton title="Next" handlePress={this.onComplete} />
-                    </View>
-                    <Text style={signupStyles.title}>Your full name</Text>
-                    <ZTextInput placeholder="First name" style={signupStyles.input} value={this.state.firstName} onChangeText={this.nameChange} width="100%" />
-                    <ZTextInput placeholder="Last name" style={signupStyles.input} value={this.state.lastName} onChangeText={this.lastNameChange} width="100%" />
-                </SSafeAreaView>
-            </View>
+            <>
+                <SHeader title="Your full name" />
+                <SHeaderButton title="Next" onPress={() => this.ref.current!.submitForm()} />
+                <YMutation mutation={ProfileCreateMutation}>
+                    {create => (
+                        <ZForm
+                            ref={this.ref}
+                            action={async (src) => {
+                                await delay(1000);
+                                // await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } })
+                                this.props.router.push(await getSignupModel().next());
+                            }}
+                        >
+                            <ZTextInput field="input.firstName" placeholder="First name" style={signupStyles.input} width="100%" />
+                            <ZTextInput field="input.lastName" placeholder="Last name" style={signupStyles.input} width="100%" />
+                        </ZForm>
+                    )}
+                </YMutation>
+            </>
         );
     }
 }
+
+export const SignupUser = withApp(SignupUserComponent);
