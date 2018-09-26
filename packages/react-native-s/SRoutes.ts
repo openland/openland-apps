@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export class SRoutes {
-    
+
     readonly defaultRoute: string;
     private routes: Map<string, React.ComponentType<{}>>;
     constructor(defaultRoute: string, map: Map<string, React.ComponentType<{}>>) {
@@ -28,7 +28,7 @@ export class SRoutesBuilder {
         return this;
     }
 
-    build() {
-        return new SRoutes(this.defaultRoute!, this.routes);
+    build(initial?: string) {
+        return new SRoutes(initial || this.defaultRoute!, this.routes);
     }
 }

@@ -1,15 +1,10 @@
+use_frameworks!
 platform :ios, '9.0'
 
 target 'openland' do
-    # use_frameworks!
   pod 'Texture'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Fabric'
   pod 'Answers'
-end
-
-post_install do |installer|
-    installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
-        configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
-    end
+  pod 'Auth0', '~> 1.0'
 end

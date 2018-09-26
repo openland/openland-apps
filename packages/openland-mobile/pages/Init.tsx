@@ -12,12 +12,14 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
-import { Login } from './auth/Login';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
+import { SessionStateFullFragment } from 'openland-api/Types';
+import { SignupRoutes, EmailRoutes } from './signup/routes';
+import { initSignupModel, getSignupModel } from './signup/signup';
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'auth' | 'app' }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFullFragment }> {
 
     private ref = React.createRef<ZPictureModal>();
 
@@ -28,38 +30,58 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         };
     }
     componentDidMount() {
-        (async () => {
-            let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
-            if (userToken) {
-                this.setState({ state: 'loading' });
-                let client = buildNativeClient(userToken);
-                let res = await backoff(async () => await client.client.query<any>({
-                    query: AccountQuery.document
-                }));
-                if (!res.data.me) {
-                    userToken = undefined;
-                } else {
-                    let messenger = buildMessenger(client, res.data.me);
-                    let history = SRouting.create(Routes);
-                    setMessenger(new MobileMessenger(messenger, history, this.ref));
-                    saveClient(client);
-                    await messenger.awaitLoading();
-                }
-            }
-
-            // Reset badge if not authenticated
-            if (!userToken) {
-                AppBadge.setBadge(0);
-            }
-
-            // Launch app or login sequence
-            if (userToken) {
-                this.setState({ state: 'app' });
-            } else {
-                this.setState({ state: 'auth' });
-            }
-        })();
+        this.checkState().then();
     }
+
+    checkState = async () => {
+        let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+        let res;
+        if (userToken) {
+            this.setState({ state: 'loading' });
+            let client = buildNativeClient(userToken);
+            saveClient(client);
+            res = await backoff(async () => await getClient().client.query<any>({
+                query: AccountQuery.document
+            }));
+            if (res.data.sessionState.isCompleted) {
+                let messenger = buildMessenger(getClient(), res.data.me);
+                let history = SRouting.create(Routes);
+                setMessenger(new MobileMessenger(messenger, history, this.ref));
+                await messenger.awaitLoading();
+            }
+            if (!res.data.sessionState.isLoggedIn) {
+                userToken = undefined;
+            }
+
+        }
+
+        // Reset badge if not authenticated
+        if (!userToken) {
+            AppBadge.setBadge(0);
+        }
+
+        // Launch app or login sequence
+        if (userToken) {
+            if (res && !res.data.sessionState.isCompleted) {
+                initSignupModel(res.data.sessionState, this.onSignupComplete);
+                this.setState({ state: 'signup' });
+            } else {
+                this.setState({ state: 'app' });
+            }
+        } else {
+            this.setState({ state: 'initial' });
+        }
+
+        // for testing
+        // initSignupModel(res.data.sessionState, this.onSignupComplete);
+        // this.setState({ state: 'auth' });
+
+    }
+
+    onSignupComplete = () => {
+        this.checkState().then();
+    }
+
     render() {
         if (this.state.state === 'loading') {
             return <ZLoader appearance="large" />;
@@ -78,8 +100,14 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     </MobileMessengerContext.Provider>
                 </YApolloProvider>
             );
-        } else if (this.state.state === 'auth') {
-            return <Login />;
+        } else if (this.state.state === 'initial') {
+            return <Root routing={SRouting.create(EmailRoutes)} />;
+        } else if (this.state.state === 'signup') {
+            return (
+                <YApolloProvider client={getClient()}>
+                    <Root routing={SRouting.create(SignupRoutes(getSignupModel().page))} />
+                </YApolloProvider>
+            );
         }
 
         return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);

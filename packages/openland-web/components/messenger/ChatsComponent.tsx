@@ -209,17 +209,6 @@ interface ConversationComponentProps {
     online: boolean;
 }
 
-const OnlineDot = Glamorous.div({
-    position: 'absolute',
-    width: 9,
-    height: 9,
-    backgroundColor: '#69d06d',
-    border: 'solid 1px #f9fafb',
-    borderRadius: 50,
-    left: 50,
-    top: 46
-});
-
 class ConversationComponentInner extends React.Component<ConversationComponentProps & UserInfoComponentProps> {
     refComponent: any;
 
@@ -266,8 +255,9 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     userId={props.flexibleId}
                     size="medium"
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
+                    online={props.online}
                 />
-                {this.props.online && <OnlineDot />}
+                {/* {this.props.online && <OnlineDot />} */}
                 <Header>
                     <Main>
                         <Title className="title"><span>{props.title}</span></Title>
@@ -608,46 +598,33 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     {!search && this.props.data && this.props.data.chats && (
                         <OnlinesComponent>
                             <OnlineContext.Consumer>
-                                {onlines => {
-                                    let onlinesArray: string[] = [];
+                                {onlines => (
+                                    <>
+                                        {this.props.data.chats.conversations.map((i, j) => {
+                                            let isOnline = onlines.onlines ? (onlines.onlines.get(i.flexibleId) || false) : false;
 
-                                    if (onlines !== undefined && onlines.onlines) {
-                                        Array.from(onlines.onlines).map(i => onlinesArray.push(i[0]));
-                                    }
-                                    return (
-                                        <>
-                                            {this.props.data.chats.conversations.map((i, j) => {
-                                                let isOnline = false;
+                                            return (
+                                                <ConversationComponent
+                                                    key={i.id}
+                                                    id={i.id}
+                                                    onSelect={this.onSelect}
+                                                    flexibleId={i.flexibleId}
+                                                    typename={i.__typename}
+                                                    title={i.title}
+                                                    photos={i.photos}
+                                                    photo={(i as any).photo}
+                                                    topMessage={i.topMessage}
+                                                    unreadCount={i.unreadCount}
+                                                    settings={i.settings}
+                                                    selectedItem={this.state.select === j}
+                                                    allowSelection={this.state.allowShortKeys}
 
-                                                for (let item of onlinesArray) {
-                                                    if (item === i.flexibleId) {
-                                                        isOnline = true;
-                                                    }
-                                                }
-
-                                                return (
-                                                    <ConversationComponent
-                                                        key={i.id}
-                                                        id={i.id}
-                                                        onSelect={this.onSelect}
-                                                        flexibleId={i.flexibleId}
-                                                        typename={i.__typename}
-                                                        title={i.title}
-                                                        photos={i.photos}
-                                                        photo={(i as any).photo}
-                                                        topMessage={i.topMessage}
-                                                        unreadCount={i.unreadCount}
-                                                        settings={i.settings}
-                                                        selectedItem={this.state.select === j}
-                                                        allowSelection={this.state.allowShortKeys}
-
-                                                        online={isOnline}
-                                                    />
-                                                );
-                                            })}
-                                        </>
-                                    );
-                                }}
+                                                    online={isOnline}
+                                                />
+                                            );
+                                        })}
+                                    </>
+                                )}
                             </OnlineContext.Consumer>
                         </OnlinesComponent>
                     )}

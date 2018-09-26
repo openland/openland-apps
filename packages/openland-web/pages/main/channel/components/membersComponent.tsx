@@ -223,15 +223,17 @@ const RemoveMemberModal = withConversationKick((props) => {
     );
 }) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string }>;
 
-class ChannelMembersComponentInner extends React.Component<{
-    data: ChannelMembersQuery,
-    channelTitle: string,
-    channelId: string,
-    description?: string,
-    longDescription?: string,
-    orgId: string,
-    emptyText: string,
-}> {
+interface ChannelMembersComponentInnerProps {
+    data: ChannelMembersQuery;
+    channelTitle: string;
+    channelId: string;
+    description?: string;
+    longDescription?: string;
+    orgId: string;
+    emptyText: string;
+}
+
+class ChannelMembersComponentInner extends React.Component<ChannelMembersComponentInnerProps> {
     render() {
         if (!this.props.data || !this.props.data.members) {
             return <XLoader loading={true} />;

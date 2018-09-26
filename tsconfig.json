@@ -130,6 +130,9 @@
       ],
       "openland-xs": [
         "openland-xs"
+      ],
+      "react-native-auth0-s": [
+        "react-native-auth0-s"
       ]
     },
     "importHelpers": true
@@ -184,6 +187,7 @@
     "./packages/openland-xs",
     "./packages/react-native-async-view",
     "./packages/react-native-fast-navigation",
-    "./packages/react-native-s"
+    "./packages/react-native-s",
+    "./packages/react-native-auth0-s"
   ]
 }

@@ -10,6 +10,9 @@ export function formatError(error: any): string {
     } else if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         // Return first message
         return error.graphQLErrors[0].message;
+    } else if (error.userMessage) {
+        // Return first message
+        return error.userMessage;
     }
 
     // Track unexpected errors
@@ -34,4 +37,12 @@ export function exportWrongFields(error: any) {
         }
     }
     return invalidFields;
+}
+
+export class UserError extends Error {
+    userMessage: string;
+    constructor(message: string) {
+        super(message);
+        this.userMessage = message;
+    }
 }

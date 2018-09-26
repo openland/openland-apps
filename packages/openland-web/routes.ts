@@ -58,6 +58,8 @@ routes.add('/settings/invites', '/main/settings/globalInvites');
 routes.add('/settings/invites/', '/main/settings/globalInvites/');
 routes.add('/settings/dev', '/main/settings/developer');
 routes.add('/settings/dev/', '/main/settings/developer');
+routes.add('/settings/organization/:organizationId', '/main/settings/organization');
+routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
 
 //
 // Home
