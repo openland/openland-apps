@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
@@ -50,6 +51,12 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
     );
 });
 
+const TextAreaWrapper = Glamorous.div({
+    '& > textarea': {
+        minHeight: 180
+    }
+});
+
 const EditMessageComponent = withEditMessage((props) => {
     let id = props.router.query.editMessage;
     let conversation: ConversationEngine = (props as any).conversation;
@@ -69,7 +76,9 @@ const EditMessageComponent = withEditMessage((props) => {
             }}
             submitProps={{ succesText: 'done!' }}
         >
-            <XTextArea valueStoreKey="fields.message" resize={false} autofocus={true} />
+            <TextAreaWrapper>
+                <XTextArea valueStoreKey="fields.message" resize={false} autofocus={true} />
+            </TextAreaWrapper>
         </XModalForm >
     );
 }) as React.ComponentType<{ conversation: ConversationEngine }>;
