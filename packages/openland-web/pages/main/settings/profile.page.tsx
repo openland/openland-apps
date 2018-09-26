@@ -152,6 +152,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     <XInput field="input.website" size="r-default" color="primary-sky-blue" placeholder="Website" />
                                                     <XInput field="input.linkedin" size="r-default" color="primary-sky-blue" placeholder="LinkedIn" />
                                                     <XSelect
+                                                        placeholder="Primary location"
                                                         rounded={true}
                                                         field="input.location"
                                                         options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
