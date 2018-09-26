@@ -209,17 +209,6 @@ interface ConversationComponentProps {
     online: boolean;
 }
 
-const OnlineDot = Glamorous.div({
-    position: 'absolute',
-    width: 9,
-    height: 9,
-    backgroundColor: '#69d06d',
-    border: 'solid 1px #f9fafb',
-    borderRadius: 50,
-    left: 50,
-    top: 46
-});
-
 class ConversationComponentInner extends React.Component<ConversationComponentProps & UserInfoComponentProps> {
     refComponent: any;
 
@@ -266,8 +255,9 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     userId={props.flexibleId}
                     size="medium"
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
+                    online={props.online}
                 />
-                {this.props.online && <OnlineDot />}
+                {/* {this.props.online && <OnlineDot />} */}
                 <Header>
                     <Main>
                         <Title className="title"><span>{props.title}</span></Title>

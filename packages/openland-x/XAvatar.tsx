@@ -20,6 +20,7 @@ export interface XAvatarStyleProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
     userId?: string;
     userName?: string;
+    online?: boolean;
 }
 
 export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string | null, photoRef?: XPhotoRef }>>;
@@ -235,6 +236,18 @@ const AvatarWrapper = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     })
 ]);
 
+const OnlineDot = Glamorous.div<{format?: XAvatarSize}>(props => ({
+    position: 'absolute',
+    width: 9,
+    height: 9,
+    backgroundColor: '#69d06d',
+    border: 'solid 1px #f9fafb',
+    borderRadius: 50,
+    right: props.format === 'small' ? 2 : 3,
+    bottom: props.format === 'small' ? 2 : 3,
+    cursor: 'default'
+}));
+
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let avatarWrapperProps = {
@@ -299,6 +312,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     )}
                 </StyledPlaceholder>
             )}
+            {props.online === true && <OnlineDot format={props.size} className="online-status-dot"/>}
         </AvatarWrapper>
     );
 }));

@@ -34,6 +34,7 @@ import { UserSelect } from '../../api/UserSelect';
 import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { OnlinesComponent, OnlineContext } from './components/OnlineComponent';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -415,20 +416,30 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
                         <XHorizontal alignItems="center" separator={6} maxWidth="100%" width="100%">
-                            <XAvatar
-                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
-                                size="small"
-                                style={(props.data.chat.__typename === 'SharedConversation'
-                                    ? 'organization'
-                                    : props.data.chat.__typename === 'GroupConversation'
-                                        ? 'group'
-                                        : props.data.chat.__typename === 'ChannelConversation'
-                                            ? 'channel' : 'colorus'
-                                )}
-                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
-                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
-                                userId={props.data.chat.flexibleId}
-                            />
+                            <OnlinesComponent>
+                                <OnlineContext.Consumer>
+                                    {onlines => {
+                                        let isOnline = onlines.onlines ? (onlines.onlines.get(props.data.chat.flexibleId) || false) : false;
+                                        return (
+                                            <XAvatar
+                                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
+                                                size="small"
+                                                style={(props.data.chat.__typename === 'SharedConversation'
+                                                    ? 'organization'
+                                                    : props.data.chat.__typename === 'GroupConversation'
+                                                        ? 'group'
+                                                        : props.data.chat.__typename === 'ChannelConversation'
+                                                            ? 'channel' : 'colorus'
+                                                )}
+                                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
+                                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
+                                                userId={props.data.chat.flexibleId}
+                                                online={isOnline}
+                                            />
+                                        );
+                                    }}
+                                </OnlineContext.Consumer>
+                            </OnlinesComponent>
                             <XHorizontal alignItems="center" separator={6} maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
@@ -551,7 +562,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         emptyText="To grow the community, invite people to this channel"
                     />
                 )}
-                 {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
+                {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
                     <ChannelMembersComponent
                         channelTitle={title}
                         key={props.data.chat.id + '_members'}
