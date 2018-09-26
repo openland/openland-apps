@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableHighlight, Alert } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { isAndroid } from '../utils/isAndroid';
 import { RectButton } from 'react-native-gesture-handler';
@@ -30,7 +30,6 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
     }
 
     handleLongPress = () => {
-        console.warn('onLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPress');
         if (this.props.onLongPress) {
             this.props.onLongPress();
         }
@@ -51,7 +50,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
             </View>
         );
 
-        if (!!this.props.onPress || !!this.props.path) {
+        if (!!this.props.onPress || !!this.props.onLongPress || !!this.props.path) {
             return (this.props.enabled !== false ? (
                 <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                     {content}

@@ -94,7 +94,6 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                         }
                                                     );
                                                 }}
-                                                onLongPress={() => Alert.alert('boom')}
                                             />
                                         )}
                                     </YMutation>
