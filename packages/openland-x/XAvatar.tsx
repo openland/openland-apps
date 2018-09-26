@@ -159,7 +159,9 @@ const AvatarBehaviour = [
 const StyledAvatarSrc = Glamorous.img<StyledAvatarProps>(AvatarBehaviour);
 const StyledAvatar = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
 () => ({
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: '100% !important',
+    height: '100% !important'
 })]);
 
 const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
@@ -169,6 +171,8 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     justifyContent: 'center',
     color: 'rgba(51, 69, 98, 0.3)',
     overflow: 'hidden',
+    width: '100% !important',
+    height: '100% !important',
     '> svg': {
         width: '100%',
         height: '100%',
@@ -224,11 +228,16 @@ const ColorusStub = Glamorous.div<{ backgroundImage: string, fontSize: number }>
     color: '#fff'
 }));
 
+const AvatarWrapper = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
+    () => ({
+        position: 'relative',
+        border: 'none !important'
+    })
+]);
+
 const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
-    let avatarProps = {
-        href: props.href,
-        target: props.hrefTarget,
+    let avatarWrapperProps = {
         avatarSize: props.size,
         avatarBorder: props.border,
         avatarStyle: props.style,
@@ -237,9 +246,24 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         flexGrow: props.flexGrow,
         flexShrink: props.flexShrink,
         alignSelf: props.alignSelf,
-        onClick: props.onClick,
-        className: props.className,
         zIndex: props.zIndex,
+        className: props.className,
+    };
+
+    let avatarProps = {
+        href: props.href,
+        target: props.hrefTarget,
+        avatarSize: props.size,
+        // avatarBorder: props.border,
+        avatarStyle: props.style,
+        // attach: props.attach,
+        // flexBasis: props.flexBasis,
+        // flexGrow: props.flexGrow,
+        // flexShrink: props.flexShrink,
+        // alignSelf: props.alignSelf,
+        onClick: props.onClick,
+        // className: props.className,
+        // zIndex: props.zIndex,
         src: props.src || undefined,
         enabled: !!(props.onClick)
     };
@@ -250,7 +274,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let initials = props.userName && extractPlaceholder(props.userName);
     return (
-        <>
+        <AvatarWrapper {...avatarWrapperProps}>
             {props.src && (
                 <StyledAvatarSrc {...avatarProps} />
             )}
@@ -275,7 +299,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     )}
                 </StyledPlaceholder>
             )}
-        </>
+        </AvatarWrapper>
     );
 }));
 
