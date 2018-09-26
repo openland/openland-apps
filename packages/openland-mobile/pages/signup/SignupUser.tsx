@@ -25,7 +25,8 @@ export const signupStyles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginBottom: 15,
         borderBottomColor: '#e0e3e7',
-        borderBottomWidth: 0.5
+        borderBottomWidth: 0.5,
+        marginLeft: 17
 
     } as TextStyle,
 });
@@ -62,7 +63,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                             ref={this.ref}
                             action={async (src) => {
                                 // await delay(1000);
-                                await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } })
+                                await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });
                                 this.props.router.push(await getSignupModel().next());
                             }}
                         >

@@ -12,15 +12,14 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
 import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
-import { Login } from './auth/Login';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { SessionStateFullFragment } from 'openland-api/Types';
-import { SignupRoutes } from './signup/routes';
+import { SignupRoutes, EmailRoutes } from './signup/routes';
 import { initSignupModel, getSignupModel } from './signup/signup';
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'auth' | 'app', sessionState?: SessionStateFullFragment }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFullFragment }> {
 
     private ref = React.createRef<ZPictureModal>();
 
@@ -50,6 +49,9 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 setMessenger(new MobileMessenger(messenger, history, this.ref));
                 await messenger.awaitLoading();
             }
+            if (!res.data.me) {
+                userToken = undefined;
+            }
 
         }
 
@@ -62,7 +64,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         if (userToken) {
             if (res && !res.data.sessionState.isCompleted) {
                 initSignupModel(res.data.sessionState, this.onSignupComplete);
-                this.setState({ state: 'auth' });
+                this.setState({ state: 'signup' });
             } else {
                 this.setState({ state: 'app' });
             }
@@ -99,8 +101,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 </YApolloProvider>
             );
         } else if (this.state.state === 'initial') {
-            return <Login />;
-        } else if (this.state.state === 'auth') {
+            return <Root routing={SRouting.create(EmailRoutes)} />;
+        } else if (this.state.state === 'signup') {
             return (
                 <YApolloProvider client={getClient()}>
                     <Root routing={SRouting.create(SignupRoutes(getSignupModel().page))} />

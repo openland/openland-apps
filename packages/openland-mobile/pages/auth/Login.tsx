@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyl
 import { Auth0Client } from '../../index';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
-import { Auth0 } from 'react-native-auth0-s/Auth0';
+import { PageProps } from '../../components/PageProps';
+import { withApp } from '../../components/withApp';
 
 const styles = StyleSheet.create({
     container: {
@@ -52,14 +53,14 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class Login extends React.Component<{}, { initing: boolean, loading: boolean }> {
+class LoginComponent extends React.Component<PageProps, { initing: boolean, loading: boolean }> {
 
     state = {
         initing: false,
         loading: false
     };
 
-    handlePress = async () => {
+    handleGoogleAuth = async () => {
         try {
             this.setState({ loading: true });
             let res = await Auth0Client.webAuth.authorize({
@@ -111,6 +112,7 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
     }
 
     handleEmailPress = () => {
+        this.props.router.push('EmailStart');
         // (async () => {
         //     Auth0.requestEmailAuth('korshakov.stepan@gmail.com');
         // })();
@@ -135,7 +137,7 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                     </View>
                     <Text>— or —</Text>
                     <View flexDirection="column" style={{ marginTop: 12 }}>
-                        <TouchableOpacity onPress={this.handlePress} disabled={this.state.loading}>
+                        <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading}>
                             <View style={styles.button}>
                                 <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
                                     {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
@@ -160,3 +162,5 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
         );
     }
 }
+
+export const Login = withApp(LoginComponent);
