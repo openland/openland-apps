@@ -14,7 +14,7 @@
                     "alias": {
                         "react-native-s": "./build/native/react-native-s",
                         "react-native-async-view": "./build/native/react-native-async-view",
-                        "react-native-fast-navigation": "./build/native/react-native-fast-navigation",
+                        "react-native-auth0-s": "./build/native/react-native-auth0-s",
                         "openland-api": "./build/native/openland-api",
                         "openland-y-graphql": "./build/native/openland-y-graphql",
                         "openland-engines": "./build/native/openland-engines",
@@ -40,7 +40,7 @@
                     "alias": {
                         "react-native-s": "./build/native/react-native-s",
                         "react-native-async-view": "./build/native/react-native-async-view",
-                        "react-native-fast-navigation": "./build/native/react-native-fast-navigation",
+                        "react-native-auth0-s": "./build/native/react-native-auth0-s",
                         "openland-api": "./build/native/openland-api",
                         "openland-y-graphql": "./build/native/openland-y-graphql",
                         "openland-engines": "./build/native/openland-engines",

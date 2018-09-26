@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyl
 import { Auth0Client } from '../../index';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
+import { Auth0 } from 'react-native-auth0-s/Auth0';
 
 const styles = StyleSheet.create({
     container: {
@@ -109,6 +110,12 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
         }
     }
 
+    handleEmailPress = () => {
+        // (async () => {
+        //     Auth0.requestEmailAuth('korshakov.stepan@gmail.com');
+        // })();
+    }
+
     render() {
         return (
             <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
@@ -116,7 +123,7 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                     <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                         <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
-                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of professional networking</Text>
+                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of professional messaging</Text>
                         </View>
                     </View>
                     <View flexDirection="column" style={{ marginTop: 8, marginBottom: 12 }}>
@@ -141,8 +148,8 @@ export class Login extends React.Component<{}, { initing: boolean, loading: bool
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View flexDirection="column" style={{ marginTop: 8 }}>
-                        <TouchableOpacity>
+                    <View flexDirection="column" style={{ marginTop: 8, marginBottom: 56 }}>
+                        <TouchableOpacity onPress={this.handleEmailPress}>
                             <View style={styles.button}>
                                 <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Email'}</Text>
                             </View>

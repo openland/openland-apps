@@ -92,6 +92,9 @@
 		AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */; };
 		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
+		AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B51215AE40C005E09BA /* RNSAuth0.swift */; };
+		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
+		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
 		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
@@ -783,6 +786,10 @@
 		AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNImageNode.swift; sourceTree = "<group>"; };
 		AAB0EF90213D8CF500FBCB75 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
+		AAC60B51215AE40C005E09BA /* RNSAuth0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAuth0.swift; sourceTree = "<group>"; };
+		AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAuth0-Bridge.h"; sourceTree = "<group>"; };
+		AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAuth0-Bridge.m"; sourceTree = "<group>"; };
+		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
 		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
@@ -983,6 +990,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
@@ -998,6 +1006,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
 				AA6281AA2151C8BC007C8200 /* VERSION */,
+				AAC60B56215AF2D3005E09BA /* Auth0.plist */,
 			);
 			name = openland;
 			sourceTree = "<group>";
@@ -1319,6 +1328,16 @@
 				AAA8A6EB211F77920025A392 /* libRNSuperEllipseMask.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AAC60B06215AE3F0005E09BA /* RNSAuth0 */ = {
+			isa = PBXGroup;
+			children = (
+				AAC60B51215AE40C005E09BA /* RNSAuth0.swift */,
+				AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */,
+				AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */,
+			);
+			name = RNSAuth0;
 			sourceTree = "<group>";
 		};
 		AACFC5B22107B4C700225C86 /* Products */ = {
@@ -2281,6 +2300,7 @@
 				A0C52DC8CE88418DB6A5F0E4 /* Foundation.ttf in Resources */,
 				7F84D057DBB04B27B8CCE27C /* Ionicons.ttf in Resources */,
 				8310E3E5526E402699A09B2F /* MaterialCommunityIcons.ttf in Resources */,
+				AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */,
 				B4E889AAE62D4E939C55A608 /* MaterialIcons.ttf in Resources */,
 				1CC3BD25D0634CBB899B6793 /* Octicons.ttf in Resources */,
 				C76D7A1B6372414D92C3ADEB /* SimpleLineIcons.ttf in Resources */,
@@ -2431,6 +2451,7 @@
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
+				AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */,
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
 				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
@@ -2444,6 +2465,7 @@
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
+				AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,
 			);
