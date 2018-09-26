@@ -61,6 +61,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                     {create => (
                         <ZForm
                             ref={this.ref}
+                            defaultData={{ input: { firstName: '' } }}
                             action={async (src) => {
                                 // await delay(1000);
                                 await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });

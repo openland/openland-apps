@@ -10,6 +10,7 @@ import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { delay } from 'openland-y-utils/timer';
 import { signupStyles } from './SignupUser';
+import { Alert } from 'react-native';
 
 class SignupOrgComponent extends React.PureComponent<PageProps & { onComplete: () => void }, { name: string, loading: boolean }> {
     private ref = React.createRef<ZForm>();
@@ -23,13 +24,14 @@ class SignupOrgComponent extends React.PureComponent<PageProps & { onComplete: (
                     {create => (
                         <ZForm
                             ref={this.ref}
+                            defaultData={{ input: { name: '' } }}
                             action={async (src) => {
                                 // await delay(1000);
-                                await create({ variables: { input: { name: src.input.name, personal: false } } });
+                                await create({ variables: { input: { name: src.input.name , personal: false } } });
                                 this.props.router.push(await getSignupModel().next());
                             }}
                         >
-                            <ZTextInput field="input.firstName" placeholder="Name" style={signupStyles.input} width="100%" />
+                            <ZTextInput field="input.name" placeholder="Name" style={signupStyles.input} width="100%" />
                         </ZForm>
                     )}
                 </YMutation>
