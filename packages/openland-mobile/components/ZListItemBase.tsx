@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableHighlight } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { isAndroid } from '../utils/isAndroid';
 import { RectButton } from 'react-native-gesture-handler';
@@ -11,6 +11,7 @@ export interface ZListItemBaseProps {
     separator?: boolean;
     height?: number | null;
     onPress?: () => void;
+    onLongPress?: () => void;
     path?: string;
     navigationIcon?: boolean;
     backgroundColor?: string;
@@ -25,6 +26,13 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         }
         if (this.props.path) {
             this.props.router.push(this.props.path);
+        }
+    }
+
+    handleLongPress = () => {
+        console.warn('onLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPressonLongPress');
+        if (this.props.onLongPress) {
+            this.props.onLongPress();
         }
     }
 
@@ -44,10 +52,15 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         );
 
         if (!!this.props.onPress || !!this.props.path) {
-            return (
-                <RectButton enabled={this.props.enabled} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+            return (this.props.enabled !== false ? (
+                <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                     {content}
-                </RectButton>
+                </TouchableHighlight>
+            ) : (
+                    <RectButton enabled={this.props.enabled} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                        {content}
+                    </RectButton>
+                )
             );
         } else {
             return (

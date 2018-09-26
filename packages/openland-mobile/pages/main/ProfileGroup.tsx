@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
@@ -94,6 +94,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                         }
                                                     );
                                                 }}
+                                                onLongPress={() => Alert.alert('boom')}
                                             />
                                         )}
                                     </YMutation>
