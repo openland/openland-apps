@@ -7,10 +7,10 @@ import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { XButton } from 'openland-x/XButton';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -27,7 +27,6 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { withAlterChat } from '../../api/withAlterChat';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
-import PlusIcon from '../icons/ic-add-medium.svg';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
 import { UserSelect } from '../../api/UserSelect';
@@ -35,6 +34,8 @@ import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { OnlinesComponent, OnlineContext } from './components/OnlineComponent';
+import IconInvite from './components/icons/ic-invite.svg';
+import IconInfo from './components/icons/ic-info.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -362,13 +363,50 @@ const AddMemberForm = withSuperAddToChannel((props) => {
     );
 }) as React.ComponentType<{ refetchVars: { conversationId: string }, channelId: string }>;
 
-const AddButton = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s'
-    },
-    '&:active svg > g > path:last-child': {
-        fill: '#fff'
+const AddButton = Glamorous.div({
+    width: 32,
+    height: 32,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    '&:hover svg > g > path': {
+        fill: '#1790ff'
     }
+});
+
+const InfoButton = Glamorous.div({
+    width: 32,
+    height: 32,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    '&:hover svg > path': {
+        fill: '#1790ff'
+    }
+});
+
+const AboutWrapper = Glamorous(XVertical)({
+    padding: 6
+});
+
+const AboutTitle = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 600,
+    lineHeight: 1.43,
+    letterSpacing: -0.2,
+    color: '#99A2B0'
+});
+
+const AboutText = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 1.57,
+    letterSpacing: -0.2,
+    color: '#334562'
 });
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
@@ -453,27 +491,41 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
                                     <ChannelTab query={{ field: 'tab', value: 'members' }}>
                                         <XHorizontal separator={4} alignItems="center">
-                                            <span>About</span>
+                                            <span>Members</span>
                                             {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
                                                 <XCounter big={true} count={props.data.chat.memberRequestsCount} />
                                             )}
                                         </XHorizontal>
                                     </ChannelTab>
                                 </ChannelTabs>
-                                <InviteMembersModal
-                                    orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
-                                    channelTitle={title}
-                                    channelId={props.data.chat.id}
-                                    target={
-                                        <AddButton
-                                            text="Invite"
-                                            iconResponsive={<PlusIcon />}
-                                            icon={<PlusIcon className="icon" />}
-                                            size="r-default"
-                                            alignSelf="center"
-                                        />
-                                    }
-                                />
+                                <XHorizontal alignSelf="center" alignItems="center" separator={6}>
+                                    <InviteMembersModal
+                                        orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
+                                        channelTitle={title}
+                                        channelId={props.data.chat.id}
+                                        target={
+                                            <AddButton>
+                                                <IconInvite />
+                                            </AddButton>
+                                        }
+                                    />
+                                    {props.data.chat.longDescription && (
+                                        <XPopper
+                                            showOnHover={true}
+                                            placement="bottom-end"
+                                            content={(
+                                                <AboutWrapper separator={2} maxWidth={510}>
+                                                    <AboutTitle>About channel</AboutTitle>
+                                                    <AboutText>{props.data.chat.longDescription}</AboutText>
+                                                </AboutWrapper>
+                                            )}
+                                        >
+                                            <InfoButton>
+                                                <IconInfo />
+                                            </InfoButton>
+                                        </XPopper>
+                                    )}
+                                </XHorizontal>
                             </XHorizontal>
                         )}
 
