@@ -9,16 +9,17 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChatChangeGroupTitleMutation } from 'openland-api';
+import { ChatChangeGroupTitleMutation, ConversationKickMutation } from 'openland-api';
 import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { UserShortFragment } from 'openland-api/Types';
+import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 
-export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void }) => (
-    <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress}>
+export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void, onLongPress?: () => void }) => (
+    <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
         <View paddingTop={12} paddingLeft={15} paddingRight={15}>
             <XPAvatar size={32} src={props.user.picture} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
         </View>
@@ -98,7 +99,27 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
                                     {resp.data.members.map((v) => (
-                                        <UserView user={v.user} role={v.role} onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })} />
+                                        <YMutation mutation={ConversationKickMutation} refetchQueries={[GroupChatFullInfoQuery]}>
+                                            {(kick) => (
+                                                <UserView
+                                                    user={v.user}
+                                                    role={v.role}
+                                                    onLongPress={async () => {
+                                                        Alert.alert('kick user?', undefined, [{
+                                                            onPress: async () => {
+                                                                startLoader();
+                                                                await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                stopLoader();
+                                                            },
+                                                            text: 'kick',
+                                                            style: 'destructive'
+                                                        }]);
+
+                                                    }}
+                                                    onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
+                                                />
+                                            )}
+                                        </YMutation>
                                     ))}
                                 </ZListItemGroup>
                             </SScrollView>
