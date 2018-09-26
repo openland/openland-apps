@@ -40,23 +40,24 @@ export class SignupModel {
     }
 
     private resolveNextPage: (session: SessionStateFullFragment) => string = (session: SessionStateFullFragment) => {
-        // if (!session.isProfileCreated) {
-        //     return 'SignupUser';
-        // } else if (!session.isAccountExists) {
-        //     return 'SignupOrg';
-        // } else if (!session.isAccountActivated) {
-        //     return 'Waitlist';
-        // } else if (session.isCompleted) {
-        //     return 'complete';
-        // }
-        // throw new Error('inconsistnet state');
-        if (this.page === 'init') {
+        if (!session.isProfileCreated) {
             return 'SignupUser';
-        } else if (this.page === 'SignupUser') {
+        } else if (!session.isAccountExists) {
             return 'SignupOrg';
-        } else if (this.page === 'SignupOrg') {
+        } else if (!session.isAccountActivated) {
             return 'Waitlist';
+        } else if (session.isCompleted) {
+            return 'complete';
         }
-        return 'complete';
+        throw new Error('inconsistent state');
+        // for testing
+        // if (this.page === 'init') {
+        //     return 'SignupUser';
+        // } else if (this.page === 'SignupUser') {
+        //     return 'SignupOrg';
+        // } else if (this.page === 'SignupOrg') {
+        //     return 'Waitlist';
+        // }
+        // return 'complete';
     }
 }

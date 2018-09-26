@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button, Alert, Image } from 'react-native';
+import { StyleSheet, TextStyle, Platform, Button } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
 import { ActionButtonIOS } from 'react-native-s/navigation/buttons/ActionButtonIOS';
-import { ZLoader } from '../../components/ZLoader';
-import { getClient } from '../../utils/apolloClient';
 import { ProfileCreateMutation } from 'openland-api';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
@@ -63,8 +61,8 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                         <ZForm
                             ref={this.ref}
                             action={async (src) => {
-                                await delay(1000);
-                                // await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } })
+                                // await delay(1000);
+                                await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } })
                                 this.props.router.push(await getSignupModel().next());
                             }}
                         >

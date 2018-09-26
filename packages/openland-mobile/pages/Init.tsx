@@ -18,7 +18,7 @@ import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { SessionStateFullFragment } from 'openland-api/Types';
 import { SignupRoutes } from './signup/routes';
-import { initSignupModel } from './signup/signup';
+import { initSignupModel, getSignupModel } from './signup/signup';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'auth' | 'app', sessionState?: SessionStateFullFragment }> {
 
@@ -71,9 +71,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         }
 
         // for testing
-        // this.setState({ state: 'initial', sessionState: res.data.sessionState });
-        initSignupModel(res.data.sessionState, this.onSignupComplete);
-        this.setState({ state: 'auth' });
+        // initSignupModel(res.data.sessionState, this.onSignupComplete);
+        // this.setState({ state: 'auth' });
 
     }
 
@@ -104,8 +103,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'auth') {
             return (
                 <YApolloProvider client={getClient()}>
-                    <Root routing={SRouting.create(SignupRoutes)} />
-            </YApolloProvider>
+                    <Root routing={SRouting.create(SignupRoutes(getSignupModel().page))} />
+                </YApolloProvider>
             );
         }
 

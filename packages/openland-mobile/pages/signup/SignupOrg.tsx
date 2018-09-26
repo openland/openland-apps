@@ -1,12 +1,6 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, Text, Platform, Button, Alert, Image } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
-import { SSafeAreaView } from 'react-native-s/SSafeArea';
-import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
-import { ActionButtonIOS } from 'react-native-s/navigation/buttons/ActionButtonIOS';
-import { ZLoader } from '../../components/ZLoader';
-import { getClient } from '../../utils/apolloClient';
-import { ProfileCreateMutation, CreateOrganizationMutation } from 'openland-api';
+import { CreateOrganizationMutation } from 'openland-api';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { getSignupModel } from './signup';
@@ -30,8 +24,8 @@ class SignupOrgComponent extends React.PureComponent<PageProps & { onComplete: (
                         <ZForm
                             ref={this.ref}
                             action={async (src) => {
-                                await delay(1000);
-                                // await create({ variables: { input: { name: src.input.name} } })
+                                // await delay(1000);
+                                await create({ variables: { input: { name: src.input.name, personal: false } } });
                                 this.props.router.push(await getSignupModel().next());
                             }}
                         >
