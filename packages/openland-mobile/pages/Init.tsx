@@ -49,7 +49,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 setMessenger(new MobileMessenger(messenger, history, this.ref));
                 await messenger.awaitLoading();
             }
-            if (!res.data.me) {
+            if (!res.data.sessionState.isLoggedIn) {
                 userToken = undefined;
             }
 
