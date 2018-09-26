@@ -3,20 +3,6 @@ import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 
-let cachedSignupModel: SignupModel | null = null;
-
-export function initSignupModel(session: SessionStateFullFragment, onComplete: () => void) {
-    cachedSignupModel = new SignupModel(session, onComplete);
-
-    return cachedSignupModel!!;
-}
-export function getSignupModel() {
-    if (!cachedSignupModel) {
-        throw Error('SignupModel is not inited');
-    }
-    return cachedSignupModel!!;
-}
-
 export class SignupModel {
     page = 'init';
     onComplete: () => void;
@@ -60,4 +46,18 @@ export class SignupModel {
         // }
         // return 'complete';
     }
+}
+
+let cachedSignupModel: SignupModel | null = null;
+
+export function initSignupModel(session: SessionStateFullFragment, onComplete: () => void) {
+    cachedSignupModel = new SignupModel(session, onComplete);
+
+    return cachedSignupModel!!;
+}
+export function getSignupModel() {
+    if (!cachedSignupModel) {
+        throw Error('SignupModel is not inited');
+    }
+    return cachedSignupModel!!;
 }
