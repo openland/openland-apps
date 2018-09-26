@@ -14,7 +14,7 @@
                 <mj-raw>
                 </mj-raw>
                     <mj-text mj-class="text">
-                        There are {{messageCount}} new message in your inbox. Go to Openland app to see them now.
+                        There are {{messageCount}} in your inbox. Go to Openland app to see them now.
                     </mj-text>
                 <mj-raw>
                 </mj-raw>
