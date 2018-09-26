@@ -6,6 +6,8 @@ import { stopLoader, startLoader } from '../../../components/ZGlobalLoader';
 import { Keyboard } from 'react-native';
 import { PageProps } from '../../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { SHeader } from 'react-native-s/SHeader';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 // import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 
@@ -45,6 +47,8 @@ class TextEditModalComponent extends React.PureComponent<PageProps, { value: str
             <>
                 {/* <FastHeader title="Edit group name" />
                 <FastHeaderButton title="Save" onPress={this.handleSave} /> */}
+                <SHeader />
+                <SHeaderButton title="Save" onPress={this.handleSave} />
                 <SScrollView>
                     <ZListItemGroup header={null}>
                         <ZListItemEdit title="Group name" value={this.state.value} onChange={this.handleChange} autoFocus={true} />
