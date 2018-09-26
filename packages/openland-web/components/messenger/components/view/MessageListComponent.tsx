@@ -168,8 +168,16 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         };
         let shouldCompact = (sender: string, date: number) => {
             if (prevMessageSender === sender && prevMessageDate !== undefined) {
+                let delta = prevMessageDate - date;
+
+                // 1 hour
+                if ((delta * -1) > 3600000) {
+                    prevMessageDate = date;
+                    currentCollapsed = 0;
+                    return false;
+                }
                 // 10 sec
-                if (prevMessageDate - date < 10000 && currentCollapsed < 10) {
+                if (delta < 10000 && currentCollapsed < 10) {
                     prevMessageDate = date;
                     currentCollapsed++;
                     return true;
