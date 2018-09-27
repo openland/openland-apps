@@ -3,7 +3,6 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 
 let MixpanelToken = canUseDOM && loadConfig().mixpanelKey;
-let intercomToken = canUseDOM && loadConfig().intercomKey;
 let sentryEndpoint = canUseDOM && loadConfig().sentryEndpoint;
 
 let shouldTrack = canUseDOM && (!!MixpanelToken);
@@ -19,11 +18,6 @@ export function trackEvent(event: string, params?: { [key: string]: any }) {
         // Forward to mixpanel
         if (MixpanelToken) {
             Mixpanel.track(event, params);
-        }
-
-        // Forward to intercom
-        if (intercomToken) {
-            (window as any).Intercom('trackEvent', event, params);
         }
     }
 }
@@ -57,11 +51,6 @@ export function trackProfile(id: string, firstName: string, lastName: string | n
                 email: email,
                 id: id
             });
-        }
-
-        // Identify Intercom
-        if (intercomToken) {
-            (window as any).Intercom('update', { email: email, user_id: id, name: ((firstName === null ? '' : firstName) + ' ' + (lastName === null ? lastName : '')).trim() });
         }
     }
 }
