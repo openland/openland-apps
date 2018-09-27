@@ -83,13 +83,12 @@ export default class StateDocument extends Document {
                     <link rel="stylesheet" href="/static/css/draft-emoji.css" />
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
 
-                    {/* Scripts */}
-                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js" />
+                    {/* Config */}
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
 
                     {/* Centry/Raven */}
-                    {config.sentryEndpoint && config.release && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
-                    {config.sentryEndpoint && config.release && <script dangerouslySetInnerHTML={{ __html: `Raven.config('${config.sentryEndpoint}', { release: '${config.release}' }).install();` }}>{}</script>}
+                    {config.sentryEndpoint && config.release && config.release !== 'development' && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
+                    {config.sentryEndpoint && config.release && config.release !== 'development' && <script dangerouslySetInnerHTML={{ __html: `Raven.config('${config.sentryEndpoint}', { release: '${config.release}' }).install();` }}>{}</script>}
                 </Head>
                 <body>
                     <Main />
