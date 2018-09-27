@@ -1,9 +1,10 @@
 import * as Mixpanel from 'mixpanel-browser';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
+import * as Sentry from '@sentry/browser';
 
 let MixpanelToken = canUseDOM && loadConfig().mixpanelKey;
-let sentryEndpoint = canUseDOM && loadConfig().sentryEndpoint;
+let sentryEndpoint = canUseDOM && loadConfig().sentryEndpoint && loadConfig().release;
 
 let shouldTrack = canUseDOM && (!!MixpanelToken);
 if (shouldTrack) {
@@ -47,10 +48,11 @@ export function trackProfile(id: string, firstName: string, lastName: string | n
 
         // Identify Centry
         if (sentryEndpoint) {
-            (window as any).Raven.setUserContext({
-                email: email,
-                id: id
-            });
+            // TODO: Fix Me
+            // (window as any).Raven.setUserContext({
+            //     email: email,
+            //     id: id
+            // });
         }
     }
 }
@@ -59,7 +61,7 @@ export function trackError(src: any) {
     if (shouldTrack) {
         // Trying to report exception
         if (sentryEndpoint) {
-            (window as any).Raven.captureException(src);
+            Sentry.captureException(src);
         }
 
         // Log exception to analytics
