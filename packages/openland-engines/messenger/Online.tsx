@@ -35,6 +35,9 @@ export class OnlineWatcher {
 
         this.sub = onlineSubscription.subscribe({
             next: (event) => {
+                if (!event || !event.data) {
+                    return;
+                }
                 let evData = event.data.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
