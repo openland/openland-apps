@@ -17,6 +17,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { UserShortFragment } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
+import { ActionSheetBuilder } from '../../components/ActionSheet';
 
 export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -105,19 +106,33 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     user={v.user}
                                                     role={v.role}
                                                     onLongPress={async () => {
-                                                        Alert.alert('kick user?', undefined, [{
-                                                            onPress: async () => {
-                                                                startLoader();
-                                                                try {
-                                                                    await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
-                                                                } catch (e) {
-                                                                    Alert.alert(e.message);
-                                                                }
-                                                                stopLoader();
+
+
+                                                        let builder = new ActionSheetBuilder();
+                                                        builder.action(
+                                                            'Kick',
+                                                            () => {
+                                                                Alert.alert(`Are you sure you want to kick ${v.user.name}?`, undefined, [{
+                                                                    onPress: async () => {
+                                                                        startLoader();
+                                                                        try {
+                                                                            await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                        } catch (e) {
+                                                                            Alert.alert(e.message);
+                                                                        }
+                                                                        stopLoader();
+                                                                    },
+                                                                    text: 'kick',
+                                                                    style: 'destructive'
+                                                                },
+                                                                {
+                                                                    text: 'cancel',
+                                                                    style: 'cancel'
+                                                                }]);
                                                             },
-                                                            text: 'kick',
-                                                            style: 'destructive'
-                                                        }]);
+                                                            true
+                                                        );
+                                                        builder.show();
 
                                                     }}
                                                     onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
