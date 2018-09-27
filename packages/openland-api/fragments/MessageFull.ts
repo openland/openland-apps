@@ -20,6 +20,7 @@ export const MessageFull = gql`
         ...UserShort
     }
     urlAugmentation{
+        type
         url
         title
         date

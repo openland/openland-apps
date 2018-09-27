@@ -444,6 +444,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_u
 
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -532,6 +533,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAu
 
 export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -621,6 +623,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_url
 
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -752,6 +755,7 @@ export interface ChatHistory_messages_messages_urlAugmentation_photo {
 
 export interface ChatHistory_messages_messages_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -1375,6 +1379,7 @@ export interface SendMessage_sentMessage_message_urlAugmentation_photo {
 
 export interface SendMessage_sentMessage_message_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -1792,6 +1797,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -1881,6 +1887,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
 
 export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -1986,6 +1993,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2125,6 +2133,7 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentatio
 
 export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2305,6 +2314,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2394,6 +2404,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2499,6 +2510,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2624,6 +2636,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2713,6 +2726,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -2818,6 +2832,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -9607,6 +9622,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -9696,6 +9712,7 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -9801,6 +9818,7 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
@@ -9930,6 +9948,7 @@ export interface MessageFull_urlAugmentation_photo {
 
 export interface MessageFull_urlAugmentation {
   __typename: "UrlAugmentation";
+  type: string | null;
   url: string;
   title: string | null;
   date: string | null;
