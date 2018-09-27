@@ -18,6 +18,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { UserShortFragment } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
+import { getMessenger } from '../../utils/messenger';
 
 export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -85,13 +86,19 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     Modals.showUserPicker(
                                                         this.props.router,
                                                         async (src) => {
-                                                            try {
-                                                                let res = await add({ variables: { userId: src, conversationId: resp.data.chat.id } });
-                                                                console.warn('boom', res);
-                                                            } catch (e) {
-                                                                console.warn('boom', e);
-                                                                throw e;
-                                                            }
+
+                                                            Alert.alert(`Are you sure you want to add ${src.name}?`, undefined, [{
+                                                                onPress: async () => {
+                                                                    await add({ variables: { userId: src.id, conversationId: resp.data.chat.id } });
+                                                                },
+                                                                text: 'add',
+                                                                style: 'default'
+                                                            },
+                                                            {
+                                                                text: 'cancel',
+                                                                style: 'cancel'
+                                                            }]);
+
 
                                                         }
                                                     );
@@ -100,12 +107,12 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
                                     {resp.data.members.map((v) => (
-                                        <YMutation mutation={ConversationKickMutation} refetchQueries={[GroupChatFullInfoQuery]}>
+                                        <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>
                                             {(kick) => (
                                                 <UserView
                                                     user={v.user}
                                                     role={v.role}
-                                                    onLongPress={async () => {
+                                                    onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
 
 
                                                         let builder = new ActionSheetBuilder();
@@ -134,7 +141,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                         );
                                                         builder.show();
 
-                                                    }}
+                                                    } : undefined}
                                                     onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
                                                 />
                                             )}

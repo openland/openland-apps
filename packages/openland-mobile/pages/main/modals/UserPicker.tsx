@@ -11,11 +11,12 @@ import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SHeader } from 'react-native-s/SHeader';
 import { SRouter } from 'react-native-s/SRouter';
+import { UserShortFragment } from 'openland-api/Types';
 
 class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 
-    handlePicked = async (id: string) => {
-        let action = this.props.router.params.action as (value: string) => any;
+    handlePicked = async (id: UserShortFragment) => {
+        let action = this.props.router.params.action as (value: UserShortFragment) => any;
         try {
             Keyboard.dismiss();
             startLoader();
@@ -35,7 +36,7 @@ class UserSearch extends React.Component<{ query: string, router: SRouter }> {
                     <SScrollView>
                         <ZListItemGroup>
                             {reponse.data.items.filter(u => u.__typename === 'User').map((v) => (
-                                <UserView key={v.id} user={v as any} role={(v as any).primaryOrganization ? (v as any).primaryOrganization.name : undefined} onPress={() => this.handlePicked(v.id)} />
+                                <UserView key={v.id} user={v as any} role={(v as any).primaryOrganization ? (v as any).primaryOrganization.name : undefined} onPress={() => this.handlePicked(v)} />
                             ))}
                         </ZListItemGroup>
 

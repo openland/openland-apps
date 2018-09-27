@@ -1,10 +1,11 @@
 import { SRouter } from 'react-native-s/SRouter';
+import { UserShortFragment } from 'openland-api/Types';
 
 export const Modals = {
     showTextEdit(router: SRouter, defaultValue: string, action: (value: string) => any) {
         router.push('TextEditModal', { 'value': defaultValue, 'action': action });
     },
-    showUserPicker(router: SRouter, action: (value: string) => any) {
+    showUserPicker(router: SRouter, action: (value: UserShortFragment) => any) {
         router.push('UserPicker', { 'action': action });
     },
     showCountryPicker(router: SRouter, action: (value: string) => any) {
