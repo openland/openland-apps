@@ -1,18 +1,13 @@
-import * as ga from 'react-ga';
 import * as Mixpanel from 'mixpanel-browser';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 
-let GAToken = canUseDOM && loadConfig().googleAnalyticsKey;
 let MixpanelToken = canUseDOM && loadConfig().mixpanelKey;
 let intercomToken = canUseDOM && loadConfig().intercomKey;
 let sentryEndpoint = canUseDOM && loadConfig().sentryEndpoint;
 
-let shouldTrack = canUseDOM && (!!GAToken || !!MixpanelToken);
+let shouldTrack = canUseDOM && (!!MixpanelToken);
 if (shouldTrack) {
-    if (GAToken) {
-        ga.initialize(GAToken);
-    }
     if (MixpanelToken) {
         Mixpanel.init(MixpanelToken);
     }
@@ -36,11 +31,6 @@ export function trackEvent(event: string, params?: { [key: string]: any }) {
 export function trackPage(page?: string) {
     if (shouldTrack) {
         let p = page ? page : document.location.pathname;
-
-        // Track in Google Analytics
-        if (GAToken) {
-            ga.pageview(p);
-        }
 
         // Track in other analytical platforms
         // Replacing with application level event tracking
