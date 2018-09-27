@@ -108,7 +108,11 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                         Alert.alert('kick user?', undefined, [{
                                                             onPress: async () => {
                                                                 startLoader();
-                                                                await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                try {
+                                                                    await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                } catch (e) {
+                                                                    Alert.alert(e.message);
+                                                                }
                                                                 stopLoader();
                                                             },
                                                             text: 'kick',
