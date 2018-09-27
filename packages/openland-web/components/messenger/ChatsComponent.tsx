@@ -257,7 +257,6 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
                     online={props.online}
                 />
-                {/* {this.props.online && <OnlineDot />} */}
                 <Header>
                     <Main>
                         <Title className="title"><span>{props.title}</span></Title>

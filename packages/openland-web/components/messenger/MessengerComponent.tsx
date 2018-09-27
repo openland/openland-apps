@@ -494,11 +494,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             </XHorizontal>
-                            {lastSeen && (
+                            {/* {lastSeen && (
                                 <LastSeenWrapper>
                                     Last seen: <XDate value={lastSeen} format="time" />
                                 </LastSeenWrapper>
-                            )}
+                            )} */}
                         </XHorizontal>
                     </NavChatLeftContentStyled>
                     <XHorizontal alignItems="center" separator={5}>
