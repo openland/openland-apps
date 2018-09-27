@@ -2,6 +2,8 @@ import React from 'react';
 import App, { AppProps } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { buildConfig } from '../config';
 
 export default class MyApp extends App {
 
@@ -9,7 +11,7 @@ export default class MyApp extends App {
 
     constructor(props: AppProps) {
         super(props);
-        let cfg = loadConfig();
+        let cfg = canUseDOM ? loadConfig() : buildConfig();
         if (cfg.sentryEndpoint && cfg.release) {
             this.isSentryEnabled = true;
             Sentry.init({ dsn: cfg.sentryEndpoint, release: cfg.release });
