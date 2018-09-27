@@ -13,6 +13,7 @@
 		"@babel/core": "7.0.0",
 		"@mapbox/geo-viewport": "^0.2.2",
 		"@mapbox/mapbox-gl-geocoder": "^2.2.0",
+		"@sentry/browser": "^4.0.5",
 		"@turf/bbox": "^5.1.5",
 		"@turf/center": "^5.1.5",
 		"@turf/center-of-mass": "^5.1.5",
@@ -141,6 +142,7 @@
 		"yarn": "^1.9.4"
 	},
 	"devDependencies": {
+		"@babel/cli": "7.0.0",
 		"@types/auth0-js": "^8.11.0",
 		"@types/chart.js": "^2.7.3",
 		"@types/classnames": "^2.2.3",
@@ -207,15 +209,14 @@
 		"nodemon": "^1.17.1",
 		"postinstall-postinstall": "^1.0.0",
 		"react-native": "0.57.0",
+		"rimraf": "^2.6.2",
 		"ts-jest": "^22.0.4",
 		"ts-node": "^6.1.1",
 		"tslib": "^1.9.0",
 		"tslint": "^5.8.0",
 		"tslint-react": "^3.5.1",
 		"typescript": "2.9.2",
-		"watchman": "^1.0.0",
-		"@babel/cli": "7.0.0",
-		"rimraf": "^2.6.2"
+		"watchman": "^1.0.0"
 	},
 	"resolutions": {
 		"**/@types/react-native": "0.56.4",

@@ -8,7 +8,7 @@ import { saveConfig } from 'openland-x-config';
 // Load Configuration
 let config = buildConfig();
 
-export default class StateDocument extends Document {
+export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
         const content = page.html || page.errorHtml;
@@ -84,10 +84,6 @@ export default class StateDocument extends Document {
 
                     {/* Config */}
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
-
-                    {/* Centry/Raven */}
-                    {config.sentryEndpoint && config.release && config.release !== 'development' && <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js">{}</script>}
-                    {config.sentryEndpoint && config.release && config.release !== 'development' && <script dangerouslySetInnerHTML={{ __html: `Raven.config('${config.sentryEndpoint}', { release: '${config.release}' }).install();` }}>{}</script>}
                 </Head>
                 <body>
                     <Main />
