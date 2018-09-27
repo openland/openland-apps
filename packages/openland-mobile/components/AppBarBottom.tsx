@@ -26,8 +26,8 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                 >
                     <View
                         style={{
-                            width: 25,
-                            height: 25,
+                            width: 28,
+                            height: 28,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}
@@ -36,10 +36,10 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                             source={this.props.icon}
                             resizeMode="stretch"
                             style={{
-                                width: 25,
-                                height: 25,
+                                width: 28,
+                                height: 28,
                                 opacity: this.props.selected ? 1 : 1,
-                                tintColor: this.props.selected ? AppStyles.primaryColor : '#99a2b0'
+                                tintColor: this.props.selected ? '#fff' : '#99a2b0'
                             }}
                         />
                         <View
@@ -54,9 +54,11 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                     </View>
                     <Text
                         style={{
-                            color: this.props.selected ? AppStyles.primaryColor : '#99a2b0',
+                            color: this.props.selected ? '#fff' : '#99a2b0',
                             fontSize: 12,
-                            marginTop: 2,
+                            lineHeight: 16,
+                            height: 16,
+                            overflow: 'visible',
                             opacity: this.props.selected ? 1 : 1
                         }}
                     >
@@ -73,13 +75,13 @@ export class AppBarBottom extends React.PureComponent {
         return (
             <View
                 style={{
-                    backgroundColor: '#f5f7f9',
+                    backgroundColor: '#354856',
                     paddingBottom: SDevice.safeArea.bottom,
                     flexDirection: 'column',
                     alignItems: 'stretch'
                 }}
             >
-                <View style={{ height: 0.5, backgroundColor: AppStyles.separatorColor }} />
+                {/* <View style={{ height: 1, backgroundColor: AppStyles.separatorColor }} /> */}
                 <View style={{ flexDirection: 'row', height: 48 }}>
                     {this.props.children}
                 </View>
