@@ -1198,12 +1198,27 @@ export interface ChatFullInfoVariables {
 // GraphQL query operation: GroupChatFullInfo
 // ====================================================
 
+export interface GroupChatFullInfo_chat_AnonymousConversation_settings {
+  __typename: "ConversationSettings";
+  id: string;
+  mobileNotifications: NotificationMessages;
+  mute: boolean;
+}
+
 export interface GroupChatFullInfo_chat_AnonymousConversation {
   __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
   id: string;
   flexibleId: string;
   title: string;
   photos: string[];
+  settings: GroupChatFullInfo_chat_AnonymousConversation_settings;
+}
+
+export interface GroupChatFullInfo_chat_ChannelConversation_settings {
+  __typename: "ConversationSettings";
+  id: string;
+  mobileNotifications: NotificationMessages;
+  mute: boolean;
 }
 
 export interface GroupChatFullInfo_chat_ChannelConversation_photoRef_crop {
@@ -1226,8 +1241,16 @@ export interface GroupChatFullInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  settings: GroupChatFullInfo_chat_ChannelConversation_settings;
   photo: string | null;
   photoRef: GroupChatFullInfo_chat_ChannelConversation_photoRef | null;
+}
+
+export interface GroupChatFullInfo_chat_GroupConversation_settings {
+  __typename: "ConversationSettings";
+  id: string;
+  mobileNotifications: NotificationMessages;
+  mute: boolean;
 }
 
 export interface GroupChatFullInfo_chat_GroupConversation_photoRef_crop {
@@ -1250,6 +1273,7 @@ export interface GroupChatFullInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  settings: GroupChatFullInfo_chat_GroupConversation_settings;
   photo: string | null;
   photoRef: GroupChatFullInfo_chat_GroupConversation_photoRef | null;
 }

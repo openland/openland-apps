@@ -203,6 +203,11 @@ export const GroupChatFullInfoQuery = gql`
             flexibleId
             title
             photos
+            settings{
+                id
+                mobileNotifications
+                mute
+            }
             ... on ChannelConversation {
                 photo
                 photoRef{

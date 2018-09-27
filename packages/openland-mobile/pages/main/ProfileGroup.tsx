@@ -9,7 +9,7 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChatChangeGroupTitleMutation, ConversationKickMutation } from 'openland-api';
+import { ChatChangeGroupTitleMutation, ConversationKickMutation, ConversationSettingsUpdateMutation } from 'openland-api';
 import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
@@ -74,7 +74,24 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             />
                                         )}
                                     </YMutation>
-                                    <ZListItem text="Notifications" toggle={true} />
+                                    <YMutation mutation={ConversationSettingsUpdateMutation}>
+                                        {(update) => (
+                                            <ZListItem
+                                                text="Notifications"
+                                                toggle={!resp.data.chat.settings.mute}
+                                                onPress={async () => {
+                                                    startLoader();
+                                                    try {
+                                                        await update({ variables: { conversationId: resp.data.chat.id, settings: { mute: !resp.data.chat.settings.mute } } });
+                                                    } catch (e) {
+                                                        Alert.alert(e.message);
+                                                    }
+                                                    stopLoader();
+                                                }}
+                                            />
+                                        )
+                                        }
+                                    </YMutation>
                                 </ZListItemGroup>
 
                                 <ZListItemGroup header="Members">
