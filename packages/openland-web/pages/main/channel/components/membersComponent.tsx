@@ -10,7 +10,7 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
-import { ChannelMembersQuery, UserShortFragment } from 'openland-api/Types';
+import { ChannelMembers, UserShort } from 'openland-api/Types';
 import { XLoader } from 'openland-x/XLoader';
 import { withChannelInvite } from '../../../../api/withChannelInvite';
 import { XMutation } from 'openland-x/XMutation';
@@ -131,8 +131,8 @@ const Accept = withChannelInvite((props) => {
     );
 }) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
-class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment, channelId: string }, { isHovered: boolean }> {
-    constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShortFragment, channelId: string }) {
+class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }, { isHovered: boolean }> {
+    constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }) {
         super(props);
         this.state = {
             isHovered: false,
@@ -224,7 +224,7 @@ const RemoveMemberModal = withConversationKick((props) => {
 }) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string }>;
 
 interface ChannelMembersComponentInnerProps {
-    data: ChannelMembersQuery;
+    data: ChannelMembers;
     channelTitle: string;
     channelId: string;
     description?: string;

@@ -3,4 +3,4 @@ import * as Permissions from './queries/Permissions';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const SuperAdminsQuery = typedQuery<Types.SuperAdminsQuery, {}>(Permissions.SuperAdminsQuery);
+export const SuperAdminsQuery = typedQuery<Types.SuperAdmins, {}>(Permissions.SuperAdminsQuery);

@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const ChannelInviteLinkQuery = typedQuery<Types.ChannelInviteLinkQuery, Types.ChannelInviteLinkQueryVariables>(Chats.ChannelInviteLinkQuery);
+export const ChannelInviteLinkQuery = typedQuery<Types.ChannelInviteLink, Types.ChannelInviteLinkVariables>(Chats.ChannelInviteLinkQuery);

@@ -5,14 +5,14 @@ import { PageProps } from '../../components/PageProps';
 import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { OrganizationSearchFragment } from 'openland-api/Types';
+import { OrganizationSearch } from 'openland-api/Types';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
-export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearchFragment, router: SRouter }> {
+export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {
     render() {
         return (
             <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('ProfileOrganization', { id: this.props.item.id })}>

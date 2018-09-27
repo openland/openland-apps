@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
+import { MessageFull, UserShort } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -20,8 +20,8 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 
 interface MessageComponentProps {
     compact: boolean;
-    sender?: UserShortFragment;
-    message: MessageFullFragment | PendingMessage;
+    sender?: UserShort;
+    message: MessageFull | PendingMessage;
     conversation: ConversationEngine;
     out: boolean;
 }

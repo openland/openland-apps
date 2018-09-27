@@ -3,4 +3,4 @@ import * as Account from './queries/Account';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const AccountInviteJoinMutation = typedMutation<Types.AccountInviteJoinMutation, Types.AccountInviteJoinMutationVariables>(Account.AccountInviteJoinMutation);
+export const AccountInviteJoinMutation = typedMutation<Types.AccountInviteJoin, Types.AccountInviteJoinVariables>(Account.AccountInviteJoinMutation);

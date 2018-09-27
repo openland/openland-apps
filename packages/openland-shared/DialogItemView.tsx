@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet, TextStyle } from 'react-native';
-import { ConversationShortFragment } from 'openland-api/Types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { XPListItem } from 'openland-xp/XPListItem';

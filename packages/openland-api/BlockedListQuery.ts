@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const BlockedListQuery = typedQuery<Types.BlockedListQuery, Types.BlockedListQueryVariables>(Chats.BlockedListQuery);
+export const BlockedListQuery = typedQuery<Types.BlockedList, Types.BlockedListVariables>(Chats.BlockedListQuery);

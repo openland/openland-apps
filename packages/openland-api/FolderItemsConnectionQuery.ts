@@ -3,4 +3,4 @@ import * as Folder from './queries/Folder';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const FolderItemsConnectionQuery = typedQuery<Types.FolderItemsConnectionQuery, Types.FolderItemsConnectionQueryVariables>(Folder.FolderItemsConnectionQuery);
+export const FolderItemsConnectionQuery = typedQuery<Types.FolderItemsConnection, Types.FolderItemsConnectionVariables>(Folder.FolderItemsConnectionQuery);

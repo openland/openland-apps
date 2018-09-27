@@ -3,4 +3,4 @@ import * as Account from './queries/Account';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.CreateUserProfileAndOrganizationMutation, Types.CreateUserProfileAndOrganizationMutationVariables>(Account.CreateUserProfileAndOrganizationMutation);
+export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.CreateUserProfileAndOrganization, Types.CreateUserProfileAndOrganizationVariables>(Account.CreateUserProfileAndOrganizationMutation);

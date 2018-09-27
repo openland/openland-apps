@@ -3,4 +3,4 @@ import * as Sourcing from './queries/Sourcing';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const OpportunityTileOverlayQuery = typedQuery<Types.OpportunityTileOverlayQuery, Types.OpportunityTileOverlayQueryVariables>(Sourcing.OpportunityTileOverlayQuery);
+export const OpportunityTileOverlayQuery = typedQuery<Types.OpportunityTileOverlay, Types.OpportunityTileOverlayVariables>(Sourcing.OpportunityTileOverlayQuery);

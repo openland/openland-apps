@@ -3,4 +3,4 @@ import * as Deals from './queries/Deals';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const RemoveDealMutation = typedMutation<Types.RemoveDealMutation, Types.RemoveDealMutationVariables>(Deals.RemoveDealMutation);
+export const RemoveDealMutation = typedMutation<Types.RemoveDeal, Types.RemoveDealVariables>(Deals.RemoveDealMutation);

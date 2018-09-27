@@ -81,7 +81,7 @@ export const ExportModal = withSourcingAll(withRouter((props) => {
             <XButton style="primary" onClick={exportCVS} text={'Download' + props.data.variables + '.csv'} />
         </>
     );
-})) as React.ComponentType<{ variables?: Types.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
+})) as React.ComponentType<{ variables?: Types.SourcingAllVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
 
 // function buildQuery(clauses: any[]): any | null {
 //     if (clauses.length === 0) {
@@ -291,4 +291,4 @@ export const OpportunitiesTable = withSourcing(withRouter((props) => {
             )}
         </XVertical>
     );
-})) as React.ComponentType<{ variables?: Types.SourcingQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;
+})) as React.ComponentType<{ variables?: Types.SourcingVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed' }>;

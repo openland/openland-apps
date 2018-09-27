@@ -3,4 +3,4 @@ import * as Addressing from './queries/Addressing';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const StateQuery = typedQuery<Types.StateQuery, {}>(Addressing.StateQuery);
+export const StateQuery = typedQuery<Types.State, {}>(Addressing.StateQuery);

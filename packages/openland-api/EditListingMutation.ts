@@ -3,4 +3,4 @@ import * as Organization from './queries/Organization';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const EditListingMutation = typedMutation<Types.EditListingMutation, Types.EditListingMutationVariables>(Organization.EditListingMutation);
+export const EditListingMutation = typedMutation<Types.EditListing, Types.EditListingVariables>(Organization.EditListingMutation);

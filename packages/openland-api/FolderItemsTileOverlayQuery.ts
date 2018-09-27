@@ -3,4 +3,4 @@ import * as Folder from './queries/Folder';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const FolderItemsTileOverlayQuery = typedQuery<Types.FolderItemsTileOverlayQuery, Types.FolderItemsTileOverlayQueryVariables>(Folder.FolderItemsTileOverlayQuery);
+export const FolderItemsTileOverlayQuery = typedQuery<Types.FolderItemsTileOverlay, Types.FolderItemsTileOverlayVariables>(Folder.FolderItemsTileOverlayQuery);

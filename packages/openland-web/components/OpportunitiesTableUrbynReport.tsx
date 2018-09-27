@@ -374,4 +374,4 @@ export const OpportunitiesTable = withSourcingAll(withRouter((props) => {
             )}
         </>
     );
-})) as React.ComponentType<{ variables?: Types.SourcingAllQueryVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;
+})) as React.ComponentType<{ variables?: Types.SourcingAllVariables, stage?: 'unit' | 'zoning' | 'approved' | 'rejected' | 'snoozed', type?: string, title?: string }>;

@@ -3,4 +3,4 @@ import * as Deals from './queries/Deals';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const AddDealMutation = typedMutation<Types.AddDealMutation, Types.AddDealMutationVariables>(Deals.AddDealMutation);
+export const AddDealMutation = typedMutation<Types.AddDeal, Types.AddDealVariables>(Deals.AddDealMutation);

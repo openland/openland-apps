@@ -3,4 +3,4 @@ import * as Sourcing from './queries/Sourcing';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const RejectOpportunityMutation = typedMutation<Types.RejectOpportunityMutation, Types.RejectOpportunityMutationVariables>(Sourcing.RejectOpportunityMutation);
+export const RejectOpportunityMutation = typedMutation<Types.RejectOpportunity, Types.RejectOpportunityVariables>(Sourcing.RejectOpportunityMutation);

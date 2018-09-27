@@ -3,4 +3,4 @@ import * as Folder from './queries/Folder';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const SetParcelFolderMutation = typedMutation<Types.SetParcelFolderMutation, Types.SetParcelFolderMutationVariables>(Folder.SetParcelFolderMutation);
+export const SetParcelFolderMutation = typedMutation<Types.SetParcelFolder, Types.SetParcelFolderVariables>(Folder.SetParcelFolderMutation);

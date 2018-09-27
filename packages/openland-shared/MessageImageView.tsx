@@ -3,7 +3,7 @@ import { XPBubbleView } from 'openland-xp/XPBubbleView';
 import { View, Platform, Dimensions, LayoutChangeEvent, TouchableWithoutFeedback, Text, Image } from 'react-native';
 import { layoutMedia } from './utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
-import { MessageFullFragment } from 'openland-api/Types';
+import { MessageFull } from 'openland-api/Types';
 import { formatTime } from './utils/formatTime';
 import { DownloadManagerInterface, DownloadState } from './DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
@@ -18,8 +18,8 @@ export interface MessageImageViewProps {
     height: number;
     isGif: boolean;
     isOut: boolean;
-    message: MessageFullFragment;
-    onPress?: (message: MessageFullFragment, view?: View) => void;
+    message: MessageFull;
+    onPress?: (message: MessageFull, view?: View) => void;
 }
 
 export class MessageImageView extends React.PureComponent<MessageImageViewProps, { downloadState?: DownloadState }> {

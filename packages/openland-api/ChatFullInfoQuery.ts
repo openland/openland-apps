@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const ChatFullInfoQuery = typedQuery<Types.ChatFullInfoQuery, Types.ChatFullInfoQueryVariables>(Chats.ChatFullInfoQuery);
+export const ChatFullInfoQuery = typedQuery<Types.ChatFullInfo, Types.ChatFullInfoVariables>(Chats.ChatFullInfoQuery);

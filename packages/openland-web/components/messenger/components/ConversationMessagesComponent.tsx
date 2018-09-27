@@ -9,7 +9,7 @@ import { ConversationState } from 'openland-engines/messenger/ConversationState'
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { TypignsComponent, TypingContext } from './TypingsComponent';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 
 const TypingWrapper = Glamorous.div({
     display: 'flex',
@@ -101,7 +101,7 @@ interface ConversationMessagesComponentProps {
     conversationId: string;
     conversationType?: string;
     inputShower?: (show: boolean) => void;
-    me?: UserShortFragment | null;
+    me?: UserShort | null;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {

@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const ChannelJoinInviteLinkMutation = typedMutation<Types.ChannelJoinInviteLinkMutation, Types.ChannelJoinInviteLinkMutationVariables>(Chats.ChannelJoinInviteLinkMutation);
+export const ChannelJoinInviteLinkMutation = typedMutation<Types.ChannelJoinInviteLink, Types.ChannelJoinInviteLinkVariables>(Chats.ChannelJoinInviteLinkMutation);

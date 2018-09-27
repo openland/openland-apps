@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ModelMessage, isServerMessage, isPendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { MessageFullFragment } from 'openland-api/Types';
+import { MessageFull } from 'openland-api/Types';
 import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
 import { MessageTextView } from './MessageTextView';
 import { MessageImageView } from './MessageImageView';
@@ -36,8 +36,8 @@ export interface MessageViewSingleProps {
     engine: ConversationEngine;
     downloadManager?: DownloadManagerInterface;
     onAvatarPress?: (userId: string) => void;
-    onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
-    onDocumentPress?: (message: MessageFullFragment) => void;
+    onPhotoPress?: (message: MessageFull, view?: View) => void;
+    onDocumentPress?: (message: MessageFull) => void;
     message: ModelMessage;
     attach?: 'top' | 'bottom' | 'both';
 }
@@ -51,7 +51,7 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
         }
     }
 
-    hanlePhotoPress = (message: MessageFullFragment, view?: View) => {
+    hanlePhotoPress = (message: MessageFull, view?: View) => {
         if (this.props.onPhotoPress) {
             this.props.onPhotoPress(message, view);
         }

@@ -3,4 +3,4 @@ import * as Development from './queries/Development';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const PersonalTokensQuery = typedQuery<Types.PersonalTokensQuery, {}>(Development.PersonalTokensQuery);
+export const PersonalTokensQuery = typedQuery<Types.PersonalTokens, {}>(Development.PersonalTokensQuery);

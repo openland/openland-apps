@@ -7,7 +7,7 @@ import { MessageInputBar } from '../components/MessageInputBar';
 import { ZQuery } from '../../../components/ZQuery';
 import { ChatSearchForComposeMobileQuery } from 'openland-api/ChatSearchForComposeMobileQuery';
 import { ZUserListItem } from '../components/ZUserListItem';
-import { UserShortFragment, MessageFullFragment } from 'openland-api/Types';
+import { UserShort, MessageFull } from 'openland-api/Types';
 import { ZTagView } from '../../../components/ZTagView';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ZLoader } from '../../../components/ZLoader';
@@ -21,7 +21,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 interface ComposeModalState {
     message: string;
     query: string;
-    users: UserShortFragment[];
+    users: UserShort[];
     searchHeight: number;
     conversationId?: string;
     resolving: boolean;
@@ -85,7 +85,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
         this.setState({ message });
     }
 
-    handleAddUser = (user: UserShortFragment) => {
+    handleAddUser = (user: UserShort) => {
         if (!this.state.users.find((v) => v.id === user.id)) {
             let ids = [...this.state.users, user].map((v) => v.id);
             this.setState({ users: [...this.state.users, user], resolving: ids.length > 0, conversationId: undefined });
@@ -122,11 +122,11 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
         // this.props.navigator.navigate('ProfileUser', { 'id': userId });
     }
 
-    handlePhotoPress = (message: MessageFullFragment) => {
+    handlePhotoPress = (message: MessageFull) => {
         // this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
     }
 
-    handleDocumentPress = (message: MessageFullFragment) => {
+    handleDocumentPress = (message: MessageFull) => {
         // this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
     }
 
@@ -142,7 +142,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                                 <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                                     {r => (
                                         <ScrollView keyboardShouldPersistTaps={true} style={{ flexGrow: 1, flexBasis: 0 }} keyboardDismissMode="on-drag">
-                                            {r.data.items.map((v) => (<ZUserListItem key={v.id} id={v.id} name={v.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v as UserShortFragment)} />))}
+                                            {r.data.items.map((v) => (<ZUserListItem key={v.id} id={v.id} name={v.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v as UserShort)} />))}
                                         </ScrollView>
                                     )}
                                 </ZQuery>

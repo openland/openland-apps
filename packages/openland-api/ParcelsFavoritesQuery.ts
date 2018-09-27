@@ -3,4 +3,4 @@ import * as Parcels from './queries/Parcels';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const ParcelsFavoritesQuery = typedQuery<Types.ParcelsFavoritesQuery, {}>(Parcels.ParcelsFavoritesQuery);
+export const ParcelsFavoritesQuery = typedQuery<Types.ParcelsFavorites, {}>(Parcels.ParcelsFavoritesQuery);

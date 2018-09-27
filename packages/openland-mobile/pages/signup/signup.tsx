@@ -1,4 +1,4 @@
-import { SessionStateFullFragment } from 'openland-api/Types';
+import { SessionStateFull } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
@@ -6,7 +6,7 @@ import { AccountQuery } from 'openland-api';
 export class SignupModel {
     page = 'init';
     onComplete: () => void;
-    constructor(session: SessionStateFullFragment, onComplete: () => void) {
+    constructor(session: SessionStateFull, onComplete: () => void) {
         this.page = this.resolveNextPage(session);
         this.onComplete = onComplete;
     }
@@ -25,7 +25,7 @@ export class SignupModel {
         return this.page;
     }
 
-    private resolveNextPage: (session: SessionStateFullFragment) => string = (session: SessionStateFullFragment) => {
+    private resolveNextPage: (session: SessionStateFull) => string = (session: SessionStateFull) => {
         if (!session.isProfileCreated) {
             return 'SignupUser';
         } else if (!session.isAccountExists) {
@@ -50,7 +50,7 @@ export class SignupModel {
 
 let cachedSignupModel: SignupModel | null = null;
 
-export function initSignupModel(session: SessionStateFullFragment, onComplete: () => void) {
+export function initSignupModel(session: SessionStateFull, onComplete: () => void) {
     cachedSignupModel = new SignupModel(session, onComplete);
 
     return cachedSignupModel!!;

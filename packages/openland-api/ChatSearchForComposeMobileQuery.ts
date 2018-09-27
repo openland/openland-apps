@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const ChatSearchForComposeMobileQuery = typedQuery<Types.ChatSearchForComposeMobileQuery, Types.ChatSearchForComposeMobileQueryVariables>(Chats.ChatSearchForComposeMobileQuery);
+export const ChatSearchForComposeMobileQuery = typedQuery<Types.ChatSearchForComposeMobile, Types.ChatSearchForComposeMobileVariables>(Chats.ChatSearchForComposeMobileQuery);

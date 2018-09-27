@@ -5,7 +5,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { XArea } from 'openland-x-format/XArea';
 import { XTable } from 'openland-x/XTable';
 
-export const TableParcels = withRouter<{ items: Types.ParcelShortFragment[], showCity?: boolean }>((props) => {
+export const TableParcels = withRouter<{ items: Types.ParcelShort[], showCity?: boolean }>((props) => {
     return (
         <XTable>
             <XTable.Header>

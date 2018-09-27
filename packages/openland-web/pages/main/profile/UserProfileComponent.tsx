@@ -3,7 +3,7 @@ import '../../../globals';
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withUser } from '../../../api/withUserSimple';
-import { UserQuery } from 'openland-api/Types';
+import { User } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -87,7 +87,7 @@ const OrgName = makeNavigable(Glamorous(XHorizontal)({
     cursor: 'pointer'
 }) as any) as any;
 
-const Header = (props: { userQuery: UserQuery }) => {
+const Header = (props: { userQuery: User }) => {
     let usr = props.userQuery.user;
 
     console.log(usr);
@@ -176,7 +176,7 @@ const SocialIconWrapper = Glamorous.div({
     display: 'flex'
 });
 
-const About = (props: { userQuery: UserQuery }) => {
+const About = (props: { userQuery: User }) => {
     let usr = props.userQuery.user;
     let hasLinks = (usr.linkedin || usr.website || usr.phone);
     // let hasLocations = usr.location;
@@ -315,7 +315,7 @@ class ChannelCard extends React.Component<ChannelCardProps> {
 }
 
 interface UserProfileInnerProps extends XWithRouter {
-    userQuery: UserQuery;
+    userQuery: User;
     onBack: () => void;
 }
 

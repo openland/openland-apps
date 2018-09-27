@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TextStyle, TouchableWithoutFeedback } fr
 import { formatBytes } from './utils/formatBytes';
 import { XPBubbleView } from 'openland-xp/XPBubbleView';
 import { formatTime } from './utils/formatTime';
-import { MessageFullFragment } from 'openland-api/Types';
+import { MessageFull } from 'openland-api/Types';
 
 let styles = StyleSheet.create({
     date: {
@@ -20,14 +20,14 @@ let styles = StyleSheet.create({
 });
 export interface MessageDocumentViewProps {
     date: string;
-    message: MessageFullFragment;
+    message: MessageFull;
     isSending: boolean;
     file: string;
     fileName?: string;
     size?: number;
     isOut: boolean;
     attach?: 'bottom' | 'top' | 'both';
-    onPress?: (message: MessageFullFragment) => void;
+    onPress?: (message: MessageFull) => void;
 }
 
 export class MessageDocumentView extends React.PureComponent<MessageDocumentViewProps> {

@@ -3,4 +3,4 @@ import * as SuperCity from './queries/SuperCity';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const SuperCitiesQuery = typedQuery<Types.SuperCitiesQuery, {}>(SuperCity.SuperCitiesQuery);
+export const SuperCitiesQuery = typedQuery<Types.SuperCities, {}>(SuperCity.SuperCitiesQuery);

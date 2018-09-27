@@ -3,4 +3,4 @@ import * as Permissions from './queries/Permissions';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const SuperMessagesSentStatsQuery = typedQuery<Types.SuperMessagesSentStatsQuery, Types.SuperMessagesSentStatsQueryVariables>(Permissions.SuperMessagesSentStatsQuery);
+export const SuperMessagesSentStatsQuery = typedQuery<Types.SuperMessagesSentStats, Types.SuperMessagesSentStatsVariables>(Permissions.SuperMessagesSentStatsQuery);

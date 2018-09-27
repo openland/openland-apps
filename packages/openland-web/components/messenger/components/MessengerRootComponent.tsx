@@ -13,7 +13,7 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
 import { withUserInfo } from '../../UserInfo';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -26,7 +26,7 @@ interface MessagesComponentProps {
     loading: boolean;
     messenger: MessengerEngine;
     conversationType?: string;
-    me: UserShortFragment | null;
+    me: UserShort | null;
 }
 
 interface MessagesComponentState {

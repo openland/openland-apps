@@ -3,4 +3,4 @@ import * as Deals from './queries/Deals';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const DealQuery = typedQuery<Types.DealQuery, Types.DealQueryVariables>(Deals.DealQuery);
+export const DealQuery = typedQuery<Types.Deal, Types.DealVariables>(Deals.DealQuery);

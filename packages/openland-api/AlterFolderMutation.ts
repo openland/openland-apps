@@ -3,4 +3,4 @@ import * as Folder from './queries/Folder';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const AlterFolderMutation = typedMutation<Types.AlterFolderMutation, Types.AlterFolderMutationVariables>(Folder.AlterFolderMutation);
+export const AlterFolderMutation = typedMutation<Types.AlterFolder, Types.AlterFolderVariables>(Folder.AlterFolderMutation);

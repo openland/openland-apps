@@ -14,7 +14,7 @@ import { XNumber } from 'openland-x-format/XNumber';
 import { XProperty, XPropertyList, XPropertyColumns } from 'openland-x/XProperty';
 import { XTooltipHint } from 'openland-x/XTooltipHint';
 
-export function ParcelProperties(props: { item: Types.ParcelFullFragment }) {
+export function ParcelProperties(props: { item: Types.ParcelFull }) {
     return (
         <>
             <XPropertyColumns>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { Text, Linking, TextStyle, StyleSheet, Platform, View, Image, ViewStyle } from 'react-native';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
@@ -52,7 +52,7 @@ let styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class MessageTextView extends React.PureComponent<{ date: string, text: string, sender?: UserShortFragment, isOut: boolean, attach?: 'bottom' | 'top' | 'both', isSending: boolean }> {
+export class MessageTextView extends React.PureComponent<{ date: string, text: string, sender?: UserShort, isOut: boolean, attach?: 'bottom' | 'top' | 'both', isSending: boolean }> {
 
     paddedText = ' ' + '\u00A0'.repeat(13);
     paddedTextOut = ' ' + '\u00A0'.repeat(16);

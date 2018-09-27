@@ -3,4 +3,4 @@ import * as Addressing from './queries/Addressing';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const CountyQuery = typedQuery<Types.CountyQuery, Types.CountyQueryVariables>(Addressing.CountyQuery);
+export const CountyQuery = typedQuery<Types.County, Types.CountyVariables>(Addressing.CountyQuery);

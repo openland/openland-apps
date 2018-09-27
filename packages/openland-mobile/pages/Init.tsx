@@ -15,11 +15,11 @@ import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMess
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
-import { SessionStateFullFragment } from 'openland-api/Types';
+import { SessionStateFull } from 'openland-api/Types';
 import { SignupRoutes, EmailRoutes } from './signup/routes';
 import { initSignupModel, getSignupModel } from './signup/signup';
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFullFragment }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
     private ref = React.createRef<ZPictureModal>();
 

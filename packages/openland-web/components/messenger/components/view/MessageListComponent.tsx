@@ -6,7 +6,7 @@ import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
-import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
+import { MessageFull, UserShort } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 
 let months = [
@@ -85,7 +85,7 @@ interface MessageListProps {
     loadBefore: (id: string) => void;
     conversationType?: string;
     inputShower?: (show: boolean) => void;
-    me?: UserShortFragment | null;
+    me?: UserShort | null;
 }
 
 const getScrollView = () => {
@@ -222,7 +222,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         lastMessageId = '';
 
         if (!this.props.conversation.historyFullyLoaded && lastMessage) {
-            let id = (lastMessage as MessageFullFragment).id;
+            let id = (lastMessage as MessageFull).id;
             lastMessageId = id;
             messages.unshift(<XButton alignSelf="center" style="flat" key={'load_more_' + id} text="Load more" loading={true} />);
         }

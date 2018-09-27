@@ -3,4 +3,4 @@ import * as FeatureFlag from './queries/FeatureFlag';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const FeatureFlagsQuery = typedQuery<Types.FeatureFlagsQuery, {}>(FeatureFlag.FeatureFlagsQuery);
+export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);

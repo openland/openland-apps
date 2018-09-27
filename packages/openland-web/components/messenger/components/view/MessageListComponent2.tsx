@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { MessageComponent } from './MessageComponent';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
-import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
+import { MessageFull, UserShort } from 'openland-api/Types';
 import {
     AutoSizer,
     InfiniteLoader,
@@ -114,7 +114,7 @@ interface MessageListProps {
     loadBefore: (id: string) => void;
     conversationType?: string;
     inputShower?: (show: boolean) => void;
-    me?: UserShortFragment | null;
+    me?: UserShort | null;
 }
 
 interface MessageListState {
@@ -251,7 +251,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
         let lastId = '';
 
         if (!props.conversation.historyFullyLoaded && lastMessage) {
-            lastId = (lastMessage as MessageFullFragment).id;
+            lastId = (lastMessage as MessageFull).id;
         }
 
         if (this.state.stopLoading) {

@@ -10,7 +10,7 @@ import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x-format/XDate';
-import { ChatListQuery } from 'openland-api/Types';
+import { ChatList } from 'openland-api/Types';
 import { XInput } from 'openland-x/XInput';
 import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
@@ -408,7 +408,7 @@ const ExploreChannels = Glamorous(XMenuItem)({
 });
 
 interface ChatsComponentInnerProps extends XWithRouter {
-    data: ChatListQuery;
+    data: ChatList;
     emptyState: boolean;
 }
 

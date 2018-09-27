@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const DocumentFetchPreviewLinkQuery = typedQuery<Types.DocumentFetchPreviewLinkQuery, Types.DocumentFetchPreviewLinkQueryVariables>(Chats.DocumentFetchPreviewLinkQuery);
+export const DocumentFetchPreviewLinkQuery = typedQuery<Types.DocumentFetchPreviewLink, Types.DocumentFetchPreviewLinkVariables>(Chats.DocumentFetchPreviewLinkQuery);

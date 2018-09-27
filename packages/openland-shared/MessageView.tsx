@@ -3,7 +3,7 @@ import { MessageGroup } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { extractKey } from 'openland-engines/messenger/types';
 import { View, ViewStyle, StyleSheet } from 'react-native';
-import { MessageFullFragment } from 'openland-api/Types';
+import { MessageFull } from 'openland-api/Types';
 import { MessageViewSingle } from './MessageViewSingle';
 import { DownloadManagerInterface } from './DownloadManagerInterface';
 
@@ -15,7 +15,7 @@ let styles = StyleSheet.create({
 
 export interface MessageViewProps {
     onAvatarPress?: (userId: string) => void;
-    onPhotoPress?: (message: MessageFullFragment, view?: View) => void;
+    onPhotoPress?: (message: MessageFull, view?: View) => void;
     downloadManager?: DownloadManagerInterface;
     message: MessageGroup;
     engine: ConversationEngine;

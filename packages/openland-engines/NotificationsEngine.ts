@@ -1,6 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
 import { SettingsQuery } from 'openland-api';
-import { SettingsQuery as SettingsQueryType } from 'openland-api/Types';
+import { Settings as SettingsQueryType } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';

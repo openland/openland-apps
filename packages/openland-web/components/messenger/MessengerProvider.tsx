@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
@@ -9,7 +9,7 @@ import { Observable } from '../../../../node_modules/subscriptions-transport-ws'
 
 let cachedMessenger: MessengerEngine | null = null;
 
-const Messenger = (props: { currentUser: UserShortFragment, children?: any }) => {
+const Messenger = (props: { currentUser: UserShort, children?: any }) => {
     if (canUseDOM) {
         return (
             <YApolloContext.Consumer>
@@ -37,7 +37,7 @@ const Messenger = (props: { currentUser: UserShortFragment, children?: any }) =>
     }
 };
 
-export class MessengerProvider extends React.PureComponent<{ user?: UserShortFragment }> {
+export class MessengerProvider extends React.PureComponent<{ user?: UserShort }> {
     render() {
         if (this.props.user) {
             return <Messenger currentUser={this.props.user}>{this.props.children}</Messenger>;

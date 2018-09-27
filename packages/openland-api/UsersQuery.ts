@@ -3,4 +3,4 @@ import * as User from './queries/User';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const UsersQuery = typedQuery<Types.UsersQuery, Types.UsersQueryVariables>(User.UsersQuery);
+export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);

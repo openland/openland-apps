@@ -5,7 +5,7 @@ import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFullFragment, UserShortFragment } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -602,7 +602,7 @@ export class ConversationEngine implements MessageSendHandler {
         //
         // Start a new sender group
         //
-        let prepareSenderIfNeeded = (sender: UserShortFragment, message: ModelMessage, date: number) => {
+        let prepareSenderIfNeeded = (sender: UserShortFragnemt, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
             if (prevMessageSender === sender.id && prevMessageDate !== undefined) {
                 // 10 sec

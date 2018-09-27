@@ -1,4 +1,4 @@
-import { MessageFullFragment } from 'openland-api/Types';
+import { MessageFull } from 'openland-api/Types';
 
 export interface PendingMessage {
     date: string;
@@ -9,13 +9,13 @@ export interface PendingMessage {
     failed?: boolean;
 }
 
-export type ModelMessage = PendingMessage | MessageFullFragment;
+export type ModelMessage = PendingMessage | MessageFull;
 
 export function isPendingMessage(src: ModelMessage): src is PendingMessage {
     return !(src as any).__typename;
 }
 
-export function isServerMessage(message: MessageFullFragment | PendingMessage): message is MessageFullFragment {
+export function isServerMessage(message: MessageFull | PendingMessage): message is MessageFull {
     return !!(message as any).__typename;
 }
 

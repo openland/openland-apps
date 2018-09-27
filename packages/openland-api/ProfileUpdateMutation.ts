@@ -3,4 +3,4 @@ import * as Settings from './queries/Settings';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdateMutation, Types.ProfileUpdateMutationVariables>(Settings.ProfileUpdateMutation);
+export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdate, Types.ProfileUpdateVariables>(Settings.ProfileUpdateMutation);

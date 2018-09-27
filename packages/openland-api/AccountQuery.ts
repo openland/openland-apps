@@ -3,4 +3,4 @@ import * as Account from './queries/Account';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const AccountQuery = typedQuery<Types.AccountQuery, {}>(Account.AccountQuery);
+export const AccountQuery = typedQuery<Types.Account, {}>(Account.AccountQuery);

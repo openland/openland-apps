@@ -6,9 +6,9 @@ import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { trackProfile } from 'openland-x-analytics';
 
 export class UserInfoProvider extends React.Component<{
-    user?: Types.UserShortFragment | null,
-    organization?: Types.OrganizationShortFragment | null,
-    sessionState: Types.SessionStateFullFragment,
+    user?: Types.UserShort | null,
+    organization?: Types.OrganizationShort | null,
+    sessionState: Types.SessionStateFull,
     roles: string[]
 } & XWithRouter> implements React.ChildContextProvider<{}> {
     static childContextTypes = {
@@ -53,8 +53,8 @@ export class UserInfoProvider extends React.Component<{
 }
 
 export interface UserInfoComponentProps {
-    user: Types.UserShortFragment | null;
-    organization: Types.OrganizationShortFragment | null;
+    user: Types.UserShort | null;
+    organization: Types.OrganizationShort | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
     isAccountPicked: boolean;
@@ -80,8 +80,8 @@ class UserInfoReceiver extends React.Component<{ render: React.ComponentType<Use
     };
 
     render() {
-        var user = this.context.user as Types.UserShortFragment | null;
-        var organization = this.context.organization as Types.OrganizationShortFragment | null;
+        var user = this.context.user as Types.UserShort | null;
+        var organization = this.context.organization as Types.OrganizationShort | null;
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
         var isProfileCreated = this.context.isProfileCreated as boolean;

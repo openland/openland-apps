@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
@@ -16,7 +16,7 @@ export class MessengerEngine {
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly global: GlobalStateEngine;
-    readonly user: UserShortFragment;
+    readonly user: UserShort;
     readonly notifications: NotificationsEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
@@ -29,7 +29,7 @@ export class MessengerEngine {
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(client: OpenApolloClient, user: UserShortFragment) {
+    constructor(client: OpenApolloClient, user: UserShort) {
         // Onlines
         this.onlineWatcher = new OnlineWatcher(client);
 

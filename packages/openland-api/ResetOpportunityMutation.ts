@@ -3,4 +3,4 @@ import * as Sourcing from './queries/Sourcing';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const ResetOpportunityMutation = typedMutation<Types.ResetOpportunityMutation, Types.ResetOpportunityMutationVariables>(Sourcing.ResetOpportunityMutation);
+export const ResetOpportunityMutation = typedMutation<Types.ResetOpportunity, Types.ResetOpportunityVariables>(Sourcing.ResetOpportunityMutation);

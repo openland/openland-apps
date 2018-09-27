@@ -3,4 +3,4 @@ import * as Permits from './queries/Permits';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const PermitsConnectionQuery = typedQuery<Types.PermitsConnectionQuery, Types.PermitsConnectionQueryVariables>(Permits.PermitsConnectionQuery);
+export const PermitsConnectionQuery = typedQuery<Types.PermitsConnection, Types.PermitsConnectionVariables>(Permits.PermitsConnectionQuery);

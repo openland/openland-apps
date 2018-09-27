@@ -3,4 +3,4 @@ import * as Settings from './queries/Settings';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const ProfileQuery = typedQuery<Types.ProfileQuery, {}>(Settings.ProfileQuery);
+export const ProfileQuery = typedQuery<Types.Profile, {}>(Settings.ProfileQuery);

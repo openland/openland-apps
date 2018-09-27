@@ -3,4 +3,4 @@ import * as Folder from './queries/Folder';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const FoldersQuery = typedQuery<Types.FoldersQuery, {}>(Folder.FoldersQuery);
+export const FoldersQuery = typedQuery<Types.Folders, {}>(Folder.FoldersQuery);

@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { ConversationShortFragment } from 'openland-api/Types';
+import { ConversationShort } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { ChatListQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
@@ -43,7 +43,7 @@ export function formatMessage(message: any): string {
 export class DialogListEngine {
 
     readonly engine: MessengerEngine;
-    private conversations: ConversationShortFragment[] = [];
+    private conversations: ConversationShort[] = [];
     readonly dataSource: DataSource<DialogDataSourceItem>;
     // private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
     private next?: string;
@@ -168,7 +168,7 @@ export class DialogListEngine {
             });
 
             // Write to storage
-            this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShortFragment) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
+            this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShort) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
             this.next = initialDialogs.data.chats.next;
             this.engine.client.client.writeQuery({
                 query: ChatListQuery.document,

@@ -3,4 +3,4 @@ import * as Parcels from './queries/Parcels';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const BlocksTileOverlayQuery = typedQuery<Types.BlocksTileOverlayQuery, Types.BlocksTileOverlayQueryVariables>(Parcels.BlocksTileOverlayQuery);
+export const BlocksTileOverlayQuery = typedQuery<Types.BlocksTileOverlay, Types.BlocksTileOverlayVariables>(Parcels.BlocksTileOverlayQuery);

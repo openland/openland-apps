@@ -3,4 +3,4 @@ import * as Sourcing from './queries/Sourcing';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const SourcingQuery = typedQuery<Types.SourcingQuery, Types.SourcingQueryVariables>(Sourcing.SourcingQuery);
+export const SourcingQuery = typedQuery<Types.Sourcing, Types.SourcingVariables>(Sourcing.SourcingQuery);

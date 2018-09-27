@@ -3,4 +3,4 @@ import * as Permissions from './queries/Permissions';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const SuperAdminRemoveMutation = typedMutation<Types.SuperAdminRemoveMutation, Types.SuperAdminRemoveMutationVariables>(Permissions.SuperAdminRemoveMutation);
+export const SuperAdminRemoveMutation = typedMutation<Types.SuperAdminRemove, Types.SuperAdminRemoveVariables>(Permissions.SuperAdminRemoveMutation);

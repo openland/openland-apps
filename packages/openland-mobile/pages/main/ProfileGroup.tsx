@@ -15,12 +15,12 @@ import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 
-export const UserView = (props: { user: UserShortFragment, role?: string, onPress: () => void, onLongPress?: () => void }) => (
+export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
         <View paddingTop={12} paddingLeft={15} paddingRight={15}>
             <XPAvatar size={32} src={props.user.picture} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
@@ -99,7 +99,6 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                 style: 'cancel'
                                                             }]);
 
-
                                                         }
                                                     );
                                                 }}
@@ -113,7 +112,6 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     user={v.user}
                                                     role={v.role}
                                                     onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
-
 
                                                         let builder = new ActionSheetBuilder();
                                                         builder.action(

@@ -3,4 +3,4 @@ import * as Permissions from './queries/Permissions';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const SuperAccountRenameMutation = typedMutation<Types.SuperAccountRenameMutation, Types.SuperAccountRenameMutationVariables>(Permissions.SuperAccountRenameMutation);
+export const SuperAccountRenameMutation = typedMutation<Types.SuperAccountRename, Types.SuperAccountRenameVariables>(Permissions.SuperAccountRenameMutation);

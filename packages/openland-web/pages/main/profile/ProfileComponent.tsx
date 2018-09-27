@@ -4,7 +4,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { OrganizationQuery } from 'openland-api/Types';
+import { Organization } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -136,7 +136,7 @@ const HeaderTools = Glamorous.div({
     padding: 24
 });
 
-const Header = (props: { organizationQuery: OrganizationQuery }) => {
+const Header = (props: { organizationQuery: Organization }) => {
     let org = props.organizationQuery.organization;
 
     return (
@@ -275,7 +275,7 @@ const SocialIconWrapper = Glamorous.div({
 
 const LinkTag = makeNavigable(XTag);
 
-const About = (props: { organizationQuery: OrganizationQuery }) => {
+const About = (props: { organizationQuery: Organization }) => {
     let org = props.organizationQuery.organization;
     let hasLinks = (org.linkedin || org.twitter || org.website);
     let hasCategories = (org.organizationType || []).length > 0;
@@ -630,7 +630,7 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
     );
 }) as React.ComponentType<{ members: any[] }>;
 
-const Members = (props: { organizationQuery: OrganizationQuery }) => {
+const Members = (props: { organizationQuery: Organization }) => {
     let organization = props.organizationQuery.organization;
     return (
         <>
@@ -768,7 +768,7 @@ class ChannelCard extends React.Component<ChannelCardProps> {
 }
 
 interface OrganizationProfileInnerProps extends XWithRouter {
-    organizationQuery: OrganizationQuery;
+    organizationQuery: Organization;
     onBack: () => void;
 }
 

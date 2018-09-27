@@ -1,11 +1,11 @@
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { MobileMessenger } from '../messenger/MobileMessenger';
 
 let cachedMessenger: MobileMessenger | null = null;
 
-export function buildMessenger(client: OpenApolloClient, user: UserShortFragment) {
+export function buildMessenger(client: OpenApolloClient, user: UserShort) {
     return new MessengerEngine(client, user);
 }
 

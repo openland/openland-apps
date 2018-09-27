@@ -3,4 +3,4 @@ import * as Debug from './queries/Debug';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const DebugReadedStatesQuery = typedQuery<Types.DebugReadedStatesQuery, {}>(Debug.DebugReadedStatesQuery);
+export const DebugReadedStatesQuery = typedQuery<Types.DebugReadedStates, {}>(Debug.DebugReadedStatesQuery);

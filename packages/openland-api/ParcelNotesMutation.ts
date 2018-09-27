@@ -3,4 +3,4 @@ import * as Parcels from './queries/Parcels';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const ParcelNotesMutation = typedMutation<Types.ParcelNotesMutation, Types.ParcelNotesMutationVariables>(Parcels.ParcelNotesMutation);
+export const ParcelNotesMutation = typedMutation<Types.ParcelNotes, Types.ParcelNotesVariables>(Parcels.ParcelNotesMutation);

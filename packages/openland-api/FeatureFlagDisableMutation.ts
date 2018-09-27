@@ -3,4 +3,4 @@ import * as FeatureFlag from './queries/FeatureFlag';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisableMutation, Types.FeatureFlagDisableMutationVariables>(FeatureFlag.FeatureFlagDisableMutation);
+export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);

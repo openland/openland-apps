@@ -1,4 +1,4 @@
-import { UserShortFragment } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { ModelMessage } from './types';
 
 export interface Day {
@@ -11,7 +11,7 @@ export interface Day {
 
 export interface MessageGroup {
     key: string;
-    sender: UserShortFragment;
+    sender: UserShort;
     messages: ModelMessage[];
 }
 

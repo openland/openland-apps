@@ -3,4 +3,4 @@ import * as Debug from './queries/Debug';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const DebugSendWelcomeEmailMutation = typedMutation<Types.DebugSendWelcomeEmailMutation, {}>(Debug.DebugSendWelcomeEmailMutation);
+export const DebugSendWelcomeEmailMutation = typedMutation<Types.DebugSendWelcomeEmail, {}>(Debug.DebugSendWelcomeEmailMutation);

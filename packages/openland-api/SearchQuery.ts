@@ -3,4 +3,4 @@ import * as Search from './queries/Search';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const SearchQuery = typedQuery<Types.SearchQuery, Types.SearchQueryVariables>(Search.SearchQuery);
+export const SearchQuery = typedQuery<Types.Search, Types.SearchVariables>(Search.SearchQuery);
