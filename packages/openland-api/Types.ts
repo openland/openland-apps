@@ -9343,6 +9343,8 @@ export interface User_user {
   location: string | null;
   isBot: boolean;
   isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
   primaryOrganization: User_user_primaryOrganization | null;
   linkedin: string | null;
   channels: User_user_channels[];

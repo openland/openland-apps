@@ -236,6 +236,18 @@ const AvatarWrapper = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
     })
 ]);
 
+const DotPosition = {
+    'x-large': 10,
+    'large': 9,
+    's-large': 8,
+    'x-medium': 7,
+    's-medium': 6,
+    'medium': 4,
+    'default': 3,
+    'small': 2,
+    'x-small': 1
+};
+
 const OnlineDot = Glamorous.div<{format?: XAvatarSize}>(props => ({
     position: 'absolute',
     width: 9,
@@ -243,8 +255,8 @@ const OnlineDot = Glamorous.div<{format?: XAvatarSize}>(props => ({
     backgroundColor: '#69d06d',
     border: 'solid 1px #f9fafb',
     borderRadius: 50,
-    right: props.format === 'small' ? 2 : 3,
-    bottom: props.format === 'small' ? 2 : 3,
+    right: props.format ? DotPosition[props.format] : 3,
+    bottom: props.format ? DotPosition[props.format] : 3,
     cursor: 'default'
 }));
 

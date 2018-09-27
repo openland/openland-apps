@@ -514,6 +514,7 @@ interface MemberCardProps {
         lastName: string | null,
         picture: string | null,
         email: string | null,
+        online: boolean,
         primaryOrganization: {
             id: string,
             name: string,
@@ -541,7 +542,13 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                 path={'/directory/u/' + user.id}
             >
                 <MemberCardAvatar>
-                    <XAvatar cloudImageUuid={user.picture || undefined} userName={user.name} userId={user.id} style="colorus" />
+                    <XAvatar
+                        cloudImageUuid={user.picture || undefined}
+                        userName={user.name}
+                        userId={user.id}
+                        style="colorus"
+                        online={user.online}
+                    />
                 </MemberCardAvatar>
                 <XHorizontal alignItems="center" flexGrow={1}>
                     <XVertical flexGrow={1} separator={0.5} flexShrink={0}>

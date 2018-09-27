@@ -6,6 +6,7 @@ import { withUser } from '../../../api/withUserSimple';
 import { User } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { XDate } from 'openland-x-format/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
 import { XLink } from 'openland-x/XLink';
@@ -83,14 +84,20 @@ const HeaderTools = Glamorous.div({
     padding: 24
 });
 
+const LastSeenWrapper = Glamorous.div({
+    alignSelf: 'flex-end',
+    fontSize: 12,
+    fontWeight: 500,
+    color: 'rgb(153, 162, 176)',
+    letterSpacing: -0.2
+});
+
 const OrgName = makeNavigable(Glamorous(XHorizontal)({
     cursor: 'pointer'
 }) as any) as any;
 
 const Header = (props: { userQuery: User }) => {
     let usr = props.userQuery.user;
-
-    console.log(usr);
 
     return (
         <HeaderWrapper>
@@ -101,10 +108,14 @@ const Header = (props: { userQuery: User }) => {
                     style="colorus"
                     userName={usr.name}
                     userId={usr.id}
+                    online={usr.online}
                 />
             </HeaderAvatar>
             <HeaderInfo flexGrow={1} separator={3}>
-                <HeaderTitle>{usr.name}</HeaderTitle>
+                <XHorizontal separator={5}>
+                    <HeaderTitle>{usr.name}</HeaderTitle>
+                    {usr.lastSeen && <LastSeenWrapper>Last seen: <XDate value={usr.lastSeen} format="time" /></LastSeenWrapper>}
+                </XHorizontal>
                 {usr.primaryOrganization && (
                     <OrgName separator={2.5} alignItems="center" path={'/directory/o/' + usr.primaryOrganization.id}>
                         <XAvatar
@@ -335,6 +346,7 @@ const Channels = (props: { channels: any }) => {
 const UserProfileInner = (props: UserProfileInnerProps) => {
     let usr = props.userQuery.user;
 
+    console.log(usr);
     return (
         <>
             <Back callback={props.onBack} />

@@ -27,6 +27,8 @@ export const UserQuery = gql`
             location
             isBot
             isYou
+            online
+            lastSeen
             primaryOrganization: alphaPrimaryOrganization {
                 ...OrganizationShort
             }
