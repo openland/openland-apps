@@ -20,6 +20,7 @@ export interface Account_me {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: Account_me_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -81,6 +82,7 @@ export interface AccountSettings_me {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: AccountSettings_me_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -148,6 +150,7 @@ export interface AccountInviteInfo_invite_creator {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: AccountInviteInfo_invite_creator_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -414,6 +417,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_s
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatList_chats_conversations_AnonymousConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -500,6 +504,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_sende
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatList_chats_conversations_GroupConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -587,6 +592,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_sen
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatList_chats_conversations_ChannelConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -716,6 +722,7 @@ export interface ChatHistory_messages_messages_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatHistory_messages_messages_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -841,6 +848,7 @@ export interface ChatInfo_chat_PrivateConversation_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatInfo_chat_PrivateConversation_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1011,6 +1019,7 @@ export interface ChatFullInfo_chat_PrivateConversation_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatFullInfo_chat_PrivateConversation_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1049,6 +1058,7 @@ export interface ChatFullInfo_chat_GroupConversation_members {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatFullInfo_chat_GroupConversation_members_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1103,6 +1113,7 @@ export interface ChatFullInfo_chat_ChannelConversation_members {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatFullInfo_chat_ChannelConversation_members_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1199,6 +1210,7 @@ export interface GroupChatFullInfo_members_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: GroupChatFullInfo_members_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1253,6 +1265,7 @@ export interface SendMessage_sentMessage_message_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: SendMessage_sentMessage_message_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1399,6 +1412,7 @@ export interface ChatSearchForComposeMobile_items_User {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatSearchForComposeMobile_items_User_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1557,6 +1571,7 @@ export interface BlockedList_blocked_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: BlockedList_blocked_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1578,6 +1593,7 @@ export interface BlockedList_blocked_blockedBy {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: BlockedList_blocked_blockedBy_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1662,6 +1678,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatSearchText_items_AnonymousConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1749,6 +1766,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatSearchText_items_GroupConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1852,6 +1870,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatSearchText_items_ChannelConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -1989,6 +2008,7 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChatSearchChannel_channels_edges_node_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2167,6 +2187,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2254,6 +2275,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2357,6 +2379,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2480,6 +2503,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2567,6 +2591,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2670,6 +2695,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -2804,6 +2830,7 @@ export interface ChannelMembers_members_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelMembers_members_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -3029,6 +3056,7 @@ export interface ChannelInviteInfo_invite_invitedByUser {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ChannelInviteInfo_invite_invitedByUser_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -4099,6 +4127,7 @@ export interface MyOrganization_myOrganization_members_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: MyOrganization_myOrganization_members_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -4966,6 +4995,7 @@ export interface Organization_organization_members_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -5825,6 +5855,7 @@ export interface OrganizationMembers_alphaOrganizationMembers_OrganizationJoined
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -7088,6 +7119,7 @@ export interface SuperAdmins_superAdmins_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: SuperAdmins_superAdmins_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -7146,6 +7178,7 @@ export interface SuperAccount_superAccount_members {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: SuperAccount_superAccount_members_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -7313,6 +7346,7 @@ export interface SuperAccountMemberAdd_superAccountMemberAdd_members {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: SuperAccountMemberAdd_superAccountMemberAdd_members_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -7356,6 +7390,7 @@ export interface SuperAccountMemberRemove_superAccountMemberRemove_members {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: SuperAccountMemberRemove_superAccountMemberRemove_members_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -9343,6 +9378,7 @@ export interface ExplorePeople_items_edges_node {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ExplorePeople_items_edges_node_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -9435,6 +9471,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ConversationShort_AnonymousConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -9522,6 +9559,7 @@ export interface ConversationShort_GroupConversation_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ConversationShort_GroupConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -9625,6 +9663,7 @@ export interface ConversationShort_ChannelConversation_topMessage_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: ConversationShort_ChannelConversation_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -9752,6 +9791,7 @@ export interface MessageFull_sender {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: MessageFull_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -9848,6 +9888,7 @@ export interface OrganizationFull_members_user {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
@@ -10497,6 +10538,7 @@ export interface UserShort {
   lastName: string | null;
   picture: string | null;
   email: string | null;
+  online: boolean;
   primaryOrganization: UserShort_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;

@@ -7,6 +7,7 @@ export const UserShort = gql`
         lastName
         picture
         email
+        online
         primaryOrganization: alphaPrimaryOrganization {
             id
             name

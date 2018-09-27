@@ -153,6 +153,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                     userId={item.id}
                     style="colorus"
                     userName={item.name}
+                    online={item.online}
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
