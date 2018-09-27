@@ -203,7 +203,30 @@ export const GroupChatFullInfoQuery = gql`
             flexibleId
             title
             photos
-            
+            ... on ChannelConversation {
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+            }
+            ... on GroupConversation {
+                photo
+                photoRef{
+                    uuid
+                    crop{
+                        x
+                        y
+                        w
+                        h
+                    }
+                }
+            }
         }
         members: alphaGroupConversationMembers(conversationId: $conversationId) {
             user {

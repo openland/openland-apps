@@ -1198,13 +1198,63 @@ export interface ChatFullInfoVariables {
 // GraphQL query operation: GroupChatFullInfo
 // ====================================================
 
-export interface GroupChatFullInfo_chat {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface GroupChatFullInfo_chat_AnonymousConversation {
+  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
   id: string;
   flexibleId: string;
   title: string;
   photos: string[];
 }
+
+export interface GroupChatFullInfo_chat_ChannelConversation_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface GroupChatFullInfo_chat_ChannelConversation_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: GroupChatFullInfo_chat_ChannelConversation_photoRef_crop | null;
+}
+
+export interface GroupChatFullInfo_chat_ChannelConversation {
+  __typename: "ChannelConversation";
+  id: string;
+  flexibleId: string;
+  title: string;
+  photos: string[];
+  photo: string | null;
+  photoRef: GroupChatFullInfo_chat_ChannelConversation_photoRef | null;
+}
+
+export interface GroupChatFullInfo_chat_GroupConversation_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface GroupChatFullInfo_chat_GroupConversation_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: GroupChatFullInfo_chat_GroupConversation_photoRef_crop | null;
+}
+
+export interface GroupChatFullInfo_chat_GroupConversation {
+  __typename: "GroupConversation";
+  id: string;
+  flexibleId: string;
+  title: string;
+  photos: string[];
+  photo: string | null;
+  photoRef: GroupChatFullInfo_chat_GroupConversation_photoRef | null;
+}
+
+export type GroupChatFullInfo_chat = GroupChatFullInfo_chat_AnonymousConversation | GroupChatFullInfo_chat_ChannelConversation | GroupChatFullInfo_chat_GroupConversation;
 
 export interface GroupChatFullInfo_members_user_primaryOrganization {
   __typename: "Organization";

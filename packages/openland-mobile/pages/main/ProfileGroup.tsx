@@ -47,17 +47,18 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                         if (resp.data.chat.__typename !== 'GroupConversation' && resp.data.chat.__typename !== 'ChannelConversation') {
                             throw Error('');
                         }
+                        let groupOrChannel = resp.data.chat.__typename !== 'GroupConversation' ? 'group' : 'channel';
                         return (
                             <SScrollView>
                                 <ZListItemHeader
                                     title={resp.data.chat.title}
                                     subtitle={resp.data.members.length + ' members'}
-                                    photo={resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined}
+                                    photo={(resp.data.chat as any).photo || (resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined)}
                                     id={resp.data.chat.id}
                                 />
 
                                 <ZListItemGroup header={null}>
-                                    <ZListItem appearance="action" text="Set group photo" />
+                                    <ZListItem appearance="action" text={`Set ${groupOrChannel} photo`} />
                                     <YMutation mutation={ChatChangeGroupTitleMutation}>
                                         {(save) => (
                                             <ZListItem
@@ -89,7 +90,13 @@ class ProfileGroupComponent extends React.Component<PageProps> {
 
                                                             Alert.alert(`Are you sure you want to add ${src.name}?`, undefined, [{
                                                                 onPress: async () => {
-                                                                    await add({ variables: { userId: src.id, conversationId: resp.data.chat.id } });
+                                                                    startLoader();
+                                                                    try {
+                                                                        await add({ variables: { userId: src.id, conversationId: resp.data.chat.id } });
+                                                                    } catch (e) {
+                                                                        Alert.alert(e.message);
+                                                                    }
+                                                                    stopLoader();
                                                                 },
                                                                 text: 'add',
                                                                 style: 'default'
