@@ -129,20 +129,12 @@ interface MessageIntroComponentProps {
     user: {
         id: string,
         name: string,
-        photo: {
-            uuid: string,
-            crop: {
-                x: number,
-                y: number,
-                w: number,
-                h: number,
-            } | null
-        } | null,
+        photo: string | null,
         primaryOrganization: {
             id?: string | null,
             name?: string | null,
         } | null
-    } | any;
+    } | null;
 }
 
 export class MessageIntroComponent extends React.Component<MessageIntroComponentProps> {
@@ -152,18 +144,22 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
             <Root separator={0}>
                 <Container separator={6}>
                     <XHorizontal separator={6} alignItems="center">
-                        <XAvatar
-                            userId={user.id}
-                            userName={user.name}
-                            photoRef={urlAugmentation.photo || undefined}
-                            style="colorus"
-                        />
-                        <XVertical separator={-1}>
-                            <UserName>{user.name}</UserName>
-                            {user.primaryOrganization && (
-                                <OrgName>{user.primaryOrganization.name}</OrgName>
-                            )}
-                        </XVertical>
+                        {user && (
+                            <>
+                                <XAvatar
+                                    userId={user.id}
+                                    userName={user.name}
+                                    photoRef={urlAugmentation.photo || undefined}
+                                    style="colorus"
+                                />
+                                <XVertical separator={-1}>
+                                    <UserName>{user.name}</UserName>
+                                    {user.primaryOrganization && (
+                                        <OrgName>{user.primaryOrganization.name}</OrgName>
+                                    )}
+                                </XVertical>
+                            </>
+                        )}
                     </XHorizontal>
                     {urlAugmentation.description && (
                         <AboutText>{urlAugmentation.description}</AboutText>

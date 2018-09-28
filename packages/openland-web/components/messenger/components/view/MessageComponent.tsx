@@ -18,6 +18,7 @@ import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentatio
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XOverflow } from '../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
+import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -125,7 +126,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             }
             if (message.urlAugmentation) {
                 if (message.urlAugmentation.type === 'intro') {
-                    content.push(<MessageIntroComponent key="intro" urlAugmentation={message.urlAugmentation} file={message.file} fileMetadata={message.fileMetadata} user={message.urlAugmentation.user} />);
+                    content.push(<MessageIntroComponent key="intro" urlAugmentation={message.urlAugmentation} file={message.file} fileMetadata={message.fileMetadata} user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User} />);
                 }
                 if (message.urlAugmentation.type !== 'intro') {
                     if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
