@@ -221,7 +221,7 @@ export class HeaderTitleViewCoordinator {
                     this.searchViewContainer.translateY = 0;
                 } else {
                     this.searchView.translateY = -contentOffset;
-                    this.searchViewContainer.translateY = - Math.abs(progress) * 44;
+                    this.searchViewContainer.translateY = - Math.abs(progress) * 22;
                 }
                 this.searchView.opacity = opacityDelayedDoubleClamped;
             }

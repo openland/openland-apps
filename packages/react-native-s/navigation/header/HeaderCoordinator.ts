@@ -80,7 +80,7 @@ export class HeaderCoordinator {
             this.backgroundTranslate.value = v - MAX_SIZE;
             this.hairline.translateY = v;
 
-            let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top) + 1;
+            let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
             this.container.iosHeight = d;
             this.container.translateY = d / 2;
 

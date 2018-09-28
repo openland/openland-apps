@@ -28,6 +28,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                     {this.props.style.isOpaque && (<View style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, backgroundColor: this.props.style.backgroundColor }} />)}
                     {!this.props.style.isOpaque && (<SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} />)}
                 </SAnimated.View>
+                
                 <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
                     <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: 1 }} />
                 </SAnimated.View>
