@@ -139,6 +139,8 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'day' }} />
             <XHeader text=" Messages weekly" />
             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'week' }} />
+            <XHeader text=" Messages monthly, include Openland team" />
+            <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'month', excudeTeam: false }} />
 
             <XHeader text="Total" />
             <Stats variables={{ fromDate: (new Date(0).getTime()).toString(), toDate: (new Date().getTime()).toString() }} />

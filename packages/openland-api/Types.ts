@@ -8005,6 +8005,7 @@ export interface SuperMessagesSentStatsVariables {
   fromDate: string;
   toDate: string;
   trunc?: string | null;
+  excudeTeam?: boolean | null;
 }
 
 /* tslint:disable */

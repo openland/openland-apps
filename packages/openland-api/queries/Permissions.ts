@@ -158,8 +158,8 @@ export const SuperChatsStatsQuery = gql`
 `;
 
 export const SuperMessagesSentStatsQuery = gql`
-    query SuperMessagesSentStats($fromDate: String!, $toDate: String!, $trunc: String) {
-        messagesSentStats(fromDate: $fromDate, toDate: $toDate, trunc: $trunc){
+    query SuperMessagesSentStats($fromDate: String!, $toDate: String!, $trunc: String, $excudeTeam: Boolean) {
+        messagesSentStats(fromDate: $fromDate, toDate: $toDate, trunc: $trunc,  excudeTeam: $excudeTeam){
             date
             count
         }
