@@ -1577,6 +1577,68 @@ export interface ChatCreateGroupVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: ChatCreateIntro
+// ====================================================
+
+export interface ChatCreateIntro_intro_message_urlAugmentation_extra_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatCreateIntro_intro_message_urlAugmentation_extra_User_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export type ChatCreateIntro_intro_message_urlAugmentation_extra = ChatCreateIntro_intro_message_urlAugmentation_extra_AlphaOrganizationListing | ChatCreateIntro_intro_message_urlAugmentation_extra_User;
+
+export interface ChatCreateIntro_intro_message_urlAugmentation {
+  __typename: "UrlAugmentation";
+  extra: ChatCreateIntro_intro_message_urlAugmentation_extra | null;
+}
+
+export interface ChatCreateIntro_intro_message {
+  __typename: "ConversationMessage";
+  urlAugmentation: ChatCreateIntro_intro_message_urlAugmentation | null;
+}
+
+export interface ChatCreateIntro_intro {
+  __typename: "ConversationEventMessage";
+  seq: number;
+  message: ChatCreateIntro_intro_message;
+}
+
+export interface ChatCreateIntro {
+  intro: ChatCreateIntro_intro;
+}
+
+export interface ChatCreateIntroVariables {
+  conversationId: string;
+  userId: any;
+  about: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SetTyping
 // ====================================================
 

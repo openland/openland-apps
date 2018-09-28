@@ -11,7 +11,9 @@ import PhotoIcon from '../icons/ic-photo.svg';
 import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
 import UloadIc from '../icons/file-upload.svg';
+import IntroIc from '../icons/ic-attach-intro.svg';
 import ShortcutsIcon from '../icons/ic-attach-shortcuts-2.svg';
+import { PostIntroModal } from './content/PostIntroModal';
 import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
@@ -401,6 +403,13 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <FileIcon />
                                     <span>Document</span>
                                 </AttachmentButton>
+                                <AttachmentButton
+                                    query={{ field: 'addItro', value: 'true' }}
+                                    className="intro-button"
+                                >
+                                    <IntroIc />
+                                    <span>Intro</span>
+                                </AttachmentButton>
                                 <ShortcutsModal />
                             </XHorizontal>
                             <XButton
@@ -415,6 +424,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     </XVertical>
                 </SendMessageContent>
                 <PostChannelModal targetQuery="addListing" />
+                <PostIntroModal targetQuery="addItro" conversationId={this.props.conversationId || ''} />
             </SendMessageWrapper>
         );
     }
