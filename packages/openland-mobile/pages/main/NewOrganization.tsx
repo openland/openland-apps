@@ -12,8 +12,9 @@ import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { CreateOrganizationMutation, AccountSettingsQuery } from 'openland-api';
+import { SRouter } from 'react-native-s/SRouter';
 
-class NewOrganizationComponent extends React.PureComponent<PageProps> {
+const createPage = (onComplete?: (router: SRouter) => void) => class NewOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
     render() {
         return (
@@ -22,7 +23,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
                 <YMutation mutation={CreateOrganizationMutation} refetchQueries={[AccountSettingsQuery]}>
                     {create => (
-                        <ZForm ref={this.ref} action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }} onSuccess={() => { this.props.router.params.action ? this.props.router.params.action() : this.props.router.back(); }}>
+                        <ZForm ref={this.ref} action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }} onSuccess={() => { onComplete ? onComplete(this.props.router) : this.props.router.params.action ? this.props.router.params.action() : this.props.router.back(); }}>
                             <ZListItemGroup>
                                 <ZListItemBase height={96} separator={false}>
                                     <View padding={15}>
@@ -41,5 +42,6 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
             </>
         );
     }
-}
-export const NewOrganization = withApp(NewOrganizationComponent);
+};
+export const NewOrganization = withApp(createPage());
+export const NewOrganizationAction = (onComplete: (router: SRouter) => void) => withApp(createPage(onComplete));
