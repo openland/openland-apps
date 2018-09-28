@@ -7,4 +7,6 @@ target 'openland' do
   pod 'Fabric'
   pod 'Answers'
   pod 'Auth0', '~> 1.0'
+  pod 'SentryReactNative', :path => '../node_modules/react-native-sentry'
+
 end

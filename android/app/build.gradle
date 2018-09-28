@@ -170,6 +170,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-sentry')
     compile project(':react-native-reanimated')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.beust:klaxon:3.0.1'

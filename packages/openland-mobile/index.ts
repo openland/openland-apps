@@ -6,6 +6,11 @@ import 'openland-y-runtime/AppNotifications';
 // Disable annoying yellow box
 console.disableYellowBox = true;
 
+import { Sentry } from 'react-native-sentry';
+if (!__DEV__) {
+    Sentry.config('https://39d8c1bb34664416aeffd47a1faccb7a@sentry.io/1290872').install();
+}
+
 // Init static Auth0 Client just for case
 import Auth0 from 'react-native-auth0';
 export const Auth0Client = new Auth0({
