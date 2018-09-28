@@ -155,6 +155,7 @@ export class HeaderTitleViewCoordinator {
         // 1 0.66 0.33 0
         // -2    -1    0  1
 
+        let opacityLinear = (1 - Math.abs(progress));
         let opacitySimple = (1 - Math.abs(progress)) * (1 - Math.abs(progress));
         let opacityDelayed = (1 - Math.abs(progress) * 2);
         let opacityDelayedDouble = (1 - Math.abs(progress) * 4);
@@ -291,11 +292,17 @@ export class HeaderTitleViewCoordinator {
         // Small header
         this.titleView.opacity *= opacityDelayed; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
         this.rightView.opacity = opacitySimple;
-        if (this.coordinator.isModal && this.page.startIndex === 0) {
-            this.leftView.opacity = opacitySimple;
-        } else {
+        if (this.page.startIndex === 0) {
             this.leftView.opacity = 0;
+        } else {
+            if (isInSearch) {
+                this.leftView.opacity = 0;
+            } else {
+                this.leftView.opacity = opacityLinear * 1.5;
+            }
         }
+        
+        // Titles
         if (isInSearch) {
             this.headerSmallView.translateX = (progress) * this.coordinator.size.width;
             this.titleView.translateX = 0;

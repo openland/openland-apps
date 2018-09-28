@@ -11,7 +11,6 @@ const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('windo
 
 export class HeaderCoordinator {
 
-    private backOpacity: SAnimatedProperty;
     private backgroundTranslate: SAnimatedProperty;
     private hairline: SAnimatedShadowView;
     private container: SAnimatedShadowView;
@@ -24,11 +23,9 @@ export class HeaderCoordinator {
     constructor(key: string, isModal: boolean, size: () => { width: number, height: number }) {
         this.isModal = isModal;
         this.getSize = size;
-        this.backOpacity = new SAnimatedProperty('header-back-' + key, 'opacity', 1);
         this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -MAX_SIZE);
         this.hairline = new SAnimatedShadowView('header-hairline-' + key);
         this.container = new SAnimatedShadowView('header-container-' + key);
-        // this.container.iosHeight = 0;
     }
 
     get size() {
@@ -72,15 +69,6 @@ export class HeaderCoordinator {
     }
 
     _updateState = (state: NavigationState, progress: number) => {
-
-        // Back Button
-        if (state.history.length === 1) {
-            this.backOpacity.value = -0.3;
-        } else if (state.history.length === 2) {
-            this.backOpacity.value = 1.0 - Math.abs(progress) * 1.3;
-        } else {
-            this.backOpacity.value = 1;
-        }
 
         // Background
         if (Platform.OS === 'ios') {

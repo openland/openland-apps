@@ -77,9 +77,9 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                 <SAnimated.View name={'header--' + v.page.key} style={{ position: 'absolute', top: SDevice.statusBarHeight + SDevice.safeArea.top, right: 0, left: 0, bottom: 0 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                     <SAnimated.View name={'header-small--' + v.page.key} style={{ width: '100%' }}>
                         <SEquisiteCentered style={{ width: '100%' }}>
-                            <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={v.page.startIndex === 0 && !!this.props.manager.parent ? 'box-none' : 'none'}>
-                                {this.props.manager.parent && v.page.startIndex === 0 && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                                {!(this.props.manager.parent && v.page.startIndex === 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                            <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'}>
+                                {this.props.manager.parent && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                                {!(this.props.manager.parent) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
                             </SAnimated.View>
                             <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                                 {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]}>{v.config.title}</Text>}
