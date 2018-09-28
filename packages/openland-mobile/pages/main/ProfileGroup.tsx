@@ -115,11 +115,11 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                     }
                                                                     stopLoader();
                                                                 },
-                                                                text: 'add',
+                                                                text: 'Add',
                                                                 style: 'default'
                                                             },
                                                             {
-                                                                text: 'cancel',
+                                                                text: 'Cancel',
                                                                 style: 'cancel'
                                                             }]);
 
@@ -151,11 +151,11 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                         }
                                                                         stopLoader();
                                                                     },
-                                                                    text: 'kick',
+                                                                    text: 'Kick',
                                                                     style: 'destructive'
                                                                 },
                                                                 {
-                                                                    text: 'cancel',
+                                                                    text: 'Cancel',
                                                                     style: 'cancel'
                                                                 }]);
                                                             },

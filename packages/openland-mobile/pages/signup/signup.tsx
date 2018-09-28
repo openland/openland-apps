@@ -29,7 +29,7 @@ export class SignupModel {
         if (!session.isProfileCreated) {
             return 'SignupUser';
         } else if (!session.isAccountExists) {
-            return 'SignupOrg';
+            return 'NewOrganization';
         } else if (!session.isAccountActivated) {
             return 'Waitlist';
         } else if (session.isCompleted) {

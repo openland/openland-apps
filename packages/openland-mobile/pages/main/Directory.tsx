@@ -13,6 +13,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { Alert } from 'react-native';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {
     render() {
@@ -52,6 +53,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="Organizations" />
+                <SHeaderButton title="+ New" onPress={() => this.props.router.push('NewOrganization')}/>
                 <SSearchControler searchRender={<OrganizationSearchComponent query="" router={this.props.router} />}>
                     <ZAsyncRoutedList
                         style={{ flexGrow: 1 }}

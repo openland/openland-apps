@@ -65,7 +65,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                             action={async (src) => {
                                 // await delay(1000);
                                 await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });
-                                this.props.router.push(await getSignupModel().next());
+                                this.props.router.push(await getSignupModel().next(), { action: async () => this.props.router.push(await getSignupModel().next()) });
                             }}
                         >
                             <ZTextInput field="input.firstName" placeholder="First name" style={signupStyles.input} width="100%" />
