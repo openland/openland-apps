@@ -442,6 +442,26 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_u
   crop: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user = ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -451,6 +471,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_u
   subtitle: string | null;
   description: string | null;
   photo: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_photo | null;
+  user: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage {
@@ -531,6 +552,26 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAu
   crop: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user = ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -540,6 +581,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAu
   subtitle: string | null;
   description: string | null;
   photo: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_photo | null;
+  user: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatList_chats_conversations_GroupConversation_topMessage {
@@ -621,6 +663,26 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_url
   crop: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user = ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -630,6 +692,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_url
   subtitle: string | null;
   description: string | null;
   photo: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_photo | null;
+  user: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatList_chats_conversations_ChannelConversation_topMessage {
@@ -753,6 +816,26 @@ export interface ChatHistory_messages_messages_urlAugmentation_photo {
   crop: ChatHistory_messages_messages_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatHistory_messages_messages_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatHistory_messages_messages_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatHistory_messages_messages_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatHistory_messages_messages_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatHistory_messages_messages_urlAugmentation_user = ChatHistory_messages_messages_urlAugmentation_user_AlphaOrganizationListing | ChatHistory_messages_messages_urlAugmentation_user_User;
+
 export interface ChatHistory_messages_messages_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -762,6 +845,7 @@ export interface ChatHistory_messages_messages_urlAugmentation {
   subtitle: string | null;
   description: string | null;
   photo: ChatHistory_messages_messages_urlAugmentation_photo | null;
+  user: ChatHistory_messages_messages_urlAugmentation_user | null;
 }
 
 export interface ChatHistory_messages_messages {
@@ -1377,6 +1461,26 @@ export interface SendMessage_sentMessage_message_urlAugmentation_photo {
   crop: SendMessage_sentMessage_message_urlAugmentation_photo_crop | null;
 }
 
+export interface SendMessage_sentMessage_message_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface SendMessage_sentMessage_message_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface SendMessage_sentMessage_message_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: SendMessage_sentMessage_message_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type SendMessage_sentMessage_message_urlAugmentation_user = SendMessage_sentMessage_message_urlAugmentation_user_AlphaOrganizationListing | SendMessage_sentMessage_message_urlAugmentation_user_User;
+
 export interface SendMessage_sentMessage_message_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -1386,6 +1490,7 @@ export interface SendMessage_sentMessage_message_urlAugmentation {
   subtitle: string | null;
   description: string | null;
   photo: SendMessage_sentMessage_message_urlAugmentation_photo | null;
+  user: SendMessage_sentMessage_message_urlAugmentation_user | null;
 }
 
 export interface SendMessage_sentMessage_message {
@@ -1858,6 +1963,26 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
   crop: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user = ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -1867,6 +1992,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
   subtitle: string | null;
   description: string | null;
   photo: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_photo | null;
+  user: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage {
@@ -1948,6 +2074,26 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
   crop: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user = ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -1957,6 +2103,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
   subtitle: string | null;
   description: string | null;
   photo: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_photo | null;
+  user: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage {
@@ -2054,6 +2201,26 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
   crop: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user = ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2063,6 +2230,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
   subtitle: string | null;
   description: string | null;
   photo: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_photo | null;
+  user: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage {
@@ -2194,6 +2362,26 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentatio
   crop: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user = ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User;
+
 export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2203,6 +2391,7 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentatio
   subtitle: string | null;
   description: string | null;
   photo: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo | null;
+  user: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChatSearchChannel_channels_edges_node_topMessage {
@@ -2375,6 +2564,26 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   crop: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2384,6 +2593,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   subtitle: string | null;
   description: string | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo | null;
+  user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage {
@@ -2465,6 +2675,26 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   crop: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2474,6 +2704,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   subtitle: string | null;
   description: string | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo | null;
+  user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage {
@@ -2571,6 +2802,26 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   crop: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2580,6 +2831,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   subtitle: string | null;
   description: string | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo | null;
+  user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage {
@@ -2697,6 +2949,26 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   crop: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2706,6 +2978,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   subtitle: string | null;
   description: string | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo | null;
+  user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage {
@@ -2787,6 +3060,26 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   crop: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2796,6 +3089,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   subtitle: string | null;
   description: string | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo | null;
+  user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage {
@@ -2893,6 +3187,26 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   crop: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User;
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -2902,6 +3216,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   subtitle: string | null;
   description: string | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo | null;
+  user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage {
@@ -9684,6 +9999,26 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   crop: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user = ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User;
+
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -9693,6 +10028,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   subtitle: string | null;
   description: string | null;
   photo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo | null;
+  user: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage {
@@ -9774,6 +10110,26 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
   crop: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ConversationShort_GroupConversation_topMessage_urlAugmentation_user = ConversationShort_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User;
+
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -9783,6 +10139,7 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation 
   subtitle: string | null;
   description: string | null;
   photo: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo | null;
+  user: ConversationShort_GroupConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage {
@@ -9880,6 +10237,26 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   crop: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type ConversationShort_ChannelConversation_topMessage_urlAugmentation_user = ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User;
+
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -9889,6 +10266,7 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   subtitle: string | null;
   description: string | null;
   photo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo | null;
+  user: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage {
@@ -10010,6 +10388,26 @@ export interface MessageFull_urlAugmentation_photo {
   crop: MessageFull_urlAugmentation_photo_crop | null;
 }
 
+export interface MessageFull_urlAugmentation_user_AlphaOrganizationListing {
+  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+}
+
+export interface MessageFull_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MessageFull_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MessageFull_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type MessageFull_urlAugmentation_user = MessageFull_urlAugmentation_user_AlphaOrganizationListing | MessageFull_urlAugmentation_user_User;
+
 export interface MessageFull_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
@@ -10019,6 +10417,7 @@ export interface MessageFull_urlAugmentation {
   subtitle: string | null;
   description: string | null;
   photo: MessageFull_urlAugmentation_photo | null;
+  user: MessageFull_urlAugmentation_user | null;
 }
 
 export interface MessageFull {

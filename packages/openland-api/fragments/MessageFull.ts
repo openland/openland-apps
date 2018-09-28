@@ -35,6 +35,17 @@ export const MessageFull = gql`
                     h
                 }
         }
+        user: extra {
+            ...on User {
+                id
+                name
+                photo
+                primaryOrganization: alphaPrimaryOrganization {
+                    id
+                    name
+                }
+            }
+        }
     }
     date
  }
