@@ -11,7 +11,7 @@ const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('windo
 
 export class HeaderCoordinator {
 
-    private backgroundTranslate: SAnimatedProperty;
+    private background: SAnimatedShadowView;
     private hairline: SAnimatedShadowView;
     private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
@@ -23,7 +23,7 @@ export class HeaderCoordinator {
     constructor(key: string, isModal: boolean, size: () => { width: number, height: number }) {
         this.isModal = isModal;
         this.getSize = size;
-        this.backgroundTranslate = new SAnimatedProperty('header-background-' + key, 'translateY', -MAX_SIZE);
+        this.background = new SAnimatedShadowView('header-background-' + key, { translateX: -MAX_SIZE });
         this.hairline = new SAnimatedShadowView('header-hairline-' + key);
         this.container = new SAnimatedShadowView('header-container-' + key);
     }
@@ -72,24 +72,73 @@ export class HeaderCoordinator {
 
         // Background
         if (Platform.OS === 'ios') {
-            let v: number = 0;
-            v += Math.abs(1 - progress) * this.resolveHeaderHeight(state.history[state.history.length - 1].config);
-            if (state.history.length >= 2) {
-                v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config);
-            }
-            this.backgroundTranslate.value = v - MAX_SIZE;
-            this.hairline.translateY = v;
 
-            let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
-            this.container.iosHeight = d;
-            this.container.translateY = d / 2;
-
-            let op: number = 0;
-            op += Math.abs(1 - progress) * this.resolveHairlineOpacity(state.history[state.history.length - 1].config);
+            let handled = false;
             if (state.history.length >= 2) {
-                op += Math.abs(progress) * this.resolveHairlineOpacity(state.history[state.history.length - 2].config);
+                let prev = state.history[state.history.length - 2].config;
+                let current = state.history[state.history.length - 1].config;
+                if (prev.headerHidden && current.headerHidden) {
+                    // Hide background
+                    handled = true;
+                    this.background.translateY = -MAX_SIZE;
+                    this.background.translateX = 0;
+                    this.hairline.translateX = 0;
+                    this.hairline.translateY = -1;
+                    this.hairline.opacity = 0;
+                } else if (current.headerHidden) {
+                    // Keep on previous page offset
+                    handled = true;
+                    let op = this.resolveHairlineOpacity(prev);
+                    let v = this.resolveHeaderHeight(prev);
+                    this.background.translateY = v - MAX_SIZE;
+                    this.background.translateX = Dimensions.get('window').width * progress;
+                    this.hairline.translateX = Dimensions.get('window').width * progress;
+                    this.hairline.translateY = v;
+                    this.hairline.opacity = op;
+                } else if (prev.headerHidden) {
+                    // Keep on current page offset
+                    handled = true;
+                    let op = this.resolveHairlineOpacity(current);
+                    let v = this.resolveHeaderHeight(current);
+                    this.background.translateY = v - MAX_SIZE;
+                    this.background.translateX = Dimensions.get('window').width * progress;
+                    this.hairline.translateX = Dimensions.get('window').width * progress;
+                    this.hairline.translateY = v;
+                    this.hairline.opacity = op;
+                } else {
+                    // Cross fade
+                }
+            } else {
+                let current = state.history[state.history.length - 1].config;
+                if (current.headerHidden) {
+                    // Hide background
+                    handled = true;
+                    this.background.translateY = -MAX_SIZE;
+                    this.hairline.translateY = -1;
+                    this.hairline.opacity = 0;
+                }
             }
-            this.hairline.opacity = op;
+
+            if (!handled) {
+                let v: number = 0;
+                let op: number = 0;
+                op += Math.abs(1 - progress) * this.resolveHairlineOpacity(state.history[state.history.length - 1].config);
+                v += Math.abs(1 - progress) * this.resolveHeaderHeight(state.history[state.history.length - 1].config);
+                if (state.history.length >= 2) {
+                    v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config);
+                    op += Math.abs(progress) * this.resolveHairlineOpacity(state.history[state.history.length - 2].config);
+                }
+
+                let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
+                this.container.iosHeight = d;
+                this.container.translateY = d / 2;
+
+                this.background.translateY = v - MAX_SIZE;
+                this.background.translateX = 0;
+                this.hairline.translateY = v;
+                this.hairline.translateX = 0;
+                this.hairline.opacity = op;
+            }
         } else {
             this.hairline.translateX = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
             this.hairline.opacity = 1;

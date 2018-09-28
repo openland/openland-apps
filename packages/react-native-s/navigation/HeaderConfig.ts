@@ -98,7 +98,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
             searchContext = c.searchContext;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {

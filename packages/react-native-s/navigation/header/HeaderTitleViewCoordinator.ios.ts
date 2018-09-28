@@ -36,7 +36,7 @@ export class HeaderTitleViewCoordinator {
         this.page = page;
         this.coordinator = coordinator;
         let w = coordinator.size.width;
-        this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: w / 2 });
+        this.headerView = new SAnimatedShadowView('header--' + this.key, { translateX: w / 2, opacity: 1 });
         this.headerSmallView = new SAnimatedShadowView('header-small--' + this.key, { opacity: 0 });
         this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0, translateX: w });
         this.rightView = new SAnimatedShadowView('header-right--' + this.key, { opacity: 0, translateX: w });
@@ -148,6 +148,12 @@ export class HeaderTitleViewCoordinator {
     }
 
     updateState = (progress: number) => {
+
+        if (this.lastConfig.headerHidden) {
+            this.headerView.opacity = 0;
+        } else {
+            this.headerView.opacity = 1;
+        }
         //
         // 1  0.75   0.5  0.25  0
         // -3    -2     -1    0   1
@@ -301,7 +307,7 @@ export class HeaderTitleViewCoordinator {
                 this.leftView.opacity = opacityLinear * 1.5;
             }
         }
-        
+
         // Titles
         if (isInSearch) {
             this.headerSmallView.translateX = (progress) * this.coordinator.size.width;
