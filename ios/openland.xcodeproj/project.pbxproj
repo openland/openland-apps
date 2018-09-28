@@ -74,6 +74,9 @@
 		AA0D74AA215EA8DE00BDE84E /* WorkSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A1215EA8DD00BDE84E /* WorkSans-ExtraBold.ttf */; };
 		AA0D74AB215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A2215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf */; };
 		AA0D74AC215EA8DE00BDE84E /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A3215EA8DE00BDE84E /* WorkSans-Medium.ttf */; };
+		AA0D751D215ED59B00BDE84E /* ProximaNova-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74D2215ED59800BDE84E /* ProximaNova-Semibold.ttf */; };
+		AA0D751F215ED5E400BDE84E /* ProximaNova-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D751E215ED5E400BDE84E /* ProximaNova-Regular.ttf */; };
+		AA0D7521215ED69C00BDE84E /* ProximaNova-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D7520215ED69C00BDE84E /* ProximaNova-Bold.ttf */; };
 		AA5ACBC82107642B004798B4 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5ACBC521076417004798B4 /* libRCTPushNotification.a */; };
 		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
@@ -778,6 +781,9 @@
 		AA0D74A1215EA8DD00BDE84E /* WorkSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		AA0D74A2215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-ExtraLight.ttf"; sourceTree = "<group>"; };
 		AA0D74A3215EA8DE00BDE84E /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Medium.ttf"; sourceTree = "<group>"; };
+		AA0D74D2215ED59800BDE84E /* ProximaNova-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.ttf"; sourceTree = "<group>"; };
+		AA0D751E215ED5E400BDE84E /* ProximaNova-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.ttf"; sourceTree = "<group>"; };
+		AA0D7520215ED69C00BDE84E /* ProximaNova-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.ttf"; sourceTree = "<group>"; };
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedEventEmitter.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
@@ -1192,6 +1198,9 @@
 		AA0D7450215EA8BD00BDE84E /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				AA0D74D2215ED59800BDE84E /* ProximaNova-Semibold.ttf */,
+				AA0D751E215ED5E400BDE84E /* ProximaNova-Regular.ttf */,
+				AA0D7520215ED69C00BDE84E /* ProximaNova-Bold.ttf */,
 				AA0D749B215EA8DC00BDE84E /* WorkSans-Black.ttf */,
 				AA0D749C215EA8DC00BDE84E /* WorkSans-Bold.ttf */,
 				AA0D74A1215EA8DD00BDE84E /* WorkSans-ExtraBold.ttf */,
@@ -2342,9 +2351,12 @@
 				8310E3E5526E402699A09B2F /* MaterialCommunityIcons.ttf in Resources */,
 				AA0D74A5215EA8DE00BDE84E /* WorkSans-Bold.ttf in Resources */,
 				AA0D74A8215EA8DE00BDE84E /* WorkSans-Thin.ttf in Resources */,
+				AA0D751D215ED59B00BDE84E /* ProximaNova-Semibold.ttf in Resources */,
 				AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */,
 				B4E889AAE62D4E939C55A608 /* MaterialIcons.ttf in Resources */,
+				AA0D751F215ED5E400BDE84E /* ProximaNova-Regular.ttf in Resources */,
 				1CC3BD25D0634CBB899B6793 /* Octicons.ttf in Resources */,
+				AA0D7521215ED69C00BDE84E /* ProximaNova-Bold.ttf in Resources */,
 				AA0D74A6215EA8DE00BDE84E /* WorkSans-SemiBold.ttf in Resources */,
 				C76D7A1B6372414D92C3ADEB /* SimpleLineIcons.ttf in Resources */,
 				C4CCFE291D7643E781230076 /* Zocial.ttf in Resources */,

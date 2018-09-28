@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.53</string>
+	<string>1.0.55</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>84</string>
+	<string>85</string>
 	<key>CodePushDeploymentKey</key>
 	<string>TNsklumnHNeMxRjz3VClHfhoIdqZH1kRWpV47</string>
 	<key>Fabric</key>
@@ -106,6 +106,9 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>ProximaNova-Semibold.ttf</string>
+		<string>ProximaNova-Regular.ttf</string>
+		<string>ProximaNova-Bold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '600',
         lineHeight: 44,
-        fontFamily: 'WorkSans-Medium'
+        fontFamily: 'ProximaNova-Bold'
     } as TextStyle,
     titleLarge: {
         color: '#000',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         lineHeight: 52,
         paddingLeft: 15,
         paddingRight: 15,
-        fontFamily: 'WorkSans-Regular'
+        fontFamily: 'ProximaNova-Semibold'
     } as TextStyle
 });
 
