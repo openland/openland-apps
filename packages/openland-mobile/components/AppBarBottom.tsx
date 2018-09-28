@@ -39,7 +39,7 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                                 width: 28,
                                 height: 28,
                                 opacity: this.props.selected ? 1 : 1,
-                                tintColor: this.props.selected ? '#fff' : '#99a2b0'
+                                tintColor: this.props.selected ? AppStyles.primaryColor : '#99a2b0'
                             }}
                         />
                         <View
@@ -54,7 +54,7 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                     </View>
                     <Text
                         style={{
-                            color: this.props.selected ? '#fff' : '#99a2b0',
+                            color: this.props.selected ? AppStyles.primaryColor : '#99a2b0',
                             fontSize: 12,
                             lineHeight: 16,
                             height: 16,
@@ -75,13 +75,13 @@ export class AppBarBottom extends React.PureComponent {
         return (
             <View
                 style={{
-                    backgroundColor: '#354856',
+                    backgroundColor: '#f8f8f8',
                     paddingBottom: SDevice.safeArea.bottom,
                     flexDirection: 'column',
                     alignItems: 'stretch'
                 }}
             >
-                {/* <View style={{ height: 1, backgroundColor: AppStyles.separatorColor }} /> */}
+                <View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />
                 <View style={{ flexDirection: 'row', height: 48 }}>
                     {this.props.children}
                 </View>
