@@ -1,5 +1,4 @@
 import { NavigationState } from '../NavigationState';
-import { SAnimatedProperty } from '../../SAnimatedProperty';
 import { Dimensions, Platform } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { NavigationPage } from '../NavigationPage';
@@ -91,8 +90,8 @@ export class HeaderCoordinator {
                     let op = this.resolveHairlineOpacity(prev);
                     let v = this.resolveHeaderHeight(prev);
                     this.background.translateY = v - MAX_SIZE;
-                    this.background.translateX = Dimensions.get('window').width * progress;
-                    this.hairline.translateX = Dimensions.get('window').width * progress;
+                    this.background.translateX = this.size.width * progress;
+                    this.hairline.translateX = this.size.width * progress;
                     this.hairline.translateY = v;
                     this.hairline.opacity = op;
                 } else if (prev.headerHidden) {
@@ -101,8 +100,8 @@ export class HeaderCoordinator {
                     let op = this.resolveHairlineOpacity(current);
                     let v = this.resolveHeaderHeight(current);
                     this.background.translateY = v - MAX_SIZE;
-                    this.background.translateX = Dimensions.get('window').width * progress;
-                    this.hairline.translateX = Dimensions.get('window').width * progress;
+                    this.background.translateX = this.size.width * progress;
+                    this.hairline.translateX = this.size.width * progress;
                     this.hairline.translateY = v;
                     this.hairline.opacity = op;
                 } else {

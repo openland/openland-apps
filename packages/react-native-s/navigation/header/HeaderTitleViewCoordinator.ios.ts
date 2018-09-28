@@ -43,7 +43,7 @@ export class HeaderTitleViewCoordinator {
         this.leftView = new SAnimatedShadowView('header-left--' + this.key, { opacity: 0, translateX: w });
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: w });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
-        this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key);
+        this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key, { translateX: w });
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
 
@@ -225,9 +225,15 @@ export class HeaderTitleViewCoordinator {
                 if (this.lastConfig.searchActive) {
                     this.searchView.translateY = 0;
                     this.searchViewContainer.translateY = 0;
+                    this.searchViewContainer.translateX = 0;
                 } else {
                     this.searchView.translateY = -contentOffset;
                     this.searchViewContainer.translateY = - Math.abs(progress) * 22;
+                    if (progress > 0) {
+                        this.searchViewContainer.translateX = (progress) * this.coordinator.size.width;
+                    } else {
+                        this.searchViewContainer.translateX = 0;
+                    }
                 }
                 this.searchView.opacity = opacityDelayedDoubleClamped;
             }
