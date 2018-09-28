@@ -404,9 +404,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <span>Document</span>
                                 </AttachmentButton>
                                 <AttachmentButton
-                                    query={this.props.enabled === false ? { field: '', value: '' } : { field: 'addItro', value: 'true' }}
+                                    query={{ field: 'addItro', value: 'true' }}
                                     className="intro-button"
-                                    enabled={this.props.enabled === false}
                                     disable={this.props.enabled === false}
                                 >
                                     <IntroIc />
