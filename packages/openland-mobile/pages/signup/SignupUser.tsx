@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, TextStyle, Platform, Button } from 'react-native';
+import { StyleSheet, TextStyle, Platform, Button, View } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
-import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
 import { ActionButtonIOS } from 'react-native-s/navigation/buttons/ActionButtonIOS';
 import { ProfileCreateMutation } from 'openland-api';
@@ -12,7 +11,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { delay } from 'openland-y-utils/timer';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -57,22 +55,24 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
             <>
                 <SHeader title="Your full name" />
                 <SHeaderButton title="Next" onPress={() => this.ref.current!.submitForm()} />
-                <YMutation mutation={ProfileCreateMutation}>
-                    {create => (
-                        <ZForm
-                            ref={this.ref}
-                            defaultData={{ input: { firstName: '' } }}
-                            action={async (src) => {
-                                // await delay(1000);
-                                await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });
-                                this.props.router.push(await getSignupModel().next(), { action: async () => this.props.router.push(await getSignupModel().next()) });
-                            }}
-                        >
-                            <ZTextInput field="input.firstName" placeholder="First name" style={signupStyles.input} width="100%" />
-                            <ZTextInput field="input.lastName" placeholder="Last name" style={signupStyles.input} width="100%" />
-                        </ZForm>
-                    )}
-                </YMutation>
+                <View style={{ marginTop: 23 }}>
+                    <YMutation mutation={ProfileCreateMutation}>
+                        {create => (
+                            <ZForm
+                                ref={this.ref}
+                                defaultData={{ input: { firstName: '' } }}
+                                action={async (src) => {
+                                    // await delay(1000);
+                                    await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });
+                                    this.props.router.push(await getSignupModel().next(), { action: async () => this.props.router.push(await getSignupModel().next()) });
+                                }}
+                            >
+                                <ZTextInput field="input.firstName" placeholder="First name" style={signupStyles.input} width="100%" />
+                                <ZTextInput field="input.lastName" placeholder="Last name" style={signupStyles.input} width="100%" />
+                            </ZForm>
+                        )}
+                    </YMutation>
+                </View>
             </>
         );
     }
