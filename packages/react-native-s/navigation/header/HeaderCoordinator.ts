@@ -11,7 +11,7 @@ const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('windo
 export class HeaderCoordinator {
 
     private background: SAnimatedShadowView;
-    private hairline: SAnimatedShadowView;
+    // private hairline: SAnimatedShadowView;
     private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
     private getSize: () => { width: number, height: number };
@@ -23,7 +23,7 @@ export class HeaderCoordinator {
         this.isModal = isModal;
         this.getSize = size;
         this.background = new SAnimatedShadowView('header-background-' + key, { translateX: -MAX_SIZE });
-        this.hairline = new SAnimatedShadowView('header-hairline-' + key);
+        // this.hairline = new SAnimatedShadowView('header-hairline-' + key);
         this.container = new SAnimatedShadowView('header-container-' + key);
     }
 
@@ -81,9 +81,9 @@ export class HeaderCoordinator {
                     handled = true;
                     this.background.translateY = -MAX_SIZE;
                     this.background.translateX = 0;
-                    this.hairline.translateX = 0;
-                    this.hairline.translateY = -1;
-                    this.hairline.opacity = 0;
+                    // this.hairline.translateX = 0;
+                    // this.hairline.translateY = -1;
+                    // this.hairline.opacity = 0;
                 } else if (current.headerHidden) {
                     // Keep on previous page offset
                     handled = true;
@@ -91,9 +91,9 @@ export class HeaderCoordinator {
                     let v = this.resolveHeaderHeight(prev);
                     this.background.translateY = v - MAX_SIZE;
                     this.background.translateX = this.size.width * progress;
-                    this.hairline.translateX = this.size.width * progress;
-                    this.hairline.translateY = v;
-                    this.hairline.opacity = op;
+                    // this.hairline.translateX = this.size.width * progress;
+                    // this.hairline.translateY = v;
+                    // this.hairline.opacity = op;
                 } else if (prev.headerHidden) {
                     // Keep on current page offset
                     handled = true;
@@ -101,9 +101,9 @@ export class HeaderCoordinator {
                     let v = this.resolveHeaderHeight(current);
                     this.background.translateY = v - MAX_SIZE;
                     this.background.translateX = this.size.width * progress;
-                    this.hairline.translateX = this.size.width * progress;
-                    this.hairline.translateY = v;
-                    this.hairline.opacity = op;
+                    // this.hairline.translateX = this.size.width * progress;
+                    // this.hairline.translateY = v;
+                    // this.hairline.opacity = op;
                 } else {
                     // Cross fade
                 }
@@ -113,8 +113,8 @@ export class HeaderCoordinator {
                     // Hide background
                     handled = true;
                     this.background.translateY = -MAX_SIZE;
-                    this.hairline.translateY = -1;
-                    this.hairline.opacity = 0;
+                    // this.hairline.translateY = -1;
+                    // this.hairline.opacity = 0;
                 }
             }
 
@@ -134,13 +134,13 @@ export class HeaderCoordinator {
 
                 this.background.translateY = v - MAX_SIZE;
                 this.background.translateX = 0;
-                this.hairline.translateY = v;
-                this.hairline.translateX = 0;
-                this.hairline.opacity = op;
+                // this.hairline.translateY = v;
+                // this.hairline.translateX = 0;
+                // this.hairline.opacity = op;
             }
         } else {
-            this.hairline.translateX = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
-            this.hairline.opacity = 1;
+            // this.hairline.translateX = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
+            // this.hairline.opacity = 1;
         }
 
         // Pages
