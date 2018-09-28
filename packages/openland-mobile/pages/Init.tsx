@@ -105,7 +105,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'signup') {
             return (
                 <YApolloProvider client={getClient()}>
-                    <Root routing={SRouting.create(SignupRoutes(getSignupModel().page))} />
+                    <Root routing={SRouting.create(SignupRoutes(getSignupModel().page, async (r) => r.push(await getSignupModel().next())))} />
                 </YApolloProvider>
             );
         }

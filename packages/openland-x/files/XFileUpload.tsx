@@ -24,6 +24,8 @@ export interface XFileUploadProps {
     onChanged?: (file: UploadedFile | null) => void;
 
     initialUrl?: string | null;
+
+    imageOnly?: boolean;
 }
 
 export interface UploadedFile {
@@ -32,6 +34,8 @@ export interface UploadedFile {
     crop: XImageCrop | null;
     width: number | null;
     height: number | null;
+    name: string | null;
+    size: string | null;
 }
 
 export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, file: UploadedFile | null | undefined }> {
@@ -69,7 +73,7 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
             : null;
         let dialog = UploadCare.openDialog(uploaded, {
             publicKey: 'b70227616b5eac21ba88',
-            imagesOnly: true,
+            imagesOnly: this.props.imageOnly === false ? false : true,
             crop: this.props.cropParams,
             imageShrink: '1024x1024',
         });
@@ -89,7 +93,9 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
                 uuid: f.uuid,
                 crop: f.crop ? f.crop : null,
                 width: f.originalImageInfo && f.originalImageInfo.width || null,
-                height: f.originalImageInfo && f.originalImageInfo.height || null
+                height: f.originalImageInfo && f.originalImageInfo.height || null,
+                name: f.name,
+                size: f.size
             };
             if (this.isControlled) {
                 this.setState({ isLoading: false, progress: 1 });

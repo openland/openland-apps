@@ -320,6 +320,24 @@ export const ChatCreateGroupMutation = gql`
     }
 `;
 
+export const ChatCreateIntroMutation = gql`
+    mutation ChatCreateIntro($conversationId: ID!, $userId: UserID!, $about: String!, $file: String) {
+        intro: alphaSendIntro(conversationId: $conversationId, userId: $userId, about: $about, file: $file) {
+            seq
+            message {
+                urlAugmentation {
+                    extra {
+                        ... on User {
+                            ...UserShort
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ${UserShort}
+`;
+
 export const SetTypingMutation = gql`
     mutation SetTyping($conversationId: ID!) {
         setTyping: alphaSetTyping(conversationId: $conversationId)

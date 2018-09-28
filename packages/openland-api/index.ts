@@ -46,6 +46,7 @@ export const ChatSearchForComposeQuery = typedQuery<Types.ChatSearchForCompose, 
 export const ChatSearchForComposeMobileQuery = typedQuery<Types.ChatSearchForComposeMobile, Types.ChatSearchForComposeMobileVariables>(Chats.ChatSearchForComposeMobileQuery);
 export const ChatSearchGroupQuery = typedQuery<Types.ChatSearchGroup, Types.ChatSearchGroupVariables>(Chats.ChatSearchGroupQuery);
 export const ChatCreateGroupMutation = typedMutation<Types.ChatCreateGroup, Types.ChatCreateGroupVariables>(Chats.ChatCreateGroupMutation);
+export const ChatCreateIntroMutation = typedMutation<Types.ChatCreateIntro, Types.ChatCreateIntroVariables>(Chats.ChatCreateIntroMutation);
 export const SetTypingMutation = typedMutation<Types.SetTyping, Types.SetTypingVariables>(Chats.SetTypingMutation);
 export const ChatChangeGroupTitleMutation = typedMutation<Types.ChatChangeGroupTitle, Types.ChatChangeGroupTitleVariables>(Chats.ChatChangeGroupTitleMutation);
 export const ChatAddMemberMutation = typedMutation<Types.ChatAddMember, Types.ChatAddMemberVariables>(Chats.ChatAddMemberMutation);

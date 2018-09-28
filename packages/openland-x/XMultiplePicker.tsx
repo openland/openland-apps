@@ -168,6 +168,7 @@ interface MultoplePickerProps {
     query?: string;
     onPick: (location: { label: string, value: string }) => void;
     title?: string;
+    helpText?: string;
 }
 
 interface MultiplePickerState {
@@ -259,9 +260,10 @@ export class MultiplePicker extends React.Component<MultoplePickerProps, Multipl
         document.removeEventListener('keydown', this.keydownHandler);
     }
     render() {
+        let helpText = 'Press Enter to add "' + this.props.query + '"';
         return (
             <>
-                {this.state.empty && <HelpText>{'Press Enter to add "' + this.props.query + '"'}</HelpText>}
+                {this.state.empty && <HelpText>{this.props.helpText !== undefined ? this.props.helpText : helpText}</HelpText>}
                 {!this.state.empty && (
                     <XVertical separator={9} width="100%">
                         {this.props.title && <PickerTitle>{this.props.title}</PickerTitle>}

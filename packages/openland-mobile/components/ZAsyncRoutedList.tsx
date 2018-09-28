@@ -33,6 +33,7 @@ export interface ZAsyncRoutedListProps<Q, V> {
     query: GraphqlTypedQuery<ListQuery<Q>, V>;
     variables?: V;
     style?: StyleProp<ViewStyle>;
+    onEmpty?: () => void;
 }
 
 export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>> {

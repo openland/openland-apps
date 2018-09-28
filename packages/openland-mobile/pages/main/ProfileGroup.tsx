@@ -19,6 +19,7 @@ import { UserShort } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -48,6 +49,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                             throw Error('');
                         }
                         let groupOrChannel = resp.data.chat.__typename !== 'GroupConversation' ? 'group' : 'channel';
+                        let setOrChange = (resp.data.chat.photo || resp.data.chat.photos.length > 0) ? 'Change' : 'Set';
                         return (
                             <SScrollView>
                                 <ZListItemHeader
@@ -58,7 +60,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 />
 
                                 <ZListItemGroup header={null}>
-                                    <ZListItem appearance="action" text={`Set ${groupOrChannel} photo`} />
+                                    <ZListItem appearance="action" text={`${setOrChange} ${groupOrChannel} photo`} />
                                     <YMutation mutation={ChatChangeGroupTitleMutation}>
                                         {(save) => (
                                             <ZListItem
@@ -115,11 +117,11 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                     }
                                                                     stopLoader();
                                                                 },
-                                                                text: 'add',
+                                                                text: 'Add',
                                                                 style: 'default'
                                                             },
                                                             {
-                                                                text: 'cancel',
+                                                                text: 'Cancel',
                                                                 style: 'cancel'
                                                             }]);
 
@@ -129,46 +131,49 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             />
                                         )}
                                     </YMutation>
-                                    {resp.data.members.map((v) => (
-                                        <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>
-                                            {(kick) => (
-                                                <UserView
-                                                    user={v.user}
-                                                    role={v.role}
-                                                    onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
+                                    <SDeferred>
+                                        {resp.data.members.map((v) => (
+                                            <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>
+                                                {(kick) => (
+                                                    <UserView
+                                                        user={v.user}
+                                                        role={v.role}
+                                                        onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
 
-                                                        let builder = new ActionSheetBuilder();
-                                                        builder.action(
-                                                            'Kick',
-                                                            () => {
-                                                                Alert.alert(`Are you sure you want to kick ${v.user.name}?`, undefined, [{
-                                                                    onPress: async () => {
-                                                                        startLoader();
-                                                                        try {
-                                                                            await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
-                                                                        } catch (e) {
-                                                                            Alert.alert(e.message);
-                                                                        }
-                                                                        stopLoader();
+                                                            let builder = new ActionSheetBuilder();
+                                                            builder.action(
+                                                                'Kick',
+                                                                () => {
+                                                                    Alert.alert(`Are you sure you want to kick ${v.user.name}?`, undefined, [{
+                                                                        onPress: async () => {
+                                                                            startLoader();
+                                                                            try {
+                                                                                await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                            } catch (e) {
+                                                                                Alert.alert(e.message);
+                                                                            }
+                                                                            stopLoader();
+                                                                        },
+                                                                        text: 'Kick',
+                                                                        style: 'destructive'
                                                                     },
-                                                                    text: 'kick',
-                                                                    style: 'destructive'
+                                                                    {
+                                                                        text: 'Cancel',
+                                                                        style: 'cancel'
+                                                                    }]);
                                                                 },
-                                                                {
-                                                                    text: 'cancel',
-                                                                    style: 'cancel'
-                                                                }]);
-                                                            },
-                                                            true
-                                                        );
-                                                        builder.show();
+                                                                true
+                                                            );
+                                                            builder.show();
 
-                                                    } : undefined}
-                                                    onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
-                                                />
-                                            )}
-                                        </YMutation>
-                                    ))}
+                                                        } : undefined}
+                                                        onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
+                                                    />
+                                                )}
+                                            </YMutation>
+                                        ))}
+                                    </SDeferred>
+
                                 </ZListItemGroup>
                             </SScrollView>
                         );

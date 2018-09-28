@@ -27,7 +27,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                         }
                     } else if (chat.__typename === 'SharedConversation') {
                         subtitle = 'Organization';
-                    } else if (chat.__typename === 'GroupConversation') {
+                    } else if (chat.__typename === 'GroupConversation' || chat.__typename === 'ChannelConversation') {
                         subtitle = chat.membersCount + ' members';
                     }
 

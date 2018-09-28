@@ -11,12 +11,14 @@ import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
+import { MessageIntroComponent } from './content/MessageIntroComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XOverflow } from '../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
+import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -91,7 +93,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     }
 }));
 
-const MenuWrapper = Glamorous.div<{compact: boolean}>(props => ({
+const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     position: 'absolute',
     right: props.compact ? -8 : 0,
     top: 0
@@ -99,54 +101,58 @@ const MenuWrapper = Glamorous.div<{compact: boolean}>(props => ({
 
 export class MessageComponent extends React.PureComponent<MessageComponentProps> {
     render() {
+        const { message } = this.props;
         let content: any[] = [];
         let date: any = null;
-        if (isServerMessage(this.props.message)) {
-            if (this.props.message.message && this.props.message.message.length > 0) {
-                content.push(<MessageTextComponent message={this.props.message.message} key={'text'} isService={this.props.message.isService} />);
+        if (isServerMessage(message)) {
+            if (message.message && message.message.length > 0) {
+                content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} />);
             }
-            if (this.props.message.file) {
+            if (message.file && !message.urlAugmentation) {
+                let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
+                let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
+                let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
+                let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
 
-                let w = this.props.message.fileMetadata!!.imageWidth ? this.props.message.fileMetadata!!.imageWidth!! : undefined;
-                let h = this.props.message.fileMetadata!!.imageHeight ? this.props.message.fileMetadata!!.imageHeight!! : undefined;
-                let name = this.props.message.fileMetadata!!.name ? this.props.message.fileMetadata!!.name!! : undefined;
-                let size = this.props.message.fileMetadata!!.size ? this.props.message.fileMetadata!!.size!! : undefined;
-
-                if (this.props.message.fileMetadata!!.isImage && !!w && !!h) {
-                    if (this.props.message.fileMetadata!!.imageFormat === 'GIF') {
-                        content.push(<MessageAnimationComponent key={'file'} file={this.props.message.file} fileName={name} width={w} height={h} />);
+                if (message.fileMetadata!!.isImage && !!w && !!h) {
+                    if (message.fileMetadata!!.imageFormat === 'GIF') {
+                        content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
                     } else {
-                        content.push(<MessageImageComponent key={'file'} file={this.props.message.file} fileName={name} width={w} height={h} />);
+                        content.push(<MessageImageComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
                     }
                 } else {
-                    content.push(<MessageFileComponent key={'file'} file={this.props.message.file} fileName={name} fileSize={size} />);
+                    content.push(<MessageFileComponent key={'file'} file={message.file} fileName={name} fileSize={size} />);
                 }
             }
-            if (this.props.message.urlAugmentation) {
-                if (this.props.message.urlAugmentation.url.startsWith('https://app.openland.com/o') && this.props.message.urlAugmentation.url.includes('listings#')) {
-                    content = [];
+            if (message.urlAugmentation) {
+                if (message.urlAugmentation.type === 'intro') {
+                    content.push(<MessageIntroComponent key="intro" urlAugmentation={message.urlAugmentation} file={message.file} fileMetadata={message.fileMetadata} user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User} />);
                 }
-                content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...this.props.message.urlAugmentation} />);
-
+                if (message.urlAugmentation.type !== 'intro') {
+                    if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
+                        content = [];
+                    }
+                    content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...message.urlAugmentation} />);
+                }
             }
-            date = <XDate value={this.props.message.date} format="time" />;
+            date = <XDate value={message.date} format="time" />;
         } else {
-            if (this.props.message.message && this.props.message.message.length > 0) {
-                content.push(<MessageTextComponent message={this.props.message.message} key={'text'} isService={false} />);
+            if (message.message && message.message.length > 0) {
+                content.push(<MessageTextComponent message={message.message} key={'text'} isService={false} />);
             }
-            if (this.props.message.file) {
+            if (message.file) {
                 content.push(
                     <MessageUploadComponent
                         key={'file'}
-                        progress={Math.round(this.props.message.progress * 100)}
-                        title={'Uploading ' + this.props.message.file + ' (' + Math.round(this.props.message.progress * 100) + '%)'}
+                        progress={Math.round(message.progress * 100)}
+                        title={'Uploading ' + message.file + ' (' + Math.round(message.progress * 100) + '%)'}
                     />
                 );
             }
             date = 'Sending...';
-            if (this.props.message.failed) {
+            if (message.failed) {
                 date = 'Failed';
-                let key = this.props.message.key;
+                let key = message.key;
                 content.push(
                     <XHorizontal>
                         <XButton onClick={() => this.props.conversation.cancelMessage(key)} text="Cancel" />
@@ -162,7 +168,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         }
 
         // menu
-        let menu = isServerMessage(this.props.message) && this.props.out ?
+        let menu = isServerMessage(message) && this.props.out ?
             (
                 <MenuWrapper className="menu" compact={this.props.compact}>
                     <XOverflow
@@ -170,8 +176,8 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         placement="bottom-end"
                         content={
                             <>
-                                {this.props.message.message && <XMenuItem style="primary-sky-blue" query={{ field: 'editMessage', value: this.props.message.id }}>Edit</XMenuItem>}
-                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: this.props.message.id }}>Delete</XMenuItem>
+                                {message.message && <XMenuItem style="primary-sky-blue" query={{ field: 'editMessage', value: message.id }}>Edit</XMenuItem>}
+                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
                             </>
                         }
                     />

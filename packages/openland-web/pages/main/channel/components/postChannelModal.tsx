@@ -144,7 +144,16 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWi
                         size="small"
                         valueStoreKey="fields.input.summary"
                     />
-                    {this.state.addPhoto && <XAvatarUpload field="input.photo" cropParams="1:1, free" placeholder={{ add: TextOrganizationProfile.listingCreateDoPhotoPlaceholderAdd, change: TextOrganizationProfile.listingCreateDoPhotoPlaceholderChange }} />}
+                    {this.state.addPhoto && (
+                        <XAvatarUpload
+                            field="input.photo"
+                            cropParams="1:1, free"
+                            placeholder={{
+                                add: TextOrganizationProfile.listingCreateDoPhotoPlaceholderAdd,
+                                change: TextOrganizationProfile.listingCreateDoPhotoPlaceholderChange
+                            }}
+                        />
+                    )}
 
                     {/* <XLocationPickerModal field="input.location" placeholder={TextOrganizationProfile.listingCreateDoLocationPlaceholder} /> */}
 

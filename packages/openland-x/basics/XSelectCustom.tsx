@@ -64,6 +64,7 @@ interface XSelectCustomProps extends XSelectProps, XFlexStyles {
     placeholder?: string;
     popper?: boolean;
     rounded?: boolean;
+    helpText?: string;
 }
 
 const CustomContentDiv = Glamorous(XPopper.Content)({
@@ -157,6 +158,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
     }
 
     onPick = (option: { label: string, value: string }) => {
+        if (this.props.multi === false && this.state.lastValue[0] !== undefined) {
+            return;
+        }
         let res = this.state.lastValue;
         if (!(res || []).find(i => i.value === option.value)) {
             res.push(option);
@@ -250,6 +254,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                                 query={this.state.inputVal}
                                 options={[{ values: options.filter(o => !(this.state.lastValue || []).find(l => l.value === o.value)) }]}
                                 onPick={this.onPick}
+                                helpText={this.props.helpText}
                             />
                         }
                     >

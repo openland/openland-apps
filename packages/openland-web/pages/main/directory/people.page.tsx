@@ -78,8 +78,7 @@ class Communities extends React.PureComponent<CommunitiesProps> {
             <CommunitiesCards
                 tagsCount={this.tagsCount}
                 variables={{
-                    query: this.props.searchText,
-                    sort: JSON.stringify(sort),
+                    query: this.props.searchText
                 }}
             />
         );
