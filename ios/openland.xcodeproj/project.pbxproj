@@ -65,6 +65,15 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A0C52DC8CE88418DB6A5F0E4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDCBF4B960B9464F89A8B561 /* Foundation.ttf */; };
 		AA006CD0211A581D0093F7EF /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA006C95211A58070093F7EF /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AA0D74A4215EA8DE00BDE84E /* WorkSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D749B215EA8DC00BDE84E /* WorkSans-Black.ttf */; };
+		AA0D74A5215EA8DE00BDE84E /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D749C215EA8DC00BDE84E /* WorkSans-Bold.ttf */; };
+		AA0D74A6215EA8DE00BDE84E /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D749D215EA8DC00BDE84E /* WorkSans-SemiBold.ttf */; };
+		AA0D74A7215EA8DE00BDE84E /* WorkSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D749E215EA8DC00BDE84E /* WorkSans-Light.ttf */; };
+		AA0D74A8215EA8DE00BDE84E /* WorkSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D749F215EA8DD00BDE84E /* WorkSans-Thin.ttf */; };
+		AA0D74A9215EA8DE00BDE84E /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A0215EA8DD00BDE84E /* WorkSans-Regular.ttf */; };
+		AA0D74AA215EA8DE00BDE84E /* WorkSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A1215EA8DD00BDE84E /* WorkSans-ExtraBold.ttf */; };
+		AA0D74AB215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A2215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf */; };
+		AA0D74AC215EA8DE00BDE84E /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74A3215EA8DE00BDE84E /* WorkSans-Medium.ttf */; };
 		AA5ACBC82107642B004798B4 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5ACBC521076417004798B4 /* libRCTPushNotification.a */; };
 		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
@@ -760,6 +769,15 @@
 		9F5C2C7DD6684B668EDE8F57 /* libRNSuperEllipseMask.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSuperEllipseMask.a; sourceTree = "<group>"; };
 		9FC22338AF5747AE965D313C /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
+		AA0D749B215EA8DC00BDE84E /* WorkSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Black.ttf"; sourceTree = "<group>"; };
+		AA0D749C215EA8DC00BDE84E /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Bold.ttf"; sourceTree = "<group>"; };
+		AA0D749D215EA8DC00BDE84E /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		AA0D749E215EA8DC00BDE84E /* WorkSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Light.ttf"; sourceTree = "<group>"; };
+		AA0D749F215EA8DD00BDE84E /* WorkSans-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Thin.ttf"; sourceTree = "<group>"; };
+		AA0D74A0215EA8DD00BDE84E /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Regular.ttf"; sourceTree = "<group>"; };
+		AA0D74A1215EA8DD00BDE84E /* WorkSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		AA0D74A2215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-ExtraLight.ttf"; sourceTree = "<group>"; };
+		AA0D74A3215EA8DE00BDE84E /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Medium.ttf"; sourceTree = "<group>"; };
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedEventEmitter.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
@@ -990,6 +1008,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AA0D7450215EA8BD00BDE84E /* Fonts */,
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
@@ -1168,6 +1187,22 @@
 				AA006C9E211A58070093F7EF /* libLottieReactNative.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AA0D7450215EA8BD00BDE84E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				AA0D749B215EA8DC00BDE84E /* WorkSans-Black.ttf */,
+				AA0D749C215EA8DC00BDE84E /* WorkSans-Bold.ttf */,
+				AA0D74A1215EA8DD00BDE84E /* WorkSans-ExtraBold.ttf */,
+				AA0D74A2215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf */,
+				AA0D749E215EA8DC00BDE84E /* WorkSans-Light.ttf */,
+				AA0D74A3215EA8DE00BDE84E /* WorkSans-Medium.ttf */,
+				AA0D74A0215EA8DD00BDE84E /* WorkSans-Regular.ttf */,
+				AA0D749D215EA8DC00BDE84E /* WorkSans-SemiBold.ttf */,
+				AA0D749F215EA8DD00BDE84E /* WorkSans-Thin.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		AA10BF52210994060041ACBA /* Products */ = {
@@ -2290,21 +2325,30 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0D74A4215EA8DE00BDE84E /* WorkSans-Black.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				AA6281AB2151C8BD007C8200 /* VERSION in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				0D5642009EC645CCA8BB1EEC /* Entypo.ttf in Resources */,
 				F636CDE544C143D1B37FB8DF /* EvilIcons.ttf in Resources */,
+				AA0D74A9215EA8DE00BDE84E /* WorkSans-Regular.ttf in Resources */,
 				4C9133F2ECA24BF5B977D198 /* Feather.ttf in Resources */,
+				AA0D74A7215EA8DE00BDE84E /* WorkSans-Light.ttf in Resources */,
 				B4AF608A4BB3404E9C9EA40D /* FontAwesome.ttf in Resources */,
+				AA0D74AA215EA8DE00BDE84E /* WorkSans-ExtraBold.ttf in Resources */,
 				A0C52DC8CE88418DB6A5F0E4 /* Foundation.ttf in Resources */,
 				7F84D057DBB04B27B8CCE27C /* Ionicons.ttf in Resources */,
+				AA0D74AC215EA8DE00BDE84E /* WorkSans-Medium.ttf in Resources */,
 				8310E3E5526E402699A09B2F /* MaterialCommunityIcons.ttf in Resources */,
+				AA0D74A5215EA8DE00BDE84E /* WorkSans-Bold.ttf in Resources */,
+				AA0D74A8215EA8DE00BDE84E /* WorkSans-Thin.ttf in Resources */,
 				AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */,
 				B4E889AAE62D4E939C55A608 /* MaterialIcons.ttf in Resources */,
 				1CC3BD25D0634CBB899B6793 /* Octicons.ttf in Resources */,
+				AA0D74A6215EA8DE00BDE84E /* WorkSans-SemiBold.ttf in Resources */,
 				C76D7A1B6372414D92C3ADEB /* SimpleLineIcons.ttf in Resources */,
 				C4CCFE291D7643E781230076 /* Zocial.ttf in Resources */,
+				AA0D74AB215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

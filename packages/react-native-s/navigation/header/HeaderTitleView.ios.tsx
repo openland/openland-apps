@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 17,
         fontWeight: '600',
-        lineHeight: 44
+        lineHeight: 44,
+        fontFamily: 'WorkSans-Medium'
     } as TextStyle,
     titleLarge: {
         color: '#000',
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         lineHeight: 52,
         paddingLeft: 15,
-        paddingRight: 15
+        paddingRight: 15,
+        fontFamily: 'WorkSans-Regular'
     } as TextStyle
 });
 
