@@ -31,7 +31,7 @@ class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 
     render() {
         return (
-            <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.props.query }} fetchPolicy="cache-and-network">
+            <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.props.query, limit: 200 }} fetchPolicy="cache-and-network">
                 {(reponse) => (
                     <SScrollView>
                         <ZListItemGroup>
@@ -52,7 +52,7 @@ class UserPickerComponent extends React.PureComponent<PageProps> {
         let searchRender = <UserSearch query="" router={this.props.router} />;
         return (
             <>
-                <SHeader title="Add user" />
+                <SHeader title="Add user_" />
                 <SSearchControler searchRender={searchRender} >
                     {searchRender}
                 </SSearchControler>

@@ -11,6 +11,8 @@ import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
+import { SSearchControler } from 'react-native-s/SSearchController';
+import { Alert } from 'react-native';
 
 export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {
     render() {
@@ -27,20 +29,42 @@ export class DirectoryItemComponent extends React.PureComponent<{ item: Organiza
         );
     }
 }
+
+class OrganizationSearchComponent extends React.Component<PageProps & { query: string }> {
+    render() {
+        return this.props.query ? (
+            <ZAsyncRoutedList
+                key={this.props.query}
+                style={{ flexGrow: 1 }}
+                query={ExploreOrganizationsQuery}
+                variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]), prefix: this.props.query }}
+                renderItem={(item) => {
+                    return (
+                        <DirectoryItemComponent item={item} router={this.props.router} />
+                    );
+                }}
+            />
+        ) : null;
+    }
+}
 class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
                 <SHeader title="Organizations" />
-                <ZAsyncRoutedList
-                    style={{ flexGrow: 1 }}
-                    query={ExploreOrganizationsQuery}
-                    renderItem={(item) => {
-                        return (
-                            <DirectoryItemComponent item={item} router={this.props.router} />
-                        );
-                    }}
-                />
+                <SSearchControler searchRender={<OrganizationSearchComponent query="" router={this.props.router} />}>
+                    <ZAsyncRoutedList
+                        style={{ flexGrow: 1 }}
+                        query={ExploreOrganizationsQuery}
+                        variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }}
+                        renderItem={(item) => {
+                            return (
+                                <DirectoryItemComponent item={item} router={this.props.router} />
+                            );
+                        }}
+                    />
+                </SSearchControler>
+
             </>
         );
     }

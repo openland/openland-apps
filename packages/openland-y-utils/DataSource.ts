@@ -129,6 +129,21 @@ export class DataSource<T extends DataSourceItem> {
             throw Error('Trying to remove non-existent item');
         }
     }
+    clear() {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
+        this.data.map((o, i) => {
+            let removed = this.data[i];
+            let res = [...this.data];
+            res.splice(i, 1);
+            this.data = res;
+            this.dataByKey.delete(o.key);
+            for (let w of this.watchers) {
+                w.onDataSourceItemUpdated(removed, i);
+            }
+        });
+    }
     moveItem(key: string, index: number) {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
