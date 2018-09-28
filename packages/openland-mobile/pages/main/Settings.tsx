@@ -97,6 +97,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     />
                                     {secondaryFiltered.map((v) => (
                                         <ZListItem
+                                            key={v.id}
                                             text={v.name}
                                             leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
                                             onPress={() => this.props.router.push('ProfileOrganization', { id: v.id })}

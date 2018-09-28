@@ -125,7 +125,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                     <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                         <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
-                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>New era of professional messaging</Text>
+                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>Messaging for smart people</Text>
                         </View>
                     </View>
                     <View flexDirection="column" style={{ marginTop: 8, marginBottom: 12 }}>
