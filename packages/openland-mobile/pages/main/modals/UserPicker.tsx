@@ -52,7 +52,7 @@ class UserPickerComponent extends React.PureComponent<PageProps> {
         let searchRender = <UserSearch query="" router={this.props.router} />;
         return (
             <>
-                <SHeader title="Add user_" />
+                <SHeader title="Add user" />
                 <SSearchControler searchRender={searchRender} >
                     {searchRender}
                 </SSearchControler>
