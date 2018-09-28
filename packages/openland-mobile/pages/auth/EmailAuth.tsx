@@ -8,7 +8,7 @@ import { signupStyles } from '../signup/SignupUser';
 // import { Auth0 } from 'react-native-auth0-s/Auth0';
 import { ZForm } from '../../components/ZForm';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import { UserError } from 'openland-y-forms/errorHandling';
 
 let email = '';
@@ -40,23 +40,25 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
             <>
                 <SHeader title="Enter your email" />
                 <SHeaderButton title="Next" onPress={() => this.ref.current!.submitForm()} />
-                <ZForm
-                    ref={this.ref}
-                    action={async (src) => {
-                        email = src.email;
-                        let res = await http({
-                            url: 'https://api.openland.com/auth/sendCode',
-                            body: {
-                                email: email,
-                            },
-                            method: 'POST'
-                        });
-                        session = res.session;
-                    }}
-                    onSuccess={() => this.props.router.push('EmailCode')}
-                >
-                    <ZTextInput field="email" style={signupStyles.input} placeholder="email" width="100%" />
-                </ZForm>
+                <View style={{ marginTop: 23 }}>
+                    <ZForm
+                        ref={this.ref}
+                        action={async (src) => {
+                            email = src.email;
+                            let res = await http({
+                                url: 'https://api.openland.com/auth/sendCode',
+                                body: {
+                                    email: email,
+                                },
+                                method: 'POST'
+                            });
+                            session = res.session;
+                        }}
+                        onSuccess={() => this.props.router.push('EmailCode')}
+                    >
+                        <ZTextInput field="email" style={signupStyles.input} placeholder="email" width="100%" />
+                    </ZForm>
+                </View>
             </>
         );
     }
@@ -72,33 +74,35 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
             <>
                 <SHeader title="Enter code" />
                 <SHeaderButton title="Next" onPress={() => this.ref.current!.submitForm()} />
-                <ZForm
-                    ref={this.ref}
-                    action={async (src) => {
-                        let res = await http({
-                            url: 'https://api.openland.com/auth/checkCode',
-                            body: {
-                                session: session,
-                                code: src.code
-                            },
-                            method: 'POST'
-                        });
-                        let res2 = await http({
-                            url: 'https://api.openland.com/auth/getAccessToken',
-                            body: {
-                                session: session,
-                                authToken: res.authToken
-                            },
-                            method: 'POST'
-                        });
+                <View style={{ marginTop: 23 }}>
+                    <ZForm
+                        ref={this.ref}
+                        action={async (src) => {
+                            let res = await http({
+                                url: 'https://api.openland.com/auth/checkCode',
+                                body: {
+                                    session: session,
+                                    code: src.code
+                                },
+                                method: 'POST'
+                            });
+                            let res2 = await http({
+                                url: 'https://api.openland.com/auth/getAccessToken',
+                                body: {
+                                    session: session,
+                                    authToken: res.authToken
+                                },
+                                method: 'POST'
+                            });
 
-                        await AsyncStorage.setItem('openland-token', res2.accessToken);
+                            await AsyncStorage.setItem('openland-token', res2.accessToken);
 
-                    }}
-                    onSuccess={() => AppUpdateTracker.restartApp()}
-                >
-                    <ZTextInput field="code" style={signupStyles.input} placeholder="code" width="100%" />
-                </ZForm>
+                        }}
+                        onSuccess={() => AppUpdateTracker.restartApp()}
+                    >
+                        <ZTextInput field="code" style={signupStyles.input} placeholder="code" width="100%" />
+                    </ZForm>
+                </View>
             </>
         );
     }

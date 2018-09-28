@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text, Alert } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -17,6 +17,11 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatRight } from './components/ChatRight';
+import { ZRoundedButton } from '../../components/ZRoundedButton';
+import { YQuery } from 'openland-y-graphql/YQuery';
+import { YMutation } from 'openland-y-graphql/YMutation';
+import { ChannelJoinMutation } from 'openland-api';
+import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -98,9 +103,47 @@ class ConversationComponent extends React.Component<PageProps> {
                                     if (this.props.router.params.flexibleId) {
                                         return (
                                             <ZQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.flexibleId }}>
-                                                {resp => (
-                                                    <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />
-                                                )}
+                                                {resp => {
+                                                    if (resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.myStatus !== 'member') {
+                                                        return (
+                                                            <>
+                                                                <SHeaderView>
+                                                                    <ChatHeader conversationId={resp.data.chat.id} router={this.props.router} />
+                                                                </SHeaderView>
+                                                                <SHeaderButton>
+                                                                    <ChatRight conversationId={resp.data.chat.id} router={this.props.router} />
+                                                                </SHeaderButton>
+                                                                <View width="100%" height="100%" justifyContent="center">
+                                                                    <View alignSelf="center" flexDirection="column">
+                                                                        <Text style={{ fontSize: 14, color: '#000', textAlign: 'center', margin: 20 }}>{resp.data.chat.description}</Text>
+                                                                    </View>
+                                                                    <View alignSelf="center">
+                                                                        <YMutation mutation={ChannelJoinMutation} refetchQueriesVars={[{ query: ChatInfoQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
+                                                                            {(join) => (
+                                                                                <ZRoundedButton
+                                                                                    title={(resp.data.chat as any).myStatus === 'requested' ? 'Invite requested' : 'Join'}
+                                                                                    onPress={async () => {
+                                                                                        startLoader();
+                                                                                        try {
+                                                                                            await join({ variables: { channelId: resp.data.chat.id } });
+                                                                                        } catch (e) {
+                                                                                            Alert.alert(e.message);
+                                                                                        }
+                                                                                        stopLoader();
+
+                                                                                    }}
+                                                                                />
+                                                                            )}
+                                                                        </YMutation>
+                                                                    </View>
+
+                                                                </View>
+
+                                                            </>
+                                                        );
+                                                    }
+                                                    return <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />;
+                                                }}
 
                                             </ZQuery>
                                         );
@@ -109,7 +152,8 @@ class ConversationComponent extends React.Component<PageProps> {
                                     }
                                 }}
                             </MessengerContext.Consumer>
-                        )}
+                        )
+                        }
                     </ZPictureModalContext.Consumer>
                 </View>
             </>

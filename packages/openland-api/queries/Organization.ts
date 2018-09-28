@@ -69,8 +69,8 @@ export const FollowOrganizationMutation = gql`
 `;
 
 export const ExploreOrganizationsQuery = gql`
-    query ExploreOrganizations($query: String, $sort: String, $page: Int, $after: String) {
-        items: alphaOrganizations(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
+    query ExploreOrganizations($query: String, $prefix: String, $sort: String, $page: Int, $after: String) {
+        items: alphaOrganizations(query: $query, prefix: $prefix, sort: $sort, page: $page, first: 25, after: $after) {
             edges {
                 node {
                     ...OrganizationSearch

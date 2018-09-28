@@ -31,7 +31,7 @@ class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 
     render() {
         return (
-            <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.props.query }} fetchPolicy="cache-and-network">
+            <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.props.query, limit: 200 }} fetchPolicy="cache-and-network">
                 {(reponse) => (
                     <SScrollView>
                         <ZListItemGroup>

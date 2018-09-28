@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Share } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
 import { ZListItem } from '../../components/ZListItem';
@@ -87,6 +87,9 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
+                                 <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
+                                    <ZListItem text="Share link" onPress={() => Share.share({title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com'})} />
+                                </ZListItemGroup>
                                 <ZListItemGroup header="Organizations">
                                     <ZListItem
                                         text={primary.name}

@@ -22,7 +22,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
                 <YMutation mutation={CreateOrganizationMutation} refetchQueries={[AccountSettingsQuery]}>
                     {create => (
-                        <ZForm ref={this.ref} action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }} onSuccess={() => { this.props.router.back(); }}>
+                        <ZForm ref={this.ref} action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }} onSuccess={() => { this.props.router.params.action ? this.props.router.params.action() : this.props.router.back(); }}>
                             <ZListItemGroup>
                                 <ZListItemBase height={96} separator={false}>
                                     <View padding={15}>

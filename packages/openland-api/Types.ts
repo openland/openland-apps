@@ -5802,6 +5802,7 @@ export interface ExploreOrganizations {
 
 export interface ExploreOrganizationsVariables {
   query?: string | null;
+  prefix?: string | null;
   sort?: string | null;
   page?: number | null;
   after?: string | null;
