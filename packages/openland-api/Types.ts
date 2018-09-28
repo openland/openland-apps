@@ -1633,6 +1633,7 @@ export interface ChatCreateIntroVariables {
   conversationId: string;
   userId: any;
   about: string;
+  file?: string | null;
 }
 
 /* tslint:disable */

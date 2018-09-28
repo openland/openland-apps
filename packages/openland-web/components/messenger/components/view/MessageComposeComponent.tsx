@@ -325,7 +325,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 e.preventDefault();
                 this.props.router.replaceQueryParams({ editMessage: message.id });
             }
-
         }
     }
 
