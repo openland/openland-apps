@@ -46,6 +46,17 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                         {resp.data.organization.twitter && <ZListItem title="twitter" text={resp.data.organization.twitter} />}
                                     </ZListItemGroup>
 
+                                    <ZListItemGroup header="Public channels">
+                                        {resp.data.organization.channels.map((v) => (
+                                            <ZListItem
+                                                key={v!!.id}
+                                                leftAvatar={{ photo: v!!.photo, title: v!!.title, key: v!!.id }}
+                                                text={v!!.title}
+                                                onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
+                                            />
+                                        ))}
+                                    </ZListItemGroup>
+
                                     <ZListItemGroup header="Members">
                                         {resp.data.organization.members.map((v) => (
                                             <ZListItem
