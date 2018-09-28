@@ -45,8 +45,8 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                         <View
                             style={{
                                 position: 'absolute',
-                                top: 4,
-                                right: 2
+                                top: -2,
+                                right: -5
                             }}
                         >
                             {this.props.counter !== undefined && (<ZCounter value={this.props.counter} appearance="contrast" />)}
