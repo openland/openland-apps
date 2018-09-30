@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         width: 335,
         backgroundColor: '#4747ec',
         color: '#fff',
-        borderRadius: 12
+        borderRadius: 24
     } as ViewStyle,
     buttonTitle: {
         fontSize: 15,
@@ -124,25 +124,17 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 <SSafeAreaView style={styles.container}>
                     <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                         <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
-                            <View style={{ flexDirection: 'row' }}><Image source={require('assets/logo.png')} style={{ width: 60, height: 38 }} /><Text style={{ fontSize: 42, lineHeight: 48, marginTop: -6, marginLeft: -24 }}>Openland</Text></View>
-                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18 }}>Messaging for smart people</Text>
+                            <Image source={require('assets/logo.png')} style={{ width: 200, height: 35 }} />
+                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18, color: '#000', opacity: 0.7 }}>Messaging for smart people</Text>
                         </View>
                     </View>
-                    <View flexDirection="column" style={{ marginTop: 8, marginBottom: 12 }}>
-                        <TouchableOpacity>
-                            <View style={styles.button}>
-                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Start networking'}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <Text>— or —</Text>
                     <View flexDirection="column" style={{ marginTop: 12 }}>
                         <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading}>
                             <View style={styles.button}>
                                 <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
                                     {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
                                 </View>
-                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Google'}</Text>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Sign in with Google'}</Text>
                                 <View style={{ width: 70, height: 70 }}>
                                     {}
                                 </View>
@@ -152,8 +144,8 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                     </View>
                     <View flexDirection="column" style={{ marginTop: 8, marginBottom: 56 }}>
                         <TouchableOpacity onPress={this.handleEmailPress}>
-                            <View style={styles.button}>
-                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Login with Email'}</Text>
+                            <View style={[styles.button, { backgroundColor: '#919191' }]}>
+                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Continue with email'}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
