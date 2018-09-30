@@ -10,6 +10,8 @@ import { ConversationContainer } from './components/view/ConversationContainer';
 import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import { XButton } from 'openland-x/XButton';
+import ChannelIcon from './components/icons/ic-channel.svg';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -25,8 +27,20 @@ const HeaderWrapper = Glamorous.div({
     justifyContent: 'center',
     height: 60,
     flexShrink: 0,
-    paddingLeft: 40,
-    paddingRight: 40
+    maxWidth: 832,
+    paddingLeft: 66,
+    paddingRight: 66,
+    width: '100%',
+    alignSelf: 'center'
+});
+
+const HeaderButton = Glamorous(XButton)({
+    '& svg': {
+        marginLeft: -4
+    },
+    '&:active svg *': {
+        fill: '#ffffff'
+    }
 });
 
 const Title = Glamorous.div({
@@ -34,36 +48,80 @@ const Title = Glamorous.div({
     maxWidth: '100%',
     width: '100%',
     flexBasis: '100%',
-    fontSize: 20,
+    fontSize: 18,
+    lineHeight: '20px',
     fontWeight: 500,
-    letterSpacing: 0.6,
-    color: '#334562'
+    letterSpacing: -0.5,
+    color: '#121e2b'
 });
 
 const ComposeSelectWrapper = Glamorous.div({
-    maxWidth: 930,
-    paddingLeft: 40,
-    paddingRight: 40,
+    maxWidth: 832,
+    paddingLeft: 66,
+    paddingRight: 66,
     width: '100%',
     alignSelf: 'center'
 });
 
-const EmptyDiv = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    flexGrow: 1,
-    flexBasis: '100%'
+const EmptyWrapper = Glamorous(XVertical)({
+    position: 'relative',
+    paddingTop: 30,
+    paddingBottom: 30,
+    marginLeft: -16,
+    marginRight: -16
 });
 
-const ComposeText = Glamorous.div({
+const EmptyReactangle = Glamorous.div({
+    width: '100%',
+    height: 600,
+    position: 'absolute',
+    top: 'calc(50% - 300px)',
+    left: 0,
+    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'bottom',
+    zIndex: 0,
+    pointerEvents: 'none'
+});
+
+const EmptyContent = Glamorous.div({
+    zIndex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+    marginBottom: 50
+});
+
+const EmptyImage = Glamorous.div({
+    width: 358,
+    height: 311,
+    background: 'url(/static/X/messenger/compose-empty.png) no-repeat',
+    backgroundImage: '-webkit-image-set(url(/static/X/messenger/compose-empty.png) 1x, url(/static/X/messenger/compose-empty@2x.png) 2x)',
+    backgroundSize: '100% auto',
+    backgroundPosition: 'center bottom',
+    marginBottom: 50
+});
+
+const EmptyTitle = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: '24px',
+    letterSpacing: -0.35,
+    color: '#334562',
+    marginBottom: 4
+});
+
+const EmptyText = Glamorous.div({
+    width: 320,
     fontSize: 14,
-    letterSpacing: -0.3,
-    color: '#99a2b0',
-    marginTop: 10
+    fontWeight: 500,
+    lineHeight: '20px',
+    letterSpacing: -0.35,
+    color: '#5c6a81',
+    textAlign: 'center'
 });
 
 class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null }> {
@@ -135,12 +193,18 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
         return (
             <Root flexGrow={1} separator={'none'}>
                 <HeaderWrapper>
-                    <Title>Compose new message</Title>
+                    <Title>Find or start a conversation</Title>
+                    <HeaderButton
+                        text="New channel"
+                        size="r-default"
+                        icon={<ChannelIcon />}
+                        query={{ field: 'createChannel', value: 'true' }}
+                    />
                 </HeaderWrapper>
                 <ConversationContainer>
                     <ComposeSelectWrapper>
                         <ComposeSelect
-                            placeholder="Start typing name or multiple names..."
+                            placeholder="Whom would you like to message?"
                             onChange={this.handleChange}
                             value={this.state.values}
                             multi={true}
@@ -149,10 +213,14 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                     </ComposeSelectWrapper>
                     <MessagesContainer>
                         {!this.state.conversationId && (
-                            <EmptyDiv>
-                                <img src={'/static/X/chat-compose.svg'} />
-                                <ComposeText>There are no people to create a chat</ComposeText>
-                            </EmptyDiv>
+                            <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
+                                <EmptyReactangle />
+                                <EmptyContent>
+                                    <EmptyImage />
+                                    <EmptyTitle>Start a conversation</EmptyTitle>
+                                    <EmptyText>You can message a person, create a group chat, or write to a channel</EmptyText>
+                                </EmptyContent>
+                            </EmptyWrapper>
                         )}
                         {this.state.conversationId && (
                             <ConversationMessagesComponent
