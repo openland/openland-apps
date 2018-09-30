@@ -27,6 +27,8 @@ import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withCreateUserProfileAndOrganization } from '../../api/withCreateUserProfileAndOrganization';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
+import { ChannelSignup, ChannelTitle, ChannelText, ButtonsWrapper } from './components/SignComponents';
+import { XButton } from 'openland-x/XButton';
 
 const Footer = Glamorous.div({
     position: 'absolute',
@@ -57,9 +59,31 @@ const PopupWrapper = Glamorous.div({
 });
 
 const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
-    width: 240,
-    height: 240
+    width: 110,
+    height: 110,
+    '& img': {
+        width: '108px!important',
+        height: '108px!important',
+    }
 });
+
+const ProfileAvatarWrapper = Glamorous.div({
+    margin: '0 auto',
+    width: 110,
+    marginBottom: 23
+});
+
+const SubmitWrapper = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 50
+});
+
+const ResolveView = Glamorous.div<{ view: boolean }>((props) => ({
+    display: props.view ? 'block' : 'none'
+}));
+
 const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
@@ -141,11 +165,123 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
     );
 });
 
+class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            isOrgView: false
+        };
+    }
+
+    showOrgView = () => {
+        this.setState({
+            isOrgView: true
+        });
+    }
+
+    render() {
+        let usePrefill = Cookie.get('auth-type') !== 'email';
+        let props = this.props;
+
+        return (
+            <ChannelSignup
+                headerStyle={this.state.isOrgView ? 'organization' : 'profile'}
+            >
+                <ChannelTitle>{this.state.isOrgView ? 'Enter your organization' : 'Introduce yourself'}</ChannelTitle>
+                <ChannelText>{this.state.isOrgView ? 'This will help to make new connections and discover opportunities' : 'Add your name and photo so others can recognize you'}</ChannelText>
+                <ButtonsWrapper marginTop={40} marginBottom={83} width={290}>
+                    <XForm
+                        defaultData={{
+                            input: {
+                                firstName: (usePrefill && props.data.prefill && props.data.prefill.firstName) || '',
+                                lastName: (usePrefill && props.data.prefill && props.data.prefill.lastName) || '',
+                                name: '',
+                                website: '',
+                                photoRef: null,
+                                personal: false,
+                            }
+                        }}
+                        defaultAction={async (data) => {
+                            await props.create({
+                                variables: {
+                                    user: {
+                                        firstName: data.input.firstName,
+                                        lastName: data.input.lastName,
+                                        photoRef: sanitizeIamgeRef(data.input.photoRef),
+                                    },
+                                    organization: {
+                                        name: data.input.name,
+                                        website: '',
+                                        personal: false,
+                                    }
+                                }
+                            });
+                            Cookie.remove('x-openland-invite');
+                            let redirect = props.router.query.redirect;
+                            window.location.href = (redirect ? redirect : '/');
+                            await delayForewer();
+                        }}
+                        defaultLayout={false}
+                    >
+                        <XFormError onlyGeneralErrors={true} width={290} />
+                        <XFormLoadingContent>
+                            <ResolveView view={!this.state.isOrgView}>
+                                <ProfileAvatarWrapper>
+                                    <XAvatarUploadStyled field="input.photoRef" size="small" initialUrl={usePrefill ? props.data.prefill && props.data.prefill.picture : undefined} />
+                                </ProfileAvatarWrapper>
+                                <XVertical>
+                                    <XFormField field="input.firstName">
+                                        <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
+                                    </XFormField>
+                                    <XFormField field="input.lastName">
+                                        <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                                    </XFormField>
+                                </XVertical>
+                            </ResolveView>
+                            <ResolveView view={this.state.isOrgView}>
+                                <XVertical>
+                                    <XFormField field="input.name">
+                                        <XInput field="input.name" size="r-default" color="primary-sky-blue" placeholder="Organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
+                                    </XFormField>
+                                </XVertical>
+                            </ResolveView>
+                        </XFormLoadingContent>
+                        <ResolveView view={!this.state.isOrgView}>
+                            <SubmitWrapper>
+                                <XButton onClick={this.showOrgView} size="r-default" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
+                            </SubmitWrapper>
+                        </ResolveView>
+                        <ResolveView view={this.state.isOrgView}>
+                            <SubmitWrapper>
+                                <XFormSubmit size="r-default" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
+                            </SubmitWrapper>
+                        </ResolveView>
+                    </XForm>
+                </ButtonsWrapper>
+            </ChannelSignup>
+        );
+    }
+}
+
+const ChannelCreateProfileForm = withCreateUserProfileAndOrganization((props) => {
+    if (canUseDOM) {
+        localStorage.setItem('isnewuser', 'newuser');
+    }
+
+    return (
+        <ChannelCreateProfileFormInner {...props} />
+    );
+});
+
 export default withApp('Create Profile and Organization', 'viewer', (props) => {
+    const fromChannel = Cookie.get('x-openland-invite');
+
     return (
         <>
             <XDocumentHead title={InitTexts.create_profile.pageTitle} titleSocial={InitTexts.socialPageTitle} />
-            <CreateProfileForm />
+
+            {canUseDOM && fromChannel && <ChannelCreateProfileForm />}
+            {canUseDOM && !fromChannel && <CreateProfileForm />}
         </>
     );
 });

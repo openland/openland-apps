@@ -3525,6 +3525,7 @@ export interface ChannelInviteInfo_invite_channel {
   __typename: "ChannelConversation";
   id: string;
   title: string;
+  photo: string | null;
   photos: string[];
   isRoot: boolean;
   featured: boolean;

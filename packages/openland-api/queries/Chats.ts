@@ -566,6 +566,7 @@ export const ChannelInviteInfoQuery = gql`
             channel{
                 id
                 title
+                photo
                 photos
                 isRoot
                 featured

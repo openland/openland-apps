@@ -9,30 +9,36 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from './_text';
 import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
 import { ChannelsInviteComponent } from '../../components/messenger/ChannelsInviteComponent';
-import { Sidebar } from './components/signChannelInviteComponents';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withUserInfo } from '../../components/UserInfo';
-import { AuthRouter } from '../../components/AuthRouter';
+import * as Cookie from 'js-cookie';
+import { XLoader } from 'openland-x/XLoader';
 
 const Root = Glamorous.div({
     display: 'flex',
-    minHeight: '100vh',
-    paddingLeft: 280,
-});
-
-const SideBarWrapper = Glamorous.div({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    maxHeight: '100vh'
+    height: '100vh',
+    backgroundColor: '#ffffff',
+    flexDirection: 'column'
 });
 
 const Content = Glamorous.div({
-    flexGrow: 1,
+    flex: 1,
 });
 
 const InfoText = Glamorous.div({
     marginBottom: 15
+});
+
+const HeaderWrapper = Glamorous.div({
+    paddingLeft: 32,
+    paddingTop: 28
+});
+
+const HeaderLogo = Glamorous.div({
+    width: 132,
+    height: 24,
+    background: 'url(/static/X/signup/logo.svg) no-repeat',
+    backgroundSize: '100% 100%'
 });
 
 const InviteInfo = withChannelInviteInfo((props) => {
@@ -47,9 +53,9 @@ const InviteInfo = withChannelInviteInfo((props) => {
             {!(props as any).instantRedirect &&
                 <XTrack event="Join Channel">
                     <Root>
-                        <SideBarWrapper>
-                            <Sidebar />
-                        </SideBarWrapper>
+                        <HeaderWrapper>
+                            <HeaderLogo />
+                        </HeaderWrapper>
                         <Content>
                             {props.data.invite && (
                                 <ChannelsInviteComponent
@@ -59,10 +65,13 @@ const InviteInfo = withChannelInviteInfo((props) => {
                                     signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
                                 />
                             )}
-                            {!props.data.invite && (
+                            {!props.data.invite && !props.loading && (
                                 <MessagePageContent title="Join">
                                     <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
                                 </MessagePageContent>
+                            )}
+                            {!props.data.invite && props.loading && (
+                                <XLoader loading={true} />
                             )}
                         </Content>
                     </Root>
@@ -73,12 +82,15 @@ const InviteInfo = withChannelInviteInfo((props) => {
 
 export default withAppBase('Join Channel', withUserInfo((props) => {
     let uuid = props.router.routeQuery.uuid;
+
+    Cookie.set('x-openland-invite', uuid, { path: '/' });
+
     return (
-        <AuthRouter>
+        <>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
                 <InviteInfo variables={{ uuid: uuid }} redirect={'/acceptChannelInvite/' + uuid} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + uuid : undefined} />
             </XTrack>
-        </AuthRouter>
+        </>
     );
 }));

@@ -21,6 +21,7 @@ const Root = Glamorous(XScrollView)({
     minWidth: '100%',
     height: '100%',
     flexShrink: 0,
+    backgroundColor: '#ffffff'
 });
 
 const MainContent = Glamorous.div({
@@ -46,7 +47,7 @@ const Close = Glamorous(XLink)({
 
 const UserInfoWrapper = Glamorous(XHorizontal)({
     margin: 'auto',
-    marginTop: 45,
+    marginTop: 65,
     marginBottom: 24,
     flexShrink: 0,
     '@media (max-height: 800px)': {
@@ -55,13 +56,53 @@ const UserInfoWrapper = Glamorous(XHorizontal)({
 });
 
 const InfoCardWrapper = Glamorous.div({
-    borderRadius: 6,
-    border: 'solid 1px #ecedf0',
+    borderRadius: 15,
     backgroundColor: '#fff',
     margin: 'auto',
-    padding: 32,
+    padding: '20px 20px 16px 28px',
     marginBottom: 32,
-    flexShrink: 0
+    flexShrink: 0,
+    overflow: 'hidden',
+    position: 'relative',
+    maxWidth: 460,
+
+    '&:before': {
+        content: ' ',
+        display: 'block',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        pointerEvents: 'none',
+        border: 'solid 1px #edeef3',
+        borderRadius: 15,
+    },
+
+    '&:after': {
+        content: ' ',
+        display: 'block',
+        width: 8,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        backgroundColor: '#f9a540',
+    }
+});
+
+const InfoCardHeader = Glamorous(XHorizontal)({
+    borderBottom: '1px solid #edeef3',
+    paddingBottom: 20,
+    marginBottom: 12,
+});
+
+const InfoCardBody = Glamorous.div({
+    opacity: 0.8,
+    fontSize: 16,
+    lineHeight: '24px',
+    letterSpacing: -0.1,
+    color: '#121e2b'
 });
 
 const Text = Glamorous.div<{ width?: number, autoMargin?: boolean }>(props => ({
@@ -77,24 +118,10 @@ const Text = Glamorous.div<{ width?: number, autoMargin?: boolean }>(props => ({
 const ChannelTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
-    lineHeight: 1.33,
+    lineHeight: '24px',
     letterSpacing: -0.3,
-    color: '#1790ff',
-    textAlign: 'center'
-});
-
-const Reactangle = Glamorous.div({
-    width: '100%',
-    height: 600,
-    position: 'absolute',
-    top: 'calc(50% - 300px)',
-    left: 0,
-    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'bottom',
-    zIndex: 0,
-    pointerEvents: 'none'
+    color: '#121e2b',
+    margin: '2px 0 8px'
 });
 
 const UserAvatar = Glamorous(XAvatar)({
@@ -106,50 +133,75 @@ const UserAvatar = Glamorous(XAvatar)({
     }
 });
 
-const ChannelCounter = Glamorous.div({
-    height: 24,
-    borderRadius: 16,
-    backgroundColor: '#F5F7F8',
-    paddingTop: 3,
-    paddingBottom: 3,
-    paddingLeft: 10,
-    paddingRight: 10,
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    '& > span': {
-        opacity: 0.8,
-        fontSize: 14,
-        fontWeight: 600,
-        lineHeight: 1.14,
-        letterSpacing: -0.2,
-        color: '#5c6a81'
+const ChannelAvatar = Glamorous(XAvatar)({
+    width: 60,
+    height: 60,
+    '& img': {
+        width: '60px !important',
+        height: '60px !important'
     },
-    '& > svg': {
-        marginRight: 4
+    '& > div': {
+        borderRadius: 30
     }
 });
 
+const ChannelCounter = Glamorous.div({
+    borderRadius: 16,
+    backgroundColor: '#F5F7F8',
+    paddingLeft: 9,
+    paddingRight: 11,
+    display: 'inline-block',
+    verticalAlign: 'top',
+    fontSize: 0,
+    lineHeight: 0,
+    '& > span': {
+        paddingTop: 3,
+        paddingBottom: 3,
+        display: 'inline-block',
+        verticalAlign: 'top',
+        opacity: 0.5,
+        fontSize: 13,
+        fontWeight: 500,
+        lineHeight: '16px',
+        letterSpacing: -0.4,
+        color: '#121e2b'
+    },
+    '& > svg': {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        marginTop: 5,
+        marginBottom: 6,
+        marginRight: 5
+    }
+});
+
+const AcceptButton = Glamorous(XButton)({
+    height: 40,
+    borderRadius: 20,
+    padding: '0 5px'
+});
+
 const ImageWrapper = Glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 64,
-    alignSelf: 'center',
+    height: 367,
+    position: 'absolute',
+    right: 0, bottom: 18, left: 0,
+    overflow: 'hidden',
     '@media (max-height: 800px)': {
-        marginTop: 30
+        height: 250
     }
 });
 
 const Image = Glamorous.div({
-    width: 691,
-    height: 391,
-    backgroundImage: 'url(\'/static/X/messenger/channel-invite-pic.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
+    position: 'absolute',
+    top: 0, bottom: 0, left: '50%',
+    width: 1242,
+    marginLeft: -688,
+    background: 'url(/static/X/signup/invite-illustration.png) no-repeat',
+    backgroundImage: '-webkit-image-set(url(/static/X/signup/invite-illustration.png) 1x, url(/static/X/signup/invite-illustration@2x.png) 2x)',
+    backgroundSize: 'auto 100%',
     '@media (max-height: 800px)': {
-        width: 500,
-        height: 391
+        width: 846,
+        marginLeft: -500,
     }
 });
 
@@ -197,6 +249,7 @@ interface ChannelsInviteComponentProps {
         isRoot: boolean,
         title: string,
         membersCount: number,
+        photo?: string | null,
         organization?: {
             name: string,
             isMine: boolean
@@ -214,11 +267,11 @@ interface ChannelsInviteComponentProps {
 
 export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
     render() {
-        let joinText = this.props.channel.myStatus === 'none' ? (this.props.channel.organization && this.props.channel.organization.isMine ? 'Join channel' : 'Request invite') : this.props.channel.myStatus === 'invited' ? 'Accept invite' : '???';
+        let channel = this.props.channel;
+        let joinText = channel.myStatus === 'none' ? (channel.organization && channel.organization.isMine ? 'Join channel' : 'Request invite') : channel.myStatus === 'invited' ? 'Accept invite' : '???';
         let closePath = this.props.onDirectory ? '/directory/channels' : '/mail/channels';
         return (
             <Root>
-                <Reactangle />
                 <MainContent>
                     {!this.props.noLogin && (
                         <XHorizontal justifyContent="flex-end">
@@ -234,24 +287,30 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         </UserInfoWrapper> : <div style={{ height: 50 }} />
                     }
                     <InfoCardWrapper>
-                        <XVertical separator={10} justifyContent="center">
-                            <XVertical justifyContent="center">
+                        <InfoCardHeader separator={8}>
+                            <ChannelAvatar
+                                cloudImageUuid={channel.photo || undefined}
+                                style="channel"
+                            />
+                            <div>
                                 <ChannelTitle>
-                                    {(!this.props.channel.isRoot ? this.props.channel.organization!!.name + ' / ' : '') + this.props.channel.title}
+                                    {(!channel.isRoot ? channel.organization!!.name + ' / ' : '') + channel.title}
                                 </ChannelTitle>
-                                <Text width={354} autoMargin={true}>{this.props.channel.description || TextChannel.descriptionPlaceholder}</Text>
-                            </XVertical>
-                            <ChannelCounter>
-                                <ProfileIcon />
-                                <span>{this.props.channel.membersCount}</span>
-                            </ChannelCounter>
-                        </XVertical>
+                                <ChannelCounter>
+                                    <ProfileIcon />
+                                    <span>{channel.membersCount} {channel.membersCount > 1 ? 'members' : 'member'}</span>
+                                </ChannelCounter>
+                            </div>
+                        </InfoCardHeader>
+                        <InfoCardBody>    
+                            {channel.description || TextChannel.descriptionPlaceholder}
+                        </InfoCardBody>
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((this.props.channel.myStatus === 'none' && !this.props.inviteLink) || this.props.channel.myStatus === 'invited') && <JoinButton channelId={this.props.channel.id} isMine={!!(this.props.channel.organization && this.props.channel.organization.isMine)} refetchVars={{ conversationId: this.props.channel.id }} text={joinText} />}
-                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: this.props.channel.id }} text="Accept invite" />}
-                            {this.props.channel.myStatus === 'requested' && (
+                            {((channel.myStatus === 'none' && !this.props.inviteLink) || channel.myStatus === 'invited') && <JoinButton channelId={channel.id} isMine={!!(channel.organization && channel.organization.isMine)} refetchVars={{ conversationId: channel.id }} text={joinText} />}
+                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: channel.id }} text="Accept invite" />}
+                            {channel.myStatus === 'requested' && (
                                 <XButton
                                     style="ghost"
                                     size="r-default"
@@ -260,23 +319,23 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                                     flexShrink={0}
                                 />
                             )}
-                            {this.props.channel.myStatus === 'member' && (
+                            {channel.myStatus === 'member' && (
                                 <XButton
                                     style="primary-sky-blue"
                                     size="r-default"
                                     text="Open channel"
                                     alignSelf="center"
                                     flexShrink={0}
-                                    path={'/mail/' + this.props.channel.id}
+                                    path={'/mail/' + channel.id}
                                 />
                             )}
                         </>
                     }
                     {this.props.signup && (
-                        <XButton
+                        <AcceptButton
                             style="primary-sky-blue"
                             size="r-default"
-                            text="Accept invite"
+                            text="Accept invitation"
                             alignSelf="center"
                             flexShrink={0}
                             path={this.props.signup}
