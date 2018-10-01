@@ -45,6 +45,9 @@ const Title = Glamorous.div({
     letterSpacing: -0.4,
     color: '#1790ff',
     marginTop: 7,
+    '&:first-child': {
+        marginTop: 0
+    }
 });
 
 const Description = Glamorous.div({
@@ -54,6 +57,9 @@ const Description = Glamorous.div({
     letterSpacing: -0.3,
     color: '#121e2b',
     marginTop: 3,
+    '&:first-child': {
+        marginTop: 0
+    }
 });
 
 const Image = Glamorous.img({
@@ -62,6 +68,9 @@ const Image = Glamorous.img({
     borderRadius: 5,
     overflow: 'hidden',
     marginTop: 13,
+    '&:first-child': {
+        marginTop: 0
+    }
 });
 
 export class MessageUrlAugmentationComponent extends React.Component<{
@@ -100,10 +109,12 @@ export class MessageUrlAugmentationComponent extends React.Component<{
         });
         return (
             <Container href={this.props.url}>
-                <Hostname>
-                    <WebsiteIcon />
-                    <span>{this.props.hostname}</span>
-                </Hostname>
+                {this.props.hostname && (
+                    <Hostname>
+                        <WebsiteIcon />
+                        <span>{this.props.hostname}</span>
+                    </Hostname>
+                )}
                 {this.props.title && <Title>{this.props.title}</Title>}
                 {parts && <Description>{parts}</Description>}
                 {this.props.imageURL && <Image src={this.props.imageURL} />}
