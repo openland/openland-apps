@@ -74,55 +74,55 @@ let sizeStyles = styleResolver({
 });
 
 let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, attach?: 'left' | 'right' | 'both' }) => ({
-    'x-large': props.style === 'organization' ? {
+    'x-large': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
     } : { borderRadius: 76 },
-    'large': props.style === 'organization' ? {
+    'large': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 65 },
-    's-large': props.style === 'organization' ? {
+    's-large': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 65 },
-    'x-medium': props.style === 'organization' ? {
+    'x-medium': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 43 },
-    's-medium': props.style === 'organization' ? {
+    's-medium': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 33 },
-    'medium': props.style === 'organization' ? {
+    'medium': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
     } : { borderRadius: 24 },
-    'default': props.style === 'organization' ? {
+    'default': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
     } : { borderRadius: 20 },
-    'small': props.style === 'organization' ? {
+    'small': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
     } : { borderRadius: 18 },
-    'x-small': props.style === 'organization' ? {
+    'x-small': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
