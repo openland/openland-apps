@@ -20,7 +20,7 @@ const Hostname = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     '& svg': {
-        marginRight: 5,
+        marginRight: 7,
         width: 12,
         height: 12,
         '& path': {
@@ -36,6 +36,14 @@ const Hostname = Glamorous.div({
         letterSpacing: 0,
         color: '#334562'
     }
+});
+
+const Favicon = Glamorous.img({
+    width: 14,
+    height: 14,
+    borderRadius: 3,
+    margin: '-1px 5px -1px 0',
+    overflow: 'hidden'
 });
 
 const Title = Glamorous.div({
@@ -91,11 +99,19 @@ export class MessageUrlAugmentationComponent extends React.Component<{
             h: number,
         } | null,
     } | null,
-}> {
+}, { favicon: string | undefined }> {
     private preprocessed: Span[];
     constructor(props: any) {
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
+        this.state = {
+            favicon: '//' + this.props.hostname + '/favicon.ico'
+        };
+    }
+    handleFaviconError = () => {
+        this.setState({
+            favicon: undefined
+        });
     }
     render() {
         let parts = this.preprocessed.map((v, i) => {
@@ -111,7 +127,8 @@ export class MessageUrlAugmentationComponent extends React.Component<{
             <Container href={this.props.url}>
                 {this.props.hostname && (
                     <Hostname>
-                        <WebsiteIcon />
+                        {this.state.favicon && <Favicon src={this.state.favicon} onError={this.handleFaviconError} />}
+                        {!this.state.favicon && <WebsiteIcon />}
                         <span>{this.props.hostname}</span>
                     </Hostname>
                 )}
