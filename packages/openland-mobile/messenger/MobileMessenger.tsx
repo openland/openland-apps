@@ -109,7 +109,8 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
 
     render() {
         let item = this.props.item;
-        let showSenderName = item.message && (!(item.isOut && item.type === 'PrivateConversation'));
+        let showSenderName = !!(item.message && (!(item.isOut && item.type === 'PrivateConversation')));
+        console.warn('boom', showSenderName);
         return (
             <ASFlex height={80} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress}>
                 <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
