@@ -60,10 +60,13 @@ const ComposeSelectWrapper = Glamorous.div({
     paddingLeft: 66,
     paddingRight: 66,
     width: '100%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    zIndex: 2,
+    position: 'relative'
 });
 
 const EmptyWrapper = Glamorous(XVertical)({
+    zIndex: 1,
     position: 'relative',
     paddingTop: 30,
     paddingBottom: 30,
