@@ -45,7 +45,7 @@ const DateDivider = Glamorous.div({
     top: 8,
     zIndex: 1,
     marginTop: 24,
-    marginBottom: 24,
+    marginBottom: 12,
     '& > div': {
         display: 'flex',
         justifyContent: 'center',
