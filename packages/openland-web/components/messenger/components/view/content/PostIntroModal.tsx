@@ -155,6 +155,42 @@ class FileUploader extends React.PureComponent<FileUploaderProps> {
     }
 }
 
+interface FileComponentProps {
+    file: {
+        uuid: string,
+        name: string | null,
+        size: string | null
+    } | null;
+    field: string;
+    store: XStoreState;
+    onClearClick: () => void;
+}
+
+class FileComponent extends React.PureComponent<FileComponentProps> {
+    handleClearClick = () => {
+        let key = ('fields.' + this.props.field);
+        if (this.props.file) {
+            this.props.store.writeValue(key, null);
+            this.props.onClearClick();
+        }
+    }
+    render() {
+        let { file } = this.props;
+        return (
+            <>
+                {file && file.name && file.size && (
+                    <MessageFileComponent
+                        fileName={file.name}
+                        fileSize={Number(file.size)}
+                        clearButton={true}
+                        onClearClick={this.handleClearClick}
+                    />
+                )}
+            </>
+        );
+    }
+}
+
 interface PostIntroModalRawState {
     fileUploading: boolean;
     progress: number | null;
@@ -187,6 +223,14 @@ class PostIntroModalRaw extends React.PureComponent<Partial<XModalFormProps>, Po
         this.setState({
             fileUploading: isLoading,
             progress: progress
+        });
+    }
+
+    handleFileClear = () => {
+        this.setState({
+            fileUploading: false,
+            progress: 0,
+            file: null
         });
     }
 
@@ -246,14 +290,23 @@ class PostIntroModalRaw extends React.PureComponent<Partial<XModalFormProps>, Po
                         size="small"
                         valueStoreKey="fields.input.about"
                     />
-                    {file && file.name && file.size && (
-                        <MessageFileComponent
-                            key={'file'}
-                            fileName={file.name}
-                            fileSize={Number(file.size)}
-                        />
-                    )}
-                    {(this.state.progress !== 0 && !file) && (
+                    <XStoreContext.Consumer>
+                        {store => {
+                            if (!store) {
+                                throw Error('No store!');
+                            }
+                            return (
+                                <FileComponent
+                                    field="input.file"
+                                    key="file"
+                                    store={store}
+                                    file={file}
+                                    onClearClick={this.handleFileClear}
+                                />
+                            );
+                        }}
+                    </XStoreContext.Consumer>
+                    {(this.state.progress !== 0 && !file && this.state.fileUploading) && (
                         <MessageUploadComponent
                             key={'file'}
                             progress={Math.round((this.state.progress || 0) * 100)}

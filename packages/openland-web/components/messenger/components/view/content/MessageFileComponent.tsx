@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
+import IcClose from '../../icons/ic-close.svg';
 
 const FileButton = Glamorous(XLink)((props) => ({
     display: 'flex',
@@ -16,6 +17,7 @@ const FileButton = Glamorous(XLink)((props) => ({
     color: '#334562',
     backgroundColor: '#ffffff',
     width: 250,
+    position: 'relative',
     '&:hover': {
         '& .title': {
             color: props.enabled === false ? '#334562' : undefined
@@ -23,7 +25,7 @@ const FileButton = Glamorous(XLink)((props) => ({
         '& .size': {
             color: '#334562'
         }
-    }
+    },
 }));
 
 const FileImage = Glamorous.div({
@@ -82,6 +84,8 @@ interface MessageFileComponentProps {
     file?: string;
     fileName?: string;
     fileSize?: number;
+    onClearClick?: () => void;
+    clearButton?: boolean;
 }
 
 export const MessageFileComponent = (props: MessageFileComponentProps) => (
@@ -95,6 +99,9 @@ export const MessageFileComponent = (props: MessageFileComponentProps) => (
                     <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
                     <Size className="size">{niceBytes(props.fileSize)}</Size>
                 </FileText>
+                {props.clearButton && (
+                    <XLink onClick={props.onClearClick}><IcClose/></XLink>
+                )}
             </FileButton>
         )}
         {!props.file && (
@@ -106,6 +113,9 @@ export const MessageFileComponent = (props: MessageFileComponentProps) => (
                     <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
                     <Size className="size">{niceBytes(props.fileSize)}</Size>
                 </FileText>
+                {props.clearButton && (
+                    <XLink onClick={props.onClearClick}><IcClose/></XLink>
+                )}
             </FileButton>
         )}
     </>
