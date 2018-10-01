@@ -19,6 +19,10 @@ import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
 import { PhoneVerify, CountryPicker } from './pages/auth/PhoneVerify';
+import { SignupUser } from './pages/signup/SignupUser';
+import { SignupOrg } from './pages/signup/SignupOrg';
+import { Waitlist } from './pages/signup/Waitlist';
+import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -41,4 +45,12 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevLoader', Loader)
   .addRoute('PhoneVerify', PhoneVerify)
   .addRoute('CountryPicker', CountryPicker)
+
+  .addRoute('SignupUser', SignupUser)
+  .addRoute('SignupOrg', SignupOrg)
+
+  .addRoute('Waitlist', Waitlist)
+  .addRoute('Login', Login)
+  .addRoute('EmailStart', EmailStart)
+  .addRoute('EmailCode', EmailCode)
   .build();

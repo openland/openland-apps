@@ -5,16 +5,15 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ZForm } from '../../components/ZForm';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemBase } from '../../components/ZListItemBase';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { CreateOrganizationMutation, AccountSettingsQuery } from 'openland-api';
-import { SRouter } from 'react-native-s/SRouter';
 
-const createPage = (onComplete?: (router: SRouter) => void) => class NewOrganizationComponent extends React.PureComponent<PageProps> {
+class NewOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
     render() {
         return (
@@ -23,7 +22,13 @@ const createPage = (onComplete?: (router: SRouter) => void) => class NewOrganiza
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
                 <YMutation mutation={CreateOrganizationMutation} refetchQueries={[AccountSettingsQuery]}>
                     {create => (
-                        <ZForm ref={this.ref} action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }} onSuccess={() => { onComplete ? onComplete(this.props.router) : this.props.router.params.action ? this.props.router.params.action() : this.props.router.back(); }}>
+                        <ZForm
+                            ref={this.ref}
+                            action={(src) => { return create({ variables: { input: { name: '', personal: false, ...src.input }, } }); }}
+                            onSuccess={async () => {
+                                this.props.router.params.action ? await this.props.router.params.action(this.props.router) : this.props.router.back();
+                            }}
+                        >
                             <ZListItemGroup>
                                 <ZListItemBase height={96} separator={false}>
                                     <View padding={15}>
@@ -42,6 +47,6 @@ const createPage = (onComplete?: (router: SRouter) => void) => class NewOrganiza
             </>
         );
     }
-};
-export const NewOrganization = withApp(createPage());
-export const NewOrganizationAction = (onComplete: (router: SRouter) => void) => withApp(createPage(onComplete));
+}
+
+export const NewOrganization = withApp(NewOrganizationComponent);

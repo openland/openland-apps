@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Alert } from 'react-native';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
@@ -16,13 +16,13 @@ import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { SessionStateFull } from 'openland-api/Types';
-import { SignupRoutes, EmailRoutes } from './signup/routes';
-import { initSignupModel, getSignupModel } from './signup/signup';
+import { resolveNextPage, resolveNextPageCompleteAction } from './signup/signup';
+import { json } from 'body-parser';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
     private ref = React.createRef<ZPictureModal>();
-
+    history: any;
     constructor(props: PageProps) {
         super(props);
         this.state = {
@@ -30,56 +30,52 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         };
     }
     componentDidMount() {
-        this.checkState().then();
-    }
+        (async () => {
+            try {
+                let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+                let res;
+                if (userToken) {
+                    this.setState({ state: 'loading' });
+                    let client = buildNativeClient(userToken);
+                    saveClient(client);
+                    res = await backoff(async () => await getClient().client.query<any>({
+                        query: AccountQuery.document
+                    }));
 
-    checkState = async () => {
-        let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
-        let res;
-        if (userToken) {
-            this.setState({ state: 'loading' });
-            let client = buildNativeClient(userToken);
-            saveClient(client);
-            res = await backoff(async () => await getClient().client.query<any>({
-                query: AccountQuery.document
-            }));
-            if (res.data.sessionState.isCompleted) {
-                let messenger = buildMessenger(getClient(), res.data.me);
-                let history = SRouting.create(Routes);
-                setMessenger(new MobileMessenger(messenger, history, this.ref));
-                await messenger.awaitLoading();
+                    let defaultPage = !res.data.sessionState.isCompleted ? resolveNextPage(res.data.sessionState, 'SignupUser') : undefined;
+                    this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
+                    if (res.data.me) {
+                        let messenger = buildMessenger(getClient(), res.data.me);
+                        setMessenger(new MobileMessenger(messenger, this.history, this.ref));
+                        await messenger.awaitLoading();
+                    }
+
+                    if (!res.data.sessionState.isLoggedIn) {
+                        userToken = undefined;
+                    }
+
+                }
+
+                // Reset badge if not authenticated
+                if (!userToken) {
+                    AppBadge.setBadge(0);
+                }
+
+                // Launch app or login sequence
+                if (userToken) {
+                    if (res && res.data.me) {
+                        this.setState({ state: 'app' });
+                    } else {
+                        this.setState({ state: 'signup' });
+                    }
+                } else {
+                    this.setState({ state: 'initial' });
+                }
+            } catch (e) {
+                Alert.alert(e.message);
             }
-            if (!res.data.sessionState.isLoggedIn) {
-                userToken = undefined;
-            }
 
-        }
-
-        // Reset badge if not authenticated
-        if (!userToken) {
-            AppBadge.setBadge(0);
-        }
-
-        // Launch app or login sequence
-        if (userToken) {
-            if (res && !res.data.sessionState.isCompleted) {
-                initSignupModel(res.data.sessionState, this.onSignupComplete);
-                this.setState({ state: 'signup' });
-            } else {
-                this.setState({ state: 'app' });
-            }
-        } else {
-            this.setState({ state: 'initial' });
-        }
-
-        // for testing
-        // initSignupModel(res.data.sessionState, this.onSignupComplete);
-        // this.setState({ state: 'auth' });
-
-    }
-
-    onSignupComplete = () => {
-        this.checkState().then();
+        })();
     }
 
     render() {
@@ -101,12 +97,12 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 </YApolloProvider>
             );
         } else if (this.state.state === 'initial') {
-            return <Root routing={SRouting.create(EmailRoutes)} />;
+            return <Root routing={SRouting.create(Routes, 'Login')} />;
         } else if (this.state.state === 'signup') {
             return (
                 <YApolloProvider client={getClient()}>
-                    <Root routing={SRouting.create(SignupRoutes(getSignupModel().page, async (r) => r.push(await getSignupModel().next())))} />
-                </YApolloProvider>
+                    <Root routing={this.history} />
+            </YApolloProvider>
             );
         }
 
