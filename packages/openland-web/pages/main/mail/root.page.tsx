@@ -42,12 +42,15 @@ let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    width: 300,
+    width: 345,
     flexShrink: 0,
     borderRight: '1px solid rgba(216, 218, 229, 0.7)',
     backgroundColor: '#ffffff',
+    '@media (max-width: 1100px)': {
+        width: 300
+    },
     '@media (max-width: 950px)': {
-        width: 200
+        width: 230
     }
 });
 
@@ -57,12 +60,15 @@ let ConversationContainer = Glamorous.div({
     flexGrow: 1,
     flexShrink: 0,
     height: '100vh',
-    width: 'calc(100% - 300px)',
+    width: 'calc(100% - 345px)',
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     position: 'relative',
+    '@media (max-width: 1100px)': {
+        width: 'calc(100% - 300px)',
+    },
     '@media (max-width: 950px)': {
-        width: 'calc(100% - 200px)',
+        width: 'calc(100% - 230px)',
     }
 });
 
