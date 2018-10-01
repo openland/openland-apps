@@ -99,18 +99,24 @@ export class MessageUrlAugmentationComponent extends React.Component<{
             h: number,
         } | null,
     } | null,
-}, { favicon: string | undefined }> {
+}, { favicon: string | undefined, image: string | undefined }> {
     private preprocessed: Span[];
     constructor(props: any) {
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
         this.state = {
-            favicon: '//' + this.props.hostname + '/favicon.ico'
+            favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
+            image: this.props.imageURL || undefined
         };
     }
     handleFaviconError = () => {
         this.setState({
             favicon: undefined
+        });
+    }
+    handleImageError = () => {
+        this.setState({
+            image: undefined
         });
     }
     render() {
@@ -134,7 +140,7 @@ export class MessageUrlAugmentationComponent extends React.Component<{
                 )}
                 {this.props.title && <Title>{this.props.title}</Title>}
                 {parts && <Description>{parts}</Description>}
-                {this.props.imageURL && <Image src={this.props.imageURL} />}
+                {this.state.image && <Image src={this.state.image} onError={this.handleImageError} />}
             </Container>
         );
     }
