@@ -430,7 +430,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let title = props.data.chat.__typename === 'ChannelConversation' ?
         ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' / ' : '') + props.data.chat.title) :
         props.data.chat.title;
-    let titlePath = undefined;
+    let titlePath: string | undefined = undefined;
 
     let subtitle = '';
     let subtitlePath = undefined;
