@@ -19,7 +19,7 @@ export const resolveNextPage: (session: SessionStateFull, current: string) => st
     throw new Error('inconsistent state');
 };
 
-export var next: (router: SRouter) => voidgitp u;
+export var next: (router: SRouter) => void;
 
 export const resolveNextPageCompleteAction: (page?: string) => ((router: SRouter) => void) | undefined = (page: string) => {
     if (page === 'NewOrganization') {
