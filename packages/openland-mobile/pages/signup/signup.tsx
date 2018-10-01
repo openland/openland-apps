@@ -4,9 +4,8 @@ import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
-import { Alert } from 'react-native';
 
-export const resolveNextPage: (session: SessionStateFull, current: string) => string = (session: SessionStateFull, current: string) => {    
+export const resolveNextPage: (session: SessionStateFull, current: string) => string = (session: SessionStateFull, current: string) => {
     if (!session.isProfileCreated) {
         return 'SignupUser';
     } else if (!session.isAccountExists) {
@@ -20,14 +19,16 @@ export const resolveNextPage: (session: SessionStateFull, current: string) => st
     throw new Error('inconsistent state');
 };
 
-export const resolveNextPageCompleteAction: (page?: string) => ( (router: SRouter) => void) | undefined = (page: string) => {
+export var next: (router: SRouter) => voidgitp u;
+
+export const resolveNextPageCompleteAction: (page?: string) => ((router: SRouter) => void) | undefined = (page: string) => {
     if (page === 'NewOrganization') {
         return async (router) => await next(router);
     }
     return undefined;
 };
 
-export const next = async (router: SRouter) => {
+next = async (router: SRouter) => {
     let res = await backoff(async () => await getClient().client.query<any>({
         query: AccountQuery.document,
         fetchPolicy: 'network-only'
