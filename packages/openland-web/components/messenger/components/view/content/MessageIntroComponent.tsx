@@ -4,6 +4,28 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XLink } from 'openland-x/XLink';
+import { XButton } from 'openland-x/XButton';
+import { XMutation } from 'openland-x/XMutation';
+import { withSetReaction, withUnsetReaction } from '../../../../../api/withSetReaction';
+
+const SetReactionButton = withSetReaction((props) => (
+    <XMutation mutation={props.setReaction}>
+        <XButton
+            text="Accept intro"
+            style="primary-sky-blue"
+            size="r-default"
+        />
+    </XMutation>
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string } }>;
+
+const UnsetReactionButton = withUnsetReaction((props) => (
+    <XMutation mutation={props.unsetReaction}>
+        <XButton
+            text="Pass"
+            size="r-default"
+        />
+    </XMutation>
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string } }>;
 
 const Root = Glamorous(XVertical)({
     border: '1px solid #eef0f2',
@@ -135,45 +157,77 @@ interface MessageIntroComponentProps {
             name?: string | null,
         } | null
     } | null;
+    reactions: {
+        user: {
+            id: string
+        },
+        reaction: string
+    }[];
+    messageId: string;
+    meId: string;
 }
 
 export class MessageIntroComponent extends React.Component<MessageIntroComponentProps> {
+    
+    renderReactions() {
+        let {reactions, meId, messageId} = this.props;
+
+        if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
+            return <XButton text="You passed" size="r-default" />;
+        } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
+            return <XButton text="Accepted" size="r-default" style="success" />;
+        } else {
+            return (
+                <>
+                    <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }} />
+                    <UnsetReactionButton variables={{ messageId: messageId, reaction: 'pass' }} />
+                </>
+            );
+        }
+    }
+
     render() {
-        const { user, file, fileMetadata, urlAugmentation } = this.props;
+        const { user, file, fileMetadata, urlAugmentation, messageId, reactions, meId } = this.props;
+
         return (
-            <Root separator={0}>
-                <Container separator={6}>
-                    <XHorizontal separator={6} alignItems="center">
-                        {user && (
-                            <>
-                                <XAvatar
-                                    userId={user.id}
-                                    userName={user.name}
-                                    photoRef={urlAugmentation.photo || undefined}
-                                    style="colorus"
-                                />
-                                <XVertical separator={-1}>
-                                    <UserName>{user.name}</UserName>
-                                    {user.primaryOrganization && (
-                                        <OrgName>{user.primaryOrganization.name}</OrgName>
-                                    )}
-                                </XVertical>
-                            </>
-                        )}
-                    </XHorizontal>
-                    {urlAugmentation.description && (
-                        <AboutText>{urlAugmentation.description}</AboutText>
-                    )}
-                </Container>
-                {(file && fileMetadata) && (
-                    <FileButton href={'https://ucarecdn.com/' + file + '/' + (fileMetadata.name ? fileMetadata.name!! : '')}>
-                        <XHorizontal separator={4} alignItems="center">
-                            <FileImage />
-                            <span>{fileMetadata.name}({niceBytes(fileMetadata.size)})</span>
+            <XVertical separator={6}>
+                <Root separator={0}>
+                    <Container separator={6}>
+                        <XHorizontal separator={6} alignItems="center">
+                            {user && (
+                                <>
+                                    <XAvatar
+                                        userId={user.id}
+                                        userName={user.name}
+                                        photoRef={urlAugmentation.photo || undefined}
+                                        style="colorus"
+                                    />
+                                    <XVertical separator={-1}>
+                                        <UserName>{user.name}</UserName>
+                                        {user.primaryOrganization && (
+                                            <OrgName>{user.primaryOrganization.name}</OrgName>
+                                        )}
+                                    </XVertical>
+                                </>
+                            )}
                         </XHorizontal>
-                    </FileButton>
-                )}
-            </Root>
+                        {urlAugmentation.description && (
+                            <AboutText>{urlAugmentation.description}</AboutText>
+                        )}
+                    </Container>
+                    {(file && fileMetadata) && (
+                        <FileButton href={'https://ucarecdn.com/' + file + '/' + (fileMetadata.name ? fileMetadata.name!! : '')}>
+                            <XHorizontal separator={4} alignItems="center">
+                                <FileImage />
+                                <span>{fileMetadata.name}({niceBytes(fileMetadata.size)})</span>
+                            </XHorizontal>
+                        </FileButton>
+                    )}
+                </Root>
+                <XHorizontal separator={6} alignSelf="flex-start">
+                    {this.renderReactions()}
+                </XHorizontal>
+            </XVertical>
         );
     }
 }

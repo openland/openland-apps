@@ -39,6 +39,18 @@ export const ChatListQuery = gql`
     ${UserShort}
 `;
 
+export const MessageSetReactionMutation = gql`
+    mutation MessageSetReaction($messageId: ConversationMessageID!, $reaction: String!) {
+        alphaChatSetReaction(messageId: $messageId, reaction: $reaction)
+    }
+`;
+
+export const MessageUnsetReactionMutation = gql`
+    mutation MessageUnsetReaction($messageId: ConversationMessageID!, $reaction: String!) {
+        alphaChatUnsetReaction(messageId: $messageId, reaction: $reaction)
+    }
+`;
+
 export const GlobalCounterQuery = gql`
     query GlobalCounter {
         counter: alphaNotificationCounter {

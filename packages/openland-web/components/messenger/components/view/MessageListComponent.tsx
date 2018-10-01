@@ -200,6 +200,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         message={m}
                         conversation={this.props.conversation}
                         out={!!(this.props.me && this.props.me.id === m.sender.id)}
+                        me={this.props.me}
                     />
                 );
             } else {
@@ -211,6 +212,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         message={m}
                         conversation={this.props.conversation}
                         out={true}
+                        me={this.props.me}
                     />
                 );
             }

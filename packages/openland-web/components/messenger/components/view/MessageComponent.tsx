@@ -26,6 +26,7 @@ interface MessageComponentProps {
     message: MessageFull | PendingMessage;
     conversation: ConversationEngine;
     out: boolean;
+    me?: UserShort | null;
 }
 
 const MessageWrapper = Glamorous(XVertical)({
@@ -126,7 +127,18 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             }
             if (message.urlAugmentation) {
                 if (message.urlAugmentation.type === 'intro') {
-                    content.push(<MessageIntroComponent key="intro" urlAugmentation={message.urlAugmentation} file={message.file} fileMetadata={message.fileMetadata} user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User} />);
+                    content.push(
+                        <MessageIntroComponent
+                            key="intro"
+                            urlAugmentation={message.urlAugmentation}
+                            file={message.file}
+                            fileMetadata={message.fileMetadata}
+                            user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User}
+                            messageId={(message as MessageFull).id}
+                            reactions={(message as MessageFull).reactions}
+                            meId={(this.props.me as UserShort).id}
+                        />
+                    );
                 }
                 if (message.urlAugmentation.type !== 'intro') {
                     if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
@@ -198,7 +210,13 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         return (
             <MessageContainer className="full-message" compact={false}>
                 <XHorizontal alignSelf="stretch">
-                    <XAvatar style="colorus" userName={this.props.sender!!.name} userId={this.props.sender!!.id} cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined} path={'/mail/u/' + this.props.sender!!.id} />
+                    <XAvatar
+                        style="colorus"
+                        userName={this.props.sender!!.name}
+                        userId={this.props.sender!!.id}
+                        cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined}
+                        path={'/mail/u/' + this.props.sender!!.id}
+                    />
                     <MessageWrapper separator={2} flexGrow={1}>
                         <XHorizontal separator={4}>
                             <XHorizontal separator={4} alignItems="center">

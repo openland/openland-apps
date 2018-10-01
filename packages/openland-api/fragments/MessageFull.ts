@@ -19,6 +19,13 @@ export const MessageFull = gql`
     sender {
         ...UserShort
     }
+    reactions: reactions {
+        user {
+            id
+            name
+        }
+        reaction
+    }
     urlAugmentation{
         type
         url
