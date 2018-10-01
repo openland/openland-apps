@@ -244,7 +244,7 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
                         />
                     </SearchWrapper>
                     <FilterWrapper justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <CounterText>All channels</CounterText>
+                        <CounterText>Featured channels</CounterText>
                         <SortPicker
                             sort={this.state.sort}
                             onPick={this.changeSort}
