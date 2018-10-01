@@ -175,12 +175,6 @@ const ChannelCounter = Glamorous.div({
     }
 });
 
-const AcceptButton = Glamorous(XButton)({
-    height: 40,
-    borderRadius: 20,
-    padding: '0 5px'
-});
-
 const ImageWrapper = Glamorous.div({
     height: 367,
     position: 'absolute',
@@ -209,7 +203,7 @@ const JoinButton = withChannelJoin((props) => {
     return (
         <XButton
             style="primary-sky-blue"
-            size="r-default"
+            size="r-large"
             text={(props as any).text}
             alignSelf="center"
             flexShrink={0}
@@ -227,7 +221,7 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
     return (
         <XButton
             style="primary-sky-blue"
-            size="r-default"
+            size="r-large"
             text={(props as any).text}
             alignSelf="center"
             flexShrink={0}
@@ -313,7 +307,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                             {channel.myStatus === 'requested' && (
                                 <XButton
                                     style="ghost"
-                                    size="r-default"
+                                    size="r-large"
                                     text="Pending"
                                     alignSelf="center"
                                     flexShrink={0}
@@ -322,7 +316,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                             {channel.myStatus === 'member' && (
                                 <XButton
                                     style="primary-sky-blue"
-                                    size="r-default"
+                                    size="r-large"
                                     text="Open channel"
                                     alignSelf="center"
                                     flexShrink={0}
@@ -332,9 +326,9 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         </>
                     }
                     {this.props.signup && (
-                        <AcceptButton
+                        <XButton
                             style="primary-sky-blue"
-                            size="r-default"
+                            size="r-large"
                             text="Accept invitation"
                             alignSelf="center"
                             flexShrink={0}
