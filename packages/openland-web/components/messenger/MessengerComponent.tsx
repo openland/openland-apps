@@ -472,7 +472,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         let isOnline = onlines.onlines ? (onlines.onlines.get(props.data.chat.flexibleId) || false) : false;
                                         return (
                                             <XAvatar
-                                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
+                                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
                                                 size="small"
                                                 style={(props.data.chat.__typename === 'SharedConversation'
                                                     ? 'organization'
