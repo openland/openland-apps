@@ -6,6 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
+import CheckIcon from '../../icons/ic-check.svg';
 import { withSetReaction, withUnsetReaction } from '../../../../../api/withSetReaction';
 
 const SetReactionButton = withSetReaction((props) => (
@@ -168,14 +169,14 @@ interface MessageIntroComponentProps {
 }
 
 export class MessageIntroComponent extends React.Component<MessageIntroComponentProps> {
-    
+
     renderReactions() {
-        let {reactions, meId, messageId} = this.props;
+        let { reactions, meId, messageId } = this.props;
 
         if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
-            return <XButton text="You passed" size="r-default" />;
+            return <XButton text="You passed" size="r-default" enabled={false} />;
         } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
-            return <XButton text="Accepted" size="r-default" style="success" />;
+            return <XButton text="Accepted" size="r-default" style="success" icon={<CheckIcon />} />;
         } else {
             return (
                 <>
