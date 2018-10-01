@@ -450,6 +450,7 @@ export type XSelectBasicProps = ReactSelectProps & {
 
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
+    rounded?: boolean;
 };
 
 export function XSelectBasic(props: XSelectBasicProps) {

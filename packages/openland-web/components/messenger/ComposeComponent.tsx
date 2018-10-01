@@ -208,6 +208,7 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                             onChange={this.handleChange}
                             value={this.state.values}
                             multi={true}
+                            rounded={true}
                             variables={{ organizations: this.state.values.length === 0 }}
                         />
                     </ComposeSelectWrapper>
