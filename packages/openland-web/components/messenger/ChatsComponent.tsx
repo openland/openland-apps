@@ -65,7 +65,7 @@ const Header = Glamorous.div({
     flexDirection: 'column',
     flexGrow: 1,
     alignItems: 'stretch',
-    paddingLeft: 11,
+    paddingLeft: 16,
     paddingRight: 12,
     maxWidth: 'calc(100% - 46px)',
     position: 'relative',
