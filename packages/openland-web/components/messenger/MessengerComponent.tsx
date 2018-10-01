@@ -35,7 +35,7 @@ import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { OnlinesComponent, OnlineContext } from './components/OnlineComponent';
-import IconInvite from './components/icons/ic-invite.svg';
+import IconInvite from './components/icons/ic-invite-2.svg';
 import IconInfo from './components/icons/ic-info.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
