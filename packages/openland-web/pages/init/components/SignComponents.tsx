@@ -495,7 +495,8 @@ export const Separator = (props: { marginTop?: number; marginBottom?: number}) =
 
 const ChannelSignupWrapper = Glamorous.div({
     position: 'relative',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    background: 'rgba(0, 0, 0, 0.8) url(/static/X/signup/background-blur.jpg) no-repeat',
+    backgroundSize: 'cover',
     height: '100vh'
 });
 
