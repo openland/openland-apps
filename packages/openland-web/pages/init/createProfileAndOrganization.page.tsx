@@ -248,12 +248,12 @@ class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: bo
                         </XFormLoadingContent>
                         <ResolveView view={!this.state.isOrgView}>
                             <SubmitWrapper>
-                                <XButton onClick={this.showOrgView} size="r-default" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
+                                <XButton onClick={this.showOrgView} size="r-large" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
                             </SubmitWrapper>
                         </ResolveView>
                         <ResolveView view={this.state.isOrgView}>
                             <SubmitWrapper>
-                                <XFormSubmit size="r-default" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
+                                <XFormSubmit size="r-large" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
                             </SubmitWrapper>
                         </ResolveView>
                     </XForm>

@@ -269,8 +269,8 @@ let sizeStyles = styleResolver({
     'r-large': {
         height: 40,
         lineHeight: '38px',
-        fontSize: 20,
-        letterSpacing: 0.5,
+        fontSize: 16,
+        letterSpacing: -0.5,
         fontWeight: 500,
         '& .button-content': {
             paddingLeft: 20,
