@@ -391,8 +391,8 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean, rounded?: boolean }>(
         }
     }),
     (props) => props.rounded ? {
-        height: 44,
-        borderRadius: 22,
+        height: 40,
+        borderRadius: 20,
         backgroundColor: props.primary ? '#1790ff' : '#ffffff',
         color: props.primary ? '#ffffff' : '#334562',
         border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
@@ -405,19 +405,18 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean, rounded?: boolean }>(
             backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)'
         },
         '& span': {
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: 500,
-            letterSpacing: -0.3,
+            letterSpacing: -0.4,
             lineHeight: '16px'
         },
         '& svg': {
-            marginRight: 13,
-            marginLeft: -6
+            marginRight: 9,
+            marginLeft: -2
         },
         '&.email': {
             '& svg': {
-                marginRight: 8,
-                marginLeft: -9
+                margin: '1px 7px -1px -2px',
             },
             '&:active': {
                 '& svg path:first-child': {

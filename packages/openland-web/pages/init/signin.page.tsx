@@ -206,7 +206,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                 {!this.state.fromOutside && !this.state.email && (<>
                     <ChannelTitle>{signin ? 'Sign in and join the conversation' : 'Sign up and join the conversation'}</ChannelTitle>
                     <ChannelText>{signin ? 'We are excited to have you back!' : 'Creating an account is free and easy'}</ChannelText>
-                    <ButtonsWrapper marginTop={40} width={280} marginBottom={84}>
+                    <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
                         <GoogleButton
                             onClick={this.loginWithGoogle}
                             text={signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle}
@@ -214,7 +214,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         />
                         <Separator
                             marginTop={10}
-                            marginBottom={11}
+                            marginBottom={10}
                         />
                         <EmailButton
                             onClick={this.loginWithEmail}
