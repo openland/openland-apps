@@ -26,6 +26,8 @@ export const MessageFull = gql`
         date
         subtitle
         description
+        hostname
+        imageURL
         photo{
             uuid
                 crop{

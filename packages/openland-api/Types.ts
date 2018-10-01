@@ -470,6 +470,8 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_u
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -580,6 +582,8 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAu
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -691,6 +695,8 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_url
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -844,6 +850,8 @@ export interface ChatHistory_messages_messages_urlAugmentation {
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatHistory_messages_messages_urlAugmentation_photo | null;
   user: ChatHistory_messages_messages_urlAugmentation_user | null;
 }
@@ -1489,6 +1497,8 @@ export interface SendMessage_sentMessage_message_urlAugmentation {
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: SendMessage_sentMessage_message_urlAugmentation_photo | null;
   user: SendMessage_sentMessage_message_urlAugmentation_user | null;
 }
@@ -1991,6 +2001,8 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2102,6 +2114,8 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2229,6 +2243,8 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2390,6 +2406,8 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentatio
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo | null;
   user: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user | null;
 }
@@ -2592,6 +2610,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2703,6 +2723,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2830,6 +2852,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2977,6 +3001,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -3088,6 +3114,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -3215,6 +3243,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10029,6 +10059,8 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10140,6 +10172,8 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation 
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ConversationShort_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10267,6 +10301,8 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10418,6 +10454,8 @@ export interface MessageFull_urlAugmentation {
   date: string | null;
   subtitle: string | null;
   description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
   photo: MessageFull_urlAugmentation_photo | null;
   user: MessageFull_urlAugmentation_user | null;
 }

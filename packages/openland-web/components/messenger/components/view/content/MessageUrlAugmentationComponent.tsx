@@ -1,25 +1,77 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XText } from 'openland-x/XText';
-import { XDate } from 'openland-x-format/XDate';
 import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { emojify } from 'react-emojione';
+import { XLink } from 'openland-x/XLink';
+import WebsiteIcon from '../../icons/website-2.svg';
 
-const Container = Glamorous(XHorizontal)({
-    border: '1px solid #eef0f2',
+const Container = Glamorous(XLink)({
+    marginTop: 10,
+    border: '1px solid #edeef3',
+    background: '#ffffff',
     borderRadius: 10,
-    padding: 16
+    padding: '9px 16px 12px',
+    maxWidth: 550,
+    color: '#121e2b!important'
+});
+
+const Hostname = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    '& svg': {
+        marginRight: 5,
+        width: 12,
+        height: 12,
+        '& path': {
+            opacity: 0.5,
+            fill: '#334562'
+        }
+    },
+    '& span': {
+        opacity: 0.5,
+        fontSize: 12,
+        fontWeight: 500,
+        lineHeight: '20px',
+        letterSpacing: 0,
+        color: '#334562'
+    }
+});
+
+const Title = Glamorous.div({
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: '20px',
+    letterSpacing: -0.4,
+    color: '#1790ff',
+    marginTop: 7,
+});
+
+const Description = Glamorous.div({
+    opacity: 0.9,
+    fontSize: 14,
+    lineHeight: '21px',
+    letterSpacing: -0.3,
+    color: '#121e2b',
+    marginTop: 3,
+});
+
+const Image = Glamorous.img({
+    display: 'block',
+    maxWidth: 360,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginTop: 13,
 });
 
 export class MessageUrlAugmentationComponent extends React.Component<{
+    type: string | null,
     url: string,
     title: string | null,
     date: string | null,
     subtitle: string | null,
+    hostname: string | null,
+    imageURL: string | null,
     description: string | null,
     photo: {
         uuid: string,
@@ -47,17 +99,15 @@ export class MessageUrlAugmentationComponent extends React.Component<{
             }
         });
         return (
-            <Container separator={6}>
-                <XAvatar photoRef={this.props.photo || undefined} style="organization" size="small" />
-                <XVertical separator={2}>
-                    <XHorizontal separator={0}>
-                        <XText fontWeight={500} fontSize="14px" lineHeight="16px" color="#5c6a81">{this.props.title}</XText>
-                        {this.props.date && <XText fontWeight={500} fontSize="14px" lineHeight="16px" color="#99a2b0">• <XDate value={(new Date(this.props.date).getTime().toString())} format="date" /></XText>}
-                    </XHorizontal>
-                    <XText fontWeight={500} fontSize="14px" lineHeight="16px" color="#334562">{this.props.subtitle}</XText>
-                    <XText fontWeight={400} fontSize="14px" lineHeight="16px" color="#5c6a81">{parts}</XText>
-                </XVertical>
-            </Container >
+            <Container href={this.props.url}>
+                <Hostname>
+                    <WebsiteIcon />
+                    <span>{this.props.hostname}</span>
+                </Hostname>
+                {this.props.title && <Title>{this.props.title}</Title>}
+                {parts && <Description>{parts}</Description>}
+                {this.props.imageURL && <Image src={this.props.imageURL} />}
+            </Container>
         );
     }
 }
