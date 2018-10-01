@@ -7,26 +7,15 @@ import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import CheckIcon from '../../icons/ic-check.svg';
-import { withSetReaction, withUnsetReaction } from '../../../../../api/withSetReaction';
+import { XOverflow } from '../../../../Incubator/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { withSetReaction } from '../../../../../api/withSetReaction';
 
 const SetReactionButton = withSetReaction((props) => (
     <XMutation mutation={props.setReaction}>
-        <XButton
-            text="Accept intro"
-            style="primary-sky-blue"
-            size="r-default"
-        />
+        {props.children}
     </XMutation>
-)) as React.ComponentType<{ variables: { messageId: string, reaction: string } }>;
-
-const UnsetReactionButton = withUnsetReaction((props) => (
-    <XMutation mutation={props.unsetReaction}>
-        <XButton
-            text="Pass"
-            size="r-default"
-        />
-    </XMutation>
-)) as React.ComponentType<{ variables: { messageId: string, reaction: string } }>;
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
 
 const Root = Glamorous(XVertical)({
     border: '1px solid #eef0f2',
@@ -180,23 +169,34 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
         } else {
             return (
                 <>
-                    <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }} />
-                    <UnsetReactionButton variables={{ messageId: messageId, reaction: 'pass' }} />
+                    <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }}>
+                        <XButton
+                            text="Accept intro"
+                            style="primary-sky-blue"
+                            size="r-default"
+                        />
+                    </SetReactionButton>
+                    <SetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
+                        <XButton
+                            text="Pass"
+                            size="r-default"
+                        />
+                    </SetReactionButton>
                 </>
             );
         }
     }
 
     render() {
-        const { user, file, fileMetadata, urlAugmentation, messageId, reactions, meId } = this.props;
+        const { user, file, fileMetadata, urlAugmentation, reactions, meId, messageId } = this.props;
 
         return (
             <XVertical separator={6}>
                 <Root separator={0}>
                     <Container separator={6}>
-                        <XHorizontal separator={6} alignItems="center">
-                            {user && (
-                                <>
+                        {user && (
+                            <XHorizontal justifyContent="space-between" alignItems="center">
+                                <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
                                         userId={user.id}
                                         userName={user.name}
@@ -209,9 +209,24 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                             <OrgName>{user.primaryOrganization.name}</OrgName>
                                         )}
                                     </XVertical>
-                                </>
-                            )}
-                        </XHorizontal>
+                                </XHorizontal>
+                                <XOverflow
+                                    flat={true}
+                                    placement="bottom-end"
+                                    content={
+                                        <>
+                                            {reactions.find(r => r.user.id === meId && r.reaction === 'pass') && (
+                                                <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }}>
+                                                    <XMenuItem style="primary-sky-blue">Accept intro</XMenuItem>
+                                                </SetReactionButton>
+                                            )}
+                                            <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
+                                            <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
+                                        </>
+                                    }
+                                />
+                            </XHorizontal>
+                        )}
                         {urlAugmentation.description && (
                             <AboutText>{urlAugmentation.description}</AboutText>
                         )}
