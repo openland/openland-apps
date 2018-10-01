@@ -165,6 +165,10 @@ const ContentCounter = Glamorous.div({
     bottom: 10,
 });
 
+const ConversationAvatar = Glamorous(XAvatar)({
+    marginTop: 4
+});
+
 let Item = makeNavigable((props) => (
     <ItemContainer
         href={props.href}
@@ -243,7 +247,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
 
         return (
             <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect} ref={this.handleRef}>
-                <XAvatar
+                <ConversationAvatar
                     style={(props.typename === 'SharedConversation'
                         ? 'organization'
                         : props.typename === 'GroupConversation'
