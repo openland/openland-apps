@@ -115,6 +115,7 @@ interface MessageListProps {
     conversationType?: string;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
+    channelType: boolean;
 }
 
 interface MessageListState {
@@ -229,6 +230,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
                         message={m}
                         conversation={props.conversation}
                         out={!!(props.me && props.me.id === m.sender.id)}
+                        channelType={this.props.channelType}
                     />
                 );
             } else {
@@ -240,6 +242,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
                         message={m}
                         conversation={props.conversation}
                         out={true}
+                        channelType={this.props.channelType}
                     />
                 );
             }
