@@ -103,6 +103,7 @@ interface ConversationMessagesComponentProps {
     conversationType?: string;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
+    channelType: boolean;
 }
 
 interface ConversationMessagesComponentState {
@@ -172,6 +173,7 @@ export class ConversationMessagesComponent extends React.Component<ConversationM
                     messages={this.state.messages}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
+                    channelType={this.props.channelType}
                 />
                 {(!this.state.mounted || this.state.loading) && <XLoader loading={true} />}
                 <TypingComponent chatId={this.props.conversationId} />
