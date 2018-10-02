@@ -9,7 +9,7 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChatChangeGroupTitleMutation, ConversationKickMutation, ConversationSettingsUpdateMutation } from 'openland-api';
+import { ChatChangeGroupTitleMutation, ConversationKickMutation, ConversationSettingsUpdateMutation, ChatUpdateGroupMutation } from 'openland-api';
 import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
@@ -20,6 +20,7 @@ import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -48,7 +49,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                         if (resp.data.chat.__typename !== 'GroupConversation' && resp.data.chat.__typename !== 'ChannelConversation') {
                             throw Error('');
                         }
-                        let groupOrChannel = resp.data.chat.__typename !== 'GroupConversation' ? 'group' : 'channel';
+                        let groupOrChannel = resp.data.chat.__typename === 'GroupConversation' ? 'group' : 'channel';
                         let setOrChange = (resp.data.chat.photo || resp.data.chat.photos.length > 0) ? 'Change' : 'Set';
                         return (
                             <SScrollView>
@@ -60,7 +61,29 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 />
 
                                 <ZListItemGroup header={null}>
-                                    <ZListItem appearance="action" text={`${setOrChange} ${groupOrChannel} photo`} />
+                                    <YMutation mutation={ChatUpdateGroupMutation}>
+                                        {(save) => (
+                                            <ZAvatarPicker
+                                                showLoaderOnUpload={true}
+                                                render={(props) => {
+
+                                                    return <ZListItem appearance="action" onPress={props.showPicker} text={`${setOrChange} ${groupOrChannel} photo`} />;
+                                                }}
+                                                onChanged={(val) => {
+                                                    save({
+                                                        variables: {
+                                                            conversationId: this.props.router.params.id,
+                                                            input: {
+                                                                photoRef: val
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                                }
+                                            />
+                                        )}
+                                    </YMutation>
+
                                     <YMutation mutation={ChatChangeGroupTitleMutation}>
                                         {(save) => (
                                             <ZListItem
@@ -77,21 +100,25 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
                                     <YMutation mutation={ConversationSettingsUpdateMutation}>
-                                        {(update) => (
-                                            <ZListItem
-                                                text="Notifications"
-                                                toggle={!resp.data.chat.settings.mute}
-                                                onPress={async () => {
-                                                    startLoader();
-                                                    try {
-                                                        await update({ variables: { conversationId: resp.data.chat.id, settings: { mute: !resp.data.chat.settings.mute } } });
-                                                    } catch (e) {
-                                                        Alert.alert(e.message);
-                                                    }
-                                                    stopLoader();
-                                                }}
-                                            />
-                                        )
+                                        {(update) => {
+                                            let toggle = async () => {
+                                                startLoader();
+                                                try {
+                                                    await update({ variables: { conversationId: resp.data.chat.id, settings: { mute: !resp.data.chat.settings.mute } } });
+                                                } catch (e) {
+                                                    Alert.alert(e.message);
+                                                }
+                                                stopLoader();
+                                            };
+                                            return (
+                                                <ZListItem
+                                                    text="Notifications"
+                                                    toggle={!resp.data.chat.settings.mute}
+                                                    onToggle={toggle}
+                                                    onPress={toggle}
+                                                />
+                                            );
+                                        }
                                         }
                                     </YMutation>
                                 </ZListItemGroup>

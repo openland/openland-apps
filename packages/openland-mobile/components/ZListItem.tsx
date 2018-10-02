@@ -51,7 +51,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             checkmarkEnabled = this.props.store!!.readValue('fields.' + this.props.checkmarkField.key) === this.props.checkmarkField.value;
         }
 
-        let enabled = !!this.props.onPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled);
+        let enabled = !!this.props.onPress || !!this.props.onToggle || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled);
 
         return (
             <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} height={this.props.multiline ? null : (this.props.title ? 66 : 44)} navigationIcon={this.props.navigationIcon}>

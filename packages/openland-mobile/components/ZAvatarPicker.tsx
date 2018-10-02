@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { ZImage } from './ZImage';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
+import { startLoader, stopLoader } from './ZGlobalLoader';
 
 interface AvatarImageRef {
     uuid: string;
@@ -17,6 +18,8 @@ export interface ZAvatarPickerProps {
     valueStoreKey?: string;
     value?: AvatarImageRef | null;
     onChanged?: (value: AvatarImageRef | null) => void;
+    showLoaderOnUpload?: boolean;
+    render?: React.ComponentType<{ url?: string, file?: string, loading: boolean, showPicker: () => void }>;
 }
 
 class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { file?: string, loading: boolean }> {
@@ -47,6 +50,9 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 // Ignore
             }
             if (res) {
+                if (this.props.showLoaderOnUpload) {
+                    startLoader();
+                }
                 this.setState({ file: res.path, loading: true });
                 let up = ++this.currentIteration;
                 let uploading = new UploadCareDirectUploading('photo.jpg', res.path);
@@ -76,8 +82,10 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                                 });
                             }
                             this.setState({ loading: false });
+                            stopLoader();
                         } else if (v.status === UploadStatus.FAILED) {
                             this.setState({ file: undefined, loading: false });
+                            stopLoader();
                         }
                     }
                 });
@@ -108,7 +116,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             }
         }
 
-        return (
+        return this.props.render ? <this.props.render url={valueUrl} file={this.state.file} loading={this.state.loading} showPicker={this.handlePicker} /> : (
             <TouchableOpacity onPress={this.handlePicker}>
                 <View width={66} height={66} backgroundColor="grey" borderRadius={33}>
                     {!this.state.file && valueUrl && <ZImage source={{ uri: valueUrl }} width={66} height={66} style={{ borderRadius: 33 }} />}
