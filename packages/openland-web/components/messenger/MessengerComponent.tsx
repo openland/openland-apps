@@ -58,23 +58,24 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
 
 const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontSize: 16,
-    fontWeight: 500,
-    letterSpacing: -0.2,
-    color: '#1790ff',
+    fontWeight: 600,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    cursor: props.href ? 'pointer' : undefined
+    cursor: props.href ? 'pointer' : undefined,
+    marginBottom: -2,
+    opacity: 0.8,
+    paddingLeft: 8
 })));
 
 const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: -0.1,
+    fontWeight: 400,
     color: '#5c6a81',
     opacity: 0.5,
     cursor: props.href ? 'pointer' : undefined,
-    marginBottom: -2
+    marginBottom: -2,
+    paddingLeft: 8
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
@@ -455,7 +456,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
             <ChatHeaderWrapper>
-                <ChatHeaderContent justifyContent="space-between">
+                <ChatHeaderContent>
                     <NavChatLeftContentStyled
                         path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                         query={props.data.chat.__typename === 'ChannelConversation' || props.data.chat.__typename === 'GroupConversation' ? { field: 'editChat', value: 'true' } : undefined}
@@ -465,7 +466,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         maxWidth={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
-                        <XHorizontal alignItems="center" separator={6} maxWidth="100%" width="100%">
+                        <XHorizontal alignItems="center" separator="none" maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                             <OnlinesComponent>
                                 <OnlineContext.Consumer>
                                     {onlines => {
@@ -490,10 +491,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     }}
                                 </OnlineContext.Consumer>
                             </OnlinesComponent>
-                            <XHorizontal alignItems="center" separator={6} maxWidth="calc(100% - 48px)">
+                            <XVertical separator="none" maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
-                            </XHorizontal>
+                            </XVertical>
                             {/* {lastSeen && (
                                 <LastSeenWrapper>
                                     Last seen: <XDate value={lastSeen} format="time" />
