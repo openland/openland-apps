@@ -7,6 +7,7 @@ import { Option } from 'react-select';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from '../XPopper';
 import { MultiplePicker } from '../XMultiplePicker';
+import { UserPicker } from '../XUserPicker';
 import { delay } from 'openland-y-utils/timer';
 
 const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
@@ -80,9 +81,9 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
     constructor(props: XSelectCustomProps) {
         super(props);
 
-        this.state = { 
-            inputVal: '', 
-            lastValue: (props.value as Option<string>[] || []) 
+        this.state = {
+            inputVal: '',
+            lastValue: (props.value as Option<string>[] || [])
         };
     }
 
@@ -261,6 +262,189 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         {input}
                     </XPopper>
                 )}
+            </Container>
+        );
+    }
+}
+
+export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps, XSelectCustomState> {
+    input?: any;
+    constructor(props: XSelectCustomProps) {
+        super(props);
+
+        this.state = {
+            inputVal: '',
+            lastValue: (props.value as Option<string>[] || [])
+        };
+    }
+
+    handleRef = (e: any) => {
+        if (e === null) {
+            return;
+        }
+        this.input = e;
+    }
+
+    // componentWillReceiveProps(props: XSelectAsyncProps) { ///----- neeed fix
+
+    componentWillReceiveProps(props: any) {
+        if ((this.state.lastValue as any || []).length !== (props.value as any || []).length) {
+            this.setState({
+                inputVal: ''
+            });
+            if (this.props.onInputChange) {
+                this.props.onInputChange('');
+            }
+        }
+        this.setState(
+            {
+                lastValue: (props.value as Option<string>[]) || [],
+            },
+            () => {
+                if (this.input && this.input.inputRef && this.input.inputRef) {
+                    this.input.inputRef.inputRef.focus();
+                }
+            });
+
+    }
+
+    keydownHandler = (e: any) => {
+        if (this.state.focus && e.code === 'Backspace' && this.state.inputVal === '' && this.state.lastValue.length > 0) {
+            e.preventDefault();
+            this.onDelete(this.state.lastValue[this.state.lastValue.length - 1].value);
+        }
+    }
+
+    focusInHandler = (e: any) => {
+        this.setState({ focus: true });
+    }
+
+    focusOutHandler = () => {
+        this.setState({ focus: false });
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        this.setState({
+            inputVal: e.currentTarget.value
+        });
+        if (this.props.onInputChange) {
+            this.props.onInputChange(e.currentTarget.value);
+        }
+    }
+
+    onDelete = (value?: string) => {
+        let res = this.state.lastValue.filter(v => v.value !== value);
+        if (this.props.onChange) {
+            this.props.onChange(res);
+        } else {
+            this.setState({ lastValue: res });
+        }
+    }
+
+    onPick = (option: { label: string, value: string }) => {
+        if (this.props.multi === false && this.state.lastValue[0] !== undefined) {
+            return;
+        }
+        let res = this.state.lastValue;
+        if (!(res || []).find(i => i.value === option.value)) {
+            res.push(option);
+        }
+        if (this.props.onChange) {
+            this.props.onChange(res);
+            this.setState({ inputVal: '', focus: false });
+        } else {
+            this.setState({ lastValue: res, inputVal: '', focus: false });
+        }
+    }
+
+    render() {
+        const {
+            alignSelf,
+            justifyContent,
+            flexGrow,
+            flexShrink,
+            flexBasis,
+            width,
+            height,
+            minHeight,
+            minWidth,
+            maxHeight,
+            maxWidth,
+            zIndex,
+            opacity,
+            rounded
+        } = this.props;
+
+        let options = this.props.options as { label: string, value: string, photo: string | null, org: string | null }[];
+        let inputValue = this.state.inputVal;
+        if (inputValue === null) {
+            inputValue = '';
+        }
+
+        return (
+            <Container
+                separator={4}
+                alignSelf={alignSelf}
+                justifyContent={justifyContent}
+                flexGrow={flexGrow}
+                flexShrink={flexShrink}
+                flexBasis={flexBasis}
+                width={width}
+                height={height}
+                minHeight={minHeight}
+                minWidth={minWidth}
+                maxHeight={maxHeight}
+                maxWidth={maxWidth}
+                zIndex={zIndex}
+                opacity={opacity}
+                rounded={rounded}
+            >
+                {((this.state.lastValue as Option<string>[]) || []).map(v => (
+                    <XTag
+                        key={v.value}
+                        icon="x-close"
+                        size={rounded ? 'default' : 'large'}
+                        text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
+                        rounded={rounded}
+                        onClick={() => this.onDelete(v.value)}
+                    />
+                ))}
+                <XPopper
+                    placement="bottom-start"
+                    arrow={null}
+                    zIndex={999}
+                    animation={null}
+                    show={this.state.inputVal.length > 0 || this.state.focus}
+                    onClickOutside={this.focusOutHandler}
+                    contentContainer={(
+                        <CustomContentDiv />
+                    )}
+                    content={
+                        <UserPicker
+                            query={this.state.inputVal}
+                            options={[{ values: options.filter(o => !(this.state.lastValue || []).find(l => l.value === o.value)) }]}
+                            onPick={this.onPick}
+                        />
+                    }
+                >
+                    <Input
+                        innerRef={this.handleRef}
+                        value={inputValue}
+                        placeholder={(this.state.lastValue || []).length === 0 ? this.props.placeholder : ''}
+                        autoFocus={this.props.autoFocus}
+                        onChange={this.onInputChange}
+                        onFocus={this.focusInHandler}
+                        rounded={rounded}
+                    />
+                </XPopper>
             </Container>
         );
     }

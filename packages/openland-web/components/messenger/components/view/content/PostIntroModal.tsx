@@ -8,7 +8,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XSelect } from 'openland-x/XSelect';
 import IcFile from '../../icons/ic-file.svg';
-import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
+import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withExplorePeople } from '../../../../../api/withExplorePeople';
 import { withCreateIntro } from '../../../../../api/withCreateIntro';
 import { XFileUpload } from 'openland-x/files/XFileUpload';
@@ -50,17 +50,14 @@ const ImgButton = (props: XLinkProps & ImgButtonStylesProps) => (
 
 const SearchPeopleModule = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
-        return null;
-    }
-    return (
-        <>
+        return (
             <XSelect
                 creatable={true}
                 multi={false}
                 field="input.userId"
-                options={props.data.items.edges.map(i => ({ label: i.node.name, value: i.node.id })) || []}
+                options={[]}
                 render={
-                    <XSelectCustomInputRender
+                    <XSelectCustomUsersRender
                         multi={false}
                         popper={true}
                         placeholder="Whom do you want to introduce?"
@@ -70,7 +67,23 @@ const SearchPeopleModule = withExplorePeople(props => {
                     />
                 }
             />
-        </>
+        );
+    }
+    return (
+        <XSelect
+            creatable={true}
+            multi={false}
+            field="input.userId"
+            options={props.data.items.edges.map(i => ({ label: i.node.name, value: i.node.id, photo: i.node.picture, org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null) })) || []}
+            render={
+                <XSelectCustomUsersRender
+                    multi={false}
+                    placeholder="Whom do you want to introduce?"
+                    rounded={true}
+                    onInputChange={(data) => (props as any).onChangeInput(data)}
+                />
+            }
+        />
     );
 }) as React.ComponentType<{ variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
 

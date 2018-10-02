@@ -8,13 +8,13 @@ import { getConfig } from '../../../../config';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
 import PhotoIcon from '../icons/ic-photo.svg';
-import ListingIcon from '../icons/ic-listing.svg';
+// import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
 import UloadIc from '../icons/file-upload.svg';
 import IntroIc from '../icons/ic-attach-intro.svg';
 import ShortcutsIcon from '../icons/ic-attach-shortcuts-2.svg';
 import { PostIntroModal } from './content/PostIntroModal';
-import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
+// import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
@@ -383,7 +383,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <PhotoIcon />
                                     <span>Photo</span>
                                 </AttachmentButton>
-                                {this.props.conversationType === 'ChannelConversation' && this.props.conversationId && (
+                                {/* {this.props.conversationType === 'ChannelConversation' && this.props.conversationId && (
                                     <AttachmentButton
                                         query={{ field: 'addListing', value: 'true' }}
                                     // enabled={this.props.enabled === false}
@@ -392,7 +392,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                         <ListingIcon />
                                         <span>Listing</span>
                                     </AttachmentButton>
-                                )}
+                                )} */}
                                 <AttachmentButton
                                     onClick={this.props.enabled === false ? undefined : this.handleAttach}
                                     enabled={this.props.enabled === false}
@@ -423,7 +423,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                         </XHorizontal>
                     </XVertical>
                 </SendMessageContent>
-                <PostChannelModal targetQuery="addListing" />
+                {/* <PostChannelModal targetQuery="addListing" /> */}
                 <PostIntroModal targetQuery="addItro" conversationId={this.props.conversationId || ''} />
             </SendMessageWrapper>
         );
