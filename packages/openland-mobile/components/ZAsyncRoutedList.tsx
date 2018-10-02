@@ -6,10 +6,11 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASListView } from 'react-native-async-view/ASListView';
-import { StyleProp, ViewStyle, Animated } from 'react-native';
+import { StyleProp, ViewStyle, Animated, View, Text } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { STrackedValue } from 'react-native-s/STrackedValue';
+import { ZLoader } from './ZLoader';
 
 type ListQuery<Q> = {
     items: {
@@ -33,10 +34,16 @@ export interface ZAsyncRoutedListProps<Q, V> {
     query: GraphqlTypedQuery<ListQuery<Q>, V>;
     variables?: V;
     style?: StyleProp<ViewStyle>;
-    onEmpty?: () => void;
+    emptyText?: string;
 }
 
-export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>> {
+export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>, { loading?: boolean, empty?: boolean }> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {};
+    }
+
     private contentOffset = new STrackedValue();
 
     private isLoading = false;
@@ -76,12 +83,16 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
     componentWillMount() {
         (async () => {
             this.isLoading = true;
+            this.setState({ loading: true });
             let loaded = await backoff(async () => await getClient().query(this.props.query, this.props.variables));
             let items = loaded.data.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
             if (items.length > 0) {
                 this.nextCursor = loaded.data.items.edges[loaded.data.items.edges.length - 1].cursor;
+            } else {
+                this.setState({ empty: true });
             }
             this.isLoading = false;
+            this.setState({ loading: false });
             this.dataSource.initialize(items, items.length === 0);
         })();
     }
@@ -89,7 +100,11 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
         return (
             <ASSafeAreaContext.Consumer>
                 {area => {
-                    return (
+                    return this.state.empty ? (
+                        <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{this.props.emptyText || 'Nothing found 🤷‍'}</Text>
+                        </View>
+                    ) : this.state.loading ? (<ZLoader />) : (
                         <>
                             <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView

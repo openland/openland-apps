@@ -32,7 +32,7 @@ class DialogsSearch extends React.Component<{ query: string }> {
                                     if (resp.data.items.length === 0) {
                                         return (
                                             <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                                <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>No chats found 🤷‍♂️</Text>
+                                                <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>No chats found 🤷‍</Text>
                                             </View>
                                         );
 
