@@ -162,6 +162,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
                             <Header alignItems="center" justifyContent="space-between">
                                 <Title>Messages</Title>
                                 <AddButton
+                                style="primary"
                                     path="/mail/new"
                                     text="New"
                                     icon={<PlusIcon />}
