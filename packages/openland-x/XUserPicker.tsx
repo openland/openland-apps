@@ -5,6 +5,7 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XButton } from 'openland-x/XButton';
 
 const EntryScrollable = Glamorous(XVertical)({
     overflowY: 'scroll',
@@ -145,29 +146,8 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
     }
 }
 
-const PickerTitle = Glamorous.div({
-    fontSize: 15,
-    fontWeight: 500,
-    letterSpacing: 0.1,
-    color: '#334562',
-    paddingLeft: 24,
-    paddingRight: 24
-});
-
 const PickerEntries = Glamorous(XHorizontal)({
     borderTop: '1px solid rgba(220, 222, 228, 0.5)'
-});
-
-const HelpText = Glamorous.div({
-    paddingLeft: 24,
-    paddingRight: 24,
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.27,
-    letterSpacing: -0.1,
-    color: '#334562',
-    marginBottom: '24px !important',
-    marginTop: 10
 });
 
 interface MultoplePickerProps {
@@ -268,7 +248,11 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
     render() {
         return (
             <>
-                {this.state.empty && <HelpText>Wait...</HelpText>}
+                {this.state.empty && (
+                    <XHorizontal alignItems="center" justifyContent="center" width={120}>
+                        <XButton alignSelf="center" style="flat" loading={true} />
+                    </XHorizontal>
+                )}
                 {!this.state.empty && (
                     <XVertical separator={9} width="100%">
                         {this.props.options.length === 1 && (
