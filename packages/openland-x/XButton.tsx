@@ -370,11 +370,11 @@ let colorStyles = styleResolver({
         }
     },
     'primary': {
-        backgroundColor: '#654bfa',
+        backgroundColor: '#4a78e7',
         color: '#ffffff',
         border: 'solid 1px transparent',
         '&:hover': {
-            backgroundColor: '#816cf9',
+            backgroundColor: '#4869b7',
             color: '#ffffff'
         },
         '&:active': {
@@ -530,7 +530,7 @@ let colorDisabledStyles = styleResolver({
         border: 'solid 1px transparent !important',
     },
     'primary': {
-        backgroundColor: '#9380fc !important',
+        backgroundColor: '#CECECE !important',
         color: 'rgba(255, 255, 255, 0.7) !important',
         border: 'solid 1px transparent !important',
     },
