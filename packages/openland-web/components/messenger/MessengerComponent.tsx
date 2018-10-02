@@ -640,6 +640,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         longDescription={undefined}
                         orgId={''}
                         emptyText="To grow the community, invite people to this group"
+                        removeText="Remove from group"
                     />
                 )}
             </XHorizontal>

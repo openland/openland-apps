@@ -131,7 +131,7 @@ const Accept = withChannelInvite((props) => {
     );
 }) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
-class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }, { isHovered: boolean }> {
+class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string, removeText?: string }, { isHovered: boolean }> {
     constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }) {
         super(props);
         this.state = {
@@ -162,12 +162,11 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
 
                 {item.status === 'member' && (
                     <MemberTools separator={5}>
-
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
                             content={(
-                                <XMenuItem style="danger" query={{ field: 'remove', value: this.props.item.id }}>Remove from channel</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: this.props.item.id }}>{this.props.removeText || 'Remove from channel'}</XMenuItem>
                             )}
                         />
                     </MemberTools>
@@ -232,6 +231,7 @@ interface ChannelMembersComponentInnerProps {
     longDescription?: string;
     orgId: string;
     emptyText: string;
+    removeText?: string;
 }
 
 class ChannelMembersComponentInner extends React.Component<ChannelMembersComponentInnerProps> {
@@ -262,7 +262,12 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                 <XSubHeader title="Members" counter={members.length} />
                 <MembersView>
                     {(members.length > 1) && members.map(m => (
-                        <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                        <MemberItem
+                            key={m.user.id}
+                            item={{ status: m.status as any, ...m.user }}
+                            channelId={this.props.channelId}
+                            removeText={this.props.removeText}
+                        />
                     ))}
                 </MembersView>
                 {(members.length <= 3) && (
@@ -290,5 +295,6 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         longDescription={(props as any).longDescription}
         orgId={(props as any).orgId}
         emptyText={(props as any).emptyText}
+        removeText={(props as any).removeText}
     />
-)) as React.ComponentType<{ emptyText: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ removeText?: string, emptyText: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
