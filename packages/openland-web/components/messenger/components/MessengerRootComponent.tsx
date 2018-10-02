@@ -27,6 +27,7 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
     conversationType?: string;
     me: UserShort | null;
+    channelType: boolean;
 }
 
 interface MessagesComponentState {
@@ -145,6 +146,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     conversationId={this.props.conversationId}
                     conversationType={this.props.conversationType}
                     inputShower={this.handleShowIput}
+                    channelType={this.props.channelType}
                 />
                 {this.state.hideInput === false && (
                     <MessageComposeComponent
@@ -178,6 +180,7 @@ const Placeholder = withChatHistory(() => {
 interface MessengerRootComponentProps {
     conversationId: string;
     conversationType?: string;
+    channelType: boolean;
 }
 
 const MessagesWithUser = withUserInfo((props) => (
@@ -187,8 +190,9 @@ const MessagesWithUser = withUserInfo((props) => (
         conversationId={props.conversationId}
         messenger={props.messenger}
         conversationType={props.conversationType}
+        channelType={props.channelType}
     />
-)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
+)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string, channelType: boolean; }>;
 
 export class MessengerRootComponent extends React.Component<MessengerRootComponentProps> {
     render() {
@@ -203,6 +207,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
                         conversationId={this.props.conversationId}
                         messenger={messenger}
                         conversationType={this.props.conversationType}
+                        channelType={this.props.channelType}
                     />
                 )}
             </MessengerContext.Consumer>

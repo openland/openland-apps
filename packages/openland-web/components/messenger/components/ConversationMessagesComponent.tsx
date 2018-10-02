@@ -102,6 +102,7 @@ interface ConversationMessagesComponentProps {
     conversationType?: string;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
+    channelType: boolean;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
@@ -161,6 +162,7 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
                     messages={this.state.messages}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
+                    channelType={this.props.channelType}
                 />
                 <XLoader loading={!this.state.mounted || this.state.loading} />
                 <TypingComponent chatId={this.props.conversationId} />

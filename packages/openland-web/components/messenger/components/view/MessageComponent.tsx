@@ -18,6 +18,7 @@ import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentatio
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XOverflow } from '../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 
 interface MessageComponentProps {
@@ -27,6 +28,7 @@ interface MessageComponentProps {
     conversation: ConversationEngine;
     out: boolean;
     me?: UserShort | null;
+    channelType: boolean;
 }
 
 const MessageWrapper = Glamorous(XVertical)({
@@ -198,7 +200,19 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         }
                     />
                 </MenuWrapper>
-            ) : null;
+            ) 
+            // : (isServerMessage(message) && this.props.channelType) ? (
+            //     <XWithRole role="super-admin">
+            //         <MenuWrapper className="menu" compact={this.props.compact}>
+            //             <XOverflow
+            //                 flat={true}
+            //                 placement="bottom-end"
+            //                 content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
+            //             />
+            //         </MenuWrapper>
+            //     </XWithRole>
+            // ) 
+            : null;
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true}>
