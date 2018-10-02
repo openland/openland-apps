@@ -199,6 +199,10 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
             }
         }
 
+        this.setState({
+            notFound: false
+        });
+
         this.timer = setTimeout(() => {
             this.setState({
                 notFound: count === 0
