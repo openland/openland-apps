@@ -107,7 +107,11 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         let date: any = null;
         if (isServerMessage(message)) {
             if (message.message && message.message.length > 0) {
-                content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} />);
+                if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+                    content.push(null);
+                } else {
+                    content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} />);
+                }
             }
             if (message.file && !message.urlAugmentation) {
                 let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
