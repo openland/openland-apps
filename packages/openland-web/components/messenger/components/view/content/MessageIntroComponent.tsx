@@ -10,10 +10,16 @@ import CheckIcon from '../../icons/ic-check.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { withSetReaction } from '../../../../../api/withSetReaction';
+import { withSetReaction, withUnsetReaction } from '../../../../../api/withSetReaction';
 
 const SetReactionButton = withSetReaction((props) => (
     <XMutation mutation={props.setReaction}>
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
+
+const UnsetReactionButton = withUnsetReaction((props) => (
+    <XMutation mutation={props.unsetReaction}>
         {props.children}
     </XMutation>
 )) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
@@ -227,9 +233,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                     content={
                                         <>
                                             {reactions.find(r => r.user.id === meId && r.reaction === 'pass') && (
-                                                <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }}>
+                                                <UnsetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
                                                     <XMenuItem style="primary-sky-blue">Accept intro</XMenuItem>
-                                                </SetReactionButton>
+                                                </UnsetReactionButton>
                                             )}
                                             <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                             <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
