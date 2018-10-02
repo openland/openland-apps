@@ -34,7 +34,7 @@ const SendMessageWrapper = Glamorous.div({
     paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 12,
-    borderTop: '1px solid rgba(220, 222, 228, 0.45)'
+    borderTop: 'solid 1px #e4e6e9'
 });
 
 const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
@@ -109,21 +109,20 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
     flexShrink: 0,
     borderRadius: 20,
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 600,
     lineHeight: 1.43,
-    letterSpacing: -0.2,
-    color: '#a3acb8',
-    cursor: props.disable ? 'default !important' : 'poonter',
+    color: '#87898D',
+    cursor: props.disable ? 'default !important' : 'pointer',
     '&:hover': {
-        color: props.disable ? '#a3acb8' : '#1790ff',
-        backgroundColor: props.disable ? 'transparent' : 'rgba(23, 144, 255, 0.05)',
+        color: props.disable ? '#a3acb8' : '#87898D',
+        backgroundColor: props.disable ? 'transparent' : '#E1E2E3',
         '& > svg > path': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(23, 144, 255, 0.5)'
+            fill: props.disable ? '#c1c7cf' : '#87898D'
         }
     },
     '&.document-button:hover': {
         '& > svg > g > g': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(23, 144, 255, 0.5)'
+            fill: props.disable ? '#c1c7cf' : '#87898D'
         }
     },
     '&.shortcuts-button > svg': {
@@ -147,7 +146,7 @@ const TextInputWrapper = Glamorous.div({
             overflow: 'auto',
             borderRadius: 20,
             backgroundColor: '#fff',
-            border: 'solid 1px #eef0f2',
+            border: 'solid 1px #e4e6e9',
             minHeight: 40,
             maxHeight: 125,
             paddingTop: 9,
