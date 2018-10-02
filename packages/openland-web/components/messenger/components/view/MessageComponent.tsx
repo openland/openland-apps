@@ -200,19 +200,17 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         }
                     />
                 </MenuWrapper>
-            ) 
-            // : (isServerMessage(message) && this.props.channelType) ? (
-            //     <XWithRole role="super-admin">
-            //         <MenuWrapper className="menu" compact={this.props.compact}>
-            //             <XOverflow
-            //                 flat={true}
-            //                 placement="bottom-end"
-            //                 content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
-            //             />
-            //         </MenuWrapper>
-            //     </XWithRole>
-            // ) 
-            : null;
+            ) : (isServerMessage(message) && this.props.channelType) ? (
+                <XWithRole role="super-admin">
+                    <MenuWrapper className="menu" compact={this.props.compact}>
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
+                        />
+                    </MenuWrapper>
+                </XWithRole>
+            ) : null;
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true}>
