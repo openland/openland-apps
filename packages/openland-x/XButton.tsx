@@ -354,15 +354,15 @@ let sizeStyles = styleResolver({
 
 let colorStyles = styleResolver({
     'default': {
-        backgroundColor: '#f3f3f5',
-        color: '#334562',
+        backgroundColor: '#e2e2e2',
+        color: '#575757',
         border: 'solid 1px transparent',
         '&:hover': {
-            backgroundColor: '#ecedf0',
+            backgroundColor: '#c6c6c8',
             color: '#334562'
         },
         '&:active': {
-            backgroundColor: '#117fe4',
+            backgroundColor: '#b3b3b5',
             color: '#fff'
         },
         '&:focus': {
