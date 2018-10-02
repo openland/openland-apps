@@ -65,6 +65,36 @@ export default withData('Compatibitily Table', class Error extends React.Compone
                     <FontDemo fontSize={34} fontWeight="500" />
                 </XVertical>
                 <XVertical>
+                    <FontDemo fontSize={13} fontWeight="600" />
+                    <FontDemo fontSize={14} fontWeight="600" />
+                    <FontDemo fontSize={15} fontWeight="600" />
+                    <FontDemo fontSize={16} fontWeight="600" />
+                    <FontDemo fontSize={17} fontWeight="600" />
+                    <FontDemo fontSize={18} fontWeight="600" />
+                    <FontDemo fontSize={20} fontWeight="600" />
+                    <FontDemo fontSize={22} fontWeight="600" />
+                    <FontDemo fontSize={24} fontWeight="600" />
+                    <FontDemo fontSize={26} fontWeight="600" />
+                    <FontDemo fontSize={28} fontWeight="600" />
+                    <FontDemo fontSize={32} fontWeight="600" />
+                    <FontDemo fontSize={34} fontWeight="600" />
+                </XVertical>
+                <XVertical>
+                    <FontDemo fontSize={13} fontWeight="700" />
+                    <FontDemo fontSize={14} fontWeight="700" />
+                    <FontDemo fontSize={15} fontWeight="700" />
+                    <FontDemo fontSize={16} fontWeight="700" />
+                    <FontDemo fontSize={17} fontWeight="700" />
+                    <FontDemo fontSize={18} fontWeight="700" />
+                    <FontDemo fontSize={20} fontWeight="700" />
+                    <FontDemo fontSize={22} fontWeight="700" />
+                    <FontDemo fontSize={24} fontWeight="700" />
+                    <FontDemo fontSize={26} fontWeight="700" />
+                    <FontDemo fontSize={28} fontWeight="700" />
+                    <FontDemo fontSize={32} fontWeight="700" />
+                    <FontDemo fontSize={34} fontWeight="700" />
+                </XVertical>
+                <XVertical>
                     <FontDemo fontSize={13} fontWeight="800" />
                     <FontDemo fontSize={14} fontWeight="800" />
                     <FontDemo fontSize={15} fontWeight="800" />
