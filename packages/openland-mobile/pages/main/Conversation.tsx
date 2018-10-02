@@ -18,7 +18,6 @@ import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatRight } from './components/ChatRight';
 import { ZRoundedButton } from '../../components/ZRoundedButton';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChannelJoinMutation } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';

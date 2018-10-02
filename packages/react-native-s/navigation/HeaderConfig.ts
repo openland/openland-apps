@@ -151,9 +151,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
 
-    if (a.buttons && a.buttons.length > 0) {
-        let a2 = new Set(a.buttons.map((v) => v.id));
-        let b2 = new Set(b.buttons!!.map((v) => v.id));
+    if ((b.buttons && b.buttons.length > 0) || (b.buttons && b.buttons.length > 0)) {
+        let a2 = new Set((a.buttons || []).map((v) => v.id));
+        let b2 = new Set((b.buttons || []).map((v) => v.id));
         for (let a3 of a2) {
             if (!b2.has(a3)) {
                 return false;

@@ -9,6 +9,7 @@ import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
 import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
+import { Channels } from './Channels';
 
 export class Home extends React.PureComponent<PageProps, { tab: number }> {
     constructor(props: PageProps) {
@@ -34,11 +35,16 @@ export class Home extends React.PureComponent<PageProps, { tab: number }> {
                         </View>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 1 ? 1 : 0 }} pointerEvents={this.state.tab === 1 ? 'box-none' : 'none'}>
                             <HeaderContextChild enabled={this.state.tab === 1}>
-                                <Dialogs {...this.props as any} />
+                                <Channels {...this.props as any} />
                             </HeaderContextChild>
                         </View>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 2 ? 1 : 0 }} pointerEvents={this.state.tab === 2 ? 'box-none' : 'none'}>
                             <HeaderContextChild enabled={this.state.tab === 2}>
+                                <Dialogs {...this.props as any} />
+                            </HeaderContextChild>
+                        </View>
+                        <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 3 ? 1 : 0 }} pointerEvents={this.state.tab === 3 ? 'box-none' : 'none'}>
+                            <HeaderContextChild enabled={this.state.tab === 3}>
                                 <Settings {...this.props as any} />
                             </HeaderContextChild>
                         </View>
@@ -55,17 +61,23 @@ export class Home extends React.PureComponent<PageProps, { tab: number }> {
                                     onPress={() => this.handleTabChange(0)}
                                 />
                                 <AppBarBottomItem
+                                    title="Channels"
+                                    icon={require('assets/ic-feed.png')}
+                                    selected={this.state.tab === 1}
+                                    onPress={() => this.handleTabChange(1)}
+                                />
+                                <AppBarBottomItem
                                     title="Messages"
                                     icon={require('assets/ic-messages-ios.png')}
-                                    selected={this.state.tab === 1}
+                                    selected={this.state.tab === 2}
                                     counter={resp.data!!.counter.unreadCount}
-                                    onPress={() => this.handleTabChange(1)}
+                                    onPress={() => this.handleTabChange(2)}
                                 />
                                 <AppBarBottomItem
                                     title="Settings"
                                     icon={require('assets/ic-settings-ios.png')}
-                                    selected={this.state.tab === 2}
-                                    onPress={() => this.handleTabChange(2)}
+                                    selected={this.state.tab === 3}
+                                    onPress={() => this.handleTabChange(3)}
                                 />
                             </AppBarBottom>
                         </View>

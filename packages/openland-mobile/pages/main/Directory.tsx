@@ -10,9 +10,7 @@ import { XPStyles } from 'openland-xp/XPStyles';
 import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
-import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { Alert } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {

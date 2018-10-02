@@ -428,7 +428,7 @@ export const DocumentFetchPreviewLinkQuery = gql`
 
 export const ChatSearchChannelQuery = gql`
     query ChatSearchChannel($query: String, $sort: String, $page: Int) {
-        channels: alphaChannels(query: $query, sort: $sort, page: $page, first: 25) {
+        items: alphaChannels(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
                     ...ConversationShort

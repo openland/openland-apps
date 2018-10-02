@@ -34,7 +34,7 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                     >
                         <Image
                             source={this.props.icon}
-                            resizeMode="stretch"
+                            resizeMode="contain"
                             style={{
                                 width: 28,
                                 height: 28,

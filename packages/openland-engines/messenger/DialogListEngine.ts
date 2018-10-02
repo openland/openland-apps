@@ -40,6 +40,20 @@ export function formatMessage(message: any): string {
         return '';
     }
 }
+
+export const extractDialog = (c: any, uid: string) => (
+    {
+        key: c.id,
+        type: c.__typename,
+        title: c.title,
+        photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
+        unread: c.unreadCount,
+        isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
+        sender: c.topMessage ? (c.topMessage!!.sender.id === uid ? 'You' : c.topMessage!!.sender.name) : undefined,
+        message: c.topMessage ? formatMessage(c.topMessage) : undefined,
+        date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
+    }
+);
 export class DialogListEngine {
 
     readonly engine: MessengerEngine;
@@ -77,17 +91,7 @@ export class DialogListEngine {
 
         // Update data source
         this.dataSource.initialize(
-            this.conversations.map((c) => ({
-                key: c.id,
-                type: c.__typename,
-                title: c.title,
-                photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
-                unread: c.unreadCount,
-                isOut: c.topMessage ? c.topMessage!!.sender.id === this.engine.user.id : undefined,
-                sender: c.topMessage ? (c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name) : undefined,
-                message: c.topMessage ? formatMessage(c.topMessage) : undefined,
-                date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
-            })),
+            this.conversations.map(c => extractDialog(c, this.engine.user.id)),
             next === null);
 
         // Start engine

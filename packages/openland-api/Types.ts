@@ -2478,7 +2478,7 @@ export interface DocumentFetchPreviewLinkVariables {
 // GraphQL query operation: ChatSearchChannel
 // ====================================================
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_fileMetadata {
+export interface ChatSearchChannel_items_edges_node_topMessage_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2489,14 +2489,14 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_fileMetadata {
   size: number;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_sender_primaryOrganization {
+export interface ChatSearchChannel_items_edges_node_topMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_sender {
+export interface ChatSearchChannel_items_edges_node_topMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -2506,25 +2506,25 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_sender {
   email: string | null;
   online: boolean;
   lastSeen: string | null;
-  primaryOrganization: ChatSearchChannel_channels_edges_node_topMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_sender_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_reactions_user {
+export interface ChatSearchChannel_items_edges_node_topMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_reactions {
+export interface ChatSearchChannel_items_edges_node_topMessage_reactions {
   __typename: "MessageReaction";
-  user: ChatSearchChannel_channels_edges_node_topMessage_reactions_user;
+  user: ChatSearchChannel_items_edges_node_topMessage_reactions_user;
   reaction: string;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo_crop {
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
   y: number;
@@ -2532,33 +2532,33 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentatio
   h: number;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo {
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo {
   __typename: "ImageRef";
   uuid: string;
-  crop: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo_crop | null;
+  crop: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing {
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing {
   __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization {
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User {
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user = ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user_User;
+export type ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user = ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User;
 
-export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation {
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
   url: string;
@@ -2568,32 +2568,32 @@ export interface ChatSearchChannel_channels_edges_node_topMessage_urlAugmentatio
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
-  photo: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_photo | null;
-  user: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation_user | null;
+  photo: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo | null;
+  user: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user | null;
 }
 
-export interface ChatSearchChannel_channels_edges_node_topMessage {
+export interface ChatSearchChannel_items_edges_node_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
-  fileMetadata: ChatSearchChannel_channels_edges_node_topMessage_fileMetadata | null;
-  sender: ChatSearchChannel_channels_edges_node_topMessage_sender;
-  reactions: ChatSearchChannel_channels_edges_node_topMessage_reactions[];
-  urlAugmentation: ChatSearchChannel_channels_edges_node_topMessage_urlAugmentation | null;
+  fileMetadata: ChatSearchChannel_items_edges_node_topMessage_fileMetadata | null;
+  sender: ChatSearchChannel_items_edges_node_topMessage_sender;
+  reactions: ChatSearchChannel_items_edges_node_topMessage_reactions[];
+  urlAugmentation: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation | null;
   date: any;
 }
 
-export interface ChatSearchChannel_channels_edges_node_settings {
+export interface ChatSearchChannel_items_edges_node_settings {
   __typename: "ConversationSettings";
   id: string;
   mobileNotifications: NotificationMessages;
   mute: boolean;
 }
 
-export interface ChatSearchChannel_channels_edges_node_photoRef_crop {
+export interface ChatSearchChannel_items_edges_node_photoRef_crop {
   __typename: "ImageCrop";
   x: number;
   y: number;
@@ -2601,46 +2601,46 @@ export interface ChatSearchChannel_channels_edges_node_photoRef_crop {
   h: number;
 }
 
-export interface ChatSearchChannel_channels_edges_node_photoRef {
+export interface ChatSearchChannel_items_edges_node_photoRef {
   __typename: "ImageRef";
   uuid: string;
-  crop: ChatSearchChannel_channels_edges_node_photoRef_crop | null;
+  crop: ChatSearchChannel_items_edges_node_photoRef_crop | null;
 }
 
-export interface ChatSearchChannel_channels_edges_node_organization {
+export interface ChatSearchChannel_items_edges_node_organization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface ChatSearchChannel_channels_edges_node {
+export interface ChatSearchChannel_items_edges_node {
   __typename: "ChannelConversation";
   id: string;
   title: string;
   flexibleId: string;
   unreadCount: number;
   photos: string[];
-  topMessage: ChatSearchChannel_channels_edges_node_topMessage | null;
-  settings: ChatSearchChannel_channels_edges_node_settings;
+  topMessage: ChatSearchChannel_items_edges_node_topMessage | null;
+  settings: ChatSearchChannel_items_edges_node_settings;
   featured: boolean;
   hidden: boolean;
   photo: string | null;
-  photoRef: ChatSearchChannel_channels_edges_node_photoRef | null;
+  photoRef: ChatSearchChannel_items_edges_node_photoRef | null;
   membersCount: number;
   description: string;
   myStatus: ChannelMembershipStatus;
-  organization: ChatSearchChannel_channels_edges_node_organization | null;
+  organization: ChatSearchChannel_items_edges_node_organization | null;
   isRoot: boolean;
 }
 
-export interface ChatSearchChannel_channels_edges {
+export interface ChatSearchChannel_items_edges {
   __typename: "ChannelConversationConnectionEdge";
-  node: ChatSearchChannel_channels_edges_node;
+  node: ChatSearchChannel_items_edges_node;
   cursor: string;
 }
 
-export interface ChatSearchChannel_channels_pageInfo {
+export interface ChatSearchChannel_items_pageInfo {
   __typename: "PageInfo";
   hasNextPage: boolean;
   hasPreviousPage: boolean;
@@ -2650,14 +2650,14 @@ export interface ChatSearchChannel_channels_pageInfo {
   openEnded: boolean;
 }
 
-export interface ChatSearchChannel_channels {
+export interface ChatSearchChannel_items {
   __typename: "ChannelConversationConnection";
-  edges: ChatSearchChannel_channels_edges[];
-  pageInfo: ChatSearchChannel_channels_pageInfo;
+  edges: ChatSearchChannel_items_edges[];
+  pageInfo: ChatSearchChannel_items_pageInfo;
 }
 
 export interface ChatSearchChannel {
-  channels: ChatSearchChannel_channels;
+  items: ChatSearchChannel_items;
 }
 
 export interface ChatSearchChannelVariables {

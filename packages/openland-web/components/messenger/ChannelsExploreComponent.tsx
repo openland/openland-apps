@@ -95,10 +95,10 @@ interface WithChatSearchChannelsProps {
 
 const Channels = withChatSearchChannels((props) => {
     return (
-        props.data && props.data.channels ? props.data.channels.edges.length
+        props.data && props.data.items ? props.data.items.edges.length
             ? (
                 <>
-                    {props.data.channels.edges.map(c => {
+                    {props.data.items.edges.map(c => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' / ') : '') + channel.title;
 

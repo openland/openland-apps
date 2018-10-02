@@ -39,7 +39,7 @@ export interface ZAsyncRoutedListProps<Q, V> {
 
 export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>, { loading?: boolean, empty?: boolean }> {
 
-    constructor(props: any) {
+    constructor(props: ZAsyncRoutedListProps<Q, V>) {
         super(props);
         this.state = {};
     }
