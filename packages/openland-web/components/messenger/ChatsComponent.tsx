@@ -488,6 +488,11 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
         let { allowShortKeys } = this.state;
 
         if (e.ctrlKey) {
+            if (canUseDOM) {
+                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
+                    return;
+                }
+            }
             switch (String.fromCharCode(e.which).toLowerCase()) {
                 case 's':
                     e.preventDefault();
@@ -498,6 +503,26 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                 }
             }
         }
+
+        // if (e.shiftKey) {
+        //     if (canUseDOM) {
+        //         if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
+        //             return;
+        //         }
+        //     }
+
+        //     switch (e.code) {
+        //         case 'ArrowUp':
+        //             console.log('ArrowUp');
+        //             break;
+        //         case 'ArrowDown':
+        //             console.log('ArrowDown');
+        //             break;
+        //         default: {
+        //             return;
+        //         }
+        //     }
+        // }
 
         if (!this.props.emptyState && e.code === 'Escape') {
             if (canUseDOM) {
