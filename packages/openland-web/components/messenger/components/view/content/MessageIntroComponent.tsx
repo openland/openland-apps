@@ -10,16 +10,10 @@ import CheckIcon from '../../icons/ic-check.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { withSetReaction, withUnsetReaction } from '../../../../../api/withSetReaction';
+import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
 
 const SetReactionButton = withSetReaction((props) => (
     <XMutation mutation={props.setReaction}>
-        {props.children}
-    </XMutation>
-)) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
-
-const UnsetReactionButton = withUnsetReaction((props) => (
-    <XMutation mutation={props.unsetReaction}>
         {props.children}
     </XMutation>
 )) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
@@ -29,6 +23,27 @@ const SetAccesReactionButton = withSetReaction(withRouter((props) => (
         {props.children}
     </XMutation>
 ))) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any, userId: string }>;
+
+const ChangeReactionButton = withChangeReaction((props) => (
+    <XMutation
+        action={async () => {
+            await props.unsetReaction({
+                variables: {
+                    messageId: (props as any).messageId,
+                    reaction: 'pass'
+                }
+            });
+            await props.setReaction({
+                variables: {
+                    messageId: (props as any).messageId,
+                    reaction: 'accept'
+                }
+            });
+        }}
+    >
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ messageId: string, children: any }>;
 
 const Root = Glamorous(XVertical)({
     border: '1px solid #eef0f2',
@@ -233,9 +248,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                     content={
                                         <>
                                             {reactions.find(r => r.user.id === meId && r.reaction === 'pass') && (
-                                                <UnsetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
+                                                <ChangeReactionButton messageId={messageId}>
                                                     <XMenuItem style="primary-sky-blue">Accept intro</XMenuItem>
-                                                </UnsetReactionButton>
+                                                </ChangeReactionButton>
                                             )}
                                             <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                             <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
