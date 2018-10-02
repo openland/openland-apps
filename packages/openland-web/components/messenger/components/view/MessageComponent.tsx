@@ -66,7 +66,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
 const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
-    alignItems: props.compact ? 'center' : undefined,
+    // alignItems: props.compact ? 'center' : undefined,
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: props.compact ? 3 : 7,
