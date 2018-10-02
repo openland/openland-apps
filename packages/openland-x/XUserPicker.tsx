@@ -131,7 +131,7 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                                         src={e.photo || ''}
                                         size="small"
                                     />
-                                    <XVertical separator={1}>
+                                    <XVertical separator={3}>
                                         <UserName>{e.label}</UserName>
                                         {e.org && <UserOrg>{e.org}</UserOrg>}
                                     </XVertical>
