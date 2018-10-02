@@ -69,7 +69,7 @@ routes.add('/home', '/main/home/main');
 routes.add('/home/', '/main/home/main');
 
 //
-// Onbouarding
+// Onboarding
 //
 routes.add('/new/invite', '/main/onboarding/invite');
 
@@ -240,6 +240,8 @@ routes.add('/super/orgs/:accountId/', '/dev/orgView');
 
 routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
+
+routes.add('/compatibility', '/compat');
 
 //
 // Authentication
