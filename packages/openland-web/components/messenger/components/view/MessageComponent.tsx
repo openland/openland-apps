@@ -56,9 +56,9 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     width: props.small ? 56 : 62,
     marginBottom: props.small ? undefined : -1,
     fontSize: 11,
-    paddingTop: props.small ? 3 : 1,
-    fontWeight: 500,
-    letterSpacing: -0.2,
+    // lineHeight: '12px',
+    paddingTop: props.small ? 1 : 1,
+    fontWeight: 600,
     whiteSpace: 'nowrap',
     color: '#99A2B0'
 }));
