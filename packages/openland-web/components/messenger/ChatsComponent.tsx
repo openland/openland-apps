@@ -27,15 +27,16 @@ import { XFont } from 'openland-x/XFont';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
-    height: 77,
+    height: 72,
     fontSize: 15,
     fontWeight: 500,
     color: '#334562',
     flexDirection: 'row',
-    paddingLeft: 16,
+    alignItems: 'center',
+    paddingLeft: 8,
     paddingRight: 0,
-    paddingTop: 8,
-    paddingBottom: 0,
+    paddingTop: 4,
+    paddingBottom: 4,
     position: 'relative',
     '&:hover, &:focus': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
@@ -64,10 +65,12 @@ const Header = Glamorous.div({
     flexDirection: 'column',
     flexGrow: 1,
     alignItems: 'stretch',
-    paddingLeft: 16,
-    paddingRight: 12,
+    paddingLeft: 12,
+    paddingRight: 8,
+    paddingTop: 8,
     maxWidth: 'calc(100% - 46px)',
     position: 'relative',
+    height: 72,
     '&:before': {
         content: ' ',
         display: 'block',
@@ -84,8 +87,8 @@ const Main = Glamorous.div({
     alignItems: 'center',
     flexGrow: 0,
     flexShrink: 1,
-    height: 20,
-    marginBottom: 3
+    height: 18,
+    marginBottom: 4
 });
 
 const Title = Glamorous.div({
@@ -93,8 +96,7 @@ const Title = Glamorous.div({
     flexDirection: 'row',
     flexGrow: 1,
     flexBasis: '0px',
-    fontSize: 14,
-    height: 20,
+    height: 18,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -103,7 +105,7 @@ const Title = Glamorous.div({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     },
-    ...XFont.h500
+    ...XFont.h400
 });
 
 const Date = Glamorous.div({
@@ -112,7 +114,7 @@ const Date = Glamorous.div({
     alignSelf: 'flex-start',
     alignItems: 'flex-end',
     flexShrink: 0,
-    height: 20,
+    height: 18,
     ...XFont.h100,
     color: '#121e2b',
     opacity: 0.3,
@@ -133,7 +135,7 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
 
 const ContentText = Glamorous.div({
     height: 38,
-    
+
     ...XFont.b300,
     opacity: 0.8,
     // color: '#000',

@@ -23,7 +23,7 @@ const h400: CSSProperties = {
     fontSize: 14,
     fontWeight: 600,
     lineHeight: '20px',
-    color: neutral(0.6)
+    color: neutral(0.8)
 };
 
 const b300: CSSProperties = {
