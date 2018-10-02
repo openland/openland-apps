@@ -23,9 +23,7 @@ import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import PlusIcon from '../../../components/icons/ic-add-medium.svg';
-import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
-import { withUserInfo } from '../../../components/UserInfo';
-import { XPopper } from 'openland-x/XPopper';
+import { XFont } from 'openland-x/XFont';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -82,11 +80,7 @@ const Header = Glamorous(XHorizontal)({
 });
 
 const Title = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 500,
-    lineHeight: 1.33,
-    letterSpacing: -0.4,
-    color: '#334562'
+    ...XFont.h600
 });
 
 const OrganizationProfilContainer = Glamorous.div({
@@ -106,7 +100,6 @@ const ChannelInviteFromLink = withChannelInviteInfo((props) => (
 ));
 
 const AddButton = Glamorous(XButton)({
-    marginTop: 5,
     '& svg > g > path': {
         transition: 'all .2s'
     },

@@ -23,6 +23,7 @@ import SearchIcon from '../icons/ic-search-small.svg';
 import PhotoIcon from './components/icons/ic-photo.svg';
 import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
+import { XFont } from 'openland-x/XFont';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -33,29 +34,27 @@ const ItemContainer = Glamorous.a({
     flexDirection: 'row',
     paddingLeft: 16,
     paddingRight: 0,
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 0,
     position: 'relative',
-    '&.is-active': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        '&:hover': {
-            backgroundColor: 'rgba(23, 144, 255, 0.05)',
-            color: '#334562'
-        },
-        '& .title, .date': {
-            color: '#1790ff !important',
-            opacity: '1 !important'
-        },
-    },
     '&:hover, &:focus': {
         backgroundColor: 'rgba(23, 144, 255, 0.05)',
         '&:hover': {
-            backgroundColor: 'rgba(23, 144, 255, 0.05)',
+            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+            color: '#334562'
+        }
+    },
+    '&.is-active': {
+        backgroundColor: 'rgba(112, 100, 255, 0.96)',
+        '&:hover': {
+            backgroundColor: 'rgba(112, 100, 255, 0.96)',
             color: '#334562'
         },
-        '& .title, .date': {
-            color: '#1790ff !important',
+        '& .title, .date, .content': {
+            color: '#fff !important',
             opacity: '1 !important'
+            // color: '#1790ff !important',
+            // opacity: '1 !important'
         },
     }
 });
@@ -85,8 +84,8 @@ const Main = Glamorous.div({
     alignItems: 'center',
     flexGrow: 0,
     flexShrink: 1,
-    height: 16,
-    marginBottom: 4
+    height: 20,
+    marginBottom: 3
 });
 
 const Title = Glamorous.div({
@@ -95,10 +94,7 @@ const Title = Glamorous.div({
     flexGrow: 1,
     flexBasis: '0px',
     fontSize: 14,
-    height: 16,
-    fontWeight: 500,
-    lineHeight: '16px',
-    color: '#121e2b',
+    height: 20,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -106,18 +102,18 @@ const Title = Glamorous.div({
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-    }
+    },
+    ...XFont.h500
 });
 
 const Date = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'flex-start',
+    alignItems: 'flex-end',
     flexShrink: 0,
-    fontSize: 12,
-    fontWeight: 500,
-    lineHeight: '16px',
-    letterSpacing: -0.1,
+    height: 20,
+    ...XFont.h100,
     color: '#121e2b',
     opacity: 0.3,
     marginLeft: 5
@@ -136,12 +132,12 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
 }));
 
 const ContentText = Glamorous.div({
-    height: 34,
-    fontSize: 13,
-    lineHeight: '17px',
-    opacity: 0.6,
-    color: '#121e2b',
-    fontWeight: 400,
+    height: 38,
+    
+    ...XFont.b300,
+    opacity: 0.8,
+    // color: '#000',
+
     '& span': {
         display: 'block',
         height: '100%',
@@ -166,7 +162,7 @@ const ContentCounter = Glamorous.div({
 });
 
 const ConversationAvatar = Glamorous(XAvatar)({
-    marginTop: 4
+    marginTop: 2
 });
 
 let Item = makeNavigable((props) => (
