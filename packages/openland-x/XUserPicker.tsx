@@ -61,16 +61,16 @@ const UserOrg = Glamorous.div({
     color: '#121e2b'
 });
 
-const filterOptions = (options: { label: string, value: string, photo: string | null, org: string | null }[], q: string) => {
+const filterOptions = (options: { type: string | null, label: string, value: string, photo: string | null, org: string | null }[], q: string) => {
     return options.filter(e => ([...e.label.split(' '), e.label]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
 };
 
 interface EntriesComponentProps {
-    options: { label: string, value: string, photo: string | null, org: string | null }[];
+    options: { type: string | null, label: string, value: string, photo: string | null, org: string | null }[];
     scrollToTarget?: boolean;
     selected?: number;
     query?: string;
-    onPick: (q: { label: string, value: string }) => void;
+    onPick: (q: { type: string | null, label: string, value: string }) => void;
     onHover?: (i: number) => void;
 }
 
@@ -121,14 +121,14 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                                 hover={!this.props.onHover}
                                 innerRef={i === this.props.selected ? this.captureTargetRef : undefined}
                                 selected={i === this.props.selected}
-                                onClick={() => this.props.onPick({ value: e.value, label: e.label })}
+                                onClick={() => this.props.onPick({ type: e.type, value: e.value, label: e.label })}
                                 key={e + '_' + i}
                             >
                                 <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
                                         userId={e.value}
                                         userName={e.label}
-                                        style="colorus"
+                                        style={e.type ? (e.type === 'Organization' ? 'organization' : 'colorus') : 'colorus'}
                                         src={e.photo || ''}
                                         size="small"
                                     />
@@ -151,16 +151,16 @@ const PickerEntries = Glamorous(XHorizontal)({
 });
 
 interface MultoplePickerProps {
-    options: { label?: string, values: { label: string, value: string, photo: string | null, org: string | null }[] }[];
+    options: { label?: string, values: { type: string | null, label: string, value: string, photo: string | null, org: string | null }[] }[];
     query?: string;
-    onPick: (location: { label: string, value: string }) => void;
+    onPick: (location: { type: string | null, label: string, value: string }) => void;
     title?: string;
 }
 
 interface MultiplePickerState {
     selected: number[];
     empty: boolean;
-    filteredOptions: { label?: string, values: { label: string, value: string, photo: string | null, org: string | null }[] }[];
+    filteredOptions: { label?: string, values: { type: string | null, label: string, value: string, photo: string | null, org: string | null }[] }[];
     scrollToSelected?: boolean;
     query?: string;
 }
@@ -220,7 +220,7 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
             if (!this.state.empty) {
                 this.props.onPick(this.state.filteredOptions[this.state.selected[0]].values[this.state.selected[1]]);
             } else {
-                this.props.onPick({ label: this.props.query || '', value: this.props.query || '' });
+                this.props.onPick({ type: null, label: this.props.query || '', value: this.props.query || '' });
             }
         }
 
@@ -263,7 +263,7 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
                                 selected={0 === this.state.selected[0] ? this.state.selected[1] : undefined}
                                 query={this.props.query}
                                 options={this.props.options[0].values}
-                                onPick={sq => this.props.onPick({ label: sq.label, value: sq.value })}
+                                onPick={sq => this.props.onPick({ type: sq.type, label: sq.label, value: sq.value })}
                             />
                         )}
                         {this.props.options.length > 1 && (

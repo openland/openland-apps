@@ -158,7 +158,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
         }
     }
 
-    onPick = (option: { label: string, value: string }) => {
+    onPick = (option: { type: string | null, label: string, value: string }) => {
         if (this.props.multi === false && this.state.lastValue[0] !== undefined) {
             return;
         }
@@ -192,7 +192,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
             rounded
         } = this.props;
 
-        let options = this.props.options as { label: string, value: string }[];
+        let options = this.props.options as { type: string | null, label: string, value: string }[];
         let inputValue = this.state.inputVal;
         if (inputValue === null) {
             inputValue = '';
@@ -349,7 +349,7 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
         }
     }
 
-    onPick = (option: { label: string, value: string }) => {
+    onPick = (option: { type: string | null, label: string, value: string }) => {
         if (this.props.multi === false && this.state.lastValue[0] !== undefined) {
             return;
         }
@@ -383,7 +383,7 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
             rounded
         } = this.props;
 
-        let options = this.props.options as { label: string, value: string, photo: string | null, org: string | null }[];
+        let options = this.props.options as { type: string | null, label: string, value: string, photo: string | null, org: string | null }[];
         let inputValue = this.state.inputVal;
         if (inputValue === null) {
             inputValue = '';

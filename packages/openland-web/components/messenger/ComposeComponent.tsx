@@ -12,6 +12,9 @@ import { ConversationMessagesComponent } from './components/ConversationMessages
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import ChannelIcon from './components/icons/ic-channel.svg';
+import { XSelect } from 'openland-x/XSelect';
+import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
+import { withChatCompose } from '../../api/withChatCompose';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -25,7 +28,8 @@ const HeaderWrapper = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
+    height: 50,
+    paddingTop: 10,
     flexShrink: 0,
     maxWidth: 832,
     paddingLeft: 66,
@@ -57,6 +61,7 @@ const Title = Glamorous.div({
 
 const ComposeSelectWrapper = Glamorous.div({
     maxWidth: 832,
+    marginTop: 10,
     paddingLeft: 66,
     paddingRight: 66,
     width: '100%',
@@ -127,15 +132,62 @@ const EmptyText = Glamorous.div({
     textAlign: 'center'
 });
 
-class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null }> {
+const SearchPeopleModule = withChatCompose(props => {
+    if (!(props.data && props.data.items)) {
+        return (
+            <XSelect
+                creatable={true}
+                multi={true}
+                options={[]}
+                render={
+                    <XSelectCustomUsersRender
+                        multi={true}
+                        popper={true}
+                        placeholder="Whom would you like to message?"
+                        rounded={true}
+                        onInputChange={(data) => (props as any).onChangeInput(data)}
+                        helpText="Wait..."
+                    />
+                }
+            />
+        );
+    }
+    return (
+        <XSelect
+            value={(props as any).value}
+            creatable={true}
+            multi={true}
+            options={props.data.items.map(i => {
+                if (i.__typename === 'User') {
+                    return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: i.organization ? i.organization.name : '' };
+                } else {
+                    return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: 'Organization' };
+                }
+            }) || []}
+            onChange={(data) => (props as any).onChange(data)}
+            render={
+                <XSelectCustomUsersRender
+                    multi={true}
+                    placeholder="Whom would you like to message?"
+                    rounded={true}
+                    onInputChange={(data) => (props as any).onChangeInput(data)}
+                />
+            }
+        />
+    );
+}) as React.ComponentType<{ value?: any, variables: { query?: string, organizations?: boolean }, onChange: (data: Option<OptionValues>[]) => void, onChangeInput: (data: string) => void }>;
 
+class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null, query: string }> {
     state = {
         values: [] as Option<OptionValues>[],
         resolving: false,
-        conversationId: null
+        conversationId: null,
+        query: ''
     };
 
     handleChange: OnChangeHandler = (vals) => {
+        console.warn(vals);
+
         let nvals: Option<OptionValues>[] = [];
         if (vals === null) {
             nvals = [];
@@ -145,8 +197,8 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
             nvals = [vals];
         }
         if (nvals.length === 1) {
-            if ((nvals[0] as any)._obj.__typename === 'Organization') {
-                Router.replaceRoute('/mail/' + (nvals[0] as any)._obj.id);
+            if ((nvals[0] as any).type === 'Organization') {
+                Router.replaceRoute('/mail/' + (nvals[0] as any).value);
                 return;
             }
             this.setState({ values: nvals, resolving: true, conversationId: null });
@@ -192,6 +244,12 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
         }
     }
 
+    handleSearchText = (query: string) => {
+        this.setState({
+            query: query
+        });
+    }
+
     render() {
         return (
             <Root flexGrow={1} separator={'none'}>
@@ -206,14 +264,23 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                 </HeaderWrapper>
                 <ConversationContainer>
                     <ComposeSelectWrapper>
-                        <ComposeSelect
+                        <SearchPeopleModule
+                            onChange={this.handleChange}
+                            onChangeInput={this.handleSearchText}
+                            value={this.state.values}
+                            variables={{
+                                query: this.state.query,
+                                organizations: this.state.values.length === 0
+                            }}
+                        />
+                        {/* <ComposeSelect
                             placeholder="Whom would you like to message?"
                             onChange={this.handleChange}
                             value={this.state.values}
                             multi={true}
                             rounded={true}
                             variables={{ organizations: this.state.values.length === 0 }}
-                        />
+                        /> */}
                     </ComposeSelectWrapper>
                     <MessagesContainer>
                         {!this.state.conversationId && (

@@ -1674,16 +1674,25 @@ export interface ChatReadVariables {
 // GraphQL query operation: ChatSearchForCompose
 // ====================================================
 
+export interface ChatSearchForCompose_items_User_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface ChatSearchForCompose_items_User {
   __typename: "User";
   id: string;
   title: string;
+  photo: string | null;
+  organization: ChatSearchForCompose_items_User_organization | null;
 }
 
 export interface ChatSearchForCompose_items_Organization {
   __typename: "Organization";
   id: string;
   title: string;
+  photo: string | null;
 }
 
 export type ChatSearchForCompose_items = ChatSearchForCompose_items_User | ChatSearchForCompose_items_Organization;

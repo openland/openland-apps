@@ -291,10 +291,16 @@ export const ChatSearchForComposeQuery = gql`
             ... on User {
                 id
                 title: name
+                photo
+                organization: alphaPrimaryOrganization {
+                    id
+                    name
+                }
             }
             ... on Organization {
                 id
                 title: name
+                photo
             }
         }
     }
