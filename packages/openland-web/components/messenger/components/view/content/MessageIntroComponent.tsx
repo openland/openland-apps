@@ -9,13 +9,26 @@ import { XMutation } from 'openland-x/XMutation';
 import CheckIcon from '../../icons/ic-check.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { withSetReaction } from '../../../../../api/withSetReaction';
+import { withRouter } from 'openland-x-routing/withRouter';
+import { withSetReaction, withUnsetReaction } from '../../../../../api/withSetReaction';
 
 const SetReactionButton = withSetReaction((props) => (
     <XMutation mutation={props.setReaction}>
         {props.children}
     </XMutation>
 )) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
+
+const UnsetReactionButton = withUnsetReaction((props) => (
+    <XMutation mutation={props.unsetReaction}>
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
+
+const SetAccesReactionButton = withSetReaction(withRouter((props) => (
+    <XMutation mutation={props.setReaction} onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}>
+        {props.children}
+    </XMutation>
+))) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any, userId: string }>;
 
 const Root = Glamorous(XVertical)({
     border: '1px solid #eef0f2',
@@ -157,25 +170,29 @@ interface MessageIntroComponentProps {
     meId: string;
 }
 
+const SuccessButton = Glamorous(XButton)({
+    cursor: 'pointer !important'
+});
+
 export class MessageIntroComponent extends React.Component<MessageIntroComponentProps> {
 
     renderReactions() {
-        let { reactions, meId, messageId } = this.props;
+        let { user, reactions, meId, messageId } = this.props;
 
         if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
             return <XButton text="You passed" size="r-default" enabled={false} />;
         } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
-            return <XButton text="Accepted" size="r-default" style="success" icon={<CheckIcon />} />;
+            return <SuccessButton text="Accepted" size="r-default" style="success" path={'/mail/' + user!.id} icon={<CheckIcon />} />;
         } else {
             return (
                 <>
-                    <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }}>
+                    <SetAccesReactionButton variables={{ messageId: messageId, reaction: 'accept' }} userId={user!.id}>
                         <XButton
                             text="Accept intro"
                             style="primary-sky-blue"
                             size="r-default"
                         />
-                    </SetReactionButton>
+                    </SetAccesReactionButton>
                     <SetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
                         <XButton
                             text="Pass"
@@ -216,9 +233,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                     content={
                                         <>
                                             {reactions.find(r => r.user.id === meId && r.reaction === 'pass') && (
-                                                <SetReactionButton variables={{ messageId: messageId, reaction: 'accept' }}>
+                                                <UnsetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
                                                     <XMenuItem style="primary-sky-blue">Accept intro</XMenuItem>
-                                                </SetReactionButton>
+                                                </UnsetReactionButton>
                                             )}
                                             <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                             <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>

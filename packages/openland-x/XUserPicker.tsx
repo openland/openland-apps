@@ -160,12 +160,14 @@ interface MultoplePickerProps {
 interface MultiplePickerState {
     selected: number[];
     empty: boolean;
+    notFound: boolean;
     filteredOptions: { label?: string, values: { type: string | null, label: string, value: string, photo: string | null, org: string | null }[] }[];
     scrollToSelected?: boolean;
     query?: string;
 }
 
 export class UserPicker extends React.Component<MultoplePickerProps, MultiplePickerState> {
+    timer: any;
 
     constructor(props: MultoplePickerProps) {
         super(props);
@@ -181,11 +183,13 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
         this.state = {
             selected: [0, 0],
             empty: count === 0,
+            notFound: count === 0,
             filteredOptions: fOptions
         };
     }
 
     componentWillReceiveProps(props: MultoplePickerProps) {
+        clearInterval(this.timer);
         let fOptions = [];
         let count = 0;
         for (let o of props.options) {
@@ -195,7 +199,23 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
             }
         }
 
-        this.setState({ selected: [0, 0], empty: count === 0, filteredOptions: fOptions, query: props.query });
+        this.setState({
+            notFound: false
+        });
+
+        this.timer = setTimeout(() => {
+            this.setState({
+                notFound: count === 0
+            });
+
+        },                      1000);
+
+        this.setState({ 
+            selected: [0, 0], 
+            empty: count === 0,
+            filteredOptions: fOptions, 
+            query: props.query 
+        });
     }
 
     keydownHandler = (e: any) => {
@@ -244,13 +264,14 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
+        clearInterval(this.timer);
     }
     render() {
         return (
             <>
                 {this.state.empty && (
                     <XHorizontal alignItems="center" justifyContent="center" width={120}>
-                        <XButton alignSelf="center" style="flat" loading={true} />
+                        <XButton alignSelf="center" style="flat" text="not found :(" loading={!this.state.notFound} />
                     </XHorizontal>
                 )}
                 {!this.state.empty && (
