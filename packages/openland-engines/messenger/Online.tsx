@@ -43,27 +43,27 @@ export class OnlineWatcher {
 
                 this.onlinesData.set(
                     userId,
-                    evData.type === 'online' ? true : false
+                    evData.type === 'online'
                 );
 
-                if (this.timeouts.has(userId)) {
-                    clearTimeout(this.timeouts.get(userId));
-                }
-
-                if (evData.type === 'online') {
-                    this.timeouts.set(
-                        userId,
-                        setTimeout(
-                            () => {
-                                this.onlinesData.set(
-                                    userId,
-                                    false
-                                );
-                            },
-                            evData.timeout
-                        )
-                    );
-                }
+                // if (this.timeouts.has(userId)) {
+                //     clearTimeout(this.timeouts.get(userId));
+                // }
+                //
+                // if (evData.type === 'online') {
+                //     this.timeouts.set(
+                //         userId,
+                //         setTimeout(
+                //             () => {
+                //                 this.onlinesData.set(
+                //                     userId,
+                //                     false
+                //                 );
+                //             },
+                //             evData.timeout
+                //         )
+                //     );
+                // }
 
                 this.listeners.forEach(l => l(this.onlinesData));
             }
