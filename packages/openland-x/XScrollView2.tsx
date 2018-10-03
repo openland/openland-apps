@@ -22,6 +22,14 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
     WebkitOverflowScrolling: 'touch', /* Trigger native scrolling for mobile, if not supported, plugin is used. */
 }, applyFlex]);
 
+const ContentDiv = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    overflowX: 'scroll',
+    transform: 'translateZ(0)'
+});
+
 export class XScrollView2 extends React.Component<XScrollViewProps> {
     // Simplebar = canUseDOM ? require('simplebar') : null;
     // handleRef = (el: any) => {
@@ -42,18 +50,9 @@ export class XScrollView2 extends React.Component<XScrollViewProps> {
                 {...extractFlexProps(this.props)}
             >
                 <Scrollbars universal={true} autoHide={true} style={{ height: '100%' }}>
-                    {/* <div className="simplebar-track vertical">
-                        <div className="simplebar-scrollbar" />
-                    </div>
-                    <div className="simplebar-track horizontal">
-                        <div className="simplebar-scrollbar" />
-                    </div>
-                    <div className="simplebar-scroll-content" ref={this.props.contentContainerRef || this.props.innerRef} onScroll={this.props.onScroll}>
-                        <div className="simplebar-content" >
-                            {this.props.children}
-                        </div>
-                    </div> */}
-                    {this.props.children}
+                    <ContentDiv>
+                        {this.props.children}
+                    </ContentDiv>
                 </Scrollbars>
             </ScrollDiv>
 
