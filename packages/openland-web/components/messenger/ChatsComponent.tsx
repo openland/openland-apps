@@ -24,6 +24,7 @@ import PhotoIcon from './components/icons/ic-photo.svg';
 import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
 import { XFont } from 'openland-x/XFont';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -590,7 +591,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     render() {
         let search = this.state.query && this.state.query.length > 0;
         return (
-            <XVertical separator={'none'}>
+            <XVertical separator={'none'} flexGrow={1} flexBasis={0}>
                 <Search
                     value={this.state.query}
                     onChange={this.onInput}
@@ -611,7 +612,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     </ExploreChannels>
                 )}
 
-                <XScrollView height="100%">
+                <XScrollView2 flexGrow={1} flexBasis={0}>
                     {search && (
                         <SearchChats
                             variables={{ query: this.state.query!! }}
@@ -654,7 +655,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                             </OnlineContext.Consumer>
                         </OnlinesComponent>
                     )}
-                </XScrollView>
+                </XScrollView2>
             </XVertical>
         );
     }

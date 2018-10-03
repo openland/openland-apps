@@ -7,6 +7,8 @@ if (typeof window !== 'undefined') {
     }
 }
 
+let fontFamily = '"-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"';
+
 // Normalize
 
 css.global('html', {
@@ -15,7 +17,8 @@ css.global('html', {
     fontVariant: 'normal',
     fontSize: '14px',
     lineHeight: '20px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol',
+    fontFamily,
+    textRendering: 'optimizeLegibility !important',
     WebkitTextSizeAdjust: '100%',
     WebkitFontSmoothing: 'antialiased',
     MozFontSmoothing: 'antialiased',
@@ -40,7 +43,7 @@ css.global('body', {
 
 });
 css.global('input, textarea, button', {
-    fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol'
+    fontFamily,
 });
 css.global('input, select', {
     verticalAlign: 'middle'

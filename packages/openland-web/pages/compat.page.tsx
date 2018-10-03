@@ -12,7 +12,7 @@ const FontDemoRender = Glamorous.div<{ fontSize: number, fontWeight: string }>((
 }));
 
 const FontDemo = (props: { fontSize: number, fontWeight: string }) => {
-    return <FontDemoRender {...props}>Font {props.fontSize}px/{props.fontWeight}</FontDemoRender>;
+    return <FontDemoRender {...props}>Steve Kite {props.fontSize}px/{props.fontWeight}</FontDemoRender>;
 };
 
 export default withData('Compatibitily Table', class Error extends React.Component {

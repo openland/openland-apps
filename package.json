@@ -176,7 +176,7 @@
 		"@types/rc-slider": "^8.2.3",
 		"@types/react": "^16.3.13",
 		"@types/react-burger-menu": "^2.1.5",
-		"@types/react-custom-scrollbars": "^4.0.3",
+		"@types/react-custom-scrollbars": "^4.0.5",
 		"@types/react-dates": "^16.0.5",
 		"@types/react-dom": "^16.0.3",
 		"@types/react-form": "^2.12.0",
@@ -226,6 +226,7 @@
 	},
 	"scripts": {
 		"dev": "BABEL_ENV=default API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
+		"dev:ngrok": "ngrok http 3000 -subdomain=openweb --region=eu",
 		"dev:local": "BABEL_ENV=default API_WS_ENDPOINT=\"ws://localhost:9000/api\" nodemon ./packages/openland-web/server.ts",
 		"lint": "BABEL_ENV=default NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
 		"jest": "BABEL_ENV=default node ./node_modules/jest/bin/jest.js --no-cache",
