@@ -134,7 +134,7 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
 }));
 
 const ContentText = Glamorous.div({
-    height: 38,
+    height: 34,
 
     ...XFont.b300,
     opacity: 0.8,

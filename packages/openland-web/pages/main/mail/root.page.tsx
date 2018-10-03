@@ -103,7 +103,7 @@ const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
         transition: 'all .2s'
     },
-    '&:active svg > g > path:last-child': {
+    '& svg > g > path:last-child': {
         fill: '#fff'
     }
 });
