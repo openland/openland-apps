@@ -198,7 +198,7 @@ const ShortcutsModal = () => {
                 <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Send message</KeyboardShortcut>
                 <KeyboardShortcut><span>Ctrl + S</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Up Arrow</span> Edit last message (works when message box is in focus)</KeyboardShortcut>
+                <KeyboardShortcut><span>Up Arrow</span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
