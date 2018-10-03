@@ -15,7 +15,7 @@ export class Home extends React.PureComponent<PageProps, { tab: number }> {
     constructor(props: PageProps) {
         super(props);
         this.state = {
-            tab: 1
+            tab: 2
         };
     }
 

@@ -1794,7 +1794,9 @@ export interface ChatCreateGroup {
 
 export interface ChatCreateGroupVariables {
   members: string[];
-  message: string;
+  message?: string | null;
+  title?: string | null;
+  photoRef?: ImageRefInput | null;
 }
 
 /* tslint:disable */

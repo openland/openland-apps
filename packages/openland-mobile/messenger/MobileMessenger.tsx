@@ -26,7 +26,7 @@ interface ASAvatarProps {
     placeholderTitle?: string | null;
 }
 
-class ASAvatar extends React.PureComponent<ASAvatarProps> {
+export class ASAvatar extends React.PureComponent<ASAvatarProps> {
     render() {
         if (this.props.src) {
             let url = this.props.src;

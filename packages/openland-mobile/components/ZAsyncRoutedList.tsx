@@ -11,6 +11,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { ZLoader } from './ZLoader';
+import { randomEmptyPlaceholderEmoji } from '../utils/tolerance';
 
 type ListQuery<Q> = {
     items: {
@@ -102,7 +103,7 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                 {area => {
                     return this.state.empty ? (
                         <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{this.props.emptyText || 'Nothing found 🤷‍'}</Text>
+                            <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{this.props.emptyText || ('Nothing found' + randomEmptyPlaceholderEmoji())}</Text>
                         </View>
                     ) : this.state.loading ? (<ZLoader />) : (
                         <>

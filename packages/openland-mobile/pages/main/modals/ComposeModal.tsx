@@ -94,13 +94,13 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                 if (ids.length === 1) {
                     let id = (await this.props.messenger.global.resolvePrivateConversation(ids[0])).id;
                     if (gen === this.generation) {
-                        this.setState({ conversationId: id, resolving: false });
+                        // this.setState({ conversationId: id, resolving: false });
                     }
                 } else {
                     let id = (await this.props.messenger.global.resolveGroup(ids));
                     if (gen === this.generation) {
                         if (id) {
-                            this.setState({ conversationId: id.id, resolving: false });
+                            // this.setState({ conversationId: id.id, resolving: false });
                         } else {
                             this.setState({ conversationId: undefined, resolving: false });
                         }

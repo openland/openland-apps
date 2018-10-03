@@ -331,8 +331,8 @@ export const ChatSearchGroupQuery = gql`
 `;
 
 export const ChatCreateGroupMutation = gql`
-    mutation ChatCreateGroup($members: [ID!]!, $message: String!) {
-        group: alphaChatCreateGroup(members: $members, message: $message) {
+    mutation ChatCreateGroup($members: [ID!]!, $message: String, $title: String, $photoRef: ImageRefInput) {
+        group: alphaChatCreateGroup(members: $members, message: $message, title: $title, photoRef: $photoRef) {
             id
         }
     }

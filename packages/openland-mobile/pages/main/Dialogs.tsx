@@ -14,6 +14,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ASView } from 'react-native-async-view/ASView';
 import { DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { ZLoader } from '../../components/ZLoader';
+import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
@@ -32,7 +33,7 @@ class DialogsSearch extends React.Component<{ query: string }> {
                                     if (resp.data.items.length === 0) {
                                         return (
                                             <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                                <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>No chats found 🤷‍</Text>
+                                                <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No chats found' + randomEmptyPlaceholderEmoji()}</Text>
                                             </View>
                                         );
 
@@ -87,7 +88,7 @@ class DialogsComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Messages" />
-                <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeModal')} />
+                <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeInitial')} />
                 <SSearchControler searchRender={<DialogsSearch query="" />}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent dialogs={engine.dialogs} />)}

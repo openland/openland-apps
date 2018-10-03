@@ -23,6 +23,9 @@ import { SignupUser } from './pages/signup/SignupUser';
 import { SignupOrg } from './pages/signup/SignupOrg';
 import { Waitlist } from './pages/signup/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
+import { ComposeInitial } from './pages/compose/ComposeInitial';
+import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
+import { CreateGroupUsers } from './pages/compose/CreateGroupUsers';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -45,7 +48,10 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevLoader', Loader)
   .addRoute('PhoneVerify', PhoneVerify)
   .addRoute('CountryPicker', CountryPicker)
-
+  .addRoute('ComposeInitial', ComposeInitial)
+  .addRoute('CreateGroupAttrs', CreateGroupAttrs)
+  .addRoute('CreateGroupUsers', CreateGroupUsers)
+  
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)
 

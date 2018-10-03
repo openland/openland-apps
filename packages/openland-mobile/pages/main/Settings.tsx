@@ -87,7 +87,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
-                                 <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
+                                <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
                                     <ZListItem text="Share link" onPress={() => Share.share({title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com'})} />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Organizations">
