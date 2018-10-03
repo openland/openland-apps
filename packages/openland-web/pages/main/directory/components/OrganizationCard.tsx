@@ -10,6 +10,7 @@ import { XOverflow } from '../../../../components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { XTag } from 'openland-x/XTag';
+import { makeNavigable } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 
@@ -52,10 +53,11 @@ const OrganizationTitle = Glamorous(XLink)({
     }
 });
 
-const OrganizationMembers = Glamorous.div({
+const OrganizationMembers = makeNavigable(Glamorous.div({
     display: 'flex',
     flexAlign: 'center',
     marginTop: 7,
+    cursor: 'pointer',
 
     '& span': {
         marginLeft: 8,
@@ -64,8 +66,13 @@ const OrganizationMembers = Glamorous.div({
         color: '#99a2b0',
         fontWeight: 500,
         lineHeight: '18px'
+    },
+    '&:hover': {
+        '& span': {
+            color: '#1790ff'
+        }
     }
-});
+})as any);
 
 const OrganizationToolsWrapper = Glamorous(XHorizontal)({
     paddingTop: 1
@@ -193,16 +200,18 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                     <OrganizationContentWrapper>
                         <OrganizationInfoWrapper>
                             <OrganizationTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
-                            {firstMember && <OrganizationMembers>
-                                <XAvatar
-                                    userName={firstMember.user.name}
-                                    userId={firstMember.user.id}
-                                    size="x-small"
-                                    style="colorus"
-                                    cloudImageUuid={firstMember.user.picture || undefined}
-                                />
-                                <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
-                            </OrganizationMembers>}
+                            {firstMember && (
+                                <OrganizationMembers path={'/directory/u/' + firstMember.user.id}>
+                                    <XAvatar
+                                        userName={firstMember.user.name}
+                                        userId={firstMember.user.id}
+                                        size="x-small"
+                                        style="colorus"
+                                        cloudImageUuid={firstMember.user.picture || undefined}
+                                    />
+                                    <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
+                                </OrganizationMembers>
+                            )}
                             <OrganizationCardTypeWrapper separator={0}>
                                 {this.props.item.locations && (this.props.item.locations.length > 0) && (
                                     <XTag
