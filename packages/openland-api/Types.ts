@@ -8284,6 +8284,36 @@ export interface SuperMessagesSentStatsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: SuperOnlineUserStats
+// ====================================================
+
+export interface SuperOnlineUserStats_onlineUsers_location {
+  __typename: "GeoIPLocation";
+  locationCode: string;
+  locationName: string;
+}
+
+export interface SuperOnlineUserStats_onlineUsers_user {
+  __typename: "User";
+  id: string;
+  photo: string | null;
+  name: string;
+}
+
+export interface SuperOnlineUserStats_onlineUsers {
+  __typename: "OnlineUser";
+  location: SuperOnlineUserStats_onlineUsers_location | null;
+  user: SuperOnlineUserStats_onlineUsers_user;
+}
+
+export interface SuperOnlineUserStats {
+  onlineUsers: SuperOnlineUserStats_onlineUsers[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Permit
 // ====================================================
 

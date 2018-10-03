@@ -11,7 +11,8 @@ export function graphqlRouted<TResult, TVars>(
     params?: ({ key: string, default?: string } | string)[],
     notifyOnNetworkStatusChange?: boolean,
     fetchPolicy?: 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only' | 'no-cache' | 'standby',
-    throwOnError?: boolean
+    throwOnError?: boolean,
+    pollInterval?: number
   }
 ) {
   return function (Component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>): React.ComponentType<{ variables?: TVars }> {
@@ -31,6 +32,7 @@ export function graphqlRouted<TResult, TVars>(
                   variables={preparedVariables}
                   notifyOnNetworkStatusChange={options ? options.notifyOnNetworkStatusChange : undefined}
                   fetchPolicy={options ? options.fetchPolicy : undefined}
+                  pollInterval={options ? options.pollInterval : undefined}
                 >
                   {(results) => {
                     if (options && options.throwOnError && results.data.error) {

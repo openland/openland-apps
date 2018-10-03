@@ -241,6 +241,9 @@ routes.add('/super/orgs/:accountId/', '/dev/orgView');
 routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
 
+routes.add('/super/users', '/dev/users');
+routes.add('/super/users/', '/dev/users');
+
 routes.add('/compatibility', '/compat');
 
 //

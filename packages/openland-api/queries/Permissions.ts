@@ -165,3 +165,19 @@ export const SuperMessagesSentStatsQuery = gql`
         }
     }
 `;
+
+export const SuperOnlineUserStatsQuery = gql`
+    query SuperOnlineUserStats {
+        onlineUsers: superOnlineUsers {
+            location {
+                locationCode
+                locationName
+            }
+            user {
+                id
+                photo
+                name
+            }
+        }
+    }
+`;
