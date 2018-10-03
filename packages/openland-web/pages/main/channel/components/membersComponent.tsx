@@ -131,11 +131,12 @@ const Accept = withChannelInvite((props) => {
     );
 }) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
-class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string, removeText?: string }, { isHovered: boolean }> {
+class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string, removeText?: string }, { isHovered: boolean, isHoveredDecline: boolean }> {
     constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }) {
         super(props);
         this.state = {
             isHovered: false,
+            isHoveredDecline: false
         };
     }
 
@@ -174,8 +175,20 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
 
                 {item.status === 'requested' && (
                     <MemberTools separator={6}>
-                        <Accept variables={{ userId: item.id, channelId: this.props.channelId }} isHovered={this.state.isHovered} refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }} />
-                        <DeclineButton isHoveredWrapper={this.state.isHovered} userId={item.id} />
+                        <Accept
+                            variables={{ userId: item.id, channelId: this.props.channelId }}
+                            isHovered={this.state.isHoveredDecline ? false : this.state.isHovered}
+                            refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }}
+                        />
+                        <div
+                            onMouseEnter={() => this.setState({ isHoveredDecline: true })}
+                            onMouseLeave={() => this.setState({ isHoveredDecline: false })}
+                        >
+                            <DeclineButton
+                                isHoveredWrapper={this.state.isHovered}
+                                userId={item.id}
+                            />
+                        </div>
                     </MemberTools>
                 )}
             </Member>
