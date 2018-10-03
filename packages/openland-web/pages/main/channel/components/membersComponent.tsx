@@ -167,7 +167,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                             flat={true}
                             placement="bottom-end"
                             content={(
-                                <XMenuItem style="danger" query={{ field: 'remove', value: this.props.item.id }}>{this.props.removeText || 'Remove from channel'}</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: item.id }}>{this.props.removeText || 'Remove from channel'}</XMenuItem>
                             )}
                         />
                     </MemberTools>
@@ -216,7 +216,6 @@ const RemoveMemberModal = withConversationKick((props) => {
                         conversationId: (props as any).channelId
                     }
                 });
-
             }}
         >
             <XHorizontal>
@@ -293,7 +292,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         text={this.props.emptyText}
                     />
                 )}
-                <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
+                <RemoveMemberModal members={this.props.data.members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
             </MembersWrapper >
         );
     }
