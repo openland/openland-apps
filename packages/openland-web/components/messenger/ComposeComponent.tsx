@@ -113,25 +113,6 @@ const EmptyImage = Glamorous.div({
     marginBottom: 50
 });
 
-const EmptyTitle = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 600,
-    lineHeight: '24px',
-    letterSpacing: -0.35,
-    color: '#334562',
-    marginBottom: 4
-});
-
-const EmptyText = Glamorous.div({
-    width: 320,
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    letterSpacing: -0.35,
-    color: '#5c6a81',
-    textAlign: 'center'
-});
-
 const SearchPeopleModule = withChatCompose(props => {
     if (!(props.data && props.data.items)) {
         return (
@@ -288,8 +269,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                                 <EmptyReactangle />
                                 <EmptyContent>
                                     <EmptyImage />
-                                    <EmptyTitle>Start a conversation</EmptyTitle>
-                                    <EmptyText>You can message a person, create a group chat, or write to a channel</EmptyText>
                                 </EmptyContent>
                             </EmptyWrapper>
                         )}
