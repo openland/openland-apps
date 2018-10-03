@@ -135,7 +135,7 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
 }));
 
 const ContentText = Glamorous.div({
-    height: 38,
+    height: 34,
 
     ...XFont.b300,
     opacity: 0.8,
@@ -259,6 +259,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     size="medium"
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
                     online={props.online}
+                    border="none"
                 />
                 <Header>
                     <Main>

@@ -11,7 +11,6 @@ import { withAllChats } from '../../../api/withAllChats';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
@@ -103,7 +102,7 @@ const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
         transition: 'all .2s'
     },
-    '&:active svg > g > path:last-child': {
+    '& svg > g > path:last-child': {
         fill: '#fff'
     }
 });
@@ -120,7 +119,7 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
 
     let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
 
-    if (isCompose && canUseDOM) {
+    if (isCompose) {
         tab = 'compose';
     }
 

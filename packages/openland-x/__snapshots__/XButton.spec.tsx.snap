@@ -12,8 +12,8 @@ exports[`XButton should render correctly 1`] = `
   pointer-events: auto;
   cursor: pointer;
   transition: box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease;
-  background-color: #f3f3f5;
-  color: #334562;
+  background-color: #e2e2e2;
+  color: #575757;
   border: solid 1px transparent;
   height: 32px;
   line-height: 32px;
@@ -45,13 +45,13 @@ exports[`XButton should render correctly 1`] = `
 
 .css-0:hover,
 [data-css-0]:hover {
-  background-color: #ecedf0;
+  background-color: #c6c6c8;
   color: #334562;
 }
 
 .css-0:active,
 [data-css-0]:active {
-  background-color: #117fe4;
+  background-color: #b3b3b5;
   color: #fff;
 }
 

@@ -131,11 +131,12 @@ const Accept = withChannelInvite((props) => {
     );
 }) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
-class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string, removeText?: string }, { isHovered: boolean }> {
+class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string, removeText?: string }, { isHovered: boolean, isHoveredDecline: boolean }> {
     constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }) {
         super(props);
         this.state = {
             isHovered: false,
+            isHoveredDecline: false
         };
     }
 
@@ -166,7 +167,7 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                             flat={true}
                             placement="bottom-end"
                             content={(
-                                <XMenuItem style="danger" query={{ field: 'remove', value: this.props.item.id }}>{this.props.removeText || 'Remove from channel'}</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: item.id }}>{this.props.removeText || 'Remove from channel'}</XMenuItem>
                             )}
                         />
                     </MemberTools>
@@ -174,8 +175,20 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
 
                 {item.status === 'requested' && (
                     <MemberTools separator={6}>
-                        <Accept variables={{ userId: item.id, channelId: this.props.channelId }} isHovered={this.state.isHovered} refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }} />
-                        <DeclineButton isHoveredWrapper={this.state.isHovered} userId={item.id} />
+                        <Accept
+                            variables={{ userId: item.id, channelId: this.props.channelId }}
+                            isHovered={this.state.isHoveredDecline ? false : this.state.isHovered}
+                            refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }}
+                        />
+                        <div
+                            onMouseEnter={() => this.setState({ isHoveredDecline: true })}
+                            onMouseLeave={() => this.setState({ isHoveredDecline: false })}
+                        >
+                            <DeclineButton
+                                isHoveredWrapper={this.state.isHovered}
+                                userId={item.id}
+                            />
+                        </div>
                     </MemberTools>
                 )}
             </Member>
@@ -203,7 +216,6 @@ const RemoveMemberModal = withConversationKick((props) => {
                         conversationId: (props as any).channelId
                     }
                 });
-
             }}
         >
             <XHorizontal>
@@ -230,7 +242,7 @@ interface ChannelMembersComponentInnerProps {
     description?: string;
     longDescription?: string;
     orgId: string;
-    emptyText: string;
+    emptyText?: string;
     removeText?: string;
 }
 
@@ -270,7 +282,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         />
                     ))}
                 </MembersView>
-                {(members.length <= 3) && (
+                {(members.length <= 3) && this.props.emptyText && (
                     <EmptyComponent
                         orgId={this.props.orgId}
                         aloneMember={(members.length + requests.length) === 1}
@@ -280,7 +292,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         text={this.props.emptyText}
                     />
                 )}
-                <RemoveMemberModal members={members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
+                <RemoveMemberModal members={this.props.data.members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
             </MembersWrapper >
         );
     }
@@ -297,4 +309,4 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         emptyText={(props as any).emptyText}
         removeText={(props as any).removeText}
     />
-)) as React.ComponentType<{ removeText?: string, emptyText: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ removeText?: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
