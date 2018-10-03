@@ -120,7 +120,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (!canUseDOM) {
             return;
         }
-        getScrollView().addEventListener('scroll', this.handleScroll);
+        getScrollView().addEventListener('scroll', this.handleScroll, { passive: true });
     }
 
     componentWillUnmount() {
