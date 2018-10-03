@@ -146,8 +146,8 @@ const AvatarBehaviour = [
         flexShrink: 0,
 
         '& img': {
-            marginTop: (props.avatarBorde || (props as any).avatarStyle !== 'organization') ? -1 : 0,
-            marginLeft: (props.avatarBorde || (props as any).avatarStyle !== 'organization') ? -1 : 0,
+            marginTop: props.avatarBorder === 'none' ? 0 : (props.avatarBorder || (props as any).avatarStyle !== 'organization' ? -1 : 0),
+            marginLeft: props.avatarBorder === 'none' ? 0 : (props.avatarBorder || (props as any).avatarStyle !== 'organization' ? -1 : 0),
         }
     }),
     (props: any) => applyFlex(props),
@@ -279,7 +279,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         href: props.href,
         target: props.hrefTarget,
         avatarSize: props.size,
-        // avatarBorder: props.border,
+        avatarBorder: props.border,
         avatarStyle: props.style,
         // attach: props.attach,
         // flexBasis: props.flexBasis,

@@ -258,6 +258,7 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                     size="medium"
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
                     online={props.online}
+                    border="none"
                 />
                 <Header>
                     <Main>
