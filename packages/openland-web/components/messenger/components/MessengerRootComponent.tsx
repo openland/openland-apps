@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
@@ -17,9 +16,7 @@ import { UserShort } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withEditMessage } from '../../../api/withEditMessage';
-import { isServerMessage } from 'openland-engines/messenger/types';
-import { XTextArea } from 'openland-x/XTextArea';
+import { EditMessageComponent } from './view/MessageEditComponent';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -51,38 +48,6 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
         </XModalForm >
     );
 });
-
-const TextAreaWrapper = Glamorous.div({
-    '& > textarea': {
-        minHeight: 180
-    }
-});
-
-const EditMessageComponent = withEditMessage((props) => {
-    let id = props.router.query.editMessage;
-    let conversation: ConversationEngine = (props as any).conversation;
-    let message = conversation.getState().messages.filter(m => isServerMessage(m) && m.id === id)[0];
-    if (!message) {
-        return null;
-    }
-    return (
-        <XModalForm
-            title="Edit message"
-            targetQuery="editMessage"
-            defaultAction={(data) => {
-                props.editMessage({ variables: { messageId: id, message: data.message } });
-            }}
-            defaultData={{
-                message: message.message
-            }}
-            submitProps={{ succesText: 'done!' }}
-        >
-            <TextAreaWrapper>
-                <XTextArea valueStoreKey="fields.message" resize={false} autofocus={true} />
-            </TextAreaWrapper>
-        </XModalForm >
-    );
-}) as React.ComponentType<{ conversation: ConversationEngine }>;
 
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> {
 
