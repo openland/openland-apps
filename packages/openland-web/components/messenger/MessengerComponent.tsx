@@ -27,6 +27,7 @@ import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { withAlterChat } from '../../api/withAlterChat';
+import { withOnline } from '../../api/withOnline';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -411,13 +412,23 @@ const AboutText = Glamorous.div({
     color: '#334562'
 });
 
-// const LastSeenWrapper = Glamorous.div({
-//     fontSize: 12,
-//     fontWeight: 500,
-//     color: 'rgb(153, 162, 176)',
-//     letterSpacing: -0.2,
-//     marginBottom: -4
-// });
+const LastSeenWrapper = Glamorous.div({
+    fontSize: 12,
+    fontWeight: 500,
+    color: 'rgb(153, 162, 176)',
+    letterSpacing: -0.2,
+    marginBottom: -3,
+    marginLeft: 4,
+    alignSelf: 'flex-end'
+});
+
+const LastSeen = withOnline(props => (
+    (props.data.user && props.data.user.lastSeen) ? (
+        <LastSeenWrapper>
+            last seen: <XDate value={props.data.user.lastSeen} format="time" />
+        </LastSeenWrapper>
+    ) : null
+)) as React.ComponentType<{ variables: { userId: string } }>;
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' = 'chat';
@@ -435,7 +446,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
 
     let subtitle = '';
     let subtitlePath = undefined;
-    // let lastSeen = null;
+    let uId = null;
     if (props.data.chat.__typename === 'SharedConversation') {
         subtitle = 'Organization';
     } else if (props.data.chat.__typename === 'GroupConversation') {
@@ -444,7 +455,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         subtitle = 'Channel';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
         subtitle = 'Person';
-        // lastSeen = props.data.chat.user.lastSeen;
+        uId = props.data.chat.user.id;
 
         if (props.data.chat.user.primaryOrganization) {
             titlePath = '/mail/u/' + props.data.chat.user.id;
@@ -495,11 +506,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             </XVertical>
-                            {/* {lastSeen && (
-                                <LastSeenWrapper>
-                                    Last seen: <XDate value={lastSeen} format="time" />
-                                </LastSeenWrapper>
-                            )} */}
+                            {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                <LastSeen variables={{ userId: uId }} />
+                            )}
                         </XHorizontal>
                     </NavChatLeftContentStyled>
                     <XHorizontal alignItems="center" separator={5}>

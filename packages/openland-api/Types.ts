@@ -10136,6 +10136,27 @@ export interface UserVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Online
+// ====================================================
+
+export interface Online_user {
+  __typename: "User";
+  online: boolean;
+  lastSeen: string | null;
+}
+
+export interface Online {
+  user: Online_user;
+}
+
+export interface OnlineVariables {
+  userId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: ExplorePeople
 // ====================================================
 

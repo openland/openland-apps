@@ -48,6 +48,15 @@ export const UserQuery = gql`
     ${OrganizationShort}
 `;
 
+export const OnlineQuery = gql`
+    query Online($userId: ID!) {
+        user: user(id: $userId) {
+            online
+            lastSeen
+        }
+    }
+`;
+
 export const ExplorePeopleQuery = gql`
     query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
         items: alphaProfiles(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
