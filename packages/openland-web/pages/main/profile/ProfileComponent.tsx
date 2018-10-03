@@ -170,33 +170,43 @@ const Header = (props: { organizationQuery: Organization }) => {
                 </HeaderTabs> */}
             </HeaderInfo>
             <HeaderTools>
-                <XWithRole role="super-admin" negate={true}>
+                <XHorizontal>
+                    <XWithRole role="super-admin" negate={true}>
+                        <XWithRole role="admin" orgPermission={org.id}>
+                            <XButton
+                                size="r-default"
+                                text="Edit profile"
+                                path={'/settings/organization/' + org.id}
+                            />
+                        </XWithRole>
+                    </XWithRole>
 
-                    <XWithRole role="admin" orgPermission={org.id}>
-                        <XButton
+                    <XWithRole role="super-admin">
+                        < XButton
                             size="r-default"
                             text="Edit profile"
                             path={'/settings/organization/' + org.id}
                         />
-                    </XWithRole>
-                </XWithRole>
-
-                <XWithRole role="super-admin">
-                    <XHorizontal>
-                        {< XButton
-                            size="r-default"
-                            text="Edit profile"
-                            path={'/settings/organization/' + org.id}
-                        />}
                         <XButton
                             size="r-default"
                             text="Super edit"
                             path={'/super/orgs/' + org.superAccountId}
                         />
-                    </XHorizontal>
-                </XWithRole>
-            </HeaderTools>
+                    </XWithRole>
 
+                    {org.isMine && (
+                        <XOverflow
+                            placement="bottom-end"
+                            flat={true}
+                            content={(
+                                <>
+                                    <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>Create channel</XMenuItem>
+                                </>
+                            )}
+                        />
+                    )}
+                </XHorizontal>
+            </HeaderTools>
         </HeaderWrapper>
     );
 };
