@@ -105,10 +105,18 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export class XRichTextInput extends React.PureComponent<{ onChange?: (value: string) => void, onSubmit?: () => void, placeholder?: string } & XFlexStyles, { editorState: EditorState }> {
+export interface XRichTextInputProps extends XFlexStyles {
+    onChange?: (value: string) => void;
+    value?: string;
+    onSubmit?: () => void;
+    placeholder?: string;
+}
+
+export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beePasted: boolean }> {
     private editorRef = React.createRef<Editor>();
     state = {
-        editorState: EditorState.createEmpty()
+        editorState: EditorState.createEmpty(),
+        beePasted: false
     };
 
     focus = () => {
@@ -118,7 +126,9 @@ export class XRichTextInput extends React.PureComponent<{ onChange?: (value: str
     }
 
     reset = () => {
-        this.setState((src) => ({ editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range') }));
+        this.setState((src) => ({
+            editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range')
+        }));
     }
 
     resetAndFocus = () => {
@@ -136,9 +146,17 @@ export class XRichTextInput extends React.PureComponent<{ onChange?: (value: str
     }
 
     onChange = (editorState: EditorState) => {
+        if (this.props.value !== undefined && !this.state.beePasted) {
+            this.setState((src) => ({
+                editorState: EditorState.push(src.editorState, ContentState.createFromText(this.props.value || ''), 'remove-range'),
+                beePasted: true
+            }));
+            return;
+        }
+
         this.setState({ editorState: editorState });
+
         if (this.props.onChange) {
-            // console.warn(editorState.getCurrentContent());
             this.props.onChange(editorState.getCurrentContent().getPlainText());
         }
     }
