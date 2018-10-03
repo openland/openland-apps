@@ -242,7 +242,7 @@ interface ChannelMembersComponentInnerProps {
     description?: string;
     longDescription?: string;
     orgId: string;
-    emptyText: string;
+    emptyText?: string;
     removeText?: string;
 }
 
@@ -282,7 +282,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         />
                     ))}
                 </MembersView>
-                {(members.length <= 3) && (
+                {(members.length <= 3) && this.props.emptyText && (
                     <EmptyComponent
                         orgId={this.props.orgId}
                         aloneMember={(members.length + requests.length) === 1}
@@ -309,4 +309,4 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         emptyText={(props as any).emptyText}
         removeText={(props as any).removeText}
     />
-)) as React.ComponentType<{ removeText?: string, emptyText: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ removeText?: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
