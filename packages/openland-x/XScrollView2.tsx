@@ -13,21 +13,15 @@ export interface XScrollViewProps extends XFlexStyles {
 }
 
 const ScrollDiv = Glamorous.div<XFlexStyles>([{
-    display: 'flex',
     position: 'relative',
     flexDirection: 'column',
-    zIndex: 0,
-    overflow: 'hidden!important',
-    // maxHeight: 'inherit',
-    WebkitOverflowScrolling: 'touch', /* Trigger native scrolling for mobile, if not supported, plugin is used. */
+    zIndex: 0
 }, applyFlex]);
 
 const ContentDiv = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
-    overflowX: 'scroll',
-    transform: 'translateZ(0)'
+    alignItems: 'stretch'
 });
 
 export class XScrollView2 extends React.Component<XScrollViewProps> {
