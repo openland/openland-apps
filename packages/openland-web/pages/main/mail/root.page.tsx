@@ -23,6 +23,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import PlusIcon from '../../../components/icons/ic-add-medium.svg';
 import { XFont } from 'openland-x/XFont';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -110,8 +111,18 @@ const AddButton = Glamorous(XButton)({
 let returnPath: string | undefined = undefined;
 
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
-
     let isCompose = props.router.path.endsWith('/new');
+    if (!canUseDOM) {
+        return (
+            <>
+            <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
+            <Scaffold>
+                {}
+            </Scaffold>
+            </>
+        );
+    }
+
     let isChannels = props.router.path.endsWith('/channels');
     let isInvite = props.router.path.includes('joinChannel');
     let oid = props.router.routeQuery.organizationId;
