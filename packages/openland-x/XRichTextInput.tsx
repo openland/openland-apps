@@ -110,6 +110,7 @@ export interface XRichTextInputProps extends XFlexStyles {
     value?: string;
     onSubmit?: () => void;
     placeholder?: string;
+    autofocus?: boolean;
 }
 
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beePasted: boolean }> {
@@ -118,6 +119,12 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
         editorState: EditorState.createEmpty(),
         beePasted: false
     };
+
+    componentDidMount() {
+        if (this.props.autofocus) {
+            this.focus();
+        }
+    }
 
     focus = () => {
         if (this.editorRef.current) {
