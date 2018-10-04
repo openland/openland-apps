@@ -173,7 +173,6 @@ export class ConversationMessagesComponent extends React.Component<ConversationM
                     messages={this.state.messages}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
-                    channelType={this.props.channelType}
                 />
                 {(!this.state.mounted || this.state.loading) && <XLoader loading={true} />}
                 <TypingComponent chatId={this.props.conversationId} />
