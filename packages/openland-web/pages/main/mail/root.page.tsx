@@ -24,11 +24,11 @@ import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import PlusIcon from '../../../components/icons/ic-add-medium.svg';
 import { XFont } from 'openland-x/XFont';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XThemeDefault } from 'openland-x/XTheme';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#f9fafb',
     height: '100vh',
     width: '100%',
     flexGrow: 1,
@@ -42,8 +42,10 @@ let ChatListContainer = Glamorous.div({
     height: '100vh',
     width: 345,
     flexShrink: 0,
-    borderRight: '1px solid rgba(216, 218, 229, 0.7)',
-    backgroundColor: '#ffffff',
+    borderRightWidth: '1px',
+    borderRightStyle: 'solid',
+    borderRightColor: XThemeDefault.separatorColor,
+    backgroundColor: XThemeDefault.backgroundColor,
     '@media (max-width: 1100px)': {
         width: 300
     },
@@ -59,7 +61,7 @@ let ConversationContainer = Glamorous.div({
     flexShrink: 0,
     height: '100vh',
     width: 'calc(100% - 345px)',
-    backgroundColor: '#ffffff',
+    backgroundColor: XThemeDefault.backgroundColor,
     justifyContent: 'center',
     position: 'relative',
     '@media (max-width: 1100px)': {

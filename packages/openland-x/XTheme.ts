@@ -7,5 +7,5 @@ export interface XTheme {
 export const XThemeDefault: XTheme = {
     backgroundColor: '#fff',
     backyardColor: 'rgb(249, 250, 251)',
-    separatorColor: '#000'
+    separatorColor: '#e4e6e9'
 };

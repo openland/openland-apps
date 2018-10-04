@@ -43,6 +43,7 @@ import { InitTexts } from '../pages/init/_text';
 import { withCreateChannel } from '../api/withCreateChannel';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XThemeDefault } from 'openland-x/XTheme';
 
 //
 // Root
@@ -82,7 +83,10 @@ const NavigationScroller = Glamorous(XScrollView)({
     minHeight: '100vh',
     height: '100%',
     width: 64,
-    backgroundColor: '#f5f7f9',
+    backgroundColor: XThemeDefault.backyardColor,
+    borderRightWidth: '1px',
+    borderRightStyle: 'solid',
+    borderRightColor: XThemeDefault.separatorColor,
     flexShrink: 0,
 });
 
@@ -104,7 +108,7 @@ const NavigationDivider = Glamorous.div<{top?: number, bottom?: number}>((props)
     marginTop: (typeof props.top !== undefined) ? props.top : 3,
     marginBottom: (typeof props.bottom !== undefined) ? props.bottom : 3,
     alignSelf: 'center',
-    backgroundColor: 'rgba(220, 222, 228, 0.6)',
+    backgroundColor: XThemeDefault.separatorColor,
     flexShrink: 0,
 }));
 
