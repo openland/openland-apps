@@ -137,7 +137,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 </ChannelTools>
             </ChannelHeader>
             <ChannelWrapper>
-                {(!isListingsTab && !isMembersTab) && (<MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} channelType={false} />)}
+                {(!isListingsTab && !isMembersTab) && (<MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />)}
                 {(isListingsTab && !isMembersTab) && (<ListingsComponent />)}
             </ChannelWrapper>
         </ChatRoot>
