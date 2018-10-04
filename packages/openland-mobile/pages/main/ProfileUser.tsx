@@ -33,11 +33,11 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                 />
 
                                 <ZListItemGroup header="Contacts">
-                                    {resp.data.user.about && <ZListItem title="about" multiline={true} text={resp.data.user.about} />}
-                                    {resp.data.user.email && <ZListItem title="email" text={resp.data.user.email} />}
-                                    {resp.data.user.phone && <ZListItem title="phone" text={resp.data.user.phone} />}
-                                    {resp.data.user.website && <ZListItem title="website" text={resp.data.user.website} />}
-                                    {resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
+                                    {!!resp.data.user.about && <ZListItem title="about" multiline={true} text={resp.data.user.about} />}
+                                    {!!resp.data.user.email && <ZListItem title="email" text={resp.data.user.email} />}
+                                    {!!resp.data.user.phone && <ZListItem title="phone" text={resp.data.user.phone} />}
+                                    {!!resp.data.user.website && <ZListItem title="website" text={resp.data.user.website} />}
+                                    {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
                                 </ZListItemGroup>
                             </SScrollView>
                         );
