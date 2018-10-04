@@ -7,6 +7,8 @@ import { AsyncBubbleView } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
+import { doSimpleHash } from 'openland-y-utils/hash';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -33,6 +35,11 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
             default: 8,
             ios: 10
         });
+        let placeholderIndex = 0;
+        if (this.props.message.senderId) {
+            placeholderIndex = doSimpleHash(this.props.message.senderId);
+        }
+        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex
@@ -42,6 +49,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                     marginBottom={8}
                     flexDirection="column"
                 >
+                    {!this.props.message.isOut && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
                     <ASText
                         color={this.props.message.isOut ? '#fff' : '#000'}
                         lineHeight={big ? 60 : 20}
