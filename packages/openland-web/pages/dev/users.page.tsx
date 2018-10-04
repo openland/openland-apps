@@ -28,7 +28,7 @@ export default withApp('Super Organizations', 'super-admin', withOnlineUsers(wit
             }))
     };
     return (
-        <DevToolsScaffold title="Users">
+        <DevToolsScaffold title="Users" padding={false}>
             <Wrapper>
                 <XMap focusPosition={{ latitude: 0, longitude: 0, zoom: 1.5 }}>
                     <XMapSource

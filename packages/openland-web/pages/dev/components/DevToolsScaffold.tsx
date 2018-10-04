@@ -4,7 +4,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { Sidebar } from '../../../components/Sidebar';
 
-export function DevToolsScaffold(props: { title: string, children?: any }) {
+export function DevToolsScaffold(props: { title: string, children?: any, padding?: boolean }) {
     return (
         <>
             <XDocumentHead title={[props.title]} />
@@ -20,7 +20,7 @@ export function DevToolsScaffold(props: { title: string, children?: any }) {
                         <Sidebar.Item path="/super/readers">Event Readers</Sidebar.Item>
                     </Sidebar>
                 </Scaffold.Menu>
-                <Scaffold.Content>
+                <Scaffold.Content padding={props.padding}>
                     {props.children}
                 </Scaffold.Content>
             </Scaffold>
