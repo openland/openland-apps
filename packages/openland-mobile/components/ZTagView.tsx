@@ -95,8 +95,8 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
                         <View flexWrap="wrap" flexDirection="row">
                             {this.props.title && (
-                                <View style={{ height: 28, paddingRight: 5 }}>
-                                    <Text style={{ lineHeight: 28, fontSize: 15, color: '#000', opacity: 0.6, fontWeight: '500' }}>{this.props.title}</Text>
+                                <View style={{ height: 32, paddingRight: 5 }}>
+                                    <Text style={{ lineHeight: 32, fontSize: 15, color: '#000', opacity: 0.6, fontWeight: '500' }}>{this.props.title}</Text>
                                 </View>
                             )}
 
@@ -104,13 +104,14 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
                                     <View paddingLeft={1} paddingRight={1} paddingTop={2} paddingBottom={2}>
                                         <View height={28} borderRadius={8} backgroundColor={this.state.focused === v.id ? AppStyles.primaryColor : undefined} paddingLeft={1} paddingRight={1}>
-                                            <Text style={{ color: this.state.focused === v.id ? '#fff' : AppStyles.primaryColor, height: 24, lineHeight: 24, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
+                                            <Text style={{ color: this.state.focused === v.id ? '#fff' : AppStyles.primaryColor, height: 24, lineHeight: 28, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
                                         </View>
                                     </View>
                                 </TouchableWithoutFeedback>
                             ))}
                             <TextInput
                                 ref={this.ref}
+                                minHeight={32}
                                 onChangeText={this.handleChange}
                                 onKeyPress={this.handleKeyPress}
                                 style={{ minWidth: Math.min(Dimensions.get('window').width * 0.3, 250), fontSize: 15, height: 28 }}

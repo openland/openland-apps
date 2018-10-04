@@ -1,34 +1,30 @@
 import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
-import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChatCreateGroupMutation, ChatSearchForComposeMobileQuery } from 'openland-api';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemBase } from '../../components/ZListItemBase';
-import { View, Text, ScrollView } from 'react-native';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZTextInput } from '../../components/ZTextInput';
+import { View, LayoutChangeEvent } from 'react-native';
 import { AppStyles } from '../../styles/AppStyles';
 import { ZTagView } from '../../components/ZTagView';
 import { ZQuery } from '../../components/ZQuery';
-import { ZUserListItem } from '../main/components/ZUserListItem';
 import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZBlurredView } from '../../components/ZBlurredView';
+import { UserViewAsync } from './ComposeInitial';
 
 interface CreateGroupComponentState {
     query: string;
     users: { id: string, name: string }[];
+    searchHeight: number;
 }
 
 class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupComponentState> {
     constructor(props: any) {
         super(props);
-        this.state = { users: [], query: '' };
+        this.state = { users: [], query: '', searchHeight: 0 };
     }
 
     handleChange = (query: string) => {
@@ -38,6 +34,8 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
     handleAddUser = (user: UserShort) => {
         if (!this.state.users.find((v) => v.id === user.id)) {
             this.setState({ users: [...this.state.users, user] });
+        } else {
+            this.handleRemoveUser(user.id);
         }
     }
 
@@ -45,14 +43,18 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
         this.setState({ users: this.state.users.filter((v) => v.id !== id) });
     }
 
+    handleSearchLayout = (event: LayoutChangeEvent) => {
+        this.setState({ searchHeight: event.nativeEvent.layout.height });
+    }
+
     render() {
         return (
             <YMutation mutation={ChatCreateGroupMutation}>
                 {create => (
                     <>
-                        <SHeader title="New group" />
+                        <SHeader title={this.props.router.params.variables.title} />
                         <SHeaderButton
-                            title="Next"
+                            title="Create"
                             onPress={async () => {
                                 let res = await create({
                                     variables: {
@@ -64,24 +66,22 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                             }}
                         />
                         <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-
                             <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                                 {r => (
-                                    <SScrollView>
-                                        {r.data.items.map((v) => (<ZUserListItem key={v.id} id={v.id} name={v.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v as UserShort)} />))}
+                                    <SScrollView paddingTop={this.state.searchHeight}>
+                                        {r.data.items.map((v) => (<UserViewAsync key={v.id} item={v as UserShort} onPress={() => this.handleAddUser(v as UserShort)} />))}
                                     </SScrollView>
                                 )}
                             </ZQuery>
-
                         </View>
                         <ASSafeAreaContext.Consumer>
                             {area => (
-                                <ZBlurredView style={{ position: 'absolute', top: area.top, left: 0, right: 0, flexDirection: 'column', maxHeight: 44 * 4 }}>
+                                <ZBlurredView onLayout={this.handleSearchLayout} style={{ position: 'absolute', top: area.top, left: 0, right: 0, flexDirection: 'column', maxHeight: 44 * 4 }}>
                                     <ZTagView
                                         items={this.state.users.map((v) => ({ id: v.id, text: v.name }))}
                                         onChange={this.handleChange}
                                         onRemoved={this.handleRemoveUser}
-                                        title="To:"
+                                        title="Members:"
                                         autoFocus={true}
                                     />
                                     <View style={{ height: 1, backgroundColor: AppStyles.separatorColor }} />
@@ -95,4 +95,4 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
     }
 }
 
-export const CreateGroupUsers = withApp(CreateGroupComponent);
+export const CreateGroupUsers = withApp(CreateGroupComponent, { navigationAppearance: 'small' });

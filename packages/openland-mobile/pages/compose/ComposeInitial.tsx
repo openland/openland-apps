@@ -19,7 +19,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 
-class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void }> {
+export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void }> {
 
     handlePress = () => {
         this.props.onPress(this.props.item.id);
@@ -27,6 +27,7 @@ class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id:
 
     render() {
         let item = this.props.item;
+        console.warn(JSON.stringify(item));
         return (
             <ASView style={{ height: 60 }}>
                 <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress}>
