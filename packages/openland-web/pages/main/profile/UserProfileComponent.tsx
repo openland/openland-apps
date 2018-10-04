@@ -343,8 +343,6 @@ const Channels = (props: { channels: any }) => {
 
 const UserProfileInner = (props: UserProfileInnerProps) => {
     let usr = props.userQuery.user;
-
-    console.log(usr);
     return (
         <>
             <Back callback={props.onBack} />
