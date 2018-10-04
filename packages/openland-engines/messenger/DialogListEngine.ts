@@ -54,6 +54,7 @@ export const extractDialog = (c: any, uid: string) => (
         date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
     }
 );
+
 export class DialogListEngine {
 
     readonly engine: MessengerEngine;
@@ -198,5 +199,4 @@ export class DialogListEngine {
             this.loading = false;
         }
     }
-
 }

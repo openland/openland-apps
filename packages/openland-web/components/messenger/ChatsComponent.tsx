@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withChatsAll } from '../../api/withChatsAll';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { DialogListEngine } from 'openland-engines/messenger/DialogListEngine';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -12,6 +14,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x-format/XDate';
 import { ChatList } from 'openland-api/Types';
 import { XInput } from 'openland-x/XInput';
+import { XButton } from 'openland-x/XButton';
 import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
@@ -410,9 +413,14 @@ const ExploreChannels = Glamorous(XMenuItem)({
     }
 });
 
+const LoadingWrapper = Glamorous.div({
+    height: 60
+});
+
 interface ChatsComponentInnerProps extends XWithRouter {
     data: ChatList;
     emptyState: boolean;
+    messenger: MessengerEngine;
 }
 
 interface ChatsComponentInnerState {
@@ -422,11 +430,21 @@ interface ChatsComponentInnerState {
     allowShortKeys: boolean;
 }
 
+const getScrollView = () => {
+    if (!canUseDOM) {
+        return null;
+    }
+    return document.getElementsByClassName('chats-list')[0].getElementsByClassName('scroll-bar')[0].firstChild;
+};
+
 class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, ChatsComponentInnerState> {
+    readonly dialogListEngine: DialogListEngine;
     inputRef: any;
 
     constructor(props: ChatsComponentInnerProps) {
         super(props);
+
+        this.dialogListEngine = this.props.messenger.dialogList;
 
         this.state = {
             query: '',
@@ -455,6 +473,9 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
         document.addEventListener('click', this.mouseHandler);
+        if (getScrollView()) {
+            getScrollView()!.addEventListener('scroll', this.handleScroll, { passive: true });
+        }
         if (this.props.data && this.props.data.chats) {
             this.setState({
                 chatsLength: this.props.data.chats.conversations.length
@@ -465,6 +486,9 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
         document.removeEventListener('click', this.mouseHandler);
+        if (getScrollView()) {
+            getScrollView()!.removeEventListener('scroll', this.handleScroll);
+        }
     }
 
     componentWillReceiveProps(nextProps: ChatsComponentInnerProps) {
@@ -472,6 +496,17 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
             this.setState({
                 allowShortKeys: true
             });
+        }
+    }
+
+    handleScroll = (e: any) => {
+        let childHeight = (getScrollView() as any)!.firstChild!.offsetHeight;
+        let wrapHeight = e.target.offsetHeight;
+        let scrollTop = e.target.scrollTop;
+        if ((childHeight - (wrapHeight + scrollTop)) < 100) {
+            if (this.props.data.chats.next) {
+                this.dialogListEngine.loadNext();
+            }
         }
     }
 
@@ -613,7 +648,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     </ExploreChannels>
                 )} */}
 
-                <XScrollView2 flexGrow={1} flexBasis={0}>
+                <XScrollView2 flexGrow={1} flexBasis={0} className="chats-list">
                     {search && (
                         <SearchChats
                             variables={{ query: this.state.query!! }}
@@ -654,6 +689,11 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                                     </>
                                 )}
                             </OnlineContext.Consumer>
+                            {this.props.data.chats.next && (
+                                <LoadingWrapper>
+                                    <XButton alignSelf="center" style="flat" loading={true} />
+                                </LoadingWrapper>
+                            )}
                         </OnlinesComponent>
                     )}
                 </XScrollView2>
@@ -662,8 +702,31 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     }
 }
 
-export const ChatsComponent = withChatsAll(withRouter((props) => {
+const ChatsComponentWrapper = withChatsAll(withRouter((props) => {
     return (
-        <ChatsComponentInner data={props.data} emptyState={(props as any).emptyState} router={props.router} />
+        <ChatsComponentInner
+            data={props.data}
+            emptyState={(props as any).emptyState}
+            router={props.router}
+            messenger={(props as any).messenger}
+        />
     );
-})) as React.ComponentType<{ emptyState: boolean }>;
+})) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine; }>;
+
+export class ChatsComponent extends React.Component<{ emptyState: boolean }> {
+    render() {
+        if (!canUseDOM) {
+            return null;
+        }
+        return (
+            <MessengerContext.Consumer>
+                {messenger => (
+                    <ChatsComponentWrapper
+                        emptyState={this.props.emptyState}
+                        messenger={messenger}
+                    />
+                )}
+            </MessengerContext.Consumer>
+        );
+    }
+}
