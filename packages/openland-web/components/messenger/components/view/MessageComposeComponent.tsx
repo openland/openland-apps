@@ -198,12 +198,12 @@ const ShortcutsModal = () => {
             )}
         >
             <KeyboardShortcuts>
-                <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Send message</KeyboardShortcut>
-                <KeyboardShortcut><span>Ctrl + S</span> Search chats</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl/Cmd + S</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
                 <KeyboardShortcut><span>Up Arrow</span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
-                <KeyboardShortcut><span>Ctrl + Z</span> Previous chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Ctrl + X</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl/Cmd + Z</span> Previous chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl/Cmd + X</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl/Cmd + Enter</span> Submit form</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
