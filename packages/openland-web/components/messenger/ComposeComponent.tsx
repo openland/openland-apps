@@ -276,7 +276,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                             <ConversationMessagesComponent
                                 conversation={this.props.messenger.getConversation(this.state.conversationId!!)}
                                 conversationId={this.props.conversationId}
-                                channelType={false}
                             />
                         )}
                     </MessagesContainer>

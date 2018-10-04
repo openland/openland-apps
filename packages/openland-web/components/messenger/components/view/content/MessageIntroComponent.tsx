@@ -197,20 +197,28 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
         let { user, reactions, meId, senderId, conversationType, messageId } = this.props;
 
         if (senderId === meId) {
-            if (reactions.length > 0 && conversationType === 'PrivateConversation') {
-                return (
-                    <Counter alignSelf="flex-start">
-                        <CheckIconSmall />
-                        <span>accepted</span>
-                    </Counter>
-                );
-            } else if (reactions.length > 0 && conversationType !== 'PrivateConversation') {
-                return (
-                    <Counter alignSelf="flex-end">
-                        <CheckIconSmall />
-                        <span>{reactions.length} accepted</span>
-                    </Counter>
-                );
+            if (conversationType === 'PrivateConversation') {
+                if (reactions.length > 0) {
+                    return (
+                        <Counter alignSelf="flex-start">
+                            <CheckIconSmall />
+                            <span>accepted</span>
+                        </Counter>
+                    );
+                } else {
+                    return null;
+                }
+            } else if (conversationType !== 'PrivateConversation') {
+                if (reactions.length > 0) {
+                    return (
+                        <Counter alignSelf="flex-end">
+                            <CheckIconSmall />
+                            <span>{reactions.length} accepted</span>
+                        </Counter>
+                    );
+                } else {
+                    return null;
+                }
             }
         }
         if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
