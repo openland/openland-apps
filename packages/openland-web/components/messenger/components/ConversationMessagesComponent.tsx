@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
-import { XAvatar } from 'openland-x/XAvatar';
+// import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
@@ -40,29 +40,29 @@ const TypingString = Glamorous.div({
     marginBottom: 8
 });
 
-const TypingAvatarWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 9,
-    '& > div': {
-        marginLeft: '-8px !important',
-    },
-    '& > div:first-child': {
-        marginLeft: '0 !important'
-    }
-});
+// const TypingAvatarWrapper = Glamorous.div({
+//     display: 'flex',
+//     alignItems: 'center',
+//     marginTop: 8,
+//     marginBottom: 9,
+//     '& > div': {
+//         marginLeft: '-8px !important',
+//     },
+//     '& > div:first-child': {
+//         marginLeft: '0 !important'
+//     }
+// });
 
-const TypingAvatar = Glamorous(XAvatar)({
-    width: 16,
-    height: 16,
-    flexShrink: 0,
-    '& img': {
-        width: '16px !important',
-        height: '16px !important',
-        objectFit: 'contain'
-    }
-});
+// const TypingAvatar = Glamorous(XAvatar)({
+//     width: 16,
+//     height: 16,
+//     flexShrink: 0,
+//     '& img': {
+//         width: '16px !important',
+//         height: '16px !important',
+//         objectFit: 'contain'
+//     }
+// });
 
 const TypingComponent = (props: { chatId: string }) => (
     <TypingWrapper>
@@ -70,7 +70,7 @@ const TypingComponent = (props: { chatId: string }) => (
             <TypingContext.Consumer>
                 {typing => (
                     <TypingContent separator={5} alignItems="center" flexGrow={1}>
-                        {typing.users && (
+                        {/* {typing.users && (
                             <TypingAvatarWrapper>
                                 {typing.users.map((i, j) => (
                                     <TypingAvatar
@@ -83,7 +83,7 @@ const TypingComponent = (props: { chatId: string }) => (
                                     />
                                 ))}
                             </TypingAvatarWrapper>
-                        )}
+                        )} */}
                         {typing.typing && (
                             <TypingString>
                                 {typing.typing}
