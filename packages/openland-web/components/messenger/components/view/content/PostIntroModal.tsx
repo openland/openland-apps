@@ -16,6 +16,7 @@ import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { MessageUploadComponent } from './MessageUploadComponent';
 import { MessageFileComponent } from './MessageFileComponent';
+import { XFormField } from 'openland-x-forms/XFormField';
 
 interface ImgButtonStylesProps {
     marginRight?: number;
@@ -70,20 +71,22 @@ const SearchPeopleModule = withExplorePeople(props => {
         );
     }
     return (
-        <XSelect
-            creatable={true}
-            multi={false}
-            field="input.userId"
-            options={props.data.items.edges.map(i => ({ label: i.node.name, value: i.node.id, photo: i.node.picture, org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null) })) || []}
-            render={
-                <XSelectCustomUsersRender
-                    multi={false}
-                    placeholder="Whom do you want to introduce?"
-                    rounded={true}
-                    onInputChange={(data) => (props as any).onChangeInput(data)}
-                />
-            }
-        />
+        <XFormField field="input.userId">
+            <XSelect
+                creatable={true}
+                multi={false}
+                field="input.userId"
+                options={props.data.items.edges.map(i => ({ label: i.node.name, value: i.node.id, photo: i.node.picture, org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null) })) || []}
+                render={
+                    <XSelectCustomUsersRender
+                        multi={false}
+                        placeholder="Whom do you want to introduce?"
+                        rounded={true}
+                        onInputChange={(data) => (props as any).onChangeInput(data)}
+                    />
+                }
+            />
+        </XFormField>
     );
 }) as React.ComponentType<{ variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
 
@@ -297,12 +300,14 @@ class PostIntroModalRaw extends React.PureComponent<Partial<XModalFormProps>, Po
 
                     <SearchPeople />
 
-                    <XTextArea
-                        placeholder="Description"
-                        resize={false}
-                        size="small"
-                        valueStoreKey="fields.input.about"
-                    />
+                    <XFormField field="input.about">
+                        <XTextArea
+                            placeholder="Description"
+                            resize={false}
+                            size="small"
+                            valueStoreKey="fields.input.about"
+                        />
+                    </XFormField>
                     <XStoreContext.Consumer>
                         {store => {
                             if (!store) {
