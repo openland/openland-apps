@@ -121,11 +121,11 @@ export class ShortcutNavigator extends React.Component<{ router: XRouter; prevID
     }
 
     keydownHandler = (e: any) => {
-        if (e.ctrlKey && e.code === 'KeyZ' && this.props.prevID) {
+        if (e.shiftKey && e.code === 'ArrowUp' && this.props.prevID) {
             this.props.router.push('/mail/' + this.props.prevID);
         }
 
-        if (e.ctrlKey && e.code === 'KeyX' && this.props.nextID) {
+        if (e.shiftKey && e.code === 'ArrowDown' && this.props.nextID) {
             this.props.router.push('/mail/' + this.props.nextID);
         }
     }
