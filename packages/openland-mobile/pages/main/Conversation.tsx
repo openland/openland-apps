@@ -109,9 +109,6 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                 <SHeaderView>
                                                                     <ChatHeader conversationId={resp.data.chat.id} router={this.props.router} />
                                                                 </SHeaderView>
-                                                                <SHeaderButton>
-                                                                    <ChatRight conversationId={resp.data.chat.id} router={this.props.router} />
-                                                                </SHeaderButton>
                                                                 <View width="100%" height="100%" justifyContent="center">
                                                                     <View alignSelf="center" flexDirection="column">
                                                                         <Text style={{ fontSize: 14, color: '#000', textAlign: 'center', margin: 20 }}>{resp.data.chat.description}</Text>

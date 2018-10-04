@@ -461,8 +461,8 @@ export const ChatSearchChannelQuery = gql`
 `;
 
 export const CreateChannelMutation = gql`
-    mutation CreateChannel($title: String!, $message: String!, $description: String) {
-        channel: alphaChannelCreate(title: $title, message: $message, description: $description){
+    mutation CreateChannel($title: String!, $message: String, $description: String, $photoRef: ImageRefInput) {
+        channel: alphaChannelCreate(title: $title, message: $message, description: $description, photoRef: $photoRef){
             id
         }
     }

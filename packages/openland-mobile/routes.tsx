@@ -26,6 +26,7 @@ import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
 import { ComposeInitial } from './pages/compose/ComposeInitial';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { CreateGroupUsers } from './pages/compose/CreateGroupUsers';
+import { CreateChannel } from './pages/compose/CreateChannel';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -51,6 +52,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ComposeInitial', ComposeInitial)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('CreateGroupUsers', CreateGroupUsers)
+  .addRoute('CreateChannel', CreateChannel)
   
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)

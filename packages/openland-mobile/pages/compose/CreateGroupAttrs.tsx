@@ -4,15 +4,14 @@ import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChatCreateGroupMutation } from 'openland-api';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemBase } from '../../components/ZListItemBase';
-import { View, Text, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { UserShort } from 'openland-api/Types';
+import { UserError } from 'openland-y-forms/errorHandling';
 
 interface CreateGroupComponentState {
     query: string;
@@ -43,26 +42,27 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
     render() {
         return (
             <>
-                <SHeader title="New group" />
+                <SHeader title="👥 New group" />
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
                 <ZForm
                     ref={this.ref}
                     action={async (src) => {
                         // let group = await create({ variables: { members: this.state.users.map(u => u.id), title: src.title, photoRef: src.photoRef } });
+                        if (!src.title) {
+                            throw new UserError('Group name can\'t be empty');
+                        }
                         this.props.router.push('CreateGroupUsers', { variables: { title: src.title, photoRef: src.photoRef } });
                     }}
                 >
-                    <ZListItemGroup>
-                        <ZListItemBase height={96} separator={false}>
-                            <View padding={15}>
-                                <ZAvatarPicker field="photoRef" />
-                            </View>
-                            <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4} alignContent="center" alignSelf="center">
-                                <ZTextInput placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} />
-                                <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                            </View>
-                        </ZListItemBase>
-                    </ZListItemGroup>
+                    <ZListItemBase height={96} separator={false}>
+                        <View padding={15}>
+                            <ZAvatarPicker field="photoRef" />
+                        </View>
+                        <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4} alignContent="center" alignSelf="center">
+                            <ZTextInput autoFocus={true} placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} />
+                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                        </View>
+                    </ZListItemBase>
                 </ZForm>
             </>
         );

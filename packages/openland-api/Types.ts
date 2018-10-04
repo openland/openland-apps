@@ -2686,8 +2686,9 @@ export interface CreateChannel {
 
 export interface CreateChannelVariables {
   title: string;
-  message: string;
+  message?: string | null;
   description?: string | null;
+  photoRef?: ImageRefInput | null;
 }
 
 /* tslint:disable */
