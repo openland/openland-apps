@@ -54,6 +54,7 @@ const RootContainer = Glamorous.div({
     flexDirection: 'row',
     width: '100%',
     minWidth: 800,
+    margin: -1
 });
 
 // 
@@ -102,7 +103,7 @@ const Logo = Glamorous.div({
     backgroundSize: 'contain'
 });
 
-const NavigationDivider = Glamorous.div<{top?: number, bottom?: number}>((props) => ({
+const NavigationDivider = Glamorous.div<{ top?: number, bottom?: number }>((props) => ({
     width: 38,
     height: 1,
     marginTop: (typeof props.top !== undefined) ? props.top : 3,
@@ -276,7 +277,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
                             <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
-                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" userName={this.props.name} userId={this.props.id}/>
+                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" userName={this.props.name} userId={this.props.id} />
                                 <XVertical separator={1}>
                                     <ProfileTitle >{this.props.name}</ProfileTitle>
                                     <ProfileSubTitle>{TextGlobal.editProfile}</ProfileSubTitle>
@@ -289,7 +290,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                     </XModalContext.Provider>
                 )}
             >
-                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} style="colorus" userName={this.props.name} userId={this.props.id}/>
+                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} style="colorus" userName={this.props.name} userId={this.props.id} />
             </XPopper>
         );
     }
@@ -322,18 +323,24 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 const ContentView = Glamorous.div<{ marginLeft: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: 'calc(100vh - 1px)',
     // overflow: 'hidden',
     // borderTopLeftRadius: 8,
     // borderBottomLeftRadius: 8,
-    backgroundColor: '#ffffff',
+    // marginRight: -1,
+    // marginBottom: -1,
+    marginTop: 1,
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: XThemeDefault.separatorColor,
+    backgroundColor: XThemeDefault.backgroundColor,
     flex: 1,
     order: 2,
     minWidth: 0,
     maxWidth: '100%',
     position: 'relative',
     zIndex: 0,
-    marginLeft: props.marginLeft
+    marginLeft: props.marginLeft - 1
 }));
 
 const SearchWrapper = Glamorous.div<{ visible: boolean }>((props) => ({
@@ -519,7 +526,7 @@ const MenuView = Glamorous(XScrollView)({
     // top: 0,
     // left: 64,
     height: '100vh',
-    
+
     '& > .simplebar-scroll-content': {
         '& > .simplebar-content': {
             overflowX: 'hidden'
@@ -779,7 +786,7 @@ export const CreateOrganization = withCreateOrganization((props) => {
                                 valueStoreKey="fields.input.about"
                             />
                         </XVertical>
-                        <XAvatarUpload field="input.photoRef" placeholder={{add: texts.addPhoto, change: texts.changePhoto}}/>
+                        <XAvatarUpload field="input.photoRef" placeholder={{ add: texts.addPhoto, change: texts.changePhoto }} />
                     </XHorizontal>
                 </XFormLoadingContent>
             </XVertical>
