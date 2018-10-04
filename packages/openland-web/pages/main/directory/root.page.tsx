@@ -329,11 +329,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         if (e.target !== this.input) {
             return;
         }
-        if (e.code === 'Enter') {
-            e.preventDefault();
-
-            this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
-        }
         if (e.code === 'Backspace' && this.state.searchText === '') {
             e.preventDefault();
             this.removeCondition(this.state.conditions[this.state.conditions.length - 1]);
@@ -457,6 +452,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                         <SearchIcon />
                                         <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
                                         <AutocompletePopper
+                                            router={this.props.router}
                                             target={
                                                 <SearchInput
                                                     onFocus={this.onSearchFocus}

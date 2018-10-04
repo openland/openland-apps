@@ -1,15 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper } from 'openland-x/XPopper';
-import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
 import { SearchCondition } from './root.page';
 import { TextDirectoryData } from 'openland-text/TextDirectory';
 import DirecoryIcon from './icons/directory.1.svg';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withOrganizationByPrefix } from '../../../api/withOrganizationByPrefix';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import SearchIcon from './icons/ic-search-small.svg';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
     padding: 0
@@ -62,36 +61,42 @@ const EntriesWrap = Glamorous.div({
     marginBottom: 9,
 });
 
-const OrgWrap = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
-    height: 40,
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 4,
-    borderTop: '1px solid #f1f2f5',
-    cursor: 'pointer',
-    color: '#5c6a81',
-    '& > svg': {
-        width: 15,
-        height: 15,
-        '> g': {
-            fill: '#BEC3CA'
-        }
-    },
-    ':hover': {
-        color: '#1790ff',
-        backgroundColor: '#f9fafb',
+const OrgWrap = makeNavigable(Glamorous.div<{selected: boolean} & NavigableChildProps>([
+    {
+        height: 40,
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingTop: 4,
+        borderTop: '1px solid #f1f2f5',
+        cursor: 'pointer',
+        color: '#5c6a81',
         '& > svg': {
             width: 15,
             height: 15,
             '> g': {
-                fill: '#1790ff',
-                opacity: 0.5
+                fill: '#BEC3CA'
             }
         },
-    }
-})));
+        ':hover': {
+            color: '#1790ff',
+            backgroundColor: '#f9fafb',
+            '& > svg > g': {
+                fill: '#1790ff',
+                opacity: 0.5
+            },
+        }
+    },
+    (props) => props.selected ? {
+        color: '#1790ff',
+        backgroundColor: '#f9fafb',
+        '& > svg > g': {
+            fill: '#1790ff',
+            opacity: 0.5
+        },
+    } : {}
+]));
 
 const OrgTitle = Glamorous.div({
     fontSize: 14,
@@ -122,6 +127,7 @@ const EntryComponent = (props: EntryProps) => (
 );
 
 interface AutocompleteProps {
+    router: XRouter;
     onPick: (q: SearchCondition) => void;
     query: string;
     target: any;
@@ -135,19 +141,29 @@ interface AutocompletePopperState {
 }
 
 const OrgByPrefix = withOrganizationByPrefix((props) => {
-    console.warn(props);
     if (!props.data || !props.data.organizationByPrefix) {
+        (props as any).onLoad(0);
         return null;
     }
+    (props as any).onLoad(1); // count of organizations. now only 1, but in future.....
+
+    let path = '/directory/o/' + props.data.organizationByPrefix.id;
+
+    if ((props as any).selected >= 0) {
+        (props as any).onSelect(path);
+    }
+
     return (
-        <OrgWrap path={'/directory/o/' + props.data.organizationByPrefix.id}>
+        <OrgWrap selected={(props as any).selected >= 0} path={path}>
             <DirecoryIcon />
             <OrgTitle>{props.data.organizationByPrefix.name}</OrgTitle>
         </OrgWrap>
     );
-});
+}) as React.ComponentType<{ selected: number, onLoad: any, onSelect: any, variables: { query: string } }>;
 
 export class AutocompletePopper extends React.Component<AutocompleteProps, AutocompletePopperState> {
+    orgCount = 0;
+    selectedOrgPath: string | undefined = undefined;
 
     constructor(props: AutocompleteProps) {
         super(props);
@@ -222,14 +238,18 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
             e.preventDefault();
             if (this.state.select === -1) {
                 this.props.onPick({ type: 'name', value: this.props.query, label: this.props.query });
-            } else {
+            } else if (this.state.select <= (this.state.entries.length - 1)) {
                 this.props.onPick(this.state.entries[this.state.select].entry);
+            } else {
+                if (this.selectedOrgPath) {
+                    this.props.router.push(this.selectedOrgPath);
+                }
             }
         }
 
         let y = this.state.select + dy;
 
-        y = Math.min(this.state.entries.length - 1, Math.max(-1, y));
+        y = Math.min((this.state.entries.length + this.orgCount) - 1, Math.max(-1, y));
 
         this.setState({ select: y });
     }
@@ -238,8 +258,18 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
         this.props.onInputChange(e);
     }
 
+    onOrgLoad = (count: number) => {
+        this.orgCount = count;
+    }
+
+    onOrgSelect = (path: string) => {
+        this.selectedOrgPath = path;
+    }
+
     render() {
         let inputValue = this.props.value;
+        let selIndex = this.state.select;
+        let itemsCount = this.state.entries.length;
 
         let content = (
             <ContentValue>
@@ -262,10 +292,12 @@ export class AutocompletePopper extends React.Component<AutocompleteProps, Autoc
                         }
                     </EntriesWrap>
                 )}
-
-                <XWithRole role="software-developer">
-                    <OrgByPrefix variables={{ query: this.props.query ? this.props.query.toLowerCase() : '' }} />
-                </XWithRole>
+                <OrgByPrefix
+                    variables={{ query: this.props.query ? this.props.query.toLowerCase() : '' }}
+                    onLoad={this.onOrgLoad}
+                    onSelect={this.onOrgSelect}
+                    selected={(selIndex > (itemsCount - 1)) ? selIndex - (itemsCount - 1) : -1}
+                />
             </ContentValue>
         );
         return (
