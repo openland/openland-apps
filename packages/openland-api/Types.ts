@@ -1857,8 +1857,8 @@ export interface ChatCreateIntro {
 
 export interface ChatCreateIntroVariables {
   conversationId: string;
-  userId: any;
-  about: string;
+  userId?: any | null;
+  about?: string | null;
   file?: string | null;
 }
 
