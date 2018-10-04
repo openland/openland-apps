@@ -132,10 +132,11 @@ export class XMap extends React.Component<XMapProps> {
     componentDidMount() {
         this._isMounted = true;
         let domNode = ReactDOM.findDOMNode(this);
-        MapBox!!.then((map) => {
+        MapBox!!.then((lib) => {
             if (!this._isMounted) {
                 return;
             }
+            let map = lib.default;
             map.accessToken = 'pk.eyJ1Ijoic3RldmUta2l0ZSIsImEiOiJjamNlbnR2cGswdnozMzNuemxzMHNlN200In0.WHk4oWuFM4zOGBPwju74sw';
             let initialLatitude = 37.75444398077139;
             let initialLongitude = -122.43963811583545;
@@ -158,7 +159,7 @@ export class XMap extends React.Component<XMapProps> {
                 center: [initialLongitude, initialLatitude],
                 zoom: initialZoom,
                 style: this.props.mapStyle || 'mapbox://styles/mapbox/streets-v9',
-                scrollZoom: this.props.scrollZoom !== undefined ? this.props.scrollZoom : true
+                scrollZoom: this.props.scrollZoom !== undefined ? this.props.scrollZoom : true,
             });
             mapComponent.addControl(new map.NavigationControl());
             mapComponent.on('load', () => {

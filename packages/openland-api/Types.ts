@@ -8287,10 +8287,17 @@ export interface SuperMessagesSentStatsVariables {
 // GraphQL query operation: SuperOnlineUserStats
 // ====================================================
 
+export interface SuperOnlineUserStats_onlineUsers_location_coordinates {
+  __typename: "Geo";
+  latitude: number;
+  longitude: number;
+}
+
 export interface SuperOnlineUserStats_onlineUsers_location {
   __typename: "GeoIPLocation";
   locationCode: string;
   locationName: string;
+  coordinates: SuperOnlineUserStats_onlineUsers_location_coordinates | null;
 }
 
 export interface SuperOnlineUserStats_onlineUsers_user {

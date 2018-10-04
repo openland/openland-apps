@@ -172,6 +172,10 @@ export const SuperOnlineUserStatsQuery = gql`
             location {
                 locationCode
                 locationName
+                coordinates {
+                    latitude
+                    longitude
+                }
             }
             user {
                 id
