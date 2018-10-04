@@ -202,6 +202,8 @@ const ShortcutsModal = () => {
                 <KeyboardShortcut><span>Ctrl + S</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
                 <KeyboardShortcut><span>Up Arrow</span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + Z</span> Previous chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + X</span> Next chat</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
