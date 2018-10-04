@@ -4,12 +4,20 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 const SUBSCRIBE_ONLINES = gql`
     subscription SubscribeOnlines($conversations: [ID!]!) {
         alphaSubscribeChatOnline(conversations: $conversations) {
-            user {
+            user: user {
                 id
+                online
             }
             type
             timeout
         }
+    }
+`;
+
+const USER_ONLINE = gql`
+    fragment UserOnline on User{
+        id
+        online
     }
 `;
 
@@ -35,35 +43,38 @@ export class OnlineWatcher {
 
         this.sub = onlineSubscription.subscribe({
             next: (event) => {
+
                 if (!event || !event.data) {
                     return;
                 }
                 let evData = event.data.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
-                this.onlinesData.set(
-                    userId,
-                    evData.type === 'online'
-                );
+                this.client.client.writeFragment({ id: userId, fragment: USER_ONLINE, data: { __typename: 'User', id: userId, online: evData.type === 'online' } });
 
-                // if (this.timeouts.has(userId)) {
-                //     clearTimeout(this.timeouts.get(userId));
-                // }
-                //
-                // if (evData.type === 'online') {
-                //     this.timeouts.set(
-                //         userId,
-                //         setTimeout(
-                //             () => {
-                //                 this.onlinesData.set(
-                //                     userId,
-                //                     false
-                //                 );
-                //             },
-                //             evData.timeout
-                //         )
-                //     );
-                // }
+                if (this.timeouts.has(userId)) {
+                    clearTimeout(this.timeouts.get(userId));
+                }
+
+                if (evData.type === 'online' && evData.timeout) {
+                    this.timeouts.set(
+                        userId,
+                        setTimeout(
+                            () => {
+                                let data = this.client.client.readFragment({
+                                    id: userId,
+                                    fragment: USER_ONLINE,
+                                });
+                                this.client.client.writeFragment({
+                                    id: userId,
+                                    fragment: USER_ONLINE,
+                                    data: { ...data, online: false }
+                                });
+                            },
+                            evData.timeout
+                        )
+                    );
+                }
 
                 this.listeners.forEach(l => l(this.onlinesData));
             }

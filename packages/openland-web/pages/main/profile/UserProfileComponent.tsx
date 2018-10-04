@@ -103,10 +103,9 @@ const Header = (props: { userQuery: User }) => {
                 <XAvatar
                     cloudImageUuid={usr.photo || undefined}
                     size="s-medium"
-                    style="colorus"
+                    style="user"
                     userName={usr.name}
                     userId={usr.id}
-                    online={usr.online}
                 />
             </HeaderAvatar>
             <HeaderInfo flexGrow={1} separator={3}>

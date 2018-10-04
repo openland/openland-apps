@@ -8,9 +8,11 @@ import { XCloudImage, XPhotoRef } from './XCloudImage';
 import { XPImage } from 'openland-xp/XPImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
+import { Query } from 'react-apollo';
+import { UserQuery } from 'openland-api';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'medium' | 'default' | 'small' | 'x-small';
-export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | undefined;
+export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | 'user' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
@@ -230,10 +232,10 @@ const ColorusStub = Glamorous.div<{ backgroundImage: string, fontSize: number }>
 }));
 
 const AvatarWrapper = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
-    () => ({
-        position: 'relative',
-        border: 'none !important'
-    })
+() => ({
+    position: 'relative',
+    border: 'none !important'
+})
 ]);
 
 const DotPosition = {
@@ -248,7 +250,7 @@ const DotPosition = {
     'x-small': 1
 };
 
-const OnlineDot = Glamorous.div<{format?: XAvatarSize}>(props => ({
+const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     position: 'absolute',
     width: 9,
     height: 9,
@@ -314,7 +316,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     {props.style === 'channel' && <AvatarStub className="channel" />}
                     {props.style === 'group' && <AvatarStub className="group" />}
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
-                    {props.style === 'colorus' && (
+                    {(props.style === 'colorus' || props.style === 'user') && (
                         <ColorusStub
                             fontSize={fontSize}
                             backgroundImage={props.userId && ColorusArr[Math.abs(doSimpleHash(props.userId)) % ColorusArr.length] || ColorusArr[1]}
@@ -324,7 +326,15 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     )}
                 </StyledPlaceholder>
             )}
-            {props.online === true && <OnlineDot format={props.size} className="online-status-dot"/>}
+            {(props.style !== 'user' && props.online === true) && <OnlineDot format={props.size} className="online-status-dot" />}
+            {(props.style === 'user' && props.online === undefined) && (
+                <Query query={UserQuery.document} variables={{ userId: props.userId }}>
+                    {(data) => {
+                        return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
+                    }}
+                </Query>
+            )}
+
         </AvatarWrapper>
     );
 }));

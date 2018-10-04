@@ -20,7 +20,6 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { OnlinesComponent, OnlineContext } from './components/OnlineComponent';
 import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
 import PhotoIcon from './components/icons/ic-photo.svg';
@@ -28,6 +27,8 @@ import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
 import { XFont } from 'openland-x/XFont';
 import { XScrollView2 } from 'openland-x/XScrollView2';
+import { Query } from 'react-apollo';
+import { UserQuery } from 'openland-api';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -211,8 +212,6 @@ interface ConversationComponentProps {
     };
     selectedItem: boolean;
     allowSelection: boolean;
-
-    online: boolean;
 }
 
 class ConversationComponentInner extends React.Component<ConversationComponentProps & UserInfoComponentProps> {
@@ -255,13 +254,13 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
                         : props.typename === 'GroupConversation'
                             ? 'group'
                             : props.typename === 'ChannelConversation'
-                                ? 'channel' : 'colorus'
+                                ? 'channel' :
+                                props.typename === 'PrivateConversation' ? 'user' : undefined
                     )}
                     userName={props.title}
                     userId={props.flexibleId}
                     size="medium"
                     cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
-                    online={props.online}
                     border="none"
                 />
                 <Header>
@@ -351,8 +350,6 @@ const SearchChats = withChatSearchText((props) => {
                                 settings={i.settings}
                                 selectedItem={(props as any).selectedItem === j}
                                 allowSelection={(props as any).allowSelection}
-
-                                online={false}
                             />
                         ))}
                     </>
@@ -659,43 +656,35 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                         />
                     )}
                     {!search && this.props.data && this.props.data.chats && (
-                        <OnlinesComponent>
-                            <OnlineContext.Consumer>
-                                {onlines => (
-                                    <>
-                                        {this.props.data.chats.conversations.map((i, j) => {
-                                            let isOnline = onlines.onlines ? (onlines.onlines.get(i.flexibleId) || false) : false;
-
-                                            return (
-                                                <ConversationComponent
-                                                    key={i.id}
-                                                    id={i.id}
-                                                    onSelect={this.onSelect}
-                                                    flexibleId={i.flexibleId}
-                                                    typename={i.__typename}
-                                                    title={i.title}
-                                                    photos={i.photos}
-                                                    photo={(i as any).photo}
-                                                    topMessage={i.topMessage}
-                                                    unreadCount={i.unreadCount}
-                                                    settings={i.settings}
-                                                    selectedItem={this.state.select === j}
-                                                    allowSelection={this.state.allowShortKeys}
-
-                                                    online={isOnline}
-                                                />
-                                            );
-                                        })}
-                                    </>
-                                )}
-                            </OnlineContext.Consumer>
+                        <>
+                            {this.props.data.chats.conversations.map((i, j) => {
+                                return (
+                                    <ConversationComponent
+                                        key={i.id}
+                                        id={i.id}
+                                        onSelect={this.onSelect}
+                                        flexibleId={i.flexibleId}
+                                        typename={i.__typename}
+                                        title={i.title}
+                                        photos={i.photos}
+                                        photo={(i as any).photo}
+                                        topMessage={i.topMessage}
+                                        unreadCount={i.unreadCount}
+                                        settings={i.settings}
+                                        selectedItem={this.state.select === j}
+                                        allowSelection={this.state.allowShortKeys}
+                                    />
+                                );
+                            })}
                             {this.props.data.chats.next && (
                                 <LoadingWrapper>
                                     <XButton alignSelf="center" style="flat" loading={true} />
                                 </LoadingWrapper>
                             )}
-                        </OnlinesComponent>
+                        </>
+
                     )}
+
                 </XScrollView2>
             </XVertical>
         );

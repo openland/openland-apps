@@ -51,6 +51,7 @@ export const UserQuery = gql`
 export const OnlineQuery = gql`
     query Online($userId: ID!) {
         user: user(id: $userId) {
+            id
             online
             lastSeen
         }

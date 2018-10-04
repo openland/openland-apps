@@ -35,7 +35,6 @@ import { UserSelect } from '../../api/UserSelect';
 import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import { OnlinesComponent, OnlineContext } from './components/OnlineComponent';
 import IconInvite from './components/icons/ic-invite-2.svg';
 import IconInfo from './components/icons/ic-info.svg';
 
@@ -478,11 +477,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
                         <XHorizontal alignItems="center" separator="none" maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
-                            <OnlinesComponent>
-                                <OnlineContext.Consumer>
-                                    {onlines => {
-                                        let isOnline = onlines.onlines ? (onlines.onlines.get(props.data.chat.flexibleId) || false) : false;
-                                        return (
                                             <XAvatar
                                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
                                                 size="small"
@@ -491,17 +485,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                     : props.data.chat.__typename === 'GroupConversation'
                                                         ? 'group'
                                                         : props.data.chat.__typename === 'ChannelConversation'
-                                                            ? 'channel' : 'colorus'
+                                            ? 'channel' : props.data.chat.__typename === 'PrivateConversation' ? 'user' : 'colorus'
                                                 )}
                                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
                                                 userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
                                                 userId={props.data.chat.flexibleId}
-                                                online={isOnline}
                                             />
-                                        );
-                                    }}
-                                </OnlineContext.Consumer>
-                            </OnlinesComponent>
                             <XVertical separator="none" maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>

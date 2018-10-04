@@ -554,8 +554,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                         cloudImageUuid={user.picture || undefined}
                         userName={user.name}
                         userId={user.id}
-                        style="colorus"
-                        online={user.online}
+                        style="user"
                     />
                 </MemberCardAvatar>
                 <XHorizontal alignItems="center" flexGrow={1}>

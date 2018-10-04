@@ -152,9 +152,8 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                 <MemberAvatar
                     cloudImageUuid={item.picture || undefined}
                     userId={item.id}
-                    style="colorus"
+                    style="user"
                     userName={item.name}
-                    online={item.online}
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
