@@ -1,0 +1,25 @@
+<mjml>
+    <mj-head>
+        <mj-title>Activation code for Openland: {{code}}</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    Almost there
+                </mj-text>
+
+                <mj-raw>
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        To get in your Openland account, paste the activation code <strong>{{code}}</strong> into the signin form. To keep your account safe, don’t share this email with anyone. If you didn't request this code, simply ignore this message.
+                    </mj-text>
+                <mj-raw>
+                </mj-raw>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer.mjml" />
+    </mj-body>
+</mjml>
