@@ -604,14 +604,14 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                     innerRef={this.handleRef}
                     onFocus={this.inputFocusHandler}
                 />
-                {!search && (
+                {/* {!search && (
                     <ExploreChannels path={'/mail/channels'}>
                         <XHorizontal alignItems="center" justifyContent="space-between">
                             <XText>Explore channels</XText>
                             <ArrowIcon />
                         </XHorizontal>
                     </ExploreChannels>
-                )}
+                )} */}
 
                 <XScrollView2 flexGrow={1} flexBasis={0}>
                     {search && (

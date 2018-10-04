@@ -20,6 +20,7 @@ import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
 import { XModal } from 'openland-x-modal/XModal';
+import { XThemeDefault } from 'openland-x/XTheme';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -28,13 +29,15 @@ const SendMessageWrapper = Glamorous.div({
     width: '100%',
     minHeight: 114,
     maxHeight: 200,
-    backgroundColor: '#f9fafb',
+    backgroundColor: XThemeDefault.backyardColor,
     flexShrink: 0,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 12,
     paddingBottom: 12,
-    borderTop: 'solid 1px #e4e6e9'
+    borderTopStyle: 'solid',
+    borderTopWidth: '1px',
+    borderTopColor: XThemeDefault.separatorColor
 });
 
 const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
