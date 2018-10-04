@@ -28,7 +28,7 @@ interface MessageComponentProps {
     conversation: ConversationEngine;
     out: boolean;
     me?: UserShort | null;
-    channelType: boolean;
+    conversationType?: string;
 }
 
 const MessageWrapper = Glamorous(XVertical)({
@@ -143,6 +143,8 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                             messageId={(message as MessageFull).id}
                             reactions={(message as MessageFull).reactions}
                             meId={(this.props.me as UserShort).id}
+                            senderId={message.sender.id}
+                            conversationType={this.props.conversationType}
                         />
                     );
                 }
@@ -200,7 +202,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         }
                     />
                 </MenuWrapper>
-            ) : (isServerMessage(message) && this.props.channelType) ? (
+            ) : (isServerMessage(message) && this.props.conversationType === 'ChannelConversation') ? (
                 <XWithRole role="super-admin">
                     <MenuWrapper className="menu" compact={this.props.compact}>
                         <XOverflow

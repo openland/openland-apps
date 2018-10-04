@@ -628,7 +628,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         key={props.data.chat.id}
                         conversationId={props.data.chat.id}
                         conversationType={props.data.chat.__typename}
-                        channelType={subtitle === 'Channel'}
                     />
                 )}
                 {(props.data.chat.__typename === 'ChannelConversation' && tab === 'members') && (
