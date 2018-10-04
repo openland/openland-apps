@@ -1,5 +1,3 @@
-import '../init';
-import '../../globals';
 import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';

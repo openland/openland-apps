@@ -1,5 +1,3 @@
-import '../init';
-import '../../globals';
 import * as React from 'react';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';

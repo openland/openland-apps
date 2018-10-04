@@ -1,3 +1,5 @@
+import './init';
+import '../globals';
 import React from 'react';
 import App, { AppProps } from 'next/app';
 import * as Sentry from '@sentry/browser';

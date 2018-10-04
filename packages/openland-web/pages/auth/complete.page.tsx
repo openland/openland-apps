@@ -1,5 +1,3 @@
-import '../init';
-import '../../globals';
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import createHistory from 'history/createBrowserHistory';

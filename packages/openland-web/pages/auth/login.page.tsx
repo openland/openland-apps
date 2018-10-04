@@ -1,5 +1,3 @@
-import '../init';
-import '../../globals';
 import * as React from 'react';
 import * as qs from 'query-string';
 import { withData } from '../../components/withData';

@@ -1,5 +1,3 @@
-import '../../init';
-import '../../../globals';
 import * as React from 'react';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';

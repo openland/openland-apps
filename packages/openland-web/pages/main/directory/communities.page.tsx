@@ -1,5 +1,3 @@
-import '../../init';
-import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withExploreCommunities } from '../../../api/withExploreCommunities';

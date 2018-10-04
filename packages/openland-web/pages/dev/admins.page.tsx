@@ -1,4 +1,3 @@
-import '../../globals';
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { withSuperAdmins } from '../../api/withSuperAdmins';
