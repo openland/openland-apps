@@ -23,6 +23,7 @@ import PlusIcon from '../../../components/icons/ic-add-medium.svg';
 import { XFont } from 'openland-x/XFont';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -110,6 +111,30 @@ const AddButton = Glamorous(XButton)({
 
 let returnPath: string | undefined = undefined;
 
+export class ShortcutNavigator extends React.Component<{ router: XRouter; prevID?: string; nextID?: string}> {
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    keydownHandler = (e: any) => {
+        if (e.ctrlKey && e.code === 'KeyZ' && this.props.prevID) {
+            this.props.router.push('/mail/' + this.props.prevID);
+        }
+
+        if (e.ctrlKey && e.code === 'KeyX' && this.props.nextID) {
+            this.props.router.push('/mail/' + this.props.nextID);
+        }
+    }
+
+    render() {
+        return null;
+    }
+}
+
 export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) => {
     let isCompose = props.router.path.endsWith('/new');
     if (!canUseDOM) {
@@ -162,11 +187,32 @@ export default withApp('Mail', 'viewer', withAllChats(withQueryLoader((props) =>
         tab = 'user';
     }
 
+    let prevChatID: string | undefined = undefined;
+    let nextChatID: string | undefined = undefined;
+    let curChatIndex: number = -1;
+
+    if (props.data.chats.conversations && props.data.chats.conversations.length > 0) {
+        props.data.chats.conversations.map((c, i) => {
+            if (c.flexibleId === props.router.routeQuery.conversationId) {
+                curChatIndex = i;
+            }
+        });
+    
+        if (curChatIndex > 0) {
+            prevChatID = props.data.chats.conversations[curChatIndex - 1].flexibleId;
+        }
+    
+        if (curChatIndex < (props.data.chats.conversations.length - 1)) {
+            nextChatID = props.data.chats.conversations[curChatIndex + 1].flexibleId;
+        }
+    }
+
     return (
         <>
             <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
+                    <ShortcutNavigator router={props.router} prevID={prevChatID} nextID={nextChatID} />
                     <ChatContainer>
                         <ChatListContainer>
                             <Header alignItems="center" justifyContent="space-between">
