@@ -64,7 +64,7 @@ export const MessageImageComponent = (props: MessageImageComponentProps) => {
     return (
         <XModal
             useTopCloser={true}
-            size="large"
+            size="s-large"
             heading={null}
             transparent={true}
             body={(

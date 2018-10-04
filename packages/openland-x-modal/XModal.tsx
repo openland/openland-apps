@@ -10,7 +10,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import CloseIcon from './ic-close.svg';
 
 interface ModalRenderProps {
-    size: 'x-large' | 'large' | 'default' | 'small';
+    size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
     scrollableContent?: boolean;
     isOpen: boolean;
     closeOnClick?: boolean;
@@ -25,6 +25,8 @@ class ModalRender extends React.PureComponent<ModalRenderProps> {
         let width = 570;
         if (this.props.size === 'large') {
             width = 870;
+        } else if (this.props.size === 's-large') {
+            width = 1200;
         } else if (this.props.size === 'small') {
             width = 460;
         }
@@ -205,7 +207,7 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
 export interface XModalProps extends ModalContentRenderProps {
 
     // Style
-    size?: 'x-large' | 'large' | 'default' | 'small';
+    size?: 'x-large' | 's-large' | 'large' | 'default' | 'small';
     transparent?: boolean;
 
     // Controlled/Uncontrolled
