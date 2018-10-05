@@ -45,7 +45,6 @@ export function formatMessage(message: any): string {
 export const extractDialog = (c: any, uid: string) => (
     {
         key: c.id,
-        flexibleId: c.flexibleId,
         type: c.__typename,
         title: c.title,
         photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
