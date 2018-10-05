@@ -27129,6 +27129,37 @@
             "deprecationReason": null
           },
           {
+            "name": "alphaSubscribeOnline",
+            "description": "",
+            "args": [
+              {
+                "name": "users",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UserID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "OnlineEvent",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "watchSettings",
             "description": "",
             "args": [],

@@ -2689,6 +2689,7 @@ export interface CreateChannelVariables {
   message?: string | null;
   description?: string | null;
   photoRef?: ImageRefInput | null;
+  oid?: string | null;
 }
 
 /* tslint:disable */
@@ -10181,6 +10182,7 @@ export interface UserVariables {
 
 export interface Online_user {
   __typename: "User";
+  id: string;
   online: boolean;
   lastSeen: string | null;
 }
