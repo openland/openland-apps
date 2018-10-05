@@ -19,16 +19,32 @@ let months = [
     'Dec'
 ];
 
-export function XDate(props: { value: string, format?: 'date' | 'time' | 'datetime_short' | 'humanize' | 'humanize_large' }) {
+interface XDateProps {
+    value: string;
+    format?: 'date' | 'time' | 'datetime_short' | 'humanize' | 'humanize_large' | 'humanize_cute';
+}
+
+export function XDate(props: XDateProps) {
     let date = parseInt(props.value, 10);
+    let format = props.format;
+
+    if (format === 'humanize_cute') {
+        let yesterday = new Date(Date.now() - 86400000);
+        if (yesterday > new Date(date)) {
+            format = 'datetime_short';
+        } else {
+            format = 'humanize';
+        }
+    }
+
     // let date = new Date(parseInt(props.value, 10)).getTime() / 1000;
-    if (props.format === 'humanize' || props.format === 'humanize_large') {
+    if (format === 'humanize' || format === 'humanize_large') {
         return (
             <span>
-                {humanize.relativeTime(date / 1000)}{props.format === 'humanize_large' ? ' (' + props.value + ')' : ''}
+                {humanize.relativeTime(date / 1000)}{format === 'humanize_large' ? ' (' + props.value + ')' : ''}
             </span>
         );
-    } else if (props.format === 'time') {
+    } else if (format === 'time') {
         let dt = new Date(date);
         let hours = dt.getHours();
         let ampm = dt.getHours() < 12 ? ' AM' : ' PM';
@@ -36,7 +52,7 @@ export function XDate(props: { value: string, format?: 'date' | 'time' | 'dateti
         return (
             <span>{hours}:{('0' + dt.getMinutes()).substr(-2)} {ampm}</span>
         );
-    } else if (props.format === 'datetime_short') {
+    } else if (format === 'datetime_short') {
         if (canUseDOM) {
             let dt = new Date(date);
             let now = new Date();

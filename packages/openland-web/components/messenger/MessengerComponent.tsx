@@ -412,19 +412,21 @@ const AboutText = Glamorous.div({
 });
 
 const LastSeenWrapper = Glamorous.div({
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 500,
-    color: 'rgb(153, 162, 176)',
+    lineHeight: 1.23,
+    opacity: 0.5,
+    color: '#121e2b',
     letterSpacing: -0.2,
-    marginBottom: -3,
-    marginLeft: 4,
-    alignSelf: 'flex-end'
+    marginTop: 4,
+    marginLeft: 8,
+    alignSelf: 'flex-start'
 });
 
 const LastSeen = withOnline(props => (
     (props.data.user && props.data.user.lastSeen) ? (
         <LastSeenWrapper>
-            last seen: <XDate value={props.data.user.lastSeen} format="time" />
+            last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
         </LastSeenWrapper>
     ) : null
 )) as React.ComponentType<{ variables: { userId: string } }>;
@@ -485,7 +487,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                     : props.data.chat.__typename === 'GroupConversation'
                                                         ? 'group'
                                                         : props.data.chat.__typename === 'ChannelConversation'
-                                            ? 'channel' : props.data.chat.__typename === 'PrivateConversation' ? 'user' : 'colorus'
+                                                            ? 'channel' 
+                                                            : props.data.chat.__typename === 'PrivateConversation' 
+                                                                ? 'user' 
+                                                                : 'colorus'
                                                 )}
                                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
                                                 userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
