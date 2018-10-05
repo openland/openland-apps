@@ -116,7 +116,7 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
     lineHeight: 1.43,
     color: '#87898D',
     cursor: props.disable ? 'default !important' : 'pointer',
-    '@media (max-width: 850px)': {
+    '@media (max-width: 800px)': {
         fontSize: 0,
         '& > svg': {
             marginRight: '0!important'
