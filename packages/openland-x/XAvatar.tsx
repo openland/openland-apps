@@ -244,7 +244,7 @@ const DotPosition = {
     's-large': 8,
     'x-medium': 7,
     's-medium': 6,
-    'medium': 4,
+    'medium': 2,
     'default': 3,
     'small': 2,
     'x-small': 1
@@ -252,11 +252,11 @@ const DotPosition = {
 
 const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     position: 'absolute',
-    width: 9,
-    height: 9,
-    backgroundColor: '#69d06d',
-    border: 'solid 1px #f9fafb',
-    borderRadius: 50,
+    width: 10,
+    height: 10,
+    backgroundColor: 'rgb(92,212,81)',
+    border: 'solid 1px #ffffff',
+    borderRadius: '50%',
     right: props.format ? DotPosition[props.format] : 3,
     bottom: props.format ? DotPosition[props.format] : 3,
     cursor: 'default'

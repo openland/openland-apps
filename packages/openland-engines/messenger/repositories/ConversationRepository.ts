@@ -106,7 +106,7 @@ export const ConversationRepository = {
 
         return null;
     },
-    improveConversationResolving(client: OpenApolloClient, conversationId: string) {
+    improveConversationResolving(client: OpenApolloClient, conversationId: string): { id: string, flexibleId: string } | undefined {
         let conversation = this.resolveConversation(client, conversationId);
         if (conversation) {
 
@@ -131,7 +131,9 @@ export const ConversationRepository = {
                     chat: conversation
                 }
             });
+            return conversation;
         }
+        return undefined;
     },
     writeConversationCounter(client: OpenApolloClient, conversationId: string, counter: number, visible: boolean) {
 

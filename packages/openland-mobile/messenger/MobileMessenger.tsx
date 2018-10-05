@@ -15,9 +15,12 @@ import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard } from 'react-native';
+import { Clipboard, View } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
+import { YQuery } from 'openland-y-graphql/YQuery';
+import { UserQuery } from 'openland-api';
+import { ASView } from 'react-native-async-view/ASView';
 
 interface ASAvatarProps {
     size: number;
@@ -89,6 +92,30 @@ export class ASAvatar extends React.PureComponent<ASAvatarProps> {
     }
 }
 
+export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: boolean }> {
+    render() {
+        return (
+            <ASFlex
+                width={this.props.size}
+                height={this.props.size}
+                alignItems="center"
+                justifyContent="center"
+            >
+                {/* {this.props.online && <ASFlex overlay={true} justifyContent="flex-end" alignItems="flex-end">
+                    <ASFlex width={10} height={10} borderRadius={5} backgroundColor="#rgb(92,212,81)" />
+                </ASFlex>} */}
+                {this.props.online && <ASFlex overlay={true} width={100} height={100} justifyContent="flex-end" alignItems="flex-end">
+                    <ASFlex width={12} height={12} borderRadius={6} backgroundColor="#ffffff" justifyContent="center">
+                        <ASFlex width={10} height={10} borderRadius={5} backgroundColor="rgb(92,212,81)" marginLeft={1} marginTop={1} marginRight={1} />
+                    </ASFlex>
+                </ASFlex>}
+                <ASAvatar {...this.props} />
+            </ASFlex>
+
+        );
+    }
+}
+
 class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
@@ -110,16 +137,23 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
     render() {
         let item = this.props.item;
         let showSenderName = !!(item.message && (!(item.isOut && item.type === 'PrivateConversation')) && item.sender);
-        console.warn('boom', showSenderName);
+        let isUser = item.type === 'PrivateConversation';
         return (
             <ASFlex height={80} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress}>
                 <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
-                    <ASAvatar
+                    {!isUser && <ASAvatar
                         src={item.photo}
                         size={60}
                         placeholderKey={item.key}
                         placeholderTitle={item.title}
-                    />
+                    />}
+                    {isUser && <UserAvatar
+                        src={item.photo}
+                        size={60}
+                        placeholderKey={item.key}
+                        placeholderTitle={item.title}
+                        online={item.online}
+                    />}
                 </ASFlex>
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={18}>

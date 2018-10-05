@@ -12,6 +12,7 @@ export interface DialogDataSourceItem {
     type: string;
     photo?: string;
     unread: number;
+    online?: boolean;
 
     date?: number;
     message?: string;
@@ -44,6 +45,7 @@ export function formatMessage(message: any): string {
 export const extractDialog = (c: any, uid: string) => (
     {
         key: c.id,
+        flexibleId: c.flexibleId,
         type: c.__typename,
         title: c.title,
         photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
@@ -64,10 +66,27 @@ export class DialogListEngine {
     private next?: string;
     private loading: boolean = true;
     private dialogListCallback: (convs: string[]) => void;
+    private userConversationMap = new Map<string, string>();
 
     constructor(engine: MessengerEngine, cb: (convs: string[]) => void) {
         this.engine = engine;
         this.dialogListCallback = cb;
+
+        engine.getOnlines().onSingleChangeChange((user, online) => {
+            let conversationId = this.userConversationMap.get(user);
+            if (!conversationId) {
+                return;
+            }
+            let res = this.dataSource.getItem(conversationId);
+            if (res) {
+                this.dataSource.updateItem({
+                    ...res,
+                    online: online
+                });
+            }
+
+            console.warn(user, online);
+        });
 
         this.dataSource = new DataSource<DialogDataSourceItem>(() => {
             this.loadNext();
@@ -92,7 +111,12 @@ export class DialogListEngine {
 
         // Update data source
         this.dataSource.initialize(
-            this.conversations.map(c => extractDialog(c, this.engine.user.id)),
+            this.conversations.map(c => {
+                if (c.__typename === 'PrivateConversation' &&  c.flexibleId) {
+                    this.userConversationMap.set(c.flexibleId, c.id);
+                }
+                return extractDialog(c, this.engine.user.id);
+            }),
             next === null);
 
         // Start engine
@@ -120,7 +144,10 @@ export class DialogListEngine {
         const unreadCount = event.unread as number;
 
         // Improve resolving for faster chat switch via flexibleId
-        ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
+        let c = ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
+        if (c && c.flexibleId) {
+            this.userConversationMap.set(c.flexibleId, c.id);
+        }
 
         // Write Message to Repository
         ConversationRepository.writeNewMessage(this.engine.client, conversationId, messageId, unreadCount, visible);

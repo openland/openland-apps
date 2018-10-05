@@ -25,9 +25,8 @@ export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
     private sub?: ZenObservable.Subscription = undefined;
 
-    private timeouts = new Map<string, number>();
-
     private listeners: ((data: {}) => void)[] = [];
+    private singleChangeListeners: ((user: string, online: boolean) => void)[] = [];
     private client: OpenApolloClient;
     constructor(client: OpenApolloClient) {
         this.client = client;
@@ -51,30 +50,8 @@ export class OnlineWatcher {
                 let userId = evData.user.id;
 
                 this.client.client.writeFragment({ id: userId, fragment: USER_ONLINE, data: { __typename: 'User', id: userId, online: evData.type === 'online' } });
-
-                if (this.timeouts.has(userId)) {
-                    clearTimeout(this.timeouts.get(userId));
-                }
-
-                if (evData.type === 'online' && evData.timeout) {
-                    this.timeouts.set(
-                        userId,
-                        setTimeout(
-                            () => {
-                                let data = this.client.client.readFragment({
-                                    id: userId,
-                                    fragment: USER_ONLINE,
-                                });
-                                this.client.client.writeFragment({
-                                    id: userId,
-                                    fragment: USER_ONLINE,
-                                    data: { ...data, online: false }
-                                });
-                            },
-                            evData.timeout
-                        )
-                    );
-                }
+                this.onlinesData.set(userId, evData.type === 'online');
+                this.singleChangeListeners.forEach(l => l(userId, evData.type === 'online'));
 
                 this.listeners.forEach(l => l(this.onlinesData));
             }
@@ -88,6 +65,17 @@ export class OnlineWatcher {
             let index = this.listeners.indexOf(cb);
             if (index > -1) {
                 this.listeners.splice(index, 1);
+            }
+        };
+    }
+
+    onSingleChangeChange(cb: (user: string, online: boolean) => void) {
+        this.singleChangeListeners.push(cb);
+
+        return () => {
+            let index = this.singleChangeListeners.indexOf(cb);
+            if (index > -1) {
+                this.singleChangeListeners.splice(index, 1);
             }
         };
     }
