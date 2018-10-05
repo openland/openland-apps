@@ -21,7 +21,7 @@ const TextInputWrapper = Glamorous.div({
             backgroundColor: '#fff',
             border: 'solid 1px #e4e6e9',
             minHeight: 40,
-            maxHeight: 125,
+            maxHeight: 200,
             paddingTop: 9,
             paddingBottom: 9,
             paddingLeft: 16,
@@ -101,6 +101,7 @@ export const EditMessageComponent = withEditMessage((props) => {
     return (
         <XModalForm
             title="Edit message"
+            width={800}
             targetQuery="editMessage"
             defaultAction={(data) => {
                 props.editMessage({ variables: { messageId: id, message: data.message } });
@@ -113,6 +114,6 @@ export const EditMessageComponent = withEditMessage((props) => {
             <TextInputWrapper>
                 <XTextInput valueStoreKey="fields.message" />
             </TextInputWrapper>
-        </XModalForm >
+        </XModalForm>
     );
 }) as React.ComponentType<{ conversation: ConversationEngine }>;

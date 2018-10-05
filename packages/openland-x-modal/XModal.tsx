@@ -11,6 +11,7 @@ import CloseIcon from './ic-close.svg';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
+    sWidth?: number;
     scrollableContent?: boolean;
     isOpen: boolean;
     closeOnClick?: boolean;
@@ -19,11 +20,11 @@ interface ModalRenderProps {
 }
 
 class ModalRender extends React.PureComponent<ModalRenderProps> {
-
     render() {
-
         let width = 570;
-        if (this.props.size === 'large') {
+        if (this.props.sWidth !== undefined) {
+            width = this.props.sWidth;
+        } else if (this.props.size === 'large') {
             width = 870;
         } else if (this.props.size === 's-large') {
             width = 1200;
@@ -209,6 +210,7 @@ export interface XModalProps extends ModalContentRenderProps {
     // Style
     size?: 'x-large' | 's-large' | 'large' | 'default' | 'small';
     transparent?: boolean;
+    width?: number;
 
     // Controlled/Uncontrolled
     isOpen?: boolean;
@@ -261,6 +263,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                         isOpen={this.state.isOpen}
                         onCloseRequest={this.onModalCloseRequest}
                         size={size}
+                        sWidth={this.props.width}
                         closeOnClick={this.props.closeOnClick}
                         transparent={this.props.transparent}
                     >
@@ -291,6 +294,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                                 isOpen={!!router!!.query[q]}
                                 onCloseRequest={this.onModalCloseRequest}
                                 size={size}
+                                sWidth={this.props.width}
                                 closeOnClick={this.props.closeOnClick}
                                 transparent={this.props.transparent}
                             >
@@ -318,6 +322,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                     isOpen={this.props.isOpen}
                     onCloseRequest={this.onModalCloseRequest}
                     size={size}
+                    sWidth={this.props.width}
                     closeOnClick={this.props.closeOnClick}
                     transparent={this.props.transparent}
                 >

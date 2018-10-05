@@ -58,7 +58,9 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
     flexAlign: 'center',
     marginTop: 7,
     cursor: 'pointer',
-
+    '& *': {
+        cursor: 'pointer'
+    },
     '& span': {
         marginLeft: 8,
         fontSize: 14,
