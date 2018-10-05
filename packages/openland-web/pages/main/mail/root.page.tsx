@@ -121,6 +121,11 @@ export class ShortcutNavigator extends React.Component<{ router: XRouter; prevID
     }
 
     keydownHandler = (e: any) => {
+        if (canUseDOM) {
+            if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
+                return;
+            }
+        }
         if (e.shiftKey && e.code === 'ArrowUp' && this.props.prevID) {
             this.props.router.push('/mail/' + this.props.prevID);
         }
