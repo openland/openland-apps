@@ -1,7 +1,7 @@
 import './init';
 import '../globals';
 import React from 'react';
-import App, { AppProps } from 'next/app';
+import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -32,5 +32,15 @@ export default class MyApp extends App {
 
         // This is needed to render errors correctly in development / production
         super.componentDidCatch!!(error, errorInfo);
+    }
+
+    render() {
+        const { Component, pageProps } = this.props;
+
+        return (
+            <Container>
+                <Component {...pageProps} />
+            </Container>
+        );
     }
 }

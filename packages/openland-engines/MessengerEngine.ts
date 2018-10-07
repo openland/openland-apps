@@ -9,6 +9,7 @@ import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
+import { CallEngine } from './messenger/CallEngine';
 
 export class MessengerEngine {
 
@@ -18,6 +19,7 @@ export class MessengerEngine {
     readonly global: GlobalStateEngine;
     readonly user: UserShort;
     readonly notifications: NotificationsEngine;
+    readonly calls: CallEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
@@ -53,6 +55,9 @@ export class MessengerEngine {
         // Typings
         this.typingsWatcher = new TypingsWatcher(this.client, this.handleTyping, this.user.id);
 
+        // Calls
+        this.calls = new CallEngine(this);
+
         // Starting
         this.loadingPromise = this.loadingSequence();
         console.info('MessengerEngine started');
@@ -60,6 +65,7 @@ export class MessengerEngine {
 
     private loadingSequence = async () => {
         await this.global.start();
+        await this.calls.start();
     }
 
     handleTyping = (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {
