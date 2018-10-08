@@ -8,7 +8,7 @@ import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types'
 import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
-import ReactResizeDetector from 'react-resize-detector';
+import { XResizeDetector } from 'openland-x/XResizeDetector';
 
 let months = [
     'Jan',
@@ -146,8 +146,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     resizeHandler = (width: number, height: number) => {
-        console.warn('list', width, height);
-        this.scroller.current!!.restorePreviousScroll();
+        if (canUseDOM) {
+            this.scroller.current!!.restorePreviousScroll();
+        }
     }
 
     // checkEmptyState = () => {
@@ -238,7 +239,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
 
         return (
-            <ReactResizeDetector handleWidth={false} handleHeight={true} onResize={this.resizeHandler}>
+            <XResizeDetector handleWidth={false} handleHeight={true} onResize={this.resizeHandler}>
                 <XScrollViewReversed ref={this.scroller}>
                     <MessagesWrapper empty={this.isEmpty()}>
 
@@ -248,7 +249,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         {!this.isEmpty() && messages}
                     </MessagesWrapper>
                 </XScrollViewReversed>
-            </ReactResizeDetector>
+            </XResizeDetector>
         );
     }
 }
