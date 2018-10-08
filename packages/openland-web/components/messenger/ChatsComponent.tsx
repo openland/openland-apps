@@ -219,6 +219,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                                 conv.type === 'PrivateConversation' ? 'user' : undefined
                     )}
                     userName={conv.title}
+                    userId={conv.flexibleId}
                     online={conv.online}
                     size="medium"
                     cloudImageUuid={conv.photo}
@@ -301,6 +302,7 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                                 conversation={{
                                     sender: i.topMessage ? (props.user && (i.topMessage.sender.id === props.user.id) ? 'You' : i.topMessage.sender.name) : undefined,
                                     key: i.id,
+                                    flexibleId: i.flexibleId,
                                     message: i.topMessage && formatMessage(i.topMessage),
                                     type: i.__typename,
                                     title: i.title,

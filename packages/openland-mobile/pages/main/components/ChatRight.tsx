@@ -4,6 +4,7 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { SRouter } from 'react-native-s/SRouter';
+import { OnlineQuery } from 'openland-api';
 
 export class ChatRight extends React.PureComponent<{ conversationId: string, router: SRouter }> {
 
@@ -38,12 +39,23 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, rou
                     return (
                         <TouchableOpacity disabled={!destPath} onPress={() => this.props.router.push(destPath!!, destPathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 0, marginLeft: 10 }}>
                             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
-                                <XPAvatar
+                                {res.data!!.chat.__typename === 'PrivateConversation' && <YQuery query={OnlineQuery} variables={{ userId: res.data!!.chat.flexibleId }}>
+                                    {online => (
+                                        < XPAvatar
+                                            src={(res.data!!.chat as any).photo || (res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined)}
+                                            size={Platform.OS === 'android' ? 40 : 36}
+                                            placeholderKey={res.data!!.chat.flexibleId}
+                                            placeholderTitle={res.data!!.chat.title}
+                                        />
+                                    )}
+
+                                </YQuery>}
+                                {res.data!!.chat.__typename !== 'PrivateConversation' && < XPAvatar
                                     src={(res.data!!.chat as any).photo || (res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined)}
                                     size={Platform.OS === 'android' ? 40 : 36}
                                     placeholderKey={res.data!!.chat.flexibleId}
                                     placeholderTitle={res.data!!.chat.title}
-                                />
+                                />}
                             </View>
                         </TouchableOpacity>
                     );

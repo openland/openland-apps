@@ -44,6 +44,7 @@ class DialogsSearch extends React.Component<{ query: string }> {
                                         let sender = d.topMessage ? isOut ? 'You' : d.topMessage.sender.name : undefined;
                                         return {
                                             key: d.id,
+                                            flexibleId: d.flexibleId,
                                             title: d.title,
                                             type: d.__typename,
                                             unread: d.unreadCount,

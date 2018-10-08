@@ -150,7 +150,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                     {isUser && <UserAvatar
                         src={item.photo}
                         size={60}
-                        placeholderKey={item.key}
+                        placeholderKey={item.flexibleId}
                         placeholderTitle={item.title}
                         online={item.online}
                     />}

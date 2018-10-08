@@ -8,6 +8,7 @@ import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 export interface DialogDataSourceItem {
     key: string;
+    flexibleId: string;
     title: string;
     type: string;
     photo?: string;
@@ -46,6 +47,7 @@ export function formatMessage(message: any): string {
 export const extractDialog = (c: any, uid: string) => (
     {
         key: c.id,
+        flexibleId: c.flexibleId,
         type: c.__typename,
         title: c.title,
         photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
@@ -144,10 +146,9 @@ export class DialogListEngine {
         const unreadCount = event.unread as number;
 
         // Improve resolving for faster chat switch via flexibleId
-        let c = ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
-        if (c && c.flexibleId) {
-            this.userConversationMap.set(c.flexibleId, c.id);
-        }
+        ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
+
+        this.userConversationMap.set(conversation.flexibleId, conversationId);
 
         // Write Message to Repository
         ConversationRepository.writeNewMessage(this.engine.client, conversationId, messageId, unreadCount, visible);
@@ -172,6 +173,7 @@ export class DialogListEngine {
             this.dataSource.addItem(
                 {
                     key: conversationId,
+                    flexibleId: conversation.flexibleId,
                     type: conversation.__typename,
                     title: conversation.title,
                     photo: (conversation as any).photo || (conversation.photos.length > 0 ? conversation.photos[0] : undefined),
@@ -217,6 +219,7 @@ export class DialogListEngine {
             // Write to datasource
             let converted = initialDialogs.data.chats.conversations.map((c: any) => ({
                 key: c.id,
+                flexibleId: c.flexibleId,
                 type: c.__typename,
                 title: c.title,
                 photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
