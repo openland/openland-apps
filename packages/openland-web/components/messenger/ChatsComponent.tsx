@@ -561,6 +561,10 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                 if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
                     return;
                 }
+
+                if ((document as any).isEditMessage) {
+                    return;
+                }
             }
 
             this.props.router.replace('/mail');

@@ -7,6 +7,11 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
+import { XForm } from 'openland-x-forms/XForm2';
+import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { MessageFull } from 'openland-api/Types';
+import { XButton } from 'openland-x/XButton';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -117,3 +122,66 @@ export const EditMessageComponent = withEditMessage((props) => {
         </XModalForm>
     );
 }) as React.ComponentType<{ conversation: ConversationEngine }>;
+
+const Footer = Glamorous(XHorizontal)({
+    display: 'flex',
+    paddingTop: 10,
+    paddingBottom: 5,
+});
+
+const EditMessageInline = withEditMessage((props) => {
+    let id = (props as any).id;
+    let text = (props as any).text;
+    return (
+        <XForm
+            defaultAction={async (data) => {
+                await props.editMessage({ variables: { messageId: id, message: data.message } });
+                (props as any).onClose();
+            }}
+            defaultData={{
+                message: text
+            }}
+        >
+            <TextInputWrapper>
+                <XTextInput valueStoreKey="fields.message" />
+            </TextInputWrapper>
+
+            <Footer separator={5}>
+                <XFormSubmit text="Save" size="r-default" style="primary-sky-blue" />
+                <XButton text="Cancel" size="r-default" onClick={() => { (props as any).onClose(); }} />
+            </Footer>
+        </XForm>
+    );
+}) as React.ComponentType<{ id: string, text: string | null, onClose: any }>;
+
+export class EditMessageInlineWrapper extends React.Component<{ message: MessageFull, onClose: any }> {
+    onCloseHandler = () => {
+        this.props.onClose();
+    }
+
+    keydownHandler = (e: any) => {
+        if (e.code === 'Escape') {
+            this.onCloseHandler();
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('keydown', this.keydownHandler);
+        (document as any).isEditMessage = true;
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keydownHandler);
+        (document as any).isEditMessage = false;
+    }
+
+    render() {
+        return (
+            <EditMessageInline
+                id={this.props.message.id}
+                text={this.props.message.message}
+                onClose={this.onCloseHandler}
+            />
+        );
+    }
+}

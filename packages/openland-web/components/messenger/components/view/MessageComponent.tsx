@@ -20,6 +20,7 @@ import { XOverflow } from '../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
+import { EditMessageInlineWrapper } from './MessageEditComponent';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -63,7 +64,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: '#99A2B0'
 }));
 
-const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
+const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
     // alignItems: props.compact ? 'center' : undefined,
@@ -75,15 +76,6 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     marginTop: props.compact ? undefined : 12,
     // marginBottom: 12,
     borderRadius: 6,
-    '&:hover': {
-        backgroundColor: 'rgba(242, 244, 245, 0.5)',
-        '& .time': {
-            opacity: 1
-        },
-        '& .menu': {
-            display: 'block',
-        }
-    },
     '& .time': {
         opacity: props.compact ? 0 : 1
     },
@@ -93,7 +85,30 @@ const MessageContainer = Glamorous.div<{ compact: boolean }>((props) => ({
     },
     '& .menu': {
         display: 'none'
-    }
+    },
+
+    // hover - start
+
+    '&:hover': {
+        backgroundColor: 'rgba(242, 244, 245, 0.5)',
+        '& .time': {
+            opacity: 1
+        },
+        '& .menu': {
+            display: 'block',
+        }
+    },
+    '&': (props.isEditView) ? {
+        backgroundColor: 'rgba(242, 244, 245, 0.5)',
+        '& .time': {
+            opacity: 1
+        },
+        '& .menu': {
+            display: 'block',
+        }
+    } : {},
+
+    // hover - end
 }));
 
 const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
@@ -102,57 +117,81 @@ const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     top: 0
 }));
 
-export class MessageComponent extends React.PureComponent<MessageComponentProps> {
+export class MessageComponent extends React.PureComponent<MessageComponentProps, { isEditView: boolean }> {
+    constructor(props: MessageComponentProps) {
+        super(props);
+
+        this.state = {
+            isEditView: false
+        };
+    }
+
+    showEditView = () => {
+        this.setState({
+            isEditView: true
+        });
+    }
+
+    hideEditView = () => {
+        this.setState({
+            isEditView: false
+        });
+    }
+
     render() {
         const { message } = this.props;
         let content: any[] = [];
         let date: any = null;
         if (isServerMessage(message)) {
-            if (message.message && message.message.length > 0) {
-                if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
-                    content.push(null);
-                } else {
-                    content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} />);
-                }
-            }
-            if (message.file && !message.urlAugmentation) {
-                let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
-                let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
-                let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
-                let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
-
-                if (message.fileMetadata!!.isImage && !!w && !!h) {
-                    if (message.fileMetadata!!.imageFormat === 'GIF') {
-                        content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
+            if (this.state.isEditView && message.message) {
+                content.push(<EditMessageInlineWrapper message={message} key={'editForm'} onClose={this.hideEditView} />);
+            } else {
+                if (message.message && message.message.length > 0) {
+                    if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+                        content.push(null);
                     } else {
-                        content.push(<MessageImageComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
+                        content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} />);
                     }
-                } else {
-                    content.push(<MessageFileComponent key={'file'} file={message.file} fileName={name} fileSize={size} />);
                 }
-            }
-            if (message.urlAugmentation) {
-                if (message.urlAugmentation.type === 'intro') {
-                    content.push(
-                        <MessageIntroComponent
-                            key="intro"
-                            urlAugmentation={message.urlAugmentation}
-                            file={message.file}
-                            fileMetadata={message.fileMetadata}
-                            user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User}
-                            messageId={(message as MessageFull).id}
-                            reactions={(message as MessageFull).reactions}
-                            meId={(this.props.me as UserShort).id}
-                            senderId={message.sender.id}
-                            conversationType={this.props.conversationType}
-                        />
-                    );
-                }
-                if (message.urlAugmentation.type !== 'intro') {
-                    if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
-                        content = [];
+                if (message.file && !message.urlAugmentation) {
+                    let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
+                    let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
+                    let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
+                    let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
+    
+                    if (message.fileMetadata!!.isImage && !!w && !!h) {
+                        if (message.fileMetadata!!.imageFormat === 'GIF') {
+                            content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
+                        } else {
+                            content.push(<MessageImageComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
+                        }
+                    } else {
+                        content.push(<MessageFileComponent key={'file'} file={message.file} fileName={name} fileSize={size} />);
                     }
-                    content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...message.urlAugmentation} />);
+                }
+                if (message.urlAugmentation) {
+                    if (message.urlAugmentation.type === 'intro') {
+                        content.push(
+                            <MessageIntroComponent
+                                key="intro"
+                                urlAugmentation={message.urlAugmentation}
+                                file={message.file}
+                                fileMetadata={message.fileMetadata}
+                                user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User}
+                                messageId={(message as MessageFull).id}
+                                reactions={(message as MessageFull).reactions}
+                                meId={(this.props.me as UserShort).id}
+                                senderId={message.sender.id}
+                                conversationType={this.props.conversationType}
+                            />
+                        );
+                    }
+                    if (message.urlAugmentation.type !== 'intro') {
+                        if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
+                            content = [];
+                        }
+                        content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...message.urlAugmentation} />);
+                    }
                 }
             }
             date = <XDate value={message.date} format="time" />;
@@ -196,7 +235,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
                         placement="bottom-end"
                         content={
                             <>
-                                {message.message && <XMenuItem style="primary-sky-blue" query={{ field: 'editMessage', value: message.id }}>Edit</XMenuItem>}
+                                {message.message && <XMenuItem style="primary-sky-blue" onClick={this.showEditView}>Edit</XMenuItem>}
                                 <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
                             </>
                         }
@@ -215,7 +254,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
             ) : null;
         if (this.props.compact) {
             return (
-                <MessageContainer className="compact-message" compact={true}>
+                <MessageContainer className="compact-message" compact={true} isEditView={this.state.isEditView}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XVertical separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
                         {content}
@@ -226,7 +265,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps>
         }
 
         return (
-            <MessageContainer className="full-message" compact={false}>
+            <MessageContainer className="full-message" compact={false} isEditView={this.state.isEditView}>
                 <XHorizontal alignSelf="stretch">
                     <XAvatar
                         style="colorus"
