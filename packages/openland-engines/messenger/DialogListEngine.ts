@@ -18,6 +18,7 @@ export interface DialogDataSourceItem {
     message?: string;
     sender?: string;
     isOut?: boolean;
+    fileMeta?: { isImage?: boolean };
 }
 
 export function formatMessage(message: any): string {
@@ -52,7 +53,9 @@ export const extractDialog = (c: any, uid: string) => (
         isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
         sender: c.topMessage ? (c.topMessage!!.sender.id === uid ? 'You' : c.topMessage!!.sender.name) : undefined,
         message: c.topMessage ? formatMessage(c.topMessage) : undefined,
-        date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
+        date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
+        fileMeta: c.topMessage ? c.topMessage.fileMetadata : undefined,
+        online: false,
     }
 );
 
@@ -109,7 +112,7 @@ export class DialogListEngine {
         // Update data source
         this.dataSource.initialize(
             this.conversations.map(c => {
-                if (c.__typename === 'PrivateConversation' &&  c.flexibleId) {
+                if (c.__typename === 'PrivateConversation' && c.flexibleId) {
                     this.userConversationMap.set(c.flexibleId, c.id);
                 }
                 return extractDialog(c, this.engine.user.id);
@@ -160,7 +163,9 @@ export class DialogListEngine {
                 isOut: isOut,
                 sender: sender,
                 message: formatMessage(event.message),
-                date: parseInt(event.message.date, 10)
+                date: parseInt(event.message.date, 10),
+                fileMeta: event.message.fileMetadata,
+                online: false,
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
@@ -174,7 +179,9 @@ export class DialogListEngine {
                     isOut: isOut,
                     sender: sender,
                     message: formatMessage(event.message),
-                    date: parseInt(event.message.date, 10)
+                    date: parseInt(event.message.date, 10),
+                    fileMeta: event.message.fileMetadata,
+                    online: false,
                 },
                 0);
         }
@@ -182,6 +189,7 @@ export class DialogListEngine {
 
     loadNext = async () => {
         if (!this.loading && this.next !== null) {
+            this.loading = true;
             let initialDialogs: any = await backoff(async () => {
                 try {
                     return await this.engine.client.client.query({
@@ -216,7 +224,9 @@ export class DialogListEngine {
                 isOut: c.topMessage ? c.topMessage!!.sender.id === this.engine.user.id : undefined,
                 sender: c.topMessage ? (c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name) : undefined,
                 message: c.topMessage ? formatMessage(c.topMessage) : undefined,
-                date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined
+                date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
+                fileMeta: c.topMessage ? c.topMessage.fileMetadata : undefined,
+                online: false,
             }));
             this.dataSource.loadedMore(converted, !this.next);
 

@@ -1,34 +1,28 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { withChatsAll } from '../../api/withChatsAll';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
-import { DialogListEngine } from 'openland-engines/messenger/DialogListEngine';
+import { DialogListEngine, DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCounter } from 'openland-x/XCounter';
-import { XScrollView } from 'openland-x/XScrollView';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x-format/XDate';
-import { ChatList } from 'openland-api/Types';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XMenuItem } from 'openland-x/XMenuItem';
-import ArrowIcon from './components/icons/ic-arrow-rignt-1.svg';
 import SearchIcon from '../icons/ic-search-small.svg';
 import PhotoIcon from './components/icons/ic-photo.svg';
 import FileIcon from './components/icons/ic-file-2.svg';
-import { withUserInfo, UserInfoComponentProps } from '../UserInfo';
+import { withUserInfo } from '../UserInfo';
 import { XFont } from 'openland-x/XFont';
 import { XScrollView2 } from 'openland-x/XScrollView2';
-import { Query } from 'react-apollo';
-import { UserQuery } from 'openland-api';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { DataSourceRender } from './components/DataSourceRender';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -185,39 +179,10 @@ let Item = makeNavigable((props) => (
     </ItemContainer>
 )) as React.ComponentType<{ ref: (e: any) => void, path: string, onClick?: () => void }>;
 
-interface ConversationComponentProps {
-    onSelect?: () => void;
-    id: string;
-    flexibleId: string;
-    typename: 'ChannelConversation' | 'AnonymousConversation' | 'SharedConversation' | 'PrivateConversation' | 'GroupConversation';
-    title: string;
-    photos: string[];
-    photo?: string | null;
-    topMessage: {
-        date: string,
-        message: string | null,
-        sender: {
-            id: string,
-            firstName: string
-        },
-        file: string | null,
-        fileMetadata: {
-            name: string,
-            isImage: boolean,
-        } | null,
-    } | null;
-    unreadCount: number;
-    settings: {
-        mute: boolean
-    };
-    selectedItem: boolean;
-    allowSelection: boolean;
-}
-
-class ConversationComponentInner extends React.Component<ConversationComponentProps & UserInfoComponentProps> {
+class ConversationComponent extends React.PureComponent<{ conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean, onSelect: () => void }> {
     refComponent: any;
 
-    componentWillReceiveProps(nextProps: ConversationComponentProps) {
+    componentWillReceiveProps(nextProps: { conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean }) {
         if (nextProps.selectedItem === true && nextProps.allowSelection) {
             this.reactDom(this.refComponent);
         }
@@ -241,48 +206,45 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
     }
 
     render() {
-
-        let { props } = this;
-
-        let senderName = props.topMessage ? props.user && props.topMessage.sender.id === props.user.id ? 'You' : props.topMessage.sender.firstName : '';
-
+        let conv = this.props.conversation;
         return (
-            <Item path={'/mail/' + props.flexibleId} onClick={props.onSelect} ref={this.handleRef}>
+            <Item path={'/mail/' + conv.key} onClick={this.props.onSelect} ref={this.handleRef}>
                 <ConversationAvatar
-                    style={(props.typename === 'SharedConversation'
+                    style={(conv.type === 'SharedConversation'
                         ? 'organization'
-                        : props.typename === 'GroupConversation'
+                        : conv.type === 'GroupConversation'
                             ? 'group'
-                            : props.typename === 'ChannelConversation'
+                            : conv.type === 'ChannelConversation'
                                 ? 'channel' :
-                                props.typename === 'PrivateConversation' ? 'user' : undefined
+                                conv.type === 'PrivateConversation' ? 'user' : undefined
                     )}
-                    userName={props.title}
-                    userId={props.flexibleId}
+                    userName={conv.title}
+                    online={conv.online}
                     size="medium"
-                    cloudImageUuid={(props.photos || []).length > 0 ? props.photos[0] : props.photo}
+                    cloudImageUuid={conv.photo}
                     border="none"
                 />
                 <Header>
                     <Main>
-                        <Title className="title"><span>{props.title}</span></Title>
-                        {props.topMessage && <Date className="date"><XDate value={props.topMessage!!.date} format="datetime_short" /></Date>}
+                        <Title className="title"><span>{conv.title}</span></Title>
+                        {conv.date && <Date className="date"><XDate value={conv.date.toString()} format="datetime_short" /></Date>}
                     </Main>
                     <Content>
-                        <ContentText className={'content' + ((props.unreadCount > 0) ? ' with-unread' : '')}>
-                            {props.topMessage && props.topMessage.message && (
-                                <span>{senderName}: {props.topMessage.message}</span>
+                        <ContentText className={'content' + ((conv.unread > 0) ? ' with-unread' : '')}>
+                            {!!(conv.message) && !conv.fileMeta && (
+                                <span>{conv.isOut ? 'You' : conv.sender}: {conv.message}</span>
                             )}
-                            {props.topMessage && !props.topMessage.message && props.topMessage.file && props.topMessage.fileMetadata!.isImage && (
-                                <span>{senderName}: <PhotoIcon />Image</span>
+                            {conv.fileMeta && conv.fileMeta.isImage && (
+                                <span>{conv.isOut ? 'You' : conv.sender}: <PhotoIcon />Image</span>
                             )}
-                            {props.topMessage && !props.topMessage.message && props.topMessage.file && !props.topMessage.fileMetadata!.isImage && (
-                                <span>{senderName}: <FileIcon className="document" />Document</span>
+                            {conv.fileMeta && !conv.fileMeta.isImage && (
+                                <span>{conv.isOut ? 'You' : conv.sender}: <FileIcon className="document" />Document</span>
                             )}
                         </ContentText>
-                        {props.unreadCount > 0 && (
+                        {conv.unread > 0 && (
                             <ContentCounter>
-                                <XCounter big={true} count={props.unreadCount} bgColor={props.settings.mute ? '#9f9f9f' : undefined} />
+                                <XCounter big={true} count={conv.unread} />
+                                {/* <XCounter big={true} count={props.unread} bgColor={(props.settings && props.settings.mute) ? '#9f9f9f' : undefined} /> */}
                             </ContentCounter>
                         )}
                     </Content>
@@ -291,8 +253,6 @@ class ConversationComponentInner extends React.Component<ConversationComponentPr
         );
     }
 }
-
-const ConversationComponent = withUserInfo((props) => (<ConversationComponentInner {...props} />)) as React.ComponentType<ConversationComponentProps>;
 
 const PlaceholderEmpty = Glamorous(XText)({
     opacity: 0.5
@@ -315,7 +275,7 @@ const Image = Glamorous.div({
     backgroundPosition: 'center',
 });
 
-const SearchChats = withChatSearchText((props) => {
+const SearchChats = withChatSearchText(withUserInfo((props) => {
     let items = (props.data && props.data.items ? props.data.items : []).reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
@@ -329,7 +289,6 @@ const SearchChats = withChatSearchText((props) => {
     if (props.data && props.data.items && items) {
         (props as any).itemsCount(items.length);
     }
-
     return (
         props.data && props.data.items
             ? items.length
@@ -338,16 +297,17 @@ const SearchChats = withChatSearchText((props) => {
                         {items.map((i, j) => (
                             <ConversationComponent
                                 key={i.id}
-                                id={i.id}
                                 onSelect={(props as any).onSelect}
-                                flexibleId={i.flexibleId}
-                                typename={i.__typename}
-                                title={i.title}
-                                photos={i.photos}
-                                photo={i.photo}
-                                topMessage={i.topMessage}
-                                unreadCount={i.unreadCount}
-                                settings={i.settings}
+                                conversation={{
+                                    sender: i.topMessage ? (props.user && (i.topMessage.sender.id === props.user.id) ? 'You' : i.topMessage.sender.name) : undefined,
+                                    key: i.id,
+                                    message: i.topMessage && formatMessage(i.topMessage),
+                                    type: i.__typename,
+                                    title: i.title,
+                                    photo: i.photo,
+                                    unread: i.unreadCount,
+                                    fileMeta: i.topMessage && i.topMessage.fileMetadata
+                                }}
                                 selectedItem={(props as any).selectedItem === j}
                                 allowSelection={(props as any).allowSelection}
                             />
@@ -362,7 +322,7 @@ const SearchChats = withChatSearchText((props) => {
                 )
             : <PlaceholderLoader color="#334562" />
     );
-}) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number, allowSelection: boolean }>;
+})) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number, allowSelection: boolean }>;
 
 const Search = Glamorous(XInput)({
     marginLeft: 12,
@@ -415,7 +375,6 @@ const LoadingWrapper = Glamorous.div({
 });
 
 interface ChatsComponentInnerProps extends XWithRouter {
-    data: ChatList;
     emptyState: boolean;
     messenger: MessengerEngine;
 }
@@ -425,6 +384,7 @@ interface ChatsComponentInnerState {
     select: number;
     chatsLength: number;
     allowShortKeys: boolean;
+    dialogs: DialogDataSourceItem[];
 }
 
 const getScrollView = () => {
@@ -434,7 +394,7 @@ const getScrollView = () => {
     return document.getElementsByClassName('chats-list')[0].getElementsByClassName('scroll-bar')[0].firstChild;
 };
 
-class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, ChatsComponentInnerState> {
+class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
     readonly dialogListEngine: DialogListEngine;
     inputRef: any;
 
@@ -447,15 +407,16 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
             query: '',
             select: -1,
             chatsLength: 0,
-            allowShortKeys: this.props.emptyState
+            allowShortKeys: this.props.emptyState,
+            dialogs: []
         };
     }
 
     onInput = (q: string) => {
         this.setState({ query: q });
-        if (q === '' && this.props.data && this.props.data.chats) {
+        if (q === '') {
             this.setState({
-                chatsLength: this.props.data.chats.conversations.length
+                chatsLength: this.props.messenger.dialogList.dataSource.getSize()
             });
         }
     }
@@ -463,7 +424,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     onSelect = () => {
         this.setState({
             query: '',
-            chatsLength: this.props.data.chats.conversations.length
+            chatsLength: this.props.messenger.dialogList.dataSource.getSize()
         });
     }
 
@@ -472,11 +433,6 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
         document.addEventListener('click', this.mouseHandler);
         if (getScrollView()) {
             getScrollView()!.addEventListener('scroll', this.handleScroll, { passive: true });
-        }
-        if (this.props.data && this.props.data.chats) {
-            this.setState({
-                chatsLength: this.props.data.chats.conversations.length
-            });
         }
     }
 
@@ -501,9 +457,7 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
         let wrapHeight = e.target.offsetHeight;
         let scrollTop = e.target.scrollTop;
         if ((childHeight - (wrapHeight + scrollTop)) < 100) {
-            if (this.props.data.chats.next) {
-                this.dialogListEngine.loadNext();
-            }
+            this.dialogListEngine.loadNext();
         }
     }
 
@@ -536,25 +490,29 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
             }
         }
 
-        // if (e.shiftKey) {
-        //     if (canUseDOM) {
-        //         if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
-        //             return;
-        //         }
-        //     }
+        if (e.shiftKey) {
+            if (canUseDOM) {
+                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
+                    return;
+                }
+            }
 
-        //     switch (e.code) {
-        //         case 'ArrowUp':
-        //             console.log('ArrowUp');
-        //             break;
-        //         case 'ArrowDown':
-        //             console.log('ArrowDown');
-        //             break;
-        //         default: {
-        //             return;
-        //         }
-        //     }
-        // }
+            let index = this.state.dialogs.findIndex(d => d.key === this.props.router.routeQuery.conversationId);
+            switch (e.code) {
+                case 'ArrowUp':
+                    index--;
+                    break;
+                case 'ArrowDown':
+                    index++;
+                    break;
+                default: {
+                    return;
+                }
+            }
+            index = Math.max(0, index);
+            index = Math.min(this.state.dialogs.length - 1, index);
+            this.props.router.push('/mail/' + this.state.dialogs[index].key);
+        }
 
         if (!this.props.emptyState && e.code === 'Escape') {
             if (canUseDOM) {
@@ -659,34 +617,33 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
                             allowSelection={this.state.allowShortKeys}
                         />
                     )}
-                    {!search && this.props.data && this.props.data.chats && (
-                        <>
-                            {this.props.data.chats.conversations.map((i, j) => {
-                                return (
-                                    <ConversationComponent
-                                        key={i.id}
-                                        id={i.id}
-                                        onSelect={this.onSelect}
-                                        flexibleId={i.flexibleId}
-                                        typename={i.__typename}
-                                        title={i.title}
-                                        photos={i.photos}
-                                        photo={(i as any).photo}
-                                        topMessage={i.topMessage}
-                                        unreadCount={i.unreadCount}
-                                        settings={i.settings}
-                                        selectedItem={this.state.select === j}
-                                        allowSelection={this.state.allowShortKeys}
-                                    />
-                                );
-                            })}
-                            {this.props.data.chats.next && (
-                                <LoadingWrapper>
-                                    <XButton alignSelf="center" style="flat" loading={true} />
-                                </LoadingWrapper>
+                    {!search && (
+                        <DataSourceRender
+                            onChange={(items) => {
+                                this.setState({ chatsLength: items.length, dialogs: items });
+                            }}
+                            dataSource={this.props.messenger.dialogList.dataSource}
+                            render={(props) => (
+                                <>
+                                    {props.items.map((i, j) => {
+                                        return (
+                                            <ConversationComponent
+                                                key={i.key}
+                                                conversation={i}
+                                                onSelect={this.onSelect}
+                                                selectedItem={this.state.select === j}
+                                                allowSelection={this.state.allowShortKeys}
+                                            />
+                                        );
+                                    })}
+                                    {!props.completed && (
+                                        <LoadingWrapper>
+                                            <XButton alignSelf="center" style="flat" loading={true} />
+                                        </LoadingWrapper>
+                                    )}
+                                </>
                             )}
-                        </>
-
+                        />
                     )}
 
                 </XScrollView2>
@@ -695,16 +652,15 @@ class ChatsComponentInner extends React.Component<ChatsComponentInnerProps, Chat
     }
 }
 
-const ChatsComponentWrapper = withChatsAll(withRouter((props) => {
+const ChatsComponentWrapper = withRouter((props) => {
     return (
         <ChatsComponentInner
-            data={props.data}
             emptyState={(props as any).emptyState}
             router={props.router}
             messenger={(props as any).messenger}
         />
     );
-})) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine; }>;
+}) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine; }>;
 
 export class ChatsComponent extends React.Component<{ emptyState: boolean }> {
     render() {

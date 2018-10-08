@@ -326,8 +326,8 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     )}
                 </StyledPlaceholder>
             )}
-            {(props.style !== 'user' && props.online === true) && <OnlineDot format={props.size} className="online-status-dot" />}
-            {(props.style === 'user' && props.online === undefined) && (
+            {props.online === true && <OnlineDot format={props.size} className="online-status-dot" />}
+            {(props.style === 'user' && props.userId && props.online === undefined) && (
                 <Query query={UserQuery.document} variables={{ userId: props.userId }}>
                     {(data) => {
                         return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
