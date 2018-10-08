@@ -21,7 +21,6 @@ import { isServerMessage } from 'openland-engines/messenger/types';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -340,25 +339,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
     }
 
-    keyupHandler = (e: any) => {
-        if (canUseDOM && this.input.current && this.input.current.state.editorState.getSelection().getHasFocus() && this.props.conversation) {
-            window.dispatchEvent(new Event('resize'));
-        }
-    }
-
     componentDidMount() {
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
         window.addEventListener('keydown', this.keydownHandler);
-        window.addEventListener('keyup', this.keyupHandler);
     }
 
     componentWillUnmount() {
         window.removeEventListener('dragover', this.handleWindowDragover);
         window.removeEventListener('drop', this.handleWindowDrop);
         window.removeEventListener('keydown', this.keydownHandler);
-        window.removeEventListener('keyup', this.keyupHandler);
     }
 
     componentDidUpdate() {
