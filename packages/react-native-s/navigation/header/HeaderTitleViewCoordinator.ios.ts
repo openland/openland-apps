@@ -99,16 +99,17 @@ export class HeaderTitleViewCoordinator {
     }
 
     updateSmallTitleState = (smallVisible: boolean) => {
-        if (this.titleVisible === smallVisible) {
-            return;
-        }
-        this.titleVisible = smallVisible;
 
         if (smallVisible) {
             if (SAnimated.isInAnimatedTransaction || !this.isInScrollHandler) {
+                this.titleVisible = smallVisible;
                 this.titleView.opacity = 1;
                 this.titleLargeView.opacity = 0;
             } else {
+                if (this.titleVisible === smallVisible) {
+                    return;
+                }
+                this.titleVisible = smallVisible;
                 setTimeout(() => {
                     SAnimated.beginTransaction();
                     SAnimated.setPropertyAnimator((name, prop, from, to) => {
@@ -128,7 +129,12 @@ export class HeaderTitleViewCoordinator {
             if (SAnimated.isInAnimatedTransaction || !this.isInScrollHandler) {
                 this.titleView.opacity = 0;
                 this.titleLargeView.opacity = 1;
+                this.titleVisible = smallVisible;
             } else {
+                if (this.titleVisible === smallVisible) {
+                    return;
+                }
+                this.titleVisible = smallVisible;
                 setTimeout(() => {
                     SAnimated.beginTransaction();
                     SAnimated.setPropertyAnimator((name, prop, from, to) => {
