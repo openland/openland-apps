@@ -119,6 +119,7 @@
 		"url-parse": "^1.4.1",
 		"uuid": "^3.3.2",
 		"yarn": "^1.7.0",
-		"@sentry/browser": "^4.0.5"
+		"@sentry/browser": "^4.0.5",
+		"react-resize-detector": "^3.1.3"
 	}
 }
