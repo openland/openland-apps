@@ -426,7 +426,7 @@ const LastSeenWrapper = Glamorous.div({
 const LastSeen = withOnline(props => (
     (props.data.user && props.data.user.lastSeen) ? (
         <LastSeenWrapper>
-            last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+            Last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
         </LastSeenWrapper>
     ) : null
 )) as React.ComponentType<{ variables: { userId: string } }>;
@@ -440,9 +440,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
         return <ChannelsInviteComponent channel={props.data.chat} onDirectory={(props as any).onDirectory} />;
     }
-    let title = props.data.chat.__typename === 'ChannelConversation' ?
-        ((!props.data.chat.isRoot && props.data.chat.organization ? props.data.chat.organization.name + ' / ' : '') + props.data.chat.title) :
-        props.data.chat.title;
+    let title = props.data.chat.title;
     let titlePath: string | undefined = undefined;
 
     let subtitle = '';

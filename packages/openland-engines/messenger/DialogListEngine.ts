@@ -82,7 +82,7 @@ export class DialogListEngine {
                 return;
             }
             let res = this.dataSource.getItem(conversationId);
-            if (res) {
+            if (res && res.online !== online) {
                 this.dataSource.updateItem({
                     ...res,
                     online: online

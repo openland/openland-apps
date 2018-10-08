@@ -31,17 +31,17 @@ let sizeStyles = styleResolver({
     'x-large': {
         height: 152,
         width: 152,
-        fontSize: 16
+        fontSize: 32
     },
     'large': {
         height: 130,
         width: 130,
-        fontSize: 16
+        fontSize: 32
     },
     's-large': {
         height: 100,
         width: 100,
-        fontSize: 16
+        fontSize: 32
     },
     'x-medium': {
         height: 86,
@@ -51,12 +51,12 @@ let sizeStyles = styleResolver({
     's-medium': {
         height: 66,
         width: 66,
-        fontSize: 16
+        fontSize: 24
     },
     'medium': {
         height: 46,
         width: 46,
-        fontSize: 16
+        fontSize: 24
     },
     'default': {
         height: 40,

@@ -384,9 +384,7 @@ interface ChatsComponentInnerProps extends XWithRouter {
 interface ChatsComponentInnerState {
     query: string;
     select: number;
-    chatsLength: number;
     allowShortKeys: boolean;
-    dialogs: DialogDataSourceItem[];
 }
 
 const getScrollView = () => {
@@ -398,6 +396,7 @@ const getScrollView = () => {
 
 class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
     readonly dialogListEngine: DialogListEngine;
+    items: DialogDataSourceItem[] = [];
     inputRef: any;
 
     constructor(props: ChatsComponentInnerProps) {
@@ -408,25 +407,17 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         this.state = {
             query: '',
             select: -1,
-            chatsLength: 0,
             allowShortKeys: this.props.emptyState,
-            dialogs: []
         };
     }
 
     onInput = (q: string) => {
         this.setState({ query: q });
-        if (q === '') {
-            this.setState({
-                chatsLength: this.props.messenger.dialogList.dataSource.getSize()
-            });
-        }
     }
 
     onSelect = () => {
         this.setState({
             query: '',
-            chatsLength: this.props.messenger.dialogList.dataSource.getSize()
         });
     }
 
@@ -499,7 +490,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                 }
             }
 
-            let index = this.state.dialogs.findIndex(d => d.key === this.props.router.routeQuery.conversationId);
+            let index = this.items.findIndex(d => d.key === this.props.router.routeQuery.conversationId);
             switch (e.code) {
                 case 'ArrowUp':
                     index--;
@@ -512,8 +503,8 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                 }
             }
             index = Math.max(0, index);
-            index = Math.min(this.state.dialogs.length - 1, index);
-            this.props.router.push('/mail/' + this.state.dialogs[index].key);
+            index = Math.min(this.items.length - 1, index);
+            this.props.router.push('/mail/' + this.items[index].key);
         }
 
         if (!this.props.emptyState && e.code === 'Escape') {
@@ -549,7 +540,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
             let y = this.state.select + dy;
 
-            y = Math.min(this.state.chatsLength - 1, Math.max(-1, y));
+            y = Math.min(this.items.length - 1, Math.max(-1, y));
 
             if (y === -1) {
                 this.inputFocusHandler();
@@ -563,11 +554,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     }
 
     itemsCount = (items: number) => {
-        if (items !== this.state.chatsLength) {
-            this.setState({
-                chatsLength: items
-            });
-        }
+        //
     }
 
     handleRef = (e: any) => {
@@ -622,7 +609,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     {!search && (
                         <DataSourceRender
                             onChange={(items) => {
-                                this.setState({ chatsLength: items.length, dialogs: items });
+                                this.items = items;
                             }}
                             dataSource={this.props.messenger.dialogList.dataSource}
                             render={(props) => (
@@ -664,7 +651,7 @@ const ChatsComponentWrapper = withRouter((props) => {
     );
 }) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine; }>;
 
-export class ChatsComponent extends React.Component<{ emptyState: boolean }> {
+export class ChatsComponent extends React.PureComponent<{ emptyState: boolean }> {
     render() {
         if (!canUseDOM) {
             return null;
