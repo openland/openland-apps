@@ -44,11 +44,7 @@ const ModalBody = Glamorous.div({
     }
 });
 
-const ModalPic = Glamorous.img({
-    objectFit: 'contain',
-    maxHeight: '100%',
-    width: '100%',
-    maxWidth: '100%',
+const ModalPic = Glamorous(XCloudImage)({
     borderRadius: 8
 });
 
@@ -61,10 +57,11 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = (props: MessageImageComponentProps) => {
     let dimensions = layoutMedia(props.width, props.height);
+    let dimensions2 = layoutMedia(props.width, props.height, 1200, 1200);
     return (
         <XModal
             useTopCloser={true}
-            size="s-large"
+            width={dimensions2.width}
             heading={null}
             transparent={true}
             body={(
@@ -73,7 +70,10 @@ export const MessageImageComponent = (props: MessageImageComponentProps) => {
                         <ModalCloseIcon />
                     </ModalCloser>
                     <ModalPic
-                        src={'https://ucarecdn.com/' + props.file + '/'}
+                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                        resize={'fill'}
+                        width={dimensions2.width}
+                        height={dimensions2.height}
                     />
                     <ImgDownload
                         className="download-button"

@@ -83,8 +83,6 @@ export class DialogListEngine {
                     online: online
                 });
             }
-
-            console.warn(user, online);
         });
 
         this.dataSource = new DataSource<DialogDataSourceItem>(() => {
