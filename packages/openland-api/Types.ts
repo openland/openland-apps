@@ -440,6 +440,12 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_r
   reaction: string;
 }
 
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -484,6 +490,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_u
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -565,6 +572,12 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_react
   reaction: string;
 }
 
+export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -609,6 +622,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_urlAu
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -691,6 +705,12 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_rea
   reaction: string;
 }
 
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -735,6 +755,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_url
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -894,6 +915,12 @@ export interface ChatHistory_messages_messages_reactions {
   reaction: string;
 }
 
+export interface ChatHistory_messages_messages_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatHistory_messages_messages_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -938,6 +965,7 @@ export interface ChatHistory_messages_messages_urlAugmentation {
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatHistory_messages_messages_urlAugmentation_imageInfo | null;
   photo: ChatHistory_messages_messages_urlAugmentation_photo | null;
   user: ChatHistory_messages_messages_urlAugmentation_user | null;
 }
@@ -1554,6 +1582,12 @@ export interface SendMessage_sentMessage_message_reactions {
   reaction: string;
 }
 
+export interface SendMessage_sentMessage_message_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface SendMessage_sentMessage_message_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -1598,6 +1632,7 @@ export interface SendMessage_sentMessage_message_urlAugmentation {
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: SendMessage_sentMessage_message_urlAugmentation_imageInfo | null;
   photo: SendMessage_sentMessage_message_urlAugmentation_photo | null;
   user: SendMessage_sentMessage_message_urlAugmentation_user | null;
 }
@@ -2082,6 +2117,12 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_reactions
   reaction: string;
 }
 
+export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -2126,6 +2167,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2208,6 +2250,12 @@ export interface ChatSearchText_items_GroupConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -2252,6 +2300,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2350,6 +2399,12 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -2394,6 +2449,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2526,6 +2582,12 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reactions {
   reaction: string;
 }
 
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -2570,6 +2632,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation {
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo | null;
   photo: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo | null;
   user: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user | null;
 }
@@ -2745,6 +2808,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   reaction: string;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -2789,6 +2858,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -2871,6 +2941,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   reaction: string;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -2915,6 +2991,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -3013,6 +3090,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   reaction: string;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -3057,6 +3140,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -3175,6 +3259,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   reaction: string;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -3219,6 +3309,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -3301,6 +3392,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   reaction: string;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -3345,6 +3442,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -3443,6 +3541,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   reaction: string;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -3487,6 +3591,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10331,6 +10436,12 @@ export interface ConversationShort_AnonymousConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -10375,6 +10486,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo | null;
   user: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10457,6 +10569,12 @@ export interface ConversationShort_GroupConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -10501,6 +10619,7 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation 
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo | null;
   user: ConversationShort_GroupConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10599,6 +10718,12 @@ export interface ConversationShort_ChannelConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -10643,6 +10768,7 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
   photo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo | null;
   user: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user | null;
 }
@@ -10765,6 +10891,12 @@ export interface MessageFull_reactions {
   reaction: string;
 }
 
+export interface MessageFull_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
 export interface MessageFull_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
@@ -10809,6 +10941,7 @@ export interface MessageFull_urlAugmentation {
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
+  imageInfo: MessageFull_urlAugmentation_imageInfo | null;
   photo: MessageFull_urlAugmentation_photo | null;
   user: MessageFull_urlAugmentation_user | null;
 }

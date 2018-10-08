@@ -35,7 +35,11 @@ export const MessageFull = gql`
         description
         hostname
         imageURL
-        photo{
+        imageInfo {
+            imageWidth
+            imageHeight
+        }
+        photo {
             uuid
                 crop{
                     x

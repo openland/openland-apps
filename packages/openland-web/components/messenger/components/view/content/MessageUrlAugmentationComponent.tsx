@@ -5,6 +5,7 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from '../../icons/website-2.svg';
+import { MessageFull_urlAugmentation } from 'openland-api/Types';
 
 const Container = Glamorous(XLink)({
     marginTop: 10,
@@ -19,6 +20,7 @@ const Container = Glamorous(XLink)({
 const Hostname = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
+    height: 20,
     '& svg': {
         marginRight: 7,
         width: 12,
@@ -70,43 +72,60 @@ const Description = Glamorous.div({
     }
 });
 
-const Image = Glamorous.img({
-    display: 'block',
-    maxWidth: 360,
+const ImageWrapper = Glamorous.div<{ imageWidth?: number, imageHeight?: number }>((props) => ({
+    marginTop: 13,
+    position: 'relative',
     borderRadius: 5,
     overflow: 'hidden',
-    marginTop: 13,
+    maxWidth: (props.imageWidth && (props.imageWidth < 360)) ? props.imageWidth : 360,
     '&:first-child': {
         marginTop: 0
-    }
-});
+    },
+    '&:before': (props.imageWidth && props.imageHeight) ? {
+            display: 'block',
+            content: ' ',
+            paddingTop: ((props.imageHeight / props.imageWidth) * 100) + '%'
+        } : { },
+    '& img': (props.imageWidth && props.imageHeight) ? {
+            position: 'absolute',
+            top: 0, right: 0, bottom: 0, left: 0,
+            display: 'block',
+            width: '100%',
+            height: '100%'
+        } : {
+            display: 'block',
+            width: '100%',
+        }
+}));
 
-export class MessageUrlAugmentationComponent extends React.Component<{
-    type: string | null,
-    url: string,
-    title: string | null,
-    date: string | null,
-    subtitle: string | null,
-    hostname: string | null,
-    imageURL: string | null,
-    description: string | null,
-    photo: {
-        uuid: string,
-        crop: {
-            x: number,
-            y: number,
-            w: number,
-            h: number,
-        } | null,
-    } | null,
-}, { favicon: string | undefined, image: string | undefined }> {
+let resolveImageUrl = (url: string | null): string | undefined => {
+    if (url) {
+        if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
+            return url;
+        } else {
+            // if (hostname && url.startsWith('/'))
+            //     return '//' + hostname + url
+
+            return undefined;
+        }
+    } else {
+        return undefined;
+    }
+};
+
+interface MessageUrlAugmentationState {
+    favicon: string | undefined;
+    image: string | undefined;
+}
+
+export class MessageUrlAugmentationComponent extends React.Component<MessageFull_urlAugmentation, MessageUrlAugmentationState> {
     private preprocessed: Span[];
-    constructor(props: any) {
+    constructor(props: MessageFull_urlAugmentation) {
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
         this.state = {
             favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
-            image: this.props.imageURL || undefined
+            image: resolveImageUrl(this.props.imageURL)
         };
     }
     handleFaviconError = () => {
@@ -140,7 +159,17 @@ export class MessageUrlAugmentationComponent extends React.Component<{
                 )}
                 {this.props.title && <Title>{this.props.title}</Title>}
                 {parts && <Description>{parts}</Description>}
-                {this.state.image && <Image src={this.state.image} onError={this.handleImageError} />}
+                {this.state.image && (
+                    <ImageWrapper
+                        imageWidth={this.props.imageInfo ? this.props.imageInfo.imageWidth || undefined : undefined}
+                        imageHeight={this.props.imageInfo ? this.props.imageInfo.imageHeight || undefined : undefined}
+                    >
+                        <img
+                            src={this.state.image}
+                            onError={this.handleImageError}
+                        />
+                    </ImageWrapper>
+                )}
             </Container>
         );
     }
