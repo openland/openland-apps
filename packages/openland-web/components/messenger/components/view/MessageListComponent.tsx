@@ -239,15 +239,15 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
         return (
             <ReactResizeDetector handleWidth={false} handleHeight={true} onResize={this.resizeHandler}>
-            <XScrollViewReversed ref={this.scroller}>
-                <MessagesWrapper empty={this.isEmpty()}>
+                <XScrollViewReversed ref={this.scroller}>
+                    <MessagesWrapper empty={this.isEmpty()}>
 
-                    {this.isEmpty() && (
-                        <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower} />
-                    )}
-                    {!this.isEmpty() && messages}
-                </MessagesWrapper>
-            </XScrollViewReversed>
+                        {this.isEmpty() && (
+                            <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower} />
+                        )}
+                        {!this.isEmpty() && messages}
+                    </MessagesWrapper>
+                </XScrollViewReversed>
             </ReactResizeDetector>
         );
     }
