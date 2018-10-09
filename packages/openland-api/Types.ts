@@ -6835,6 +6835,10 @@ export interface OrganizationPublicInvite {
   publicInvite: OrganizationPublicInvite_publicInvite | null;
 }
 
+export interface OrganizationPublicInviteVariables {
+  organizationId?: string | null;
+}
+
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
@@ -6855,6 +6859,7 @@ export interface OrganizationCreatePublicInvite {
 
 export interface OrganizationCreatePublicInviteVariables {
   expirationDays?: number | null;
+  organizationId?: string | null;
 }
 
 /* tslint:disable */
@@ -6866,6 +6871,10 @@ export interface OrganizationCreatePublicInviteVariables {
 
 export interface OrganizationDeletePublicInvite {
   alphaOrganizationDeletePublicInvite: string;
+}
+
+export interface OrganizationDeletePublicInviteVariables {
+  organizationId?: string | null;
 }
 
 /* tslint:disable */
@@ -6902,6 +6911,10 @@ export interface OrganizationPublicInviteOrganizatons {
   publicInvite: OrganizationPublicInviteOrganizatons_publicInvite | null;
 }
 
+export interface OrganizationPublicInviteOrganizatonsVariables {
+  organizationId?: string | null;
+}
+
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
@@ -6922,6 +6935,7 @@ export interface OrganizationCreatePublicInviteOrganizatons {
 
 export interface OrganizationCreatePublicInviteOrganizatonsVariables {
   expirationDays?: number | null;
+  organizationId?: string | null;
 }
 
 /* tslint:disable */
@@ -6933,6 +6947,10 @@ export interface OrganizationCreatePublicInviteOrganizatonsVariables {
 
 export interface OrganizationDeletePublicInviteOrganizatons {
   alphaOrganizationDeletePublicInviteForOrganizations: string;
+}
+
+export interface OrganizationDeletePublicInviteOrganizatonsVariables {
+  organizationId?: string | null;
 }
 
 /* tslint:disable */

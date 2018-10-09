@@ -5,7 +5,7 @@ import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { OrganizationPublicInviteOrganizatonsQuery, OrganizationCreatePublicInviteOrganizatonsMutation, OrganizationDeletePublicInviteOrganizatonsMutation } from 'openland-api';
 
 export const withPublicInviteOrganization = graphqlCompose3(
-    graphqlRouted(OrganizationPublicInviteOrganizatonsQuery),
-    graphqlMutation(OrganizationCreatePublicInviteOrganizatonsMutation, 'createPublicInvite', { refetchQueries: [OrganizationPublicInviteOrganizatonsQuery] }, ),
-    graphqlMutation(OrganizationDeletePublicInviteOrganizatonsMutation, 'deletePublicInvite', { refetchQueries: [OrganizationPublicInviteOrganizatonsQuery] }),
+    graphqlRouted(OrganizationPublicInviteOrganizatonsQuery, { params: ['organizationId'] }),
+    graphqlMutation(OrganizationCreatePublicInviteOrganizatonsMutation, 'createPublicInvite', { refetchQueries: [OrganizationPublicInviteOrganizatonsQuery], params: ['organizationId'], refetchParams: ['organizationId'] }),
+    graphqlMutation(OrganizationDeletePublicInviteOrganizatonsMutation, 'deletePublicInvite', { refetchQueries: [OrganizationPublicInviteOrganizatonsQuery], params: ['organizationId'], refetchParams: ['organizationId'] }),
 );

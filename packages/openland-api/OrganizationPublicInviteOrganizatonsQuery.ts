@@ -3,4 +3,4 @@ import * as Organization from './queries/Organization';
 import * as Types from './Types';
 import { typedQuery } from 'openland-y-graphql/typed';
 
-export const OrganizationPublicInviteOrganizatonsQuery = typedQuery<Types.OrganizationPublicInviteOrganizatons, {}>(Organization.OrganizationPublicInviteOrganizatonsQuery);
+export const OrganizationPublicInviteOrganizatonsQuery = typedQuery<Types.OrganizationPublicInviteOrganizatons, Types.OrganizationPublicInviteOrganizatonsVariables>(Organization.OrganizationPublicInviteOrganizatonsQuery);
