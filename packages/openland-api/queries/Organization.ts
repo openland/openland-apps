@@ -233,14 +233,14 @@ export const OrganizationRemoveMemberMutation = gql`
 `;
 
 export const OrganizationInviteMembersMutation = gql`
-    mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!) {
-        alphaOrganizationInviteMembers(inviteRequests: $inviteRequests)
+    mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!, $organizationId: ID) {
+        alphaOrganizationInviteMembers(inviteRequests: $inviteRequests, organizationId: $organizationId)
     }
 `;
 
 export const OrganizationPublicInviteQuery = gql`
-    query OrganizationPublicInvite{
-        publicInvite: alphaOrganizationPublicInvite{
+    query OrganizationPublicInvite($organizationId: ID){
+        publicInvite: alphaOrganizationPublicInvite(organizationId: $organizationId){
             id
             key
             ttl
@@ -249,8 +249,8 @@ export const OrganizationPublicInviteQuery = gql`
 `;
 
 export const OrganizationCreatePublicInviteMutation = gql`
-    mutation OrganizationCreatePublicInvite($expirationDays: Int){
-        alphaOrganizationCreatePublicInvite(expirationDays: $expirationDays){
+    mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID){
+        alphaOrganizationCreatePublicInvite(expirationDays: $expirationDays, organizationId: $organizationId){
             id
             key
             ttl
@@ -259,20 +259,20 @@ export const OrganizationCreatePublicInviteMutation = gql`
 `;
 
 export const OrganizationDeletePublicInviteMutation = gql`
-    mutation OrganizationDeletePublicInvite{
-        alphaOrganizationDeletePublicInvite
+    mutation OrganizationDeletePublicInvite($organizationId: ID){
+        alphaOrganizationDeletePublicInvite(organizationId: $organizationId)
     }
 `;
 
 export const OrganizationInviteOrganizationMutation = gql`
-    mutation OrganizationInviteOrganization($inviteRequests: [InviteRequestOrganization!]!) {
-        alphaOrganizationInviteOrganization(inviteRequests: $inviteRequests)
+    mutation OrganizationInviteOrganization($inviteRequests: [InviteRequestOrganization!]!, $organizationId: ID) {
+        alphaOrganizationInviteOrganization(inviteRequests: $inviteRequests, organizationId: $organizationId)
     }
 `;
 
 export const OrganizationPublicInviteOrganizatonsQuery = gql`
-    query OrganizationPublicInviteOrganizatons{
-        publicInvite: alphaOrganizationPublicInviteForOrganizations{
+    query OrganizationPublicInviteOrganizatons($organizationId: ID){
+        publicInvite: alphaOrganizationPublicInviteForOrganizations(organizationId: $organizationId){
             id
             key
             ttl
@@ -281,8 +281,8 @@ export const OrganizationPublicInviteOrganizatonsQuery = gql`
 `;
 
 export const OrganizationCreatePublicInviteOrganizatonsMutation = gql`
-    mutation OrganizationCreatePublicInviteOrganizatons($expirationDays: Int){
-        alphaOrganizationCreatePublicInviteForOrganizations(expirationDays: $expirationDays){
+    mutation OrganizationCreatePublicInviteOrganizatons($expirationDays: Int, $organizationId: ID){
+        alphaOrganizationCreatePublicInviteForOrganizations(expirationDays: $expirationDays, organizationId: $organizationId){
             id
             key
             ttl
@@ -291,8 +291,8 @@ export const OrganizationCreatePublicInviteOrganizatonsMutation = gql`
 `;
 
 export const OrganizationDeletePublicInviteOrganizatonsMutation = gql`
-    mutation OrganizationDeletePublicInviteOrganizatons{
-        alphaOrganizationDeletePublicInviteForOrganizations
+    mutation OrganizationDeletePublicInviteOrganizatons($organizationId: ID){
+        alphaOrganizationDeletePublicInviteForOrganizations(organizationId: $organizationId)
     }
 `;
 

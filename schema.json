@@ -3908,7 +3908,18 @@
           {
             "name": "alphaOrganizationPublicInvite",
             "description": "",
-            "args": [],
+            "args": [
+              {
+                "name": "organizationId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
             "type": {
               "kind": "OBJECT",
               "name": "Invite",
@@ -3920,7 +3931,18 @@
           {
             "name": "alphaOrganizationPublicInviteForOrganizations",
             "description": "",
-            "args": [],
+            "args": [
+              {
+                "name": "organizationId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
             "type": {
               "kind": "OBJECT",
               "name": "Invite",
