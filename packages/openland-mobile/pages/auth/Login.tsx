@@ -146,8 +146,8 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                         <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                             <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={require('assets/logo-unicorn.png')} style={{ width: 117, height: 151 }} />
-                                <Image source={require('assets/logotype.png')} style={{ width: 186, height: 38, marginTop: 40 }} />
-                                <Text style={{ marginTop: 13, fontSize: 18, lineHeight: 21, height: 21, color: '#000', opacity: 0.8, fontWeight: '500' }}>Messaging for smart people</Text>
+                                <Image source={require('assets/logotype.png')} style={{ width: 186, height: 38, marginTop: 28 }} />
+                                <Text style={{ marginTop: 12, fontSize: 18, lineHeight: 21, height: 21, color: '#000', opacity: 0.8, fontWeight: '500' }}>Messaging for smart people</Text>
                             </View>
                         </View>
                         <View flexDirection="column">
