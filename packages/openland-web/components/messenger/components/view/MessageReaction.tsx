@@ -171,6 +171,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                     <XPopper
                         key={'reaction' + reactionsMap[k][0].reaction}
                         placement="bottom"
+                        style="dark"
                         showOnHover={true}
                         content={reactionsMap[k].map((i: any) => (
                             <div>{i.user.name}</div>
@@ -190,6 +191,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                     <XPopper
                         key={'reaction' + reactionsMap[k][0].reaction}
                         placement="bottom"
+                        style="dark"
                         showOnHover={true}
                         content={reactionsMap[k].map((i: any) => (
                             <div>{i.user.name}</div>
