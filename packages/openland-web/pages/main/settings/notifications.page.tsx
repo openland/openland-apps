@@ -100,7 +100,7 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     <XCheckbox square={true} label="Notify every 15 minutes" trueValue="MIN_15" field="input.emailFrequency" />
                                     <XCheckbox square={true} label="Notify maximum once per hour" trueValue="HOUR_1" field="input.emailFrequency" />
                                     <XCheckbox square={true} label="Notify maximum once per day" trueValue="HOUR_24" field="input.emailFrequency" />
-                                    <XCheckbox square={true} label="Notify maximum once per week" trueValue="WEEK_1" field="input.emailFrequency" />
+                                    {/* <XCheckbox square={true} label="Notify maximum once per week" trueValue="WEEK_1" field="input.emailFrequency" /> */}
                                     <XCheckbox square={true} label="Never notify me" trueValue="NEVER" field="input.emailFrequency" />
                                 </CheckboxWrapper>
                             </XVertical>

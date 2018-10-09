@@ -89,7 +89,7 @@ export class TypingsWatcher {
         if (!t) {
             return undefined;
         }
-        let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic, userId: u!.userId }));
+        let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: (u!.userName.split(' ')[0] + (u!.userName.split(' ')[1] !== undefined ? ' ' + u!.userName.split(' ')[1][0] : '')), userPic: u!.userPic, userId: u!.userId }));
 
         let userNames = usersTyping.map(u => u!.userName);
 
