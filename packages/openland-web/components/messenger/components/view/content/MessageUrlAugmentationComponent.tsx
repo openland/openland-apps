@@ -6,7 +6,8 @@ import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from '../../icons/website-2.svg';
 import { MessageFull_urlAugmentation } from 'openland-api/Types';
-import { buildBaseImageUrl } from 'openland-xp/impl/PImage';
+import { layoutMedia } from './utils/MediaLayout';
+import { XCloudImage } from 'openland-x/XCloudImage';
 
 const Container = Glamorous(XLink)({
     marginTop: 10,
@@ -73,31 +74,33 @@ const Description = Glamorous.div({
     }
 });
 
-const ImageWrapper = Glamorous.div<{ imageWidth?: number, imageHeight?: number }>((props) => ({
+const ImageWrapper = Glamorous.div((props) => ({
     marginTop: 13,
-    position: 'relative',
     borderRadius: 5,
     overflow: 'hidden',
-    maxWidth: (props.imageWidth && (props.imageWidth < 360)) ? props.imageWidth : 360,
-    '&:first-child': {
-        marginTop: 0
+    '& img': {
+        display: 'block'
     },
-    '&:before': (props.imageWidth && props.imageHeight) ? {
-            display: 'block',
-            content: ' ',
-            paddingTop: ((props.imageHeight / props.imageWidth) * 100) + '%'
-        } : { },
-    '& img': (props.imageWidth && props.imageHeight) ? {
-            position: 'absolute',
-            top: 0, right: 0, bottom: 0, left: 0,
-            display: 'block',
-            width: '100%',
-            height: '100%'
-        } : {
-            display: 'block',
-            width: '100%',
-        }
+    '& img.from-foreign-server': {
+        width: '100%',
+        maxWidth: 360
+    }
 }));
+
+let resolveImageUrl = (url: string | null): string | undefined => {
+    if (url) {
+        if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
+            return url;
+        } else {
+            // if (hostname && url.startsWith('/'))
+            //     return '//' + hostname + url
+
+            return undefined;
+        }
+    } else {
+        return undefined;
+    }
+};
 
 interface MessageUrlAugmentationState {
     favicon: string | undefined;
@@ -111,7 +114,7 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
         this.preprocessed = props.description ? preprocessText(props.description) : [];
         this.state = {
             favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
-            image: buildBaseImageUrl(this.props.photo || undefined)
+            image: resolveImageUrl(this.props.imageURL)
         };
     }
     handleFaviconError = () => {
@@ -134,6 +137,10 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                 return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>;
             }
         });
+        let dimensions = undefined;
+        if (this.props.imageInfo && this.props.imageInfo.imageWidth && this.props.imageInfo.imageHeight) {
+            dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 360);
+        }
         return (
             <Container href={this.props.url}>
                 {this.props.hostname && (
@@ -145,15 +152,19 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                 )}
                 {this.props.title && <Title>{this.props.title}</Title>}
                 {parts && <Description>{parts}</Description>}
-                {this.state.image && (
-                    <ImageWrapper
-                        imageWidth={this.props.imageInfo ? this.props.imageInfo.imageWidth || undefined : undefined}
-                        imageHeight={this.props.imageInfo ? this.props.imageInfo.imageHeight || undefined : undefined}
-                    >
-                        <img
-                            src={this.state.image}
-                            onError={this.handleImageError}
+                {this.props.photo && dimensions && (
+                    <ImageWrapper>
+                        <XCloudImage
+                            srcCloud={'https://ucarecdn.com/' + this.props.photo.uuid + '/'}
+                            resize={'fill'}
+                            width={dimensions.width}
+                            height={dimensions.height}
                         />
+                    </ImageWrapper>
+                )}
+                {!this.props.photo && this.state.image && (
+                    <ImageWrapper>
+                        <img src={this.state.image} className="from-foreign-server" />
                     </ImageWrapper>
                 )}
             </Container>
