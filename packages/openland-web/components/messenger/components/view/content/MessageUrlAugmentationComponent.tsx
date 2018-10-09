@@ -6,6 +6,7 @@ import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from '../../icons/website-2.svg';
 import { MessageFull_urlAugmentation } from 'openland-api/Types';
+import { buildBaseImageUrl } from 'openland-xp/impl/PImage';
 
 const Container = Glamorous(XLink)({
     marginTop: 10,
@@ -98,21 +99,6 @@ const ImageWrapper = Glamorous.div<{ imageWidth?: number, imageHeight?: number }
         }
 }));
 
-let resolveImageUrl = (url: string | null): string | undefined => {
-    if (url) {
-        if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
-            return url;
-        } else {
-            // if (hostname && url.startsWith('/'))
-            //     return '//' + hostname + url
-
-            return undefined;
-        }
-    } else {
-        return undefined;
-    }
-};
-
 interface MessageUrlAugmentationState {
     favicon: string | undefined;
     image: string | undefined;
@@ -124,9 +110,15 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
         this.state = {
-            favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
-            image: resolveImageUrl(this.props.imageURL)
+            favicon: undefined,
+            image: undefined
         };
+    }
+    componentWillMount = () => {
+        this.setState({
+            favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
+            image: buildBaseImageUrl(this.props.photo || undefined)
+        });
     }
     handleFaviconError = () => {
         this.setState({
