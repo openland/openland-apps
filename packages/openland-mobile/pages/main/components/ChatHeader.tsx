@@ -7,7 +7,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
 import { OnlineQuery } from 'openland-api';
 import * as humanize from 'humanize';
-import { formatTime } from '../../../utils/formatTime';
+import { formatDate } from '../../../utils/formatDate';
 
 export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string }> {
     disposeSubscription?: () => any;
@@ -40,21 +40,19 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
                     let title = res.data!!.chat.title;
                     let subtitle = '';
-                    subtitle = this.state.typing || subtitle;
                     if (chat.__typename === 'PrivateConversation') {
                         if (chat.user.primaryOrganization) {
                             subtitle = chat.user.primaryOrganization.name;
                         } else {
                             subtitle = 'Person';
                         }
-                        if (this.state.typing) {
-                            subtitle = 'typing...';
-                        }
                     } else if (chat.__typename === 'SharedConversation') {
                         subtitle = 'Organization';
                     } else if (chat.__typename === 'GroupConversation' || chat.__typename === 'ChannelConversation') {
                         subtitle = chat.membersCount + ' members';
                     }
+
+                    subtitle = this.state.typing || subtitle;
 
                     if (this.state.typing) {
                         accent = true;
@@ -82,9 +80,9 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                                     if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
                                         let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
                                         if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-                                            sub = 'Last seen ' + humanize.relativeTime(time / 1000);
+                                            sub = 'last seen ' + humanize.relativeTime(time / 1000);
                                         } else {
-                                            sub = 'Last seen ' + formatTime(time);
+                                            sub = 'last seen ' + formatDate(time);
                                         }
                                     }
                                     return (

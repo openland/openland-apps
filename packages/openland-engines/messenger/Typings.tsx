@@ -53,6 +53,7 @@ export class TypingsWatcher {
                     return;
                 }
                 let cId: string = event.data.alphaSubscribeTypings.conversation.id;
+                let type: string = event.data.alphaSubscribeTypings.conversation.__typename;
 
                 // add new typings
                 let existing = this.typings[cId] || {};
@@ -65,7 +66,7 @@ export class TypingsWatcher {
                     };
                     this.typings[cId] = existing;
 
-                    this.onChange(cId, this.renderTypings(cId));
+                    this.onChange(cId, this.renderTypings(cId, type));
                 }
 
                 // clear scehduled typing clear
@@ -84,17 +85,21 @@ export class TypingsWatcher {
 
     }
 
-    renderTypings = (cId: string) => {
+    renderTypings = (cId: string, type?: string) => {
         let t = this.typings[cId];
         if (!t) {
             return undefined;
         }
+
         let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: (u!.userName.split(' ')[0] + (u!.userName.split(' ')[1] !== undefined ? ' ' + u!.userName.split(' ')[1][0] : '')), userPic: u!.userPic, userId: u!.userId }));
 
         let userNames = usersTyping.map(u => u!.userName.split(' ').map((part, i) => i === 0 ? part : i === 1 ? part[0] + '.' : '').join(' '));
 
         let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing...';
 
+        if (type === 'PrivateConversation') {
+            str = '...typing';
+        }
         let data = {
             typing: str,
             users: usersTyping,

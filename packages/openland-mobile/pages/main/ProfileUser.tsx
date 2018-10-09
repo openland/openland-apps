@@ -10,7 +10,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import * as humanize from 'humanize';
-import { formatTime } from '../../utils/formatTime';
+import { formatDate } from '../../utils/formatDate';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
@@ -32,9 +32,9 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                         if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
                                             let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
                                             if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-                                                sub = 'Last seen ' + humanize.relativeTime(time / 1000);
+                                                sub = 'last seen ' + humanize.relativeTime(time / 1000);
                                             } else {
-                                                sub = 'Last seen ' + formatTime(time);
+                                                sub = 'last seen ' + formatDate(time);
                                             }
                                         }
                                         return (

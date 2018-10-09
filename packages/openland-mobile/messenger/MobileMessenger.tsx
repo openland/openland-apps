@@ -166,7 +166,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                             <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={14} height={36} lineHeight={18} color="#7b7b7b" numberOfLines={2}>{item.typing}</ASText>
+                            <ASText fontSize={14} height={36} lineHeight={18} color="#4747ec" numberOfLines={2}>{item.typing}</ASText>
                         </ASFlex>}
                         {item.unread > 0 && (
                             <ASFlex marginTop={18} flexShrink={0}>

@@ -426,7 +426,7 @@ const LastSeenWrapper = Glamorous.div({
 const LastSeen = withOnline(props => (
     (props.data.user && props.data.user.lastSeen) ? (
         <LastSeenWrapper>
-            Last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+            last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
         </LastSeenWrapper>
     ) : null
 )) as React.ComponentType<{ variables: { userId: string } }>;
