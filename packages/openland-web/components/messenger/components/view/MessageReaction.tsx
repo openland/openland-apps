@@ -66,7 +66,7 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
                     />
                 )}
                 show={this.state.show}
-                placement="bottom-end"
+                placement="bottom"
                 animation={null}
                 onClickOutside={this.onClickOutside}
                 contentContainer={(
