@@ -288,7 +288,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                             />
                             <div>
                                 <ChannelTitle>
-                                    {(!channel.isRoot ? channel.organization!!.name + ' / ' : '') + channel.title}
+                                    {channel.title}
                                 </ChannelTitle>
                                 <ChannelCounter>
                                     <ProfileIcon />
