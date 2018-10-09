@@ -278,7 +278,7 @@ export class HeaderTitleViewCoordinator {
                         this.lastConfig.searchUnderlay!!.translateY = 0;
                     }
                     this.headerView.translateY = 0;
-                    // this.titleLargeView.opacity = 1;
+                    this.titleLargeView.opacity = 1;
                     this.lastConfig.searchContainer!.opacity = 0;
 
                     // Show/hide scroll depending if large title is visible
@@ -286,13 +286,14 @@ export class HeaderTitleViewCoordinator {
                 }
 
             } else {
-                // this.titleLargeView.opacity = 1;
+                this.titleLargeView.opacity = 1;
                 this.updateSmallTitleState(titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12));
                 if (this.lastConfig.searchUnderlay) {
                     this.lastConfig.searchUnderlay!!.translateY = 0;
                 }
                 this.headerView.translateY = 0;
             }
+            this.titleLargeView.opacity *= opacityDelayed;
         } else if (this.lastConfig.appearance === 'small-hidden') {
             let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
             if (offset > SDevice.navigationBarHeight) {
