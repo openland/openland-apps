@@ -6814,6 +6814,7 @@ export interface OrganizationInviteMembers {
 
 export interface OrganizationInviteMembersVariables {
   inviteRequests: InviteRequest[];
+  organizationId?: string | null;
 }
 
 /* tslint:disable */
@@ -6880,6 +6881,7 @@ export interface OrganizationInviteOrganization {
 
 export interface OrganizationInviteOrganizationVariables {
   inviteRequests: InviteRequestOrganization[];
+  organizationId?: string | null;
 }
 
 /* tslint:disable */

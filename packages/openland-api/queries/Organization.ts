@@ -233,8 +233,8 @@ export const OrganizationRemoveMemberMutation = gql`
 `;
 
 export const OrganizationInviteMembersMutation = gql`
-    mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!) {
-        alphaOrganizationInviteMembers(inviteRequests: $inviteRequests)
+    mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!, $organizationId: ID) {
+        alphaOrganizationInviteMembers(inviteRequests: $inviteRequests, organizationId: $organizationId)
     }
 `;
 
@@ -265,8 +265,8 @@ export const OrganizationDeletePublicInviteMutation = gql`
 `;
 
 export const OrganizationInviteOrganizationMutation = gql`
-    mutation OrganizationInviteOrganization($inviteRequests: [InviteRequestOrganization!]!) {
-        alphaOrganizationInviteOrganization(inviteRequests: $inviteRequests)
+    mutation OrganizationInviteOrganization($inviteRequests: [InviteRequestOrganization!]!, $organizationId: ID) {
+        alphaOrganizationInviteOrganization(inviteRequests: $inviteRequests, organizationId: $organizationId)
     }
 `;
 
