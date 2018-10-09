@@ -12,19 +12,20 @@ const CustomContentDiv = Glamorous(XPopper.Content)({
     boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
 });
 
-const ReactionButton = Glamorous.div<{marginTop?: number}>(props => ({
+const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }>(props => ({
     display: 'flex',
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
     marginTop: props.marginTop,
+    marginLeft: props.marginLeft,
     '&:hover svg > g': {
         fill: '#1790ff'
     }
 }));
 
-class ReactionComponentInner extends React.PureComponent<{ messageId: string, marginTop?: number, mutation: MutationFunc<{}> }> {
+class ReactionComponentInner extends React.PureComponent<{ messageId: string, marginTop?: number, marginLeft?: number, mutation: MutationFunc<{}> }> {
 
     state = {
         show: false
@@ -70,7 +71,7 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
                     <CustomContentDiv />
                 )}
             >
-                <ReactionButton onClick={this.switch} marginTop={this.props.marginTop}>
+                <ReactionButton onClick={this.switch} marginTop={this.props.marginTop} marginLeft={this.props.marginLeft}>
                     <ReactionIcon />
                 </ReactionButton>
             </XPopper>
@@ -79,13 +80,19 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
 }
 
 export const ReactionComponent = withSetReaction((props) => (
-    <ReactionComponentInner mutation={props.setReaction} messageId={(props as any).messageId} marginTop={(props as any).marginTop} />
-)) as React.ComponentType<{ messageId: string, marginTop?: number }>;
+    <ReactionComponentInner
+        mutation={props.setReaction}
+        messageId={(props as any).messageId}
+        marginTop={(props as any).marginTop}
+        marginLeft={(props as any).marginLeft}
+    />
+)) as React.ComponentType<{ messageId: string, marginTop?: number, marginLeft?: number }>;
 
 const ReactionsWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 3
 });
 
 const ReactionItem = Glamorous.div<{ isMy: boolean }>(props => ({
@@ -189,7 +196,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             this.props.reactions && this.props.reactions.length > 0 ? (
                 <ReactionsWrapper>
                     {this.reactionsRender()}
-                    <ReactionComponent messageId={this.props.messageId} marginTop={2} />
+                    <ReactionComponent messageId={this.props.messageId} marginTop={2} marginLeft={12} />
                 </ReactionsWrapper>
             ) : null
         );
