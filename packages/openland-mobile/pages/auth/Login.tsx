@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator, Dimensions } from 'react-native';
 import { Auth0Client } from '../../index';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
@@ -141,6 +141,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             <>
                 <SHeader hidden={true} />
                 <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
+                    <Image source={require('assets/img-chat-1.png')} style={{ position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="cover" />
                     <SSafeAreaView style={styles.container}>
                         <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                             <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
@@ -151,11 +152,11 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                         <View flexDirection="column">
                             <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading}>
                                 <View style={styles.button}>
-                                    <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                                        {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
+                                    <View style={{ width: 56, height: 56, justifyContent: 'center', alignItems: 'center' }}>
+                                        {!this.state.loading && <Image source={require('assets/ic-google-signup.png')} />}
                                     </View>
                                     <Text style={styles.buttonTitle}>{!this.state.loading && 'Sign in with Google'}</Text>
-                                    <View style={{ width: 70, height: 70 }}>
+                                    <View style={{ width: 56, height: 56 }}>
                                         {}
                                     </View>
                                     {this.state.loading && <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator color="#fff" /></View>}
