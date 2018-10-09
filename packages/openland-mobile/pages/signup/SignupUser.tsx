@@ -17,14 +17,14 @@ export const signupStyles = StyleSheet.create({
         fontWeight: '300',
         color: '#000',
         fontSize: 18,
-        height: 52,
-        lineHeight: 18,
+        height: 48,
         textAlign: 'left',
         alignSelf: 'flex-start',
-        marginBottom: 15,
+        marginBottom: 8,
         borderBottomColor: '#e0e3e7',
         borderBottomWidth: 0.5,
-        marginLeft: 17
+        marginLeft: 16,
+        paddingRight: 16
 
     } as TextStyle,
 });
