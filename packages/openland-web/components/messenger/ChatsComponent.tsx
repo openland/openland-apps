@@ -232,14 +232,18 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                     </Main>
                     <Content>
                         <ContentText className={'content' + ((conv.unread > 0) ? ' with-unread' : '')}>
-                            {!!(conv.message) && !conv.fileMeta && (
-                                <span>{conv.isOut ? 'You' : conv.sender}: {conv.message}</span>
-                            )}
-                            {conv.fileMeta && conv.fileMeta.isImage && (
-                                <span>{conv.isOut ? 'You' : conv.sender}: <PhotoIcon />Image</span>
-                            )}
-                            {conv.fileMeta && !conv.fileMeta.isImage && (
-                                <span>{conv.isOut ? 'You' : conv.sender}: <FileIcon className="document" />Document</span>
+                            {conv.typing || (
+                                <>
+                                    {!!(conv.message) && !conv.fileMeta && (
+                                        <span>{conv.isOut ? 'You' : conv.sender}: {conv.message}</span>
+                                    )}
+                                    {conv.fileMeta && conv.fileMeta.isImage && (
+                                        <span>{conv.isOut ? 'You' : conv.sender}: <PhotoIcon />Image</span>
+                                    )}
+                                    {conv.fileMeta && !conv.fileMeta.isImage && (
+                                        <span>{conv.isOut ? 'You' : conv.sender}: <FileIcon className="document" />Document</span>
+                                    )}
+                                </>
                             )}
                         </ContentText>
                         {conv.unread > 0 && (

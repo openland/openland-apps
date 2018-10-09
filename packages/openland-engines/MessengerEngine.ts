@@ -74,7 +74,8 @@ export class MessengerEngine {
     }
 
     handleTyping = (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {
-        this.getTypings(conversationId).onTyping(data);
+        this.getTypings(conversationId).onTyping(data, conversationId);
+        this.getTypings('global_typings').onTyping(data, conversationId);
     }
 
     awaitLoading() {
@@ -96,12 +97,21 @@ export class MessengerEngine {
         return this.activeConversations.get(conversationId)!!;
     }
 
-    getTypings(conversationId: string) {
-        if (!this.activeTypings.has(conversationId)) {
-            let engine = new TypingEngine();
-            this.activeTypings.set(conversationId, engine);
+    getTypings(conversationId?: string) {
+        if (conversationId) {
+            if (!this.activeTypings.has(conversationId)) {
+                let engine = new TypingEngine();
+                this.activeTypings.set(conversationId, engine);
+            }
+            return this.activeTypings.get(conversationId)!!;
+        } else {
+            if (!this.activeTypings.has('global_typings')) {
+                let engine = new TypingEngine();
+                this.activeTypings.set('global_typings', engine);
+            }
+            return this.activeTypings.get('global_typings')!!;
         }
-        return this.activeTypings.get(conversationId)!!;
+
     }
 
     getOnlines() {

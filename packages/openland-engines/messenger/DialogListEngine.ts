@@ -14,6 +14,7 @@ export interface DialogDataSourceItem {
     photo?: string;
     unread: number;
     online?: boolean;
+    typing?: string;
 
     date?: number;
     message?: string;
@@ -86,6 +87,16 @@ export class DialogListEngine {
                 this.dataSource.updateItem({
                     ...res,
                     online: online
+                });
+            }
+        });
+
+        engine.getTypings().subcribe((typing, users, conversationId) => {
+            let res = this.dataSource.getItem(conversationId);
+            if (res && res.typing !== typing) {
+                this.dataSource.updateItem({
+                    ...res,
+                    typing: typing
                 });
             }
         });
