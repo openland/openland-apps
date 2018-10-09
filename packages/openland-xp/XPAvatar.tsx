@@ -35,6 +35,7 @@ const placeholderSizeInterpolator = createInterpolator(
 
 export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
     render() {
+        let onlineSize = this.props.size / 4;
         if (this.props.src) {
             return (
                 <AndroidAliaser
@@ -45,7 +46,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                     <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
                         <XPImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
                         {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
-                        {this.props.online && <View style={{ position: 'absolute', width: 10, height: 10, bottom: 0, right: 0, borderRadius: 5, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: 1 }} />}
+                        {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
                     </View>
                 </AndroidAliaser>
             );
@@ -79,7 +80,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                         <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
                     </View>
                     <View position="absolute" left={10} top={10} borderRadius={5} backgroundColor="#00ff22" />
-                    {this.props.online && <View style={{ position: 'absolute', width: 10, height: 10, bottom: 0, right: 0, borderRadius: 5, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: 1 }} />}
+                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
                 </XPLinearGradient>
             </AndroidAliaser>
         );

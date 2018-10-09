@@ -36,13 +36,19 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
                     const chat = res.data!!.chat;
 
+                    let accent = false;
+
                     let title = res.data!!.chat.title;
                     let subtitle = '';
+                    subtitle = this.state.typing || subtitle;
                     if (chat.__typename === 'PrivateConversation') {
                         if (chat.user.primaryOrganization) {
                             subtitle = chat.user.primaryOrganization.name;
                         } else {
                             subtitle = 'Person';
+                        }
+                        if (this.state.typing) {
+                            subtitle = 'typing...';
                         }
                     } else if (chat.__typename === 'SharedConversation') {
                         subtitle = 'Organization';
@@ -50,7 +56,9 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                         subtitle = chat.membersCount + ' members';
                     }
 
-                    subtitle = this.state.typing || subtitle;
+                    if (this.state.typing) {
+                        accent = true;
+                    }
 
                     if (isAndroid) {
                         return (
@@ -80,7 +88,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                                         }
                                     }
                                     return (
-                                        <Text style={{ fontSize: 12, height: 14, color: '#000', opacity: 0.6 }}>{sub}</Text>
+                                        <Text style={{ fontSize: 12, height: 14, color: accent ? '#4747ec' : '#000', opacity: accent ? 1 : 0.6 }}>{sub}</Text>
                                     );
                                 }}
                             </YQuery>

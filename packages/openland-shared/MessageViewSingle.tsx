@@ -143,6 +143,7 @@ export class MessageViewSingle extends React.PureComponent<MessageViewSingleProp
                         <TouchableOpacity onPress={this.handleAvatarPress}>
                             <XPAvatar
                                 src={sender.picture}
+                                userId={sender.id}
                                 size={28}
                                 placeholderKey={sender.id}
                                 placeholderTitle={sender.name}

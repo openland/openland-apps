@@ -94,6 +94,7 @@ export class DialogItemView extends React.PureComponent<DialogComponentProps> {
                         size={60}
                         placeholderKey={this.props.item.flexibleId}
                         placeholderTitle={this.props.item.title}
+                        userId={this.props.item.__typename === 'PrivateConversation' ? this.props.item.flexibleId : undefined}
                     />
                 </View>
                 <View flexGrow={1} paddingTop={12} paddingBottom={12} paddingRight={10} alignItems="stretch">

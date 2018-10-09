@@ -45,6 +45,7 @@ export class ZListItemHeader extends React.PureComponent<{
     id?: string,
     title?: string | null,
     subtitle?: string | null,
+    subsubtitle?: string | null,
     path?: string,
     onPress?: () => void;
     action?: string
@@ -53,11 +54,12 @@ export class ZListItemHeader extends React.PureComponent<{
     render() {
         return (
             <View style={styles.container}>
-                <XPAvatarWithPreview size={96} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} />
+                <XPAvatarWithPreview size={96} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.id} />
                 <View style={styles.body}>
                     <View style={styles.header}>
                         <Text style={styles.title} numberOfLines={1}>{this.props.title}</Text>
                         <Text style={styles.subtitle} numberOfLines={1}>{this.props.subtitle}</Text>
+                        {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>}
                     </View>
                     {this.props.action && (
                         <View style={styles.footer}>
