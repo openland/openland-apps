@@ -500,7 +500,9 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Remove from datasource
-            this.dataSource.removeItem(event.messageId);
+            if (this.dataSource.hasItem(event.messageId)) {
+                this.dataSource.removeItem(event.messageId);
+            }
         } else if (event.__typename === 'ConversationEventEditMessage') {
             // Handle message
             console.info('Received edit message');
