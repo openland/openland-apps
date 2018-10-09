@@ -168,25 +168,41 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
         for (let k in reactionsMap) {
             if (reactionsMap[k].find((r: any) => r.user.id === meId)) {
                 components.push(
-                    <SingleReactionUnset
-                        messageId={this.props.messageId}
-                        reaction={reactionsMap[k][0].reaction}
+                    <XPopper
                         key={'reaction' + reactionsMap[k][0].reaction}
-                        isMy={true}
+                        placement="bottom"
+                        showOnHover={true}
+                        content={reactionsMap[k].map((i: any) => (
+                            <div>{i.user.name}</div>
+                        ))}
                     >
-                        {reactionsMap[k][0].reaction + reactionsMap[k].length}
-                    </SingleReactionUnset>
+                        <SingleReactionUnset
+                            messageId={this.props.messageId}
+                            reaction={reactionsMap[k][0].reaction}
+                            isMy={true}
+                        >
+                            {reactionsMap[k][0].reaction + reactionsMap[k].length}
+                        </SingleReactionUnset>
+                    </XPopper>
                 );
             } else {
                 components.push(
-                    <SingleReactionSet
-                        messageId={this.props.messageId}
-                        reaction={reactionsMap[k][0].reaction}
+                    <XPopper
                         key={'reaction' + reactionsMap[k][0].reaction}
-                        isMy={false}
+                        placement="bottom"
+                        showOnHover={true}
+                        content={reactionsMap[k].map((i: any) => (
+                            <div>{i.user.name}</div>
+                        ))}
                     >
-                        {reactionsMap[k][0].reaction + reactionsMap[k].length}
-                    </SingleReactionSet>
+                        <SingleReactionSet
+                            messageId={this.props.messageId}
+                            reaction={reactionsMap[k][0].reaction}
+                            isMy={false}
+                        >
+                            {reactionsMap[k][0].reaction + reactionsMap[k].length}
+                        </SingleReactionSet>
+                    </XPopper>
                 );
             }
         }
