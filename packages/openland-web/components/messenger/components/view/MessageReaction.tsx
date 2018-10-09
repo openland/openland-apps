@@ -20,6 +20,7 @@ const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }
     cursor: 'pointer',
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
+    opacity: 0,
     '&:hover svg > g': {
         fill: '#1790ff'
     }
@@ -60,6 +61,7 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
                 content={(
                     <Picker
                         set="twitter"
+                        emojiSize={16}
                         onSelect={(emj) => this.handleSetReaction(emj)}
                     />
                 )}
@@ -71,7 +73,7 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
                     <CustomContentDiv />
                 )}
             >
-                <ReactionButton onClick={this.switch} marginTop={this.props.marginTop} marginLeft={this.props.marginLeft}>
+                <ReactionButton className="reaction-button" onClick={this.switch} marginTop={this.props.marginTop} marginLeft={this.props.marginLeft}>
                     <ReactionIcon />
                 </ReactionButton>
             </XPopper>
@@ -194,7 +196,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
         return (
             this.props.reactions && this.props.reactions.length > 0 ? (
-                <ReactionsWrapper>
+                <ReactionsWrapper className="reactions-wrapper">
                     {this.reactionsRender()}
                     <ReactionComponent messageId={this.props.messageId} marginTop={2} marginLeft={12} />
                 </ReactionsWrapper>

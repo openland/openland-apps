@@ -98,6 +98,9 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean 
         },
         '& .menu': {
             display: 'block',
+        },
+        '& .reaction-button': {
+            opacity: 1
         }
     },
     '&': (props.isEditView) ? {
@@ -109,9 +112,20 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean 
             display: 'block',
         }
     } : {},
+    '& .reaction-button': {
+        position: 'absolute',
+        right: 5
+    },
+    '& .reactions-wrapper .reaction-button': {
+        position: 'static'
+    }
 
     // hover - end
 }));
+
+const MessageCompactContent = Glamorous(XVertical)({
+    paddingRight: 20
+});
 
 const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     position: 'absolute',
@@ -269,10 +283,20 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
             return (
                 <MessageContainer className="compact-message" compact={true} isEditView={this.state.isEditView}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
-                    <XVertical separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
+                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
                         {content}
                         {menu}
-                    </XVertical>
+                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                            <ReactionComponent messageId={(message as MessageFull).id} />
+                        )}
+                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                            <Reactions
+                                messageId={(message as MessageFull).id}
+                                reactions={(message as MessageFull).reactions}
+                                meId={(this.props.me as UserShort).id}
+                            />
+                        )}
+                    </MessageCompactContent>
                 </MessageContainer>
             );
         }
