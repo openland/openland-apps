@@ -94,6 +94,9 @@ export class HeaderCoordinator {
                     this.hairline.translateX = this.size.width * progress;
                     this.hairline.translateY = v;
                     this.hairline.opacity = op;
+                    let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
+                    this.container.iosHeight = d;
+                    this.container.translateY = d / 2;
                 } else if (prev.headerHidden) {
                     // Keep on current page offset
                     handled = true;
@@ -104,6 +107,9 @@ export class HeaderCoordinator {
                     this.hairline.translateX = this.size.width * progress;
                     this.hairline.translateY = v;
                     this.hairline.opacity = op;
+                    let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
+                    this.container.iosHeight = d;
+                    this.container.translateY = d / 2;
                 } else {
                     // Cross fade
                 }

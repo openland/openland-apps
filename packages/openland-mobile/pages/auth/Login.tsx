@@ -5,6 +5,8 @@ import { AppUpdateTracker } from '../../utils/UpdateTracker';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
+import { SDevice } from 'react-native-s/SDevice';
+import { SHeader } from 'react-native-s/SHeader';
 
 const styles = StyleSheet.create({
     container: {
@@ -28,11 +30,17 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 48,
-        width: 335,
+        height: 56,
+        width: 315,
         backgroundColor: '#4747ec',
         color: '#fff',
-        borderRadius: 24
+        borderRadius: 28
+    } as ViewStyle,
+    buttonEmail: {
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#dce0e7'
     } as ViewStyle,
     buttonTitle: {
         fontSize: 15,
@@ -43,6 +51,10 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         textAlign: 'center',
         textAlignVertical: 'center'
+    } as TextStyle,
+    buttonTitleEmail: {
+        color: '#000',
+        height: 56,
     } as TextStyle,
     footer: {
         color: '#000',
@@ -105,6 +117,12 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             Alert.alert('Unable to authenticate');
 
         } catch (e) {
+            if (e.error) {
+                if (e.error === 'a0.session.user_cancelled') {
+                    return;
+                }
+            }
+
             Alert.alert(e.message + '\n' + JSON.stringify(e));
         } finally {
             this.setState({ loading: false });
@@ -120,37 +138,40 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
 
     render() {
         return (
-            <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
-                <SSafeAreaView style={styles.container}>
-                    <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
-                        <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={require('assets/logo.png')} style={{ width: 200, height: 35 }} />
-                            <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18, color: '#000', opacity: 0.7 }}>Messaging for smart people</Text>
+            <>
+                <SHeader hidden={true} />
+                <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
+                    <SSafeAreaView style={styles.container}>
+                        <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+                            <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
+                                <Image source={require('assets/logo.png')} style={{ width: 200, height: 35 }} />
+                                <Text style={{ marginTop: 16, marginBottom: 32, fontSize: 18, color: '#000', opacity: 0.7 }}>Messaging for smart people</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View flexDirection="column" style={{ marginTop: 12 }}>
-                        <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading}>
-                            <View style={styles.button}>
-                                <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                                    {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
+                        <View flexDirection="column">
+                            <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading}>
+                                <View style={styles.button}>
+                                    <View style={{ width: 70, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                                        {!this.state.loading && <Image source={require('assets/ic-google.png')} />}
+                                    </View>
+                                    <Text style={styles.buttonTitle}>{!this.state.loading && 'Sign in with Google'}</Text>
+                                    <View style={{ width: 70, height: 70 }}>
+                                        {}
+                                    </View>
+                                    {this.state.loading && <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator color="#fff" /></View>}
                                 </View>
-                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Sign in with Google'}</Text>
-                                <View style={{ width: 70, height: 70 }}>
-                                    {}
+                            </TouchableOpacity>
+                        </View>
+                        <View flexDirection="column" style={{ marginTop: 15, marginBottom: 46 + SDevice.safeArea.bottom }}>
+                            <TouchableOpacity onPress={this.handleEmailPress}>
+                                <View style={[styles.button, styles.buttonEmail]}>
+                                    <Text style={[styles.buttonTitle, styles.buttonTitleEmail]}>{'Continue with Email'}</Text>
                                 </View>
-                                {this.state.loading && <View style={{ position: 'absolute' }}><ActivityIndicator /></View>}
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View flexDirection="column" style={{ marginTop: 8, marginBottom: 56 }}>
-                        <TouchableOpacity onPress={this.handleEmailPress}>
-                            <View style={[styles.button, { backgroundColor: '#919191' }]}>
-                                <Text style={styles.buttonTitle}>{!this.state.loading && 'Continue with email'}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </SSafeAreaView>
-            </View>
+                            </TouchableOpacity>
+                        </View>
+                    </SSafeAreaView>
+                </View>
+            </>
         );
     }
 }
