@@ -68,7 +68,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         height={Dimensions.get('window').height}
                     >
                         <ASImage
-                            source={require('assets/img-chat-3.jpg')}
+                            source={require('assets/img-chat-1.png')}
                             width={Dimensions.get('window').width}
                             height={Dimensions.get('window').height}
                         />
