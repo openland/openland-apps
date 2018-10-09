@@ -20,7 +20,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader />
-                <SHeaderButton title="Logout" onPress={() => this.handleLogout()} />
+                <SHeaderButton title="Sign out" onPress={() => this.handleLogout()} />
                 <SSafeAreaView flexGrow={1}>
                     <View flexGrow={1} flexDirection="column" alignItems="center" justifyContent="center">
                         <Text style={{ textAlign: 'center', fontWeight: '500', fontSize: 22, color: '#000', paddingHorizontal: 48, height: 28, lineHeight: 28 }}>You have joined the waitlist</Text>
