@@ -5,6 +5,9 @@ import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
+import { OnlineQuery } from 'openland-api';
+import * as humanize from 'humanize';
+import { formatTime } from '../../../utils/formatTime';
 
 export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string }> {
     disposeSubscription?: () => any;
@@ -65,7 +68,22 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                     return (
                         <View flexDirection="column" alignItems="center" justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
                             <Text style={{ fontSize: 15, height: 18, color: '#000', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            <Text style={{ fontSize: 12, height: 14, color: '#000', opacity: 0.6 }}>{subtitle}</Text>
+                            <YQuery query={OnlineQuery} variables={{ userId: chat.flexibleId }}>
+                                {online => {
+                                    let sub = subtitle;
+                                    if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
+                                        let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
+                                        if (new Date().getTime() - time > 1000 * 60 * 60 * 24) {
+                                            sub = 'Last seen ' + humanize.relativeTime(time / 1000);
+                                        } else {
+                                            sub = 'Last seen ' + formatTime(time);
+                                        }
+                                    }
+                                    return (
+                                        <Text style={{ fontSize: 12, height: 14, color: '#000', opacity: 0.6 }}>{sub}</Text>
+                                    );
+                                }}
+                            </YQuery>
                         </View>
                     );
                 }}
