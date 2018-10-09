@@ -463,25 +463,25 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                 <XButton text="Links" iconRight="add" />
             )}
         >
-                <XFormLoadingContent>
-                    <XVertical flexGrow={1} separator={8}>
-                        <XFormField field="input.website">
-                            <XHorizontal separator={7}>
-                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialModalWeb} field="input.website" size="r-default" />
-                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="r-default" />
-                            </XHorizontal>
-                        </XFormField>
-                        <XFormField field="input.twitter">
-                            <XInput placeholder={TextOrganizationProfile.placeholderSocialModalTwitter} field="input.twitter" size="r-default" />
-                        </XFormField>
-                        <XFormField field="input.facebook">
-                            <XInput placeholder={TextOrganizationProfile.placeholderSocialModalFacebook} field="input.facebook" size="r-default" />
-                        </XFormField>
-                        <XFormField field="input.linkedin">
-                            <XInput placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn} field="input.linkedin" size="r-default" />
-                        </XFormField>
-                    </XVertical>
-                </XFormLoadingContent>
+            <XFormLoadingContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <XFormField field="input.website">
+                        <XHorizontal separator={7}>
+                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialModalWeb} field="input.website" size="r-default" />
+                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="r-default" />
+                        </XHorizontal>
+                    </XFormField>
+                    <XFormField field="input.twitter">
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalTwitter} field="input.twitter" size="r-default" />
+                    </XFormField>
+                    <XFormField field="input.facebook">
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalFacebook} field="input.facebook" size="r-default" />
+                    </XFormField>
+                    <XFormField field="input.linkedin">
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn} field="input.linkedin" size="r-default" />
+                    </XFormField>
+                </XVertical>
+            </XFormLoadingContent>
         </XModalForm>
 
     );
@@ -518,7 +518,7 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
                 <div style={{ cursor: 'pointer' }}>
                     <XHorizontal alignItems="center">
                         <PlaceholderContact />
-                        <Text marginWidth={18}>{TextOrganizationProfile. placeholderContacts}</Text>
+                        <Text marginWidth={18}>{TextOrganizationProfile.placeholderContacts}</Text>
                     </XHorizontal>
                 </div>
             )}
