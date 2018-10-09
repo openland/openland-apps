@@ -16,7 +16,7 @@ import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { SessionStateFull } from 'openland-api/Types';
-import { resolveNextPage, resolveNextPageCompleteAction } from './signup/signup';
+import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { json } from 'body-parser';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {

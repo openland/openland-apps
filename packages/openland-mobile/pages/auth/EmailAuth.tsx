@@ -4,7 +4,7 @@ import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZTextInput } from '../../components/ZTextInput';
-import { signupStyles } from '../signup/SignupUser';
+import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import { AppUpdateTracker } from '../../utils/UpdateTracker';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
