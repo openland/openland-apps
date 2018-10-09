@@ -117,24 +117,33 @@ const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     top: 0
 }));
 
-export class MessageComponent extends React.PureComponent<MessageComponentProps, { isEditView: boolean }> {
+export class MessageComponent extends React.PureComponent<MessageComponentProps, { isEditView: boolean, isMenuOpen: boolean }> {
     constructor(props: MessageComponentProps) {
         super(props);
 
         this.state = {
-            isEditView: false
+            isEditView: false,
+            isMenuOpen: false
         };
+    }
+
+    switchMenu = () => {
+        this.setState({
+            isMenuOpen: !this.state.isMenuOpen
+        });
     }
 
     showEditView = () => {
         this.setState({
-            isEditView: true
+            isEditView: true,
+            isMenuOpen: false
         });
     }
 
     hideEditView = () => {
         this.setState({
-            isEditView: false
+            isEditView: false,
+            isMenuOpen: false
         });
     }
 
@@ -231,8 +240,10 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
             (
                 <MenuWrapper className="menu" compact={this.props.compact}>
                     <XOverflow
+                        show={this.state.isMenuOpen}
                         flat={true}
                         placement="bottom-end"
+                        onClickTarget={this.switchMenu}
                         content={
                             <>
                                 {message.message && <XMenuItem style="primary-sky-blue" onClick={this.showEditView}>Edit</XMenuItem>}

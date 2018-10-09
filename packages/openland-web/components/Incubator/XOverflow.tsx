@@ -99,6 +99,7 @@ interface XOverflowProps {
     horizontal?: boolean;
     flat?: boolean;
     notificationStyle?: boolean;
+    onClickTarget?: any;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -115,11 +116,20 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
     switch = (e: any) => {
         e.stopPropagation();
-        this.setState({ show: !this.state.show });
+
+        if (typeof this.props.show === 'undefined') {
+            this.setState({ show: !this.state.show });
+        }
+
+        if (this.props.onClickTarget) {
+            this.props.onClickTarget();
+        }
     }
 
     handleClose = () => {
-        this.setState({ show: false });
+        if (typeof this.props.show === 'undefined') {
+            this.setState({ show: false });
+        }
     }
 
     createRef = (el: any) => {
@@ -132,15 +142,17 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
         let targetElement: any;
 
+        let show = (typeof this.props.show === 'undefined') ? this.state.show : this.props.show;
+
         if (target !== undefined) {
             targetElement = React.cloneElement(target as any, { onClick: this.switch, innerRef: this.createRef });
         }
 
         return (
             <>
-                {shadow && <Shadow active={this.state.show} />}
+                {shadow && <Shadow active={show} />}
                 <XPopper
-                    show={this.state.show}
+                    show={show}
                     contentContainer={<XMenuVertical />}
                     content={this.props.content}
                     arrow={null}
@@ -154,7 +166,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                             ? (
                                 <NotificationButton
                                     onClick={this.switch}
-                                    active={this.state.show}
+                                    active={show}
                                     innerRef={this.createRef}
                                 >
                                     <NotifyIcon/>
@@ -163,7 +175,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                             : (
                                 <DottedMenuButtonStyle
                                     onClick={this.switch}
-                                    active={this.state.show}
+                                    active={show}
                                     innerRef={this.createRef}
                                     horizontal={this.props.horizontal}
                                     flat={this.props.flat}

@@ -166,6 +166,7 @@ export class EditMessageInlineWrapper extends React.Component<{ message: Message
     }
 
     componentDidMount() {
+        window.dispatchEvent(new Event ('resize'));
         document.addEventListener('keydown', this.keydownHandler);
         (document as any).isEditMessage = true;
     }
