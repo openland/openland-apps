@@ -196,7 +196,7 @@ const AvatarStub = Glamorous.div({
         backgroundImage: 'url(\'/static/img/avatars/org-small.svg\')',
     },
     '&.channel': {
-        backgroundImage: 'url(\'/static/img/avatars/channel.svg\')',
+        backgroundImage: 'url(\'/static/img/avatars/channels.svg\')',
     },
     '&.group': {
         backgroundImage: 'url(\'/static/img/avatars/groups.svg\')',
