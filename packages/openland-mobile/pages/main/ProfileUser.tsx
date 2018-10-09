@@ -31,7 +31,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                         let sub = undefined;
                                         if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
                                             let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
-                                            if (new Date().getTime() - time > 1000 * 60 * 60 * 24) {
+                                            if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
                                                 sub = 'Last seen ' + humanize.relativeTime(time / 1000);
                                             } else {
                                                 sub = 'Last seen ' + formatTime(time);
