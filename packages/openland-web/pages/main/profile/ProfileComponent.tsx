@@ -285,7 +285,7 @@ const LinkTag = makeNavigable(XTag);
 
 const About = (props: { organizationQuery: Organization }) => {
     let org = props.organizationQuery.organization;
-    let hasLinks = (org.linkedin || org.twitter || org.website);
+    let hasLinks = (org.linkedin || org.twitter || org.website || org.facebook);
     let hasCategories = (org.organizationType || []).length > 0;
     let hasLocations = (org.locations || []).length > 0;
 
@@ -361,6 +361,14 @@ const About = (props: { organizationQuery: Organization }) => {
                                     icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
                                     size="r-default"
                                     text="Website"
+                                />
+                            )}
+                             {org.facebook && (
+                                <XButton
+                                    href={org.facebook}
+                                    icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
+                                    size="r-default"
+                                    text="Facebook"
                                 />
                             )}
                             {org.linkedin && (

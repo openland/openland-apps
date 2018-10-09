@@ -257,7 +257,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                         )}
 
                                         <XWithRole role="admin" orgPermission={this.props.item.id}>
-                                            <XMenuItem style="primary-sky-blue" href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
+                                            <XMenuItem style="primary-sky-blue" href={'/settings/organization/' + this.props.item.id} >{TextDirectory.buttonEdit}</XMenuItem>
                                         </XWithRole>
 
                                         {!this.props.item.isMine && (
