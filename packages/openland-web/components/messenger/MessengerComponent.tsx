@@ -307,7 +307,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 </XHorizontal>
 
                 <XTextArea valueStoreKey="fields.input.longDescription" placeholder="Description" resize={false} />
-                <XAvatarUpload field="input.socialImageRef" placeholder={{ add: 'Add social image', change: 'Change social image' }} />
+                <XAvatarUpload cropParams="1:1, free" field="input.socialImageRef" placeholder={{ add: 'Add social image', change: 'Change social image' }} />
             </XVertical>
         </XModalForm>
     );
