@@ -177,7 +177,6 @@ export class DialogListEngine {
                 message: formatMessage(event.message),
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
-                online: false,
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
