@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         lineHeight: 26
     } as TextStyle,
     buttonWrapper: {
-        flexGrow: 1, maxWidth: 315, marginLeft: 15, marginRight: 15
+        flexGrow: 1, maxWidth: 315, marginLeft: 28, marginRight: 28
     } as ViewStyle,
     button: {
         flexDirection: 'row',
