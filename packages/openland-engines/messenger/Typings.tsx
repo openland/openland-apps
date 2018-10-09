@@ -31,12 +31,12 @@ export class TypingsWatcher {
                 userPic: string | null,
                 userId: string
             } | undefined
-        }
+        } | undefined
     } = {};
     private timeouts: {
         [conversationId: string]: {
-            [userId: string]: number
-        }
+            [userId: string]: number | undefined
+        } | undefined
     } = {};
     private sub?: ZenObservable.Subscription = undefined;
     private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
@@ -85,7 +85,11 @@ export class TypingsWatcher {
     }
 
     renderTypings = (cId: string) => {
-        let usersTyping: TypingsUser[] = Object.keys(this.typings[cId]).map(userId => (this.typings[cId][userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic, userId: u!.userId }));
+        let t = this.typings[cId];
+        if (!t) {
+            return undefined;
+        }
+        let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: u!.userName, userPic: u!.userPic, userId: u!.userId }));
 
         let userNames = usersTyping.map(u => u!.userName);
 
