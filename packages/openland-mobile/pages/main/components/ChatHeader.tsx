@@ -4,8 +4,24 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
+import { getMessenger } from '../../../utils/messenger';
 
-export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }> {
+export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string }> {
+    disposeSubscription?: () => any;
+    constructor(props: any) {
+        super(props);
+        this.state = {};
+    }
+
+    componentWillMount() {
+        this.disposeSubscription = getMessenger().engine.getTypings(this.props.conversationId).subcribe(t => this.setState({ typing: t }));
+    }
+
+    componentWillUnmount() {
+        if (this.disposeSubscription) {
+            this.disposeSubscription();
+        }
+    }
 
     render() {
         return (
@@ -31,6 +47,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                         subtitle = chat.membersCount + ' members';
                     }
 
+                    subtitle = this.state.typing || subtitle;
+
                     if (isAndroid) {
                         return (
                             <TouchableHighlight onPress={() => this.props.router.push('ConversationInfo', { id: this.props.conversationId })}>
@@ -46,8 +64,8 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
                     return (
                         <View flexDirection="column" alignItems="center" justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
-                            <Text style={{ fontSize: 15, height: 18, color:  '#000', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            <Text style={{ fontSize: 12, height: 14, color:  '#000', opacity: 0.6 }}>{subtitle}</Text>
+                            <Text style={{ fontSize: 15, height: 18, color: '#000', fontWeight: '500' }} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                            <Text style={{ fontSize: 12, height: 14, color: '#000', opacity: 0.6 }}>{subtitle}</Text>
                         </View>
                     );
                 }}

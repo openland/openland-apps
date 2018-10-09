@@ -19,8 +19,9 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatRight } from './components/ChatRight';
 import { ZRoundedButton } from '../../components/ZRoundedButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChannelJoinMutation } from 'openland-api';
+import { ChannelJoinMutation, SetTypingMutation } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
+import { getMessenger } from '../../utils/messenger';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, uploadState?: UploadState }> {
     engine: ConversationEngine;
@@ -44,6 +45,7 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
     }
 
     handleTextChange = (src: string) => {
+        getMessenger().engine.client.client.mutate({ mutation: SetTypingMutation.document, variables: { conversationId: this.props.conversationId } });
         this.setState({ text: src });
     }
 

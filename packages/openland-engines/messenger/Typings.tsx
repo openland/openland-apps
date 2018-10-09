@@ -91,7 +91,7 @@ export class TypingsWatcher {
         }
         let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: (u!.userName.split(' ')[0] + (u!.userName.split(' ')[1] !== undefined ? ' ' + u!.userName.split(' ')[1][0] : '')), userPic: u!.userPic, userId: u!.userId }));
 
-        let userNames = usersTyping.map(u => u!.userName);
+        let userNames = usersTyping.map(u => u!.userName.split(' ').map((part, i) => i === 0 ? part : i === 1 ? part[0] + '.' : '').join(' '));
 
         let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing...';
 
@@ -111,21 +111,20 @@ export class TypingsWatcher {
 }
 
 export class TypingEngine {
-    listeners: ((typing?: string, users?: TypingsUser[]) => void)[] = [];
+    listeners: ((typing: string | undefined, users: TypingsUser[] | undefined, conversationId: string) => void)[] = [];
     typing?: string;
     users?: TypingsUser[];
 
-    onTyping = (data?: { typing: string, users: TypingsUser[] }) => {
+    onTyping = (data: { typing: string, users: TypingsUser[] } | undefined, conversationId: string) => {
         this.typing = data !== undefined ? data.typing : undefined;
         this.users = data !== undefined ? data.users : undefined;
         for (let l of this.listeners) {
-            l(this.typing, this.users);
+            l(this.typing, this.users, conversationId);
         }
     }
 
-    subcribe = (listener: (typing?: string, users?: TypingsUser[]) => void) => {
+    subcribe = (listener: (typing: string | undefined, users: TypingsUser[] | undefined, conversationId: string) => void) => {
         this.listeners.push(listener);
-        listener(this.typing, this.users);
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {
