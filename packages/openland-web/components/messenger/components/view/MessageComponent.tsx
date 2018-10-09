@@ -21,6 +21,8 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
+import { ReactionComponent } from './MessageReaction';
+import { Reactions } from './MessageReaction';
 
 interface MessageComponentProps {
     compact: boolean;
@@ -167,7 +169,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
                     let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
                     let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
                     let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
-    
+
                     if (message.fileMetadata!!.isImage && !!w && !!h) {
                         if (message.fileMetadata!!.imageFormat === 'GIF') {
                             content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
@@ -294,7 +296,17 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
                             <DateComponent className="time">{date}</DateComponent>
                         </XHorizontal>
                         {content}
+                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                            <Reactions
+                                messageId={(message as MessageFull).id}
+                                reactions={(message as MessageFull).reactions}
+                                meId={(this.props.me as UserShort).id}
+                            />
+                        )}
                     </MessageWrapper>
+                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                        <ReactionComponent messageId={(message as MessageFull).id} />
+                    )}
                     {menu}
                 </XHorizontal>
             </MessageContainer>
