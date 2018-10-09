@@ -110,15 +110,9 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
         this.state = {
-            favicon: undefined,
-            image: undefined
-        };
-    }
-    componentWillMount = () => {
-        this.setState({
             favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
             image: buildBaseImageUrl(this.props.photo || undefined)
-        });
+        };
     }
     handleFaviconError = () => {
         this.setState({
