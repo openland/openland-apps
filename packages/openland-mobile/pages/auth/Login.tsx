@@ -7,6 +7,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SDevice } from 'react-native-s/SDevice';
 import { SHeader } from 'react-native-s/SHeader';
+import { style } from 'glamor';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,14 +28,17 @@ const styles = StyleSheet.create({
         height: 26,
         lineHeight: 26
     } as TextStyle,
+    buttonWrapper: {
+        flexGrow: 1, maxWidth: 315, marginLeft: 15, marginRight: 15
+    } as ViewStyle,
     button: {
         flexDirection: 'row',
         alignItems: 'center',
         height: 56,
-        width: 315,
         backgroundColor: '#4747ec',
         color: '#fff',
-        borderRadius: 28
+        borderRadius: 28,
+        flexGrow: 1
     } as ViewStyle,
     buttonEmail: {
         backgroundColor: '#fff',
@@ -150,8 +154,8 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                                 <Text style={{ marginTop: 12, fontSize: 18, lineHeight: 21, height: 21, color: '#000', opacity: 0.8, fontWeight: '500' }}>Messaging for smart people</Text>
                             </View>
                         </View>
-                        <View flexDirection="column">
-                            <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading}>
+                        <View flexDirection="row">
+                            <TouchableOpacity onPress={this.handleGoogleAuth} disabled={this.state.loading} style={styles.buttonWrapper}>
                                 <View style={styles.button}>
                                     <View style={{ width: 56, height: 56, justifyContent: 'center', alignItems: 'center' }}>
                                         {!this.state.loading && <Image source={require('assets/ic-google-signup.png')} />}
@@ -164,8 +168,8 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View flexDirection="column" style={{ marginTop: 15, marginBottom: 46 + SDevice.safeArea.bottom }}>
-                            <TouchableOpacity onPress={this.handleEmailPress}>
+                        <View flexDirection="row" style={{ marginTop: 15, marginBottom: 46 + SDevice.safeArea.bottom }}>
+                            <TouchableOpacity onPress={this.handleEmailPress} disabled={this.state.loading} style={styles.buttonWrapper}>
                                 <View style={[styles.button, styles.buttonEmail]}>
                                     <Text style={[styles.buttonTitle, styles.buttonTitleEmail]}>{'Continue with Email'}</Text>
                                 </View>
