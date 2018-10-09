@@ -5,7 +5,6 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withData } from './withData';
 import { withQueryLoader } from './withQueryLoader';
 import { MessengerProvider } from './messenger/MessengerProvider';
-import { OnlineReporter } from './messenger/OnlineReporter';
 import { PushEngineComponent } from './push/PushEngineComponent';
 
 export function withAppBase(name: string, WrappedComponent: React.ComponentType<{}>) {
@@ -13,7 +12,6 @@ export function withAppBase(name: string, WrappedComponent: React.ComponentType<
         let hasMessenger = !!props.data.me;
         return (
             <>
-                {props.data.me && <OnlineReporter client={(props as any).client} />}
                 <PushEngineComponent enable={hasMessenger} />
                 <XDocumentHead title={['App']} />
                 <UserInfoProvider

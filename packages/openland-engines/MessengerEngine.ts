@@ -10,6 +10,7 @@ import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
 import { CallEngine } from './messenger/CallEngine';
+import { OnlineReportEngine } from './OnlineReportEngine';
 
 export class MessengerEngine {
 
@@ -17,6 +18,7 @@ export class MessengerEngine {
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly global: GlobalStateEngine;
+    readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
     readonly notifications: NotificationsEngine;
     readonly calls: CallEngine;
@@ -55,6 +57,9 @@ export class MessengerEngine {
         // Typings
         this.typingsWatcher = new TypingsWatcher(this.client, this.handleTyping, this.user.id);
 
+        // Online reporter
+        this.onlineReporter = new OnlineReportEngine(this);
+
         // Calls
         this.calls = new CallEngine(this);
 
@@ -78,6 +83,7 @@ export class MessengerEngine {
 
     destroy() {
         this.global.destroy();
+        this.onlineReporter.destroy();
         AppVisibility.unwatch(this.handleVisibleChanged);
     }
 
@@ -155,6 +161,7 @@ export class MessengerEngine {
                 this.handleConversationHidden(m[0]);
             }
         }
+        this.onlineReporter.onVisible(isVisible);
     }
 }
 
