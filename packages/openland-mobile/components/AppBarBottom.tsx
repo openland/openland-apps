@@ -75,16 +75,16 @@ export class AppBarBottom extends React.PureComponent {
         return (
             <View
                 style={{
-                    backgroundColor: '#f8f8f8',
+                    backgroundColor: '#fff',
                     paddingBottom: SDevice.safeArea.bottom,
                     flexDirection: 'column',
                     alignItems: 'stretch',
-                    shadowColor: '#000',
-                    shadowOpacity: 0.2,
-                    shadowOffset: { width: 0, height: 1 }
+                    // shadowColor: '#000',
+                    // shadowOpacity: 0.2,
+                    // shadowOffset: { width: 0, height: 1 }
                 }}
             >
-                {/* <View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} /> */}
+                <View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />
                 <View style={{ flexDirection: 'row', height: 48 }}>
                     {this.props.children}
                 </View>
