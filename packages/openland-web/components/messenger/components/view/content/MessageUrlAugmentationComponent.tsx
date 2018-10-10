@@ -174,7 +174,7 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
             if (isSquareImage) {
                 dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 120, 120);
             } else {
-                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 180);
+                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 200);
             }
         }
         return (
