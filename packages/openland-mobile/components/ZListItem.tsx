@@ -25,6 +25,7 @@ export interface ZListItemProps {
     appearance?: 'default' | 'action';
     multiline?: boolean;
     navigationIcon?: boolean;
+    linkify?: boolean;
 }
 
 class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: XStoreState }> {
@@ -60,9 +61,9 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     <View flexDirection="row" alignItems="center">
                         {this.props.leftIcon && <Image source={this.props.leftIcon} />}
                         {this.props.leftAvatar && <View paddingRight={8}><XPAvatar size={24} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
-                        <ZText style={{ fontSize: 16, color: this.props.appearance === 'action' ? AppStyles.primaryColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
+                        <ZText linkify={this.props.linkify === true} style={{ fontSize: 16, color: this.props.appearance === 'action' ? AppStyles.primaryColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
                         {this.props.description && (
-                            <ZText style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
+                            <ZText linkify={this.props.linkify === true} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined)) && (
                             <Switch style={{ marginLeft: 15 }} value={this.props.toggle ? this.props.toggle : undefined} onValueChange={this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />

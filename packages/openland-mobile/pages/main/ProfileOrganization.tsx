@@ -8,13 +8,11 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { Alert } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
-import { Share } from 'react-native';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -84,13 +82,12 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                     <YMutation mutation={OrganizationRemoveMemberMutation} refetchQueriesVars={[{ query: OrganizationQuery, variables: { organizationId: this.props.router.params.id } }]}>
                                                         {remove => (
                                                             <ZListItemGroup header="Members" >
-                                                                {resp.data.organization.isMine && <YQuery query={OrganizationPublicInviteQuery} variables={{ organizationId: this.props.router.params.id }}>
-                                                                    {data => data && data.data && data.data.publicInvite ? (<ZListItem
-                                                                        key="add"
-                                                                        text=" 👋 Add members"
-                                                                        onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/join/${data.data!.publicInvite!.key}` })}
-                                                                    />) : null}
-                                                                </YQuery>}
+                                                                {resp.data.organization.isMine && <ZListItem
+                                                                    key="add"
+                                                                    text=" 👋 Add members"
+                                                                    appearance="action"
+                                                                    path="OrganizationInviteLinkModal"
+                                                                />}
 
                                                                 {resp.data.organization.members.map((v) => (
                                                                     <ZListItem
