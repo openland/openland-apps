@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { emojify } from 'react-emojione';
 import { MessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { Picker } from 'emoji-mart';
@@ -102,15 +103,21 @@ const ReactionItem = Glamorous.div<{ isMy: boolean }>(props => ({
     alignItems: 'center',
     height: 26,
     borderRadius: 15,
-    paddingLeft: 6,
-    paddingRight: 6,
+    paddingLeft: 7,
+    paddingRight: 9,
+    paddingTop: 5,
+    paddingBottom: 2,
     cursor: 'pointer',
     fontSize: 13,
     fontWeight: 600,
-    lineHeight: 1.95,
     color: props.isMy ? '#1790ff' : '#4A4A4A',
     '&:hover': {
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    },
+    '& span:last-child': {
+        display: 'block',
+        marginBottom: 3,
+        marginLeft: 3
     }
 }));
 
@@ -182,7 +189,8 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={true}
                         >
-                            {reactionsMap[k][0].reaction + reactionsMap[k].length}
+                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16 } })}
+                            <span>{reactionsMap[k].length}</span>
                         </SingleReactionUnset>
                     </XPopper>
                 );
@@ -202,7 +210,8 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={false}
                         >
-                            {reactionsMap[k][0].reaction + reactionsMap[k].length}
+                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16 } })}
+                            <span>{reactionsMap[k].length}</span>
                         </SingleReactionSet>
                     </XPopper>
                 );
