@@ -15,6 +15,8 @@ import ChannelIcon from './components/icons/ic-channel.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withChatCompose } from '../../api/withChatCompose';
+import { withUserInfo } from '../UserInfo';
+import { UserShort } from 'openland-api/Types';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -158,7 +160,7 @@ const SearchPeopleModule = withChatCompose(props => {
     );
 }) as React.ComponentType<{ value?: any, variables: { query?: string, organizations?: boolean }, onChange: (data: Option<OptionValues>[]) => void, onChangeInput: (data: string) => void }>;
 
-class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null, query: string }> {
+class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string, me?: UserShort }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null, query: string }> {
     state = {
         values: [] as Option<OptionValues>[],
         resolving: false,
@@ -274,6 +276,7 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                         )}
                         {this.state.conversationId && (
                             <ConversationMessagesComponent
+                                me={this.props.me}
                                 conversation={this.props.messenger.getConversation(this.state.conversationId!!)}
                                 conversationId={this.props.conversationId}
                             />
@@ -286,10 +289,10 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
     }
 }
 
-export const ComposeComponent = (props: {conversationId: string}) => {
+export const ComposeComponent = withUserInfo((props: { conversationId: string }) => {
     return (
         <MessengerContext.Consumer>
-            {messenger => <ComposeComponentRender messenger={messenger!!} conversationId={props.conversationId} />}
+            {messenger => <ComposeComponentRender messenger={messenger!!} conversationId={props.conversationId} me={(props as any).user} />}
         </MessengerContext.Consumer>
     );
-};
+});
