@@ -19,7 +19,7 @@ let colorStyles = styleResolver({
     'dark': {
         background: '#6E7588',
         color: '#ffffff',
-        borderRadius: 30,
+        borderRadius: 10,
         padding: '6px 12px 8px',
         lineHeight: '16px',
         boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
