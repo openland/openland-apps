@@ -15,7 +15,8 @@ export interface XScrollViewProps extends XFlexStyles {
 const ScrollDiv = Glamorous.div<XFlexStyles>([{
     position: 'relative',
     flexDirection: 'column',
-    zIndex: 0
+    zIndex: 0,
+    display: 'flex'
 }, applyFlex]);
 
 const ContentDiv = Glamorous.div({
