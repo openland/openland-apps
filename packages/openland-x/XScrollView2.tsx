@@ -44,7 +44,7 @@ export class XScrollView2 extends React.Component<XScrollViewProps> {
                 className={this.props.className}
                 {...extractFlexProps(this.props)}
             >
-                <Scrollbars universal={true} autoHide={true} style={{ height: '100%' }} className="scroll-bar">
+                <Scrollbars universal={true} autoHide={true} style={{ height: '100%', flexGrow: 1 }} className="scroll-bar">
                     <ContentDiv>
                         {this.props.children}
                     </ContentDiv>
