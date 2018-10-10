@@ -101,15 +101,15 @@ export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: b
                 alignItems="center"
                 justifyContent="center"
             >
-                {/* {this.props.online && <ASFlex overlay={true} justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex width={10} height={10} borderRadius={5} backgroundColor="#rgb(92,212,81)" />
-                </ASFlex>} */}
-                {this.props.online && <ASFlex overlay={true} width={100} height={100} justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex width={12} height={12} borderRadius={6} backgroundColor="#ffffff" justifyContent="center">
-                        <ASFlex width={10} height={10} borderRadius={5} backgroundColor="rgb(92,212,81)" marginLeft={1} marginTop={1} marginRight={1} />
-                    </ASFlex>
-                </ASFlex>}
                 <ASAvatar {...this.props} />
+
+                <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
+                    {this.props.online && (
+                        <ASFlex width={12} height={12} borderRadius={6} backgroundColor="#ffffff" justifyContent="center">
+                            <ASFlex width={10} height={10} borderRadius={5} backgroundColor="rgb(92,212,81)" marginLeft={1} marginTop={1} marginRight={1} />
+                        </ASFlex>
+                    )}
+                </ASFlex>
             </ASFlex>
 
         );

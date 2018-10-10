@@ -67,15 +67,16 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
 
   var res2: ASLayoutElement = res
   res2 = resolveStyle(spec, res, context)
-  if (spec.touchableKey != nil) {
-    res2 = ASBackgroundLayoutSpec(child: res2, background: RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor))
-  }
   
   if overlay.count > 1 {
     fatalError("Only one overlay supported")
   }
   if overlay.count == 1 {
     res2 = ASOverlayLayoutSpec(child: res2, overlay: resolveNode(spec: overlay[0], context: context))
+  }
+  
+  if (spec.touchableKey != nil) {
+    res2 = RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor, child: res2)
   }
   
   return res2

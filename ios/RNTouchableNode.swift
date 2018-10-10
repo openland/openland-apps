@@ -12,11 +12,14 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   
   let key: String;
   let higlightColor: UIColor;
+  let child: ASLayoutElement
   
-  init(key: String, higlightColor: UIColor) {
+  init(key: String, higlightColor: UIColor, child: ASLayoutElement) {
     self.key = key
     self.higlightColor = higlightColor;
+    self.child = child
     super.init()
+    self.automaticallyManagesSubnodes = true
     self.backgroundColor = UIColor.clear
     self.isLayerBacked = false
     self.isUserInteractionEnabled = true
@@ -53,6 +56,10 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     return true
+  }
+  
+  override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: self.child)
   }
   
   override var isHighlighted: Bool {
