@@ -16,7 +16,39 @@ const Container = Glamorous(XLink)({
     borderRadius: 10,
     padding: '9px 16px 12px',
     maxWidth: 550,
-    color: '#121e2b!important'
+    color: '#121e2b!important',
+});
+
+const Wrapper = Glamorous.div<{ squareImage?: boolean }>([
+    {
+        paddingTop: 7,
+        '&:first-child': {
+            marginTop: 0
+        }
+    },
+    (props) => props.squareImage ? {
+        display: 'flex',
+        flexDirection: 'row',
+
+        '& .content-wrapper': {
+            flex: 1,
+            paddingRight: 15
+        },
+
+        '& .image-wrapper': {
+            marginTop: 0,
+            width: 120,
+
+            '& img': {
+                width: '120px!important',
+                height: '120px!important'
+            }
+        }
+    } : { }
+]);
+
+const ContentWrapper = Glamorous.div({
+
 });
 
 const Hostname = Glamorous.div({
@@ -55,11 +87,7 @@ const Title = Glamorous.div({
     fontWeight: 500,
     lineHeight: '20px',
     letterSpacing: -0.4,
-    color: '#1790ff',
-    marginTop: 7,
-    '&:first-child': {
-        marginTop: 0
-    }
+    color: '#1790ff'
 });
 
 const Description = Glamorous.div({
@@ -139,8 +167,15 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
             }
         });
         let dimensions = undefined;
+        let isSquareImage = false;
         if (this.props.imageInfo && this.props.imageInfo.imageWidth && this.props.imageInfo.imageHeight) {
-            dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 180);
+            isSquareImage = this.props.imageInfo.imageWidth === this.props.imageInfo.imageHeight;
+
+            if (isSquareImage) {
+                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 120, 120);
+            } else {
+                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 180);
+            }
         }
         return (
             <Container href={this.props.url}>
@@ -151,23 +186,27 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                         <span>{this.props.hostname}</span>
                     </Hostname>
                 )}
-                {this.props.title && <Title>{this.props.title}</Title>}
-                {parts && <Description>{parts}</Description>}
-                {this.props.photo && dimensions && (
-                    <ImageWrapper>
-                        <XCloudImage
-                            srcCloud={'https://ucarecdn.com/' + this.props.photo.uuid + '/'}
-                            resize={'fill'}
-                            width={dimensions.width}
-                            height={dimensions.height}
-                        />
-                    </ImageWrapper>
-                )}
-                {!this.props.photo && this.state.image && (
-                    <ImageWrapper>
-                        <img src={this.state.image} className="from-foreign-server" />
-                    </ImageWrapper>
-                )}
+                <Wrapper squareImage={isSquareImage}>
+                    <ContentWrapper className="content-wrapper">
+                        {this.props.title && <Title>{this.props.title}</Title>}
+                        {parts && <Description>{parts}</Description>}
+                    </ContentWrapper>
+                    {this.props.photo && dimensions && (
+                        <ImageWrapper className="image-wrapper">
+                            <XCloudImage
+                                srcCloud={'https://ucarecdn.com/' + this.props.photo.uuid + '/'}
+                                resize={'fill'}
+                                width={dimensions.width}
+                                height={dimensions.height}
+                            />
+                        </ImageWrapper>
+                    )}
+                    {!this.props.photo && this.state.image && (
+                        <ImageWrapper className="image-wrapper">
+                            <img src={this.state.image} className="from-foreign-server" />
+                        </ImageWrapper>
+                    )}
+                </Wrapper>
             </Container>
         );
     }
