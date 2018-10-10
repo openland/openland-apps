@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery } from 'openland-api';
+import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, OrganizationMembersQuery, OrganizationPublicInviteQuery } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -11,6 +11,10 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
+import { getMessenger } from '../../utils/messenger';
+import { Alert } from 'react-native';
+import { ActionSheetBuilder } from '../../components/ActionSheet';
+import { Share } from 'react-native';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -55,7 +59,6 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                             />
                                                         )}
                                                     </YMutation>}
-                                                    <ZListItem text="Manage members" appearance="action" />
                                                 </ZListItemGroup>
                                             )}
                                             <ZListItemGroup header="Information">
@@ -76,16 +79,86 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 ))}
                                             </ZListItemGroup>
 
-                                            <ZListItemGroup header="Members">
-                                                {resp.data.organization.members.map((v) => (
-                                                    <ZListItem
-                                                        key={v.user.id}
-                                                        text={v.user.name}
-                                                        leftAvatar={{ photo: v.user.picture, title: v.user.name, key: v.user.id }}
-                                                        onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })}
-                                                    />
-                                                ))}
-                                            </ZListItemGroup>
+                                            <YMutation mutation={OrganizationChangeMemberRoleMutation} refetchQueriesVars={[{ query: OrganizationQuery, variables: { organizationId: this.props.router.params.id } }]}>
+                                                {changeRole => (
+                                                    <YMutation mutation={OrganizationRemoveMemberMutation} refetchQueriesVars={[{ query: OrganizationQuery, variables: { organizationId: this.props.router.params.id } }]}>
+                                                        {remove => (
+                                                            <ZListItemGroup header="Members" >
+                                                                {resp.data.organization.isMine && <YQuery query={OrganizationPublicInviteQuery} variables={{ organizationId: this.props.router.params.id }}>
+                                                                    {data => data && data.data && data.data.publicInvite ? (<ZListItem
+                                                                        key="add"
+                                                                        text=" 👋 Add members"
+                                                                        onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/join/${data.data!.publicInvite!.key}` })}
+                                                                    />) : null}
+                                                                </YQuery>}
+
+                                                                {resp.data.organization.members.map((v) => (
+                                                                    <ZListItem
+                                                                        key={v.user.id}
+                                                                        text={v.user.name}
+                                                                        leftAvatar={{ photo: v.user.picture, title: v.user.name, key: v.user.id }}
+                                                                        description={v.role === 'OWNER' ? 'owner' : undefined}
+                                                                        onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })}
+                                                                        onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
+                                                                            console.warn('boom', JSON.stringify(v));
+                                                                            let builder = new ActionSheetBuilder();
+
+                                                                            builder.action(
+                                                                                v.role === 'MEMBER' ? 'Make owner' : 'Make member',
+                                                                                () => {
+                                                                                    Alert.alert(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'owner' : 'member'}?`, undefined, [{
+                                                                                        onPress: async () => {
+                                                                                            startLoader();
+                                                                                            try {
+                                                                                                await changeRole({ variables: { memberId: v.user.id, organizationId: this.props.router.params.id, newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any } });
+                                                                                            } catch (e) {
+                                                                                                Alert.alert(e.message);
+                                                                                            }
+                                                                                            stopLoader();
+                                                                                        },
+                                                                                        text: v.role === 'MEMBER' ? 'Make owner' : 'Make member',
+                                                                                    },
+                                                                                    {
+                                                                                        text: 'Cancel',
+                                                                                        style: 'cancel'
+                                                                                    }]);
+                                                                                },
+                                                                            );
+
+                                                                            builder.action(
+                                                                                'Remove',
+                                                                                () => {
+                                                                                    Alert.alert(`Are you sure you want to remove ${v.user.name}?`, undefined, [{
+                                                                                        onPress: async () => {
+                                                                                            startLoader();
+                                                                                            try {
+                                                                                                await remove({ variables: { memberId: v.user.id, organizationId: this.props.router.params.id } });
+                                                                                            } catch (e) {
+                                                                                                Alert.alert(e.message);
+                                                                                            }
+                                                                                            stopLoader();
+                                                                                        },
+                                                                                        text: 'Remove',
+                                                                                        style: 'destructive'
+                                                                                    },
+                                                                                    {
+                                                                                        text: 'Cancel',
+                                                                                        style: 'cancel'
+                                                                                    }]);
+                                                                                },
+                                                                                true
+                                                                            );
+                                                                            builder.show();
+
+                                                                        } : undefined}
+                                                                    />
+                                                                ))}
+                                                            </ZListItemGroup>
+                                                        )}
+                                                    </YMutation>
+                                                )}
+                                            </YMutation>
+
                                         </SScrollView>
                                     </>
                                 );
