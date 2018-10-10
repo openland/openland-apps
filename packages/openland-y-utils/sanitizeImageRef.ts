@@ -3,10 +3,10 @@ export function sanitizeIamgeRef(src: { uuid: string, crop?: { x: number, y: num
         return {
             uuid: src.uuid,
             crop: src.crop ? {
-                x: src.crop.x,
-                y: src.crop.y,
-                w: src.crop.w,
-                h: src.crop.h
+                x: Math.round(src.crop.x),
+                y: Math.round(src.crop.y),
+                w: Math.round(src.crop.w),
+                h: Math.round(src.crop.h)
             } : null
         };
     }
