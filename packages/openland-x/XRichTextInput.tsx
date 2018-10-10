@@ -61,8 +61,8 @@ const emojiPlugin = createEmojiPlugin({
             relativeRect.top = decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
             console.warn(relativeParentRect);
         } else {
-            relativeRect.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            relativeRect.scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            relativeRect.scrollTop = window.pageYOffset || (document.documentElement ? document.documentElement.scrollTop : undefined);
+            relativeRect.scrollLeft = window.pageXOffset || (document.documentElement ? document.documentElement.scrollLeft : undefined);
 
             relativeRect.top = decoratorRect.top;
             relativeRect.left = decoratorRect.left;
