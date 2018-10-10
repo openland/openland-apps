@@ -49,7 +49,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             } else if (v.type === 'link') {
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
-                return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: this.big ? 44 : 18, backgroundImage: 'url(/static/emojione-3.1.2-64x64.png)' } })}</span>;
+                return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: this.big ? 44 : 18, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}</span>;
             }
         });
         return <TextWrapper big={this.big} isService={this.props.isService}>{parts}</TextWrapper>;
