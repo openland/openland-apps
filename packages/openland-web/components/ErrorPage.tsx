@@ -120,7 +120,7 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                                 </Description>
                                 <ButtonsWrapper separator={12}>
                                     <Button size="r-default" style="primary-sky-blue" path="/" text="Return home" />
-                                    <Button size="r-default" path="/mail/61gk9KRrl9ComJkvYnvdcddr4o" text="Message support" />
+                                    <Button size="r-default" path="/support/61gk9KRrl9ComJkvYnvdcddr4o" text="Message support" />
                                 </ButtonsWrapper>
                             </Inner>
                             </Box>

@@ -51,12 +51,12 @@ let sizeStyles = styleResolver({
     's-medium': {
         height: 66,
         width: 66,
-        fontSize: 24
+        fontSize: 16
     },
     'medium': {
         height: 46,
         width: 46,
-        fontSize: 24
+        fontSize: 16
     },
     'default': {
         height: 40,
