@@ -386,7 +386,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
-      print("onUpdated: " + state.items[index].key)
       let c = self.activeCellsStrong[state.items[index].key]!
       c.setSpec(spec: state.items[index].config)
       DispatchQueue.main.async {
@@ -467,10 +466,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onRemoved(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
-      self.node.performBatch(animated: false, updates: {
-        self.state = state
-        self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
-      }, completion: nil)
+      DispatchQueue.main.async {
+        self.node.performBatch(animated: true, updates: {
+          self.state = state
+          self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
+        }, completion: nil)
+      }
     }
   }
   

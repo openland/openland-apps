@@ -123,7 +123,7 @@ export class DataSource<T extends DataSourceItem> {
             this.data = res;
             this.dataByKey.delete(key);
             for (let w of this.watchers) {
-                w.onDataSourceItemUpdated(removed, i);
+                w.onDataSourceItemRemoved(removed, i);
             }
         } else {
             throw Error('Trying to remove non-existent item');
