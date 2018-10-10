@@ -29,7 +29,11 @@ const MainContent = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexShrink: 0,
-    padding: 28
+    padding: 28,
+
+    '& > *': {
+        zIndex: 2
+    }
 });
 
 const Close = Glamorous(XLink)({
@@ -180,6 +184,7 @@ const ImageWrapper = Glamorous.div({
     position: 'absolute',
     right: 0, bottom: 18, left: 0,
     overflow: 'hidden',
+    'z-index': '1!important',
     '@media (max-height: 800px)': {
         height: 250
     }
