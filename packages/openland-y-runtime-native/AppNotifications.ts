@@ -54,8 +54,14 @@ class AppNotiticationsIOS implements AppNotificationsApi {
     }
 
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
-        console.log('RNPushNotification', 'local', content);
-        if (Platform.OS === 'android' && !AppVisibility.isVisible) {
+        // On android show only when app is visible?
+        if (Platform.OS === 'android') {
+            if (!AppVisibility.isVisible) {
+                return;
+            }
+        }
+        // Do not show local notifications since remove one is good enougth
+        if (Platform.OS === 'ios') {
             return;
         }
         Push.localNotification({
