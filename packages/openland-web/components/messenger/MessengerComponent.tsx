@@ -477,23 +477,23 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
                         <XHorizontal alignItems="center" separator="none" maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
-                                            <XAvatar
-                                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
-                                                size="small"
-                                                style={(props.data.chat.__typename === 'SharedConversation'
-                                                    ? 'organization'
-                                                    : props.data.chat.__typename === 'GroupConversation'
-                                                        ? 'group'
-                                                        : props.data.chat.__typename === 'ChannelConversation'
-                                                            ? 'channel' 
-                                                            : props.data.chat.__typename === 'PrivateConversation' 
-                                                                ? 'user' 
-                                                                : 'colorus'
-                                                )}
-                                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
-                                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
-                                                userId={props.data.chat.flexibleId}
-                                            />
+                            <XAvatar
+                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
+                                size="small"
+                                style={(props.data.chat.__typename === 'SharedConversation'
+                                    ? 'organization'
+                                    : props.data.chat.__typename === 'GroupConversation'
+                                        ? 'group'
+                                        : props.data.chat.__typename === 'ChannelConversation'
+                                            ? 'channel'
+                                            : props.data.chat.__typename === 'PrivateConversation'
+                                                ? 'user'
+                                                : 'colorus'
+                                )}
+                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
+                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
+                                userId={props.data.chat.flexibleId}
+                            />
                             <XVertical separator="none" maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
@@ -588,11 +588,21 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         <XMenuItem query={{ field: 'addMember', value: 'true' }} style="primary-sky-blue">Add Member</XMenuItem>
                                         <XMenuTitle>Common</XMenuTitle>
                                         <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
-
                                     </div>
                                 )}
                             />
                         </XWithRole>}
+                        {props.data.chat.__typename !== 'PrivateConversation' && (
+                            <XOverflow
+                                flat={true}
+                                placement="bottom-end"
+                                content={(
+                                    <div style={{ width: 160 }}>
+                                        <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave from chat</XMenuItem>
+                                    </div>
+                                )}
+                            />
+                        )}
                         {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']} negate={true}>
                             <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
                                 <XOverflow

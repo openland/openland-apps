@@ -15,6 +15,7 @@ import { withUserInfo } from '../../UserInfo';
 import { UserShort } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
+import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { EditMessageComponent } from './view/MessageEditComponent';
 
@@ -44,6 +45,23 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
             submitProps={{ succesText: 'deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
+        </XModalForm >
+    );
+});
+
+const LeaveChatComponent = withChatLeave((props) => {
+    let id = props.router.query.leaveFromChat;
+    return (
+        <XModalForm
+            title="Leave from chat"
+            targetQuery="leaveFromChat"
+            submitBtnText="leave"
+            defaultAction={(data) => {
+                props.leaveFromChat({ variables: { conversationId: id } });
+            }}
+            submitProps={{ succesText: 'done!', style: 'danger' }}
+        >
+            <XText>Are you sure you want to leave from chat? This cannot be undone.</XText>
         </XModalForm >
     );
 });
@@ -123,6 +141,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     />
                 )}
                 <DeleteMessageComponent />
+                <LeaveChatComponent />
                 <EditMessageComponent conversation={this.conversation} />
             </ConversationContainer>
         );

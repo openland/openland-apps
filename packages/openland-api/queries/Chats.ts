@@ -39,6 +39,14 @@ export const ChatListQuery = gql`
     ${UserShort}
 `;
 
+export const ChatLeaveMutation = gql`
+    mutation ChatLeave($conversationId: ID!) {
+        alphaChatLeave(conversationId: $conversationId) {
+            curSeq
+        }
+    }
+`;
+
 export const MessageSetReactionMutation = gql`
     mutation MessageSetReaction($messageId: ConversationMessageID!, $reaction: String!) {
         alphaChatSetReaction(messageId: $messageId, reaction: $reaction)

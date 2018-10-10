@@ -814,6 +814,26 @@ export interface ChatListVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: ChatLeave
+// ====================================================
+
+export interface ChatLeave_alphaChatLeave {
+  __typename: "ConversationUpdateResponse";
+  curSeq: number;
+}
+
+export interface ChatLeave {
+  alphaChatLeave: ChatLeave_alphaChatLeave;
+}
+
+export interface ChatLeaveVariables {
+  conversationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: MessageSetReaction
 // ====================================================
 
