@@ -29,15 +29,13 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                                 this.props.router.params.action ? await this.props.router.params.action(this.props.router) : this.props.router.back();
                             }}
                         >
-                            <ZListItemGroup>
+                            <ZListItemGroup footer="Please, provide organization name and optional logo">
                                 <ZListItemBase height={96} separator={false}>
                                     <View padding={15}>
                                         <ZAvatarPicker field="input.photoRef" />
                                     </View>
-                                    <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4} alignContent="center">
-                                        <ZTextInput placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16 }} />
-                                        <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                                        <Text>Please, provide organization name and optional logo</Text>
+                                    <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4} alignContent="center" alignSelf="center">
+                                        <ZTextInput placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16, borderBottomColor: AppStyles.separatorColor, borderBottomWidth: 1 }} />
                                     </View>
                                 </ZListItemBase>
                             </ZListItemGroup>
