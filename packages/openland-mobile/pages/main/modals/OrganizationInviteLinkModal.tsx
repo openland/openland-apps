@@ -21,7 +21,7 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
                     <YQuery query={OrganizationPublicInviteQuery} variables={{ organizationId: this.props.router.params.id }}>
                         {data => (
                             <>
-                                <ZListItemGroup footer="People can join organization by following this link. You can renew the link ad any time">
+                                <ZListItemGroup footer="People can join organization by following this link. You can renew the link at any time">
                                     {data && data.data && data.data.publicInvite && (<ZListItem
                                         key="add"
                                         text={`https://app.openland.com/join/${data.data!.publicInvite!.key}`}
