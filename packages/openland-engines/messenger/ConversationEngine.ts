@@ -119,6 +119,7 @@ export class ConversationEngine implements MessageSendHandler {
     private lastTopMessageRead: string | null = null;
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
+    private localMessagesMap = new Map<string, string>();
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -500,9 +501,11 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Remove from datasource
-            if (this.dataSource.hasItem(event.messageId)) {
-                this.dataSource.removeItem(event.messageId);
+            let id = this.localMessagesMap.get(event.messageId) || event.messageId;
+            if (this.dataSource.hasItem(id)) {
+                this.dataSource.removeItem(id);
             }
+
         } else if (event.__typename === 'ConversationEventEditMessage') {
             // Handle message
             console.info('Received edit message');
@@ -539,6 +542,11 @@ export class ConversationEngine implements MessageSendHandler {
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.engine, undefined);
+            if (!this.dataSource.hasItem(conv.key) && !this.dataSource.hasItem(src.id)) {
+                conv.key = src.id;
+            } else {
+                this.localMessagesMap.set(src.id, conv.key);
+            }
             conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
         } else {
             conv = {

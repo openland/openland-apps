@@ -216,7 +216,7 @@ let cachedEngine: PushEngine | null = null;
 export function initPushEngine(enablePush: boolean, client: OpenApolloClient) {
     if (cachedEngine) {
         if (cachedEngine.enablePush !== enablePush) {
-            throw Error('Insonsistent state');
+            console.warn('Insonsistent state');
         }
     } else {
         cachedEngine = new PushEngine(enablePush, client);
