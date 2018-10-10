@@ -38,6 +38,11 @@ class RNAsyncViewNode: ASDisplayNode {
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    return resolveNode(spec: self.spec!, context: self.context) as! ASLayoutSpec
+    let res = resolveNode(spec: self.spec!, context: self.context)
+    if res is ASLayoutSpec {
+      return res as! ASLayoutSpec
+    } else {
+      return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: res)
+    }
   }
 }
