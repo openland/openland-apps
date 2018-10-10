@@ -78,6 +78,7 @@ const ImageWrapper = Glamorous.div((props) => ({
     marginTop: 13,
     borderRadius: 5,
     overflow: 'hidden',
+    display: 'inline-block',
     '& img': {
         display: 'block'
     },
