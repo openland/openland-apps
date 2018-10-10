@@ -286,7 +286,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
                     <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
                         {content}
                         {menu}
-                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
                             <ReactionComponent messageId={(message as MessageFull).id} />
                         )}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
@@ -328,7 +328,7 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
                             />
                         )}
                     </MessageWrapper>
-                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
                     )}
                     {menu}
