@@ -105,7 +105,7 @@ const ReactionItem = Glamorous.div<{ isMy: boolean }>(props => ({
     borderRadius: 15,
     paddingLeft: 7,
     paddingRight: 9,
-    paddingTop: 5,
+    paddingTop: 6,
     paddingBottom: 2,
     cursor: 'pointer',
     fontSize: 13,
@@ -116,7 +116,7 @@ const ReactionItem = Glamorous.div<{ isMy: boolean }>(props => ({
     },
     '& span:last-child': {
         display: 'block',
-        marginBottom: 3,
+        marginBottom: 5,
         marginLeft: 3
     }
 }));
