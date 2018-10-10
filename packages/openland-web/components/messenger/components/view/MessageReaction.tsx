@@ -189,7 +189,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={true}
                         >
-                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16 } })}
+                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
                             <span>{reactionsMap[k].length}</span>
                         </SingleReactionUnset>
                     </XPopper>
@@ -210,7 +210,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={false}
                         >
-                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16 } })}
+                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
                             <span>{reactionsMap[k].length}</span>
                         </SingleReactionSet>
                     </XPopper>
