@@ -140,7 +140,7 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
         });
         let dimensions = undefined;
         if (this.props.imageInfo && this.props.imageInfo.imageWidth && this.props.imageInfo.imageHeight) {
-            dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 360);
+            dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 180);
         }
         return (
             <Container href={this.props.url}>
