@@ -27,6 +27,7 @@ import { ComposeInitial } from './pages/compose/ComposeInitial';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { CreateGroupUsers } from './pages/compose/CreateGroupUsers';
 import { CreateChannel } from './pages/compose/CreateChannel';
+import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -53,6 +54,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('CreateGroupUsers', CreateGroupUsers)
   .addRoute('CreateChannel', CreateChannel)
+  .addRoute('OrganizationInviteLinkModal', OrganizationInviteLinkModal)
   
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)
