@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions, PanResponder, Image } from 'react-native';
+import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions, PanResponder, Image, PanResponderGestureState } from 'react-native';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { AnimatedViewKeys } from './AnimatedViewKeys';
 import { SAnimated } from 'react-native-s/SAnimated';
@@ -312,6 +312,70 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         );
     }
 
+    onGestureCancelled = (gesture: PanResponderGestureState) => {
+        // TODO: Reset to initial state
+        // SAnimated.setValue(AnimatedViewKeys.page(top), 'translateX', gesture.dx);
+        if (this.swipeLocker) {
+
+            let unlock = this.swipeLocker!;
+            let dx = gesture.dx;
+            this.swipeLocker = undefined;
+
+            if (dx <= 0) {
+                unlock();
+                this.headerCoordinator.onTransitionStop();
+                this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
+                this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
+            } else {
+                SAnimated.beginTransaction();
+                SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                    SAnimated.timing(name, {
+                        property: prop,
+                        from: from,
+                        to: to
+                    });
+                });
+                SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
+                    property: 'translateX',
+                    from: dx,
+                    to: 0
+                });
+                SAnimated.spring(AnimatedViewKeys.page(this.swipePrevKey!), {
+                    property: 'translateX',
+                    from: -this.props.width / 3 + dx / 3,
+                    to: -this.props.width / 3
+                });
+
+                SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
+                    property: 'opacity',
+                    from: (1 - dx / this.props.width),
+                    to: 0,
+                    easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                });
+                SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
+                    property: 'translateX',
+                    from: - 2 * this.props.width / 3 + 2 * dx / 3,
+                    to: - 2 * this.props.width / 3,
+                    easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                });
+                SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), {
+                    property: 'opacity',
+                    from: (1 - dx / this.props.width),
+                    to: 1,
+                    easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                });
+
+                this.headerCoordinator.onSwipeCancelled(this.currentHistory);
+                SAnimated.commitTransaction(() => {
+                    this.headerCoordinator.onTransitionStop();
+                    unlock();
+                    this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
+                    this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
+                });
+            }
+        }
+    }
+
     panResponder = PanResponder.create({
         onPanResponderGrant: () => {
             Keyboard.dismiss();
@@ -343,7 +407,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         onPanResponderRelease: (event, gesture) => {
             let dx = gesture.dx;
             if (dx > 0) {
-                // SAnimated.beginTransaction();
                 if (gesture.vx > 0.5 || gesture.dx > this.props.width / 3) {
 
                     // Pop history
@@ -395,16 +458,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
 
-                    // SAnimated.timing(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
-                    //     property: 'opacity',
-                    //     from: (1 - progress),
-                    //     to: 0
-                    // });
-
                     this.headerCoordinator.onSwipeCompleted(prevState, this.currentHistory);
-                    // if (this.currentHistory.history.length === 1) {
-                    //     HeaderCoordinator.hideBackButtonSwipe(progress);
-                    // }
                     SAnimated.commitTransaction(() => {
                         unlock();
                         this.headerCoordinator.onTransitionStop();
@@ -414,87 +468,20 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         this.setState({ routes: this.routes, mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
                     });
                 } else {
-                    // Cancel gesture
-                    let unlock = this.swipeLocker!;
-                    this.swipeLocker = undefined;
-                    SAnimated.beginTransaction();
-                    SAnimated.setPropertyAnimator((name, prop, from, to) => {
-                        SAnimated.timing(name, {
-                            property: prop,
-                            from: from,
-                            to: to
-                        });
-                    });
-                    SAnimated.spring(AnimatedViewKeys.page(this.swipeCurrentKey!), {
-                        property: 'translateX',
-                        from: dx,
-                        to: 0
-                    });
-                    SAnimated.spring(AnimatedViewKeys.page(this.swipePrevKey!), {
-                        property: 'translateX',
-                        from: -this.props.width / 3 + dx / 3,
-                        to: -this.props.width / 3
-                    });
-
-                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
-                        property: 'opacity',
-                        from: (1 - dx / this.props.width),
-                        to: 0,
-                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
-                    });
-                    SAnimated.timing(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), {
-                        property: 'translateX',
-                        from: - 2 * this.props.width / 3 + 2 * dx / 3,
-                        to: - 2 * this.props.width / 3,
-                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
-                    });
-                    SAnimated.timing(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), {
-                        property: 'opacity',
-                        from: (1 - dx / this.props.width),
-                        to: 1,
-                        easing: { bezier: [0.4, 0.0, 0.2, 1] }
-                    });
-
-                    // SAnimated.spring(AnimatedViewKeys.pageShadow(this.swipePrevKey!), {
-                    //     property: 'opacity',
-                    //     from: (1 - dx / SCREEN_WIDTH),
-                    //     to: 0.3
-                    // });
-                    this.headerCoordinator.onSwipeCancelled(this.currentHistory);
-                    SAnimated.commitTransaction(() => {
-                        this.headerCoordinator.onTransitionStop();
-                        unlock();
-                        this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
-                        this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
-                    });
+                    this.onGestureCancelled(gesture);
                 }
             } else {
-                this.headerCoordinator.onTransitionStop();
-                this.swipeLocker!!();
-                this.swipeLocker = undefined;
-                this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
-                this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
+                this.onGestureCancelled(gesture);
             }
         },
-        onPanResponderTerminate: () => {
-            // On terminate
-            // TODO: Reset to initial state
-            console.log('terminate');
-            // SAnimated.setValue(AnimatedViewKeys.page(top), 'translateX', gesture.dx);
-            let unlock = this.swipeLocker!;
-            unlock();
-            this.swipeLocker = undefined;
+        onPanResponderTerminate: (event, gesture) => {
+            this.onGestureCancelled(gesture);
         },
-        onPanResponderReject: () => {
-            this.headerCoordinator.onTransitionStop();
-            console.log('reject');
-            let unlock = this.swipeLocker!;
-            unlock();
-            this.swipeLocker = undefined;
+        onPanResponderReject: (event, gesture) => {
+            this.onGestureCancelled(gesture);
         },
 
         onPanResponderTerminationRequest: () => {
-            console.log('tr');
             // Returning false will prevent other views from becoming responder while
             // the navigation view is the responder (mid-gesture)
             return false;
