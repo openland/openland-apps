@@ -123,7 +123,7 @@ const InviteInfo = withInviteInfo((props) => {
 
                 <XVertical separator={12}>
                     <XHorizontal separator={5}>
-                        <XAvatar size="medium" cloudImageUuid={props.data.invite.creator.picture || undefined} style={'colorus'} objectName={props.data.invite.creator.name} objectId={props.data.invite.creator.id} />
+                        <XAvatar size="medium" cloudImageUuid={props.data.invite.creator.picture || undefined} style="colorus" objectName={props.data.invite.creator.name} objectId={props.data.invite.creator.id} />
                         <BubbleMsg separator={3}>
                             <XText letterSpacing={-0.2} fontWeight={500} fontSize={16} color="#334562">{props.data.invite.creator.name}</XText>
                             <XText letterSpacing={-0.2} fontSize={16} color="#61707e">{props.data.invite.creator.name + ' has invited you to join Openland'}</XText>

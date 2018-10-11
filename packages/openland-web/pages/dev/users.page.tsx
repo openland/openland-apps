@@ -45,7 +45,12 @@ export default withApp('Super Organizations', 'super-admin', withOnlineUsers(wit
                     {props.data.onlineUsers.map(u => (
                         <XTable.Row>
                             <XTable.Cell width={100}>
-                                <XAvatar cloudImageUuid={u.user.photo || undefined} />
+                                <XAvatar
+                                    cloudImageUuid={u.user.photo || undefined}
+                                    style="colorus"
+                                    objectName={u.user.name}
+                                    objectId={u.user.id}
+                                />
                             </XTable.Cell>
                             <XTable.Cell width={400}>
                                 <XText>{u.user.name}</XText>

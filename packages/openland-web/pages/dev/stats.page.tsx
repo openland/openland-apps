@@ -95,7 +95,12 @@ const LeaderBoard = withChatsStats((props) => (
                                     <XText>{u.count}</XText>
                                 </XTable.Cell>
                                 <XTable.Cell>
-                                    <XAvatar cloudImageUuid={u.user.photo || undefined} />
+                                    <XAvatar
+                                        cloudImageUuid={u.user.photo || undefined}
+                                        style="colorus"
+                                        objectName={u.user.name}
+                                        objectId={u.user.id}
+                                    />
                                 </XTable.Cell>
                                 <XTable.Cell>
                                     <XText>{u.user.name}</XText>

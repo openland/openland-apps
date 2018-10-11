@@ -644,7 +644,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 )}
             </XHorizontal>
-            {<ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
+            <ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
             <XWithRole role={['super-admin']}>

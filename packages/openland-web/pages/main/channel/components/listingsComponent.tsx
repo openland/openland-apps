@@ -143,6 +143,8 @@ class ListingItem extends React.Component<ListingItemProps, { isHovered: boolean
                 <ListingAvatar
                     cloudImageUuid={item.organization.photo!!}
                     style="organization"
+                    objectName={item.organization.name}
+                    objectId={item.organization.id}
                 />
                 <ListingWrapper>
                     <ListingBox>

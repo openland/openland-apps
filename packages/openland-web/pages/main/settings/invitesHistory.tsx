@@ -101,7 +101,8 @@ export const InvitesHistory = withInvitesHistory((props) => {
                     <XTable.Cell>
 
                         <XHorizontal>
-                            <XAvatar size="medium" cloudImageUuid={invite.acceptedBy ? invite.acceptedBy.picture || undefined : undefined} />
+                            {invite.acceptedBy && <XAvatar size="medium" cloudImageUuid={invite.acceptedBy.picture || undefined} style="colorus" objectName={invite.acceptedBy.name} objectId={invite.acceptedBy.id} />}
+                            {!invite.acceptedBy && <XAvatar size="medium" cloudImageUuid={undefined} />}
                             <XVertical separator={1} justifyContent="center">
                                 <Title>{invite.acceptedBy !== null && invite.acceptedBy.name}</Title>
                                 {invite.forEmail && <Text>{invite.forEmail}</Text>}

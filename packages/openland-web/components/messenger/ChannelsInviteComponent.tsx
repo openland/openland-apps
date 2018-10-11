@@ -284,6 +284,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                         <UserInfoWrapper separator={6} justifyContent="center">
                             <UserAvatar
                                 cloudImageUuid={this.props.invite.invitedByUser.picture || undefined}
+                                style="colorus"
                                 objectName={this.props.invite.invitedByUser.name}
                                 objectId={this.props.invite.invitedByUser.id}
                             />

@@ -21,6 +21,7 @@ export const OrganizationFull = gql`
         linkedin
         location
         contacts: alphaContacts{
+            id
             firstName
             lastName
             photo: photoRef {

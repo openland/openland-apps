@@ -331,7 +331,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                     }}
                 </Query>
             )}
-
         </AvatarWrapper>
     );
 }));

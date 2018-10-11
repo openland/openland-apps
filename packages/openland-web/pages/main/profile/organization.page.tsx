@@ -570,7 +570,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <XHorizontal separator={12}>
                                         <AvatarWrapper>
                                             {(hasLogo) && (
-                                                <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
+                                                <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" objectName={organization.name} objectId={organization.id} />
                                             )}
                                             {!hasLogo && (
                                                 <>
@@ -578,7 +578,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         <AvatartPlaceholder />
                                                     </XWithRole>
                                                     <XWithRole role={['org-' + organization.id + '-admin']} negate={true}>
-                                                        <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" />
+                                                        <Avatar cloudImageUuid={organization.photo || undefined} size="large" style="organization" objectName={organization.name} objectId={organization.id} />
                                                     </XWithRole>
                                                 </>
                                             )}
@@ -741,16 +741,17 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                                     <XVertical separator={8}>
                                                                         {(organization.contacts || []).filter(p => !!(p)).map((contact, i) => {
                                                                             console.warn(contact);
+                                                                            let contactTitle = ((contact.firstName || '') + ' ' + (contact.lastName || '')).trim();
                                                                             return (
                                                                                 <XHorizontal
                                                                                     key={i}
                                                                                     separator={10}
                                                                                     alignItems="center"
                                                                                 >
-                                                                                    <XAvatar photoRef={contact.photo || undefined} size="medium" />
+                                                                                    <XAvatar photoRef={contact.photo || undefined} size="medium" objectId={contact.id} objectName={contactTitle} />
                                                                                     <XVertical separator={1}>
                                                                                         <XHorizontal separator={5} alignItems="center">
-                                                                                            <Title>{((contact.firstName || '') + ' ' + (contact.lastName || '')).trim()}</Title>
+                                                                                            <Title>{contactTitle}</Title>
                                                                                             {contact.phone && <ContactLink href={'tel:' + contact.phone} target="_blank"><ContactPhoneIc width={15} height={15} /></ContactLink>}
                                                                                             {contact.email && <ContactLink href={'mailto:' + contact.email} target="_blank"><ContactEmailIc width={15} height={15} /></ContactLink>}
                                                                                             {contact.linkedin && <ContactLink href={contact.linkedin.startsWith('http') ? contact.linkedin : 'https://' + contact.linkedin} target="_blank"><ContactLinkedInIc width={15} height={15} /></ContactLink>}
