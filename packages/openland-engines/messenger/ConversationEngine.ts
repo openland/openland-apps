@@ -5,7 +5,7 @@ import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -59,6 +59,7 @@ export interface DataSourceMessageItem {
         isGif: boolean,
         imageSize?: { width: number, height: number }
     };
+    urlAugmentation?: MessageFull_urlAugmentation;
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -92,7 +93,8 @@ export function convertMessage(src: MessageFullFragment, engine: MessengerEngine
         } : undefined,
         isSending: false,
         attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) : false
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) : false,
+        urlAugmentation: src.urlAugmentation || undefined
     };
 }
 

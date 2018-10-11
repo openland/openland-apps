@@ -310,7 +310,7 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                                     message: i.topMessage && formatMessage(i.topMessage),
                                     type: i.__typename,
                                     title: i.title,
-                                    photo: i.photo,
+                                    photo: i.photo || i.photos[0],
                                     unread: i.unreadCount,
                                     fileMeta: i.topMessage && i.topMessage.fileMetadata
                                 }}
