@@ -218,8 +218,8 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                                 ? 'channel' :
                                 conv.type === 'PrivateConversation' ? 'user' : undefined
                     )}
-                    userName={conv.title}
-                    userId={conv.flexibleId}
+                    objectName={conv.title}
+                    objectId={conv.flexibleId}
                     online={conv.online}
                     size="medium"
                     cloudImageUuid={conv.photo}

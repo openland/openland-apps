@@ -100,8 +100,8 @@ export class ProfileCard extends React.Component<ProfileCardProps, { isHovered: 
                     <XLink path={'/directory/u/' + user.id}>
                         <ProfileAvatar
                             cloudImageUuid={user.picture || undefined}
-                            userId={user.id}
-                            userName={user.name}
+                            objectId={user.id}
+                            objectName={user.name}
                             style="colorus"
                         />
                     </XLink>

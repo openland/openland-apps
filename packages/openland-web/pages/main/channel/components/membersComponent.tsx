@@ -151,9 +151,9 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
             >
                 <MemberAvatar
                     cloudImageUuid={item.picture || undefined}
-                    userId={item.id}
+                    objectId={item.id}
                     style="user"
-                    userName={item.name}
+                    objectName={item.name}
                 />
                 <MemberInfo>
                     <MemberName>{item.name}</MemberName>
@@ -222,8 +222,8 @@ const RemoveMemberModal = withConversationKick((props) => {
                     size="medium"
                     style="colorus"
                     cloudImageUuid={member.user.picture || undefined}
-                    userId={member.user.id}
-                    userName={member.user.name}
+                    objectId={member.user.id}
+                    objectName={member.user.name}
                 />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>

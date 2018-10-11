@@ -491,8 +491,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                 : 'colorus'
                                 )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
-                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
-                                userId={props.data.chat.flexibleId}
+                                objectName={title}
+                                objectId={props.data.chat.flexibleId}
                             />
                             <XVertical separator="none" maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>

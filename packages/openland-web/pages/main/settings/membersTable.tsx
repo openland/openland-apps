@@ -194,7 +194,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
             }}
         >
             <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} userName={member.user.name} userId={member.user.id} style="colorus" />
+                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} objectName={member.user.name} objectId={member.user.id} style="colorus" />
                 <XVertical separator={4} justifyContent="center">
                     <XText textStyle="h500">{member.user.name}</XText>
                     {member.email && <XText opacity={0.5} >{member.email}</XText>}
@@ -312,7 +312,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                         <Row>
                             <XTable.Cell>
                                 <XHorizontal separator={7} alignItems="center">
-                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={(m.user.picture) || undefined} userName={m.user.name} userId={m.user.id} style="colorus" />}
+                                    {m.__typename === 'OrganizationJoinedMember' && <XAvatar size="small" cloudImageUuid={(m.user.picture) || undefined} objectName={m.user.name} objectId={m.user.id} style="colorus" />}
                                     {m.__typename === 'OrganizationIvitedMember' && <XAvatar size="small" cloudImageUuid={undefined} />}
                                     <XVertical separator={1} justifyContent="center">
                                         <Title>{(m.__typename === 'OrganizationJoinedMember' && m.user.name) || (m.__typename === 'OrganizationIvitedMember' && ((m.firstName || '') + ' ' + (m.lastName || '')))}</Title>

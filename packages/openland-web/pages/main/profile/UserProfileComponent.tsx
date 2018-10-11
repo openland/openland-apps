@@ -104,8 +104,8 @@ const Header = (props: { userQuery: User }) => {
                     cloudImageUuid={usr.photo || undefined}
                     size="s-medium"
                     style="user"
-                    userName={usr.name}
-                    userId={usr.id}
+                    objectName={usr.name}
+                    objectId={usr.id}
                 />
             </HeaderAvatar>
             <HeaderInfo flexGrow={1} separator={3}>
@@ -119,6 +119,8 @@ const Header = (props: { userQuery: User }) => {
                             cloudImageUuid={usr.primaryOrganization.photo || undefined}
                             style="organization"
                             size="x-small"
+                            objectName={usr.primaryOrganization.name}
+                            objectId={usr.primaryOrganization.id}
                         />
                         <HeaderOrgTitle>{usr.primaryOrganization.name}</HeaderOrgTitle>
                     </OrgName>
@@ -304,6 +306,8 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                 <ChannelAvatar
                     style="channel"
                     cloudImageUuid={channel.photo || channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
+                    objectName={channel.title}
+                    objectId={channel.id}
                 />
                 <ChannelCardInfo>
                     <ChannelCardTitle>{channel.title}</ChannelCardTitle>

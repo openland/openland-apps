@@ -320,8 +320,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 <XHorizontal alignSelf="stretch">
                     <XAvatar
                         style="colorus"
-                        userName={this.props.sender!!.name}
-                        userId={this.props.sender!!.id}
+                        objectName={this.props.sender!!.name}
+                        objectId={this.props.sender!!.id}
                         cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined}
                         path={'/mail/u/' + this.props.sender!!.id}
                     />

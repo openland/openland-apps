@@ -273,8 +273,8 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                             <XHorizontal justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
-                                        userId={user.id}
-                                        userName={user.name}
+                                        objectId={user.id}
+                                        objectName={user.name}
                                         photoRef={urlAugmentation.photo || undefined}
                                         style="colorus"
                                     />

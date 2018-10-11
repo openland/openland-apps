@@ -20,8 +20,8 @@ export interface XAvatarStyleProps extends XFlexStyles {
     border?: string;
     style?: XAvatarStyle;
     attach?: 'left' | 'right' | 'both';
-    userId?: string;
-    userName?: string;
+    objectId?: string;
+    objectName?: string;
     online?: boolean;
 }
 
@@ -299,7 +299,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
     let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
 
-    let initials = props.userName && extractPlaceholder(props.userName);
+    let initials = props.objectName && extractPlaceholder(props.objectName);
     return (
         <AvatarWrapper {...avatarWrapperProps}>
             {props.src && (
@@ -312,14 +312,11 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
-                    {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="org-large" /> : <AvatarStub className="org-small" />)}
-                    {props.style === 'channel' && <AvatarStub className="channel" />}
-                    {props.style === 'group' && <AvatarStub className="group" />}
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
-                    {(props.style === 'colorus' || props.style === 'user') && (
+                    {!(props.style === undefined || props.style === 'person') && (
                         <ColorusStub
                             fontSize={fontSize}
-                            backgroundImage={props.userId && ColorusArr[Math.abs(doSimpleHash(props.userId)) % ColorusArr.length] || ColorusArr[1]}
+                            backgroundImage={props.objectId && ColorusArr[Math.abs(doSimpleHash(props.objectId)) % ColorusArr.length] || ColorusArr[1]}
                         >
                             {initials}
                         </ColorusStub>
@@ -327,8 +324,8 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                 </StyledPlaceholder>
             )}
             {props.online === true && <OnlineDot format={props.size} className="online-status-dot" />}
-            {(props.style === 'user' && props.userId && props.online === undefined) && (
-                <Query query={UserQuery.document} variables={{ userId: props.userId }}>
+            {(props.style === 'user' && props.objectId && props.online === undefined) && (
+                <Query query={UserQuery.document} variables={{ userId: props.objectId }}>
                     {(data) => {
                         return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
                     }}
