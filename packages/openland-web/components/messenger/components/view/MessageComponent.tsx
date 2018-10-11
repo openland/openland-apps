@@ -141,10 +141,16 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean, isMenuOpen: boolean }) => {
         if (isServerMessage(props.message)) {
-            return {
-                isEditView: (props.messageEditor.editMessageId === props.message.id) ? true : false,
-                isMenuOpen: false
-            };
+            if (props.messageEditor.editMessageId === props.message.id) {
+                return {
+                    isEditView: true,
+                    isMenuOpen: false
+                };
+            } else {
+                return {
+                    isEditView: false
+                };
+            }
         }
 
         return null;
@@ -172,9 +178,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     }
 
     hideEditView = () => {
-        if (isServerMessage(this.props.message)) {
-            this.props.messageEditor.setEditMessageId(null);
-        }
+        this.props.messageEditor.setEditMessageId(null);
     }
 
     render() {
