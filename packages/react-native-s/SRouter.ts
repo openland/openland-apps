@@ -6,5 +6,6 @@ export interface SRouter {
     present: (route: string, params?: any) => void;
     dismiss: () => void;
     push: (route: string, params?: any) => void;
+    pushAndRemove: (route: string, params?: any) => void;
     back: () => void;
 }

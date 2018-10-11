@@ -20,6 +20,7 @@ export interface ZListItemProps {
     checkmarkField?: { key: string, value: string };
     onToggle?: (value: boolean) => void;
     path?: string;
+    pathRemove?: boolean;
     onPress?: () => void;
     onLongPress?: () => void;
     appearance?: 'default' | 'action';
@@ -55,7 +56,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         let enabled = !!this.props.onPress || !!this.props.onToggle || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled);
 
         return (
-            <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} height={this.props.multiline ? null : (this.props.title ? 66 : 44)} navigationIcon={this.props.navigationIcon}>
+            <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} pathRemove={this.props.pathRemove} height={this.props.multiline ? null : (this.props.title ? 66 : 44)} navigationIcon={this.props.navigationIcon}>
                 <View paddingLeft={15} paddingRight={15} flexGrow={1} paddingVertical={this.props.title ? 8 : 11}>
                     {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                     <View flexDirection="row" alignItems="center">

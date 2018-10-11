@@ -114,12 +114,12 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
                             return (
                                 <SScrollView keyboardDismissMode="on-drag">
                                     <ZListItemGroup>
-                                        <ZListItem text="👥 Create group " appearance="action" path="CreateGroupAttrs" />
-                                        <ZListItem text="📣 Create channel" appearance="action" path="CreateChannel" />
+                                        <ZListItem text="👥 Create group " appearance="action" path="CreateGroupAttrs" pathRemove={true} />
+                                        <ZListItem text="📣 Create channel" appearance="action" path="CreateChannel" pathRemove={true} />
                                     </ZListItemGroup>
                                     <View style={{ flexDirection: 'column', width: '100%' }}>
                                         {resp.data.items.map((item) => (
-                                            <UserViewAsync item={item as UserShort} onPress={(id) => this.props.router.push('Conversation', { flexibleId: id })} />
+                                            <UserViewAsync item={item as UserShort} onPress={(id) => this.props.router.pushAndRemove('Conversation', { flexibleId: id })} />
                                         ))}
                                     </View>
 

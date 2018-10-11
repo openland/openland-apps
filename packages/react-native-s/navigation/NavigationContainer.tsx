@@ -99,7 +99,8 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         Keyboard.dismiss();
 
         // Resolve current page
-        let underlay = state.history[state.history.length - 2].key;
+        let underlay = this.currentHistory.history[this.currentHistory.history.length - 1].key;
+        let removedPages = this.currentHistory.history.filter((v) => !state.history.find((v2) => v2.key === v.key));
         let underlayHolder = this.routes.find((v) => v.key === underlay)!!;
 
         // Lock navigation
@@ -192,8 +193,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                 SAnimated.commitTransaction(() => {
                     unlock();
                     this.headerCoordinator.onTransitionStop();
-                    this.mounted = this.mounted.filter((v) => v !== underlay);
-                    this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined });
+                    this.mounted = this.mounted.filter((v) => v !== underlay && !removedPages.find((v2) => v2.key === v));
+                    this.routes = this.routes.filter((v) => !removedPages.find((v2) => v2.key === v.key));
+                    this.setState({ mounted: this.mounted, routes: this.routes, navigateTo: undefined, navigateFrom: undefined });
                 });
             }
         );
