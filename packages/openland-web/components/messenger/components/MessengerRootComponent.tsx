@@ -143,7 +143,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 )}
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
-                <EditMessageComponent conversation={this.conversation} />
+                {/* <EditMessageComponent conversation={this.conversation} /> */}
             </ConversationContainer>
         );
     }
