@@ -208,7 +208,7 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessagePress={this.handleMessageLongPress} />);
+                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessagePress={this.handleMessageLongPress} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }

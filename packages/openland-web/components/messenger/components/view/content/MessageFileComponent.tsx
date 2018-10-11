@@ -65,7 +65,7 @@ const Size = Glamorous.div({
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-function niceBytes(x: number | undefined) {
+export function niceBytes(x: number | undefined) {
 
     if (x === undefined) {
         return;

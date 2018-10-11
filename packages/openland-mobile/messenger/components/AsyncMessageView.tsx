@@ -7,6 +7,9 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageTextView } from './AsyncMessageTextView';
 import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
 import { ASText } from 'react-native-async-view/ASText';
+import { AsyncMessageIntroView } from './AsyncMessageIntroView';
+import { SRouter } from 'react-native-s/SRouter';
+import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -15,7 +18,22 @@ export interface AsyncMessageViewProps {
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    navigationManager: NavigationManager;
 }
+
+let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: NavigationManager) => {
+    let type: string | undefined | null;
+    let urlAugmnentation = message.urlAugmentation;
+    type = urlAugmnentation ? urlAugmnentation.type : undefined;
+
+    if (type === 'intro') {
+        return (
+            <AsyncMessageIntroView message={message} navigationManager={navigationManager}/>
+        );
+    }
+
+    return null;
+};
 
 export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps> {
 
@@ -28,6 +46,8 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
     }
 
     render() {
+
+        let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager);
         return (
             <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
@@ -41,15 +61,16 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                     </ASFlex>
                 }
                 <ASFlex flexDirection="column" alignItems={this.props.message.isOut ? 'flex-end' : 'flex-start'} flexGrow={1} flexBasis={0} marginLeft={this.props.message.isOut ? 50 : 0} marginRight={this.props.message.isOut ? 0 : 50}>
-                    {this.props.message.text && !this.props.message.file && (
+                    {!specialMessage && this.props.message.text && !this.props.message.file && (
                         <AsyncMessageTextView message={this.props.message} />
                     )}
-                    {this.props.message.file && this.props.message.file.isImage && (
+                    {!specialMessage && this.props.message.file && this.props.message.file.isImage && (
                         <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
                     )}
-                    {this.props.message.file && !this.props.message.file.isImage && (
+                    {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
                         <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
                     )}
+                    {specialMessage}
                 </ASFlex>
             </ASFlex>
         );
