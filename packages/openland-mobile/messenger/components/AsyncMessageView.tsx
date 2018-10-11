@@ -6,6 +6,7 @@ import { AsyncMessageMediaView } from './AsyndMessageMediaView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageTextView } from './AsyncMessageTextView';
 import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
+import { ASText } from 'react-native-async-view/ASText';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;

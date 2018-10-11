@@ -18,6 +18,7 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { EditMessageComponent } from './view/MessageEditComponent';
+import { EditMessageContext, EditMessageContextProps } from './EditMessageContext';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -142,7 +143,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 )}
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
-                <EditMessageComponent conversation={this.conversation} />
+                {/* <EditMessageComponent conversation={this.conversation} /> */}
             </ConversationContainer>
         );
     }
@@ -174,22 +175,39 @@ const MessagesWithUser = withUserInfo((props) => (
     />
 )) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
 
-export class MessengerRootComponent extends React.Component<MessengerRootComponentProps> {
+export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, EditMessageContextProps> {
+    constructor(props: MessengerRootComponentProps) {
+        super(props);
+
+        this.state = {
+            editMessageId: null,
+            setEditMessageId: this.setEditMessageId
+        };
+    }
+
+    setEditMessageId = (id: string | null) => {
+        this.setState({
+            editMessageId: id
+        });
+    }
+
     render() {
         // We are not allowing messenger to be rendered on server side: just preload history and that's all
         if (!canUseDOM) {
             return <Placeholder variables={{ conversationId: this.props.conversationId }} />;
         }
         return (
-            <MessengerContext.Consumer>
-                {messenger => (
-                    <MessagesWithUser
-                        conversationId={this.props.conversationId}
-                        messenger={messenger}
-                        conversationType={this.props.conversationType}
-                    />
-                )}
-            </MessengerContext.Consumer>
+            <EditMessageContext.Provider value={this.state}>
+                <MessengerContext.Consumer>
+                    {messenger => (
+                        <MessagesWithUser
+                            conversationId={this.props.conversationId}
+                            messenger={messenger}
+                            conversationType={this.props.conversationType}
+                        />
+                    )}
+                </MessengerContext.Consumer>
+            </EditMessageContext.Provider>
         );
     }
 }
