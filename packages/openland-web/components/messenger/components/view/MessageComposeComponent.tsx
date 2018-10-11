@@ -226,6 +226,11 @@ export interface MessageComposeComponentProps {
     onChange?: (text: string) => void;
 }
 
+interface Draft {
+    conversationId?: string;
+    messageText?: string;
+}
+
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentProps & XWithRouter & UserInfoComponentProps & { messageEditor: EditMessageContextProps }> {
 
     state = {
@@ -275,6 +280,42 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (src.length > 0 && this.props.onChange) {
             this.props.onChange(src);
         }
+
+        // Save or remove (if empty) draft from browser localStorage
+
+        let localDrafts = localStorage.getItem('x-openland-drafts');
+        let curDraft: Draft = {
+            conversationId: this.props.conversationId,
+            messageText: this.message
+        };
+
+        let drafts: Draft[] = [];
+
+        if (localDrafts) {
+            drafts = JSON.parse(localDrafts);
+            let alreadyInDrafts = -1;
+
+            drafts.map((item: Draft, index: number) => {
+                if (item.conversationId === curDraft.conversationId) {
+                    alreadyInDrafts = index;
+                    item.messageText = curDraft.messageText;
+                }
+            });
+
+            if (alreadyInDrafts >= 0) {
+                if (!(this.message.length > 0)) {
+                    drafts.splice(alreadyInDrafts, 1);
+                }
+            } else {
+                if (this.message.length > 0) {
+                    drafts.push(curDraft);
+                }
+            }
+        } else {
+            drafts.push(curDraft);
+        }
+
+        localStorage.setItem('x-openland-drafts', JSON.stringify(drafts));
     }
 
     private focusIfNeeded = () => {
@@ -358,6 +399,20 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     render() {
+        // Load draft from browser localStorage
+
+        let localDrafts = localStorage.getItem('x-openland-drafts');
+
+        if (localDrafts) {
+            let drafts: Draft[] = JSON.parse(localDrafts);
+
+            drafts.map((item: Draft) => {
+                if (item.conversationId === this.props.conversationId) {
+                    this.message = item.messageText || '';
+                }
+            });
+        }
+
         return (
             <SendMessageWrapper>
                 <DropArea
@@ -383,6 +438,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                 onChange={this.handleChange}
                                 onSubmit={this.handleSend}
                                 ref={this.input}
+                                value={this.message}
                             />
                         </TextInputWrapper>
                         <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
