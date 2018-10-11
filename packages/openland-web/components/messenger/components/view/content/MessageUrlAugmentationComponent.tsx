@@ -19,13 +19,7 @@ const Container = Glamorous(XLink)({
     color: '#121e2b!important',
 });
 
-const Wrapper = Glamorous.div<{ squareImage?: boolean }>([
-    {
-        paddingTop: 7,
-        '&:first-child': {
-            marginTop: 0
-        }
-    },
+const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
     (props) => props.squareImage ? {
         display: 'flex',
         flexDirection: 'row',
@@ -36,16 +30,18 @@ const Wrapper = Glamorous.div<{ squareImage?: boolean }>([
         },
 
         '& .image-wrapper': {
-            marginTop: 0,
-            width: 120,
+            marginTop: 1,
+            marginRight: -6,
+            marginBottom: -2,
+            width: 93,
 
             '& img': {
-                width: '120px!important',
-                height: '120px!important'
+                width: '93px!important',
+                height: '93px!important'
             }
         }
-    } : { }
-]);
+    } : {}
+);
 
 const ContentWrapper = Glamorous.div({
 
@@ -87,7 +83,11 @@ const Title = Glamorous.div({
     fontWeight: 500,
     lineHeight: '20px',
     letterSpacing: -0.4,
-    color: '#1790ff'
+    color: '#1790ff',
+    marginTop: 7,
+    '&:first-child': {
+        marginTop: 0
+    }
 });
 
 const Description = Glamorous.div({
@@ -102,7 +102,7 @@ const Description = Glamorous.div({
     }
 });
 
-const ImageWrapper = Glamorous.div((props) => ({
+const ImageWrapper = Glamorous.div({
     marginTop: 13,
     borderRadius: 5,
     overflow: 'hidden',
@@ -114,7 +114,7 @@ const ImageWrapper = Glamorous.div((props) => ({
         width: '100%',
         maxWidth: 360
     }
-}));
+});
 
 let resolveImageUrl = (url: string | null): string | undefined => {
     if (url) {
@@ -172,22 +172,22 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
             isSquareImage = this.props.imageInfo.imageWidth === this.props.imageInfo.imageHeight;
 
             if (isSquareImage) {
-                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 120, 120);
+                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 93, 93);
             } else {
                 dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 200);
             }
         }
         return (
             <Container href={this.props.url}>
-                {this.props.hostname && (
-                    <Hostname>
-                        {this.state.favicon && <Favicon src={this.state.favicon} onError={this.handleFaviconError} />}
-                        {!this.state.favicon && <WebsiteIcon />}
-                        <span>{this.props.hostname}</span>
-                    </Hostname>
-                )}
                 <Wrapper squareImage={isSquareImage}>
                     <ContentWrapper className="content-wrapper">
+                        {this.props.hostname && (
+                            <Hostname>
+                                {this.state.favicon && <Favicon src={this.state.favicon} onError={this.handleFaviconError} />}
+                                {!this.state.favicon && <WebsiteIcon />}
+                                <span>{this.props.hostname}</span>
+                            </Hostname>
+                        )}
                         {this.props.title && <Title>{this.props.title}</Title>}
                         {parts && <Description>{parts}</Description>}
                     </ContentWrapper>
