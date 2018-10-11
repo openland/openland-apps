@@ -21,6 +21,7 @@ import { isServerMessage } from 'openland-engines/messenger/types';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
+import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -225,7 +226,7 @@ export interface MessageComposeComponentProps {
     onChange?: (text: string) => void;
 }
 
-class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentProps & XWithRouter & UserInfoComponentProps> {
+class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentProps & XWithRouter & UserInfoComponentProps & { messageEditor: EditMessageContextProps }> {
 
     state = {
         dragOn: false,
@@ -334,7 +335,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             let message = messages[messages.length - 1];
             if (message && isServerMessage(message)) {
                 e.preventDefault();
-                this.props.router.replaceQueryParams({ editMessage: message.id });
+                this.props.messageEditor.setEditMessageId(message.id);
             }
         }
     }
@@ -441,4 +442,12 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 }
 
-export let MessageComposeComponent = withUserInfo(withRouter((props) => <MessageComposeComponentInner {...props} />)) as React.ComponentType<MessageComposeComponentProps>;
+export let MessageComposeComponent = withUserInfo(withRouter((props) => {
+    return (
+        <EditMessageContext.Consumer>
+            {(editor: EditMessageContextProps) => (
+                <MessageComposeComponentInner {...props} messageEditor={editor} />
+            )}
+        </EditMessageContext.Consumer>
+    );
+})) as React.ComponentType<MessageComposeComponentProps>;

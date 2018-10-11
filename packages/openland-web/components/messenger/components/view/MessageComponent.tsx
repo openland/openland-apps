@@ -23,16 +23,7 @@ import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
-
-interface MessageComponentProps {
-    compact: boolean;
-    sender?: UserShort;
-    message: MessageFull | PendingMessage;
-    conversation: ConversationEngine;
-    out: boolean;
-    me?: UserShort | null;
-    conversationType?: string;
-}
+import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
 
 const MessageWrapper = Glamorous(XVertical)({
     width: 'calc(100% - 60px)'
@@ -133,14 +124,37 @@ const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     top: 0
 }));
 
-export class MessageComponent extends React.PureComponent<MessageComponentProps, { isEditView: boolean, isMenuOpen: boolean }> {
-    constructor(props: MessageComponentProps) {
+interface MessageComponentProps {
+    compact: boolean;
+    sender?: UserShort;
+    message: MessageFull | PendingMessage;
+    conversation: ConversationEngine;
+    out: boolean;
+    me?: UserShort | null;
+    conversationType?: string;
+}
+
+interface MessageComponentInnerProps extends MessageComponentProps {
+    messageEditor: EditMessageContextProps;
+}
+
+class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
+    constructor(props: MessageComponentInnerProps) {
         super(props);
 
         this.state = {
             isEditView: false,
             isMenuOpen: false
         };
+    }
+
+    componentWillReceiveProps = (newProps: MessageComponentInnerProps) => {
+        if (isServerMessage(newProps.message)) {
+            this.setState({
+                isEditView: (newProps.messageEditor.editMessageId === newProps.message.id) ? true : false,
+                isMenuOpen: false
+            });
+        }
     }
 
     switchMenu = () => {
@@ -150,17 +164,15 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
     }
 
     showEditView = () => {
-        this.setState({
-            isEditView: true,
-            isMenuOpen: false
-        });
+        if (isServerMessage(this.props.message)) {
+            this.props.messageEditor.setEditMessageId(this.props.message.id);
+        }
     }
 
     hideEditView = () => {
-        this.setState({
-            isEditView: false,
-            isMenuOpen: false
-        });
+        if (isServerMessage(this.props.message)) {
+            this.props.messageEditor.setEditMessageId(null);
+        }
     }
 
     render() {
@@ -334,6 +346,18 @@ export class MessageComponent extends React.PureComponent<MessageComponentProps,
                     {menu}
                 </XHorizontal>
             </MessageContainer>
+        );
+    }
+}
+
+export class MessageComponent extends React.Component<MessageComponentProps> {
+    render () {
+        return (
+            <EditMessageContext.Consumer>
+                {(editor: EditMessageContextProps) => (
+                    <MessageComponentInner {...this.props} messageEditor={editor} />
+                )}
+            </EditMessageContext.Consumer>
         );
     }
 }
