@@ -493,6 +493,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
                                 objectName={title}
                                 objectId={props.data.chat.flexibleId}
+                                border="none"
                             />
                             <XVertical separator="none" maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>
