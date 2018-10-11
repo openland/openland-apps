@@ -803,7 +803,7 @@ export const CreateChannel = withCreateChannel((props) => {
             targetQuery="createChannel"
             defaultAction={async (data) => {
                 let oid = props.router.query.createChannel;
-                let channel = await props.createChannel({ variables: { title: data.input.name, message: 'channel created', description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
+                let channel = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
                 delay(0).then(() => {
                     props.router.push('/mail/' + channel.data.channel.id);
                 });
