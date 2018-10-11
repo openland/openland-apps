@@ -33,8 +33,11 @@ const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
             marginTop: 1,
             marginRight: -6,
             marginBottom: -2,
-            width: 93,
-
+            display: 'flex',
+            alignItems: 'center',
+            '& > div': {
+                width: 93,
+            },
             '& img': {
                 width: '93px!important',
                 height: '93px!important'
@@ -104,6 +107,9 @@ const Description = Glamorous.div({
 
 const ImageWrapper = Glamorous.div({
     marginTop: 13,
+});
+
+const ImageBox = Glamorous.div({
     borderRadius: 5,
     overflow: 'hidden',
     display: 'inline-block',
@@ -193,17 +199,21 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                     </ContentWrapper>
                     {this.props.photo && dimensions && (
                         <ImageWrapper className="image-wrapper">
-                            <XCloudImage
-                                srcCloud={'https://ucarecdn.com/' + this.props.photo.uuid + '/'}
-                                resize={'fill'}
-                                width={dimensions.width}
-                                height={dimensions.height}
-                            />
+                            <ImageBox>
+                                <XCloudImage
+                                    srcCloud={'https://ucarecdn.com/' + this.props.photo.uuid + '/'}
+                                    resize={'fill'}
+                                    width={dimensions.width}
+                                    height={dimensions.height}
+                                />
+                            </ImageBox>
                         </ImageWrapper>
                     )}
                     {!this.props.photo && this.state.image && (
                         <ImageWrapper className="image-wrapper">
-                            <img src={this.state.image} className="from-foreign-server" />
+                            <ImageBox>
+                                <img src={this.state.image} className="from-foreign-server" />
+                            </ImageBox>
                         </ImageWrapper>
                     )}
                 </Wrapper>
