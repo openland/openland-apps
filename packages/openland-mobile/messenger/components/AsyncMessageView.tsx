@@ -6,15 +6,15 @@ import { AsyncMessageMediaView } from './AsyndMessageMediaView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageTextView } from './AsyncMessageTextView';
 import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
-import { ASText } from 'react-native-async-view/ASText';
 import { AsyncMessageIntroView, renderButtons } from './AsyncMessageIntroView';
-import { SRouter } from 'react-native-s/SRouter';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
+import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
     onMessagePress: (message: DataSourceMessageItem) => void;
+    onMessageLongPress: (message: DataSourceMessageItem) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
@@ -37,11 +37,15 @@ let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: N
 
 export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps> {
 
-    private handlePress = () => {
+    private handleAvatarPress = () => {
         this.props.onAvatarPress(this.props.message.senderId);
     }
 
     private handleLongPress = () => {
+        this.props.onMessageLongPress(this.props.message);
+    }
+
+    private handlePress = () => {
         this.props.onMessagePress(this.props.message);
     }
 
@@ -49,11 +53,12 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager, this.props.onDocumentPress);
 
         // fix needed - layour breaks if wraped in one more flex
-        let introButtonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
+        let buttonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
+        buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 22 : 0;
         return (
-            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
+            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress} onPress={this.handlePress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
-                    <ASFlex marginRight={-1} marginLeft={4} onPress={this.handlePress} marginBottom={introButtonsAvatarHackMargin}>
+                    <ASFlex marginRight={-1} marginLeft={4} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin}>
                         <AsyncAvatar
                             size={28}
                             src={this.props.message.senderPhoto}
@@ -72,6 +77,8 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                     {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
                         <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
                     )}
+                    {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
+
                     {specialMessage}
                 </ASFlex>
             </ASFlex>

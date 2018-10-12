@@ -45,6 +45,7 @@ const CONVERSATION_PAGE_SIZE = 30;
 export interface DataSourceMessageItem {
     type: 'message';
     key: string;
+    id?: string;
     date: number;
     isOut: boolean;
     senderId: string;
@@ -74,10 +75,11 @@ export interface DataSourceDateItem {
     year: number;
 }
 
-export function convertMessage(src: MessageFullFragment, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
+export function convertMessage(src: MessageFullFragment & { local?: boolean }, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
     return {
         type: 'message',
-        key: src.repeatKey || src.id,
+        id: src.id,
+        key: (src.local && src.repeatKey) || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
         senderId: src.sender.id,
@@ -287,7 +289,7 @@ export class ConversationEngine implements MessageSendHandler {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendMessage(this.conversationId, message, this);
-            let msgs = { date, key, message, progress: 0, file: null, failed: false } as PendingMessage;
+            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false } as PendingMessage;
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -473,6 +475,8 @@ export class ConversationEngine implements MessageSendHandler {
                         date: msgs[existing].date
                     };
                     this.messages = msgs;
+                    this.localMessagesMap.set(event.message.id, event.message.repeatKey);
+                    event.message.local = true;
                 } else {
                     this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.message.repeatKey), event.message];
                 }
@@ -533,6 +537,10 @@ export class ConversationEngine implements MessageSendHandler {
             // Update in datasource
             let conv = convertMessage(event.message, this.engine);
             conv.key = this.localMessagesMap.get(event.message.id) || event.message.id;
+            let old = this.dataSource.getItem(conv.key);
+            conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
+            conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
+            console.log('boom', JSON.stringify(conv));
             this.dataSource.updateItem(conv);
         } else {
             console.warn('Received unknown message');
@@ -548,11 +556,7 @@ export class ConversationEngine implements MessageSendHandler {
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.engine, undefined);
-            if (!this.dataSource.hasItem(conv.key) && !this.dataSource.hasItem(src.id)) {
-                conv.key = src.id;
-            } else {
-                this.localMessagesMap.set(src.id, conv.key);
-            }
+
             conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
         } else {
             conv = {
