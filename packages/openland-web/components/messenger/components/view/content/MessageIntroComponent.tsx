@@ -384,7 +384,6 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                                     </SetReactionButton>
                                                 )}
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
-                                                <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
                                                 {meId === senderId && (
                                                     <>
                                                         <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
