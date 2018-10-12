@@ -75,7 +75,8 @@ export const AccountInvitesHistoryQuery = gql`
         invites: alphaInvitesHistory {
             forEmail
             isGlobal
-            acceptedBy{
+            acceptedBy {
+                id
                 name
                 picture
             }

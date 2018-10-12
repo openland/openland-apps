@@ -26,7 +26,7 @@ const TextInputWrapper = Glamorous.div({
             backgroundColor: '#fff',
             border: 'solid 1px #e4e6e9',
             minHeight: 40,
-            maxHeight: 200,
+            maxHeight: 'initial',
             paddingTop: 9,
             paddingBottom: 9,
             paddingLeft: 16,

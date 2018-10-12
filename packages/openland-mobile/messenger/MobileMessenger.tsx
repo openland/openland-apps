@@ -15,12 +15,11 @@ import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, View } from 'react-native';
+import { Clipboard, Alert } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
-import { YQuery } from 'openland-y-graphql/YQuery';
-import { UserQuery } from 'openland-api';
-import { ASView } from 'react-native-async-view/ASView';
+import { MessageSetReactionMutation, MessageUnsetReactionMutation } from 'openland-api';
+import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 
 interface ASAvatarProps {
     size: number;
@@ -208,7 +207,7 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessagePress={this.handleMessageLongPress} />);
+                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessagePress={this.handleMessagePress} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
@@ -267,6 +266,28 @@ export class MobileMessenger {
         builder.action('Delete', () => {
             //
         });
+        builder.show();
+    }
+
+    private handleMessagePress = (message: DataSourceMessageItem) => {
+        if (!message.id) {
+            return;
+        }
+
+        let builder = new ActionSheetBuilder();
+        (message.reactions || []).reduce((res: string[], r) => res.indexOf(r.reaction) > -1 ? res : [r.reaction, ...res], ['❤️', '👍', '🤷‍', '😱', '👀']).map(r => {
+            builder.action(r, async () => {
+                startLoader();
+                try {
+                    let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
+                    await this.engine.client.client.mutate({ mutation: remove ? MessageUnsetReactionMutation.document : MessageSetReactionMutation.document, variables: { messageId: message.id, reaction: r } });
+                } catch (e) {
+                    Alert.alert(e.message);
+                }
+                stopLoader();
+            });
+        });
+
         builder.show();
     }
 }

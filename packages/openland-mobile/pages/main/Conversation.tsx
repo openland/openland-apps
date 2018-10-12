@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, Alert } from 'react-native';
+import { View, FlatList, Text, Alert, AsyncStorage } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -31,6 +31,7 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
     constructor(props: { provider: ZPictureModalProvider, router: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
+        AsyncStorage.getItem('compose_draft_' + this.props.conversationId).then(s => this.setState({ text: s || '' }));
         this.state = { text: '' };
     }
 
@@ -47,6 +48,7 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
     handleTextChange = (src: string) => {
         getMessenger().engine.client.client.mutate({ mutation: SetTypingMutation.document, variables: { conversationId: this.props.conversationId } });
         this.setState({ text: src });
+        AsyncStorage.setItem('compose_draft_' + this.props.conversationId, src);
     }
 
     handleSubmit = () => {
@@ -55,6 +57,8 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
             this.setState({ text: '' });
             this.engine.sendMessage(tx);
         }
+        AsyncStorage.removeItem('compose_draft_' + this.props.conversationId);
+
     }
 
     handleAttach = () => {

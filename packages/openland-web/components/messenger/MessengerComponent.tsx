@@ -491,8 +491,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                 : 'colorus'
                                 )}
                                 cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
-                                userName={props.data.chat.__typename === 'PrivateConversation' ? title : undefined}
-                                userId={props.data.chat.flexibleId}
+                                objectName={title}
+                                objectId={props.data.chat.flexibleId}
                             />
                             <XVertical separator="none" maxWidth="calc(100% - 48px)">
                                 <Title path={titlePath}>{title}</Title>
@@ -576,46 +576,35 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 </div>
                             )}
                         />
-                        {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']}>
-                            <XOverflow
-                                flat={true}
-                                placement="bottom-end"
-                                content={(
-                                    <div style={{ width: 160 }}>
-                                        <XMenuTitle>Super admin</XMenuTitle>
-                                        <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
-                                        <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
-                                        <XMenuItem query={{ field: 'addMember', value: 'true' }} style="primary-sky-blue">Add Member</XMenuItem>
-                                        <XMenuTitle>Common</XMenuTitle>
-                                        <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
-                                    </div>
-                                )}
-                            />
-                        </XWithRole>}
                         {props.data.chat.__typename !== 'PrivateConversation' && (
                             <XOverflow
                                 flat={true}
                                 placement="bottom-end"
                                 content={(
                                     <div style={{ width: 160 }}>
-                                        <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave from chat</XMenuItem>
+                                        {props.data.chat.__typename === 'ChannelConversation' && (
+                                            <>
+                                                <XWithRole role={['editor', 'super-admin']}>
+                                                    <XMenuTitle>Super admin</XMenuTitle>
+                                                    <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
+                                                    <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                                    <XMenuItem query={{ field: 'addMember', value: 'true' }} style="primary-sky-blue">Add Member</XMenuItem>
+                                                    <XMenuTitle>Common</XMenuTitle>
+                                                    <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
+                                                </XWithRole>
+
+                                                <XWithRole role={['editor', 'super-admin']} negate={true}>
+                                                    <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
+                                                        <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
+                                                    </XWithRole>
+                                                </XWithRole>
+                                            </>
+                                        )}
+                                        <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave chat</XMenuItem>
                                     </div>
                                 )}
                             />
                         )}
-                        {props.data.chat.__typename === 'ChannelConversation' && <XWithRole role={['editor', 'super-admin']} negate={true}>
-                            <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
-                                <XOverflow
-                                    flat={true}
-                                    placement="bottom-end"
-                                    content={(
-                                        <div style={{ width: 160 }}>
-                                            <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
-                                        </div>
-                                    )}
-                                />
-                            </XWithRole>
-                        </XWithRole>}
                     </XHorizontal>
                 </ChatHeaderContent>
             </ChatHeaderWrapper>
@@ -655,7 +644,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 )}
             </XHorizontal>
-            {<ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
+            <ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
             <XWithRole role={['super-admin']}>

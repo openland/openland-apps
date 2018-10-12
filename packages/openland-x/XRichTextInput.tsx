@@ -8,7 +8,7 @@ import createEmojiPlugin from 'draft-js-emoji-plugin';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
-    top: 'calc(50% - 9px)',
+    top: 11,
     right: 12,
     '& > div > button': {
         width: 18,

@@ -6,12 +6,15 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
-import CheckIcon from '../../icons/ic-check.svg';
+import { PostIntroModal } from './PostIntroModal';
 import CheckIconSmall from '../../icons/ic-check-small.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { withSetReaction } from '../../../../../api/withSetReaction';
+import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
+import IntroIcon from '../../icons/ic-tag-intro.svg';
+import PassedIcon from '../../icons/ic-passed.svg';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     <XMutation mutation={props.setReaction} onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}>
@@ -19,30 +22,63 @@ const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     </XMutation>
 ))) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any, userId: string }>;
 
+const SetReactionButton = withSetReaction((props) => (
+    <XMutation mutation={props.setReaction}>
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
+
+const ChangeReactionButton = withChangeReaction((props) => (
+    <XMutation
+        action={async () => {
+            await props.unsetReaction({
+                variables: {
+                    messageId: (props as any).messageId,
+                    reaction: (props as any).unset
+                }
+            });
+            await props.setReaction({
+                variables: {
+                    messageId: (props as any).messageId,
+                    reaction: (props as any).set
+                }
+            });
+        }}
+    >
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ messageId: string, children: any, unset: string, set: string }>;
+
 const Wrapper = Glamorous(XVertical)({
     paddingTop: 4,
     paddingBottom: 4,
+    maxWidth: 550
 });
 
 const Root = Glamorous(XVertical)({
-    border: '1px solid #eef0f2',
+    border: '1px solid #ececec',
     borderRadius: 10,
     overflow: 'hidden',
     position: 'relative',
-    '&::after': {
-        content: `''`,
-        position: 'absolute',
-        height: '100%',
-        width: 6,
-        backgroundColor: '#1790ff',
-        left: 0,
-        top: 0,
-        display: 'block'
-    }
+    backgroundColor: '#fcfcfc'
 });
 
 const Container = Glamorous(XVertical)({
-    padding: 16
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 20,
+    paddingRight: 16,
+});
+
+const IntroTag = Glamorous(XHorizontal)({
+    height: 24,
+    borderRadius: 14,
+    backgroundColor: 'rgba(23, 144, 255, 0.1)',
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#1790ff',
+    paddingLeft: 10,
+    paddingRight: 14
 });
 
 const UserName = Glamorous.div({
@@ -166,28 +202,24 @@ interface MessageIntroComponentProps {
     conversationType?: string;
 }
 
-const SuccessButton = Glamorous(XButton)({
-    cursor: 'pointer !important'
-});
-
-const Counter = Glamorous.div<{ alignSelf?: string }>(props => ({
+const Counter = Glamorous.div<{ alignSelf?: string, accepted: boolean }>(props => ({
     display: 'flex',
     alignItems: 'center',
     alignSelf: props.alignSelf,
     height: 22,
     borderRadius: 16,
-    backgroundColor: '#e6f7e6',
+    backgroundColor: props.accepted ? '#e6f7e6' : '#f6f6f6',
     paddingLeft: 10,
     paddingRight: 10,
     '& svg': {
         marginRight: 5
     },
     '& span': {
-        opacity: 0.7,
+        opacity: props.accepted ? 0.7 : 0.5,
         fontSize: 12,
         fontWeight: 600,
         letterSpacing: -0.2,
-        color: '#65b969'
+        color: props.accepted ? '#65b969' : '#000'
     }
 }));
 
@@ -195,75 +227,122 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
 
     renderReactions() {
         let { user, reactions, meId, senderId, conversationType, messageId } = this.props;
+        let reactionsMap = {};
+        let reactionsLength = reactions.length;
+
+        for (let i = 0; i < reactionsLength; i++) {
+            let reaction = reactions[i];
+
+            if (!reactionsMap[reaction.reaction]) {
+                reactionsMap[reaction.reaction] = [];
+            }
+            reactionsMap[reaction.reaction].push(reaction);
+        }
+        let acceptLength = 0;
+        if ((reactionsMap as any).accept && (reactionsMap as any).accept.length) {
+            acceptLength = (reactionsMap as any).accept.length;
+        }
 
         if (senderId === meId) {
             if (conversationType === 'PrivateConversation') {
-                if (reactions.length > 0) {
-                    return (
-                        <Counter alignSelf="flex-start">
-                            <CheckIconSmall />
-                            <span>accepted</span>
-                        </Counter>
-                    );
+                if (reactionsLength > 0) {
+                    if (reactions[0].reaction === 'pass') {
+                        return null;
+                    } else {
+                        return (
+                            <Counter alignSelf="flex-end" accepted={true}>
+                                <CheckIconSmall />
+                                <span>accepted</span>
+                            </Counter>
+                        );
+                    }
                 } else {
                     return null;
                 }
             } else if (conversationType !== 'PrivateConversation') {
-                if (reactions.length > 0) {
+                if (reactionsLength > 0 && acceptLength > 0) {
                     return (
-                        <Counter alignSelf="flex-end">
+                        <Counter alignSelf="flex-end" accepted={true}>
                             <CheckIconSmall />
-                            <span>{reactions.length} accepted</span>
+                            <span>{acceptLength} accepted</span>
                         </Counter>
                     );
                 } else {
                     return null;
                 }
+            } else {
+                return null;
             }
-        }
-        if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
-            return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
-                    <SuccessButton
-                        text="Accepted"
-                        size="r-default"
-                        style="success"
-                        path={'/mail/' + user!.id}
-                        alignSelf="flex-start"
-                        icon={<CheckIcon />}
-                    />
-                    {(reactions.length > 0 && conversationType !== 'PrivateConversation') && (
-                        <Counter>
-                            <CheckIconSmall />
-                            <span>{reactions.length} accepted</span>
+        } else if (senderId !== meId) {
+            if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
+                return (
+                    <XHorizontal justifyContent="space-between" alignItems="center">
+                        <Counter accepted={false}>
+                            <PassedIcon />
+                            <span>You passed</span>
                         </Counter>
-                    )}
-                </XHorizontal>
-            );
+                        {(reactionsLength > 0 && conversationType !== 'PrivateConversation' && acceptLength > 0) && (
+                            <Counter accepted={true}>
+                                <CheckIconSmall />
+                                <span>{acceptLength} accepted</span>
+                            </Counter>
+                        )}
+                    </XHorizontal>
+                );
+            } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
+                return (
+                    <XHorizontal justifyContent="space-between" alignItems="center">
+                        {(reactionsLength > 0 && acceptLength > 0) && (
+                            <Counter accepted={true}>
+                                <CheckIconSmall />
+                                {acceptLength === 1 ?
+                                    (
+                                        <span>You accepted</span>
+                                    ) : (
+                                        <span>You + {acceptLength - 1} accepted</span>
+                                    )
+                                }
+                            </Counter>
+                        )}
+                    </XHorizontal>
+                );
+            } else {
+                return (
+                    <XHorizontal justifyContent="space-between" alignItems="center">
+                        <SetAccesReactionButton variables={{ messageId: messageId, reaction: 'accept' }} userId={user!.id}>
+                            <XButton
+                                text="Accept intro"
+                                style="primary-sky-blue"
+                                size="r-default"
+                                alignSelf="flex-start"
+                            />
+                        </SetAccesReactionButton>
+                        {(reactionsLength > 0 && acceptLength > 0) && (
+                            <Counter accepted={true}>
+                                <CheckIconSmall />
+                                <span>{acceptLength} accepted</span>
+                            </Counter>
+                        )}
+                    </XHorizontal>
+                );
+            }
         } else {
-            return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
-                    <SetAccesReactionButton variables={{ messageId: messageId, reaction: 'accept' }} userId={user!.id}>
-                        <XButton
-                            text="Accept intro"
-                            style="primary-sky-blue"
-                            size="r-default"
-                            alignSelf="flex-start"
-                        />
-                    </SetAccesReactionButton>
-                    {reactions.length > 0 && (
-                        <Counter>
-                            <CheckIconSmall />
-                            <span>{reactions.length} accepted</span>
-                        </Counter>
-                    )}
-                </XHorizontal>
-            );
+            return null;
         }
     }
 
     render() {
-        const { user, file, fileMetadata, urlAugmentation } = this.props;
+        const { user, file, fileMetadata, urlAugmentation, messageId, meId, senderId, reactions } = this.props;
+
+        let fileData = null;
+
+        if (file && fileMetadata) {
+            fileData = {
+                uuid: file,
+                name: (fileMetadata ? fileMetadata.name : null),
+                size: (fileMetadata ? fileMetadata.size.toString() : null)
+            };
+        }
 
         return (
             <Wrapper separator={6}>
@@ -273,8 +352,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                             <XHorizontal justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
-                                        userId={user.id}
-                                        userName={user.name}
+                                        path={reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? '/mail/u/' + user.id : undefined}
+                                        objectId={user.id}
+                                        objectName={user.name}
                                         photoRef={urlAugmentation.photo || undefined}
                                         style="colorus"
                                     />
@@ -285,16 +365,42 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                         )}
                                     </XVertical>
                                 </XHorizontal>
-                                <XOverflow
-                                    flat={true}
-                                    placement="bottom-end"
-                                    content={
-                                        <>
-                                            <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
-                                            <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
-                                        </>
-                                    }
-                                />
+                                <XHorizontal separator={2.5} alignItems="center">
+                                    <IntroTag separator={2.5} alignItems="center">
+                                        <IntroIcon />
+                                        <span>Intro</span>
+                                    </IntroTag>
+                                    <XOverflow
+                                        flat={true}
+                                        placement="bottom-end"
+                                        content={
+                                            <>
+                                                {reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? (
+                                                    <ChangeReactionButton messageId={messageId} unset="accept" set="pass">
+                                                        <XMenuItem style="primary-sky-blue">Pass</XMenuItem>
+                                                    </ChangeReactionButton>
+                                                ) : null}
+                                                {reactions.find(r => r.user.id === meId && r.reaction === 'pass') ? (
+                                                    <ChangeReactionButton messageId={messageId} unset="pass" set="accept">
+                                                        <XMenuItem style="primary-sky-blue">Accept</XMenuItem>
+                                                    </ChangeReactionButton>
+                                                ) : null}
+                                                {!reactions.find(r => r.user.id === meId) && (meId !== senderId) && (
+                                                    <SetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
+                                                        <XMenuItem style="primary-sky-blue">Pass</XMenuItem>
+                                                    </SetReactionButton>
+                                                )}
+                                                <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
+                                                {meId === senderId && (
+                                                    <>
+                                                        <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
+                                                        <XMenuItem style="danger" query={{ field: 'deleteMessage', value: messageId }}>Delete</XMenuItem>
+                                                    </>
+                                                )}
+                                            </>
+                                        }
+                                    />
+                                </XHorizontal>
                             </XHorizontal>
                         )}
                         {urlAugmentation.description && (
@@ -311,6 +417,15 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                     )}
                 </Root>
                 {this.renderReactions()}
+                {meId === senderId && (
+                    <PostIntroModal
+                        targetQuery={'editItro' + messageId}
+                        messageId={messageId}
+                        about={urlAugmentation.description || ''}
+                        file={fileData}
+                        user={user}
+                    />
+                )}
             </Wrapper>
         );
     }

@@ -101,6 +101,8 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                             cloudImageUuid={this.props.item.photo!!}
                             size="small"
                             style="channel"
+                            objectName={this.props.item.name}
+                            objectId={this.props.item.id}
                         />
                     </XLink>
                     <CommunityContentWrapper>

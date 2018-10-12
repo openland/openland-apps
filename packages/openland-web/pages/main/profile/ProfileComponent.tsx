@@ -144,6 +144,8 @@ const Header = (props: { organizationQuery: Organization }) => {
                     cloudImageUuid={org.photo || undefined}
                     size="s-medium"
                     style="organization"
+                    objectName={org.name}
+                    objectId={org.id}
                 />
             </HeaderAvatar>
             <HeaderInfo>
@@ -560,8 +562,8 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                 <MemberCardAvatar>
                     <XAvatar
                         cloudImageUuid={user.picture || undefined}
-                        userName={user.name}
-                        userId={user.id}
+                        objectName={user.name}
+                        objectId={user.id}
                         style="user"
                     />
                 </MemberCardAvatar>
@@ -758,6 +760,8 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                 <ChannelAvatar
                     style="channel"
                     cloudImageUuid={channel.photo || channel.photos[0] || (organization.photo ? organization.photo : undefined)}
+                    objectName={channel.title}
+                    objectId={channel.id}
                 />
                 <ChannelCardInfo>
                     <ChannelCardTitle>{(channel.isRoot ? '' : '/') + channel.title}</ChannelCardTitle>

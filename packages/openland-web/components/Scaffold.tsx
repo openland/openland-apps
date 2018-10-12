@@ -277,7 +277,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
                             <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
-                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" userName={this.props.name} userId={this.props.id} />
+                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" objectName={this.props.name} objectId={this.props.id} />
                                 <XVertical separator={1}>
                                     <ProfileTitle >{this.props.name}</ProfileTitle>
                                     <ProfileSubTitle>{TextGlobal.editProfile}</ProfileSubTitle>
@@ -290,7 +290,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                     </XModalContext.Provider>
                 )}
             >
-                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} style="colorus" userName={this.props.name} userId={this.props.id} />
+                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} style="colorus" objectName={this.props.name} objectId={this.props.id} />
             </XPopper>
         );
     }
@@ -803,7 +803,7 @@ export const CreateChannel = withCreateChannel((props) => {
             targetQuery="createChannel"
             defaultAction={async (data) => {
                 let oid = props.router.query.createChannel;
-                let channel = await props.createChannel({ variables: { title: data.input.name, message: 'channel created', description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
+                let channel = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
                 delay(0).then(() => {
                     props.router.push('/mail/' + channel.data.channel.id);
                 });
@@ -905,7 +905,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
         }
 
         el.onwheel = this.preventDefault;
-        el.onmousewheel = document.onmousewheel = this.preventDefault;
+        el.onmousewheel = (document as any).onmousewheel = this.preventDefault;
         el.ontouchmove = this.preventDefault;
         document.onkeydown = this.preventDefaultForScrollKeys;
     }
@@ -914,7 +914,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
         if (el.removeEventListener) {
             el.removeEventListener('DOMMouseScroll', this.preventDefault, false);
         }
-        el.onmousewheel = document.onmousewheel = null;
+        el.onmousewheel = (document as any).onmousewheel = null;
         el.onwheel = null;
         el.ontouchmove = null;
         document.onkeydown = null;

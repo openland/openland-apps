@@ -126,8 +126,8 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                             >
                                 <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
-                                        userId={e.value}
-                                        userName={e.label}
+                                        objectId={e.value}
+                                        objectName={e.label}
                                         style={e.type ? (e.type === 'Organization' ? 'organization' : 'colorus') : 'colorus'}
                                         src={e.photo || ''}
                                         size="small"

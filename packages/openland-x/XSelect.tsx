@@ -7,6 +7,11 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 // Sync
 //
 
+export interface XSelectProps extends XSelectBasicProps {
+    field?: string;
+    valueStoreKey?: string;
+}
+
 class XSelectStored extends React.PureComponent<XSelectProps & { store: XStoreState }> {
     handleChange = (src: any) => {
         let val = src ? src.value as string : 'unknown';
@@ -37,11 +42,6 @@ class XSelectStored extends React.PureComponent<XSelectProps & { store: XStoreSt
     }
 }
 
-export interface XSelectProps extends XSelectBasicProps {
-    field?: string;
-    valueStoreKey?: string;
-}
-
 export class XSelect extends React.PureComponent<XSelectProps> {
 
     render() {
@@ -66,7 +66,6 @@ export class XSelect extends React.PureComponent<XSelectProps> {
                     }}
                 </XStoreContext.Consumer>
             );
-
         }
         return <XSelectBasic {...this.props} />;
     }

@@ -7903,6 +7903,38 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "plainText",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "mentions",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -18524,6 +18556,24 @@
                   }
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "mentions",
+                "description": "",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UserID",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -18588,6 +18638,24 @@
                     "ofType": {
                       "kind": "SCALAR",
                       "name": "ConversationMessageID",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "mentions",
+                "description": "",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UserID",
                       "ofType": null
                     }
                   }
@@ -18667,6 +18735,77 @@
               },
               {
                 "name": "repeatKey",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ConversationEventMessage",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "alphaEditIntro",
+            "description": "",
+            "args": [
+              {
+                "name": "messageId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "userId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "UserID",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "about",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "message",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "file",
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
@@ -23515,6 +23654,16 @@
         "possibleTypes": null
       },
       {
+        "kind": "SCALAR",
+        "name": "UserID",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ConversationEventMessage",
         "description": "",
@@ -23677,16 +23826,6 @@
             "ofType": null
           }
         ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "UserID",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },

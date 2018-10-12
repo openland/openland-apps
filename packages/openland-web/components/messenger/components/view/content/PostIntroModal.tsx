@@ -10,7 +10,7 @@ import { XSelect } from 'openland-x/XSelect';
 import IcFile from '../../icons/ic-file.svg';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withExplorePeople } from '../../../../../api/withExplorePeople';
-import { withCreateIntro } from '../../../../../api/withCreateIntro';
+import { withIntro } from '../../../../../api/withIntro';
 import { XFileUpload } from 'openland-x/files/XFileUpload';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
@@ -50,6 +50,7 @@ const ImgButton = (props: XLinkProps & ImgButtonStylesProps) => (
 );
 
 const SearchPeopleModule = withExplorePeople(props => {
+    
     if (!(props.data && props.data.items)) {
         return (
             <XSelect
@@ -76,7 +77,14 @@ const SearchPeopleModule = withExplorePeople(props => {
                 creatable={true}
                 multi={false}
                 field="input.userId"
-                options={props.data.items.edges.map(i => ({ label: i.node.name, value: i.node.id, photo: i.node.picture, org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null) })) || []}
+                options={props.data.items.edges.map(i => (
+                    {
+                        label: i.node.name,
+                        value: i.node.id,
+                        photo: i.node.picture,
+                        org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null)
+                    })
+                ) || []}
                 render={
                     <XSelectCustomUsersRender
                         multi={false}
@@ -88,7 +96,7 @@ const SearchPeopleModule = withExplorePeople(props => {
             />
         </XFormField>
     );
-}) as React.ComponentType<{ variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
+}) as React.ComponentType< { variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
 
 class SearchPeople extends React.PureComponent {
     state = {
@@ -207,6 +215,14 @@ class FileComponent extends React.PureComponent<FileComponentProps> {
     }
 }
 
+interface PostIntroModalRawProps extends Partial<XModalFormProps> {
+    file?: {
+        uuid: string,
+        name: string | null,
+        size: string | null
+    } | null;
+}
+
 interface PostIntroModalRawState {
     fileUploading: boolean;
     progress: number | null;
@@ -217,14 +233,14 @@ interface PostIntroModalRawState {
     } | null;
 }
 
-class PostIntroModalRaw extends React.PureComponent<Partial<XModalFormProps>, PostIntroModalRawState> {
-    constructor(props: Partial<XModalFormProps>) {
+class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, PostIntroModalRawState> {
+    constructor(props: PostIntroModalRawProps) {
         super(props);
 
         this.state = {
             fileUploading: false,
             progress: null,
-            file: null
+            file: props.file || null
         };
     }
 
@@ -288,13 +304,6 @@ class PostIntroModalRaw extends React.PureComponent<Partial<XModalFormProps>, Po
                 title="Introduce a person"
                 useTopCloser={true}
                 customFooter={footer}
-                defaultData={{
-                    input: {
-                        userId: '',
-                        about: '',
-                        file: ''
-                    },
-                }}
             >
                 <XVertical separator={16}>
 
@@ -337,23 +346,62 @@ class PostIntroModalRaw extends React.PureComponent<Partial<XModalFormProps>, Po
     }
 }
 
-const MutationProvider = withCreateIntro((props) => (
+interface PostIntroModalProps extends Partial<XModalFormProps> {
+    conversationId?: string;
+    messageId?: string;
+    about?: string;
+    file?: {
+        uuid: string,
+        name: string | null,
+        size: string | null
+    } | null;
+    user?: {
+        id: string,
+        name: string,
+        photo: string | null,
+        primaryOrganization: {
+            id?: string | null,
+            name?: string | null,
+        } | null
+    } | null;
+}
+
+const MutationProvider = withIntro((props) => (
     <PostIntroModalRaw
         {...props}
         defaultAction={async (data) => {
             let input = data.input || {};
-            await props.createIntro({
-                variables: {
-                    conversationId: (props as any).conversationId,
-                    userId: input.userId[0],
-                    about: input.about,
-                    file: input.file
-                }
-            });
+            if (props.messageId) {
+                await props.editIntro({
+                    variables: {
+                        messageId: (props as any).messageId,
+                        userId: input.userId[0],
+                        about: input.about,
+                        file: input.file
+                    }
+                });
+            } else {
+                await props.createIntro({
+                    variables: {
+                        conversationId: (props as any).conversationId,
+                        userId: input.userId[0],
+                        about: input.about,
+                        file: input.file
+                    }
+                });
+            }
+
+        }}
+        defaultData={{
+            input: {
+                userId: props.user ? [props.user.id] : undefined,
+                about: props.about,
+                file: (props.file && props.file.uuid)
+            }
         }}
     />
-)) as React.ComponentType<{ conversationId: string } & Partial<XModalFormProps>>;
+)) as React.ComponentType<PostIntroModalProps>;
 
-export const PostIntroModal = withCreateIntro((props: Partial<XModalFormProps>) => (
+export const PostIntroModal = withIntro((props) => (
     <MutationProvider {...props} conversationId={(props as any).conversationId} />
-)) as React.ComponentType<{ conversationId: string } & Partial<XModalFormProps>>;
+)) as React.ComponentType<PostIntroModalProps>;

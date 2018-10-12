@@ -56,11 +56,11 @@ const LeaveChatComponent = withChatLeave((props) => {
         <XModalForm
             title="Leave from chat"
             targetQuery="leaveFromChat"
-            submitBtnText="leave"
+            submitBtnText="Leave"
             defaultAction={(data) => {
                 props.leaveFromChat({ variables: { conversationId: id } });
             }}
-            submitProps={{ succesText: 'done!', style: 'danger' }}
+            submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
             <XText>Are you sure you want to leave from chat? This cannot be undone.</XText>
         </XModalForm >

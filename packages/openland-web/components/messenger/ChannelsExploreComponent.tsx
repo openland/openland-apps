@@ -118,6 +118,8 @@ const Channels = withChatSearchChannels((props) => {
                                     <Avatar
                                         style="channel"
                                         cloudImageUuid={channel.photo || channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
+                                        objectName={channel.title}
+                                        objectId={channel.id}
                                     />
                                     <XVertical separator={1}>
                                         <ChannelName>{title}</ChannelName>

@@ -197,6 +197,8 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             cloudImageUuid={this.props.item.photo!!}
                             size="x-medium"
                             style="organization"
+                            objectName={this.props.item.name}
+                            objectId={this.props.item.id}
                         />
                     </XLink>
                     <OrganizationContentWrapper>
@@ -205,8 +207,8 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             {firstMember && (
                                 <OrganizationMembers path={'/directory/u/' + firstMember.user.id}>
                                     <XAvatar
-                                        userName={firstMember.user.name}
-                                        userId={firstMember.user.id}
+                                        objectName={firstMember.user.name}
+                                        objectId={firstMember.user.id}
                                         size="x-small"
                                         style="colorus"
                                         cloudImageUuid={firstMember.user.picture || undefined}

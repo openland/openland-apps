@@ -57,7 +57,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: '#99A2B0'
 }));
 
-const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean }>((props) => ({
+const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
     // alignItems: props.compact ? 'center' : undefined,
@@ -94,7 +94,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean 
             opacity: 1
         }
     },
-    '&': (props.isEditView) ? {
+    '&': (props.isHovered) ? {
         backgroundColor: 'rgba(242, 244, 245, 0.5)',
         '& .time': {
             opacity: 1
@@ -114,9 +114,9 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean 
     // hover - end
 }));
 
-const MessageCompactContent = Glamorous(XVertical)({
-    paddingRight: 20
-});
+const MessageCompactContent = Glamorous(XVertical)<{isIntro?: boolean}>(props => ({
+    paddingRight: props.isIntro === true ? 0 : 20
+}));
 
 const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     position: 'absolute',
@@ -141,10 +141,16 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean, isMenuOpen: boolean }) => {
         if (isServerMessage(props.message)) {
-            return {
-                isEditView: (props.messageEditor.editMessageId === props.message.id) ? true : false,
-                isMenuOpen: false
-            };
+            if (props.messageEditor.editMessageId === props.message.id) {
+                return {
+                    isEditView: true,
+                    isMenuOpen: false
+                };
+            } else {
+                return {
+                    isEditView: false
+                };
+            }
         }
 
         return null;
@@ -172,9 +178,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     }
 
     hideEditView = () => {
-        if (isServerMessage(this.props.message)) {
-            this.props.messageEditor.setEditMessageId(null);
-        }
+        this.props.messageEditor.setEditMessageId(null);
     }
 
     render() {
@@ -293,11 +297,18 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     </MenuWrapper>
                 </XWithRole>
             ) : null;
+        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+            menu = null;
+        }
+        let isIntro = false;
+        if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
+            isIntro = true;
+        }
         if (this.props.compact) {
             return (
-                <MessageContainer className="compact-message" compact={true} isEditView={this.state.isEditView}>
+                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
-                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
+                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)" isIntro={isIntro}>
                         {content}
                         {menu}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
@@ -316,12 +327,12 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <MessageContainer className="full-message" compact={false} isEditView={this.state.isEditView}>
+            <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                 <XHorizontal alignSelf="stretch">
                     <XAvatar
                         style="colorus"
-                        userName={this.props.sender!!.name}
-                        userId={this.props.sender!!.id}
+                        objectName={this.props.sender!!.name}
+                        objectId={this.props.sender!!.id}
                         cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined}
                         path={'/mail/u/' + this.props.sender!!.id}
                     />
@@ -353,7 +364,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 }
 
 export class MessageComponent extends React.Component<MessageComponentProps> {
-    render () {
+    render() {
         return (
             <EditMessageContext.Consumer>
                 {(editor: EditMessageContextProps) => (

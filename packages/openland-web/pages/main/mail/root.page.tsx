@@ -166,7 +166,7 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
 
     return (
         <>
-            <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
+            <XDocumentHead title={isCompose ? 'Compose' : 'Messages'} titleWithoutReverse={!isCompose} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>

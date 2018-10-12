@@ -256,6 +256,7 @@ interface ChannelsInviteComponentProps {
     };
     invite?: {
         invitedByUser?: {
+            id: string,
             name: string,
             picture?: string | null
         }
@@ -281,7 +282,12 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                     )}
                     {this.props.invite && this.props.invite.invitedByUser ?
                         <UserInfoWrapper separator={6} justifyContent="center">
-                            <UserAvatar cloudImageUuid={this.props.invite.invitedByUser.picture || undefined} />
+                            <UserAvatar
+                                cloudImageUuid={this.props.invite.invitedByUser.picture || undefined}
+                                style="colorus"
+                                objectName={this.props.invite.invitedByUser.name}
+                                objectId={this.props.invite.invitedByUser.id}
+                            />
                             <Text><b>{this.props.invite.invitedByUser.name}</b> has invited you</Text>
                         </UserInfoWrapper> : <div style={{ height: 50 }} />
                     }
@@ -290,6 +296,8 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                             <ChannelAvatar
                                 cloudImageUuid={channel.photo || undefined}
                                 style="channel"
+                                objectName={channel.title}
+                                objectId={channel.id}
                             />
                             <div>
                                 <ChannelTitle>

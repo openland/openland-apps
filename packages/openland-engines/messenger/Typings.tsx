@@ -49,37 +49,39 @@ export class TypingsWatcher {
 
         this.sub = typingSubscription.subscribe({
             next: (event) => {
-                if (event.data.alphaSubscribeTypings.user.id === currentuserId) {
-                    return;
+                if (event.data) {
+                    if (event.data.alphaSubscribeTypings.user.id === currentuserId) {
+                        return;
+                    }
+                    let cId: string = event.data.alphaSubscribeTypings.conversation.id;
+                    let type: string = event.data.alphaSubscribeTypings.conversation.__typename;
+    
+                    // add new typings
+                    let existing = this.typings[cId] || {};
+    
+                    if (!event.data.alphaSubscribeTypings.cancel) {
+                        existing[event.data.alphaSubscribeTypings.user.id] = {
+                            userName: event.data.alphaSubscribeTypings.user.name,
+                            userPic: event.data.alphaSubscribeTypings.user.picture,
+                            userId: event.data.alphaSubscribeTypings.user.id
+                        };
+                        this.typings[cId] = existing;
+    
+                        this.onChange(cId, this.renderTypings(cId, type));
+                    }
+    
+                    // clear scehduled typing clear
+                    let existingTimeouts = this.timeouts[cId] || {};
+                    clearTimeout(existingTimeouts[event.data.alphaSubscribeTypings.user.id]);
+                    // schedule typing clear
+                    existingTimeouts[event.data.alphaSubscribeTypings.user.id] = setTimeout(
+                        () => {
+                            existing[event.data.alphaSubscribeTypings.user.id] = undefined;
+                            onChange(cId, this.renderTypings(cId));
+                        },
+                        event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
+                    this.timeouts[cId] = existingTimeouts;
                 }
-                let cId: string = event.data.alphaSubscribeTypings.conversation.id;
-                let type: string = event.data.alphaSubscribeTypings.conversation.__typename;
-
-                // add new typings
-                let existing = this.typings[cId] || {};
-
-                if (!event.data.alphaSubscribeTypings.cancel) {
-                    existing[event.data.alphaSubscribeTypings.user.id] = {
-                        userName: event.data.alphaSubscribeTypings.user.name,
-                        userPic: event.data.alphaSubscribeTypings.user.picture,
-                        userId: event.data.alphaSubscribeTypings.user.id
-                    };
-                    this.typings[cId] = existing;
-
-                    this.onChange(cId, this.renderTypings(cId, type));
-                }
-
-                // clear scehduled typing clear
-                let existingTimeouts = this.timeouts[cId] || {};
-                clearTimeout(existingTimeouts[event.data.alphaSubscribeTypings.user.id]);
-                // schedule typing clear
-                existingTimeouts[event.data.alphaSubscribeTypings.user.id] = setTimeout(
-                    () => {
-                        existing[event.data.alphaSubscribeTypings.user.id] = undefined;
-                        onChange(cId, this.renderTypings(cId));
-                    },
-                    event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
-                this.timeouts[cId] = existingTimeouts;
             }
         });
 
@@ -91,15 +93,14 @@ export class TypingsWatcher {
             return undefined;
         }
 
-        let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: (u!.userName.split(' ')[0] + (u!.userName.split(' ')[1] !== undefined ? ' ' + u!.userName.split(' ')[1][0] : '')), userPic: u!.userPic, userId: u!.userId }));
+        let isPrivate = type === 'PrivateConversation';
+
+        let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: isPrivate ? u!.userName.split(' ')[0] : u!.userName, userPic: u!.userPic, userId: u!.userId }));
 
         let userNames = usersTyping.map(u => u!.userName.split(' ').map((part, i) => i === 0 ? part : i === 1 ? part[0] + '.' : '').join(' '));
 
         let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing...';
 
-        if (type === 'PrivateConversation') {
-            str = 'typing...';
-        }
         let data = {
             typing: str,
             users: usersTyping,

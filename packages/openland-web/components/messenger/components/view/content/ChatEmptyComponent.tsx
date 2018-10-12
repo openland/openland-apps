@@ -81,24 +81,7 @@ export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: 
             <ImageWrapper>
                 {props.conversationType === 'ChannelConversation' ? <Image isChannel={true} /> : <Image isChannel={false} />}
             </ImageWrapper>
-            {props.conversationType === 'ChannelConversation' && (
-                <>
-                    <TextSmall>The discussion hasn’t started yet</TextSmall>
-                    <Text
-                        marginTop={8}
-                        opacity={1}
-                        marginBottom={30}
-                    >
-                        To get things going, describe what you are looking for and how you can help others
-                    </Text>
-                    {/* <XButton
-                        text="Write to channel"
-                        style="primary-sky-blue"
-                        size="r-default"
-                        onClick={() => props.onClick ? props.onClick(true) : null}
-                    /> */}
-                </>
-            )}
+            {props.conversationType === 'ChannelConversation' && <Text opacity={0.5} marginTop={8}>The discussion hasn’t started yet</Text>}
             {props.conversationType !== 'ChannelConversation' && <Text opacity={0.5} marginTop={8}>No messages yet</Text>}
         </EmptyContent>
     </EmptyRoot>

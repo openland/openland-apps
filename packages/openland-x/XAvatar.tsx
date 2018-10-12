@@ -17,11 +17,10 @@ export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'co
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
     size?: XAvatarSize;
-    border?: string;
     style?: XAvatarStyle;
     attach?: 'left' | 'right' | 'both';
-    userId?: string;
-    userName?: string;
+    objectId?: string;
+    objectName?: string;
     online?: boolean;
 }
 
@@ -142,15 +141,9 @@ interface StyledAvatarProps extends XFlexStyles {
 const AvatarBehaviour = [
     (props: any) => ({
         display: 'flex',
-        border: props.avatarBorder ? props.avatarBorder : (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
         cursor: (props as any).enabled === false ? 'default' : 'pointer',
         src: props.src,
         flexShrink: 0,
-
-        '& img': {
-            marginTop: props.avatarBorder === 'none' ? 0 : (props.avatarBorder || (props as any).avatarStyle !== 'organization' ? -1 : 0),
-            marginLeft: props.avatarBorder === 'none' ? 0 : (props.avatarBorder || (props as any).avatarStyle !== 'organization' ? -1 : 0),
-        }
     }),
     (props: any) => applyFlex(props),
     (props: any) => ({
@@ -180,7 +173,6 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
         width: '100%',
         height: '100%',
     },
-    border: 'none'
 })]);
 
 const AvatarStub = Glamorous.div({
@@ -266,7 +258,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let avatarWrapperProps = {
         avatarSize: props.size,
-        avatarBorder: props.border,
         avatarStyle: props.style,
         attach: props.attach,
         flexBasis: props.flexBasis,
@@ -281,7 +272,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         href: props.href,
         target: props.hrefTarget,
         avatarSize: props.size,
-        avatarBorder: props.border,
         avatarStyle: props.style,
         // attach: props.attach,
         // flexBasis: props.flexBasis,
@@ -299,7 +289,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
     let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
 
-    let initials = props.userName && extractPlaceholder(props.userName);
+    let initials = props.objectName && extractPlaceholder(props.objectName);
     return (
         <AvatarWrapper {...avatarWrapperProps}>
             {props.src && (
@@ -312,14 +302,11 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {!props.src && !(props.photoRef || props.cloudImageUuid) && (
                 <StyledPlaceholder {...avatarProps} >
-                    {props.style === 'organization' && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="org-large" /> : <AvatarStub className="org-small" />)}
-                    {props.style === 'channel' && <AvatarStub className="channel" />}
-                    {props.style === 'group' && <AvatarStub className="group" />}
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
-                    {(props.style === 'colorus' || props.style === 'user') && (
+                    {!(props.style === undefined || props.style === 'person') && (
                         <ColorusStub
                             fontSize={fontSize}
-                            backgroundImage={props.userId && ColorusArr[Math.abs(doSimpleHash(props.userId)) % ColorusArr.length] || ColorusArr[1]}
+                            backgroundImage={props.objectId && ColorusArr[Math.abs(doSimpleHash(props.objectId)) % ColorusArr.length] || ColorusArr[1]}
                         >
                             {initials}
                         </ColorusStub>
@@ -327,14 +314,13 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
                 </StyledPlaceholder>
             )}
             {props.online === true && <OnlineDot format={props.size} className="online-status-dot" />}
-            {(props.style === 'user' && props.userId && props.online === undefined) && (
-                <Query query={UserQuery.document} variables={{ userId: props.userId }}>
+            {(props.style === 'user' && props.objectId && props.online === undefined) && (
+                <Query query={UserQuery.document} variables={{ userId: props.objectId }}>
                     {(data) => {
                         return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
                     }}
                 </Query>
             )}
-
         </AvatarWrapper>
     );
 }));

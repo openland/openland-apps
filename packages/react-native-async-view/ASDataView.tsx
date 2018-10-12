@@ -95,6 +95,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
     }
     onDataSourceItemUpdated = (item: T, index: number) => {
         this.queue.push(async () => {
+            console.warn('boom', 'item updated', JSON.stringify(item));
             // Update item
             this.items[index].updateItem(item);
         });

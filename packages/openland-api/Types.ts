@@ -222,6 +222,7 @@ export interface AccountInvites {
 
 export interface AccountInvitesHistory_invites_acceptedBy {
   __typename: "User";
+  id: string;
   name: string;
   picture: string | null;
 }
@@ -1912,6 +1913,29 @@ export interface ChatCreateIntro {
 
 export interface ChatCreateIntroVariables {
   conversationId: string;
+  userId?: any | null;
+  about?: string | null;
+  file?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: ChatEditIntro
+// ====================================================
+
+export interface ChatEditIntro_intro {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
+export interface ChatEditIntro {
+  intro: ChatEditIntro_intro;
+}
+
+export interface ChatEditIntroVariables {
+  messageId: string;
   userId?: any | null;
   about?: string | null;
   file?: string | null;
@@ -4982,6 +5006,7 @@ export interface MyOrganization_myOrganization_contacts_photo {
 
 export interface MyOrganization_myOrganization_contacts {
   __typename: "Profile";
+  id: string;
   firstName: string | null;
   lastName: string | null;
   photo: MyOrganization_myOrganization_contacts_photo | null;
@@ -5851,6 +5876,7 @@ export interface Organization_organization_contacts_photo {
 
 export interface Organization_organization_contacts {
   __typename: "Profile";
+  id: string;
   firstName: string | null;
   lastName: string | null;
   photo: Organization_organization_contacts_photo | null;
@@ -11014,6 +11040,7 @@ export interface OrganizationFull_contacts_photo {
 
 export interface OrganizationFull_contacts {
   __typename: "Profile";
+  id: string;
   firstName: string | null;
   lastName: string | null;
   photo: OrganizationFull_contacts_photo | null;
