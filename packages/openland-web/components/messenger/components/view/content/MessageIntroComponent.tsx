@@ -7,13 +7,13 @@ import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import { PostIntroModal } from './PostIntroModal';
-import CheckIcon from '../../icons/ic-check.svg';
 import CheckIconSmall from '../../icons/ic-check-small.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { withSetReaction } from '../../../../../api/withSetReaction';
+import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
 import IntroIcon from '../../icons/ic-tag-intro.svg';
+import PassedIcon from '../../icons/ic-passed.svg';
 
 const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     <XMutation mutation={props.setReaction} onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}>
@@ -21,9 +21,37 @@ const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     </XMutation>
 ))) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any, userId: string }>;
 
+const SetReactionButton = withSetReaction((props) => (
+    <XMutation mutation={props.setReaction}>
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ variables: { messageId: string, reaction: string }, children: any }>;
+
+const ChangeReactionButton = withChangeReaction((props) => (
+    <XMutation
+        action={async () => {
+            await props.unsetReaction({
+                variables: {
+                    messageId: (props as any).messageId,
+                    reaction: (props as any).unset
+                }
+            });
+            await props.setReaction({
+                variables: {
+                    messageId: (props as any).messageId,
+                    reaction: (props as any).set
+                }
+            });
+        }}
+    >
+        {props.children}
+    </XMutation>
+)) as React.ComponentType<{ messageId: string, children: any, unset: string, set: string }>;
+
 const Wrapper = Glamorous(XVertical)({
     paddingTop: 4,
     paddingBottom: 4,
+    maxWidth: 550
 });
 
 const Root = Glamorous(XVertical)({
@@ -173,28 +201,24 @@ interface MessageIntroComponentProps {
     conversationType?: string;
 }
 
-const SuccessButton = Glamorous(XButton)({
-    cursor: 'pointer !important'
-});
-
-const Counter = Glamorous.div<{ alignSelf?: string }>(props => ({
+const Counter = Glamorous.div<{ alignSelf?: string, accepted: boolean }>(props => ({
     display: 'flex',
     alignItems: 'center',
     alignSelf: props.alignSelf,
     height: 22,
     borderRadius: 16,
-    backgroundColor: '#e6f7e6',
+    backgroundColor: props.accepted ? '#e6f7e6' : '#f6f6f6',
     paddingLeft: 10,
     paddingRight: 10,
     '& svg': {
         marginRight: 5
     },
     '& span': {
-        opacity: 0.7,
+        opacity: props.accepted ? 0.7 : 0.5,
         fontSize: 12,
         fontWeight: 600,
         letterSpacing: -0.2,
-        color: '#65b969'
+        color: props.accepted ? '#65b969' : '#000'
     }
 }));
 
@@ -202,75 +226,101 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
 
     renderReactions() {
         let { user, reactions, meId, senderId, conversationType, messageId } = this.props;
+        let reactionsMap = {};
+
+        for (let i = 0; i < reactions.length; i++) {
+            let reaction = reactions[i];
+
+            if (!reactionsMap[reaction.reaction]) {
+                reactionsMap[reaction.reaction] = [];
+            }
+            reactionsMap[reaction.reaction].push(reaction);
+        }
 
         if (senderId === meId) {
             if (conversationType === 'PrivateConversation') {
                 if (reactions.length > 0) {
-                    return (
-                        <Counter alignSelf="flex-start">
-                            <CheckIconSmall />
-                            <span>accepted</span>
-                        </Counter>
-                    );
+                    if (reactions[0].reaction === 'pass') {
+                        return null;
+                    } else {
+                        return (
+                            <Counter alignSelf="flex-start" accepted={true}>
+                                <CheckIconSmall />
+                                <span>accepted</span>
+                            </Counter>
+                        );
+                    }
                 } else {
                     return null;
                 }
             } else if (conversationType !== 'PrivateConversation') {
-                if (reactions.length > 0) {
+                if (reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) {
                     return (
-                        <Counter alignSelf="flex-end">
+                        <Counter alignSelf="flex-end" accepted={true}>
                             <CheckIconSmall />
-                            <span>{reactions.length} accepted</span>
+                            <span>{(reactionsMap as any).accept.length} accepted</span>
                         </Counter>
                     );
                 } else {
                     return null;
                 }
+            } else {
+                return null;
             }
-        }
-        if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
-            return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
-                    <SuccessButton
-                        text="Accepted"
-                        size="r-default"
-                        style="success"
-                        path={'/mail/' + user!.id}
-                        alignSelf="flex-start"
-                        icon={<CheckIcon />}
-                    />
-                    {(reactions.length > 0 && conversationType !== 'PrivateConversation') && (
-                        <Counter>
-                            <CheckIconSmall />
-                            <span>{reactions.length} accepted</span>
+        } else if (senderId !== meId) {
+            if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
+                return (
+                    <XHorizontal justifyContent="space-between" alignItems="center">
+                        <Counter accepted={false}>
+                            <PassedIcon />
+                            <span>You passed</span>
                         </Counter>
-                    )}
-                </XHorizontal>
-            );
+                        {(reactions.length > 0 && conversationType !== 'PrivateConversation' && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
+                            <Counter accepted={true}>
+                                <CheckIconSmall />
+                                <span>{(reactionsMap as any).accept.length} accepted</span>
+                            </Counter>
+                        )}
+                    </XHorizontal>
+                );
+            } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
+                return (
+                    <XHorizontal justifyContent="space-between" alignItems="center">
+                        {(reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
+                            <Counter accepted={true}>
+                                <CheckIconSmall />
+                                <span>You + {(reactionsMap as any).accept.length - 1} accepted</span>
+                            </Counter>
+                        )}
+                    </XHorizontal>
+                );
+            } else {
+                return (
+                    <XHorizontal justifyContent="space-between" alignItems="center">
+                        <SetAccesReactionButton variables={{ messageId: messageId, reaction: 'accept' }} userId={user!.id}>
+                            <XButton
+                                text="Accept intro"
+                                style="primary-sky-blue"
+                                size="r-default"
+                                alignSelf="flex-start"
+                            />
+                        </SetAccesReactionButton>
+                        {(reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
+                            <Counter accepted={true}>
+                                <CheckIconSmall />
+                                <span>{(reactionsMap as any).accept.length} accepted</span>
+                            </Counter>
+                        )}
+                    </XHorizontal>
+                );
+            }
         } else {
-            return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
-                    <SetAccesReactionButton variables={{ messageId: messageId, reaction: 'accept' }} userId={user!.id}>
-                        <XButton
-                            text="Accept intro"
-                            style="primary-sky-blue"
-                            size="r-default"
-                            alignSelf="flex-start"
-                        />
-                    </SetAccesReactionButton>
-                    {reactions.length > 0 && (
-                        <Counter>
-                            <CheckIconSmall />
-                            <span>{reactions.length} accepted</span>
-                        </Counter>
-                    )}
-                </XHorizontal>
-            );
+            return null;
         }
     }
 
     render() {
-        const { user, file, fileMetadata, urlAugmentation, messageId, meId, senderId } = this.props;
+        const { user, file, fileMetadata, urlAugmentation, messageId, meId, senderId, reactions } = this.props;
 
         let fileData = null;
 
@@ -312,12 +362,27 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                         placement="bottom-end"
                                         content={
                                             <>
+                                                {reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? (
+                                                    <ChangeReactionButton messageId={messageId} unset="accept" set="pass">
+                                                        <XMenuItem style="primary-sky-blue">Pass</XMenuItem>
+                                                    </ChangeReactionButton>
+                                                ) : null}
+                                                {reactions.find(r => r.user.id === meId && r.reaction === 'pass') ? (
+                                                    <ChangeReactionButton messageId={messageId} unset="pass" set="accept">
+                                                        <XMenuItem style="primary-sky-blue">Accept</XMenuItem>
+                                                    </ChangeReactionButton>
+                                                ) : null}
+                                                {!reactions.find(r => r.user.id === meId) && (meId !== senderId) && (
+                                                    <SetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
+                                                        <XMenuItem style="primary-sky-blue">Pass</XMenuItem>
+                                                    </SetReactionButton>
+                                                )}
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
                                                 {meId === senderId && (
                                                     <>
-                                                    <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
-                                                    <XMenuItem style="danger" query={{ field: 'deleteMessage', value: messageId }}>Delete</XMenuItem>
+                                                        <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
+                                                        <XMenuItem style="danger" query={{ field: 'deleteMessage', value: messageId }}>Delete</XMenuItem>
                                                     </>
                                                 )}
                                             </>
