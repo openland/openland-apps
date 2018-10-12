@@ -49,37 +49,39 @@ export class TypingsWatcher {
 
         this.sub = typingSubscription.subscribe({
             next: (event) => {
-                if (event.data.alphaSubscribeTypings.user.id === currentuserId) {
-                    return;
+                if (event.data) {
+                    if (event.data.alphaSubscribeTypings.user.id === currentuserId) {
+                        return;
+                    }
+                    let cId: string = event.data.alphaSubscribeTypings.conversation.id;
+                    let type: string = event.data.alphaSubscribeTypings.conversation.__typename;
+    
+                    // add new typings
+                    let existing = this.typings[cId] || {};
+    
+                    if (!event.data.alphaSubscribeTypings.cancel) {
+                        existing[event.data.alphaSubscribeTypings.user.id] = {
+                            userName: event.data.alphaSubscribeTypings.user.name,
+                            userPic: event.data.alphaSubscribeTypings.user.picture,
+                            userId: event.data.alphaSubscribeTypings.user.id
+                        };
+                        this.typings[cId] = existing;
+    
+                        this.onChange(cId, this.renderTypings(cId, type));
+                    }
+    
+                    // clear scehduled typing clear
+                    let existingTimeouts = this.timeouts[cId] || {};
+                    clearTimeout(existingTimeouts[event.data.alphaSubscribeTypings.user.id]);
+                    // schedule typing clear
+                    existingTimeouts[event.data.alphaSubscribeTypings.user.id] = setTimeout(
+                        () => {
+                            existing[event.data.alphaSubscribeTypings.user.id] = undefined;
+                            onChange(cId, this.renderTypings(cId));
+                        },
+                        event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
+                    this.timeouts[cId] = existingTimeouts;
                 }
-                let cId: string = event.data.alphaSubscribeTypings.conversation.id;
-                let type: string = event.data.alphaSubscribeTypings.conversation.__typename;
-
-                // add new typings
-                let existing = this.typings[cId] || {};
-
-                if (!event.data.alphaSubscribeTypings.cancel) {
-                    existing[event.data.alphaSubscribeTypings.user.id] = {
-                        userName: event.data.alphaSubscribeTypings.user.name,
-                        userPic: event.data.alphaSubscribeTypings.user.picture,
-                        userId: event.data.alphaSubscribeTypings.user.id
-                    };
-                    this.typings[cId] = existing;
-
-                    this.onChange(cId, this.renderTypings(cId, type));
-                }
-
-                // clear scehduled typing clear
-                let existingTimeouts = this.timeouts[cId] || {};
-                clearTimeout(existingTimeouts[event.data.alphaSubscribeTypings.user.id]);
-                // schedule typing clear
-                existingTimeouts[event.data.alphaSubscribeTypings.user.id] = setTimeout(
-                    () => {
-                        existing[event.data.alphaSubscribeTypings.user.id] = undefined;
-                        onChange(cId, this.renderTypings(cId));
-                    },
-                    event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
-                this.timeouts[cId] = existingTimeouts;
             }
         });
 
