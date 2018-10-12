@@ -114,9 +114,9 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
     // hover - end
 }));
 
-const MessageCompactContent = Glamorous(XVertical)({
-    paddingRight: 20
-});
+const MessageCompactContent = Glamorous(XVertical)<{isIntro?: boolean}>(props => ({
+    paddingRight: props.isIntro === true ? 0 : 20
+}));
 
 const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     position: 'absolute',
@@ -300,11 +300,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
             menu = null;
         }
+        let isIntro = false;
+        if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
+            isIntro = true;
+        }
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
-                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
+                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)" isIntro={isIntro}>
                         {content}
                         {menu}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
