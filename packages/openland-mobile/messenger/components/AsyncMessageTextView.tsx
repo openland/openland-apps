@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking } from 'react-native';
+import { Platform, Linking, Image } from 'react-native';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
@@ -40,6 +40,8 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
             placeholderIndex = doSimpleHash(this.props.message.senderId);
         }
         let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
+        let image = this.props.message.isOut ? require('assets/chat-bubble-in-compact.png') : require('assets/chat-bubble-out-compact.png');
+        let resolved = Image.resolveAssetSource(image);
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex
@@ -49,7 +51,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                     marginBottom={8}
                     flexDirection="column"
                 >
-                    {!this.props.message.isOut && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
+                    {!this.props.message.isOut && !this.props.message.attachTop && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
                     <ASText
                         color={this.props.message.isOut ? '#fff' : '#000'}
                         lineHeight={big ? 60 : 20}
@@ -60,6 +62,30 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                         {parts}
                         {this.props.message.isOut ? paddedTextOut : paddedText}
                     </ASText>
+
+                    {this.props.message.urlAugmentation && (
+                        <ASFlex flexDirection="column" marginTop={5}>
+                            {!!this.props.message.urlAugmentation.title && <ASText
+                                color={this.props.message.isOut ? '#fff' : '#000'}
+                                lineHeight={big ? 60 : 20}
+                                letterSpacing={-0.3}
+                                fontSize={18}
+                                fontWeight="500"
+                            >
+                                {this.props.message.urlAugmentation.title}
+                            </ASText>
+                            }
+                            {!!this.props.message.urlAugmentation.description && <ASText
+                                color={this.props.message.isOut ? '#fff' : '#000'}
+                                lineHeight={big ? 60 : 20}
+                                letterSpacing={-0.3}
+                                fontSize={big ? 52 : 16}
+                                fontWeight="400"
+                            >
+                                {this.props.message.urlAugmentation.description}
+                            </ASText>}
+                        </ASFlex>
+                    )}
                 </ASFlex>
                 <ASFlex
                     overlay={true}
