@@ -96,7 +96,7 @@ export class DialogListEngine {
             if (res && res.typing !== typing) {
                 this.dataSource.updateItem({
                     ...res,
-                    typing: res.type === 'PrivateConversation' ? 'typing...' : typing
+                    typing: typing && (res.type === 'PrivateConversation' ? 'typing...' : typing)
                 });
             }
         });

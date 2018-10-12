@@ -127,7 +127,7 @@ let renderButtons = (message: DataSourceMessageItem, navigationManager: Navigati
     }
 
     return buttons.length ? (
-        <ASFlex flexDirection="column">
+        <ASFlex flexDirection="column" marginBottom={10}>
             {buttons}
         </ASFlex>
     ) : null;
