@@ -89,7 +89,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         this.setState(
             { routes: this.routes, mounted: this.mounted, current: this.currentHistory.history[this.currentHistory.history.length - 1].key },
             () => {
-                this.headerCoordinator.setInitialState(this.currentHistory);
+                this.headerCoordinator.setInitialState(this.currentHistory.history);
             });
     }
 
@@ -188,11 +188,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     //     to: 1, easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     // });
                 }
-                this.headerCoordinator.onPushed(this.currentHistory);
+                this.headerCoordinator.onPushed(underlayHolder, record);
 
                 SAnimated.commitTransaction(() => {
                     unlock();
-                    this.headerCoordinator.onTransitionStop();
+                    this.headerCoordinator.onTransitionStop(record);
                     this.mounted = this.mounted.filter((v) => v !== underlay && !removedPages.find((v2) => v2.key === v));
                     this.routes = this.routes.filter((v) => !removedPages.find((v2) => v2.key === v.key));
                     this.setState({ mounted: this.mounted, routes: this.routes, navigateTo: undefined, navigateFrom: undefined });
@@ -300,11 +300,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     //     easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     // });
                 }
-                this.headerCoordinator.onPopped(prevHistory, this.currentHistory);
+                this.headerCoordinator.onPopped(page, underlayHolder);
 
                 SAnimated.commitTransaction(() => {
                     unlock();
-                    this.headerCoordinator.onTransitionStop();
+                    this.headerCoordinator.onTransitionStop(underlayHolder);
                     this.removing = this.removing.filter((v) => v !== page.key);
                     this.mounted = this.mounted.filter((v) => v !== page.key);
                     this.routes = this.routes.filter((v) => v.key !== page.key);
@@ -325,7 +325,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
             if (dx <= 0) {
                 unlock();
-                this.headerCoordinator.onTransitionStop();
+                this.headerCoordinator.onTransitionStop(this.currentHistory.history[this.currentHistory.history.length - 1]);
                 this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
                 this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
             } else {
@@ -367,9 +367,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     easing: { bezier: [0.4, 0.0, 0.2, 1] }
                 });
 
-                this.headerCoordinator.onSwipeCancelled(this.currentHistory);
+                this.headerCoordinator.onSwipeCancelled(this.currentHistory.history[this.currentHistory.history.length - 1], this.currentHistory.history[this.currentHistory.history.length - 2]);
                 SAnimated.commitTransaction(() => {
-                    this.headerCoordinator.onTransitionStop();
+                    this.headerCoordinator.onTransitionStop(this.currentHistory.history[this.currentHistory.history.length - 1]);
                     unlock();
                     this.mounted = this.mounted.filter((v) => v !== this.swipePrevKey);
                     this.setState({ mounted: this.mounted, navigateTo: undefined, navigateFrom: undefined, current: this.currentHistory.history[this.currentHistory.history.length - 1].key });
@@ -387,7 +387,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             this.swipeLocker = this.props.manager.beginLock();
             this.setState({ mounted: this.mounted, navigateTo: this.swipePrevKey, navigateFrom: this.swipeCurrentKey, current: this.currentHistory.history[this.currentHistory.history.length - 2].key });
             this.headerCoordinator.onTransitionStart();
-            this.headerCoordinator.onSwipeStarted(this.currentHistory);
+            this.headerCoordinator.onSwipeStarted(this.currentHistory.history[this.currentHistory.history.length - 1], this.currentHistory.history[this.currentHistory.history.length - 2]);
         },
         onMoveShouldSetPanResponder: (event, gesture) => {
             return !this.props.manager.isLocked() && this.currentHistory.history.length > 1 && gesture.dx > 25 && Math.abs(gesture.dy) < gesture.dx;
@@ -403,7 +403,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             SAnimated.setValue(AnimatedViewKeys.pageShadowOverlay(this.swipePrevKey!), 'opacity', (1 - dx / this.props.width));
             SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'opacity', (1 - dx / this.props.width));
             SAnimated.setValue(AnimatedViewKeys.pageShadowSide(this.swipePrevKey!), 'translateX', - 2 * this.props.width / 3 + 2 * dx / 3);
-            this.headerCoordinator.onSwipeProgress(this.currentHistory, dx / this.props.width);
+            this.headerCoordinator.onSwipeProgress(this.currentHistory.history[this.currentHistory.history.length - 1], this.currentHistory.history[this.currentHistory.history.length - 2], dx / this.props.width);
             SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
@@ -460,10 +460,10 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
 
-                    this.headerCoordinator.onSwipeCompleted(prevState, this.currentHistory);
+                    this.headerCoordinator.onSwipeCompleted(prevState.history[prevState.history.length - 1], prevState.history[prevState.history.length - 2]);
                     SAnimated.commitTransaction(() => {
                         unlock();
-                        this.headerCoordinator.onTransitionStop();
+                        this.headerCoordinator.onTransitionStop(this.currentHistory.history[this.currentHistory.history.length - 1]);
                         this.removing = this.removing.filter((v) => v !== this.swipeCurrentKey);
                         this.mounted = this.mounted.filter((v) => v !== this.swipeCurrentKey);
                         this.routes = this.routes.filter((v) => v.key !== this.swipeCurrentKey);

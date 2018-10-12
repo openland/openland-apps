@@ -1,17 +1,13 @@
 import { NavigationPage } from '../NavigationPage';
 import { HeaderCoordinator } from './HeaderCoordinator';
-import { HeaderConfig } from '../HeaderConfig';
 import { SAnimatedShadowView } from '../../SAnimatedShadowView';
-import { STrackedValue } from '../../STrackedValue';
 import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
-import { Dimensions } from 'react-native';
 
 export class HeaderTitleViewCoordinator {
     readonly key: string;
     readonly page: NavigationPage;
     readonly coordinator: HeaderCoordinator;
-    private lastConfig: HeaderConfig;
 
     private headerSmallView: SAnimatedShadowView;
     private headerView: SAnimatedShadowView;
@@ -24,8 +20,6 @@ export class HeaderTitleViewCoordinator {
     private searchInputBackgroundView: SAnimatedShadowView;
     private searchCancelView: SAnimatedShadowView;
 
-    private subscribedValue?: STrackedValue;
-    private subscription?: string;
     private searchVisible: boolean = false;
 
     private titleVisible: boolean = true;
@@ -46,56 +40,6 @@ export class HeaderTitleViewCoordinator {
         this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key, { translateX: w });
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
         this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
-
-        this.lastConfig = this.page.config;
-        this.page.watchConfig((cfg, animated) => {
-            this.handleState(cfg, animated !== undefined ? animated : true, false);
-        });
-        this.handleState(this.page.config, false, true);
-    }
-
-    private handleState = (config: HeaderConfig, animated: boolean, initial: boolean) => {
-        let isInitial = initial;
-        this.lastConfig = config;
-        if (this.lastConfig.contentOffset !== this.subscribedValue) {
-            if (this.subscribedValue) {
-                this.subscribedValue.offset.removeListener(this.subscription!);
-                this.subscribedValue = undefined;
-            }
-            if (this.lastConfig.contentOffset) {
-                this.subscribedValue = this.lastConfig.contentOffset;
-                this.subscription = this.lastConfig.contentOffset.offset.addListener((v) => {
-                    if (isInitial) {
-                        return;
-                    }
-                    if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
-                        this.isInScrollHandler = true;
-                        SAnimated.beginTransaction();
-                        this.coordinator._updateState(this.coordinator.state!!, 0);
-                        SAnimated.commitTransaction();
-                        this.isInScrollHandler = false;
-                    }
-                });
-            }
-        }
-        if (isInitial) {
-            isInitial = false;
-            return;
-        }
-        if (!this.coordinator.isInTransition && this.coordinator.state!!.history[this.coordinator.state!!.history.length - 1].key === this.page.key) {
-            SAnimated.beginTransaction();
-            if (animated) {
-                SAnimated.setPropertyAnimator((name, prop, from, to) => {
-                    SAnimated.spring(name, {
-                        property: prop,
-                        from: from,
-                        to: to
-                    });
-                });
-            }
-            this.coordinator._updateState(this.coordinator.state!!, 0);
-            SAnimated.commitTransaction();
-        }
     }
 
     updateSmallTitleState = (smallVisible: boolean) => {
@@ -155,7 +99,7 @@ export class HeaderTitleViewCoordinator {
 
     updateState = (progress: number) => {
 
-        if (this.lastConfig.headerHidden) {
+        if (this.page.config.headerHidden) {
             this.headerView.opacity = 0;
         } else {
             this.headerView.opacity = 1;
@@ -188,9 +132,9 @@ export class HeaderTitleViewCoordinator {
         // if (progress > 0.5) {
         //     progress = 0;
         // }
-        let isInSearch = this.lastConfig.search && this.lastConfig.searchActive;
+        let isInSearch = this.page.config.search && this.page.config.searchActive;
 
-        if (this.lastConfig.appearance === 'large' || this.lastConfig.appearance === undefined) {
+        if (this.page.config.appearance === 'large' || this.page.config.appearance === undefined) {
 
             if (progress > 0) {
                 this.titleLargeView.translateX = (progress) * this.coordinator.size.width;
@@ -201,13 +145,13 @@ export class HeaderTitleViewCoordinator {
 
             // Content Offset
             // Positive for overscroll
-            let contentOffset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
+            let contentOffset = this.page.config.contentOffset ? this.page.config.contentOffset.offsetValue : 0;
 
             //
             // Large title offset
             //
             let titleOffset = -contentOffset;
-            if (this.lastConfig.search) {
+            if (this.page.config.search) {
                 if (contentOffset < 0) {
                     // Do nothing on overscroll
                 } else {
@@ -227,8 +171,8 @@ export class HeaderTitleViewCoordinator {
             //
             // Search field
             //
-            if (this.lastConfig.search) {
-                if (this.lastConfig.searchActive) {
+            if (this.page.config.search) {
+                if (this.page.config.searchActive) {
                     this.searchView.translateY = 0;
                     this.searchViewContainer.translateY = 0;
                     this.searchViewContainer.translateX = 0;
@@ -245,14 +189,14 @@ export class HeaderTitleViewCoordinator {
             }
 
             // Search
-            if (this.lastConfig.search) {
-                if (this.lastConfig.searchActive) {
+            if (this.page.config.search) {
+                if (this.page.config.searchActive) {
                     if (!this.searchVisible) {
                         this.searchVisible = true;
                     }
                     this.headerView.translateY = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
-                    if (this.lastConfig.searchUnderlay) {
-                        this.lastConfig.searchUnderlay!!.translateY = -96;
+                    if (this.page.config.searchUnderlay) {
+                        this.page.config.searchUnderlay!!.translateY = -96;
                     }
                     this.searchInputBackgroundView.iosWidth = -70;
                     this.searchInputBackgroundView.translateX = -35;
@@ -260,11 +204,11 @@ export class HeaderTitleViewCoordinator {
                     this.titleVisible = true;
                     this.titleLargeView.opacity = 0;
                     this.titleView.opacity = 0;
-                    this.lastConfig.searchContainer!.opacity = 1;
+                    this.page.config.searchContainer!.opacity = 1;
                 } else {
                     if (this.searchVisible) {
                         this.searchVisible = false;
-                        let clb = this.lastConfig.searchClosingCompleted;
+                        let clb = this.page.config.searchClosingCompleted;
                         SAnimated.addTransactionCallback(() => {
                             if (clb) {
                                 clb();
@@ -274,12 +218,12 @@ export class HeaderTitleViewCoordinator {
                     this.searchInputBackgroundView.iosWidth = 0;
                     this.searchInputBackgroundView.translateX = 0;
                     this.searchCancelView.translateX = 70;
-                    if (this.lastConfig.searchUnderlay) {
-                        this.lastConfig.searchUnderlay!!.translateY = 0;
+                    if (this.page.config.searchUnderlay) {
+                        this.page.config.searchUnderlay!!.translateY = 0;
                     }
                     this.headerView.translateY = 0;
                     this.titleLargeView.opacity = 1;
-                    this.lastConfig.searchContainer!.opacity = 0;
+                    this.page.config.searchContainer!.opacity = 0;
 
                     // Show/hide scroll depending if large title is visible
                     this.updateSmallTitleState(titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12));
@@ -288,14 +232,14 @@ export class HeaderTitleViewCoordinator {
             } else {
                 this.titleLargeView.opacity = 1;
                 this.updateSmallTitleState(titleOffset < -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight - 12));
-                if (this.lastConfig.searchUnderlay) {
-                    this.lastConfig.searchUnderlay!!.translateY = 0;
+                if (this.page.config.searchUnderlay) {
+                    this.page.config.searchUnderlay!!.translateY = 0;
                 }
                 this.headerView.translateY = 0;
             }
             this.titleLargeView.opacity *= opacityDelayed;
-        } else if (this.lastConfig.appearance === 'small-hidden') {
-            let offset = this.lastConfig.contentOffset ? this.lastConfig.contentOffset.offsetValue : 0;
+        } else if (this.page.config.appearance === 'small-hidden') {
+            let offset = this.page.config.contentOffset ? this.page.config.contentOffset.offsetValue : 0;
             if (offset > SDevice.navigationBarHeight) {
                 this.titleView.opacity = 1;
                 this.titleVisible = true;

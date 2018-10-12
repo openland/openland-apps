@@ -5,6 +5,9 @@ import { NavigationPage } from '../NavigationPage';
 import { HeaderConfig } from '../HeaderConfig';
 import { SAnimatedShadowView } from '../../SAnimatedShadowView';
 import { HeaderTitleViewCoordinator } from './HeaderTitleViewCoordinator';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { SAnimated } from 'react-native-s/SAnimated';
+import { STrackedValue } from 'react-native-s/STrackedValue';
 
 const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('window').width);
 
@@ -15,9 +18,11 @@ export class HeaderCoordinator {
     private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
     private getSize: () => { width: number, height: number };
+    private freezedSubscription?: WatchSubscription;
+    private freezedOffsetValue?: STrackedValue;
+    private freezedOffsetValueSubscription?: string;
     readonly isModal: boolean;
     isInTransition = false;
-    state?: NavigationState;
 
     constructor(key: string, isModal: boolean, size: () => { width: number, height: number }) {
         this.isModal = isModal;
@@ -31,52 +36,129 @@ export class HeaderCoordinator {
         return this.getSize();
     }
 
-    setInitialState = (state: NavigationState) => {
-        this.state = state;
-        this._updateState(state, 0);
-        this.getPageCoordinator(state.history[0]).updateState(0);
+    setInitialState = (pages: NavigationPage[]) => {
+        this._updateState(0, pages[0]);
+        this._onPageFreezed(pages[0]);
     }
 
     onTransitionStart = () => {
         this.isInTransition = true;
+        this._onPageUnfreezed();
     }
 
-    onTransitionStop = () => {
+    onTransitionStop = (page: NavigationPage) => {
         this.isInTransition = false;
+        this._onPageFreezed(page);
     }
 
-    onPushed = (state: NavigationState) => {
-        this.state = state;
-        this._updateState(state, 0);
+    /**
+     * Called for push animations from oldPage to newPage
+     */
+    onPushed = (oldPage: NavigationPage, newPage: NavigationPage) => {
+        this._updateState(0, newPage, oldPage);
     }
-    onPopped = (state: NavigationState, newState: NavigationState) => {
-        this.state = newState;
-        this._updateState(state, 1);
+
+    /**
+     * Called for pop animations from oldPage to newPage
+     */
+    onPopped = (oldPage: NavigationPage, newPage: NavigationPage) => {
+        this._updateState(1, oldPage, newPage);
     }
-    onSwipeStarted = (state: NavigationState) => {
+
+    /**
+     * Called when back swipe is started
+     */
+    onSwipeStarted = (oldPage: NavigationPage, newPage: NavigationPage) => {
         // Nothing to do
     }
-    onSwipeProgress = (state: NavigationState, progress: number) => {
-        this._updateState(state, progress);
-    }
-    onSwipeCancelled = (state: NavigationState) => {
-        this._updateState(state, 0);
-    }
-    onSwipeCompleted = (state: NavigationState, newState: NavigationState) => {
-        this.state = newState;
-        this._updateState(state, 1);
+
+    /**
+     * Called when back swipe is in progess
+     */
+    onSwipeProgress = (oldPage: NavigationPage, newPage: NavigationPage, progress: number) => {
+        this._updateState(progress, oldPage, newPage);
     }
 
-    _updateState = (state: NavigationState, progress: number) => {
+    /**
+     * Called when back swipe is cancelled
+     */
+    onSwipeCancelled = (oldPage: NavigationPage, newPage: NavigationPage) => {
+        this._updateState(0, oldPage, newPage);
+    }
+
+    /**
+     * Called when back swipe is completed
+     */
+    onSwipeCompleted = (oldPage: NavigationPage, newPage: NavigationPage) => {
+        this._updateState(1, oldPage, newPage);
+    }
+
+    //
+    // State update implementation
+    //
+
+    private _onPageFreezed = (page: NavigationPage) => {
+        this.freezedSubscription = page.watchConfig((config, animated) => {
+
+            // Update subsctriptions if needed
+            this._handleFreezedConfig(page);
+
+            // Update config state
+            SAnimated.beginTransaction();
+            if (animated !== false) {
+                SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                    SAnimated.spring(name, {
+                        property: prop,
+                        from: from,
+                        to: to
+                    });
+                });
+            }
+            this._updateState(0, page);
+            SAnimated.commitTransaction();
+        });
+        this._handleFreezedConfig(page);
+        this._updateState(0, page);
+    }
+
+    private _handleFreezedConfig = (page: NavigationPage) => {
+        if (page.config.contentOffset !== this.freezedOffsetValue) {
+            if (this.freezedOffsetValueSubscription) {
+                this.freezedOffsetValue!!.offset.removeListener(this.freezedOffsetValueSubscription);
+                this.freezedOffsetValueSubscription = undefined;
+                this.freezedOffsetValue = undefined;
+            }
+            if (page.config.contentOffset) {
+                this.freezedOffsetValue = page.config.contentOffset;
+                this.freezedOffsetValueSubscription = page.config.contentOffset.offset.addListener((clb) => {
+                    SAnimated.beginTransaction();
+                    this._updateState(0, page);
+                    SAnimated.commitTransaction();
+                });
+            }
+        }
+    }
+
+    private _onPageUnfreezed = () => {
+        if (this.freezedSubscription) {
+            this.freezedSubscription();
+            this.freezedSubscription = undefined;
+        }
+        if (this.freezedOffsetValueSubscription) {
+            this.freezedOffsetValue!!.offset.removeListener(this.freezedOffsetValueSubscription);
+            this.freezedOffsetValueSubscription = undefined;
+            this.freezedOffsetValue = undefined;
+        }
+    }
+
+    private _updateState = (progress: number, last: NavigationPage, prev?: NavigationPage) => {
 
         // Background
         if (Platform.OS === 'ios') {
 
             let handled = false;
-            if (state.history.length >= 2) {
-                let prev = state.history[state.history.length - 2].config;
-                let current = state.history[state.history.length - 1].config;
-                if (prev.headerHidden && current.headerHidden) {
+            if (prev) {
+                if (prev.config.headerHidden && last.config.headerHidden) {
                     // Hide background
                     handled = true;
                     this.background.translateY = -MAX_SIZE;
@@ -84,11 +166,11 @@ export class HeaderCoordinator {
                     this.hairline.translateX = 0;
                     this.hairline.translateY = -1;
                     this.hairline.opacity = 0;
-                } else if (current.headerHidden) {
+                } else if (last.config.headerHidden) {
                     // Keep on previous page offset
                     handled = true;
-                    let op = this.resolveHairlineOpacity(prev);
-                    let v = this.resolveHeaderHeight(prev);
+                    let op = this.resolveHairlineOpacity(prev.config);
+                    let v = this.resolveHeaderHeight(prev.config);
                     this.background.translateY = v - MAX_SIZE;
                     this.background.translateX = this.size.width * progress;
                     this.hairline.translateX = this.size.width * progress;
@@ -97,11 +179,11 @@ export class HeaderCoordinator {
                     let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
                     this.container.iosHeight = d;
                     this.container.translateY = d / 2;
-                } else if (prev.headerHidden) {
+                } else if (prev.config.headerHidden) {
                     // Keep on current page offset
                     handled = true;
-                    let op = this.resolveHairlineOpacity(current);
-                    let v = this.resolveHeaderHeight(current);
+                    let op = this.resolveHairlineOpacity(last.config);
+                    let v = this.resolveHeaderHeight(last.config);
                     this.background.translateY = v - MAX_SIZE;
                     this.background.translateX = this.size.width * progress;
                     this.hairline.translateX = this.size.width * progress;
@@ -114,8 +196,8 @@ export class HeaderCoordinator {
                     // Cross fade
                 }
             } else {
-                let current = state.history[state.history.length - 1].config;
-                if (current.headerHidden) {
+                // let current = state.history[state.history.length - 1].config;
+                if (last.config.headerHidden) {
                     // Hide background
                     handled = true;
                     this.background.translateY = -MAX_SIZE;
@@ -127,11 +209,11 @@ export class HeaderCoordinator {
             if (!handled) {
                 let v: number = 0;
                 let op: number = 0;
-                op += Math.abs(1 - progress) * this.resolveHairlineOpacity(state.history[state.history.length - 1].config);
-                v += Math.abs(1 - progress) * this.resolveHeaderHeight(state.history[state.history.length - 1].config);
-                if (state.history.length >= 2) {
-                    v += Math.abs(progress) * this.resolveHeaderHeight(state.history[state.history.length - 2].config);
-                    op += Math.abs(progress) * this.resolveHairlineOpacity(state.history[state.history.length - 2].config);
+                op += Math.abs(1 - progress) * this.resolveHairlineOpacity(last.config);
+                v += Math.abs(1 - progress) * this.resolveHeaderHeight(last.config);
+                if (prev) {
+                    v += Math.abs(progress) * this.resolveHeaderHeight(prev.config);
+                    op += Math.abs(progress) * this.resolveHairlineOpacity(prev.config);
                 }
 
                 let d = v - (SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top);
@@ -150,11 +232,11 @@ export class HeaderCoordinator {
         }
 
         // Pages
-        if (state.history.length === 1) {
-            this.getPageCoordinator(state.history[0]).updateState(0);
+        if (!prev) {
+            this.getPageCoordinator(last).updateState(0);
         } else {
-            this.getPageCoordinator(state.history[state.history.length - 1]).updateState(progress);
-            this.getPageCoordinator(state.history[state.history.length - 2]).updateState(-1 + progress);
+            this.getPageCoordinator(last).updateState(progress);
+            this.getPageCoordinator(prev).updateState(-1 + progress);
         }
     }
 
