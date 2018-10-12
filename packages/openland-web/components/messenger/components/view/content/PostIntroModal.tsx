@@ -62,16 +62,12 @@ interface SearchPeopleProps {
 }
 
 const SearchPeopleModule = withExplorePeople(props => {
-    let userData;
-    if ((props as any).user) {
-        userData = [(props as any).user.id];
-    }
+    
     if (!(props.data && props.data.items)) {
         return (
             <XSelect
                 creatable={true}
                 multi={false}
-                value={userData}
                 field="input.userId"
                 options={[]}
                 render={
@@ -92,7 +88,6 @@ const SearchPeopleModule = withExplorePeople(props => {
             <XSelect
                 creatable={true}
                 multi={false}
-                value={userData}
                 field="input.userId"
                 options={props.data.items.edges.map(i => (
                     {
@@ -374,7 +369,7 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
 }
 
 interface PostIntroModalProps extends Partial<XModalFormProps> {
-    conversationId: string;
+    conversationId?: string;
     messageId?: string;
     about?: string;
     file?: {
@@ -398,18 +393,30 @@ const MutationProvider = withIntro((props) => (
         {...props}
         defaultAction={async (data) => {
             let input = data.input || {};
-            await props.createIntro({
-                variables: {
-                    conversationId: (props as any).conversationId,
-                    userId: input.userId[0],
-                    about: input.about,
-                    file: input.file
-                }
-            });
+            if (props.messageId) {
+                await props.editIntro({
+                    variables: {
+                        messageId: (props as any).messageId,
+                        userId: input.userId[0],
+                        about: input.about,
+                        file: input.file
+                    }
+                });
+            } else {
+                await props.createIntro({
+                    variables: {
+                        conversationId: (props as any).conversationId,
+                        userId: input.userId[0],
+                        about: input.about,
+                        file: input.file
+                    }
+                });
+            }
+
         }}
         defaultData={{
             input: {
-                userId: (props.user ? props.user.id : ''),
+                userId: props.user ? [props.user.id] : undefined,
                 about: props.about,
                 file: (props.file && props.file.uuid)
             }

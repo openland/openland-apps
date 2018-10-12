@@ -314,9 +314,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                             <>
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
-                                                {/* {meId === senderId && (
+                                                {meId === senderId && (
                                                     <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
-                                                )} */}
+                                                )}
                                             </>
                                         }
                                     />
@@ -340,7 +340,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                 {meId === senderId && (
                     <PostIntroModal
                         targetQuery={'editItro' + messageId}
-                        conversationId={''}
+                        messageId={messageId}
                         about={urlAugmentation.description || ''}
                         file={fileData}
                         user={user}

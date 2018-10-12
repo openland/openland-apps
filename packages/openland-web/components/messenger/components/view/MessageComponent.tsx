@@ -297,6 +297,9 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     </MenuWrapper>
                 </XWithRole>
             ) : null;
+        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+            menu = null;
+        }
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
@@ -357,7 +360,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 }
 
 export class MessageComponent extends React.Component<MessageComponentProps> {
-    render () {
+    render() {
         return (
             <EditMessageContext.Consumer>
                 {(editor: EditMessageContextProps) => (
