@@ -14,6 +14,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
 import IntroIcon from '../../icons/ic-tag-intro.svg';
 import PassedIcon from '../../icons/ic-passed.svg';
+import { makeNavigable } from 'openland-x/Navigable';
 
 const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     <XMutation mutation={props.setReaction} onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}>
@@ -351,6 +352,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                             <XHorizontal justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
+                                        path={reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? '/mail/u/' + user.id : undefined}
                                         objectId={user.id}
                                         objectName={user.name}
                                         photoRef={urlAugmentation.photo || undefined}
