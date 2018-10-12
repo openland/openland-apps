@@ -97,7 +97,8 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                                 marginTop={10}
                                 fontWeight="500"
                             >
-                                {this.props.message.urlAugmentation.title + ' '}
+                                {this.props.message.urlAugmentation.title}
+                                {this.props.message.isOut ? paddedTextOut : paddedText}
                             </ASText>
                             }
                             {!!this.props.message.urlAugmentation.description && <ASText
@@ -107,7 +108,8 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                                 fontSize={big ? 52 : 16}
                                 fontWeight="400"
                             >
-                                {this.props.message.urlAugmentation.description + ' '}
+                                {this.props.message.urlAugmentation.description}
+                                {this.props.message.isOut ? paddedTextOut : paddedText}
                             </ASText>}
 
                         </ASFlex>
