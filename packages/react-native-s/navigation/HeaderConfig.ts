@@ -111,6 +111,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
     if (a.searchContainer !== b.searchContainer) {
         return false;
     }
+    if (a.searchChanged !== b.searchChanged) {
+        return false;
+    }
     if (a.searchUnderlay !== b.searchUnderlay) {
         return false;
     }
@@ -145,9 +148,6 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.headerHidden !== b.headerHidden) {
-        return false;
-    }
-    if (a.searchChanged !== b.searchChanged) {
         return false;
     }
 

@@ -95,7 +95,7 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="New message" />
-                <SSearchControler searchRender={<UserSearchComponent query="" router={this.props.router} />}>
+                <SSearchControler searchRender={(props) => (<UserSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ query: '', organizations: false }}>
                         {resp => {
 

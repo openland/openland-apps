@@ -51,8 +51,8 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="Organizations" />
-                <SHeaderButton title="+ New" onPress={() => this.props.router.push('NewOrganization')}/>
-                <SSearchControler searchRender={<OrganizationSearchComponent query="" router={this.props.router} />}>
+                <SHeaderButton title="+ New" onPress={() => this.props.router.push('NewOrganization')} />
+                <SSearchControler searchRender={(props) => (<OrganizationSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
                         style={{ flexGrow: 1 }}
                         query={ExploreOrganizationsQuery}

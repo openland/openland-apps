@@ -10,17 +10,18 @@ import { SearchContext } from './navigation/SearchContext';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
-    searchRender: React.ReactElement<{ query: string }>;
+    searchRender: React.ComponentType<{ query: string }>;
 }
 
 export class SSearchControler extends React.PureComponent<SSearchControlerProps, { search: boolean, searchMounted: boolean, query: string }> {
 
     private containerShadowView = new SAnimatedShadowView(UUID());
     private searchShadowView = new SAnimatedShadowView(UUID());
-    private searchContext = new SearchContext();
+    private searchContext: SearchContext;
 
     constructor(props: SSearchControlerProps) {
         super(props);
+        this.searchContext = new SearchContext(this.handleSearchChanged);
         this.state = {
             search: false,
             searchMounted: false,
@@ -38,14 +39,19 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
 
     handleSearchStopCompleted = () => {
         this.setState({ search: false, searchMounted: false, query: '' });
+        this.searchContext.value = '';
+        if (this.searchContext.headerOnChanged) {
+            this.searchContext.headerOnChanged!();
+        }
     }
 
-    handleSearchChanged = (text: string) => {
-        this.setState({ query: text });
+    handleSearchChanged = () => {
+        this.setState({ query: this.searchContext.value });
     }
 
     render() {
 
+        const Render = this.props.searchRender;
         const content = Platform.OS === 'ios'
             ? (
                 <>
@@ -61,7 +67,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                                     {this.state.searchMounted && (
                                         <HeaderContextNone>
                                             <View width="100%" height="100%">
-                                                {React.cloneElement(this.props.searchRender, { query: this.state.query })}
+                                                <Render query={this.state.query} />
                                             </View>
                                         </HeaderContextNone>
                                     )}
@@ -80,7 +86,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                             style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.3)' }}
                         >
                             <HeaderContextNone>
-                                {React.cloneElement(this.props.searchRender, { query: this.state.query })}
+                                <Render query={this.state.query} />
                             </HeaderContextNone>
                         </SAnimatedView>
                     )}
@@ -98,7 +104,6 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                         searchPress: this.handleSearchStart,
                         searchUnderlay: this.containerShadowView,
                         searchContainer: this.searchShadowView,
-                        searchChanged: this.handleSearchChanged,
                         searchContext: this.searchContext
                     }}
                 />

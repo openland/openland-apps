@@ -173,7 +173,7 @@ class CountryPickerComponent extends React.Component<PageProps> {
     }
 
     render() {
-        let searchRender = <CountrySearch query="" router={this.props.router} data={this.dataView} dataSource={this.dataSource} />;
+        let searchRender = (props: { query: string }) => (<CountrySearch query={props.query} router={this.props.router} data={this.dataView} dataSource={this.dataSource} />);
         return (
             <>
                 <SHeader title="Country_" />

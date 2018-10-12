@@ -32,8 +32,8 @@ class ChannelsComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="Channels" />
-                <SHeaderButton title="+ New" onPress={() => this.props.router.push('CreateChannel')}/>
-                <SSearchControler searchRender={<ChannelSearchComponent query="" router={this.props.router} />}>
+                <SHeaderButton title="+ New" onPress={() => this.props.router.push('CreateChannel')} />
+                <SSearchControler searchRender={(props) => (<ChannelSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
                         style={{ flexGrow: 1 }}
                         query={ChatSearchChannelQuery}

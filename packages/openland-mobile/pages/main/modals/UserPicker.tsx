@@ -49,7 +49,7 @@ class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 class UserPickerComponent extends React.PureComponent<PageProps> {
 
     render() {
-        let searchRender = <UserSearch query="" router={this.props.router} />;
+        let searchRender = (props: { query: string }) => (<UserSearch query={props.query} router={this.props.router} />);
         return (
             <>
                 <SHeader title="Add user" />

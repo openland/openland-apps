@@ -18,6 +18,8 @@ import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
+        console.log('dialogs');
+        console.log(this.props.query);
         return this.props.query.trim().length > 0 ? (
             <SRouterContext.Consumer>
                 {r => (
@@ -90,7 +92,7 @@ class DialogsComponent extends React.Component<PageProps> {
             <>
                 <SHeader title="Messages" />
                 <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeInitial')} />
-                <SSearchControler searchRender={<DialogsSearch query="" />}>
+                <SSearchControler searchRender={(props) => (<DialogsSearch query={props.query} />)}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent dialogs={engine.dialogs} />)}
                     </MobileMessengerContext.Consumer>
