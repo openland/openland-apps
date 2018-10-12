@@ -35,6 +35,23 @@ export class NavigationManager {
         return this.state;
     }
 
+    pushAndReset = (route: string, params?: any) => {
+        if (this.customHandler) {
+            if (this.customHandler(route, params)) {
+                return;
+            }
+        }
+        if (this.locksCount > 0) {
+            return;
+        }
+        let record = new NavigationPage(this, this.state.history.length, route, params, this.state.history[this.state.history.length - 2].key);
+        let nhistory = new NavigationState([this.state.history[0], record]); // keep to avoid insonsistency if we will change routes in watchers
+        this.state = nhistory;
+        for (let w of this.watchers) {
+            w.onPushed(record, nhistory);
+        }
+    }
+
     pushAndRemove = (route: string, params?: any) => {
         if (this.customHandler) {
             if (this.customHandler(route, params)) {
