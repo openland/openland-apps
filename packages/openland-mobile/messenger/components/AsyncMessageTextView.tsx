@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking, Image } from 'react-native';
+import { Platform, Linking, Image, Dimensions } from 'react-native';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
@@ -9,6 +9,7 @@ import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
+import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 
 const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -40,8 +41,22 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
             placeholderIndex = doSimpleHash(this.props.message.senderId);
         }
         let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
-        let image = this.props.message.isOut ? require('assets/chat-bubble-in-compact.png') : require('assets/chat-bubble-out-compact.png');
-        let resolved = Image.resolveAssetSource(image);
+        let layout: { width: number, height: number };
+        if (this.props.message.urlAugmentation) {
+            let maxSize = Platform.select({
+                default: 400,
+                ios: Math.min(Dimensions.get('window').width - 120, 400),
+                android: Math.min(Dimensions.get('window').width - 120, 400)
+            });
+            if (this.props.message.urlAugmentation.photo && this.props.message.urlAugmentation.imageInfo) {
+                layout = layoutMedia(this.props.message.urlAugmentation.imageInfo!.imageWidth!, this.props.message.urlAugmentation.imageInfo!.imageHeight!, maxSize, maxSize);
+            }
+
+            // for left accent line
+            // let image = this.props.message.isOut ? require('assets/chat-bubble-in-compact.png') : require('assets/chat-bubble-out-compact.png');
+            // let resolved = Image.resolveAssetSource(image);
+
+        }
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex
@@ -65,14 +80,24 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
 
                     {this.props.message.urlAugmentation && (
                         <ASFlex flexDirection="column" marginTop={5}>
+                            {this.props.message.urlAugmentation.photo && (
+                                <ASImage
+                                    source={{ uri: this.props.message.urlAugmentation.imageURL }}
+                                    width={layout!.width}
+                                    height={layout!.height}
+                                    marginTop={10}
+                                    borderRadius={10}
+                                />
+                            )}
                             {!!this.props.message.urlAugmentation.title && <ASText
                                 color={this.props.message.isOut ? '#fff' : '#000'}
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
                                 fontSize={18}
+                                marginTop={10}
                                 fontWeight="500"
                             >
-                                {this.props.message.urlAugmentation.title}
+                                {this.props.message.urlAugmentation.title + ' '}
                             </ASText>
                             }
                             {!!this.props.message.urlAugmentation.description && <ASText
@@ -82,8 +107,9 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                                 fontSize={big ? 52 : 16}
                                 fontWeight="400"
                             >
-                                {this.props.message.urlAugmentation.description}
+                                {this.props.message.urlAugmentation.description + ' '}
                             </ASText>}
+
                         </ASFlex>
                     )}
                 </ASFlex>
