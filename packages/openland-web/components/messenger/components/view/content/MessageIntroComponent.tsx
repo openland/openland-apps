@@ -289,7 +289,13 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                         {(reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
                             <Counter accepted={true}>
                                 <CheckIconSmall />
-                                <span>You + {(reactionsMap as any).accept.length - 1} accepted</span>
+                                {(reactionsMap as any).accept.length === 1 ?
+                                    (
+                                        <span>You accepted</span>
+                                    ) : (
+                                        <span>You + {(reactionsMap as any).accept.length - 1} accepted</span>
+                                    )
+                                }
                             </Counter>
                         )}
                     </XHorizontal>
