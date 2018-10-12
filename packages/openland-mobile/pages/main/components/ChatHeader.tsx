@@ -52,7 +52,11 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                         subtitle = chat.membersCount + ' members';
                     }
 
-                    subtitle = this.state.typing || subtitle;
+                    let typingString = this.state.typing;
+                    if (typingString && chat.__typename === 'PrivateConversation') {
+                        typingString = 'typing...';
+                    }
+                    subtitle = (typingString) || subtitle;
 
                     if (this.state.typing) {
                         accent = true;
