@@ -49,18 +49,6 @@ const ImgButton = (props: XLinkProps & ImgButtonStylesProps) => (
     </ImgButtonStyles>
 );
 
-interface SearchPeopleProps {
-    user?: {
-        id: string,
-        name: string,
-        photo: string | null,
-        primaryOrganization: {
-            id?: string | null,
-            name?: string | null,
-        } | null
-    } | null;
-}
-
 const SearchPeopleModule = withExplorePeople(props => {
     
     if (!(props.data && props.data.items)) {
@@ -108,11 +96,11 @@ const SearchPeopleModule = withExplorePeople(props => {
             />
         </XFormField>
     );
-}) as React.ComponentType<SearchPeopleProps & { variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
+}) as React.ComponentType< { variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
 
-class SearchPeople extends React.PureComponent<SearchPeopleProps> {
+class SearchPeople extends React.PureComponent {
     state = {
-        query: this.props.user ? this.props.user.name : ''
+        query: ''
     };
 
     handleSearchText = (query: string) => {
@@ -125,7 +113,6 @@ class SearchPeople extends React.PureComponent<SearchPeopleProps> {
         return (
             <SearchPeopleModule
                 onChangeInput={this.handleSearchText}
-                user={this.props.user}
                 variables={{
                     query: this.state.query
                 }}
@@ -234,15 +221,6 @@ interface PostIntroModalRawProps extends Partial<XModalFormProps> {
         name: string | null,
         size: string | null
     } | null;
-    user?: {
-        id: string,
-        name: string,
-        photo: string | null,
-        primaryOrganization: {
-            id?: string | null,
-            name?: string | null,
-        } | null
-    } | null;
 }
 
 interface PostIntroModalRawState {
@@ -329,7 +307,7 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
             >
                 <XVertical separator={16}>
 
-                    <SearchPeople user={this.props.user} />
+                    <SearchPeople />
 
                     <XFormField field="input.about">
                         <XTextArea
