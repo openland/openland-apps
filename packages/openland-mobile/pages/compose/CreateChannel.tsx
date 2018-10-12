@@ -60,7 +60,7 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
                                     photoRef: src.photoRef
                                 }
                             });
-                            this.props.router.push('Conversation', { id: (channel as any).data.channel.id });
+                            this.props.router.pushAndReset('Conversation', { id: (channel as any).data.channel.id });
                         }}
                     >
                         <ZListItemBase height={96} separator={false}>

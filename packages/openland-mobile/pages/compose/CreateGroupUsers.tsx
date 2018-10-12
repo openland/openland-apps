@@ -62,7 +62,7 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                                         members: this.state.users.map(u => u.id)
                                     }
                                 });
-                                this.props.router.push('Conversation', { id: (res as any).data.group.id });
+                                this.props.router.pushAndReset('Conversation', { id: (res as any).data.group.id });
                             }}
                         />
                         <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>

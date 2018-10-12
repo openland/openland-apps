@@ -17,7 +17,7 @@ import { ActionSheetBuilder } from '../../components/ActionSheet';
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
     handleSend = () => {
-        this.props.router.push('Conversation', { 'flexibleId': this.props.router.params.id });
+        this.props.router.pushAndReset('Conversation', { 'flexibleId': this.props.router.params.id });
     }
 
     render() {
@@ -72,7 +72,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                         key={v!!.id}
                                                         leftAvatar={{ photo: v!!.photo, title: v!!.title, key: v!!.id }}
                                                         text={v!!.title}
-                                                        onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
+                                                        onPress={() => this.props.router.pushAndReset('Conversation', { flexibleId: v!!.id })}
                                                     />
                                                 ))}
                                             </ZListItemGroup>

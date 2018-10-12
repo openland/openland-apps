@@ -14,7 +14,7 @@ import { formatDate } from '../../utils/formatDate';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
-        this.props.router.push('Conversation', { 'flexibleId': this.props.router.params.id });
+        this.props.router.pushAndReset('Conversation', { 'flexibleId': this.props.router.params.id });
     }
 
     render() {
