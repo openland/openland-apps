@@ -227,8 +227,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
     renderReactions() {
         let { user, reactions, meId, senderId, conversationType, messageId } = this.props;
         let reactionsMap = {};
+        let reactionsLength = reactions.length;
 
-        for (let i = 0; i < reactions.length; i++) {
+        for (let i = 0; i < reactionsLength; i++) {
             let reaction = reactions[i];
 
             if (!reactionsMap[reaction.reaction]) {
@@ -236,10 +237,14 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
             }
             reactionsMap[reaction.reaction].push(reaction);
         }
+        let acceptLength = 0;
+        if ((reactionsMap as any).accept && (reactionsMap as any).accept.length) {
+            acceptLength = (reactionsMap as any).accept.length;
+        }
 
         if (senderId === meId) {
             if (conversationType === 'PrivateConversation') {
-                if (reactions.length > 0) {
+                if (reactionsLength > 0) {
                     if (reactions[0].reaction === 'pass') {
                         return null;
                     } else {
@@ -254,11 +259,11 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                     return null;
                 }
             } else if (conversationType !== 'PrivateConversation') {
-                if (reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) {
+                if (reactionsLength > 0 && acceptLength > 0) {
                     return (
                         <Counter alignSelf="flex-end" accepted={true}>
                             <CheckIconSmall />
-                            <span>{(reactionsMap as any).accept.length} accepted</span>
+                            <span>{acceptLength} accepted</span>
                         </Counter>
                     );
                 } else {
@@ -275,10 +280,10 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                             <PassedIcon />
                             <span>You passed</span>
                         </Counter>
-                        {(reactions.length > 0 && conversationType !== 'PrivateConversation' && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
+                        {(reactionsLength > 0 && conversationType !== 'PrivateConversation' && acceptLength > 0) && (
                             <Counter accepted={true}>
                                 <CheckIconSmall />
-                                <span>{(reactionsMap as any).accept.length} accepted</span>
+                                <span>{acceptLength} accepted</span>
                             </Counter>
                         )}
                     </XHorizontal>
@@ -286,14 +291,14 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
             } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
                 return (
                     <XHorizontal justifyContent="space-between" alignItems="center">
-                        {(reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
+                        {(reactionsLength > 0 && acceptLength > 0) && (
                             <Counter accepted={true}>
                                 <CheckIconSmall />
-                                {(reactionsMap as any).accept.length === 1 ?
+                                {acceptLength === 1 ?
                                     (
                                         <span>You accepted</span>
                                     ) : (
-                                        <span>You + {(reactionsMap as any).accept.length - 1} accepted</span>
+                                        <span>You + {acceptLength - 1} accepted</span>
                                     )
                                 }
                             </Counter>
@@ -311,10 +316,10 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                 alignSelf="flex-start"
                             />
                         </SetAccesReactionButton>
-                        {(reactions.length > 0 && (reactionsMap as any).accept && (reactionsMap as any).accept.length > 0) && (
+                        {(reactionsLength > 0 && acceptLength > 0) && (
                             <Counter accepted={true}>
                                 <CheckIconSmall />
-                                <span>{(reactionsMap as any).accept.length} accepted</span>
+                                <span>{acceptLength} accepted</span>
                             </Counter>
                         )}
                     </XHorizontal>
