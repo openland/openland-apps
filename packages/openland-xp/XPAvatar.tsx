@@ -80,8 +80,9 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                         <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
                     </View>
                     <View position="absolute" left={10} top={10} borderRadius={5} backgroundColor="#00ff22" />
-                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
                 </XPLinearGradient>
+                {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
+
             </AndroidAliaser>
         );
     }
