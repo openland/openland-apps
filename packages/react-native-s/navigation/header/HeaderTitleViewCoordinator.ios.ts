@@ -34,7 +34,7 @@ export class HeaderTitleViewCoordinator {
         this.headerSmallView = new SAnimatedShadowView('header-small--' + this.key, { opacity: 0 });
         this.titleView = new SAnimatedShadowView('header-title--' + this.key, { opacity: 0, translateX: w });
         this.rightView = new SAnimatedShadowView('header-right--' + this.key, { opacity: 0, translateX: w });
-        this.leftView = new SAnimatedShadowView('header-left--' + this.key, { opacity: 0, translateX: w });
+        this.leftView = new SAnimatedShadowView('header-left--' + this.key, { opacity: coordinator.isModal ? 1 : 0, translateX: w });
         this.titleLargeView = new SAnimatedShadowView('header-large--' + this.key, { opacity: 0, translateX: w });
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key, { translateX: w });
@@ -255,7 +255,7 @@ export class HeaderTitleViewCoordinator {
         // Small header
         this.titleView.opacity *= opacityDelayed; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
         this.rightView.opacity = opacitySimple;
-        if (this.page.startIndex === 0) {
+        if (this.page.startIndex === 0 && !this.coordinator.isModal) {
             this.leftView.opacity = 0;
         } else {
             if (isInSearch) {
