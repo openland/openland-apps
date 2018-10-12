@@ -9,7 +9,6 @@ import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { getMessenger } from '../../utils/messenger';
 import { formatBytes } from '../../utils/formatBytes';
-import { YMutation } from 'openland-y-graphql/YMutation';
 import { MessageSetReactionMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
@@ -45,9 +44,10 @@ export class MessageButton extends React.PureComponent<{ icon?: any, text: strin
                 marginLeft={5}
                 marginRight={10}
             >
-                {this.props.icon && <ASImage source={this.props} width={12} height={12} />}
+                {this.props.icon}
                 <ASText
-                    marginLeft={12}
+                    marginLeft={this.props.icon ? 5 : 12}
+                    letterSpacing={0.3}
                     marginRight={12}
                     fontSize={13}
                     lineHeight={14}
@@ -63,48 +63,37 @@ export class MessageButton extends React.PureComponent<{ icon?: any, text: strin
     }
 }
 
-let renderButtons = (message: DataSourceMessageItem, navigationManager: NavigationManager) => {
+let iconAccept = <ASImage source={require('assets/ic-accepted.png')} marginLeft={10} width={10} height={7} />;
+let iconPass = <ASImage source={require('assets/ic-passed.png')} marginLeft={10} width={12} height={12} />;
+
+export let renderButtons = (message: DataSourceMessageItem, navigationManager: NavigationManager) => {
     let buttons: any[] = [];
+    if (!(message.urlAugmentation && message.urlAugmentation.type === 'intro')) {
+        return buttons;
+    }
 
     let reactions = message.reactions || [];
     let accepted = reactions.filter(r => r.reaction === 'accept');
     let passed = reactions.filter(r => r.reaction === 'pass');
     if (message.isOut) {
         if (accepted.length > 0) {
-            buttons.push(<MessageButton text={(accepted.length > 1 ? accepted.length : '') + 'ACCEPTED'} style="positive_disabled" />);
+            buttons.push(<MessageButton icon={iconAccept} text={(accepted.length > 1 ? accepted.length : '') + 'ACCEPTED'} style="positive_disabled" />);
         }
         if (passed.length > 0) {
-            buttons.push(<MessageButton text={(passed.length > 1 ? passed.length : '') + 'PASSED'} style="positive_disabled" />);
+            buttons.push(<MessageButton icon={iconPass} text={(passed.length > 1 ? passed.length : '') + 'PASSED'} style="disabled" />);
         }
     } else {
         let iAccepted = accepted.filter(r => r.user.id === getMessenger().engine.user.id).length > 0;
         let iPassed = passed.filter(r => r.user.id === getMessenger().engine.user.id).length > 0;
         if (!iAccepted && !iPassed) {
             buttons.push(
-                // <YMutation mutation={MessageSetReactionMutation}>
-                //     {setReaction =>
-                //         <MessageButton
-                //             text={(accepted.length > 1 ? accepted.length : '') + 'ACCEPT INTRO'}
-                //             style="accent"
-                //             onPress={async () => {
-                //                 startLoader();
-                //                 try {
-                //                     await setReaction({ variables: { messageId: message.key, reaction: 'accept' } });
-                //                     navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
-                //                 } catch (e) {
-                //                     Alert.alert(e.message);
-                //                 }
-                //                 stopLoader();
-                //             }}
-                //         />
-                //     }
-                // </YMutation>
                 <MessageButton
                     text={(accepted.length > 1 ? accepted.length : '') + 'ACCEPT INTRO'}
                     style="accent"
                     onPress={async () => {
                         startLoader();
                         try {
+                            await getMessenger().engine.client.client.mutate({ mutation: MessageSetReactionMutation.document, variables: { messageId: message.key, reaction: 'accept' } });
                             navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
                         } catch (e) {
                             Alert.alert(e.message);
@@ -117,25 +106,30 @@ let renderButtons = (message: DataSourceMessageItem, navigationManager: Navigati
         if (accepted.length > 0) {
             let count = accepted.length - (iAccepted ? 1 : 0);
             let str = (iAccepted ? 'YOU' : '') + (count < 2 ? '' : ' +' + count) + ' ACCEPTED';
-            buttons.push(<MessageButton text={str} style="positive_disabled" />);
+            buttons.push(
+                <MessageButton
+                    icon={iconAccept}
+                    text={str}
+                    style="positive_disabled"
+                    onPress={iAccepted ? () => {
+                        navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
+
+                    } : undefined}
+                />);
         }
         if (passed.length > 0) {
             let count = passed.length - (iPassed ? 1 : 0);
             let str = (iPassed ? 'YOU' : '') + (count < 2 ? '' : ' +' + count) + ' PASSED';
-            buttons.push(<MessageButton text={str} style="disabled" />);
+            buttons.push(<MessageButton icon={iconPass} text={str} style="disabled" />);
         }
     }
 
-    return buttons.length ? (
-        <ASFlex flexDirection="column" marginBottom={10}>
-            {buttons}
-        </ASFlex>
-    ) : null;
+    return buttons;
 };
 
-export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSourceMessageItem, navigationManager: NavigationManager }> {
+export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSourceMessageItem, navigationManager: NavigationManager, onDocumentPress: (document: DataSourceMessageItem) => void }> {
     render() {
-        let preprocessed = preprocessText(this.props.message.text!);
+        let preprocessed = preprocessText(this.props.message.text || '');
         let big = false;
         if (this.props.message.text) {
             big = this.props.message.text.length <= 3 && this.props.message.text.search(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g) !== -1;
@@ -155,6 +149,7 @@ export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSo
             default: 8,
             ios: 10
         });
+        let buttons = renderButtons(this.props.message, this.props.navigationManager);
         return (
             <>
                 <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
@@ -165,7 +160,7 @@ export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSo
                         marginBottom={8}
                         flexDirection="column"
                     >
-                        <ASFlex flexDirection="row" marginLeft={7} marginTop={5} marginBottom={10}>
+                        <ASFlex flexDirection="row" marginLeft={7} marginTop={5} marginBottom={7}>
                             <ASImage source={this.props.message.isOut ? require('assets/ic-attach-intro-out.png') : require('assets/ic-attach-intro.png')} width={14} height={17} />
                             <ASText
                                 marginLeft={10}
@@ -189,19 +184,18 @@ export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSo
                             {this.props.message.isOut ? paddedTextOut : paddedText}
                         </ASText>
 
-                        {this.props.message.file && <ASFlex flexDirection="row">
-                            <ASFlex marginLeft={7} flexDirection="column" width={40} height={40} backgroundColor={this.props.message.isOut ? '#5555ea' : 'rgba(224,227,231,0.5)'} borderRadius={20} alignItems="center" justifyContent="center">
+                        {this.props.message.file && <ASFlex flexDirection="row" alignItems="center" onPress={() => this.props.onDocumentPress(this.props.message)}>
+                            <ASFlex marginLeft={7} marginTop={12} marginBottom={10} flexDirection="column" width={40} height={40} backgroundColor={this.props.message.isOut ? '#5555ea' : 'rgba(224,227,231,0.5)'} borderRadius={20} alignItems="center" justifyContent="center">
                                 <ASImage source={this.props.message.isOut ? require('assets/ic-file-download-my.png') : require('assets/ic-file-download-ios.png')} width={16} height={19} />
                             </ASFlex>
 
-                            <ASFlex flexDirection="column">
+                            <ASFlex flexDirection="column" alignSelf="center" marginLeft={10}>
                                 <ASText
                                     color={this.props.message.isOut ? '#fff' : '#000'}
                                     letterSpacing={-0.3}
                                     fontSize={15}
-                                    marginLeft={7}
-                                    marginBottom={3}
                                     fontWeight="400"
+                                    marginBottom={2}
                                 >
                                     {this.props.message.file.fileName}
                                 </ASText>
@@ -210,7 +204,6 @@ export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSo
                                     opacity={0.7}
                                     letterSpacing={-0.3}
                                     fontSize={13}
-                                    marginLeft={7}
                                     fontWeight="400"
                                 >
                                     {formatBytes(this.props.message.file.fileSize)}
@@ -248,7 +241,11 @@ export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSo
                         </ASFlex>
                     </ASFlex>
                 </AsyncBubbleView>
-                {renderButtons(this.props.message, this.props.navigationManager)}
+                {buttons.length ? (
+                    <ASFlex flexDirection="column">
+                        {buttons}
+                    </ASFlex>
+                ) : null}
             </>
         );
     }

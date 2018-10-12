@@ -223,7 +223,6 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                     online={conv.online}
                     size="medium"
                     cloudImageUuid={conv.photo}
-                    border="none"
                 />
                 <Header>
                     <Main>
