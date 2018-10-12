@@ -12,6 +12,7 @@ import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { withSetReaction } from '../../../../../api/withSetReaction';
+import IntroIcon from '../../icons/ic-tag-intro.svg';
 
 const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     <XMutation mutation={props.setReaction} onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}>
@@ -25,24 +26,29 @@ const Wrapper = Glamorous(XVertical)({
 });
 
 const Root = Glamorous(XVertical)({
-    border: '1px solid #eef0f2',
+    border: '1px solid #ececec',
     borderRadius: 10,
     overflow: 'hidden',
     position: 'relative',
-    '&::after': {
-        content: `''`,
-        position: 'absolute',
-        height: '100%',
-        width: 6,
-        backgroundColor: '#1790ff',
-        left: 0,
-        top: 0,
-        display: 'block'
-    }
+    backgroundColor: '#fcfcfc'
 });
 
 const Container = Glamorous(XVertical)({
-    padding: 16
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 20,
+    paddingRight: 16,
+});
+
+const IntroTag = Glamorous(XHorizontal)({
+    height: 24,
+    borderRadius: 14,
+    backgroundColor: 'rgba(23, 144, 255, 0.1)',
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#1790ff',
+    paddingLeft: 10,
+    paddingRight: 14
 });
 
 const UserName = Glamorous.div({
@@ -285,16 +291,22 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                         )}
                                     </XVertical>
                                 </XHorizontal>
-                                <XOverflow
-                                    flat={true}
-                                    placement="bottom-end"
-                                    content={
-                                        <>
-                                            <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
-                                            <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
-                                        </>
-                                    }
-                                />
+                                <XHorizontal separator={2.5} alignItems="center">
+                                    <IntroTag separator={2.5} alignItems="center">
+                                        <IntroIcon />
+                                        <span>Intro</span>
+                                    </IntroTag>
+                                    <XOverflow
+                                        flat={true}
+                                        placement="bottom-end"
+                                        content={
+                                            <>
+                                                <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
+                                                <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
+                                            </>
+                                        }
+                                    />
+                                </XHorizontal>
                             </XHorizontal>
                         )}
                         {urlAugmentation.description && (

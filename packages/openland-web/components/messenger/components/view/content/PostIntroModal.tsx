@@ -354,6 +354,6 @@ const MutationProvider = withCreateIntro((props) => (
     />
 )) as React.ComponentType<{ conversationId: string } & Partial<XModalFormProps>>;
 
-export const PostIntroModal = withCreateIntro((props: Partial<XModalFormProps>) => (
+export const PostIntroModal = withCreateIntro((props) => (
     <MutationProvider {...props} conversationId={(props as any).conversationId} />
 )) as React.ComponentType<{ conversationId: string } & Partial<XModalFormProps>>;

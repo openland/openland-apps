@@ -1922,6 +1922,29 @@ export interface ChatCreateIntroVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: ChatEditIntro
+// ====================================================
+
+export interface ChatEditIntro_intro {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
+export interface ChatEditIntro {
+  intro: ChatEditIntro_intro;
+}
+
+export interface ChatEditIntroVariables {
+  messageId: string;
+  userId?: any | null;
+  about?: string | null;
+  file?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SetTyping
 // ====================================================
 

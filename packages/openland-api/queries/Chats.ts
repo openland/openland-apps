@@ -364,6 +364,14 @@ export const ChatCreateIntroMutation = gql`
     ${UserShort}
 `;
 
+export const ChatEditIntroMutation = gql`
+    mutation ChatEditIntro($messageId: ID!, $userId: UserID, $about: String, $file: String) {
+        intro: alphaEditIntro(messageId: $messageId, userId: $userId, about: $about, file: $file, message: $about) {
+            seq
+        }
+    }
+`;
+
 export const SetTypingMutation = gql`
     mutation SetTyping($conversationId: ID!) {
         setTyping: alphaSetTyping(conversationId: $conversationId)
