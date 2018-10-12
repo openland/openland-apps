@@ -531,7 +531,9 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Update in datasource
-            this.dataSource.updateItem(event.message);
+            let conv = convertMessage(event.message, this.engine);
+            conv.key = this.localMessagesMap.get(event.message.id) || event.message.id;
+            this.dataSource.updateItem(conv);
         } else {
             console.warn('Received unknown message');
         }

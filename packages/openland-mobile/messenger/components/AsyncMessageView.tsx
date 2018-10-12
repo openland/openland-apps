@@ -7,7 +7,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageTextView } from './AsyncMessageTextView';
 import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
 import { ASText } from 'react-native-async-view/ASText';
-import { AsyncMessageIntroView } from './AsyncMessageIntroView';
+import { AsyncMessageIntroView, renderButtons } from './AsyncMessageIntroView';
 import { SRouter } from 'react-native-s/SRouter';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 
@@ -21,14 +21,14 @@ export interface AsyncMessageViewProps {
     navigationManager: NavigationManager;
 }
 
-let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: NavigationManager) => {
+let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: NavigationManager, onDocumentPress: (document: DataSourceMessageItem) => void) => {
     let type: string | undefined | null;
     let urlAugmnentation = message.urlAugmentation;
     type = urlAugmnentation ? urlAugmnentation.type : undefined;
 
     if (type === 'intro') {
         return (
-            <AsyncMessageIntroView message={message} navigationManager={navigationManager}/>
+            <AsyncMessageIntroView message={message} navigationManager={navigationManager} onDocumentPress={onDocumentPress} />
         );
     }
 
@@ -46,12 +46,14 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
     }
 
     render() {
+        let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager, this.props.onDocumentPress);
 
-        let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager);
+        // fix needed - layour breaks if wraped in one more flex
+        let introButtonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
         return (
             <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
-                    <ASFlex marginBottom={0} marginRight={-1} marginLeft={4} onPress={this.handlePress}>
+                    <ASFlex marginRight={-1} marginLeft={4} onPress={this.handlePress} marginBottom={introButtonsAvatarHackMargin}>
                         <AsyncAvatar
                             size={28}
                             src={this.props.message.senderPhoto}
