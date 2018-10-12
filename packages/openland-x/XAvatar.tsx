@@ -17,7 +17,6 @@ export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'co
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
     size?: XAvatarSize;
-    border?: string;
     style?: XAvatarStyle;
     attach?: 'left' | 'right' | 'both';
     objectId?: string;
@@ -142,15 +141,9 @@ interface StyledAvatarProps extends XFlexStyles {
 const AvatarBehaviour = [
     (props: any) => ({
         display: 'flex',
-        border: props.avatarBorder ? props.avatarBorder : (props as any).avatarStyle === 'organization' ? undefined : '1px solid rgba(164,169,177,0.2)',
         cursor: (props as any).enabled === false ? 'default' : 'pointer',
         src: props.src,
         flexShrink: 0,
-
-        '& img': {
-            marginTop: props.avatarBorder === 'none' ? 0 : (props.avatarBorder || (props as any).avatarStyle !== 'organization' ? -1 : 0),
-            marginLeft: props.avatarBorder === 'none' ? 0 : (props.avatarBorder || (props as any).avatarStyle !== 'organization' ? -1 : 0),
-        }
     }),
     (props: any) => applyFlex(props),
     (props: any) => ({
@@ -180,7 +173,6 @@ const StyledPlaceholder = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
         width: '100%',
         height: '100%',
     },
-    border: 'none'
 })]);
 
 const AvatarStub = Glamorous.div({
@@ -266,7 +258,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
 
     let avatarWrapperProps = {
         avatarSize: props.size,
-        avatarBorder: props.border,
         avatarStyle: props.style,
         attach: props.attach,
         flexBasis: props.flexBasis,
@@ -281,7 +272,6 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
         href: props.href,
         target: props.hrefTarget,
         avatarSize: props.size,
-        avatarBorder: props.border,
         avatarStyle: props.style,
         // attach: props.attach,
         // flexBasis: props.flexBasis,
