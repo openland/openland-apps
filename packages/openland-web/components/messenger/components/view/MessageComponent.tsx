@@ -57,7 +57,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: '#99A2B0'
 }));
 
-const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean }>((props) => ({
+const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
     // alignItems: props.compact ? 'center' : undefined,
@@ -94,7 +94,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isEditView?: boolean 
             opacity: 1
         }
     },
-    '&': (props.isEditView) ? {
+    '&': (props.isHovered) ? {
         backgroundColor: 'rgba(242, 244, 245, 0.5)',
         '& .time': {
             opacity: 1
@@ -299,7 +299,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             ) : null;
         if (this.props.compact) {
             return (
-                <MessageContainer className="compact-message" compact={true} isEditView={this.state.isEditView}>
+                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)">
                         {content}
@@ -320,7 +320,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <MessageContainer className="full-message" compact={false} isEditView={this.state.isEditView}>
+            <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                 <XHorizontal alignSelf="stretch">
                     <XAvatar
                         style="colorus"
