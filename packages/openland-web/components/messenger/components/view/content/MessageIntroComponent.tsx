@@ -6,6 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
+import { PostIntroModal } from './PostIntroModal';
 import CheckIcon from '../../icons/ic-check.svg';
 import CheckIconSmall from '../../icons/ic-check-small.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
@@ -269,7 +270,17 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
     }
 
     render() {
-        const { user, file, fileMetadata, urlAugmentation } = this.props;
+        const { user, file, fileMetadata, urlAugmentation, messageId, meId, senderId } = this.props;
+
+        let fileData = null;
+
+        if (file && fileMetadata) {
+            fileData = {
+                uuid: file,
+                name: (fileMetadata ? fileMetadata.name : null),
+                size: (fileMetadata ? fileMetadata.size.toString() : null)
+            };
+        }
 
         return (
             <Wrapper separator={6}>
@@ -303,6 +314,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                             <>
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                                 <XMenuItem style="primary-sky-blue" path={'/mail/' + user.id}>Direct chat</XMenuItem>
+                                                {/* {meId === senderId && (
+                                                    <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
+                                                )} */}
                                             </>
                                         }
                                     />
@@ -323,6 +337,15 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                     )}
                 </Root>
                 {this.renderReactions()}
+                {meId === senderId && (
+                    <PostIntroModal
+                        targetQuery={'editItro' + messageId}
+                        conversationId={''}
+                        about={urlAugmentation.description || ''}
+                        file={fileData}
+                        user={user}
+                    />
+                )}
             </Wrapper>
         );
     }

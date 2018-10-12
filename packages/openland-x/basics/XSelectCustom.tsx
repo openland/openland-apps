@@ -305,7 +305,6 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
                     this.input.inputRef.inputRef.focus();
                 }
             });
-
     }
 
     keydownHandler = (e: any) => {
