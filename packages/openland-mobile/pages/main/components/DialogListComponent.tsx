@@ -7,6 +7,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
+import { SDevice } from 'react-native-s/SDevice';
 
 export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataView<DialogDataSourceItem> }> {
     private contentOffset = new STrackedValue();
@@ -19,6 +20,7 @@ export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataVi
                         <>
                             <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
+                                overscrollCompensation={true}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 dataView={this.props.dialogs}

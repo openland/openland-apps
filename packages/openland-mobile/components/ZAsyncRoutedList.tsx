@@ -36,6 +36,7 @@ export interface ZAsyncRoutedListProps<Q, V> {
     variables?: V;
     style?: StyleProp<ViewStyle>;
     emptyText?: string;
+    overscrollCompensation?: boolean;
 }
 
 export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedListProps<Q, V>, { loading?: boolean, empty?: boolean }> {
@@ -118,6 +119,7 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 headerPadding={1}
+                                overscrollCompensation={this.props.overscrollCompensation}
                                 onScroll={this.contentOffset.event}
                             />
                         </>

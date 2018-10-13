@@ -36,6 +36,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var isDragging = false
   private var keyboardHeight: CGFloat = 0.0
   private var keyboard: RNAsyncKeyboardContextView? = nil
+  private var overscrollCompensation = false
   
   init(parent: RNAsyncListView) {
     self.parent = parent
@@ -90,7 +91,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       if k.keyboardContextKey == ctx {
         if self.node.inverted {
           self.keyboardHeight = height
-          
+
           print("keyboardWillChangeHeight")
           // self.fixContentInset(interactive: true)
         }
@@ -148,18 +149,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       print("newInset \(newInset)")
       print("currentInset \(currentInset)")
       print("contentSize.height \(size.height)")
-      self.node.view.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
+      if insetsDiff < 0 {
+        self.node.view.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
+      }
     }
-    
-    var inset = self.node.view.contentInset
-    if self.node.inverted {
-      inset.top = newInset
-      inset.bottom = CGFloat(self.topInset)
-    } else {
-      inset.bottom = newInset
-      inset.top = CGFloat(self.topInset)
-    }
-    self.node.view.scrollIndicatorInsets = inset
+  }
+  
+  public func setOverscrollCompensation(_ enabled: Bool) {
+    self.overscrollCompensation = enabled
   }
   
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -202,41 +199,19 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     
-    self.fixContentInset(interactive: true)
-    // Update scroll bars
-//    if self.keyboardVisible && self.isDragging {
-////      let newInset = max(self.keyboardHeight, CGFloat(bottomInset))
-////      var inset = self.node.view.scrollIndicatorInsets
-////      if self.node.inverted {
-////        inset.top = newInset
-////      } else {
-////        inset.bottom = newInset
-////      }
-////      self.node.view.scrollIndicatorInsets = inset
-//
-////      let currentInset = self.node.inverted ? self.node.view.contentInset.top : self.node.view.contentInset.bottom
-//      let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
-////      print(self.keyboardHeight)
-////      if self.node.inverted {
-////        var inset = self.node.view.contentInset
-////        inset.top = newInset
-////        inset.bottom = CGFloat(self.topInset)
-////        self.node.view.contentInset = inset
-////      } else {
-////        self.node.view.contentInset.bottom = newInset
-////        self.node.view.contentInset.top = CGFloat(self.topInset)
-////      }
-//
-//      var inset = self.node.view.contentInset
-//      if self.node.inverted {
-//        inset.top = newInset
-//        inset.bottom = CGFloat(self.topInset)
-//      } else {
-//        inset.bottom = newInset
-//        inset.top = CGFloat(self.topInset)
-//      }
-//      self.node.view.scrollIndicatorInsets = inset
-//    }
+    // Fixing scrollbars
+    let bottomInsetCalculated = max(self.keyboardHeight, CGFloat(self.bottomInset))
+    if !self.node.inverted {
+      // Adjust scrollbars for overscrolling
+      if self.overscrollCompensation {
+        let overscroll = max(-(scrollView.contentOffset.y + CGFloat(self.topInset)), 0)
+        self.node.view.scrollIndicatorInsets = UIEdgeInsets(top: CGFloat(self.topInset) + overscroll, left: 0.0, bottom: CGFloat(bottomInsetCalculated), right: 0.0)
+      } else {
+        self.node.view.scrollIndicatorInsets = UIEdgeInsets(top: CGFloat(self.topInset), left: 0.0, bottom: CGFloat(bottomInsetCalculated), right: 0.0)
+      }
+    } else {
+      self.node.view.scrollIndicatorInsets = UIEdgeInsets(top: CGFloat(bottomInsetCalculated), left: 0.0, bottom: CGFloat(self.topInset), right: 0.0)
+    }
     
     // Forward scroll offset
     let offsetX = scrollView.contentOffset.x
@@ -276,7 +251,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   private func updateContentPadding() {
-      if self.viewLoaded {
+    if self.viewLoaded {
         self.fixContentInset(interactive: false)
     }
   }

@@ -70,6 +70,10 @@ class RNAsyncListView: RCTView {
     self.node.setOnScroll(callback: callback)
   }
   
+  public func setOverscrollCompensation(_ enabled: Bool) {
+    self.node.setOverscrollCompensation(enabled)
+  }
+  
   override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame)
     self.node.frame = frame

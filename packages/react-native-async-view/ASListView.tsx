@@ -12,6 +12,7 @@ export interface ASListViewProps {
     fluid?: boolean;
     children?: any;
     headerPadding?: number;
+    overscrollCompensation?: boolean;
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 export class ASListView extends React.PureComponent<ASListViewProps> {
@@ -23,6 +24,7 @@ export class ASListView extends React.PureComponent<ASListViewProps> {
                 contentPaddingTop={this.props.contentPaddingTop}
                 contentPaddingBottom={this.props.contentPaddingBottom}
                 headerPadding={this.props.headerPadding}
+                overscrollCompensation={this.props.overscrollCompensation}
                 inverted={this.props.inverted}
                 onScroll={this.props.onScroll}
             />

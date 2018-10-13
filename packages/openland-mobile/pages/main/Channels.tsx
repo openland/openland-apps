@@ -35,6 +35,7 @@ class ChannelsComponent extends React.PureComponent<PageProps> {
                 <SHeaderButton title="+ New" onPress={() => this.props.router.push('CreateChannel')} />
                 <SSearchControler searchRender={(props) => (<ChannelSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
+                        overscrollCompensation={true}
                         style={{ flexGrow: 1 }}
                         query={ChatSearchChannelQuery}
                         variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }}

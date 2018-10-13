@@ -25,6 +25,7 @@ RCT_EXPORT_VIEW_PROPERTY(contentPaddingTop, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(contentPaddingBottom, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(headerPadding, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(inverted, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(overscrollCompensation, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 @end
 

@@ -550,7 +550,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         );
 
         // Content offset for device
-        let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top;
+        let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top + 1;
 
         return (
             <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]} {...(Platform.OS === 'ios' ? this.panResponder.panHandlers : {})}>
