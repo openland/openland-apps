@@ -251,8 +251,10 @@ export class HeaderCoordinator {
                     res += 52;
                 }
             }
-            if (config.contentOffset) {
-                res -= config.contentOffset.offsetValue;
+            if (!config.search || !config.searchActive) {
+                if (config.contentOffset) {
+                    res -= config.contentOffset.offsetValue;
+                }
             }
         } else {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeight);
