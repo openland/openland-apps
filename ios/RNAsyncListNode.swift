@@ -37,6 +37,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var keyboardHeight: CGFloat = 0.0
   private var keyboard: RNAsyncKeyboardContextView? = nil
   private var overscrollCompensation = false
+  private var isApplying = false
   
   init(parent: RNAsyncListView) {
     self.parent = parent
@@ -65,6 +66,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if #available(iOS 11.0, *) {
       self.node.view.contentInsetAdjustmentBehavior = .never
     }
+    self.node.view.alwaysBounceVertical = true
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
     self.viewLoaded = true
     
@@ -126,19 +128,19 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   private func fixContentInset(interactive: Bool) {
-    let currentInset = self.node.inverted ? self.node.view.contentInset.top : self.node.view.contentInset.bottom
+    let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
     let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
     let insetsDiff = currentInset - newInset
     let originalOffset = self.node.contentOffset
     let size = self.node.view.contentSize
     if self.node.inverted {
-      var inset = self.node.view.contentInset
+      var inset = self.node.contentInset
       inset.top = newInset
       inset.bottom = CGFloat(self.topInset)
-      self.node.view.contentInset = inset
+      self.node.contentInset = inset
     } else {
-      self.node.view.contentInset.bottom = newInset
-      self.node.view.contentInset.top = CGFloat(self.topInset)
+      self.node.contentInset.bottom = newInset
+      self.node.contentInset.top = CGFloat(self.topInset)
     }
     
     if self.node.inverted && !interactive {
@@ -150,7 +152,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       print("currentInset \(currentInset)")
       print("contentSize.height \(size.height)")
       if insetsDiff < 0 {
-        self.node.view.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
+        self.node.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
       }
     }
   }
@@ -197,6 +199,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.onScrollCallback = callback
   }
   
+  var prevScroll: CGFloat = 0.0
+  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     
     // Fixing scrollbars
@@ -214,8 +218,16 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
     
     // Forward scroll offset
-    let offsetX = scrollView.contentOffset.x
-    let offsetY = scrollView.contentOffset.y + CGFloat(self.topInset)
+    var offsetX = scrollView.contentOffset.x
+    var offsetY = scrollView.contentOffset.y + CGFloat(self.topInset)
+    
+    if self.isApplying && offsetY == 0 {
+      // autofix
+      offsetY = self.prevScroll
+      scrollView.contentOffset.y = offsetY - CGFloat(self.topInset)
+    } else {
+      self.prevScroll = offsetY
+    }
     
     if self.onScrollCallback != nil {
       let contentOffset = NSMutableDictionary()
@@ -412,16 +424,16 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
             }
             self.node.insertItems(at: paths)
           }
-          if wasCompleted != state.completed {
-            self.node.reloadSections(IndexSet(integer: 2))
-          }
           if self.batchContext != nil {
             DispatchQueue.main.async {
               self.batchContext?.completeBatchFetching(true)
               self.batchContext = nil
             }
           }
-        }, completion: nil)
+          self.isApplying = true
+        }, completion: { v in
+          self.isApplying = false
+        })
       }
     }
   }
