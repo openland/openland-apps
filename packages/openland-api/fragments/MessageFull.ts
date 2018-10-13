@@ -39,14 +39,27 @@ export const MessageFull = gql`
             imageWidth
             imageHeight
         }
+        iconRef {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        iconInfo {
+            imageWidth
+            imageHeight
+        }
         photo {
             uuid
-                crop{
-                    x
-                    y
-                    w
-                    h
-                }
+            crop{
+                x
+                y
+                w
+                h
+            }
         }
         user: extra {
             ...on User {

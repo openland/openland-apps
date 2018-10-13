@@ -35,20 +35,9 @@ const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
             marginBottom: -2,
             display: 'flex',
             alignItems: 'center',
-            '& > div': {
-                width: 93,
-            },
-            '& img': {
-                width: '93px!important',
-                height: '93px!important'
-            }
         }
     } : {}
 );
-
-const ContentWrapper = Glamorous.div({
-
-});
 
 const Hostname = Glamorous.div({
     display: 'flex',
@@ -78,7 +67,8 @@ const Favicon = Glamorous.img({
     height: 14,
     borderRadius: 3,
     margin: '-1px 5px -1px 0',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    display: 'block',
 });
 
 const Title = Glamorous.div({
@@ -116,51 +106,13 @@ const ImageBox = Glamorous.div({
     '& img': {
         display: 'block'
     },
-    '& img.from-foreign-server': {
-        width: '100%',
-        maxWidth: 360
-    }
 });
 
-let resolveImageUrl = (url: string | null): string | undefined => {
-    if (url) {
-        if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
-            return url;
-        } else {
-            // if (hostname && url.startsWith('/'))
-            //     return '//' + hostname + url
-
-            return undefined;
-        }
-    } else {
-        return undefined;
-    }
-};
-
-interface MessageUrlAugmentationState {
-    favicon: string | undefined;
-    image: string | undefined;
-}
-
-export class MessageUrlAugmentationComponent extends React.Component<MessageFull_urlAugmentation, MessageUrlAugmentationState> {
+export class MessageUrlAugmentationComponent extends React.Component<MessageFull_urlAugmentation> {
     private preprocessed: Span[];
     constructor(props: MessageFull_urlAugmentation) {
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
-        this.state = {
-            favicon: this.props.hostname ? ('//' + this.props.hostname + '/favicon.ico') : undefined,
-            image: resolveImageUrl(this.props.imageURL)
-        };
-    }
-    handleFaviconError = () => {
-        this.setState({
-            favicon: undefined
-        });
-    }
-    handleImageError = () => {
-        this.setState({
-            image: undefined
-        });
     }
     render() {
         let parts = this.preprocessed.map((v, i) => {
@@ -174,8 +126,10 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
         });
         let dimensions = undefined;
         let isSquareImage = false;
-        if (this.props.imageInfo && this.props.imageInfo.imageWidth && this.props.imageInfo.imageHeight) {
-            isSquareImage = this.props.imageInfo.imageWidth === this.props.imageInfo.imageHeight;
+        if (this.props.photo && this.props.imageInfo && this.props.imageInfo.imageWidth && this.props.imageInfo.imageHeight) {
+            let ratio = this.props.imageInfo.imageHeight / this.props.imageInfo.imageWidth;
+
+            isSquareImage = (ratio >= 0.9 && ratio <= 1.1);
 
             if (isSquareImage) {
                 dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 93, 93);
@@ -183,20 +137,21 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                 dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 200);
             }
         }
+
         return (
             <Container href={this.props.url}>
                 <Wrapper squareImage={isSquareImage}>
-                    <ContentWrapper className="content-wrapper">
+                    <div className="content-wrapper">
                         {this.props.hostname && (
                             <Hostname>
-                                {this.state.favicon && <Favicon src={this.state.favicon} onError={this.handleFaviconError} />}
-                                {!this.state.favicon && <WebsiteIcon />}
+                                {this.props.iconRef && <Favicon src={'https://ucarecdn.com/' + this.props.iconRef.uuid + '/'} />}
+                                {!this.props.iconRef && <WebsiteIcon />}
                                 <span>{this.props.hostname}</span>
                             </Hostname>
                         )}
                         {this.props.title && <Title>{this.props.title}</Title>}
                         {parts && <Description>{parts}</Description>}
-                    </ContentWrapper>
+                    </div>
                     {this.props.photo && dimensions && (
                         <ImageWrapper className="image-wrapper">
                             <ImageBox>
@@ -206,13 +161,6 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                                     width={dimensions.width}
                                     height={dimensions.height}
                                 />
-                            </ImageBox>
-                        </ImageWrapper>
-                    )}
-                    {!this.props.photo && this.state.image && (
-                        <ImageWrapper className="image-wrapper">
-                            <ImageBox>
-                                <img src={this.state.image} className="from-foreign-server" />
                             </ImageBox>
                         </ImageWrapper>
                     )}
