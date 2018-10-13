@@ -171,7 +171,10 @@ export class MessengerEngine {
                 this.handleConversationHidden(m[0]);
             }
         }
-        this.onlineReporter.onVisible(isVisible);
+
+        if (this.onlineReporter) {
+            this.onlineReporter.onVisible(isVisible);
+        }
     }
 }
 
