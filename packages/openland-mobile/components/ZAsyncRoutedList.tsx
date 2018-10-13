@@ -63,12 +63,12 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                 this.isLoading = true;
                 let loaded = await backoff(async () => await getClient().query(this.props.query, { ...(this.props.variables as any), page: this.nextPage }));
                 let items = loaded.data.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
-                if (items.length > 0) {
+                if (loaded.data.items.pageInfo.hasNextPage) {
                     this.nextCursor = loaded.data.items.edges[loaded.data.items.edges.length - 1].cursor;
                 }
                 this.nextPage++;
                 this.isLoading = false;
-                this.dataSource.loadedMore(items, items.length === 0);
+                this.dataSource.loadedMore(items, !loaded.data.items.pageInfo.hasNextPage);
             })();
         }
     }
@@ -87,14 +87,14 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
             this.setState({ loading: true });
             let loaded = await backoff(async () => await getClient().query(this.props.query, this.props.variables));
             let items = loaded.data.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
-            if (items.length > 0) {
+            if (loaded.data.items.pageInfo.hasNextPage) {
                 this.nextCursor = loaded.data.items.edges[loaded.data.items.edges.length - 1].cursor;
-            } else {
+            } else if (items.length === 0) {
                 this.setState({ empty: true });
             }
             this.isLoading = false;
             this.setState({ loading: false });
-            this.dataSource.initialize(items, items.length === 0);
+            this.dataSource.initialize(items, !loaded.data.items.pageInfo.hasNextPage);
         })();
     }
     render() {
