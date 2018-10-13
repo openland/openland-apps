@@ -30,7 +30,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                 </SAnimated.View>
                 
                 <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                    <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: 0.5 }} />
+                    <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: SDevice.pixel }} />
                 </SAnimated.View>
 
                 {/* Titles */}

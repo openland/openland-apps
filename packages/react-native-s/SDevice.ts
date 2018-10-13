@@ -1,4 +1,4 @@
-import { Platform, Dimensions } from 'react-native';
+import { Platform, Dimensions, PixelRatio } from 'react-native';
 
 // Detect iPhoneX
 const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get('window');
@@ -33,6 +33,8 @@ const statusBarHeight = Platform.OS === 'ios' ? 22 : 0;
 //
 const renderBlurSupported = Platform.OS === 'ios';
 
+const pixel = 1 / PixelRatio.get();
+
 export const SDevice = {
     safeArea: {
         top: safeAreaTop,
@@ -43,5 +45,6 @@ export const SDevice = {
     navigationBarHeight,
     navigationBarHeightExpanded,
 
-    renderBlurSupported: renderBlurSupported
+    renderBlurSupported: renderBlurSupported,
+    pixel: pixel
 };

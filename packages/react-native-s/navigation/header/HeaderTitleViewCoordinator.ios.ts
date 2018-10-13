@@ -39,7 +39,7 @@ export class HeaderTitleViewCoordinator {
         this.searchView = new SAnimatedShadowView('header-search--' + this.key);
         this.searchViewContainer = new SAnimatedShadowView('header-search-container--' + this.key, { translateX: w });
         this.searchInputBackgroundView = new SAnimatedShadowView('header-search-input--' + this.key);
-        this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key);
+        this.searchCancelView = new SAnimatedShadowView('header-search-button--' + this.key, { opacity: 0 });
     }
 
     updateSmallTitleState = (smallVisible: boolean) => {
@@ -194,13 +194,14 @@ export class HeaderTitleViewCoordinator {
                     if (!this.searchVisible) {
                         this.searchVisible = true;
                     }
-                    this.headerView.translateY = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 44);
+                    this.headerView.translateY = -(SDevice.navigationBarHeightExpanded - SDevice.navigationBarHeight + 41);
                     if (this.page.config.searchUnderlay) {
                         this.page.config.searchUnderlay!!.translateY = -96;
                     }
-                    this.searchInputBackgroundView.iosWidth = -70;
-                    this.searchInputBackgroundView.translateX = -35;
-                    this.searchCancelView.translateX = 0;
+                    this.searchInputBackgroundView.iosWidth = -64;
+                    this.searchInputBackgroundView.translateX = -32;
+                    this.searchCancelView.translateX = -53;
+                    this.searchCancelView.opacity = 1;
                     this.titleVisible = true;
                     this.titleLargeView.opacity = 0;
                     this.titleView.opacity = 0;
@@ -217,7 +218,8 @@ export class HeaderTitleViewCoordinator {
                     }
                     this.searchInputBackgroundView.iosWidth = 0;
                     this.searchInputBackgroundView.translateX = 0;
-                    this.searchCancelView.translateX = 70;
+                    this.searchCancelView.translateX = 0;
+                    this.searchCancelView.opacity = 0;
                     if (this.page.config.searchUnderlay) {
                         this.page.config.searchUnderlay!!.translateY = 0;
                     }

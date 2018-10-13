@@ -2,7 +2,7 @@ import * as React from 'react';
 import { HeaderPage } from './HeaderPage';
 import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
-import { View, Text, TouchableWithoutFeedback, Image, TextInput, Button, StyleSheet, TextStyle, Dimensions } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, TextInput, Button, StyleSheet, TextStyle, Dimensions, TouchableOpacity } from 'react-native';
 import { SBackButton } from '../../SBackButton';
 import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
         fontSize: 34,
         fontWeight: 'bold',
         lineHeight: 52,
-        paddingLeft: 15,
-        paddingRight: 15
+        paddingLeft: 16,
+        paddingRight: 16
     } as TextStyle
 });
 
@@ -110,33 +110,40 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     {(v.config.appearance === 'large' || !v.config.appearance) && (v.config.search) && (
                         <SAnimated.View name={'header-search-container--' + v.page.key} style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: MAX_SIZE, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-search--' + v.page.key}>
-                                <View style={{ flexDirection: 'row', height: 36, marginTop: 1, marginLeft: 15, marginRight: 15, alignItems: 'center' }}>
-                                    <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#8a8a8f', height: 36, opacity: 0.12, borderRadius: 8 }} />
+                                <View style={{ flexDirection: 'row', height: 36, marginTop: 1, marginLeft: 16, marginRight: 16, alignItems: 'center' }}>
+                                    <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#959595', height: 36, opacity: 0.16, borderRadius: 10 }} />
                                     {!v.config.searchActive && (
                                         <TouchableWithoutFeedback onPress={v.config.searchPress}>
                                             <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
-                                                <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
-                                                <Text style={{ fontSize: 16, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Search</Text>
+                                                <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 8, marginRight: 7 }} />
+                                                <Text style={{ fontSize: 17, marginTop: -1, color: 'rgba(138, 138, 143, 0.75)', lineHeight: 22 }}>Search</Text>
                                             </View>
                                         </TouchableWithoutFeedback>
                                     )}
                                     {v.config.searchActive && (
                                         <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1, marginRight: 70 }}>
-                                            <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 13, marginRight: 7 }} />
-                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 16, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 20 }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" />
+                                            <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 8, marginRight: 7 }} />
+                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 20 }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" />
                                         </View>
                                     )}
 
-                                    <View style={{ marginLeft: -70 }}>
-                                        <SAnimated.View
-                                            name={'header-search-button--' + v.page.key}
-                                            style={{
-                                                width: 70 - 15,
-                                            }}
-                                        >
-                                            <Button title="Close" onPress={v.config.searchClosed!!} color={this.props.style.accentColor} />
-                                        </SAnimated.View>
-                                    </View>
+                                    <SAnimated.View
+                                        name={'header-search-button--' + v.page.key}
+                                        style={{
+                                            width: 70,
+                                            height: 36,
+                                            marginRight: -70
+                                        }}
+                                        pointerEvents="box-none"
+                                    >
+                                        <View style={{ height: '100%', width: '100%' }} pointerEvents={this.props.page.config.searchActive ? 'box-none' : 'none'}>
+                                            <TouchableOpacity onPress={v.config.searchClosed!!} style={{ height: '100%', width: '100%' }}>
+                                                <View style={{ height: '100%', width: '100%' }}>
+                                                    <Text style={{ color: this.props.style.accentColor, fontSize: 17, height: 32, lineHeight: 32, marginTop: 1 }}>Cancel</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </SAnimated.View>
                                 </View>
                             </SAnimated.View>
                         </SAnimated.View>

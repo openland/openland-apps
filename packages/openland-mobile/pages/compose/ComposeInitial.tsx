@@ -76,7 +76,7 @@ class UserSearchComponent extends React.Component<PageProps & { query: string }>
                                 <SScrollView keyboardDismissMode="on-drag">
                                     <View style={{ flexDirection: 'column', width: '100%' }}>
                                         {resp.data.items.map((item) => (
-                                            <UserViewAsync item={item as UserShort} onPress={(id) => r!.push('Conversation', { flexibleId: id })} />
+                                            <UserViewAsync item={item as UserShort} onPress={(id) => r!.pushAndRemove('Conversation', { flexibleId: id })} />
                                         ))}
                                     </View>
 
