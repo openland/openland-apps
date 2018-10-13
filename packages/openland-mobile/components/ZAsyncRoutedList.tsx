@@ -65,6 +65,8 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                 let items = loaded.data.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
                 if (loaded.data.items.pageInfo.hasNextPage) {
                     this.nextCursor = loaded.data.items.edges[loaded.data.items.edges.length - 1].cursor;
+                } else {
+                    this.nextCursor = undefined;
                 }
                 this.nextPage++;
                 this.isLoading = false;

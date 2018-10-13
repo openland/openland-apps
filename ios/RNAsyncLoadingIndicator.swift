@@ -11,12 +11,25 @@ import Foundation
 class RNAsyncLoadingIndicator: ASDisplayNode {
   private weak var weakIndicator: UIActivityIndicatorView!
   private var node: ASDisplayNode!
+  var loading = false {
+    didSet {
+      let wi = self.weakIndicator
+      if wi != nil {
+        if (loading) {
+          wi?.startAnimating()
+          wi?.alpha = 1.0
+        } else {
+          wi?.stopAnimating()
+          wi?.alpha = 0.0
+        }
+      }
+    }
+  }
   override init() {
     super.init()
     self.node = ASDisplayNode(viewBlock: { () -> UIView in
       let res = UIActivityIndicatorView()
       res.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-      res.startAnimating()
       self.weakIndicator = res
       return res
     })
@@ -26,7 +39,7 @@ class RNAsyncLoadingIndicator: ASDisplayNode {
   
   override func didEnterVisibleState() {
     super.didEnterVisibleState()
-    if self.weakIndicator != nil {
+    if self.loading && self.weakIndicator != nil {
       self.weakIndicator.startAnimating()
     }
   }

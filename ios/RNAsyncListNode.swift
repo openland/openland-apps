@@ -29,6 +29,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var loaded = false
   private var activeCells = WeakMap<RNAsyncCell>()
   private var activeCellsStrong: [String:RNAsyncCell] = [:]
+  private var loadingCell = RNLoadingCell()
+  
   private var viewLoaded = false
   private var keyboardSubscription: (() -> Void)?
   private var isDragging = false
@@ -331,6 +333,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.activeCells.set(key: itm.key, value: itm.value)
         }
         self.fixContentInset(interactive: false)
+        self.loadingCell.loading = !state.completed
         if self.loaded {
           if indexPaths.count > 0 {
             self.node.performBatch(animated: false, updates: {
@@ -420,6 +423,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       myGroup.wait()
       
       DispatchQueue.main.async {
+        self.loadingCell.loading = !state.completed
         self.node.performBatch(animated: false, updates: {
           let wasCompleted = self.state.completed
           self.state = state
@@ -450,6 +454,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onCompleted(state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
+        self.loadingCell.loading = false
         self.node.performBatch(animated: false, updates: {
           self.state = state
           self.node.reloadSections(IndexSet(integer: 2))
@@ -526,25 +531,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         return cached!
       }
     } else if indexPath.section == 2 {
-      let hideLoader = self.state.completed || !self.state.inited
-      let w = self.bounds.size.width
+      let n = self.loadingCell
       return { () -> ASCellNode in
-        let res = ASCellNode()
-        res.automaticallyManagesSubnodes = true
-        res.layoutSpecBlock = { node, constrainedSize in
-          let res = ASStackLayoutSpec()
-          res.direction = ASStackLayoutDirection.vertical
-          res.alignItems = ASStackLayoutAlignItems.center
-          res.justifyContent = ASStackLayoutJustifyContent.center
-          if !hideLoader {
-            res.child = RNAsyncLoadingIndicator()
-          }
-          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
-          res.style.height = ASDimension(unit: ASDimensionUnit.points, value: 64.0)
-          return res
-        }
-        res.layoutThatFits(range)
-        return res
+        n.layoutThatFits(range)
+        return n
       }
     } else if indexPath.section == 0 {
       let padding = self.headerPadding
