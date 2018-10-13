@@ -65,7 +65,6 @@ const Hostname = Glamorous.div({
 const Favicon = Glamorous.img({
     width: 14,
     height: 14,
-    borderRadius: 3,
     margin: '-1px 5px -1px 0',
     overflow: 'hidden',
     display: 'block',
