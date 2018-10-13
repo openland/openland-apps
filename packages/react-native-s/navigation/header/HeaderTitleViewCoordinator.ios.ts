@@ -155,10 +155,10 @@ export class HeaderTitleViewCoordinator {
                 if (contentOffset < 0) {
                     // Do nothing on overscroll
                 } else {
-                    if (contentOffset < 44) {
+                    if (contentOffset < 52) {
                         titleOffset = 0;
                     } else {
-                        titleOffset += 44;
+                        titleOffset += 52;
                     }
                 }
             }

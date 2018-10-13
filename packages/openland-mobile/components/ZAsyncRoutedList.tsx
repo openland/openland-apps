@@ -115,7 +115,6 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                                 dataView={this.dataView}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
-                                headerPadding={4}
                                 onScroll={this.contentOffset.event}
                             />
                         </>

@@ -45,7 +45,6 @@ class ChannelsComponent extends React.PureComponent<PageProps> {
                         }}
                     />
                 </SSearchControler>
-
             </>
         );
     }

@@ -262,22 +262,25 @@ export class HeaderCoordinator {
 
     private resolveHairlineOpacity(config: HeaderConfig) {
         let res: number = 1;
-        // if (config.appearance === 'large' || config.appearance === undefined) {
-        //     if (config.search && config.searchActive) {
-        //         res = 1;
-        //     } else if (config.contentOffset) {
-        //         res = config.contentOffset.offsetValue < 44 ? 0 : 1;
-        //     } else {
-        //         res = 0;
-        //     }
-        // } else if (config.appearance === 'small-hidden') {
-        //     if (config.contentOffset) {
-        //         res = config.contentOffset.offsetValue < 44 ? 0 : 1;
-        //     } else {
-        //         res = 0;
-        //     }
-        // }
-
+        if (config.appearance === 'large' || config.appearance === undefined) {
+            if (config.search && config.searchActive) {
+                res = 1;
+            } else if (!config.search) {
+                res = 1;
+            } else {
+                if (config.contentOffset) {
+                    res = config.contentOffset.offsetValue <= 52 ? 0 : 1;
+                } else {
+                    res = 0;
+                }
+            }
+        } else if (config.appearance === 'small-hidden') {
+            if (config.contentOffset) {
+                res = config.contentOffset.offsetValue <= 44 ? 0 : 1;
+            } else {
+                res = 0;
+            }
+        }
         return res;
     }
 
