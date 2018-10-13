@@ -8,6 +8,7 @@
 
 import Foundation
 
+private var patchBaseCacheLock = NSObject()
 private var patchBaseCache = [String : UIImage]()
 private var patchCache = [String : UIImage]()
 
@@ -33,12 +34,15 @@ class RNPatchNode: ASDisplayNode {
     
     // Base image
     var _baseImage: UIImage? = nil
-    if let val = patchBaseCache[spec.source] {
-      _baseImage = val
-    } else {
-      _baseImage = try! UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale)
-      if _baseImage != nil {
-        patchBaseCache[spec.source] = _baseImage
+    
+    openland.lock(patchBaseCacheLock) {
+      if let val = patchBaseCache[spec.source] {
+        _baseImage = val
+      } else {
+        _baseImage = try! UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale)
+        if _baseImage != nil {
+          patchBaseCache[spec.source] = _baseImage
+        }
       }
     }
     
