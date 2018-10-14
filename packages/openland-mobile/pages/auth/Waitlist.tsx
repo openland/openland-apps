@@ -28,7 +28,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
                             Openland is currently in closed beta. We onboard new users in small groups and will let you know when the system is ready for you.
                         </Text>
                     </View>
-                    <Image source={require('assets/img-waitlist.png')} style={{ width: Dimensions.get('window').width, height: 310 }} />
+                    <Image source={require('assets/img-waitlist.png')} style={{ width: Dimensions.get('window').width, height: 320 }} />
                 </SSafeAreaView>
             </>
         );
