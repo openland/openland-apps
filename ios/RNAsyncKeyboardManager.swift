@@ -24,6 +24,8 @@ protocol RNAsyncKeyboardManagerDelegate {
   var keyboardAcHeight: Float = 0.0
   var currentView: RNAsyncKeyboardView? = nil
   var lastCtx: String = "default"
+  private var lastWillHideRect: CGRect? = nil
+  private var lastWillShowRect: CGRect? = nil
   
   private var watchers: [String : RNAsyncKeyboardManagerDelegate] = [:]
   
@@ -34,7 +36,6 @@ protocol RNAsyncKeyboardManagerDelegate {
   @objc func start() {
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
   }
@@ -57,6 +58,11 @@ protocol RNAsyncKeyboardManagerDelegate {
     let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
     let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
     let context = (UIResponder.current as? UIView)?.resolveKeyboardContextKey()
+    if self.lastWillShowRect != nil && endRect.equalTo(self.lastWillShowRect!) {
+      return
+    }
+    self.lastWillShowRect = endRect
+    
     print("[KEYBOARD] willShow \(endRect)")
     
     self.lastCtx = context?.keyboardContextKey ?? "default"
@@ -75,17 +81,18 @@ protocol RNAsyncKeyboardManagerDelegate {
   func keyboardDidShow(aNotification: Notification) {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
     print("[KEYBOARD] didShow: \(endRect)")
-  }
-  
-  func keyboardWillChangeFrame(aNotification: Notification) {
-    let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-    print("[KEYBOARD] willChange: \(endRect)")
+    
+    self.lastWillShowRect = nil
   }
   
   func keyboardWillHide(aNotification: Notification) {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
     let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
     let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+    if self.lastWillHideRect != nil && endRect.equalTo(self.lastWillHideRect!) {
+      return
+    }
+    self.lastWillHideRect = endRect
     print("[KEYBOARD] willHide: \(endRect)")
     
     if let tr = currentView  {
@@ -103,6 +110,7 @@ protocol RNAsyncKeyboardManagerDelegate {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
     print("[KEYBOARD] didHide: \(endRect)")
     
+    self.lastWillHideRect = nil
     self.lastCtx = "default"
   }
   

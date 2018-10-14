@@ -158,7 +158,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       print("newInset \(newInset)")
       print("currentInset \(currentInset)")
       print("contentSize.height \(size.height)")
-      if insetsDiff != 0 {
+      if insetsDiff < 0 {
         self.node.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
       }
     }
