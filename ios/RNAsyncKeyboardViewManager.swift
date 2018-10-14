@@ -94,7 +94,10 @@ class RNAsyncKeyboardView: RCTView {
       }
       if self.keyboardHeightWithAccessory != self.bounds.size.height {
         self.keyboardHeightWithAccessory = self.bounds.size.height
-        RNAsyncKeyboardManager.sharedInstance.reportRealHeight(ctx: ctx.keyboardContextKey, height: Float(self.bounds.size.height))
+        RNAsyncKeyboardManager.sharedInstance.reportRealHeight(
+          ctx: ctx.keyboardContextKey,
+          kbHeight: 0.0,
+          acHeight: Float(self.bounds.size.height))
       }
     } else {
       let kbtop = kbview!.center.y - kbview!.bounds.size.height / 2
@@ -106,7 +109,7 @@ class RNAsyncKeyboardView: RCTView {
       
       print("kbheight: \(kbheight)")
       print("height: \(height)")
-      print("accessory: \(self.bounds.size.height)")
+      print("accessory: \(accessoryHeight)")
       print("fullHeight: \(fullHeight)")
     
       if self.keyboardHeight != height {
@@ -116,7 +119,11 @@ class RNAsyncKeyboardView: RCTView {
     
       if self.keyboardHeightWithAccessory != fullHeight {
         self.keyboardHeightWithAccessory = fullHeight
-        RNAsyncKeyboardManager.sharedInstance.reportRealHeight(ctx: ctx.keyboardContextKey, height: Float(fullHeight))
+        RNAsyncKeyboardManager.sharedInstance.reportRealHeight(
+          ctx: ctx.keyboardContextKey,
+          kbHeight: Float(height),
+          acHeight: Float(accessoryHeight)
+        )
       }
     }
   }

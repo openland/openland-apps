@@ -10,7 +10,7 @@ import Foundation
 
 @objc(RNAsyncKeyboardContextView)
 class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
-  
+
   var keyboardContextKey: String!
   var safeInset: CGFloat = 0.0
   
@@ -26,15 +26,15 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
     self.safeInset = inset
   }
   
-  func keyboardWillChangeHeight(ctx: String, height: CGFloat) {
+  func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
     
   }
   
-  func keyboardWillHide(ctx: String, height: CGFloat, duration: Double, curve: Int) {
+  func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let clb = self.onKeyboardCallback {
       if ctx == self.keyboardContextKey {
         let contentOffset = NSMutableDictionary()
-        contentOffset.setValue(height, forKey: "height")
+        contentOffset.setValue(kbHeight + acHeight, forKey: "height")
         contentOffset.setValue(duration, forKey: "duration")
         contentOffset.setValue(curve, forKey: "curve")
         contentOffset.setValue("name", forKey: "keyboardWillHide")
@@ -52,11 +52,11 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
     }
   }
   
-  func keyboardWillShow(ctx: String, height: CGFloat, duration: Double, curve: Int) {
+  func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let clb = self.onKeyboardCallback {
       if ctx == self.keyboardContextKey {
         let contentOffset = NSMutableDictionary()
-        contentOffset.setValue(height, forKey: "height")
+        contentOffset.setValue(kbHeight + acHeight, forKey: "height")
         contentOffset.setValue(duration, forKey: "duration")
         contentOffset.setValue(curve, forKey: "curve")
         contentOffset.setValue("name", forKey: "keyboardWillShow")

@@ -35,6 +35,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var keyboardSubscription: (() -> Void)?
   private var isDragging = false
   private var keyboardHeight: CGFloat = 0.0
+  private var keyboardAcHeight: CGFloat = 0.0
   private var keyboard: RNAsyncKeyboardContextView? = nil
   private var overscrollCompensation = false
   private var isApplying = false
@@ -88,11 +89,15 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
-  func keyboardWillChangeHeight(ctx: String, height: CGFloat) {
+  func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
     if let k = self.keyboard {
       if k.keyboardContextKey == ctx {
         if self.node.inverted {
-          self.keyboardHeight = height
+          self.keyboardHeight = kbHeight + acHeight
+          if self.keyboardAcHeight != acHeight {
+            self.keyboardAcHeight = acHeight
+            self.fixContentInset(interactive: false)
+          }
 
           print("keyboardWillChangeHeight")
           // self.fixContentInset(interactive: true)
@@ -101,11 +106,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
-  func keyboardWillShow(ctx: String, height: CGFloat, duration: Double, curve: Int) {
+  func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let k = self.keyboard {
       if k.keyboardContextKey == ctx {
         self.keyboardVisible = true
-        self.keyboardHeight = height
+        self.keyboardHeight = kbHeight + acHeight
+        self.keyboardAcHeight = acHeight
         print("keyboardWillShow")
         UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
           self.fixContentInset(interactive: false)
@@ -114,11 +120,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
-  func keyboardWillHide(ctx: String, height: CGFloat, duration: Double, curve: Int) {
+  func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let k = self.keyboard {
       if k.keyboardContextKey == ctx {
         self.keyboardVisible = false
-        self.keyboardHeight = height
+        self.keyboardHeight = kbHeight + acHeight
+        self.keyboardAcHeight = acHeight
         print("keyboardWillHide")
         UIView.animate(withDuration: duration, delay: 0.0, options: [UIViewAnimationOptions(rawValue: UInt(curve)), UIViewAnimationOptions.beginFromCurrentState], animations: {
           self.fixContentInset(interactive: false)
@@ -151,9 +158,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       print("newInset \(newInset)")
       print("currentInset \(currentInset)")
       print("contentSize.height \(size.height)")
-      if insetsDiff < 0 {
-        self.node.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
-      }
+      // if insetsDiff < 0 {
+      self.node.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
+      //}
     }
   }
   

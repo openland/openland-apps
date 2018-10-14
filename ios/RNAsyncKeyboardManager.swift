@@ -9,9 +9,9 @@
 import Foundation
 
 protocol RNAsyncKeyboardManagerDelegate {
-  func keyboardWillChangeHeight(ctx: String, height: CGFloat)
-  func keyboardWillShow(ctx: String, height: CGFloat, duration: Double, curve: Int)
-  func keyboardWillHide(ctx: String, height: CGFloat, duration: Double, curve: Int)
+  func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat)
+  func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)
+  func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)
 }
 
 @objc class RNAsyncKeyboardManager: NSObject {
@@ -19,6 +19,7 @@ protocol RNAsyncKeyboardManagerDelegate {
   static var sharedInstance: RNAsyncKeyboardManager = RNAsyncKeyboardManager()
   
   var keyboardHeight: Float = 0.0
+  var keyboardAcHeight: Float = 0.0
   var currentView: RNAsyncKeyboardView? = nil
   var lastCtx: String = "default"
   
@@ -40,11 +41,12 @@ protocol RNAsyncKeyboardManagerDelegate {
     NotificationCenter.default.removeObserver(self)
   }
   
-  func reportRealHeight(ctx: String, height: Float) {
-    print("Report Height \(height)")
-    self.keyboardHeight = height
+  func reportRealHeight(ctx: String, kbHeight: Float, acHeight: Float) {
+    print("Report Height \(kbHeight + acHeight)")
+    self.keyboardHeight = kbHeight
+    self.keyboardAcHeight = acHeight
     for i in self.watchers {
-      i.value.keyboardWillChangeHeight(ctx: ctx, height: CGFloat(height))
+      i.value.keyboardWillChangeHeight(ctx: ctx, kbHeight: CGFloat(kbHeight), acHeight: CGFloat(acHeight))
     }
   }
   
@@ -58,9 +60,11 @@ protocol RNAsyncKeyboardManagerDelegate {
     if let tr = currentView  {
       NSLog("[KEYBOARD] (\(context?.keyboardContextKey)) height: \(tr.keyboardHeightWithAccessory)")
       let h = tr.keyboardHeightWithAccessory
+      let kh = tr.keyboardHeight
+      let ah = h - kh
       if let ctx = context?.keyboardContextKey {
         for i in self.watchers {
-          i.value.keyboardWillShow(ctx: ctx, height: h, duration: duration, curve: curve)
+          i.value.keyboardWillShow(ctx: ctx, kbHeight: kh, acHeight: ah, duration: duration, curve: curve)
         }
       }
     }
@@ -86,8 +90,10 @@ protocol RNAsyncKeyboardManagerDelegate {
     if let tr = currentView  {
       NSLog("[KEYBOARD] (\(self.lastCtx)) height: \(tr.keyboardHeightWithAccessory)")
       let h = tr.keyboardHeightWithAccessory
+      let kh = tr.keyboardHeight
+      let ah = h - kh
       for i in self.watchers {
-        i.value.keyboardWillHide(ctx: self.lastCtx, height: h, duration: duration, curve: curve)
+        i.value.keyboardWillHide(ctx: self.lastCtx, kbHeight: kh, acHeight: ah, duration: duration, curve: curve)
       }
     }
   }
@@ -100,7 +106,7 @@ protocol RNAsyncKeyboardManagerDelegate {
   func watch(delegate: RNAsyncKeyboardManagerDelegate) -> ()-> Void {
     let key = UUID().uuidString
     self.watchers[key] = delegate
-    delegate.keyboardWillChangeHeight(ctx: self.lastCtx, height: CGFloat(keyboardHeight))
+    delegate.keyboardWillChangeHeight(ctx: self.lastCtx, kbHeight: CGFloat(keyboardHeight), acHeight: CGFloat(self.keyboardAcHeight))
     return {
       self.watchers[key] = nil
     }
