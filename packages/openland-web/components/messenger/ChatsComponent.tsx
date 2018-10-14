@@ -23,6 +23,8 @@ import { XFont } from 'openland-x/XFont';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { DataSourceRender } from './components/DataSourceRender';
+import { XLink } from 'openland-x/XLink';
+import InviteIcon from './components/icons/ic-invite-plus.svg';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -397,6 +399,34 @@ const getScrollView = () => {
     return document.getElementsByClassName('chats-list')[0].getElementsByClassName('scroll-bar')[0].firstChild;
 };
 
+const InviteWrapper = Glamorous(XLink)({
+    borderTop: '1px solid #ececec',
+    height: 48,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#2196f3',
+    fontWeight: 600,
+    fontSize: 14,
+    lineHeight: '16px',
+    '&:hover': {
+        backgroundColor: 'rgb(33, 150, 243, 0.03)',
+    },
+    '& svg': {
+        width: 16,
+        height: 16,
+        display: 'block',
+        opacity: 0.6,
+        marginRight: 6,
+        '& *': {
+            fill: '#2196f3'
+        }
+    },
+    'span': {
+        display: 'block',
+    }
+});
+
 class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
     readonly dialogListEngine: DialogListEngine;
     items: DialogDataSourceItem[] = [];
@@ -598,7 +628,6 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                         </XHorizontal>
                     </ExploreChannels>
                 )} */}
-
                 <XScrollView2 flexGrow={1} flexBasis={0} className="chats-list">
                     {search && (
                         <SearchChats
@@ -637,8 +666,11 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                             )}
                         />
                     )}
-
                 </XScrollView2>
+                <InviteWrapper query={{ field: 'invite_global', value: 'true' }}>
+                    <InviteIcon />
+                    <span>Invite people</span>
+                </InviteWrapper>
             </XVertical>
         );
     }
