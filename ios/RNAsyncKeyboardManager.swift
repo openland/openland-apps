@@ -14,6 +14,8 @@ protocol RNAsyncKeyboardManagerDelegate {
   func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)
 }
 
+
+
 @objc class RNAsyncKeyboardManager: NSObject {
   
   static var sharedInstance: RNAsyncKeyboardManager = RNAsyncKeyboardManager()
@@ -55,10 +57,10 @@ protocol RNAsyncKeyboardManagerDelegate {
     let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
     let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
     let context = (UIResponder.current as? UIView)?.resolveKeyboardContextKey()
+    print("[KEYBOARD] willShow \(endRect)")
+    
     self.lastCtx = context?.keyboardContextKey ?? "default"
-    NSLog("[KEYBOARD] (\(context?.keyboardContextKey)) willShow: \(endRect)")
     if let tr = currentView  {
-      NSLog("[KEYBOARD] (\(context?.keyboardContextKey)) height: \(tr.keyboardHeightWithAccessory)")
       let h = tr.keyboardHeightWithAccessory
       let kh = tr.keyboardHeight
       let ah = h - kh
@@ -72,23 +74,22 @@ protocol RNAsyncKeyboardManagerDelegate {
   
   func keyboardDidShow(aNotification: Notification) {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-    NSLog("[KEYBOARD] didShow: \(endRect)")
+    print("[KEYBOARD] didShow: \(endRect)")
   }
   
   func keyboardWillChangeFrame(aNotification: Notification) {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-    NSLog("[KEYBOARD] willChange: \(endRect)")
+    print("[KEYBOARD] willChange: \(endRect)")
   }
   
   func keyboardWillHide(aNotification: Notification) {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
     let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
     let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-    // let context = (UIResponder.current as? UIView)?.resolveKeyboardContextKey()
-    // self.lastCtx = context?.keyboardContextKey ?? "default"
-    NSLog("[KEYBOARD] (\(self.lastCtx)) willHide: \(endRect), \(duration)")
+    print("[KEYBOARD] willHide: \(endRect)")
+    
     if let tr = currentView  {
-      NSLog("[KEYBOARD] (\(self.lastCtx)) height: \(tr.keyboardHeightWithAccessory)")
+      // print("[KEYBOARD] (\(self.lastCtx)) height: \(tr.keyboardHeightWithAccessory)")
       let h = tr.keyboardHeightWithAccessory
       let kh = tr.keyboardHeight
       let ah = h - kh
@@ -100,7 +101,9 @@ protocol RNAsyncKeyboardManagerDelegate {
   
   func keyboardDidHide(aNotification: Notification) {
     let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-    NSLog("[KEYBOARD] didHide: \(endRect)")
+    print("[KEYBOARD] didHide: \(endRect)")
+    
+    self.lastCtx = "default"
   }
   
   func watch(delegate: RNAsyncKeyboardManagerDelegate) -> ()-> Void {

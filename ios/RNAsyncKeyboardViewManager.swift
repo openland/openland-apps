@@ -70,7 +70,7 @@ class RNAsyncKeyboardView: RCTView {
     
     // Start traching own size
     self.token = self.observe(\.bounds, options: NSKeyValueObservingOptions.new) { [weak self] (v, val) in
-      self?.recalculateSize()
+      self?.acessoryHeightChanged()
     }
   }
   
@@ -81,6 +81,10 @@ class RNAsyncKeyboardView: RCTView {
   //
   // Layouting
   //
+  
+  fileprivate func acessoryHeightChanged() {
+    self.recalculateSize()
+  }
   
   fileprivate func recalculateSize() {
     let w = self.trackingView.window
@@ -102,7 +106,8 @@ class RNAsyncKeyboardView: RCTView {
     } else {
       let kbtop = kbview!.center.y - kbview!.bounds.size.height / 2
       let kbheight = w!.bounds.size.height - kbtop
-      let height = max(kbheight - self.trackingView.bounds.height, ctx.safeInset) - ctx.safeInset // Skip first safeInset bytes before starting moving input bar
+      // Skip first safeInset pixels before starting moving input bar
+      let height = max(kbheight - self.trackingView.bounds.height, ctx.safeInset) - ctx.safeInset
       
       let accessoryHeight = self.bounds.size.height
       let fullHeight = height + accessoryHeight
