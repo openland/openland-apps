@@ -231,8 +231,31 @@ const OrganizationTitleContainer = makeNavigable((props) => {
     return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
 });
 
-class UserPopper extends React.Component<{ picture: string | null, name?: string, id?: string, logo?: string | null, organizationName?: string, organizationId?: string, hasMultipleOrganizations: boolean }, { show: boolean }> {
-    constructor(props: { picture: string | null, name?: string, hasMultipleOrganizations: boolean }) {
+const PopperSeparator = Glamorous.div({
+    marginTop: 12,
+    background: '#ececec',
+    height: 1
+});
+
+interface UserPopperProps {
+    id?: string;
+    name?: string;
+    picture: string | null;
+    primaryOrganization?: {
+        id: string;
+        name: string;
+        photo: string | null;
+    };
+    organizations?: {
+        id: string;
+        name: string;
+        photo: string | null;
+    }[];
+}
+
+class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
+    inner = 0;
+    constructor(props: UserPopperProps) {
         super(props);
         this.state = { show: false };
     }
@@ -257,12 +280,19 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
     }
 
     closer = () => {
-        this.setState({
-            show: false
-        });
+        if (!this.inner) {
+            this.setState({
+                show: false
+            });
+        }
+    }
+
+    onInner = (ref: any) => {
+        this.inner += ref ? 1 : -1;
     }
 
     render() {
+        let { primaryOrganization, organizations } = this.props;
 
         return (
             <XPopper
@@ -275,7 +305,7 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                 marginBottom={5}
                 content={(
                     <XModalContext.Provider value={{ close: this.closer }}>
-                        <XVertical separator="none">
+                        <XVertical separator="none" minWidth={270}>
                             <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
                                 <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" objectName={this.props.name} objectId={this.props.id} />
                                 <XVertical separator={1}>
@@ -286,6 +316,40 @@ class UserPopper extends React.Component<{ picture: string | null, name?: string
                             <XMenuItem style="primary-sky-blue" path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem style="primary-sky-blue" query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
                             <XMenuItem style="primary-sky-blue" path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
+
+                            {primaryOrganization && (
+                                <>
+                                    <PopperSeparator />
+                                    <OrganizationTitleContainer path={'/directory/o/' + primaryOrganization.id} autoClose={true}>
+                                        <XAvatar path={'/directory/o' + primaryOrganization.id} cloudImageUuid={primaryOrganization.photo || undefined} style="organization" objectName={primaryOrganization.name} objectId={primaryOrganization.id} />
+                                        <XVertical separator={1}>
+                                            <ProfileTitle >{primaryOrganization.name}</ProfileTitle>
+                                            <ProfileSubTitle>Primary organization</ProfileSubTitle>
+                                        </XVertical>
+                                    </OrganizationTitleContainer>
+
+                                    {organizations && (organizations.length > 1) && (
+                                        <XPopper
+                                            placement="right"
+                                            contentContainer={<XMenuVertical />}
+                                            showOnHover={true}
+                                            padding={25}
+                                            marginLeft={8}
+                                            marginBottom={5}
+                                            arrow={null}
+                                            content={(
+                                                <XVertical separator="none" minWidth={260} ref={this.onInner}>
+                                                    {organizations.map((org, index) => (index >= 1) ? (
+                                                        <XMenuItem style="primary-sky-blue" path={'/directory/o/' + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
+                                                    ) : null)}
+                                                </XVertical>
+                                            )}
+                                        >
+                                            <XMenuItem style="primary-sky-blue" iconRight="x-right">Other organizations</XMenuItem>
+                                        </XPopper>
+                                    )}
+                                </>
+                            )}
                         </XVertical>
                     </XModalContext.Provider>
                 )}
@@ -304,10 +368,8 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
                     picture={props.user!!.picture}
                     name={props.user!!.name}
                     id={props.user!!.id}
-                    logo={props.organization ? props.organization.photo : undefined}
-                    organizationName={props.organization ? props.organization.name : undefined}
-                    organizationId={props.organization ? props.organization.id : undefined}
-                    hasMultipleOrganizations={data.data && data.data.myOrganizations && data.data.myOrganizations.length > 1}
+                    primaryOrganization={props.organization || undefined}
+                    organizations={(data.data && data.data.myOrganizations) ? data.data.myOrganizations : undefined}
                 />
             }
         </Query>
