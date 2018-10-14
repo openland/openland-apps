@@ -143,26 +143,27 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         });
         let wsLink = new WebSocketLink(subscriptionClient);
 
-        //
-        // HTTP Link
-        //
+        // //
+        // // HTTP Link
+        // //
 
-        let httpLink = new HttpLink({
-            uri: config.endpoint,
-            headers: headers,
-            fetch: config.fetch
-        });
+        // let httpLink = new HttpLink({
+        //     uri: config.endpoint,
+        //     headers: headers,
+        //     fetch: config.fetch
+        // });
 
-        // Hybrid link
-        link = split(
-            // split based on operation type
-            (args) => {
-                let def = getMainDefinition(args.query as any);
-                return def.kind === 'OperationDefinition' && def.operation === 'subscription';
-            },
-            wsLink,
-            httpLink,
-        );
+        // // Hybrid link
+        // link = split(
+        //     // split based on operation type
+        //     (args) => {
+        //         let def = getMainDefinition(args.query as any);
+        //         return def.kind === 'OperationDefinition' && def.operation === 'subscription';
+        //     },
+        //     wsLink,
+        //     httpLink,
+        // );
+        link = wsLink;
     }
 
     //
