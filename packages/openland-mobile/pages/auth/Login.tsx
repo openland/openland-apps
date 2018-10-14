@@ -151,7 +151,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                             <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={require('assets/logo-unicorn.png')} style={{ width: 117, height: 151 }} />
                                 <Image source={require('assets/logotype.png')} style={{ width: 186, height: 38, marginTop: 28 }} />
-                                <Text style={{ marginTop: 12, fontSize: 18, lineHeight: 21, height: 21, color: '#000', opacity: 0.8, fontWeight: '500' }}>Messaging for smart people</Text>
+                                <Text style={{ marginTop: 12, fontSize: 18, lineHeight: 21, height: 21, color: '#000', opacity: 0.8, fontWeight: '500' }}>Silicon Valley's Next Messenger</Text>
                             </View>
                         </View>
                         <View flexDirection="row">
