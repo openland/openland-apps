@@ -6,6 +6,7 @@ import { XFlexStyles, applyFlex } from './basics/Flex';
 import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | 'r-large' | 'r-default' | 'r-small' | 'r-tiny';
 export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'light-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
@@ -23,6 +24,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     attach?: 'left' | 'right' | 'both';
     breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
+    insaneMode?: boolean;
 }
 
 export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; }>>;
@@ -828,6 +830,7 @@ interface StyledButtonProps extends XFlexStyles {
     responsive?: boolean;
     breakpoint?: number;
     tooltipPlacement?: XButtonTooltipPlacement;
+    insaneMode?: boolean;
 }
 
 const StyledButton = Glamorous.a<StyledButtonProps>([
@@ -877,6 +880,12 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         },
         '& svg': iconsIndentation(props.buttonSize)
     }),
+    (props => ({
+        ...props.insaneMode ? {
+            background: 'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
+            backgroundPosition: '-10px -10px'
+        } : {}
+    }))
 ]);
 
 const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
@@ -899,18 +908,19 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
             zIndex={props.zIndex}
             breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
             responsive={props.iconResponsive ? true : false}
+            insaneMode={props.insaneMode}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">
                     {props.iconResponsive && (
-                        typeof(props.iconResponsive) === 'string'
-                        ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive material" />
-                        : <i className="icon icon-responsive">{props.iconResponsive}</i>
+                        typeof (props.iconResponsive) === 'string'
+                            ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive material" />
+                            : <i className="icon icon-responsive">{props.iconResponsive}</i>
                     )}
                     {props.icon && (
-                        typeof(props.icon) === 'string'
-                        ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon material" />
-                        : <i className="icon icon-svg">{props.icon}</i>
+                        typeof (props.icon) === 'string'
+                            ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon material" />
+                            : <i className="icon icon-svg">{props.icon}</i>
                     )}
                     <ButtonText
                         responsive={props.iconResponsive ? true : false}
@@ -920,9 +930,9 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
                         {props.text}
                     </ButtonText>
                     {props.iconRight && (
-                        typeof(props.iconRight) === 'string'
-                        ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon material" />
-                        : <i className="icon icon-svg">{props.iconRight}</i>
+                        typeof (props.iconRight) === 'string'
+                            ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon material" />
+                            : <i className="icon icon-svg">{props.iconRight}</i>
                     )}
                 </MainContent>
                 {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
@@ -931,4 +941,15 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
     );
 }));
 
-export const XButton = Glamorous(XButtonRaw)();
+const XButtonWithRole = (props: any) => (
+    <>
+        <XWithRole role="feature-insane-buttons">
+            <XButtonRaw {...props} insaneMode={true}/>
+        </XWithRole>
+        <XWithRole role="feature-insane-buttons" negate={true}>
+            <XButtonRaw {...props} />
+        </XWithRole>
+    </>
+);
+
+export const XButton = Glamorous(XButtonWithRole)();
