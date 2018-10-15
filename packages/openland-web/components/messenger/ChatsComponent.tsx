@@ -410,7 +410,7 @@ const InviteWrapper = Glamorous(XLink)({
     fontSize: 14,
     lineHeight: '16px',
     '&:hover': {
-        backgroundColor: 'rgb(33, 150, 243, 0.03)',
+        backgroundColor: '#F9F9F9',
     },
     '& svg': {
         width: 16,
