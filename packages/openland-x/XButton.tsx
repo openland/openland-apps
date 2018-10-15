@@ -7,6 +7,7 @@ import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 
 export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | 'r-large' | 'r-default' | 'r-small' | 'r-tiny';
 export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'light-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
@@ -623,7 +624,7 @@ let colorResponsiveStyles = styleResolver({
     'default': {
         background: 'none!important',
         color: '#939ca8!important',
-        
+
         '&:hover': {
             color: '#85c4ff!important'
         },
@@ -942,14 +943,9 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
 }));
 
 const XButtonWithRole = (props: any) => (
-    <>
-        <XWithRole role="feature-insane-buttons">
-            <XButtonRaw {...props} insaneMode={true}/>
-        </XWithRole>
-        <XWithRole role="feature-insane-buttons" negate={true}>
-            <XButtonRaw {...props} />
-        </XWithRole>
-    </>
+    <XRoleContext.Consumer>
+        {userRoles => <XButtonRaw {...props} insaneMode={userRoles && userRoles.roles.indexOf('feature-insane-buttons') > -1} />}
+    </XRoleContext.Consumer>
 );
 
 export const XButton = Glamorous(XButtonWithRole)();
