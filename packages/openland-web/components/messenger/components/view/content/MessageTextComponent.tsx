@@ -43,7 +43,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
     }
 
     render() {
-        let { message } = this.props;
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -53,6 +52,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: this.big ? 44 : 18, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}</span>;
             }
         });
-        return <TextWrapper big={this.big} isService={this.props.isService}>{this.big ? message.slice(1, message.length - 1) : parts}</TextWrapper>;
+        return <TextWrapper big={this.big} isService={this.props.isService}>{parts}</TextWrapper>;
     }
 }

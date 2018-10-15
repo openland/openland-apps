@@ -167,7 +167,7 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
         maxWidth: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        borderRadius: 4,
+        borderRadius: 8,
         whiteSpace: 'nowrap',
         flexShrink: 0,
         // marginRight: 8,
