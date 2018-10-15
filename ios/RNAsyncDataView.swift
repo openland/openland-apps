@@ -333,10 +333,10 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       }
       
       if index < self.windowSize {
-        let st = self.state.add(index: index, key: state.items[index].key, spec: state.items[index].config)
+        let st = self.state.remove(index: index)
         self.state = st
         for i in self.watchers {
-          i.value.onAdded(index: index, state: st)
+          i.value.onRemoved(index: index, state: st)
         }
       }
     }

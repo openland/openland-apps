@@ -11,6 +11,7 @@ import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, Model
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
+import { Alert } from 'react-native';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {

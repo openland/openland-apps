@@ -13,7 +13,6 @@ import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
-    onMessagePress: (message: DataSourceMessageItem) => void;
     onMessageLongPress: (message: DataSourceMessageItem) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
@@ -45,10 +44,6 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         this.props.onMessageLongPress(this.props.message);
     }
 
-    private handlePress = () => {
-        this.props.onMessagePress(this.props.message);
-    }
-
     render() {
         let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager, this.props.onDocumentPress);
 
@@ -56,7 +51,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         let buttonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
         buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 22 : 0;
         return (
-            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress} onPress={this.handlePress}>
+            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
                     <ASFlex marginRight={-1} marginLeft={4} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin}>
                         <AsyncAvatar
