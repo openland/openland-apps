@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { View, Text, Image, StyleSheet, TextStyle } from 'react-native';
+import { View, Text, Image, StyleSheet, TextStyle, TouchableHighlight, Alert, Linking, Button } from 'react-native';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
@@ -10,6 +10,10 @@ import { PageProps } from '../../../components/PageProps';
 // import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
 import { formatBytes } from 'openland-shared/utils/formatBytes';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { SHeader } from 'react-native-s/SHeader';
+import { ZRoundedButton } from '../../../components/ZRoundedButton';
+import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
+import { DownloadState } from 'openland-shared/DownloadManagerInterface';
 
 const styles = StyleSheet.create({
     name: {
@@ -28,31 +32,41 @@ const styles = StyleSheet.create({
         marginTop: 2
     } as TextStyle
 });
-class FilePreviewComponent extends React.PureComponent<PageProps> {
+class FilePreviewComponent extends React.PureComponent<PageProps, { completed: boolean, path?: string, downloadState?: DownloadState }> {
 
-    private handlePress = () => {
+    subscription?: WatchSubscription;
+
+    constructor(props: any) {
+        super(props);
+        this.state = { completed: false };
+    }
+
+    componentDidMount() {
         const config = this.props.router.params.config;
-        var watcher: WatchSubscription | null = null;
-        var completed = false;
-        watcher = DownloadManagerInstance.watch(config.uuid, null, (state) => {
+        this.subscription = DownloadManagerInstance.watch(config.uuid, null, (state) => {
             if (!state.path) {
-                startLoader();
+                this.setState({ completed: false });
             } else {
-                stopLoader();
-                if (watcher) {
-                    watcher!!();
+                if (this.subscription) {
+                    this.subscription!!();
                 }
-                completed = true;
-                (async () => {
-                    await Share.open({
-                        type: 'application/pdf',
-                        url: state.path
-                    } as any);
-                })();
+                this.setState({ completed: true, path: state.path, downloadState: state });
             }
         });
-        if (completed) {
-            watcher();
+    }
+
+    componentWillUnmount() {
+        if (this.subscription) {
+            this.subscription();
+        }
+    }
+
+    private handlePress = () => {
+        if (this.state.path) {
+            Share.open({
+                // type: 'application/pdf',
+                url: this.state.path
+            } as any);
         }
     }
 
@@ -60,14 +74,20 @@ class FilePreviewComponent extends React.PureComponent<PageProps> {
         const config = this.props.router.params.config;
         return (
             <>
-                {/* <FastHeader title="Document" />
-                <FastHeaderButton title="Share" icon={require('assets/ic-export.png')} onPress={this.handlePress} /> */}
+                <SHeader title="Document" />
                 <View backgroundColor="#fff" flexGrow={1}>
-                    <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                        <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
-                        <Text style={styles.name}>{config.name}</Text>
-                        <Text style={styles.size}>{formatBytes(config.size)}</Text>
-                    </ASSafeAreaView>
+                    <TouchableHighlight underlayColor="#fff" onPress={this.handlePress}>
+                        <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                            <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
+                            <Text style={styles.name}>{config.name}</Text>
+                            <Text style={styles.size}>{formatBytes(config.size)}</Text>
+                            < View height={46} justifyContent="center" marginTop={5}>
+                                {this.state.path && <ZRoundedButton title="Open" onPress={this.handlePress} />}
+                                {!this.state.path && <XPCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : this.state.downloadState ? this.state.downloadState.progress || 0 : 0)} />}
+                            </View>
+
+                        </ASSafeAreaView>
+                    </TouchableHighlight>
                 </View>
             </>
         );
