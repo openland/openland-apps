@@ -8,13 +8,11 @@ import { getConfig } from '../../../../config';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
 import PhotoIcon from '../icons/ic-photo.svg';
-// import ListingIcon from '../icons/ic-listing.svg';
 import FileIcon from '../icons/ic-file.svg';
 import UloadIc from '../icons/file-upload.svg';
 import IntroIc from '../icons/ic-attach-intro.svg';
 import ShortcutsIcon from '../icons/ic-attach-shortcuts-2.svg';
 import { PostIntroModal } from './content/PostIntroModal';
-// import { PostChannelModal } from '../../../../pages/main/channel/components/postChannelModal';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
@@ -168,27 +166,31 @@ const TextInputWrapper = Glamorous.div({
 });
 
 const KeyboardShortcuts = Glamorous.div({
-    padding: '7px 0 9px'
+    padding: '7px 0 19px'
 });
 
 const KeyboardShortcut = Glamorous.div({
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 400,
     lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#121e2b',
+    letterSpacing: 0,
+    color: '#000000',
     marginBottom: 15,
 
     '& span': {
-        margin: '-1px 5px -1px 0',
-        padding: '2px 8px 1px',
+        margin: '-1px 8px -2px 0',
+        padding: '1px 8px 2px',
         display: 'inline-block',
-        fontSize: 12,
-        fontWeight: 500,
-        letterSpacing: 0.1,
-        color: 'rgba(18, 30, 43, 0.5)',
-        borderRadius: 12,
-        backgroundColor: 'rgba(193, 199, 207, 0.3)'
+        fontSize: 13,
+        fontWeight: 400,
+        lineHeight: '20px',
+        color: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: 8,
+        backgroundColor: 'rgba(0, 0, 0, 0.06)'
+    },
+
+    '& strong': {
+        fontWeight: 600
     }
 });
 
@@ -207,9 +209,9 @@ const ShortcutsModal = () => {
             <KeyboardShortcuts>
                 <KeyboardShortcut><span>Cmd + S (Mac)</span><span>Ctrl + S (Windows)</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Up Arrow</span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + Up Arrow</span> Previous chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + Down Arrow</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span><strong>↑</strong></span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
+                <KeyboardShortcut><span>Shift + ↑</span> Previous chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Shift + ↓</span> Next chat</KeyboardShortcut>
                 <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Submit form</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
