@@ -11,7 +11,7 @@ export function XFormFieldText(props: {
     title: string,
     field: string,
     description?: string,
-    size?: 'large' | 'medium' | 'default' | 'small'
+    size?: 'large' | 'default' | 'small'
 }) {
     return (
         <XFormField field={props.field} title={props.title} description={props.description}>

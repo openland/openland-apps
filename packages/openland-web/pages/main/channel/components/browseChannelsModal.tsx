@@ -167,9 +167,8 @@ class BrowseChannelsModalRaw extends React.Component<ChannelsProps & Partial<XMo
                                 value={this.state.searchText}
                                 onChange={() => this.handleSearchChange}
                                 placeholder="start typing..."
-                                size="r-default"
+                                size="large"
                                 iconRight="search"
-                                color="primary-sky-blue"
                             />
                         </InputWrapper>
 

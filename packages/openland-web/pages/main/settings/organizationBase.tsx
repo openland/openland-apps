@@ -61,6 +61,9 @@ const SACreatedText = Glamorous.div({
 });
 
 const AdminTools = withSuperAccountActions(props => {
+    if (!props.data) {
+        return null;
+    }
     return (
         <XVertical separator={12}>
             <SACreatedBlock>
@@ -166,7 +169,7 @@ export const OrganizationSettigs = ((props: any) => {
                                 <XFormLoadingContent>
                                     <XHorizontal separator={12}>
                                         <XVertical flexGrow={1} maxWidth={480}>
-                                            <XInput field="input.name" size="r-default" color="primary-sky-blue" placeholder="Organization name" />
+                                            <XInput field="input.name" size="large" placeholder="Organization name" />
                                             <Separator />
                                             <XSelect
                                                 creatable={true}
@@ -259,12 +262,12 @@ export const OrganizationSettigs = ((props: any) => {
                                 <XFormLoadingContent>
                                     <XVertical flexGrow={1} maxWidth={480}>
                                         <XInputGroup>
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="r-default" color="primary-sky-blue" />
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="r-default" color="primary-sky-blue" />
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="large" />
                                         </XInputGroup>
-                                        <XInput field="input.twitter" placeholder="Twitter" size="r-default" color="primary-sky-blue" />
-                                        <XInput field="input.facebook" placeholder="Facebook" size="r-default" color="primary-sky-blue" />
-                                        <XInput field="input.linkedin" placeholder="LinkedIn" size="r-default" color="primary-sky-blue" />
+                                        <XInput field="input.twitter" placeholder="Twitter" size="large" />
+                                        <XInput field="input.facebook" placeholder="Facebook" size="large" />
+                                        <XInput field="input.linkedin" placeholder="LinkedIn" size="large" />
                                     </XVertical>
                                 </XFormLoadingContent>
                                 <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />

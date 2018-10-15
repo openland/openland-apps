@@ -150,9 +150,9 @@ const RemoverInputGroup = Glamorous.div({
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
         <XInputGroup flexGrow={1}>
-            <XInput size="r-default" color="primary-sky-blue" autofocus={props.first} required={true} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
-            <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
-            <XInput size="r-default" color="primary-sky-blue" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
+            <XInput size="large" autofocus={props.first} required={true} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
+            <XInput size="large" placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
+            <XInput size="large" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
 
             {props.useRoles !== false &&
                 <XWithRole role="super-admin">
@@ -221,8 +221,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                 {this.props.invite && (
                     <LinkHolder separator={4}>
                         <XInput
-                            size="r-default"
-                            color="primary-sky-blue"
+                            size="large"
                             flexGrow={1}
                             ref={this.handleRef}
                             value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.organization ? '/invite/' : '/join/') + this.props.invite.key}

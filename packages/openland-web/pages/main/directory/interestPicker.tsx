@@ -77,7 +77,7 @@ export class InterestPicker extends React.PureComponent<{ onPick: (q: SearchCond
         let content = (
             <PickerWrapper>
                 <PickerSearch>
-                    <XInput placeholder={TextDirectory.interestSearchPlaceholder} value={this.state.query} onChange={this.handleChange} />
+                    <XInput size="large" placeholder={TextDirectory.interestSearchPlaceholder} value={this.state.query} onChange={this.handleChange} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <PickerEntries separator="none" width="100%">

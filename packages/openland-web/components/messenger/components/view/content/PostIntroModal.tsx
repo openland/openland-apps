@@ -313,7 +313,6 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                         <XTextArea
                             placeholder="Description"
                             resize={false}
-                            size="small"
                             valueStoreKey="fields.input.about"
                         />
                     </XFormField>

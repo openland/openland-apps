@@ -158,7 +158,7 @@ const Channels = withChatSearchChannels((props) => {
 
 const SearchWrapper = Glamorous(XHorizontal)({
     height: 61,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    borderBottom: '1px solid #ececec',
     paddingRight: 24,
     paddingLeft: 20,
     '& > div > div': {
@@ -236,7 +236,6 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
                                 onChange={this.onQueryChange}
                                 flexGrow={1}
                                 placeholder="Search channels"
-                                color="primary-sky-blue"
                             />
                         </XHorizontal>
                         <XButton

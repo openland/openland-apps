@@ -91,13 +91,13 @@ const CreateProfileForm = withProfileCreate((props) => {
                             <XHorizontal separator="large">
                                 <XVertical width={280}>
                                     <XFormField field="input.firstName" title={InitTexts.create_profile.firstName}>
-                                        <XInput field="input.firstName" size="medium" placeholder="Jane" />
+                                        <XInput field="input.firstName" size="large" placeholder="Jane" />
                                     </XFormField>
                                     <XFormField field="input.lastName" title={InitTexts.create_profile.lastName}>
-                                        <XInput field="input.lastName" size="medium" placeholder="Doe" />
+                                        <XInput field="input.lastName" size="large" placeholder="Doe" />
                                     </XFormField>
                                     <XFormField field="input.phone" title={InitTexts.create_profile.phone} optional={true}>
-                                        <XInput field="input.phone" size="medium" placeholder="123-456-7890" />
+                                        <XInput field="input.phone" size="large" placeholder="123-456-7890" />
                                     </XFormField>
                                 </XVertical>
                                 <XFormField title={InitTexts.create_profile.photo}>

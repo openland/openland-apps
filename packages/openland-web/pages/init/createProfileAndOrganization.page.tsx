@@ -132,13 +132,13 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                             <XHorizontal>
                                 <XVertical width={340}>
                                     <XFormField field="input.firstName" title={InitTexts.create_profile.firstName}>
-                                        <XInput field="input.firstName" size="medium" placeholder="Jane" />
+                                        <XInput field="input.firstName" size="large" placeholder="Jane" />
                                     </XFormField>
                                     <XFormField field="input.lastName" title={InitTexts.create_profile.lastName}>
-                                        <XInput field="input.lastName" size="medium" placeholder="Doe" />
+                                        <XInput field="input.lastName" size="large" placeholder="Doe" />
                                     </XFormField>
                                     <XFormField field="input.name" title={InitTexts.create_profile.organizationName}>
-                                        <XInput field="input.name" size="medium" placeholder="Enter organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
+                                        <XInput field="input.name" size="large" placeholder="Enter organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
                                     </XFormField>
                                 </XVertical>
                                 <XVertical separator={0}>
@@ -229,17 +229,17 @@ class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: bo
                                 </ProfileAvatarWrapper>
                                 <XVertical>
                                     <XFormField field="input.firstName">
-                                        <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
+                                        <XInput field="input.firstName" size="large" placeholder="First name" />
                                     </XFormField>
                                     <XFormField field="input.lastName">
-                                        <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                                        <XInput field="input.lastName" size="large" placeholder="Last name" />
                                     </XFormField>
                                 </XVertical>
                             </ResolveView>
                             <ResolveView view={this.state.isOrgView}>
                                 <XVertical>
                                     <XFormField field="input.name">
-                                        <XInput field="input.name" size="r-default" color="primary-sky-blue" placeholder="Organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
+                                        <XInput field="input.name" size="large" placeholder="Organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
                                     </XFormField>
                                 </XVertical>
                             </ResolveView>

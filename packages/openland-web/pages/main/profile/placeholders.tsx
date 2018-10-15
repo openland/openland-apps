@@ -467,18 +467,18 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
                 <XVertical flexGrow={1} separator={8}>
                     <XFormField field="input.website">
                         <XHorizontal separator={7}>
-                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialModalWeb} field="input.website" size="r-default" />
-                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="r-default" />
+                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialModalWeb} field="input.website" size="large" />
+                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="large" />
                         </XHorizontal>
                     </XFormField>
                     <XFormField field="input.twitter">
-                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalTwitter} field="input.twitter" size="r-default" />
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalTwitter} field="input.twitter" size="large" />
                     </XFormField>
                     <XFormField field="input.facebook">
-                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalFacebook} field="input.facebook" size="r-default" />
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalFacebook} field="input.facebook" size="large" />
                     </XFormField>
                     <XFormField field="input.linkedin">
-                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn} field="input.linkedin" size="r-default" />
+                        <XInput placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn} field="input.linkedin" size="large" />
                     </XFormField>
                 </XVertical>
             </XFormLoadingContent>
@@ -528,19 +528,19 @@ export const ContactPlaceholder = withMyOrganizationProfile((props) => {
                     <XHorizontal>
                         <XVertical flexGrow={1} separator={8}>
                             <XFormField field="firstName" title={TextOrganizationProfile.placeholderContactsModalFirstNameTitle}>
-                                <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} size="medium" />
+                                <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} size="large" />
                             </XFormField>
                             <XFormField field="lastName" title={TextOrganizationProfile.placeholderContactsModalLastNameTitle}>
-                                <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} size="medium" />
+                                <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} size="large" />
                             </XFormField>
                             <XFormField field="position" title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
-                                <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} size="medium" />
+                                <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} size="large" />
                             </XFormField>
                             <XFormField field="link" title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
-                                <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} size="medium" />
+                                <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} size="large" />
                             </XFormField>
                             <XFormField field="twitter" title={TextOrganizationProfile.placeholderContactsModalTwitterTitle}>
-                                <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} size="medium" />
+                                <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} size="large" />
                             </XFormField>
                         </XVertical>
                         <XFormField field="photoRef" title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>

@@ -222,6 +222,7 @@ export class SearchSelect extends React.Component<SearchSelectProps, { query: st
                             value={this.state.query}
                             onChange={this.handleChange}
                             autofocus={true}
+                            size="large"
                         />
                     </SearchSelectInputWrapper>
                 )}

@@ -301,8 +301,8 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 <XHorizontal>
                     <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                     <XVertical flexGrow={1}>
-                        <XInput field="input.title" placeholder="Title" color="primary-sky-blue" size="r-default" />
-                        <XInput field="input.description" placeholder="Short Description" color="primary-sky-blue" size="r-default" />
+                        <XInput field="input.title" placeholder="Title" size="large" />
+                        <XInput field="input.description" placeholder="Short Description" size="large" />
                     </XVertical>
                 </XHorizontal>
 
@@ -342,7 +342,7 @@ export const ChatEditComponent = withAlterChat((props) => {
         >
             <XHorizontal>
                 <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-                <XInput field="input.title" flexGrow={1} placeholder="Title" color="primary-sky-blue" size="r-default" />
+                <XInput field="input.title" flexGrow={1} placeholder="Title" size="large" />
             </XHorizontal>
         </XModalForm>
     );

@@ -86,7 +86,7 @@ export class LocationPicker extends React.Component<{ onPick: (q: SearchConditio
         let content = (
             <PickerWrapper>
                 <PickerSearch>
-                    <XInput placeholder={TextDirectory.locationSearchPlaceholder} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
+                    <XInput size="large" placeholder={TextDirectory.locationSearchPlaceholder} value={this.state.query} onChange={this.handleChange} onEnter={this.onEnter} />
                     <PickerSearchIcon icon="search" />
                 </PickerSearch>
                 <LocationControlledPicker onPick={this.onPick} query={this.state.query} />

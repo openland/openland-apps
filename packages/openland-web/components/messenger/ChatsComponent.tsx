@@ -612,10 +612,9 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                 <Search
                     value={this.state.query}
                     onChange={this.onInput}
-                    size="r-default"
+                    size="large"
                     placeholder="Search"
                     icon={<SearchIcon />}
-                    color="primary-sky-blue"
                     cleanable={true}
                     innerRef={this.handleRef}
                     onFocus={this.inputFocusHandler}

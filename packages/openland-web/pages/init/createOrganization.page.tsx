@@ -128,13 +128,13 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                     <XFormField field="input.name" title={InitTexts.create_organization.name}>
                                         <XInput
                                             field="input.name"
-                                            size="medium"
+                                            size="large"
                                             placeholder={InitTexts.create_organization.namePlaceholder}
                                             tooltipContent={<InputTooltip/>}
                                         />
                                     </XFormField>
                                     <XFormField field="input.website" title={InitTexts.create_organization.website} optional={true}>
-                                        <XInput field="input.website" size="medium" placeholder={InitTexts.create_organization.websitePlaceholder} />
+                                        <XInput field="input.website" size="large" placeholder={InitTexts.create_organization.websitePlaceholder} />
                                     </XFormField>
                                 </XVertical>
                                 <XFormField title={InitTexts.create_organization.photo}>

@@ -131,17 +131,14 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWi
                 }}
             >
                 <XVertical separator={16}>
-
                     <XInput
-                        size="r-default"
-                        color="primary-sky-blue"
+                        size="large"
                         placeholder="Listing title"
                         field="input.name"
                     />
                     <XTextArea
                         placeholder="Description"
                         resize={false}
-                        size="small"
                         valueStoreKey="fields.input.summary"
                     />
                     {this.state.addPhoto && (
@@ -154,11 +151,8 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWi
                             }}
                         />
                     )}
-
                     {/* <XLocationPickerModal field="input.location" placeholder={TextOrganizationProfile.listingCreateDoLocationPlaceholder} /> */}
-
                     <Channels />
-
                 </XVertical>
             </XModalForm >
         );

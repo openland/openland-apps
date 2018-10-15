@@ -15,117 +15,144 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
         <DevDocsScaffold title="Inputs">
             <XContent>
                 <XVertical>
-                    <XTitle>Sizes</XTitle>
+                    <XTitle>Size</XTitle>
                     <XHorizontal>
                         <XVertical>
-                            <XInput size="large" placeholder="large" value="large" alignSelf="flex-start" />
-                            <XInput size="medium" placeholder="medium" alignSelf="flex-start" />
-                            <XInput size="default" placeholder="default" alignSelf="flex-start" />
+                            <XInput size="large" placeholder="large" alignSelf="flex-start" />
+                            <XInput placeholder="default" alignSelf="flex-start" />
                             <XInput size="small" placeholder="small" alignSelf="flex-start" />
                         </XVertical>
                         <XVertical>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" value="r-default" alignSelf="flex-start" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" alignSelf="flex-start" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" alignSelf="flex-start" />
+                            <XInput rounded={true} size="large" placeholder="large" alignSelf="flex-start" />
+                            <XInput rounded={true} placeholder="default" alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" placeholder="small" alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
                     <XTitle>Group</XTitle>
-                    <XVertical>
-                        <XInputGroup>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" />
-                        </XInputGroup>
-                        <XInputGroup>
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" />
-                        </XInputGroup>
-                        <XInputGroup>
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" />
-                        </XInputGroup>
-                    </XVertical>
+                    <XHorizontal>
+                        <XVertical>
+                            <XInputGroup>
+                                <XInput size="large" placeholder="large" />
+                                <XInput size="large" placeholder="large" />
+                                <XInput size="large" placeholder="large" />
+                            </XInputGroup>
+                            <XInputGroup>
+                                <XInput placeholder="default" />
+                                <XInput placeholder="default" />
+                                <XInput placeholder="default" />
+                            </XInputGroup>
+                            <XInputGroup>
+                                <XInput size="small" placeholder="small" />
+                                <XInput size="small" placeholder="small" />
+                                <XInput size="small" placeholder="small" />
+                            </XInputGroup>
+                        </XVertical>
+                        <XVertical>
+                            <XInputGroup>
+                                <XInput rounded={true} size="large" placeholder="large" />
+                                <XInput rounded={true} size="large" placeholder="large" />
+                                <XInput rounded={true} size="large" placeholder="large" />
+                            </XInputGroup>
+                            <XInputGroup>
+                                <XInput rounded={true} placeholder="default" />
+                                <XInput rounded={true} placeholder="default" />
+                                <XInput rounded={true} placeholder="default" />
+                            </XInputGroup>
+                            <XInputGroup>
+                                <XInput rounded={true} size="small" placeholder="small" />
+                                <XInput rounded={true} size="small" placeholder="small" />
+                                <XInput rounded={true} size="small" placeholder="small" />
+                            </XInputGroup>
+                        </XVertical>
+                    </XHorizontal>
                     <XTitle>Icon</XTitle>
                     <XHorizontal>
                         <XVertical>
                             <XInput size="large" placeholder="large" icon="star" alignSelf="flex-start" />
-                            <XInput size="medium" placeholder="medium" value="medium" icon="star" alignSelf="flex-start" />
-                            <XInput size="default" placeholder="default" icon="star" alignSelf="flex-start" />
+                            <XInput placeholder="default" icon="star" alignSelf="flex-start" />
                             <XInput size="small" placeholder="small" icon="star" alignSelf="flex-start" />
                         </XVertical>
                         <XVertical>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" icon="star" alignSelf="flex-start" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" icon="star" alignSelf="flex-start" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" icon="star" alignSelf="flex-start" />
+                            <XInput rounded={true} size="large" placeholder="large" icon="star" alignSelf="flex-start" />
+                            <XInput rounded={true} placeholder="default" icon="star" alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" placeholder="small" icon="star" alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
                     <XTitle>Icon Right</XTitle>
                     <XHorizontal>
                         <XVertical>
                             <XInput size="large" placeholder="large" iconRight="star" alignSelf="flex-start" />
-                            <XInput size="medium" placeholder="medium" value="medium" iconRight="star" alignSelf="flex-start" />
-                            <XInput size="default" placeholder="default" iconRight="star" alignSelf="flex-start" />
+                            <XInput placeholder="default" iconRight="star" alignSelf="flex-start" />
                             <XInput size="small" placeholder="small" iconRight="star" alignSelf="flex-start" />
                         </XVertical>
                         <XVertical>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" iconRight="star" alignSelf="flex-start" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" iconRight="star" alignSelf="flex-start" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" iconRight="star" alignSelf="flex-start" />
+                            <XInput rounded={true} size="large" placeholder="large" iconRight="star" alignSelf="flex-start" />
+                            <XInput rounded={true} placeholder="default" iconRight="star" alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" placeholder="small" iconRight="star" alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
                     <XTitle>Icon & Required</XTitle>
                     <XHorizontal>
                         <XVertical>
                             <XInput size="large" placeholder="large" icon="star" required={true} alignSelf="flex-start" />
-                            <XInput size="medium" placeholder="medium" icon="star" required={true} alignSelf="flex-start" />
-                            <XInput size="default" placeholder="default" value="default" icon="star" required={true} alignSelf="flex-start" />
+                            <XInput placeholder="default" icon="star" required={true} alignSelf="flex-start" />
                             <XInput size="small" placeholder="small" icon="star" required={true} alignSelf="flex-start" />
                         </XVertical>
                         <XVertical>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" icon="star" required={true} alignSelf="flex-start" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" icon="star" required={true} alignSelf="flex-start" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" icon="star" required={true} alignSelf="flex-start" />
+                            <XInput rounded={true} size="large" placeholder="large" icon="star" required={true} alignSelf="flex-start" />
+                            <XInput rounded={true} placeholder="default" icon="star" required={true} alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" placeholder="small" icon="star" required={true} alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
                     <XTitle>Icon & Required & Invalid</XTitle>
                     <XHorizontal>
                         <XVertical>
                             <XInput size="large" placeholder="large" icon="star" required={true} invalid={true} alignSelf="flex-start" />
-                            <XInput size="medium" placeholder="medium" icon="star" required={true} invalid={true} alignSelf="flex-start" />
-                            <XInput size="default" placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start" />
-                            <XInput size="small" placeholder="small" value="small" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                            <XInput placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                            <XInput size="small" placeholder="small" icon="star" required={true} invalid={true} alignSelf="flex-start" />
                         </XVertical>
                         <XVertical>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" icon="star" required={true} invalid={true} alignSelf="flex-start" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" icon="star" required={true} invalid={true} alignSelf="flex-start" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                            <XInput rounded={true} size="large" placeholder="large" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                            <XInput rounded={true} placeholder="default" icon="star" required={true} invalid={true} alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" placeholder="small" icon="star" required={true} invalid={true} alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
                     <XTitle>Disabled</XTitle>
                     <XHorizontal>
                         <XVertical>
                             <XInput size="large" placeholder="large" disabled={true} alignSelf="flex-start" />
-                            <XInput size="medium" placeholder="medium" value="some text" disabled={true} alignSelf="flex-start" />
-                            <XInput size="default" placeholder="default" disabled={true} alignSelf="flex-start" />
-                            <XInput size="small" placeholder="small" value="some text" disabled={true} alignSelf="flex-start" />
+                            <XInput placeholder="default" value="default" disabled={true} alignSelf="flex-start" />
+                            <XInput size="small" placeholder="small" value="small" disabled={true} alignSelf="flex-start" />
                         </XVertical>
                         <XVertical>
-                            <XInput size="r-default" color="primary-sky-blue" placeholder="r-default" value="some text" disabled={true} alignSelf="flex-start" />
-                            <XInput size="r-small" color="primary-sky-blue" placeholder="r-small" disabled={true} alignSelf="flex-start" />
-                            <XInput size="r-tiny" color="primary-sky-blue" placeholder="r-tiny" value="some text" disabled={true} alignSelf="flex-start" />
+                            <XInput rounded={true} size="large" placeholder="large" value="large" disabled={true} alignSelf="flex-start" />
+                            <XInput rounded={true} placeholder="default" value="default" disabled={true} alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" placeholder="small" disabled={true} alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
                     <XTitle>Text Area</XTitle>
-                    <XVertical>
-                        <XTextArea />
-                        <XTextArea value="disabled" disabled={true} />
-                        <XTextArea invalid={true} />
-                    </XVertical>
+                    <XHorizontal>
+                        <XVertical flexGrow={1}>
+                            <XTextArea resize={false} size="large" placeholder="default" />
+                            <XTextArea resize={false} size="large" value="disabled" disabled={true} />
+                            <XTextArea resize={false} size="large" value="invalid" invalid={true} />
+                        </XVertical>
+                        <XVertical flexGrow={1}>
+                            <XTextArea resize={false} size="large" rounded={true} placeholder="default rounded" />
+                            <XTextArea resize={false} size="large" rounded={true} value="disabled" disabled={true} />
+                            <XTextArea resize={false} size="large" rounded={true} value="invalid" invalid={true} />
+                        </XVertical>
+                        <XVertical flexGrow={1}>
+                            <XTextArea resize={false} placeholder="small" />
+                            <XTextArea resize={false} value="disabled" disabled={true} />
+                            <XTextArea resize={false} value="invalid" invalid={true} />
+                        </XVertical>
+                        <XVertical flexGrow={1}>
+                            <XTextArea resize={false} rounded={true} placeholder="small rounded" />
+                            <XTextArea resize={false} rounded={true} value="disabled" disabled={true} />
+                            <XTextArea resize={false} rounded={true} value="invalid" invalid={true} />
+                        </XVertical>
+                    </XHorizontal>
                     <XTitle>Rich Text Input</XTitle>
                     <XVertical>
                         <XRichTextInput placeholder={'Try type something...'} />

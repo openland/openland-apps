@@ -835,16 +835,14 @@ export const CreateOrganization = withCreateOrganization((props) => {
                             flexGrow={1}
                         >
                             <XInput
-                                color="primary-sky-blue"
                                 flexGrow={1}
                                 field="input.name"
-                                size="r-default"
+                                size="large"
                                 placeholder={texts.namePlaceholder}
                             />
                             <XTextArea
                                 placeholder={texts.descriptionPlaceholder}
                                 resize={false}
-                                size="small"
                                 valueStoreKey="fields.input.about"
                             />
                         </XVertical>
@@ -881,15 +879,13 @@ export const CreateChannel = withCreateChannel((props) => {
             <XVertical separator={8}>
                 <XInput
                     flexGrow={1}
-                    size="r-default"
-                    color="primary-sky-blue"
+                    size="large"
                     placeholder="Channel title"
                     field="input.name"
                 />
                 <XTextArea
                     placeholder="Description"
                     resize={false}
-                    size="small"
                     valueStoreKey="fields.input.description"
                 />
             </XVertical>

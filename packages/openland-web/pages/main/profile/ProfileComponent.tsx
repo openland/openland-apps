@@ -646,8 +646,8 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
             }
         >
             <XVertical>
-                <XInput field="input.firstName" size="r-default" color="primary-sky-blue" placeholder="First name" />
-                <XInput field="input.lastName" size="r-default" color="primary-sky-blue" placeholder="Last name" />
+                <XInput field="input.firstName" size="large" placeholder="First name" />
+                <XInput field="input.lastName" size="large" placeholder="Last name" />
                 <XAvatarUpload field="input.photoRef" />
             </XVertical>
         </XModalForm>

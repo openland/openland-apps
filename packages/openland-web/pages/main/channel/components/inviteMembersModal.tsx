@@ -87,8 +87,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                 {this.props.invite && (
                     <LinkHolder separator={4}>
                         <XInput
-                            size="r-default"
-                            color="primary-sky-blue"
+                            size="large"
                             flexGrow={1}
                             ref={this.handleRef}
                             value={this.props.router.protocol + '://' + this.props.router.hostName + '/joinChannel/' + this.props.invite}
@@ -155,9 +154,9 @@ const RemoverInputGroup = Glamorous.div({
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={2} alignItems="center" flexGrow={1} justifyContent="space-between">
         <XInputGroup flexGrow={1}>
-            <XInput size="r-default" color="primary-sky-blue" placeholder="Email" required={true} field={'inviteRequests.' + props.index + '.email'} />
-            <XInput size="r-default" color="primary-sky-blue" placeholder="First name" field={'inviteRequests.' + props.index + '.firstName'} />
-            <XInput size="r-default" color="primary-sky-blue" placeholder="Last name" field={'inviteRequests.' + props.index + '.lastName'} />
+            <XInput size="large" placeholder="Email" required={true} field={'inviteRequests.' + props.index + '.email'} />
+            <XInput size="large" placeholder="First name" field={'inviteRequests.' + props.index + '.firstName'} />
+            <XInput size="large" placeholder="Last name" field={'inviteRequests.' + props.index + '.lastName'} />
             {!props.single && (
                 <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
                     <CloseIcon />
@@ -415,7 +414,6 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                                         flexGrow={1}
                                         valueStoreKey="fields.customText"
                                         resize={false}
-                                        size="small"
                                         placeholder="Custom Message"
                                     />
                                     <XModalCloser onClick={() => this.setState({ customTextAreaOpen: false })} />
