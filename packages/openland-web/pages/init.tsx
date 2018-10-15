@@ -8,7 +8,7 @@ if (typeof window !== 'undefined') {
     }
 }
 
-let fontFamily = '"-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"';
+let fontFamily = '"SF Pro Text", "-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"';
 
 // Normalize
 
