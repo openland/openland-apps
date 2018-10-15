@@ -5,7 +5,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { XMenuItem, XMenuTitle, XMenuItemWrapper, XMenuItemSeporator, XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuTitle, XMenuItemWrapper, XMenuItemSeparator, XMenuVertical } from 'openland-x/XMenuItem';
 
 export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
     return (
@@ -17,14 +17,14 @@ export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
                             <XMenuTitle>Notifications</XMenuTitle>
                             <XMenuItem>default</XMenuItem>
                             <XMenuItem style="danger">danger</XMenuItem>
-                            <XMenuItemSeporator />
+                            <XMenuItemSeparator />
                             <XMenuItem icon="chat">With icon</XMenuItem>
                             <XMenuItem iconRight="chevron_right">With right icon</XMenuItem>
                             <XMenuItem iconRight="x-right">With custom right icon</XMenuItem>
-                            <XMenuItemSeporator />
+                            <XMenuItemSeparator />
                             <XMenuItem icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>
                             <XMenuItem style="danger" icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>
-                            <XMenuItemSeporator />
+                            <XMenuItemSeparator />
                             <XMenuItemWrapper>
                                 <XVertical>
                                     <XCheckbox label="Checkbox" checked={true} />

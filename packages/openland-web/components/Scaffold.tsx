@@ -19,7 +19,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
-import { XMenuItem, XMenuVertical, XMenuItemSepаrator } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
@@ -316,7 +316,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
 
                             {primaryOrganization && (
                                 <>
-                                    <XMenuItemSepаrator marginTop={12} marginBottom={8} />
+                                    <XMenuItemSeparator marginTop={12} marginBottom={8} />
                                     <TitleContainer path={'/directory/o/' + primaryOrganization.id} autoClose={true}>
                                         <XAvatar cloudImageUuid={primaryOrganization.photo || undefined} style="organization" objectName={primaryOrganization.name} objectId={primaryOrganization.id} />
                                         <XVertical separator="none">

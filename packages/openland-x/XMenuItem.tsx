@@ -173,7 +173,7 @@ export const XMenuTitle = Glamorous.div({
     fontWeight: 700
 });
 
-export const XMenuItemSepаrator = Glamorous.div<{ marginTop?: number; marginBottom?: number; }>((props) => ({
+export const XMenuItemSeparator = Glamorous.div<{ marginTop?: number; marginBottom?: number; }>((props) => ({
     height: 1,
     background: '#ececec',
     marginTop: props.marginTop || 4,
