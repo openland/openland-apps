@@ -79,7 +79,6 @@ export default class OpenlandDocument extends Document {
                     {/* Styles */}
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-                    <link rel="stylesheet" href="/static/css/SFTextPro.css" />
                     <link rel="stylesheet" href="/static/css/draft.css" />
                     <link rel="stylesheet" href="/static/css/draft-emoji.css" />
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
