@@ -19,7 +19,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
-import { XMenuItem, XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuVertical, XMenuItemSepаrator } from 'openland-x/XMenuItem';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
@@ -188,32 +188,10 @@ const BottomNavigation = Glamorous.div({
     flexShrink: 0
 });
 
-const ProfileTitle = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.25,
-    color: '#334562',
-    marginLeft: 15,
-    maxWidth: 164,
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden'
-});
-
-const ProfileSubTitle = Glamorous(XLink)({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.25,
-    color: '#334562',
-    marginLeft: 15,
-    opacity: 0.5,
-    letterSpacing: '-0.3px',
-});
-
 const ProfileTitleContainer = Glamorous(XHorizontal)({
-    padding: '16px 18px 12px',
+    padding: '8px 18px 7px',
     ':hover': {
-        background: '#f3f9ff',
+        background: 'rgba(23, 144, 255, 0.05)',
         '& > div': {
             '& > a': {
                 color: '#1790ff',
@@ -223,18 +201,37 @@ const ProfileTitleContainer = Glamorous(XHorizontal)({
     }
 });
 
-const ProfileNaviTitleContainer = makeNavigable((props) => {
-    return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
+const ProfileTitle = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 600,
+    lineHeight: '20px',
+    letterSpacing: 0,
+    color: '#000000',
+    marginLeft: 14,
+    maxWidth: 164,
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
 });
 
-const OrganizationTitleContainer = makeNavigable((props) => {
-    return (<a href={props.href} onClick={props.onClick}><ProfileTitleContainer separator="none" >{props.children}</ProfileTitleContainer></a>);
+const ProfileSubTitle = Glamorous(XLink)({
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: '20px',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.5)',
+    marginLeft: 14,
+    marginTop: 1,
 });
 
-const PopperSeparator = Glamorous.div({
-    marginTop: 12,
-    background: '#ececec',
-    height: 1
+const TitleContainer = makeNavigable((props) => {
+    return (
+        <a href={props.href} onClick={props.onClick} style={{ marginBottom: 4}}>
+            <ProfileTitleContainer separator="none">
+                {props.children}
+            </ProfileTitleContainer>
+        </a>
+    );
 });
 
 interface UserPopperProps {
@@ -297,36 +294,36 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
         return (
             <XPopper
                 placement="right"
-                contentContainer={<XMenuVertical />}
+                contentContainer={<XMenuVertical paddingTop={11} />}
                 onClickOutside={this.closer}
                 show={this.state.show}
                 padding={25}
-                marginLeft={32}
+                marginLeft={23}
                 marginBottom={5}
                 content={(
                     <XModalContext.Provider value={{ close: this.closer }}>
-                        <XVertical separator="none" minWidth={270}>
-                            <ProfileNaviTitleContainer path="/settings/profile" autoClose={true}>
-                                <XAvatar path="/settings/profile" cloudImageUuid={this.props.picture || undefined} style="colorus" objectName={this.props.name} objectId={this.props.id} />
-                                <XVertical separator={1}>
-                                    <ProfileTitle >{this.props.name}</ProfileTitle>
+                        <XVertical separator="none">
+                            <TitleContainer path="/settings/profile" autoClose={true}>
+                                <XAvatar cloudImageUuid={this.props.picture || undefined} style="colorus" objectName={this.props.name} objectId={this.props.id} />
+                                <XVertical separator="none">
+                                    <ProfileTitle>{this.props.name}</ProfileTitle>
                                     <ProfileSubTitle>{TextGlobal.editProfile}</ProfileSubTitle>
                                 </XVertical>
-                            </ProfileNaviTitleContainer>
+                            </TitleContainer>
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
 
                             {primaryOrganization && (
                                 <>
-                                    <PopperSeparator />
-                                    <OrganizationTitleContainer path={'/directory/o/' + primaryOrganization.id} autoClose={true}>
-                                        <XAvatar path={'/directory/o' + primaryOrganization.id} cloudImageUuid={primaryOrganization.photo || undefined} style="organization" objectName={primaryOrganization.name} objectId={primaryOrganization.id} />
-                                        <XVertical separator={1}>
-                                            <ProfileTitle >{primaryOrganization.name}</ProfileTitle>
+                                    <XMenuItemSepаrator marginTop={12} marginBottom={8} />
+                                    <TitleContainer path={'/directory/o/' + primaryOrganization.id} autoClose={true}>
+                                        <XAvatar cloudImageUuid={primaryOrganization.photo || undefined} style="organization" objectName={primaryOrganization.name} objectId={primaryOrganization.id} />
+                                        <XVertical separator="none">
+                                            <ProfileTitle>{primaryOrganization.name}</ProfileTitle>
                                             <ProfileSubTitle>Primary organization</ProfileSubTitle>
                                         </XVertical>
-                                    </OrganizationTitleContainer>
+                                    </TitleContainer>
 
                                     {organizations && (organizations.length > 1) && (
                                         <XPopper
@@ -338,7 +335,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                             marginBottom={5}
                                             arrow={null}
                                             content={(
-                                                <XVertical separator="none" minWidth={260} ref={this.onInner}>
+                                                <XVertical separator="none" ref={this.onInner}>
                                                     {organizations.map((org, index) => (index >= 1) ? (
                                                         <XMenuItem path={'/directory/o/' + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
                                                     ) : null)}

@@ -18,7 +18,7 @@ interface XMenuItemProps extends XLinkProps {
 
 let XMenuItemColorStyles = styleResolver({
     'default': {
-        color: '#334562',
+        color: '#000000',
         '& i': {
             color: '#bcc3cc'
         },
@@ -27,7 +27,7 @@ let XMenuItemColorStyles = styleResolver({
         },
         ':hover': {
             color: '#1790ff',
-            backgroundColor: '#f3f9ff',
+            backgroundColor: 'rgba(23, 144, 255, 0.05)',
             '& i': {
                 color: 'rgba(23, 144, 255, 0.5)'
             },
@@ -90,7 +90,7 @@ const XMenuItemText = Glamorous.div({
     fontSize: 14,
     lineHeight: '24px',
     padding: '7px 0 9px',
-    fontWeight: 500,
+    fontWeight: 400,
     letterSpacing: 0,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -173,12 +173,18 @@ export const XMenuTitle = Glamorous.div({
     fontWeight: 700
 });
 
-export const XMenuItemSeporator = Glamorous.div({
+export const XMenuItemSepаrator = Glamorous.div<{ marginTop?: number; marginBottom?: number; }>((props) => ({
     height: 1,
-    background: '#f1f2f5',
-    margin: '4px 0',
-});
+    background: '#ececec',
+    marginTop: props.marginTop || 4,
+    marginBottom: props.marginBottom || 4,
+    marginLeft: 0,
+    marginRight: 0,
+}));
 
-export const XMenuVertical = Glamorous(XPopperContent)({
-    padding: '8px 0'
-});
+export const XMenuVertical = Glamorous<{ paddingTop?: number; paddingBottom?: number; }>(XPopperContent)((props) => ({
+    paddingTop: props.paddingTop || 8,
+    paddingBottom: props.paddingBottom || 8,
+    paddingLeft: 0,
+    paddingRight: 0,
+}));
