@@ -229,6 +229,7 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
         border: '1px solid',
         boxSizing: 'border-box',
         color: 'rgba(0, 0, 0, 0.9)',
+        letterSpacing: 0,
         '> .icon': {
             position: 'absolute',
         },

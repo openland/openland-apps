@@ -44,6 +44,7 @@ const TextAreaStyled = Glamorous.textarea <TextAreaStyledProps & XFlexStyles> ([
         msOverflowStyle: 'none',
         resize: props.resize === false ? 'none' : undefined,
         color: 'rgba(0, 0, 0, 0.9)',
+        letterSpacing: 0,
         '&:focus': {
             boxShadow: props.bordered === false ? 'none' : `0 0 0 2px ${props.invalid ? 'rgba(226, 99, 99, 0.2)' : 'rgba(23, 144, 255, 0.2)'}`,
             border: props.bordered === false ? 'none' : props.invalid ? undefined : '1px solid #74bcff',

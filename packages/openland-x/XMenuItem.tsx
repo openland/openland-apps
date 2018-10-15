@@ -91,6 +91,7 @@ const XMenuItemText = Glamorous.div({
     lineHeight: '24px',
     padding: '7px 0 9px',
     fontWeight: 500,
+    letterSpacing: 0,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis'
@@ -168,6 +169,7 @@ export const XMenuTitle = Glamorous.div({
     padding: '10px 16px',
     fontSize: 14,
     lineHeight: '20px',
+    letterSpacing: 0,
     fontWeight: 700
 });
 
