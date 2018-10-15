@@ -145,7 +145,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             <>
                 <SHeader hidden={true} />
                 <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
-                    <Image source={require('assets/img-chat-1.png')} style={{ position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="cover" />
+                    <Image source={require('assets/img-chat-1.jpg')} style={{ position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="cover" />
                     <SSafeAreaView style={styles.container}>
                         <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                             <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
