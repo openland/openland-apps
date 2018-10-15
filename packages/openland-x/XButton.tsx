@@ -370,15 +370,15 @@ let colorStyles = styleResolver({
         }
     },
     'primary': {
-        backgroundColor: '#4a78e7',
+        backgroundColor: '#1790ff',
         color: '#ffffff',
         border: 'solid 1px transparent',
         '&:hover': {
-            backgroundColor: '#4869b7',
+            backgroundColor: '#4F85DF',
             color: '#ffffff'
         },
         '&:active': {
-            backgroundColor: '#5640d6',
+            backgroundColor: '#4B7DD2',
             color: '#ffffff'
         },
         '&:focus': {

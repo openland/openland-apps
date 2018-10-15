@@ -57,7 +57,7 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
 });
 
 const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 600,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -68,14 +68,16 @@ const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     paddingLeft: 8
 })));
 
-const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
-    fontSize: 14,
-    fontWeight: 400,
-    color: '#5c6a81',
-    opacity: 0.5,
+const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps & { onRight?: boolean }>(props => ({
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#000',
+    opacity: 0.4,
     cursor: props.href ? 'pointer' : undefined,
     marginBottom: -2,
-    paddingLeft: 8
+    marginTop: props.onClick ? 2 : undefined,
+    paddingLeft: 8,
+    alignSelf: props.onRight ? 'flex-start' : undefined
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
@@ -412,24 +414,48 @@ const AboutText = Glamorous.div({
 });
 
 const LastSeenWrapper = Glamorous.div({
-    fontSize: 13,
-    fontWeight: 500,
-    lineHeight: 1.23,
-    opacity: 0.5,
-    color: '#121e2b',
+    fontSize: 12,
+    fontWeight: 600,
+    lineHeight: 1.33,
+    color: '#000',
     letterSpacing: -0.2,
-    marginTop: 4,
-    marginLeft: 8,
-    alignSelf: 'flex-start'
+    marginTop: 3,
+    paddingLeft: 8,
+    alignSelf: 'flex-start',
+    display: 'flex',
+    alignItems: 'center',
+    '& > span': {
+        opacity: 0.4,
+    }
 });
 
-const LastSeen = withOnline(props => (
-    (props.data.user && props.data.user.lastSeen) ? (
-        <LastSeenWrapper>
-            last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-        </LastSeenWrapper>
-    ) : null
-)) as React.ComponentType<{ variables: { userId: string } }>;
+const OnlineDot = Glamorous.div({
+    width: 6,
+    height: 6,
+    borderRadius: 50,
+    backgroundColor: '#74e479',
+    marginRight: 3,
+    marginTop: 2
+});
+
+const LastSeen = withOnline(props => {
+    if (props.data.user && (props.data.user.lastSeen && !props.data.user.online)) {
+        return (
+            <LastSeenWrapper>
+                <span>last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" /></span>
+            </LastSeenWrapper>
+        );
+    } else if (props.data.user && props.data.user.online) {
+        return (
+            <LastSeenWrapper>
+                <OnlineDot />
+                <span>Online</span>
+            </LastSeenWrapper>
+        );
+    } else {
+        return null;
+    }
+}) as React.ComponentType<{ variables: { userId: string } }>;
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' = 'chat';
@@ -466,7 +492,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
             <ChatHeaderWrapper>
-                <ChatHeaderContent>
+                <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
                         path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
                         query={props.data.chat.__typename === 'ChannelConversation' || props.data.chat.__typename === 'GroupConversation' ? { field: 'editChat', value: 'true' } : undefined}
@@ -495,11 +521,18 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 objectId={props.data.chat.flexibleId}
                             />
                             <XVertical separator="none" maxWidth="calc(100% - 48px)">
-                                <Title path={titlePath}>{title}</Title>
-                                <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
+                                <Title path={titlePath}>
+                                    {title}
+                                </Title>
+                                {(props.data.chat.__typename !== 'PrivateConversation') && (
+                                    <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
+                                )}
+                                {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                    <LastSeen variables={{ userId: uId }} />
+                                )}
                             </XVertical>
                             {(uId && props.data.chat.__typename === 'PrivateConversation') && (
-                                <LastSeen variables={{ userId: uId }} />
+                                <SubTitle path={subtitlePath} onRight={true}>{subtitle}</SubTitle>
                             )}
                         </XHorizontal>
                     </NavChatLeftContentStyled>

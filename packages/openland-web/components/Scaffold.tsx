@@ -689,7 +689,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                 placement="right-end"
                 show={this.state.show}
                 marginTop={5}
-                marginLeft={16}
+                marginLeft={11}
                 content={<AddListingContent />}
                 onClickOutside={this.closer}
             >
@@ -735,7 +735,7 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
                 placement="right-end"
                 show={this.state.show}
                 padding={0}
-                marginLeft={16}
+                marginLeft={11}
                 marginBottom={5}
                 content={<AddListingContent />}
                 onClickOutside={this.closer}

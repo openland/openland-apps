@@ -94,9 +94,10 @@ export const XModalBody = Glamorous.div({
 
 export const XModalTitle = Glamorous.div({
     fontSize: 18,
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#1f3449'
+    fontWeight: 600,
+    letterSpacing: 0,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.9)'
 });
 
 export const XModalHeader = Glamorous(XHorizontal)({
