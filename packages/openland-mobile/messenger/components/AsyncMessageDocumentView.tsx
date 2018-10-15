@@ -7,14 +7,41 @@ import { ASText } from 'react-native-async-view/ASText';
 import { formatBytes } from '../../utils/formatBytes';
 import { formatTime } from '../../utils/formatTime';
 import { Platform } from 'react-native';
+import { layoutMedia } from 'openland-shared/utils/layoutMedia';
+import { DownloadManagerInstance } from '../../../openland-mobile/files/DownloadManager';
+import { WatchSubscription } from '../../../openland-y-utils/Watcher';
+import { DownloadState } from '../../../openland-shared/DownloadManagerInterface';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
 
-export class AsyncMessageDocumentView extends React.PureComponent<{ message: DataSourceMessageItem, onPress: (document: DataSourceMessageItem) => void }> {
+export class AsyncMessageDocumentView extends React.PureComponent<{ message: DataSourceMessageItem, onPress: (document: DataSourceMessageItem) => void }, { downloadState?: DownloadState }> {
     private handlePress = () => {
         this.props.onPress(this.props.message);
     }
+
+    private downloadManagerWatch?: WatchSubscription;
+
+    constructor(props: any) {
+        super(props);
+        this.state = {};
+    }
+
+    componentWillMount() {
+        if (this.props.message.file) {
+            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId, null, (state) => {
+                this.setState({ downloadState: state });
+            });
+        }
+
+    }
+
+    componentWillUnmount() {
+        if (this.downloadManagerWatch) {
+            this.downloadManagerWatch();
+        }
+    }
+
     render() {
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
@@ -36,6 +63,19 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                             width={16}
                             height={20}
                         />
+                        {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                            backgroundColor="#0008"
+                            borderRadius={20}
+                            marginTop={10}
+                            marginBottom={10}
+                            marginLeft={10}
+                            marginRight={10}
+                            overlay={true}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <ASText color="#fff" opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
+                        </ASFlex>}
                     </ASFlex>
                     <ASFlex
                         flexGrow={1}
