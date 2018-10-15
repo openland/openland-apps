@@ -81,15 +81,15 @@ let sizeStyles = styleResolver({
         fontWeight: 500,
         lineHeight: '24px',
         letterSpacing: 0.2,
-        padding: '0 12px',
+        padding: '0 8px',
     },
     'small': {
         height: 22,
         fontSize: 12,
         fontWeight: 600,
-        lineHeight: '23px',
+        lineHeight: '22px',
         letterSpacing: -0.3,
-        padding: '0 11px',
+        padding: '0 8px',
     },
 });
 
