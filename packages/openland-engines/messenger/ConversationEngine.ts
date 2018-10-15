@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { ChatReadMutation, ChatHistoryQuery } from 'openland-api';
+import { ChatReadMutation, ChatHistoryQuery, AccountQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
@@ -489,6 +489,13 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Add to datasource
             this.appendMessage(event.message);
+
+            // some fun
+            if (event.message.message === '/insane') {
+                let account: any = this.engine.client.client.readQuery({ query: AccountQuery.document });
+                console.warn(account);
+                this.engine.client.client.writeQuery({ query: AccountQuery.document, data: { ...account, permissions: { ...account.permissions, roles: [...account.permissions.roles, 'feature-insane-buttons'] } } });
+            }
         } else if (event.__typename === 'ConversationEventDelete') {
             // Handle message
             console.info('Received delete message');
