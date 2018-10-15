@@ -87,7 +87,7 @@ const XMenuItemIcon = Glamorous(XIcon)({
 
 const XMenuItemText = Glamorous.div({
     flexGrow: 1,
-    fontSize: '14px',
+    fontSize: 14,
     lineHeight: '24px',
     padding: '7px 0 9px',
     fontWeight: 500,
@@ -168,7 +168,6 @@ export const XMenuTitle = Glamorous.div({
     padding: '10px 16px',
     fontSize: 14,
     lineHeight: '20px',
-    letterSpacing: .4,
     fontWeight: 700
 });
 
