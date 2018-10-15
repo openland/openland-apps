@@ -194,27 +194,39 @@ let colorStyles = styleResolver({
     }
 });
 
+let titleStyles = styleResolver({
+    'large': {
+        top: -11,
+        left: 13,
+        height: 20,
+        fontSize: 12,
+        lineHeight: '20px',
+    },
+    'default': {
+        top: -11,
+        left: 13,
+        height: 20,
+        fontSize: 12,
+        lineHeight: '20px',
+    },
+    'small': {
+        top: -8,
+        left: 9,
+        height: 14,
+        fontSize: 11,
+        lineHeight: '14px',
+    }
+});
+
 const Title = Glamorous.div<{ format?: XInputSize }>([
-    (props) => ({
+    {
         position: 'absolute',
         paddingLeft: 3,
         paddingRight: 3,
         backgroundColor: 'white',
         color: 'rgba(0, 0, 0, 0.4)'
-    }),
-    (props) => (props.format === 'small') ? {
-            top: -8,
-            left: 9,
-            height: 14,
-            fontSize: 11,
-            lineHeight: '14px',
-        } : {
-            top: -11,
-            left: 13,
-            height: 20,
-            fontSize: 12,
-            lineHeight: '20px',
-        }
+    },
+    (props) => titleStyles(props.format),
 ]);
 
 const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyle, invalid?: boolean, format?: XInputSize, attach?: XInputAttach }>([
