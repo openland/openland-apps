@@ -9,6 +9,9 @@ import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
 import { AsyncMessageIntroView, renderButtons } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
+import { DownloadState } from 'openland-shared/DownloadManagerInterface';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;

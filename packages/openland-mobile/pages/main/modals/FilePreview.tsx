@@ -45,7 +45,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
         const config = this.props.router.params.config;
         this.subscription = DownloadManagerInstance.watch(config.uuid, null, (state) => {
             if (!state.path) {
-                this.setState({ completed: false });
+                this.setState({ completed: false, downloadState: state });
             } else {
                 if (this.subscription) {
                     this.subscription!!();
@@ -83,9 +83,8 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
                             <Text style={styles.size}>{formatBytes(config.size)}</Text>
                             < View height={46} justifyContent="center" marginTop={5}>
                                 {this.state.path && <ZRoundedButton title="Open" onPress={this.handlePress} />}
-                                {!this.state.path && <XPCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : this.state.downloadState ? this.state.downloadState.progress || 0 : 0)} />}
+                                {!this.state.path && <XPCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
                             </View>
-
                         </ASSafeAreaView>
                     </TouchableHighlight>
                 </View>

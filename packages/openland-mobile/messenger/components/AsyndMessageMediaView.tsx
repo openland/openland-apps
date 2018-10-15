@@ -8,6 +8,9 @@ import { DownloadState } from 'openland-shared/DownloadManagerInterface';
 import { DownloadManagerInstance } from '../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
+import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
+import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASText } from 'react-native-async-view/ASText';
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
@@ -61,6 +64,18 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
                     borderRadius={10}
                     isGif={this.props.message.file!!.isGif}
                 />
+                {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                    overlay={true}
+                    width={layout.width}
+                    height={layout.height}
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <ASFlex backgroundColor="#0008" borderRadius={20}>
+                        <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                    </ASFlex>
+                </ASFlex>}
+
             </AsyncBubbleView>
         );
     }
