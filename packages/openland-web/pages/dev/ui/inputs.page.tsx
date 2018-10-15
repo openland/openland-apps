@@ -28,6 +28,19 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                             <XInput rounded={true} size="small" placeholder="small" alignSelf="flex-start" />
                         </XVertical>
                     </XHorizontal>
+                    <XTitle>With title</XTitle>
+                    <XHorizontal>
+                        <XVertical>
+                            <XInput size="large" title="large" alignSelf="flex-start" />
+                            <XInput title="default" alignSelf="flex-start" />
+                            <XInput size="small" title="small" alignSelf="flex-start" />
+                        </XVertical>
+                        <XVertical>
+                            <XInput rounded={true} size="large" title="large" alignSelf="flex-start" />
+                            <XInput rounded={true} title="default" alignSelf="flex-start" />
+                            <XInput rounded={true} size="small" title="small" alignSelf="flex-start" />
+                        </XVertical>
+                    </XHorizontal>
                     <XTitle>Group</XTitle>
                     <XHorizontal>
                         <XVertical>

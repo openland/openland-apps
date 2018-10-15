@@ -10,14 +10,6 @@ type XInputSize = 'large' | 'default' | 'small';
 type XInputAttach = 'left' | 'right' | 'both';
 type XInputStyle = 'default';
 
-// top: -12px;
-// position: absolute;
-// /* top: -10px; */
-// left: 12px;
-// padding-left: 4px;
-// background-color: white;
-// padding-right: 4px;
-
 export interface XInputBasicProps extends XFlexStyles {
     title?: string;
     type?: string;
@@ -202,25 +194,28 @@ let colorStyles = styleResolver({
     }
 });
 
-const Title = Glamorous.div({
-    top: '-13px',
-    position: 'absolute',
-    left: '12px',
-    paddingLeft: '4px',
-    paddingRight: '4px',
-    backgroundColor: 'white',
-    height: 24,
-    fontSize: 12,
-    lineHeight: '24px',
-    color: 'rgba(0,0,0,0.4)'
-    // top: -12px;
-    // position: absolute;
-    // /* top: -10px; */
-    // left: 12px;
-    // padding-left: 4px;
-    // background-color: white;
-    // padding-right: 4px;
-});
+const Title = Glamorous.div<{ format?: XInputSize }>([
+    (props) => ({
+        position: 'absolute',
+        paddingLeft: 3,
+        paddingRight: 3,
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.4)'
+    }),
+    (props) => (props.format === 'small') ? {
+            top: -8,
+            left: 9,
+            height: 14,
+            fontSize: 11,
+            lineHeight: '14px',
+        } : {
+            top: -11,
+            left: 13,
+            height: 20,
+            fontSize: 12,
+            lineHeight: '20px',
+        }
+]);
 
 const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyle, invalid?: boolean, format?: XInputSize, attach?: XInputAttach }>([
     (props) => ({
@@ -425,7 +420,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
                 invalid={invalid}
                 disabled={disabled}
             >
-                {title && (<Title>{title}</Title>)}
+                {title && (<Title format={size}>{title}</Title>)}
                 {icon && (
                     typeof (icon) === 'string'
                         ? <XIcon icon={icon} className="icon" />
