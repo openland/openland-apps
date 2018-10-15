@@ -122,19 +122,19 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem style="primary-sky-blue" href={'/directory/c/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                                        <XMenuItem href={'/directory/c/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
-                                            <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: this.props.item.id }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
+                                            <XMenuItem query={{ field: 'createChannel', value: this.props.item.id }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
                                         )}
 
                                         <XWithRole role="admin" orgPermission={this.props.item.id}>
-                                            <XMenuItem style="primary-sky-blue" href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
+                                            <XMenuItem href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
                                         </XWithRole>
 
                                         {!this.props.item.isMine && (
                                             <XWithRole role={['super-admin', 'editor']}>
-                                                <XMenuItem style="primary-sky-blue" href={'/settings/organization/' + this.props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
+                                                <XMenuItem href={'/settings/organization/' + this.props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
                                             </XWithRole>
                                         )}
 

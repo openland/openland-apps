@@ -588,14 +588,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                     <XMenuTitle>Super admin</XMenuTitle>
                                                     <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
                                                     <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
-                                                    <XMenuItem query={{ field: 'addMember', value: 'true' }} style="primary-sky-blue">Add Member</XMenuItem>
+                                                    <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
                                                     <XMenuTitle>Common</XMenuTitle>
-                                                    <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
+                                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                                 </XWithRole>
 
                                                 <XWithRole role={['editor', 'super-admin']} negate={true}>
                                                     <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
-                                                        <XMenuItem query={{ field: 'editChat', value: 'true' }} style="primary-sky-blue">Settings</XMenuItem>
+                                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                                     </XWithRole>
                                                 </XWithRole>
                                             </>

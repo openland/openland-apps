@@ -16,7 +16,6 @@ export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
                         <XMenuVertical>
                             <XMenuTitle>Notifications</XMenuTitle>
                             <XMenuItem>default</XMenuItem>
-                            <XMenuItem style="primary-sky-blue">primary-sky-blue</XMenuItem>
                             <XMenuItem style="danger">danger</XMenuItem>
                             <XMenuItemSeporator />
                             <XMenuItem icon="chat">With icon</XMenuItem>
@@ -25,7 +24,6 @@ export default withApp('UI Framework - Menu Items', 'viewer', (props) => {
                             <XMenuItemSeporator />
                             <XMenuItem icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>
                             <XMenuItem style="danger" icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>
-                            <XMenuItem style="primary-sky-blue" icon="chat" iconRight="chevron_right">Very long title in XMenuItem</XMenuItem>
                             <XMenuItemSeporator />
                             <XMenuItemWrapper>
                                 <XVertical>

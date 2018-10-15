@@ -8,7 +8,7 @@ import RightIcon from './icons/ic-right-1.svg';
 import DrowdownChatIcon from './icons/ic-dropdown-message.svg';
 import DrowdownChannelIcon from './icons/ic-dropdown-channel.svg';
 
-type XMenuItemStyle = 'danger' | 'primary-sky-blue' | 'default';
+type XMenuItemStyle = 'default' | 'danger';
 
 interface XMenuItemProps extends XLinkProps {
     style?: XMenuItemStyle;
@@ -18,25 +18,6 @@ interface XMenuItemProps extends XLinkProps {
 
 let XMenuItemColorStyles = styleResolver({
     'default': {
-        color: '#334562',
-        '& i': {
-            color: '#bcc3cc'
-        },
-        '& svg *': {
-            fill: '#bcc3cc'
-        },
-        ':hover': {
-            color: '#6b50ff',
-            backgroundColor: '#f8f8fb',
-            '& i': {
-                color: 'rgba(107, 80, 255, 0.5)'
-            },
-            '& svg *': {
-                fill: 'rgba(107, 80, 255, 0.5)'
-            }
-        }
-    },
-    'primary-sky-blue': {
         color: '#334562',
         '& i': {
             color: '#bcc3cc'

@@ -280,7 +280,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         onClickTarget={this.switchMenu}
                         content={
                             <>
-                                {message.message && <XMenuItem style="primary-sky-blue" onClick={this.showEditView}>Edit</XMenuItem>}
+                                {message.message && <XMenuItem onClick={this.showEditView}>Edit</XMenuItem>}
                                 <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
                             </>
                         }

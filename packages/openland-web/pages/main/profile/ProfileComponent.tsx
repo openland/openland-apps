@@ -200,7 +200,7 @@ const Header = (props: { organizationQuery: Organization }) => {
                             flat={true}
                             content={(
                                 <>
-                                    <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>Create channel</XMenuItem>
+                                    <XMenuItem query={{ field: 'createChannel', value: 'true' }}>Create channel</XMenuItem>
                                 </>
                             )}
                         />
@@ -591,10 +591,10 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                         flat={true}
                         content={
                             <>
-                                <XMenuItem style="primary-sky-blue" query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
+                                <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
                                 <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
                                 <XWithRole role={['super-admin']}>
-                                    <XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
+                                    <XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
                                 </XWithRole>
                             </>
                         }
@@ -603,7 +603,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
-                            content={<XMenuItem style="primary-sky-blue" query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
+                            content={<XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
                         />
                     </XWithRole>}
                 </MemberCardTools>

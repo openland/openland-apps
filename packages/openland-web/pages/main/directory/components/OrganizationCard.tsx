@@ -252,25 +252,25 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem style="primary-sky-blue" href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                                        <XMenuItem href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
-                                            <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: this.props.item.id }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
+                                            <XMenuItem query={{ field: 'createChannel', value: this.props.item.id }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
                                         )}
 
                                         <XWithRole role="admin" orgPermission={this.props.item.id}>
-                                            <XMenuItem style="primary-sky-blue" href={'/settings/organization/' + this.props.item.id} >{TextDirectory.buttonEdit}</XMenuItem>
+                                            <XMenuItem href={'/settings/organization/' + this.props.item.id} >{TextDirectory.buttonEdit}</XMenuItem>
                                         </XWithRole>
 
                                         {!this.props.item.isMine && (
                                             <XWithRole role={['super-admin', 'editor']}>
-                                                <XMenuItem style="primary-sky-blue" href={'/settings/organization/' + this.props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
+                                                <XMenuItem href={'/settings/organization/' + this.props.item.id}>{TextDirectory.buttonEdit}</XMenuItem>
                                             </XWithRole>
                                         )}
 
                                         <XWithRole role={['super-admin', 'editor']}>
                                             <AlterOrgPublishedButton orgId={this.props.item.id} published={this.props.item.published} />
-                                            <XMenuItem style="primary-sky-blue" href={'/super/orgs/' + this.props.item.superAccountId}>{TextDirectory.buttonSuperEdit}</XMenuItem>
+                                            <XMenuItem href={'/super/orgs/' + this.props.item.superAccountId}>{TextDirectory.buttonSuperEdit}</XMenuItem>
                                         </XWithRole>
                                     </>
                                 )}

@@ -313,9 +313,9 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                     <ProfileSubTitle>{TextGlobal.editProfile}</ProfileSubTitle>
                                 </XVertical>
                             </ProfileNaviTitleContainer>
-                            <XMenuItem style="primary-sky-blue" path="/settings/profile">{TextGlobal.settings}</XMenuItem>
-                            <XMenuItem style="primary-sky-blue" query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
-                            <XMenuItem style="primary-sky-blue" path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
+                            <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
+                            <XMenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
+                            <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
 
                             {primaryOrganization && (
                                 <>
@@ -340,12 +340,12 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                             content={(
                                                 <XVertical separator="none" minWidth={260} ref={this.onInner}>
                                                     {organizations.map((org, index) => (index >= 1) ? (
-                                                        <XMenuItem style="primary-sky-blue" path={'/directory/o/' + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
+                                                        <XMenuItem path={'/directory/o/' + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
                                                     ) : null)}
                                                 </XVertical>
                                             )}
                                         >
-                                            <XMenuItem style="primary-sky-blue" iconRight="x-right">Other organizations</XMenuItem>
+                                            <XMenuItem iconRight="x-right">Other organizations</XMenuItem>
                                         </XPopper>
                                     )}
                                 </>
@@ -679,9 +679,9 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo((props) => {
             return (
                 <>
-                    <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
-                    <XMenuItem style="primary-sky-blue" query={{ field: 'createOrganization', value: 'community' }}>{TextGlobal.addCommunity}</XMenuItem>
-                    <XMenuItem style="primary-sky-blue" query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</XMenuItem>
+                    <XMenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
+                    <XMenuItem query={{ field: 'createOrganization', value: 'community' }}>{TextGlobal.addCommunity}</XMenuItem>
+                    <XMenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</XMenuItem>
                 </>
             );
         });
@@ -725,9 +725,9 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo((props) => {
             return (
                 <>
-                    <XMenuItem style="primary-sky-blue" path="/super/stats">{TextAppBar.items.stats}</XMenuItem>
-                    <XMenuItem style="primary-sky-blue" path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
-                    <XMenuItem style="primary-sky-blue" path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
+                    <XMenuItem path="/super/stats">{TextAppBar.items.stats}</XMenuItem>
+                    <XMenuItem path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
+                    <XMenuItem path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
                 </>
             );
         });

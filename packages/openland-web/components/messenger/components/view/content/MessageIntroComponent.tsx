@@ -377,23 +377,23 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                             <>
                                                 {reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? (
                                                     <ChangeReactionButton messageId={messageId} unset="accept" set="pass">
-                                                        <XMenuItem style="primary-sky-blue">Pass</XMenuItem>
+                                                        <XMenuItem>Pass</XMenuItem>
                                                     </ChangeReactionButton>
                                                 ) : null}
                                                 {reactions.find(r => r.user.id === meId && r.reaction === 'pass') ? (
                                                     <ChangeReactionButton messageId={messageId} unset="pass" set="accept">
-                                                        <XMenuItem style="primary-sky-blue">Accept</XMenuItem>
+                                                        <XMenuItem>Accept</XMenuItem>
                                                     </ChangeReactionButton>
                                                 ) : null}
                                                 {!reactions.find(r => r.user.id === meId) && (meId !== senderId) && (
                                                     <SetReactionButton variables={{ messageId: messageId, reaction: 'pass' }}>
-                                                        <XMenuItem style="primary-sky-blue">Pass</XMenuItem>
+                                                        <XMenuItem>Pass</XMenuItem>
                                                     </SetReactionButton>
                                                 )}
-                                                <XMenuItem style="primary-sky-blue" path={'/mail/u/' + user.id}>View profile</XMenuItem>
+                                                <XMenuItem path={'/mail/u/' + user.id}>View profile</XMenuItem>
                                                 {meId === senderId && (
                                                     <>
-                                                        <XMenuItem style="primary-sky-blue" query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
+                                                        <XMenuItem query={{ field: ('editItro' + messageId), value: 'true' }}>Edit</XMenuItem>
                                                         <XMenuItem style="danger" query={{ field: 'deleteMessage', value: messageId }}>Delete</XMenuItem>
                                                     </>
                                                 )}
