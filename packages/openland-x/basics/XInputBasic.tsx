@@ -38,7 +38,7 @@ export interface XInputBasicProps extends XFlexStyles {
     tooltipContent?: any;
     onChange?: (value: string) => void;
     onEnter?: () => void;
-    cleansable?: boolean;
+    cleanable?: boolean;
     onFocus?: () => void;
 }
 
@@ -553,7 +553,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
             disabled,
             tooltipContent,
             color,
-            cleansable,
+            cleanable,
             onFocus,
             title,
             ...other
@@ -619,7 +619,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
                         </PopperPlaceholder>
                     </XPopper>
                 )}
-                {(cleansable && v !== '') && (
+                {(cleanable && v !== '') && (
                     <ClearButton
                         onClick={() => {
                             this.handleClear();

@@ -616,7 +616,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     placeholder="Search"
                     icon={<SearchIcon />}
                     color="primary-sky-blue"
-                    cleansable={true}
+                    cleanable={true}
                     innerRef={this.handleRef}
                     onFocus={this.inputFocusHandler}
                 />
