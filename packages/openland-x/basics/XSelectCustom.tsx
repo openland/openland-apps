@@ -17,7 +17,7 @@ const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
         flexDirection: 'row',
         flexWrap: 'wrap',
         cursor: 'text',
-        borderRadius: props.rounded ? 24 : 5,
+        borderRadius: props.rounded ? 10 : 5,
         paddingTop: 2,
         paddingBottom: 1,
         paddingLeft: 8,
@@ -234,7 +234,6 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         icon="x-close"
                         size={rounded ? 'default' : 'large'}
                         text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
-                        rounded={rounded}
                         onClick={() => this.onDelete(v.value)}
                     />
                 ))}
@@ -412,7 +411,6 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
                         icon="x-close"
                         size={rounded ? 'default' : 'large'}
                         text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
-                        rounded={rounded}
                         onClick={() => this.onDelete(v.value)}
                     />
                 ))}

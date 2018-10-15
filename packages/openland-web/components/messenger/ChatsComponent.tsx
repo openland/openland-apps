@@ -47,9 +47,9 @@ const ItemContainer = Glamorous.a({
         }
     },
     '&.is-active': {
-        backgroundColor: 'rgba(112, 100, 255, 0.96)',
+        backgroundColor: '#4596e1',
         '&:hover': {
-            backgroundColor: 'rgba(112, 100, 255, 0.96)',
+            backgroundColor: '#4596e1',
             color: '#334562'
         },
         '& .title, .date, .content': {
