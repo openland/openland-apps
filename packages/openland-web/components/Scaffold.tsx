@@ -96,7 +96,7 @@ const Logo = Glamorous.div({
     marginBottom: 11,
     alignSelf: 'center',
     flexShrink: 0,
-    backgroundImage: 'url(\'/static/X/logo-3.svg\')',
+    backgroundImage: 'url(\'/static/X/logo-4.png\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain'
 });
