@@ -58,6 +58,9 @@ const ItemContainer = Glamorous.a({
             // color: '#1790ff !important',
             // opacity: '1 !important'
         },
+        '& .header:before': {
+            display: 'none'
+        }
     }
 });
 
@@ -78,7 +81,7 @@ const Header = Glamorous.div({
         position: 'absolute',
         left: 11, bottom: 0, right: 0,
         height: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.04)'
+        backgroundColor: '#ececec'
     }
 });
 
@@ -226,7 +229,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                     size="medium"
                     cloudImageUuid={conv.photo}
                 />
-                <Header>
+                <Header className="header">
                     <Main>
                         <Title className="title"><span>{conv.title}</span></Title>
                         {conv.date && <Date className="date"><XDate value={conv.date.toString()} format="datetime_short" /></Date>}
