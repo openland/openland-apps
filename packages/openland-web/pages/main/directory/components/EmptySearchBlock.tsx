@@ -9,8 +9,6 @@ const EmptySearchWrapper = Glamorous.div({
 });
 
 const EmptySearchBox = Glamorous.div({
-    background: 'url(/static/X/empty-bg.png) center center no-repeat',
-    backgroundSize: 'auto 100%',
     width: '100%',
     height: 600,
     display: 'flex',
