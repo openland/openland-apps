@@ -10,7 +10,7 @@ import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChatChangeGroupTitleMutation, ConversationKickMutation, ConversationSettingsUpdateMutation, ChatUpdateGroupMutation } from 'openland-api';
-import { ChatAddMemberMutation } from 'openland-api/ChatAddMemberMutation';
+import { ChatAddMembersMutation } from 'openland-api';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -124,40 +124,39 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 </ZListItemGroup>
 
                                 <ZListItemGroup header="Members">
-                                    <YMutation mutation={ChatAddMemberMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]} >
+                                    <YMutation mutation={ChatAddMembersMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]} >
                                         {(add) => (
                                             <ZListItem
                                                 appearance="action"
-                                                text="Add members"
+                                                text="  👋   Add members"
                                                 onPress={() => {
-                                                    Modals.showUserPicker(
+                                                    Modals.showUserMuptiplePicker(
                                                         this.props.router,
-                                                        async (src) => {
-
-                                                            Alert.alert(`Are you sure you want to add ${src.name}?`, undefined, [{
-                                                                onPress: async () => {
-                                                                    startLoader();
-                                                                    try {
-                                                                        await add({ variables: { userId: src.id, conversationId: resp.data.chat.id } });
-                                                                    } catch (e) {
-                                                                        Alert.alert(e.message);
-                                                                    }
-                                                                    stopLoader();
-                                                                },
-                                                                text: 'Add',
-                                                                style: 'default'
-                                                            },
-                                                            {
-                                                                text: 'Cancel',
-                                                                style: 'cancel'
-                                                            }]);
-
-                                                        }
+                                                        {
+                                                            title: 'Add', action: async (users) => {
+                                                                startLoader();
+                                                                try {
+                                                                    await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: resp.data.chat.id } });
+                                                                    this.props.router.back();
+                                                                } catch (e) {
+                                                                    Alert.alert(e.messagew);
+                                                                }
+                                                                stopLoader();
+                                                            }
+                                                        },
+                                                        'Add members',
+                                                        resp.data.members.map(m => m.user.id)
                                                     );
                                                 }}
                                             />
                                         )}
                                     </YMutation>
+                                    {resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.organization!.isOwner && < ZListItem
+                                        key="add"
+                                        text="  🔗   Invite via Link"
+                                        appearance="action"
+                                        onPress={() => this.props.router.push('ChannelInviteLinkModal', {id: resp.data.chat.id})}
+                                    />}
                                     <SDeferred>
                                         {resp.data.members.map((v) => (
                                             <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>

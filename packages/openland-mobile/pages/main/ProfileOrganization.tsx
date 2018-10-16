@@ -84,7 +84,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                             <ZListItemGroup header="Members" >
                                                                 {resp.data.organization.isMine && <ZListItem
                                                                     key="add"
-                                                                    text=" 👋 Add members"
+                                                                    text=" 👋 Invite via Link"
                                                                     appearance="action"
                                                                     path="OrganizationInviteLinkModal"
                                                                 />}

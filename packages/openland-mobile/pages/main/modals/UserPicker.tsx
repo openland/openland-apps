@@ -21,7 +21,9 @@ class UserSearch extends React.Component<{ query: string, router: SRouter }> {
             Keyboard.dismiss();
             startLoader();
             let res = await action(id);
-            this.props.router.back();
+            if (this.props.router.params.autoclose !== false) {
+                this.props.router.back();
+            }
         } catch (e) {
             // 
         } finally {
@@ -52,7 +54,7 @@ class UserPickerComponent extends React.PureComponent<PageProps> {
         let searchRender = (props: { query: string }) => (<UserSearch query={props.query} router={this.props.router} />);
         return (
             <>
-                <SHeader title="Add user" />
+                <SHeader title="Add members" />
                 <SSearchControler searchRender={searchRender} >
                     {searchRender}
                 </SSearchControler>

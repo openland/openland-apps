@@ -4,7 +4,6 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { withSampleTask } from '../../../api/withSampleTask';
-import { withFolderExportTask } from '../../../api/withFolderExportTask';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XModal } from 'openland-x-modal/XModal';
@@ -18,24 +17,6 @@ const SampleTask = withSampleTask((props) => {
             {props.task.result && JSON.stringify(props.task.result)}
             <XButton onClick={() => props.task.startTask({ value: 10 })} text="Start Task" alignSelf="flex-start" />
         </XVertical>
-    );
-});
-
-const FolderExportTask = withFolderExportTask((props) => {
-
-    const downloadNoTab = (downloadLink: string, folderName: string) => {
-        var link = document.createElement('a');
-        link.setAttribute('href', downloadLink);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-    return (
-        <>
-            {props.task.status !== 'COMPLETED' && <XButton onClick={() => props.task.startTask({ folderId: 'NjZ8Zg' })} text="Export" alignSelf="flex-start" loading={props.task.status === 'IN_PROGRESS'} />}
-            {props.task.status === 'COMPLETED' && <XButton onClick={() => downloadNoTab(props.task.result!!.downloadLink, 'folder')} text={'Download export.csv'} alignSelf="flex-start" />}
-        </>
     );
 });
 
@@ -61,7 +42,6 @@ export default withApp('UI Framework - Tasks', 'viewer', (props) => {
                     <XModal target={<XButton text="Start Task In Modal" />} title="Doing complex multiplications..." closeOnClick={false}>
                         <SampleTaskContent value={400} />
                     </XModal>
-                    <FolderExportTask />
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

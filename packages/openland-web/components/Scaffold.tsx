@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { withSearch } from '../api/withSearch';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
@@ -523,48 +522,6 @@ const Tilte = Glamorous(XTitle)({
     paddingLeft: 16
 });
 
-let SearchResults = withSearch((props) => {
-    if (props.data && props.data.search && (props.data.search.parcels.edges.length > 0 || props.data.search.folders.edges.length > 0)) {
-        return (
-            <ResultsContainer>
-                <XSearchList>
-                    {props.data.search.folders.edges.length > 0 && <Tilte>Folders</Tilte>}
-                    {props.data.search.folders.edges.map((v) => (
-                        <XSearchListItem key={v.node.id} path={'/folders/' + v.node.id}>
-                            <ResultTilte>
-                                <ResultTilteMain>{v.node.name}</ResultTilteMain>
-                            </ResultTilte>
-                        </XSearchListItem>
-                    ))}
-                    {props.data.search.folders.edges.length > 0 && <Tilte>Parcels</Tilte>}
-                    {props.data.search.parcels.edges.map((v) => (
-                        <XSearchListItem key={v.node.id} path={'/parcels/' + v.node.id}>
-                            <ResultTilte>
-                                <ResultTilteMain>{TextGlobalSearch.parcelIdPrefix}<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
-                                <ResultTilteHint>{v.node.extrasArea && <XArea value={v.node.extrasArea} />}</ResultTilteHint>
-                            </ResultTilte>
-                            {!v.highlight.find((k) => k.key === 'address') && (
-                                <ResultBody>
-                                    <ResultBodyMain>{TextGlobalSearch.neighborhood}</ResultBodyMain>
-                                    {v.node.extrasNeighborhood}
-                                </ResultBody>
-                            )}
-                            {v.highlight.find((k) => k.key === 'address') && (
-                                <ResultBody>
-                                    <ResultBodyMain>{TextGlobalSearch.address}</ResultBodyMain>
-                                    <Highlighted field={'address'} highlight={v.highlight} />
-                                </ResultBody>
-                            )}
-                        </XSearchListItem>
-                    ))}
-                </XSearchList>
-            </ResultsContainer>
-        );
-    } else {
-        return null;
-    }
-});
-
 //
 // Menu
 //
@@ -1014,20 +971,6 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             </BottomNavigation>
                         </NavigationContainer>
                     </NavigationScroller>
-                    <SearchWrapper visible={this.state.search} className="search-container">
-                        <SearchWrapperSticky>
-                            <SearchContainer onClick={this.handleSearch} />
-                            <SearchContent>
-                                <SearchInput
-                                    placeholder={TextGlobalSearch.placeholder}
-                                    onChange={this.handleSearchChange}
-                                    innerRef={this.handleSearchRef}
-                                    value={this.state.searchText}
-                                />
-                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults variables={{ query: this.state.searchText }} />)}
-                            </SearchContent>
-                        </SearchWrapperSticky>
-                    </SearchWrapper>
                     {menu}
                 </NavigationWrapper>
                 <ContentView

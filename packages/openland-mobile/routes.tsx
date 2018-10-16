@@ -25,9 +25,10 @@ import { Waitlist } from './pages/auth/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
 import { ComposeInitial } from './pages/compose/ComposeInitial';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
-import { CreateGroupUsers } from './pages/compose/CreateGroupUsers';
 import { CreateChannel } from './pages/compose/CreateChannel';
 import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
+import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
+import { ChannelInviteLinkModal } from './pages/main/modals/ChannelInviteLinkModal';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -52,10 +53,11 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CountryPicker', CountryPicker)
   .addRoute('ComposeInitial', ComposeInitial)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
-  .addRoute('CreateGroupUsers', CreateGroupUsers)
   .addRoute('CreateChannel', CreateChannel)
   .addRoute('OrganizationInviteLinkModal', OrganizationInviteLinkModal)
-  
+  .addRoute('UserMultiplePicker', UserMultiplePicker)
+  .addRoute('ChannelInviteLinkModal', ChannelInviteLinkModal)
+
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)
 
