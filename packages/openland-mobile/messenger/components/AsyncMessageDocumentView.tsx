@@ -29,9 +29,13 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
 
     componentWillMount() {
         if (this.props.message.file) {
-            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId, null, (state) => {
-                this.setState({ downloadState: state });
-            });
+            this.downloadManagerWatch = DownloadManagerInstance.watch(
+                this.props.message.file!!.fileId,
+                null,
+                (state) => {
+                    this.setState({ downloadState: state });
+                },
+                false);
         }
 
     }
@@ -43,6 +47,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
     }
 
     render() {
+        let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex height={60} flexDirection="row" onPress={this.handlePress}>
@@ -59,7 +64,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                         justifyContent="center"
                     >
                         <ASImage
-                            source={this.props.message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png')}
+                            source={downloaded ? require('assets/img-file.png') : this.props.message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png')}
                             width={16}
                             height={20}
                         />

@@ -4,7 +4,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 export class DownloadManager implements DownloadManagerInterface {
 
-    private _watchers = new Map<string, Watcher<DownloadState>>();
+    private _watchers = new Map<string, { watcher: Watcher<DownloadState>, download: boolean }>();
     private version = 1;
     private rootDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_v' + this.version;
     private rootIncompleteDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_incomplete_v' + this.version;
@@ -23,20 +23,76 @@ export class DownloadManager implements DownloadManagerInterface {
         return path;
     }
 
-    watch(uuid: string, resize: { width: number, height: number } | null, handler: (state: DownloadState) => void) {
-        if (!this._watchers.has(uuid)) {
-            let watcher = new Watcher<DownloadState>();
-            this._watchers.set(uuid, watcher);
+    watch(uuid: string, resize: { width: number, height: number } | null, handler: (state: DownloadState) => void, initDownload?: boolean) {
+        if (initDownload !== false) {
+            this.init(uuid, resize);
+        }
+        return this.getWatcher(uuid, resize).watcher.watch(handler);
+    }
 
-            // Init
+    init(uuid: string, resize: { width: number, height: number } | null) {
+        let watcherState = this.getWatcher(uuid, resize);
+        if (watcherState.download) {
+            return;
+        }
+        watcherState.download = true;
+        let watcher = watcherState.watcher;
 
-            let suffix = '';
+        // Init
+
+        let suffix = '';
+        if (resize) {
+            suffix = '_' + resize.width + 'x' + resize.height;
+        }
+        let path = this.rootDir + '/' + uuid + suffix;
+
+        (async () => {
+
+            let url = 'https://ucarecdn.com/' + uuid + '/';
             if (resize) {
-                suffix = '_' + resize.width + 'x' + resize.height;
+                url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
             }
-            let path = this.rootDir + '/' + uuid + suffix;
+
+            // Download
+            try {
+                watcher.setState({ progress: 0 });
+                let res = RNFetchBlob.config({
+                    path: this.rootIncompleteDir + '/' + uuid + suffix
+                }).fetch('GET', url);
+                setTimeout(
+                    () => {
+                        res.progress({ interval: 100 }, (written: number, total: number) => {
+                            let p = written / total;
+                            watcher.setState({ progress: p });
+                        });
+                    },
+                    0);
+                await res;
+
+                await this.createRootFolder;
+
+                await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid + suffix, path);
+
+                watcher.setState({ path, progress: 1 });
+            } catch (e) {
+                // How to handle?
+                console.log(e);
+            }
+        })();
+    }
+
+    getWatcher(uuid: string, resize: { width: number, height: number } | null) {
+        if (!this._watchers.has(this.resolvePath(uuid, resize))) {
+            let watcher = new Watcher<DownloadState>();
 
             (async () => {
+
+                // Init
+                let suffix = '';
+                if (resize) {
+                    suffix = '_' + resize.width + 'x' + resize.height;
+                }
+                let path = this.rootDir + '/' + uuid + suffix;
 
                 // Check if exists
                 let exists = false;
@@ -53,52 +109,11 @@ export class DownloadManager implements DownloadManagerInterface {
                     return;
                 }
 
-                let url = 'https://ucarecdn.com/' + uuid + '/';
-                if (resize) {
-                    url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
-                }
-
-                // Download
-                try {
-                    watcher.setState({ progress: 0 });
-                    let res = RNFetchBlob.config({
-                        path: this.rootIncompleteDir + '/' + uuid + suffix
-                    }).fetch('GET', url);
-                    setTimeout(
-                        () => {
-                            res.progress({ interval: 100 }, (written: number, total: number) => {
-                                let p = written / total;
-                                watcher.setState({ progress: p });
-                            });
-                        },
-                        0);
-                    await res;
-
-                    await this.createRootFolder;
-
-                    await (RNFetchBlob as any).fs.mv(this.rootIncompleteDir + '/' + uuid + suffix, path);
-
-                    watcher.setState({ path, progress: 1 });
-                } catch (e) {
-                    // How to handle?
-                    console.log(e);
-                }
             })();
 
-            // RNFetchBlob
-            //     .config({
-            //         // response data will be saved to this path if it has access right.
-            //         path: dirs.DocumentDir + '/path-to-file.anything'
-            //     })
-            //     .fetch('GET', 'http://www.example.com/file/example.zip', {
-            //         //some headers ..
-            //     })
-            //     .then((res) => {
-            //         // the path should be dirs.DocumentDir + 'path-to-file.anything'
-            //         console.log('The file saved to ', res.path())
-            //     })
+            this._watchers.set(this.resolvePath(uuid, resize), { watcher, download: false });
         }
-        return this._watchers.get(uuid)!!.watch(handler);
+        return this._watchers.get(this.resolvePath(uuid, resize))!;
     }
 }
 
