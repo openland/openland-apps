@@ -1,11 +1,14 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
-import { UploadStatus } from 'openland-engines/messenger/types';
+import { UploadStatus, FileMetadata } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
+import UUID from 'uuid/v4';
+import { resolve } from 'dns';
 
 export interface UploadState {
-    queueSize: number;
+    status: UploadStatus;
     progress: number;
+    uuid?: string;
 }
 
 interface Task {
@@ -26,7 +29,14 @@ export class UploadManager {
 
     registerUpload = (conversationId: string, name: string, uri: string) => {
         this._queue.push({ conversationId, name, uri });
-        this.getWatcher(conversationId).setState({ queueSize: this._queue.filter((v) => v.conversationId === conversationId).length, progress: 0 });
+
+        const w = new Watcher<UploadState>();
+        w.setState({ progress: 0, status: UploadStatus.UPLOADING });
+        let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
+            fetchInfo: () => new Promise((resolver) => resolver({ name, uri })),
+            watch: (handler) => w.watch(handler)
+        });
+        this._watchers.set(messageId, w);
 
         if (!this._started) {
             this._started = true;
@@ -37,20 +47,18 @@ export class UploadManager {
     private startUpload() {
         let q = this._queue[0];
         let upload = new UploadCareDirectUploading(q.name, q.uri);
+
         upload.watch((s) => {
             if (s.status === UploadStatus.UPLOADING) {
-                const queueSize = this._queue.filter((v) => v.conversationId === q.conversationId).length;
-                this.getWatcher(q.conversationId).setState({ queueSize, progress: s.progress || 0 });
+                this.getWatcher(q.conversationId).setState({ progress: s.progress || 0, status: s.status });
             } else if (s.status === UploadStatus.FAILED) {
                 // TODO: Handle
             } else if (s.status === UploadStatus.COMPLETED) {
                 this._queue.splice(0);
-                const queueSize = this._queue.filter((v) => v.conversationId === q.conversationId).length;
-                this.getWatcher(q.conversationId).setState({ queueSize, progress: 1 });
+                this.getWatcher(q.conversationId).setState({ progress: 1, status: s.status });
 
                 (async () => {
                     try {
-                        await getMessenger().engine.sender.sendFileDirect(q.conversationId, s.uuid!!);
                         if (this._queue.length > 0) {
                             this.startUpload();
                         } else {
@@ -64,13 +72,13 @@ export class UploadManager {
         });
     }
 
-    private getWatcher(conversationId: string) {
-        if (!this._watchers.has(conversationId)) {
+    private getWatcher(messageId: string) {
+        if (!this._watchers.has(messageId)) {
             const w = new Watcher<UploadState>();
-            w.setState({ queueSize: 0, progress: 0 });
-            this._watchers.set(conversationId, w);
+            w.setState({ progress: 0, status: UploadStatus.UPLOADING });
+            this._watchers.set(messageId, w);
         }
-        return this._watchers.get(conversationId)!!;
+        return this._watchers.get(messageId)!!;
     }
 }
 

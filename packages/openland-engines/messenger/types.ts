@@ -6,6 +6,7 @@ export interface PendingMessage {
     progress: number;
     message: string | null;
     file: string | null;
+    uri?: string;
     failed?: boolean;
 }
 
@@ -25,6 +26,7 @@ export function extractKey(message: ModelMessage) {
 
 export interface FileMetadata {
     name?: string;
+    uri?: string;
 }
 
 export enum UploadStatus {

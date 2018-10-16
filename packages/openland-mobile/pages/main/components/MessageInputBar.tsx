@@ -2,8 +2,6 @@ import * as React from 'react';
 import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
-import { UploadState } from '../../../files/UploadManager';
-import { ZLinearProgress } from '../../../components/ZLinearProgress';
 
 let styles = StyleSheet.create({
     textInput: {
@@ -35,7 +33,6 @@ export interface MessageInputBarProps {
     enabled?: boolean;
     attachesEnabled?: boolean;
     text: string;
-    uploadState?: UploadState;
 }
 
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
@@ -44,11 +41,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         return (
             <ZKeyboardAwareBar>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                    {this.props.uploadState && this.props.uploadState.queueSize > 0 && (
-                        <View style={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}>
-                            <ZLinearProgress progress={this.props.uploadState.progress} />
-                        </View>
-                    )}
+                  
                     <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress}>

@@ -12,6 +12,8 @@ import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 import { Alert } from 'react-native';
+import { keyframes } from 'glamor';
+import { size } from 'lodash-es';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
@@ -55,7 +57,8 @@ export interface DataSourceMessageItem {
     text?: string;
     file?: {
         fileName: string,
-        fileId: string,
+        fileId?: string,
+        uri?: string,
         fileSize: number,
         isImage: boolean,
         isGif: boolean,
@@ -306,12 +309,12 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendFile = (file: UploadingFile) => {
+        let key = this.engine.sender.sendFile(this.conversationId, file, this);
         (async () => {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
-            let key = this.engine.sender.sendFile(this.conversationId, file, this);
-            let pmsg = { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage;
+            let pmsg = { date, key, file: name, uri: info.uri, progress: 0, message: null, failed: false } as PendingMessage;
             this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -324,6 +327,7 @@ export class ConversationEngine implements MessageSendHandler {
                 l.onMessageSend();
             }
         })();
+        return key;
     }
 
     retryMessage = (key: string) => {
@@ -567,6 +571,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
         } else {
+            let p = src as PendingMessage;
             conv = {
                 type: 'message',
                 key: src.key,
@@ -578,6 +583,13 @@ export class ConversationEngine implements MessageSendHandler {
                 isSending: true,
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
+                file: {
+                    uri: p.uri,
+                    fileName: p.file || 'image.png',
+                    fileSize: 1,
+                    isImage: false,
+                    isGif: false
+                },
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id : false
             };
         }

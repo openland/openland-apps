@@ -7,7 +7,6 @@ import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 import { ConversationView } from './components/ConversationView';
-import { UploadManagerInstance, UploadState } from '../../files/UploadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { PageProps } from '../../components/PageProps';
 import { ZQuery } from '../../components/ZQuery';
@@ -22,27 +21,17 @@ import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChannelJoinMutation, SetTypingMutation } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
+import { UploadManagerInstance } from '../../files/UploadManager';
 
-class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string, uploadState?: UploadState }> {
+class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
-    watchSubscription?: WatchSubscription;
 
     constructor(props: { provider: ZPictureModalProvider, router: any, engine: MessengerEngine, conversationId: string }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.conversationId);
         AsyncStorage.getItem('compose_draft_' + this.props.conversationId).then(s => this.setState({ text: s || '' }));
         this.state = { text: '' };
-    }
-
-    componentWillMount() {
-        this.watchSubscription = UploadManagerInstance.watch(this.props.conversationId, (state) => {
-            this.setState({ uploadState: state });
-        });
-    }
-
-    componentWillUnmount() {
-        this.watchSubscription!!();
     }
 
     handleTextChange = (src: string) => {
@@ -87,7 +76,6 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
                             onSubmitPress={this.handleSubmit}
                             onChangeText={this.handleTextChange}
                             text={this.state.text}
-                            uploadState={this.state.uploadState}
                         />
                     </View>
                 </Deferred>

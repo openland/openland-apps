@@ -36,7 +36,7 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
 
     componentWillMount() {
         let optimalSize = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, 1024, 1024);
-        this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
+        this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId!, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
             this.setState({ downloadState: state });
         });
     }

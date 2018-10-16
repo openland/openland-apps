@@ -11,6 +11,7 @@ import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { DownloadManagerInstance } from '../../../openland-mobile/files/DownloadManager';
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { DownloadState } from '../../../openland-shared/DownloadManagerInterface';
+import { UploadManagerInstance } from '../../files/UploadManager';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -28,14 +29,18 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
     }
 
     componentWillMount() {
-        if (this.props.message.file) {
+        if (this.props.message.file && this.props.message.file.fileId) {
             this.downloadManagerWatch = DownloadManagerInstance.watch(
-                this.props.message.file!!.fileId,
+                this.props.message.file!!.fileId!,
                 null,
                 (state) => {
                     this.setState({ downloadState: state });
                 },
                 false);
+        }
+
+        if (this.props.message.file && this.props.message.file.uri) {
+            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => this.setState({ downloadState: { progress: s.progress } }));
         }
 
     }
