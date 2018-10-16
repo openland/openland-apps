@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XIcon } from 'openland-x/XIcon';
 import { withUserInfo } from './UserInfo';
-import { withSearch } from '../api/withSearch';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
@@ -523,48 +522,6 @@ const Tilte = Glamorous(XTitle)({
     paddingLeft: 16
 });
 
-let SearchResults = withSearch((props) => {
-    if (props.data && props.data.search && (props.data.search.parcels.edges.length > 0 || props.data.search.folders.edges.length > 0)) {
-        return (
-            <ResultsContainer>
-                <XSearchList>
-                    {props.data.search.folders.edges.length > 0 && <Tilte>Folders</Tilte>}
-                    {props.data.search.folders.edges.map((v) => (
-                        <XSearchListItem key={v.node.id} path={'/folders/' + v.node.id}>
-                            <ResultTilte>
-                                <ResultTilteMain>{v.node.name}</ResultTilteMain>
-                            </ResultTilte>
-                        </XSearchListItem>
-                    ))}
-                    {props.data.search.folders.edges.length > 0 && <Tilte>Parcels</Tilte>}
-                    {props.data.search.parcels.edges.map((v) => (
-                        <XSearchListItem key={v.node.id} path={'/parcels/' + v.node.id}>
-                            <ResultTilte>
-                                <ResultTilteMain>{TextGlobalSearch.parcelIdPrefix}<Highlighted text={v.node.title} field={'title'} highlight={v.highlight} /></ResultTilteMain>
-                                <ResultTilteHint>{v.node.extrasArea && <XArea value={v.node.extrasArea} />}</ResultTilteHint>
-                            </ResultTilte>
-                            {!v.highlight.find((k) => k.key === 'address') && (
-                                <ResultBody>
-                                    <ResultBodyMain>{TextGlobalSearch.neighborhood}</ResultBodyMain>
-                                    {v.node.extrasNeighborhood}
-                                </ResultBody>
-                            )}
-                            {v.highlight.find((k) => k.key === 'address') && (
-                                <ResultBody>
-                                    <ResultBodyMain>{TextGlobalSearch.address}</ResultBodyMain>
-                                    <Highlighted field={'address'} highlight={v.highlight} />
-                                </ResultBody>
-                            )}
-                        </XSearchListItem>
-                    ))}
-                </XSearchList>
-            </ResultsContainer>
-        );
-    } else {
-        return null;
-    }
-});
-
 //
 // Menu
 //
@@ -885,107 +842,11 @@ export const CreateChannel = withCreateChannel((props) => {
     );
 });
 
-export class Scaffold extends React.Component<{}, { search: boolean, searchText: string }> {
+export class Scaffold extends React.Component<{}> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
-    // timeout: any;
 
     keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
-    // contentRef: any | null = null;
-
-    // searchRef: any | null = null;
-
-    // constructor(props: {}) {
-    //     super(props);
-    //     this.state = { search: false, searchText: '' };
-    // }
-
-    // handleSearch = () => {
-    //     if (this.state.search) {
-    //         this.setState({ search: false });
-    //         this.enableScroll(this.contentRef);
-    //     } else {
-    //         this.setState({ search: true, searchText: '' });
-    //         this.disableScroll(this.contentRef);
-    //         if (this.searchRef) {
-    //             this.searchRef.focus();
-    //         }
-    //     }
-    // }
-
-    // handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    //     if (this.state.search) {
-    //         this.setState({ searchText: (e.target as any).value as string });
-    //     }
-    // }
-
-    // handleSearchRef = (ref: any | null) => {
-    //     this.searchRef = ref;
-    // }
-
-    // handleContentRef = (ref: any | null) => {
-    //     this.contentRef = ref;
-    // }
-
-    // preventDefault = (e: any) => {
-    //     e = e || window.event;
-
-    //     if (e.target.closest('.simplebar-content')) {
-    //         return;
-    //     } else if (e.target.closest('.search-container')) {
-    //         if (e.preventDefault) {
-    //             e.preventDefault();
-    //         }
-    //         e.returnValue = false;
-    //     }
-    // }
-
-    // preventDefaultForScrollKeys = (e: any) => {
-    //     if (this.keys[e.keyCode]) {
-    //         this.preventDefault(e);
-    //         return false;
-    //     } else {
-    //         return undefined;
-    //     }
-    // }
-
-    // disableScroll = (el: any) => {
-    //     if (el.addEventListener) {
-    //         el.addEventListener('DOMMouseScroll', this.preventDefault, false);
-    //     }
-
-    //     el.onwheel = this.preventDefault;
-    //     el.onmousewheel = (document as any).onmousewheel = this.preventDefault;
-    //     el.ontouchmove = this.preventDefault;
-    //     document.onkeydown = this.preventDefaultForScrollKeys;
-    // }
-
-    // enableScroll = (el: any) => {
-    //     if (el.removeEventListener) {
-    //         el.removeEventListener('DOMMouseScroll', this.preventDefault, false);
-    //     }
-    //     el.onmousewheel = (document as any).onmousewheel = null;
-    //     el.onwheel = null;
-    //     el.ontouchmove = null;
-    //     document.onkeydown = null;
-    // }
-
-    // private onResize = () => {
-    //     let root = document.getElementsByTagName( 'html' )[0];
-    //     root.classList.add('resize');
-    //     this.timeout = setTimeout(() => {
-    //         root.classList.remove('resize');
-    //         clearInterval(this.timeout);
-    //     },                        1000);
-    // }
-
-    // componentDidMount() {
-    //     window.addEventListener('resize', this.onResize, false);
-    // }
-
-    // componentWillUnmount() {
-    //     window.removeEventListener('resize', this.onResize, false);
-    // }
 
     render() {
         let menu = findChild(this.props.children, '_isSidebarMenu');
@@ -994,7 +855,6 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
         return (
             <RootContainer>
                 <NavigationWrapper
-                    // activeSearch={this.state.search}
                     activeSearch={false}
                 >
                     <NavigationScroller>
@@ -1035,25 +895,10 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             </BottomNavigation>
                         </NavigationContainer>
                     </NavigationScroller>
-                    {/* <SearchWrapper visible={this.state.search} className="search-container">
-                        <SearchWrapperSticky>
-                            <SearchContainer onClick={this.handleSearch} />
-                            <SearchContent>
-                                <SearchInput
-                                    placeholder={TextGlobalSearch.placeholder}
-                                    onChange={this.handleSearchChange}
-                                    innerRef={this.handleSearchRef}
-                                    value={this.state.searchText}
-                                />
-                                {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults variables={{ query: this.state.searchText }} />)}
-                            </SearchContent>
-                        </SearchWrapperSticky>
-                    </SearchWrapper> */}
                     {menu}
                 </NavigationWrapper>
                 <ContentView
                     marginLeft={menu !== undefined ? 342 : 64}
-                // innerRef={this.handleContentRef}
                 >
                     {content}
                 </ContentView>

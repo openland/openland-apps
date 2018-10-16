@@ -239,6 +239,12 @@ export const GroupChatFullInfoQuery = gql`
                         h
                     }
                 }
+                organization{
+                    id
+                    isMine
+                    isOwner: alphaIsOwner
+                    name
+                }
             }
             ... on GroupConversation {
                 photo
@@ -393,6 +399,16 @@ export const ChatChangeGroupTitleMutation = gql`
 export const ChatAddMemberMutation = gql`
     mutation ChatAddMember($conversationId: ID!, $userId: ID!) {
         alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}]){
+            chat{
+                id
+            }
+        }
+    }
+`;
+
+export const ChatAddMembersMutation = gql`
+    mutation ChatAddMembers($conversationId: ID!, $invites: [GroupConversationInvite!]!) {
+        alphaChatInviteToGroup(conversationId: $conversationId, invites: $invites){
             chat{
                 id
             }

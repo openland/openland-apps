@@ -5,8 +5,11 @@ export const Modals = {
     showTextEdit(router: SRouter, defaultValue: string, action: (value: string) => any) {
         router.push('TextEditModal', { 'value': defaultValue, 'action': action });
     },
-    showUserPicker(router: SRouter, action: (value: UserShort) => any) {
-        router.push('UserPicker', { 'action': action });
+    showUserPicker(router: SRouter, action: (value: UserShort) => any, autoclose?: boolean) {
+        router.push('UserPicker', { 'action': action, autoclose });
+    },
+    showUserMuptiplePicker(router: SRouter, action: { title: string, action: (users: UserShort[]) => any }, title?: string, disableUsers?: string[]) {
+        router.push('UserMultiplePicker', { action, title, disableUsers });
     },
     showCountryPicker(router: SRouter, action: (value: string) => any) {
         router.push('CountryPicker', { 'action': action });
