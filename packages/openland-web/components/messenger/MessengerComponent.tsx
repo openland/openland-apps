@@ -35,7 +35,7 @@ import { UserSelect } from '../../api/UserSelect';
 import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import IconInvite from './components/icons/ic-invite-2.svg';
+import IconInvite from './components/icons/ic-invite-3.svg';
 import IconInfo from './components/icons/ic-info.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
@@ -375,7 +375,10 @@ const AddButton = Glamorous.div({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    '&:hover svg > g > path': {
+    '& svg > *': {
+        fill: 'rgba(0, 0, 0, 0.2)'
+    },
+    '&:hover svg > *': {
         fill: '#1790ff'
     }
 });
@@ -388,7 +391,10 @@ const InfoButton = Glamorous.div({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    '&:hover svg > path': {
+    '& svg > *': {
+        fill: 'rgba(0, 0, 0, 0.2)'
+    },
+    '&:hover svg > *': {
         fill: '#1790ff'
     }
 });

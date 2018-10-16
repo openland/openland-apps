@@ -51,7 +51,7 @@ const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>((props) 
         }
     },
     '& > div': {
-        backgroundColor: (props.flat && props.active) ? '#1790ff' : props.active ? '#fff' : 'rgba(188, 195, 204, 0.5)',
+        backgroundColor: (props.flat && props.active) ? '#1790ff' : props.active ? '#fff' : 'rgba(0, 0, 0, 0.2)',
         width: 4,
         height: 4,
         borderRadius: 100,
@@ -74,10 +74,12 @@ const NotificationButton = Glamorous.div<{ active: boolean }>((props) => ({
     cursor: 'pointer',
     borderRadius: 5,
     '& svg': {
+        marginTop: 1,
+        marginBottom: -1,
         height: 21,
         width: 15,
         '& > g > path:last-child': {
-            fill: props.active ? '#1790ff' : '#BCC3CC'
+            fill: props.active ? '#1790ff' : 'rgba(0, 0, 0, 0.2)'
         }
     },
     '&:hover': {

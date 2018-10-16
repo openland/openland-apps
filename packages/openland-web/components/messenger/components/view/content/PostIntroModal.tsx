@@ -7,7 +7,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XSelect } from 'openland-x/XSelect';
-import IcFile from '../../icons/ic-file.svg';
+import IcFile from '../../icons/ic-file-3.svg';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withExplorePeople } from '../../../../../api/withExplorePeople';
 import { withIntro } from '../../../../../api/withIntro';
@@ -17,28 +17,48 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { MessageUploadComponent } from './MessageUploadComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XFormField } from 'openland-x-forms/XFormField';
+import { XThemeDefault } from 'openland-x/XTheme';
 
 interface ImgButtonStylesProps {
     marginRight?: number;
     marginLeft?: number;
+    marginTop?: number;
+    marginBottom?: number;
     icon?: any;
     title: string;
 }
 
 const ImgButtonStyles = Glamorous(XLink)<ImgButtonStylesProps>(props => ({
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#99a2b0',
+    fontSize: 13,
+    fontWeight: 600,
+    letterSpacing: 0,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.4)',
     display: 'flex',
     alignItems: 'center',
     alignSelf: 'flex-start',
+    paddingLeft: 12,
+    paddingRight: 12,
+    height: 32,
+    borderRadius: 20,
+    '&:first-child': {
+        marginLeft: -12
+    },
     '&:hover': {
-        color: '#5c6a81',
+        color: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.03)',
+        '& > svg > *': {
+            fill: 'rgba(0, 0, 0, 0.3)'
+        }
     },
     '& > svg': {
         marginRight: props.marginRight,
-        marginLeft: props.marginLeft
+        marginLeft: props.marginLeft,
+        marginTop: props.marginTop,
+        marginBottom: props.marginBottom,
+        '& > *': {
+            fill: 'rgba(0, 0, 0, 0.2)'
+        },
     }
 }));
 
@@ -50,7 +70,6 @@ const ImgButton = (props: XLinkProps & ImgButtonStylesProps) => (
 );
 
 const SearchPeopleModule = withExplorePeople(props => {
-    
     if (!(props.data && props.data.items)) {
         return (
             <XSelect
@@ -129,10 +148,11 @@ const FooterWrap = Glamorous.div({
     height: 64,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#fafbfc',
+    backgroundColor: XThemeDefault.backyardColor,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
-    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
+    borderTop: '1px solid',
+    borderTopColor: XThemeDefault.separatorColor
 });
 
 interface UploadedFile {
@@ -149,7 +169,6 @@ interface FileUploaderProps {
 }
 
 class FileUploader extends React.PureComponent<FileUploaderProps> {
-
     handleFileUpload = (file: UploadedFile | null) => {
         let key = ('fields.' + this.props.field);
         if (file) {
@@ -170,7 +189,9 @@ class FileUploader extends React.PureComponent<FileUploaderProps> {
                             onClick={pr.doUpload}
                             title="Document"
                             icon={<IcFile />}
-                            marginRight={8}
+                            marginRight={10}
+                            marginTop={1}
+                            marginBottom={-1}
                         />
                     );
                 }}
@@ -305,10 +326,8 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                 useTopCloser={true}
                 customFooter={footer}
             >
-                <XVertical separator={16}>
-
+                <XVertical separator={8}>
                     <SearchPeople />
-
                     <XFormField field="input.about">
                         <XTextArea
                             placeholder="Description"
