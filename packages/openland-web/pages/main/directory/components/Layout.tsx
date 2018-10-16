@@ -11,6 +11,7 @@ import PeopleIcon from '../icons/ic-people.svg';
 
 export const RootWrapper = Glamorous.div({
     height: '100vh',
+    width: '100%',
     display: 'flex'
 });
 

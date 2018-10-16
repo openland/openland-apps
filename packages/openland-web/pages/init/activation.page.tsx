@@ -9,6 +9,7 @@ import { AuthRouter } from '../../components/AuthRouter';
 const RootContainer = Glamorous.div({
     display: 'flex',
     height: '100vh',
+    width: '100%',
     backgroundColor: '#fff',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     flexBasis: '60%',

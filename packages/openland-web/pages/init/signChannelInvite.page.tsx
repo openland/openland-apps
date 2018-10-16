@@ -15,6 +15,7 @@ import { XLoader } from 'openland-x/XLoader';
 const Root = Glamorous.div({
     display: 'flex',
     height: '100vh',
+    width: '100%',
     backgroundColor: '#ffffff',
     flexDirection: 'column'
 });

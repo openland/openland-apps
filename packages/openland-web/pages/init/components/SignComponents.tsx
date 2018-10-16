@@ -4,7 +4,8 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
-    height: '100vh'
+    height: '100vh',
+    width: '100%'
 });
 
 const LeftContainer = Glamorous.div({
@@ -496,7 +497,8 @@ const ChannelSignupWrapper = Glamorous.div({
     position: 'relative',
     background: 'rgba(0, 0, 0, 0.8) url(/static/X/signup/background-blur.jpg) no-repeat',
     backgroundSize: 'cover',
-    height: '100vh'
+    height: '100vh',
+    width: '100%'
 });
 
 const ChannelToggler = Glamorous.div({

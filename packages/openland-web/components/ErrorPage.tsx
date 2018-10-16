@@ -8,6 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 const Root = Glamorous.div({
     display: 'flex',
     height: '100vh',
+    width: '100%',
     background: '#ffffff',
     position: 'relative',
     flexDirection: 'column'

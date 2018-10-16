@@ -7,6 +7,7 @@ export const RootContainer = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
+    width: '100%',
     position: 'relative',
     backgroundColor: '#fff'
 });
