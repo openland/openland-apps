@@ -81,30 +81,6 @@ const EmptyWrapper = Glamorous(XVertical)({
     marginRight: -16
 });
 
-const EmptyReactangle = Glamorous.div({
-    width: '100%',
-    height: 600,
-    position: 'absolute',
-    top: 'calc(50% - 300px)',
-    left: 0,
-    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'bottom',
-    zIndex: 0,
-    pointerEvents: 'none'
-});
-
-const EmptyContent = Glamorous.div({
-    zIndex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexShrink: 0,
-    marginBottom: 50
-});
-
 const EmptyImage = Glamorous.div({
     width: 358,
     height: 311,
@@ -268,10 +244,7 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                     <MessagesContainer>
                         {!this.state.conversationId && (
                             <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
-                                <EmptyReactangle />
-                                <EmptyContent>
-                                    <EmptyImage />
-                                </EmptyContent>
+                                <EmptyImage />
                             </EmptyWrapper>
                         )}
                         {this.state.conversationId && (

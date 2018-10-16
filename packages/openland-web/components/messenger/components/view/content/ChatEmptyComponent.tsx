@@ -1,7 +1,5 @@
-import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XButton } from 'openland-x/XButton';
 
 const EmptyRoot = Glamorous.div({
     position: 'relative',
@@ -19,20 +17,6 @@ const EmptyContent = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     flexShrink: 0
-});
-
-const Reactangle = Glamorous.div({
-    width: '100%',
-    height: 600,
-    position: 'absolute',
-    top: 'calc(50% - 300px)',
-    left: 0,
-    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'bottom',
-    zIndex: 0,
-    pointerEvents: 'none'
 });
 
 const Image = Glamorous.div<{ isChannel: boolean }>(props => ({
@@ -66,17 +50,8 @@ const Text = Glamorous.div<{ opacity: number, marginTop: number, marginBottom?: 
     marginBottom: props.marginBottom
 }));
 
-const TextSmall = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.71,
-    letterSpacing: -0.2,
-    color: '#5c6a81'
-});
-
 export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: boolean) => void }) => (
     <EmptyRoot>
-        <Reactangle />
         <EmptyContent>
             <ImageWrapper>
                 {props.conversationType === 'ChannelConversation' ? <Image isChannel={true} /> : <Image isChannel={false} />}
