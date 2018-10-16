@@ -53,6 +53,21 @@ export class DownloadManager implements DownloadManagerInterface {
                 url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
             }
 
+            // Check if exists
+            let exists = false;
+            try {
+                if (await (RNFetchBlob as any).fs.exists(path)) {
+                    exists = true;
+                }
+            } catch (e) {
+                // How to handle?
+                console.log(e);
+            }
+            if (exists) {
+                watcher.setState({ path, progress: 1 });
+                return;
+            }
+
             // Download
             try {
                 watcher.setState({ progress: 0 });
@@ -106,7 +121,6 @@ export class DownloadManager implements DownloadManagerInterface {
                 }
                 if (exists) {
                     watcher.setState({ path, progress: 1 });
-                    return;
                 }
 
             })();
