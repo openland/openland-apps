@@ -7,11 +7,11 @@ import { XLink } from 'openland-x/XLink';
 import { getConfig } from '../../../../config';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
-import PhotoIcon from '../icons/ic-photo.svg';
-import FileIcon from '../icons/ic-file.svg';
+import PhotoIcon from '../icons/ic-photo-2.svg';
+import FileIcon from '../icons/ic-file-3.svg';
 import UloadIc from '../icons/file-upload.svg';
-import IntroIc from '../icons/ic-attach-intro.svg';
-import ShortcutsIcon from '../icons/ic-attach-shortcuts-2.svg';
+import IntroIc from '../icons/ic-attach-intro-3.svg';
+import ShortcutsIcon from '../icons/ic-attach-shortcuts-3.svg';
 import { PostIntroModal } from './content/PostIntroModal';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
@@ -27,7 +27,7 @@ const SendMessageWrapper = Glamorous.div({
     alignItems: 'stretch',
     width: '100%',
     minHeight: 114,
-    maxHeight: 200,
+    maxHeight: 330,
     backgroundColor: XThemeDefault.backyardColor,
     flexShrink: 0,
     paddingLeft: 16,
@@ -102,19 +102,24 @@ const SendMessageContent = Glamorous(XHorizontal)({
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
-    paddingLeft: 14,
-    paddingRight: 14,
+    paddingLeft: 12,
+    paddingRight: 12,
     height: 32,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
     borderRadius: 20,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 600,
-    lineHeight: 1.43,
-    color: '#87898D',
+    letterSpacing: 0,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.4)',
+    opacity: props.disable ? 0.7 : undefined,
     cursor: props.disable ? 'default !important' : 'pointer',
+    '&:first-child': {
+        marginLeft: 6,
+    },
     '@media (max-width: 800px)': {
         fontSize: 0,
         '& > svg': {
@@ -122,24 +127,22 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
         }
     },
     '&:hover': {
-        color: props.disable ? '#a3acb8' : '#87898D',
-        backgroundColor: props.disable ? 'transparent' : '#E1E2E3',
-        '& > svg > path': {
-            fill: props.disable ? '#c1c7cf' : '#87898D'
+        color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
+        '& > svg > *': {
+            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)'
         }
     },
-    '&.document-button:hover': {
-        '& > svg > g > g': {
-            fill: props.disable ? '#c1c7cf' : '#87898D'
-        }
-    },
-    '&.shortcuts-button > svg': {
+    '&.shortcuts-button > svg, &.document-button > svg': {
         marginTop: 1,
         marginBottom: -1
     },
     '& > svg': {
         flexShrink: 0,
-        marginRight: 11
+        marginRight: 10,
+        '& > *': {
+            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)'
+        },
     }
 }));
 
@@ -152,11 +155,11 @@ const TextInputWrapper = Glamorous.div({
         height: '100%',
         '& .DraftEditor-root': {
             overflow: 'auto',
-            borderRadius: 20,
-            backgroundColor: '#fff',
-            border: 'solid 1px #e4e6e9',
+            borderRadius: 10,
+            backgroundColor: '#ffffff',
+            border: 'solid 1px #ececec',
             minHeight: 40,
-            maxHeight: 125,
+            maxHeight: 255,
             paddingTop: 9,
             paddingBottom: 9,
             paddingLeft: 16,
@@ -444,7 +447,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                             />
                         </TextInputWrapper>
                         <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
-                            <XHorizontal separator={1}>
+                            <XHorizontal separator="none">
                                 <AttachmentButton
                                     onClick={this.props.enabled === false ? undefined : this.handleAttach}
                                     enabled={this.props.enabled === false}
