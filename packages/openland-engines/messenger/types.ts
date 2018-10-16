@@ -7,6 +7,7 @@ export interface PendingMessage {
     message: string | null;
     file: string | null;
     uri?: string;
+    fileSize?: number;
     failed?: boolean;
 }
 
@@ -27,6 +28,7 @@ export function extractKey(message: ModelMessage) {
 export interface FileMetadata {
     name?: string;
     uri?: string;
+    fileSize?: number;
 }
 
 export enum UploadStatus {

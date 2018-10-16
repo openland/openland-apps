@@ -12,7 +12,7 @@ export interface UploadState {
 }
 
 interface Task {
-    conversationId: string;
+    messageId: string;
     name: string;
     uri: string;
 }
@@ -27,16 +27,16 @@ export class UploadManager {
         return this.getWatcher(conversationId).watch(handler);
     }
 
-    registerUpload = (conversationId: string, name: string, uri: string) => {
-        this._queue.push({ conversationId, name, uri });
+    registerUpload = (conversationId: string, name: string, uri: string, fileSize: number) => {
 
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
         let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
-            fetchInfo: () => new Promise((resolver) => resolver({ name, uri })),
+            fetchInfo: () => new Promise((resolver) => resolver({ name, uri, fileSize })),
             watch: (handler) => w.watch(handler)
         });
         this._watchers.set(messageId, w);
+        this._queue.push({ messageId, name, uri });
 
         if (!this._started) {
             this._started = true;
@@ -50,12 +50,12 @@ export class UploadManager {
 
         upload.watch((s) => {
             if (s.status === UploadStatus.UPLOADING) {
-                this.getWatcher(q.conversationId).setState({ progress: s.progress || 0, status: s.status });
+                this.getWatcher(q.messageId).setState({ progress: s.progress || 0, status: s.status });
             } else if (s.status === UploadStatus.FAILED) {
                 // TODO: Handle
             } else if (s.status === UploadStatus.COMPLETED) {
                 this._queue.splice(0);
-                this.getWatcher(q.conversationId).setState({ progress: 1, status: s.status });
+                this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
 
                 (async () => {
                     try {

@@ -55,7 +55,8 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
             if (response.didCancel) {
                 return;
             }
-            UploadManagerInstance.registerUpload(this.props.conversationId, response.fileName || 'image.jpg', response.uri);
+
+            UploadManagerInstance.registerUpload(this.props.conversationId, response.fileName || 'image.jpg', response.uri, response.fileSize);
         });
     }
 

@@ -59,7 +59,7 @@ export interface DataSourceMessageItem {
         fileName: string,
         fileId?: string,
         uri?: string,
-        fileSize: number,
+        fileSize?: number,
         isImage: boolean,
         isGif: boolean,
         imageSize?: { width: number, height: number }
@@ -314,7 +314,7 @@ export class ConversationEngine implements MessageSendHandler {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
-            let pmsg = { date, key, file: name, uri: info.uri, progress: 0, message: null, failed: false } as PendingMessage;
+            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false } as PendingMessage;
             this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -583,13 +583,13 @@ export class ConversationEngine implements MessageSendHandler {
                 isSending: true,
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
-                file: {
+                file: p.uri ? {
                     uri: p.uri,
                     fileName: p.file || 'image.png',
-                    fileSize: 1,
+                    fileSize: p.fileSize,
                     isImage: false,
                     isGif: false
-                },
+                } : undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id : false
             };
         }
