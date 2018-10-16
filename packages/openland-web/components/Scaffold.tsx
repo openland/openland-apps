@@ -220,7 +220,7 @@ const ProfileSubTitle = Glamorous(XLink)({
 
 const TitleContainer = makeNavigable((props) => {
     return (
-        <a href={props.href} onClick={props.onClick} style={{ marginBottom: 4}}>
+        <a href={props.href} onClick={props.onClick} style={{ marginBottom: 4 }}>
             <ProfileTitleContainer separator="none">
                 {props.children}
             </ProfileTitleContainer>
@@ -888,86 +888,104 @@ export const CreateChannel = withCreateChannel((props) => {
 export class Scaffold extends React.Component<{}, { search: boolean, searchText: string }> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
+    // timeout: any;
 
     keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
-    contentRef: any | null = null;
+    // contentRef: any | null = null;
 
-    searchRef: any | null = null;
+    // searchRef: any | null = null;
 
-    constructor(props: {}) {
-        super(props);
-        this.state = { search: false, searchText: '' };
-    }
+    // constructor(props: {}) {
+    //     super(props);
+    //     this.state = { search: false, searchText: '' };
+    // }
 
-    handleSearch = () => {
-        if (this.state.search) {
-            this.setState({ search: false });
-            this.enableScroll(this.contentRef);
-        } else {
-            this.setState({ search: true, searchText: '' });
-            this.disableScroll(this.contentRef);
-            if (this.searchRef) {
-                this.searchRef.focus();
-            }
-        }
-    }
+    // handleSearch = () => {
+    //     if (this.state.search) {
+    //         this.setState({ search: false });
+    //         this.enableScroll(this.contentRef);
+    //     } else {
+    //         this.setState({ search: true, searchText: '' });
+    //         this.disableScroll(this.contentRef);
+    //         if (this.searchRef) {
+    //             this.searchRef.focus();
+    //         }
+    //     }
+    // }
 
-    handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if (this.state.search) {
-            this.setState({ searchText: (e.target as any).value as string });
-        }
-    }
+    // handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    //     if (this.state.search) {
+    //         this.setState({ searchText: (e.target as any).value as string });
+    //     }
+    // }
 
-    handleSearchRef = (ref: any | null) => {
-        this.searchRef = ref;
-    }
+    // handleSearchRef = (ref: any | null) => {
+    //     this.searchRef = ref;
+    // }
 
-    handleContentRef = (ref: any | null) => {
-        this.contentRef = ref;
-    }
+    // handleContentRef = (ref: any | null) => {
+    //     this.contentRef = ref;
+    // }
 
-    preventDefault = (e: any) => {
-        e = e || window.event;
+    // preventDefault = (e: any) => {
+    //     e = e || window.event;
 
-        if (e.target.closest('.simplebar-content')) {
-            return;
-        } else if (e.target.closest('.search-container')) {
-            if (e.preventDefault) {
-                e.preventDefault();
-            }
-            e.returnValue = false;
-        }
-    }
+    //     if (e.target.closest('.simplebar-content')) {
+    //         return;
+    //     } else if (e.target.closest('.search-container')) {
+    //         if (e.preventDefault) {
+    //             e.preventDefault();
+    //         }
+    //         e.returnValue = false;
+    //     }
+    // }
 
-    preventDefaultForScrollKeys = (e: any) => {
-        if (this.keys[e.keyCode]) {
-            this.preventDefault(e);
-            return false;
-        } else {
-            return undefined;
-        }
-    }
+    // preventDefaultForScrollKeys = (e: any) => {
+    //     if (this.keys[e.keyCode]) {
+    //         this.preventDefault(e);
+    //         return false;
+    //     } else {
+    //         return undefined;
+    //     }
+    // }
 
-    disableScroll = (el: any) => {
-        if (el.addEventListener) {
-            el.addEventListener('DOMMouseScroll', this.preventDefault, false);
-        }
+    // disableScroll = (el: any) => {
+    //     if (el.addEventListener) {
+    //         el.addEventListener('DOMMouseScroll', this.preventDefault, false);
+    //     }
 
-        el.onwheel = this.preventDefault;
-        el.onmousewheel = (document as any).onmousewheel = this.preventDefault;
-        el.ontouchmove = this.preventDefault;
-        document.onkeydown = this.preventDefaultForScrollKeys;
-    }
+    //     el.onwheel = this.preventDefault;
+    //     el.onmousewheel = (document as any).onmousewheel = this.preventDefault;
+    //     el.ontouchmove = this.preventDefault;
+    //     document.onkeydown = this.preventDefaultForScrollKeys;
+    // }
 
-    enableScroll = (el: any) => {
-        if (el.removeEventListener) {
-            el.removeEventListener('DOMMouseScroll', this.preventDefault, false);
-        }
-        el.onmousewheel = (document as any).onmousewheel = null;
-        el.onwheel = null;
-        el.ontouchmove = null;
-        document.onkeydown = null;
-    }
+    // enableScroll = (el: any) => {
+    //     if (el.removeEventListener) {
+    //         el.removeEventListener('DOMMouseScroll', this.preventDefault, false);
+    //     }
+    //     el.onmousewheel = (document as any).onmousewheel = null;
+    //     el.onwheel = null;
+    //     el.ontouchmove = null;
+    //     document.onkeydown = null;
+    // }
+
+    // private onResize = () => {
+    //     let root = document.getElementsByTagName( 'html' )[0];
+    //     root.classList.add('resize');
+    //     this.timeout = setTimeout(() => {
+    //         root.classList.remove('resize');
+    //         clearInterval(this.timeout);
+    //     },                        1000);
+    // }
+
+    // componentDidMount() {
+    //     window.addEventListener('resize', this.onResize, false);
+    // }
+
+    // componentWillUnmount() {
+    //     window.removeEventListener('resize', this.onResize, false);
+    // }
 
     render() {
         let menu = findChild(this.props.children, '_isSidebarMenu');
@@ -975,7 +993,10 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
 
         return (
             <RootContainer>
-                <NavigationWrapper activeSearch={this.state.search}>
+                <NavigationWrapper
+                    // activeSearch={this.state.search}
+                    activeSearch={false}
+                >
                     <NavigationScroller>
                         <NavigationContainer>
                             <XLink path="/">
@@ -1014,7 +1035,7 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                             </BottomNavigation>
                         </NavigationContainer>
                     </NavigationScroller>
-                    <SearchWrapper visible={this.state.search} className="search-container">
+                    {/* <SearchWrapper visible={this.state.search} className="search-container">
                         <SearchWrapperSticky>
                             <SearchContainer onClick={this.handleSearch} />
                             <SearchContent>
@@ -1027,12 +1048,12 @@ export class Scaffold extends React.Component<{}, { search: boolean, searchText:
                                 {this.state.searchText.trim().length > 0 && this.state.search && (<SearchResults variables={{ query: this.state.searchText }} />)}
                             </SearchContent>
                         </SearchWrapperSticky>
-                    </SearchWrapper>
+                    </SearchWrapper> */}
                     {menu}
                 </NavigationWrapper>
                 <ContentView
                     marginLeft={menu !== undefined ? 342 : 64}
-                    innerRef={this.handleContentRef}
+                // innerRef={this.handleContentRef}
                 >
                     {content}
                 </ContentView>

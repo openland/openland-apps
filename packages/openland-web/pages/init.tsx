@@ -40,8 +40,7 @@ css.global('body, body *', {
     boxSizing: 'border-box'
 });
 css.global('body', {
-    backgroundColor: XThemeDefault.backyardColor,
-
+    backgroundColor: XThemeDefault.backyardColor
 });
 css.global('input, textarea, button', {
     fontFamily,

@@ -45,7 +45,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
     }
 
     render() {
-        let { message } = this.props;
+        // let { message } = this.props;
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -55,16 +55,16 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 return <span key={'text-' + i}>{emoji(v.text!!, this.big ? 44 : 18)}</span>;
             }
         });
-        let bigMessageParts: any[] = [];
-        if (message.length > 3) {
-            emoji(message, 44).map((i: any) => {
-                if (typeof(i) === 'string') {
-                    bigMessageParts.push(i.slice(1, i.length - 1));
-                } else {
-                    bigMessageParts.push(i);
-                }
-            });
-        }
-        return <TextWrapper big={this.big} isService={this.props.isService}>{this.big ? bigMessageParts : parts}</TextWrapper>;
+        // let bigMessageParts: any[] = [];
+        // if (message.length > 3) {
+        //     emoji(message, 44).map((i: any) => {
+        //         if (typeof(i) === 'string') {
+        //             bigMessageParts.push(i.slice(1, i.length - 1));
+        //         } else {
+        //             bigMessageParts.push(i);
+        //         }
+        //     });
+        // }
+        return <TextWrapper big={this.big} isService={this.props.isService}>{parts}</TextWrapper>;
     }
 }
