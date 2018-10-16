@@ -52,8 +52,7 @@ const RootContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    minWidth: 800,
-    margin: -1
+    minWidth: 800
 });
 
 // 
@@ -61,7 +60,6 @@ const RootContainer = Glamorous.div({
 //
 
 const NavigationWrapper = Glamorous.div<{ activeSearch: boolean }>((props) => ({
-    minHeight: '100vh',
     height: '100%',
     display: 'flex',
     flexShrink: 0,
@@ -71,7 +69,8 @@ const NavigationWrapper = Glamorous.div<{ activeSearch: boolean }>((props) => ({
 }));
 
 const NavigationContainer = Glamorous.div({
-    minHeight: '100vh',
+    minHeight: '100%',
+    flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -80,7 +79,7 @@ const NavigationContainer = Glamorous.div({
 });
 
 const NavigationScroller = Glamorous(XScrollView)({
-    minHeight: '100vh',
+    minHeight: '100%',
     height: '100%',
     width: 64,
     backgroundColor: XThemeDefault.backyardColor,
@@ -375,16 +374,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
 const ContentView = Glamorous.div<{ marginLeft: number }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 'calc(100vh - 1px)',
-    // overflow: 'hidden',
-    // borderTopLeftRadius: 8,
-    // borderBottomLeftRadius: 8,
-    // marginRight: -1,
-    // marginBottom: -1,
-    marginTop: 1,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: XThemeDefault.separatorColor,
+    minHeight: '100%',
     backgroundColor: XThemeDefault.backgroundColor,
     flex: 1,
     order: 2,
@@ -392,135 +382,8 @@ const ContentView = Glamorous.div<{ marginLeft: number }>((props) => ({
     maxWidth: '100%',
     position: 'relative',
     zIndex: 0,
-    marginLeft: props.marginLeft - 1
+    marginLeft: props.marginLeft
 }));
-
-const SearchWrapper = Glamorous.div<{ visible: boolean }>((props) => ({
-    visibility: props.visible ? 'visible' : 'hidden',
-    zIndex: 500,
-    opacity: props.visible ? 1 : 0,
-    transition: 'all 220ms',
-}));
-
-const SearchWrapperSticky = Glamorous.div({
-    // position: 'sticky',
-    // top: 0
-});
-
-const SearchContainer = Glamorous.div({
-    position: 'fixed',
-    left: 64,
-    top: 0,
-    width: '100%',
-    minHeight: '100vh',
-    height: '100%',
-    backgroundColor: 'rgba(9, 30, 66, 0.54)',
-    zIndex: 1
-});
-
-const SearchContent = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    zIndex: 1,
-    left: 64,
-    top: 0,
-    width: '300px',
-    minHeight: '100vh',
-    height: '100%',
-    backgroundColor: '#FFFFFF',
-});
-
-const SearchInput = Glamorous.input({
-    border: 'none',
-    marginTop: 24,
-    paddingLeft: 24,
-    paddingRight: 24,
-    height: 48,
-    flexShrink: 0,
-    width: '100%',
-    fontWeight: 600,
-    fontSize: 20,
-    backgroundColor: 'transparent',
-    '::placeholder': {
-        color: 'rgb(24, 39, 66, 0.6)'
-    },
-    '&:focus': {
-        '::placeholder': { color: 'rgba(24, 39, 66, 0.3)' }
-    }
-});
-
-const ResultsContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    paddingTop: '16px',
-    width: '100%',
-});
-
-let HighlightedWrapper = Glamorous.span({
-    '> em': {
-        color: '#3297d3',
-        fontWeight: 600,
-        fontStyle: 'normal'
-    }
-});
-
-const Highlighted = (props: { text?: string, field: string, highlight: { key: string, match: string }[] }) => {
-    let existing = props.highlight.find((k) => k.key === props.field);
-    if (existing) {
-        return <HighlightedWrapper dangerouslySetInnerHTML={{ __html: existing.match }} />;
-    } else {
-        if (props.text) {
-            return <>{props.text}</>;
-        } else {
-            return null;
-        }
-    }
-};
-
-// const ResultHeader = Glamorous.div({
-//     display: 'flex',
-//     flexDirection: 'row',
-//     color: '#3297d3',
-//     fontSize: 12,
-//     fontWeight: 700
-// })
-
-const ResultTilte = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-});
-
-const ResultTilteMain = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    fontSize: 13,
-    flexGrow: 1
-});
-
-const ResultTilteHint = Glamorous.div({
-    fontSize: 13,
-    opacity: 0.7
-});
-
-const ResultBody = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    fontSize: 13
-});
-
-const ResultBodyMain = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    opacity: 0.7,
-    marginRight: 8,
-    width: 100
-});
-
-const Tilte = Glamorous(XTitle)({
-    paddingLeft: 16
-});
 
 //
 // Menu
@@ -531,11 +394,6 @@ const MenuView = Glamorous(XScrollView)({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#ffffff',
-    // backgroundColor: 'transparent',
-    // position: 'sticky',
-    // top: 0,
-    // left: 64,
-    height: '100vh',
 
     '& > .simplebar-scroll-content': {
         '& > .simplebar-content': {
@@ -543,7 +401,6 @@ const MenuView = Glamorous(XScrollView)({
         }
     },
     borderRight: '1px solid rgba(216, 218, 229, 0.7)'
-
 });
 
 //
@@ -897,9 +754,7 @@ export class Scaffold extends React.Component<{}> {
                     </NavigationScroller>
                     {menu}
                 </NavigationWrapper>
-                <ContentView
-                    marginLeft={menu !== undefined ? 342 : 64}
-                >
+                <ContentView marginLeft={menu !== undefined ? 342 : 64}>
                     {content}
                 </ContentView>
 

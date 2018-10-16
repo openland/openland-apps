@@ -29,7 +29,8 @@ import { withRouter } from 'openland-x-routing/withRouter';
 let ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    height: 'calc(100vh - 2px)',
+    height: '100%',
+    maxHeight: '100%',
     width: '100%',
     flexGrow: 1,
     flexShrink: 0,
@@ -39,7 +40,7 @@ let ChatContainer = Glamorous.div({
 let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    height: 'calc(100vh - 2px)',
+    height: '100%',
     width: 345,
     flexShrink: 0,
     borderRightWidth: '1px',
@@ -59,7 +60,7 @@ let ConversationContainer = Glamorous.div({
     flexDirection: 'column',
     flexGrow: 1,
     flexShrink: 0,
-    height: 'calc(100vh - 2px)',
+    height: '100%',
     width: 'calc(100% - 345px)',
     backgroundColor: XThemeDefault.backgroundColor,
     justifyContent: 'center',

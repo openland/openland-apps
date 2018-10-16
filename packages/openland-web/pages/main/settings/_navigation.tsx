@@ -1,8 +1,13 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { Sidebar } from '../../../components/Sidebar';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
+
+const Content = Glamorous.div({
+    display: 'flex',
+    flexShrink: 0
+});
 
 export const Navigation = (props: { title: string, children?: any }) => (
     <>
@@ -17,7 +22,9 @@ export const Navigation = (props: { title: string, children?: any }) => (
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false}>
-                {props.children}
+                <Content>
+                    {props.children}
+                </Content>
             </Scaffold.Content>
         </Scaffold>
     </>

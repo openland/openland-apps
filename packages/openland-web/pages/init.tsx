@@ -12,6 +12,15 @@ let fontFamily = '"-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,
 
 // Normalize
 
+css.global('html, body', {
+    height: '100%'
+});
+
+css.global('#__next', {
+    display: 'flex',
+    minHeight: '100%'
+});
+
 css.global('html', {
     fontStyle: 'normal',
     fontWeight: 'normal',
