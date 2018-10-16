@@ -650,8 +650,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <XHorizontal
                 justifyContent="center"
                 width="100%"
-                height="calc(100% - 56px)"
-                maxHeight="calc(100% - 56px)"
+                height="calc(100vh - 56px)"
+                maxHeight="calc(100vh - 56px)"
             >
                 {tab === 'chat' && (
                     <MessengerRootComponent
