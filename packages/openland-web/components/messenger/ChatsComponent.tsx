@@ -61,6 +61,9 @@ const ItemContainer = Glamorous.a({
         '& .header:before': {
             display: 'none'
         }
+    },
+    '&:last-child .header:before': {
+        display: 'none'
     }
 });
 
