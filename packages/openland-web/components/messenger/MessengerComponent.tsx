@@ -427,10 +427,10 @@ const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
 }));
 
 const LastSeen = withOnline(props => {
-    if (props.data.user && (props.data.user.lastSeen && !props.data.user.online)) {
+    if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <LastSeenWrapper online={false}>
-                last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                <span>last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" /></span>
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {

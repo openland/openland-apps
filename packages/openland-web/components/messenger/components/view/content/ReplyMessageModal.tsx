@@ -37,6 +37,14 @@ export interface XTextInputProps extends XRichTextInputProps {
 
 class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
 
+    private input = React.createRef<XRichTextInput>();
+
+    componentDidMount() {
+        if (this.input.current) {
+            this.input.current.focus();
+        }
+    }
+
     onChangeHandler = (value: string) => {
         if (this.props.onChange) {
             this.props.onChange(value);
@@ -47,7 +55,7 @@ class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store
     }
 
     render() {
-        return <XRichTextInput onChange={this.onChangeHandler} {...this.props} placeholder="Write a reply..." />;
+        return <XRichTextInput onChange={this.onChangeHandler} {...this.props} ref={this.input} placeholder="Write a reply..." />;
     }
 }
 
