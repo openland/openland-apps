@@ -4,7 +4,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 export class DownloadManager implements DownloadManagerInterface {
 
-    private _watchers = new Map<string, { watcher: Watcher<DownloadState>, download: boolean }>();
+    private _watchers = new Map<string, { watcher: Watcher<DownloadState>, download: boolean, existing: Promise<boolean> }>();
     private version = 1;
     private rootDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_v' + this.version;
     private rootIncompleteDir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/files_incomplete_v' + this.version;
@@ -46,25 +46,14 @@ export class DownloadManager implements DownloadManagerInterface {
         }
         let path = this.rootDir + '/' + uuid + suffix;
 
-        (async () => {
+        watcherState.existing.then(async (existing) => {
 
             let url = 'https://ucarecdn.com/' + uuid + '/';
             if (resize) {
                 url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
             }
 
-            // Check if exists
-            let exists = false;
-            try {
-                if (await (RNFetchBlob as any).fs.exists(path)) {
-                    exists = true;
-                }
-            } catch (e) {
-                // How to handle?
-                console.log(e);
-            }
-            if (exists) {
-                watcher.setState({ path, progress: 1 });
+            if (existing) {
                 return;
             }
 
@@ -93,15 +82,14 @@ export class DownloadManager implements DownloadManagerInterface {
                 // How to handle?
                 console.log(e);
             }
-        })();
+        });
     }
 
     getWatcher(uuid: string, resize: { width: number, height: number } | null) {
         if (!this._watchers.has(this.resolvePath(uuid, resize))) {
             let watcher = new Watcher<DownloadState>();
 
-            (async () => {
-
+            let checkExisting = new Promise<boolean>(async (resolever, reject) => {
                 // Init
                 let suffix = '';
                 if (resize) {
@@ -123,9 +111,10 @@ export class DownloadManager implements DownloadManagerInterface {
                     watcher.setState({ path, progress: 1 });
                 }
 
-            })();
+                resolever(exists);
+            }).then();
 
-            this._watchers.set(this.resolvePath(uuid, resize), { watcher, download: false });
+            this._watchers.set(this.resolvePath(uuid, resize), { watcher, download: false, existing: checkExisting });
         }
         return this._watchers.get(this.resolvePath(uuid, resize))!;
     }
