@@ -42,6 +42,8 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
         }
         let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
         let layout: { width: number, height: number };
+        // let resolved: any;
+        // let capInsets = { left: 1000, right: -10000, top: 10, bottom: 10 };
         if (this.props.message.urlAugmentation) {
             let maxSize = Platform.select({
                 default: 400,
@@ -52,9 +54,9 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                 layout = layoutMedia(this.props.message.urlAugmentation.imageInfo!.imageWidth!, this.props.message.urlAugmentation.imageInfo!.imageHeight!, maxSize, maxSize);
             }
 
-            // for left accent line
+            // // for left accent line
             // let image = this.props.message.isOut ? require('assets/chat-bubble-in-compact.png') : require('assets/chat-bubble-out-compact.png');
-            // let resolved = Image.resolveAssetSource(image);
+            // resolved = Image.resolveAssetSource(image);
 
         }
         return (

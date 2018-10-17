@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, OrganizationMembersQuery, OrganizationPublicInviteQuery } from 'openland-api';
+import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, OrganizationMembersQuery, OrganizationPublicInviteQuery, ConversationSettingsUpdateMutation } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -13,6 +13,8 @@ import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { Alert } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
+import { YQuery } from 'openland-y-graphql/YQuery';
+import { ChatInfoQuery } from 'openland-api';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -39,10 +41,10 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 action="Send message"
                                                 onPress={this.handleSend}
                                             />
-                                            {(resp.data.organization.isMine || resp.data.organization.isOwner) && (
+                                            {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
                                                 <ZListItemGroup header={null}>
-                                                    <ZListItem text="Edit info" appearance="action" onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })} />
-                                                    {resp.data.organization.id !== (settings.data && settings.data.primaryOrganization && settings.data.primaryOrganization.id) && <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountSettingsQuery]}>
+                                                    {resp.data.organization.isOwner && <ZListItem text="Edit info" appearance="action" onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })} />}
+                                                    {resp.data.organization.isMine && resp.data.organization.id !== (settings.data && settings.data.primaryOrganization && settings.data.primaryOrganization.id) && <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountSettingsQuery]}>
                                                         {updateProfile => (
                                                             <ZListItem
                                                                 text="Make primary"
@@ -57,6 +59,35 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                             />
                                                         )}
                                                     </YMutation>}
+                                                    {this.props.router.params.conversationId &&
+                                                        <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.conversationId }}>
+                                                            {conv => conv.data ? (
+                                                                <YMutation mutation={ConversationSettingsUpdateMutation}>
+                                                                    {(update) => {
+                                                                        let toggle = async () => {
+                                                                            startLoader();
+                                                                            try {
+                                                                                await update({ variables: { conversationId: conv.data!.chat.id, settings: { mute: !conv.data!.chat.settings.mute } } });
+                                                                            } catch (e) {
+                                                                                Alert.alert(e.message);
+                                                                            }
+                                                                            stopLoader();
+                                                                        };
+                                                                        return (
+                                                                            <ZListItem
+                                                                                text="Notifications"
+                                                                                toggle={!conv.data!.chat.settings.mute}
+                                                                                onToggle={toggle}
+                                                                                onPress={toggle}
+                                                                            />
+                                                                        );
+                                                                    }
+                                                                    }
+                                                                </YMutation>
+                                                            ) : null}
+                                                        </YQuery>
+
+                                                    }
                                                 </ZListItemGroup>
                                             )}
                                             <ZListItemGroup header="Information">

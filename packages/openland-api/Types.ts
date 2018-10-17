@@ -7563,8 +7563,22 @@ export interface User_user {
   channels: User_user_channels[];
 }
 
+export interface User_conversation_settings {
+  __typename: "ConversationSettings";
+  id: string;
+  mobileNotifications: NotificationMessages;
+  mute: boolean;
+}
+
+export interface User_conversation {
+  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+  id: string;
+  settings: User_conversation_settings;
+}
+
 export interface User {
   user: User_user;
+  conversation: User_conversation;
 }
 
 export interface UserVariables {

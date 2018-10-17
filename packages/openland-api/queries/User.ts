@@ -44,6 +44,14 @@ export const UserQuery = gql`
                 }
             }
         }
+        conversation: alphaChat(conversationId: $userId){
+            id
+            settings{
+                id
+                mobileNotifications
+                mute
+            }
+        }
     }
     ${OrganizationShort}
 `;

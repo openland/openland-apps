@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { UserQuery, OnlineQuery } from 'openland-api';
+import { UserQuery, OnlineQuery, ConversationSettingsUpdateMutation } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -11,6 +11,9 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import * as humanize from 'humanize';
 import { formatDate } from '../../utils/formatDate';
+import { YMutation } from 'openland-y-graphql/YMutation';
+import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
+import { Alert } from 'react-native';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
@@ -50,6 +53,30 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                         );
                                     }}
                                 </YQuery>
+                                <ZListItemGroup>
+                                    <YMutation mutation={ConversationSettingsUpdateMutation}>
+                                        {(update) => {
+                                            let toggle = async () => {
+                                                startLoader();
+                                                try {
+                                                    await update({ variables: { conversationId: resp.data.conversation.id, settings: { mute: !resp.data.conversation.settings.mute } } });
+                                                } catch (e) {
+                                                    Alert.alert(e.message);
+                                                }
+                                                stopLoader();
+                                            };
+                                            return (
+                                                <ZListItem
+                                                    text="Notifications"
+                                                    toggle={!resp.data.conversation.settings.mute}
+                                                    onToggle={toggle}
+                                                    onPress={toggle}
+                                                />
+                                            );
+                                        }
+                                        }
+                                    </YMutation>
+                                </ZListItemGroup>
 
                                 <ZListItemGroup header="Contacts">
                                     {!!resp.data.user.about && <ZListItem title="about" multiline={true} text={resp.data.user.about} />}
