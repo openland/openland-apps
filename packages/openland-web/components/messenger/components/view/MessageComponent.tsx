@@ -111,7 +111,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
     },
     '& .reply-btn': {
         position: 'absolute',
-        right: 32,
+        right: props.compact ? 32 : 40,
         top: 3
     },
     '& .reactions-wrapper .reaction-button': {
