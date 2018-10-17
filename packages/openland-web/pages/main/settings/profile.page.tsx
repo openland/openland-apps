@@ -60,7 +60,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                 <XVertical separator={21}>
                     <Query query={MyOrganizationsQuery.document}>
                         {(orgsData) => (
-                            <XVertical separator={30}>
+                            <XVertical separator={25}>
                                 <XForm
                                     defaultData={{
                                         input: {
@@ -88,13 +88,13 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     }}
                                     defaultLayout={false}
                                 >
-                                    <XVertical separator={12}>
+                                    <XVertical separator={12} maxWidth={660}>
                                         <HeadTitle>Profile</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical separator={12}>
                                             <XFormLoadingContent>
                                                 <XHorizontal separator={13}>
-                                                    <XVertical flexGrow={1} width={480}>
+                                                    <XVertical flexGrow={1} width={480} separator={10}>
                                                         <XInput title="First name" field="input.firstName" size="large" />
                                                         <XInput title="Last name" field="input.lastName" size="large" />
                                                         <XSelect
@@ -144,7 +144,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical width={480} separator={12}>
                                             <XFormLoadingContent>
-                                                <XVertical>
+                                                <XVertical separator={10}>
                                                     <XInput field="input.phone" size="large" title="Phone number" />
                                                     <XInput field="input.email" size="large" title="Email" />
                                                     <XInput field="input.website" size="large" title="Website" />
@@ -163,7 +163,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                             </XVertical>
                         )}
                     </Query>
-                    <XVertical separator={18}>
+                    <XVertical separator={12}>
                         <XWithRole role="super-admin">
                             <HeadTitle>Super admin</HeadTitle>
                             <XHorizontal separator={8}>
@@ -176,7 +176,6 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     <CardText>
                                         {!props.data.profile.invitedBy && <span>Self-registered</span>}
                                         {props.data.profile.invitedBy && <span>Invited by <span className="bold person">{(props.data.profile.invitedBy.name || 'John Doe')}</span></span>}
-
                                     </CardText>
                                 )}
                             </XHorizontal>
