@@ -587,7 +587,7 @@ export const MessengerButton = withNotificationCounter((props) => {
         >
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <MessagesIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#f5f7f9" count={props.data.counter.unreadCount} />}
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#e9ecf0" count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
     );

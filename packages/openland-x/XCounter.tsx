@@ -8,14 +8,14 @@ const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string, borderC
     height: 15,
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: 2,
+    paddingRight: 2,
     lineHeight: '13px',
-    borderRadius: 21,
+    borderRadius: 5,
     backgroundColor: props.bgColor || '#e22a2a',
-    border: '1px solid ' + (props.borderColor ? props.borderColor : 'white'),
+    border: '2px solid ' + (props.borderColor ? props.borderColor : 'white'),
     fontSize: 10,
-    fontWeight: 500,
+    fontWeight: 600,
     color: props.color || '#ffffff'
 }));
 
