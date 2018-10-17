@@ -12,7 +12,7 @@ const SelectAnimationSpin = glamor.keyframes({
     'to': { transform: 'rotate(1turn)' }
 });
 
-const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both', rounded?: boolean }) => ({
+const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' }) => ({
     minWidth: 100,
     '&.Select': {
         position: 'relative'
@@ -41,7 +41,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         background: '#fff',
-        borderColor: props.rounded === true ? 'rgb(116, 188, 255) rgb(116, 188, 255) rgb(116, 188, 255)' : '#986AFE #986AFE #986AFE',
+        borderColor: 'rgb(116, 188, 255) rgb(116, 188, 255) rgb(116, 188, 255)',
         // boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)'
     },
     '&.Select.is-open > .Select-control .Select-arrow': {
@@ -56,8 +56,8 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         background: '#fff'
     },
     '&.Select.is-focused:not(.is-open) > .Select-control': {
-        borderColor: props.rounded === true ? 'rgb(116, 188, 255)' :  '#986AFE',
-        boxShadow: props.rounded === true ? 'rgba(23, 144, 255, 0.2) 0px 0px 0px 2px' : '0 0 0 2px rgba(143, 124, 246, 0.2)',
+        borderColor: 'rgb(116, 188, 255)',
+        boxShadow: 'rgba(23, 144, 255, 0.2) 0px 0px 0px 2px',
         background: '#fff'
     },
     '&.Select.has-value.is-clearable.Select--single > .Select-control .Select-value': {
@@ -66,8 +66,10 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
         fontSize: props.large === true ? 15 : 14,
         color: '#334562',
-        fontWeight: props.rounded === true ? 'normal' : 500,
-        verticalAlign: 'middle'
+        fontWeight: 400,
+        display: 'block',
+        marginTop: 1,
+        // verticalAlign: 'middle'
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
         cursor: 'pointer',
@@ -94,27 +96,11 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
     '& .Select-control': {
         backgroundColor: '#fff',
         // borderColor: '#d9d9d9 #ccc #b3b3b3',
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left'
-            ? 0
-            : props.rounded === true
-                ? 20
-                : 4,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left'
-            ? 0
-            : props.rounded === true
-                ? 20
-                : 4,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right'
-        ? 0
-        : props.rounded === true
-            ? 20
-            : 4,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right'
-        ? 0
-        : props.rounded === true
-            ? 20
-            : 4,
-        border: props.rounded === true ? '1px solid rgba(220, 222, 228, 0.6)' : '1px solid #dcdee4',
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 10,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 10,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 10,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 10,
+        border: '1px solid rgba(220, 222, 228, 0.6)',
         color: '#333',
         cursor: 'default',
         display: 'table',
@@ -143,7 +129,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         left: 0,
         // lineHeight: '30px',
         lineHeight: 'normal',
-        paddingLeft: props.rounded === true ? 16 : 10,
+        paddingLeft: 16,
         paddingRight: 10,
         position: 'absolute',
         right: 0,
@@ -160,12 +146,12 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
     },
     '& .Select-placeholder': {
         // paddingTop: 'calc(5% - 8px)'
-        marginTop: props.large === true ? 13 : 8
+        marginTop: props.large === true ? 13 : 9
     },
     '& .Select-input': {
         height: props.large === true ? 32 : 28,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 16,
+        paddingRight: 16,
         // verticalAlign: 'middle',
 
         // display: 'flex !important',
@@ -187,10 +173,10 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         // padding: '8px 0 12px',
         WebkitAppearance: 'none',
         fontSize: props.large === true ? 15 : 14,
-        fontWeight: props.large === true ? undefined : 500,
+        fontWeight: 400,
         alignSelf: 'center',
         verticalAlign: 'middle',
-        marginTop: props.large === true ? 8 : undefined
+        marginTop: props.large === true ? 8 : 2
     },
     '&.is-focused .Select-input > input': {
         cursor: 'text'
@@ -291,10 +277,10 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         float: 'left'
     },
     '& .Select-menu-outer': {
-        borderBottomRightRadius: 4,
-        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
         backgroundColor: '#fff',
-        border: props.rounded === true ? '1px solid rgb(116, 188, 255)' : '1px solid #986AFE',
+        border: '1px solid rgb(116, 188, 255)',
         borderTopColor: '#e6e6e6',
         boxShadow: '0 1px 0 rgba(0, 0, 0, .06)',
         boxSizing: 'border-box',
@@ -317,7 +303,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         color: '#666',
         cursor: 'pointer',
         display: 'block',
-        padding: '8px 10px',
+        padding: '8px 16px',
 
         // height: 36,
         lineHeight: '20px',
@@ -329,12 +315,12 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both',
         borderBottomLeftRadius: 4
     },
     '& .Select-option.is-selected': {
-        backgroundColor: props.rounded === true ? 'rgba(23, 144, 255, 0.05)' : '#ebe2ff2e',
-        color: props.rounded === true ? '#1790ff !important' : '#333'
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#1790ff !important'
     },
     '& .Select-option.is-focused': {
-        backgroundColor: props.rounded === true ? '#f9fafb !important' : '#654bfa !important',
-        color: props.rounded === true ? '#1790ff !important' : '#fff !important'
+        backgroundColor: '#f9fafb !important',
+        color: '#1790ff !important'
     },
     // '& .Select-option.is-focused': {
     //     backgroundColor: '#ebf5ff',
@@ -445,12 +431,10 @@ export type XSelectBasicProps = ReactSelectProps & {
     creatable?: boolean;
     render?: any;
     large?: boolean;
-    rounded?: boolean;
 };
 
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
-    rounded?: boolean;
 };
 
 export function XSelectBasic(props: XSelectBasicProps) {

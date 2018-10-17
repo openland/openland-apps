@@ -98,7 +98,6 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                         <XInput title="First name" field="input.firstName" size="large" />
                                                         <XInput title="Last name" field="input.lastName" size="large" />
                                                         <XSelect
-                                                            rounded={true}
                                                             field="input.primaryOrganizationId"
                                                             searchable={false}
                                                             clearable={false}
@@ -151,7 +150,6 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     <XInput field="input.linkedin" size="large" title="LinkedIn" />
                                                     <XSelect
                                                         placeholder="Primary location"
-                                                        rounded={true}
                                                         field="input.location"
                                                         options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
                                                     />

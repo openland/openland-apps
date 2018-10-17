@@ -158,7 +158,6 @@ const InviteComponent = (props: InviteComponentProps) => (
                 <XWithRole role="super-admin">
                     <XSelect
                         attach="both"
-                        rounded={true}
                         field={'inviteRequests.' + props.index + '.role'}
                         searchable={false}
                         clearable={false}
