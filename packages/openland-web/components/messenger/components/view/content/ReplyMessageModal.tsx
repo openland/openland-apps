@@ -15,7 +15,7 @@ const TextInputWrapper = Glamorous.div({
         height: '100%',
         '& .DraftEditor-root': {
             overflow: 'auto',
-            borderRadius: 20,
+            borderRadius: 10,
             backgroundColor: '#fff',
             border: 'solid 1px #e4e6e9',
             minHeight: 40,
