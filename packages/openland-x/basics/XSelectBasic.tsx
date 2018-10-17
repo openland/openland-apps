@@ -68,7 +68,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         color: '#334562',
         fontWeight: 400,
         display: 'block',
-        marginTop: 1,
+        marginTop: 0,
         // verticalAlign: 'middle'
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
@@ -106,7 +106,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         display: 'table',
         borderSpacing: 0,
         borderCollapse: 'separate',
-        height: props.large === true ? 48 : 38,
+        height: props.large === true ? 48 : 40,
         outline: 'none',
         overflow: 'hidden',
         position: 'relative',
@@ -142,14 +142,14 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
     },
     '&.Select--single > .Select-control .Select-value': {
         // paddingTop: 'calc(5% - 10px)'
-        marginTop: props.large === true ? 11 : 8
+        marginTop: props.large === true ? 11 : 10
     },
     '& .Select-placeholder': {
         // paddingTop: 'calc(5% - 8px)'
         marginTop: props.large === true ? 13 : 9
     },
     '& .Select-input': {
-        height: props.large === true ? 32 : 28,
+        height: props.large === true ? 32 : 30,
         paddingLeft: 16,
         paddingRight: 16,
         // verticalAlign: 'middle',
@@ -176,7 +176,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         fontWeight: 400,
         alignSelf: 'center',
         verticalAlign: 'middle',
-        marginTop: props.large === true ? 8 : 2
+        marginTop: props.large === true ? 8 : 4
     },
     '&.is-focused .Select-input > input': {
         cursor: 'text'
@@ -335,7 +335,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         color: '#999',
         cursor: 'default',
         display: 'block',
-        padding: '8px 10px'
+        padding: '8px 16px'
     },
     '&.Select--multi .Select-input': {
         verticalAlign: 'middle',
@@ -427,24 +427,149 @@ const StyledSelect = Glamorous(Select)(Styles);
 const StyledSelectCreatable = Glamorous(Creatable)(Styles);
 
 export type XSelectBasicProps = ReactSelectProps & {
+    ref?: any;
     attach?: 'left' | 'right' | 'both';
     creatable?: boolean;
     render?: any;
     large?: boolean;
+    title?: string;
 };
 
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
 };
 
-export function XSelectBasic(props: XSelectBasicProps) {
-    return (
-        props.render
-            ? React.cloneElement(props.render, props)
-            : props.creatable
-                ? <StyledSelectCreatable {...props} shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13} />
-                : <StyledSelect {...props} />
-    );
+const SelectWrapper = Glamorous.div({
+    position: 'relative'
+});
+
+const Title = Glamorous.div<{ inside?: boolean }>(
+    (props) => props.inside ? {
+        top: 1,
+        left: 17,
+        height: 38,
+        fontSize: 14,
+        lineHeight: '38px',
+        position: 'absolute',
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.4)',
+        zIndex: 2,
+        pointerEvents: 'none'
+    } : {
+        top: -10,
+        left: 13,
+        height: 20,
+        fontSize: 12,
+        lineHeight: '20px',
+        position: 'absolute',
+        paddingLeft: 3,
+        paddingRight: 3,
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.4)',
+        zIndex: 2,
+        pointerEvents: 'none'
+    }
+);
+
+interface XSelectBasicState {
+    hasValue?: boolean;
+    hasInputValue?: boolean;
+    isFocused?: boolean;
+}
+
+export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelectBasicState> {
+    constructor(props: XSelectBasicProps) {
+        super(props);
+
+        this.state = {
+            hasValue: this.props.value ? true : false,
+            hasInputValue: false,
+            isFocused: false
+        };
+    }
+
+    componentWillReceiveProps(props: XSelectBasicProps) {
+        this.setState({
+            hasValue: props.value ? true : false
+        });
+    }
+
+    handleInputChange = (value: string) => {
+        this.setState({
+            hasInputValue: value.length > 0
+        });
+
+        return value;
+    }
+
+    handleChange = (newValue: any) => {
+        this.setState({
+            hasValue: newValue ? true : false
+        });
+
+        if (this.props.onChange) {
+            this.props.onChange(newValue);
+        }
+    }
+
+    handleFocus = (e: any) => {
+        this.setState({
+            isFocused: true
+        });
+
+        if (this.props.onFocus) {
+            this.props.onFocus(e);
+        }
+    }
+
+    handleBlur = (e: any) => {
+        this.setState({
+            isFocused: false
+        });
+
+        if (this.props.onBlur) {
+            this.props.onBlur(e);
+        }
+    }
+
+    render () {
+        if (this.props.render) {
+            return React.cloneElement(this.props.render, this.props);
+        }
+
+        let { placeholder, title, onChange, onFocus, onBlur, ...other } = this.props;
+
+        return (
+            <SelectWrapper>
+                {title && (
+                    <Title inside={!(this.state.hasValue || this.state.hasInputValue || this.state.isFocused)}>{title}</Title>
+                )}
+                {this.props.creatable && (
+                    <StyledSelectCreatable
+                        onInputChange={this.handleInputChange}
+                        onChange={this.handleChange}
+                        onFocus={this.handleFocus}
+                        onBlur={this.handleBlur}
+                        placeholder={title ? '' : placeholder}
+                        shouldKeyDownEventCreateNewOption={(event) => event.keyCode === 13}
+                        {...other}
+                    />
+                )}
+                {!this.props.creatable && (
+                    <StyledSelect
+                        onInputChange={this.handleInputChange}
+                        onChange={this.handleChange}
+                        onFocus={this.handleFocus}
+                        onBlur={this.handleBlur}
+                        placeholder={title ? '' : placeholder}
+                        {...other}
+                    />
+                )}
+            </SelectWrapper>
+        );
+    }
 }
 
 export function XSelectAsyncBasic(props: XSelectAsyncBasicProps) {

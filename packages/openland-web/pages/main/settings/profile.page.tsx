@@ -27,9 +27,9 @@ const Content = Glamorous(XContent)({
 
 const HeadTitle = Glamorous.div({
     fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: -0.2,
-    color: '#1f3449'
+    fontWeight: 600,
+    letterSpacing: 0,
+    color: '#000000'
 });
 
 const CardText = Glamorous.div({
@@ -82,7 +82,6 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
 
                                                     photoRef: sanitizeIamgeRef(data.input.photoRef)
                                                 }
-
                                             }
                                         });
                                     }}
@@ -93,11 +92,12 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                         <XFormError onlyGeneralErrors={true} />
                                         <XVertical separator={12}>
                                             <XFormLoadingContent>
-                                                <XHorizontal separator={12}>
-                                                    <XVertical flexGrow={1} maxWidth={480}>
+                                                <XHorizontal separator={13}>
+                                                    <XVertical flexGrow={1} width={480}>
                                                         <XInput title="First name" field="input.firstName" size="large" />
                                                         <XInput title="Last name" field="input.lastName" size="large" />
                                                         <XSelect
+                                                            title="Primary organization"
                                                             field="input.primaryOrganizationId"
                                                             searchable={false}
                                                             clearable={false}
@@ -141,7 +141,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                     <XVertical separator={12}>
                                         <HeadTitle>Contacts</HeadTitle>
                                         <XFormError onlyGeneralErrors={true} />
-                                        <XVertical maxWidth={480} separator={12}>
+                                        <XVertical width={480} separator={12}>
                                             <XFormLoadingContent>
                                                 <XVertical>
                                                     <XInput field="input.phone" size="large" title="Phone number" />
@@ -149,7 +149,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     <XInput field="input.website" size="large" title="Website" />
                                                     <XInput field="input.linkedin" size="large" title="LinkedIn" />
                                                     <XSelect
-                                                        placeholder="Primary location"
+                                                        title="Primary location"
                                                         field="input.location"
                                                         options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
                                                     />
