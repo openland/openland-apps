@@ -10,6 +10,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
+import { resolveInternalLink } from '../../components/ZText';
 
 const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -27,7 +28,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
             if (v.type === 'new_line') {
                 return <ASText key={'br-' + i} >{'\n'}</ASText>;
             } else if (v.type === 'link') {
-                return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={() => Linking.openURL(v.link!)} textDecorationLine="underline">{v.text}</ASText>;
+                return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
             } else {
                 return <ASText key={'text-' + i}>{v.text}</ASText>;
             }
