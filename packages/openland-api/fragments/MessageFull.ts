@@ -19,6 +19,14 @@ export const MessageFull = gql`
     sender {
         ...UserShort
     }
+    reply: replyMessages {
+        sender {
+            ...UserShort
+        }
+        id
+        date
+        message
+    }
     reactions: reactions {
         user {
             id

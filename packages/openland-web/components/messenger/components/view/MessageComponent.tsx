@@ -8,10 +8,12 @@ import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
 import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageIntroComponent } from './content/MessageIntroComponent';
+import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
@@ -24,6 +26,7 @@ import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
+import ReplyIcon from '../icons/ic-reply.svg';
 
 const MessageWrapper = Glamorous(XVertical)({
     width: 'calc(100% - 60px)'
@@ -50,7 +53,6 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     width: props.small ? 56 : 62,
     marginBottom: props.small ? undefined : -1,
     fontSize: 11,
-    // lineHeight: '12px',
     paddingTop: props.small ? 1 : 1,
     fontWeight: 600,
     whiteSpace: 'nowrap',
@@ -90,7 +92,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
         '& .menu': {
             display: 'block',
         },
-        '& .reaction-button': {
+        '& .reaction-button, & .reply-btn': {
             opacity: 1
         }
     },
@@ -107,6 +109,11 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
         position: 'absolute',
         right: 5
     },
+    '& .reply-btn': {
+        position: 'absolute',
+        right: 32,
+        top: 3
+    },
     '& .reactions-wrapper .reaction-button': {
         position: 'static'
     }
@@ -114,7 +121,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
     // hover - end
 }));
 
-const MessageCompactContent = Glamorous(XVertical)<{isIntro?: boolean}>(props => ({
+const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
     paddingRight: props.isIntro === true ? 0 : 20
 }));
 
@@ -123,6 +130,17 @@ const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
     right: props.compact ? -8 : 0,
     top: 0
 }));
+
+const ReplyButton = Glamorous(XLink)({
+    opacity: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:hover svg path:last-child': {
+        fill: '#1790ff',
+        opacity: 1
+    }
+});
 
 interface MessageComponentProps {
     compact: boolean;
@@ -236,6 +254,17 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...message.urlAugmentation} />);
                     }
                 }
+                if ((message as MessageFull).reply) {
+                    let replyMessage = (message as MessageFull).reply![0];
+                    content.push(
+                        <MessageReplyComponent
+                            sender={replyMessage.sender}
+                            date={replyMessage.date}
+                            message={replyMessage.message}
+                            id={replyMessage.id}
+                        />
+                    );
+                }
             }
             date = <XDate value={message.date} format="time" />;
         } else {
@@ -314,6 +343,9 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
                             <ReactionComponent messageId={(message as MessageFull).id} />
                         )}
+                        <ReplyButton className="reply-btn" query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                            <ReplyIcon />
+                        </ReplyButton>
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                             <Reactions
                                 messageId={(message as MessageFull).id}
@@ -356,6 +388,9 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
                     )}
+                    <ReplyButton className="reply-btn" query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                        <ReplyIcon />
+                    </ReplyButton>
                     {menu}
                 </XHorizontal>
             </MessageContainer>

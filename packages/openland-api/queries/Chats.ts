@@ -284,6 +284,14 @@ export const SendMessageMutation = gql`
     ${UserShort}
 `;
 
+export const ReplyMessageMutation = gql`
+    mutation ReplyMessage($conversationId: ID!, $message: String, $replyMessages: [ConversationMessageID!]) {
+        replyMessage: alphaSendMessage(conversationId: $conversationId, message: $message, replyMessages: $replyMessages) {
+            seq
+        }
+    }
+`;
+
 export const ChatReadMutation = gql`
     mutation ChatRead($conversationId: ID!, $messageId: ID!) {
         alphaReadChat(conversationId: $conversationId, messageId: $messageId) {

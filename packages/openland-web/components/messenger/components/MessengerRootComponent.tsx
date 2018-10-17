@@ -19,6 +19,7 @@ import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { EditMessageComponent } from './view/MessageEditComponent';
 import { EditMessageContext, EditMessageContextProps } from './EditMessageContext';
+import { ReplyMessageComponent } from './view/content/ReplyMessageModal';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -143,6 +144,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 )}
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
+                <ReplyMessageComponent />
                 {/* <EditMessageComponent conversation={this.conversation} /> */}
             </ConversationContainer>
         );

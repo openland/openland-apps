@@ -390,6 +390,37 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_s
   twitter: string | null;
 }
 
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatList_chats_conversations_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatList_chats_conversations_AnonymousConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
@@ -488,6 +519,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage {
   isService: boolean;
   fileMetadata: ChatList_chats_conversations_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChatList_chats_conversations_AnonymousConversation_topMessage_sender;
+  reply: ChatList_chats_conversations_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChatList_chats_conversations_AnonymousConversation_topMessage_reactions[];
   urlAugmentation: ChatList_chats_conversations_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -542,6 +574,37 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_sende
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatList_chats_conversations_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatList_chats_conversations_GroupConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChatList_chats_conversations_GroupConversation_topMessage_reactions_user {
@@ -642,6 +705,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage {
   isService: boolean;
   fileMetadata: ChatList_chats_conversations_GroupConversation_topMessage_fileMetadata | null;
   sender: ChatList_chats_conversations_GroupConversation_topMessage_sender;
+  reply: ChatList_chats_conversations_GroupConversation_topMessage_reply[] | null;
   reactions: ChatList_chats_conversations_GroupConversation_topMessage_reactions[];
   urlAugmentation: ChatList_chats_conversations_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -697,6 +761,37 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_sen
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatList_chats_conversations_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatList_chats_conversations_ChannelConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_reactions_user {
@@ -797,6 +892,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage {
   isService: boolean;
   fileMetadata: ChatList_chats_conversations_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChatList_chats_conversations_ChannelConversation_topMessage_sender;
+  reply: ChatList_chats_conversations_ChannelConversation_topMessage_reply[] | null;
   reactions: ChatList_chats_conversations_ChannelConversation_topMessage_reactions[];
   urlAugmentation: ChatList_chats_conversations_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -951,6 +1047,37 @@ export interface ChatHistory_messages_messages_sender {
   twitter: string | null;
 }
 
+export interface ChatHistory_messages_messages_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatHistory_messages_messages_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatHistory_messages_messages_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatHistory_messages_messages_reply {
+  __typename: "ConversationMessage";
+  sender: ChatHistory_messages_messages_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface ChatHistory_messages_messages_reactions_user {
   __typename: "User";
   id: string;
@@ -1049,6 +1176,7 @@ export interface ChatHistory_messages_messages {
   isService: boolean;
   fileMetadata: ChatHistory_messages_messages_fileMetadata | null;
   sender: ChatHistory_messages_messages_sender;
+  reply: ChatHistory_messages_messages_reply[] | null;
   reactions: ChatHistory_messages_messages_reactions[];
   urlAugmentation: ChatHistory_messages_messages_urlAugmentation | null;
   date: any;
@@ -1649,6 +1777,37 @@ export interface SendMessage_sentMessage_message_sender {
   twitter: string | null;
 }
 
+export interface SendMessage_sentMessage_message_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface SendMessage_sentMessage_message_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: SendMessage_sentMessage_message_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface SendMessage_sentMessage_message_reply {
+  __typename: "ConversationMessage";
+  sender: SendMessage_sentMessage_message_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface SendMessage_sentMessage_message_reactions_user {
   __typename: "User";
   id: string;
@@ -1747,6 +1906,7 @@ export interface SendMessage_sentMessage_message {
   isService: boolean;
   fileMetadata: SendMessage_sentMessage_message_fileMetadata | null;
   sender: SendMessage_sentMessage_message_sender;
+  reply: SendMessage_sentMessage_message_reply[] | null;
   reactions: SendMessage_sentMessage_message_reactions[];
   urlAugmentation: SendMessage_sentMessage_message_urlAugmentation | null;
   date: any;
@@ -1767,6 +1927,28 @@ export interface SendMessageVariables {
   message?: string | null;
   file?: string | null;
   repeatKey: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: ReplyMessage
+// ====================================================
+
+export interface ReplyMessage_replyMessage {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
+export interface ReplyMessage {
+  replyMessage: ReplyMessage_replyMessage;
+}
+
+export interface ReplyMessageVariables {
+  conversationId: string;
+  message?: string | null;
+  replyMessages?: any[] | null;
 }
 
 /* tslint:disable */
@@ -2255,6 +2437,37 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_sender {
   twitter: string | null;
 }
 
+export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatSearchText_items_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatSearchText_items_AnonymousConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface ChatSearchText_items_AnonymousConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
@@ -2353,6 +2566,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage {
   isService: boolean;
   fileMetadata: ChatSearchText_items_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChatSearchText_items_AnonymousConversation_topMessage_sender;
+  reply: ChatSearchText_items_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChatSearchText_items_AnonymousConversation_topMessage_reactions[];
   urlAugmentation: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -2408,6 +2622,37 @@ export interface ChatSearchText_items_GroupConversation_topMessage_sender {
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatSearchText_items_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatSearchText_items_GroupConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage_reactions_user {
@@ -2508,6 +2753,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage {
   isService: boolean;
   fileMetadata: ChatSearchText_items_GroupConversation_topMessage_fileMetadata | null;
   sender: ChatSearchText_items_GroupConversation_topMessage_sender;
+  reply: ChatSearchText_items_GroupConversation_topMessage_reply[] | null;
   reactions: ChatSearchText_items_GroupConversation_topMessage_reactions[];
   urlAugmentation: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -2579,6 +2825,37 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_sender {
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatSearchText_items_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatSearchText_items_ChannelConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_reactions_user {
@@ -2679,6 +2956,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage {
   isService: boolean;
   fileMetadata: ChatSearchText_items_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChatSearchText_items_ChannelConversation_topMessage_sender;
+  reply: ChatSearchText_items_ChannelConversation_topMessage_reply[] | null;
   reactions: ChatSearchText_items_ChannelConversation_topMessage_reactions[];
   urlAugmentation: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -2786,6 +3064,37 @@ export interface ChatSearchChannel_items_edges_node_topMessage_sender {
   twitter: string | null;
 }
 
+export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChatSearchChannel_items_edges_node_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChatSearchChannel_items_edges_node_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface ChatSearchChannel_items_edges_node_topMessage_reactions_user {
   __typename: "User";
   id: string;
@@ -2884,6 +3193,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage {
   isService: boolean;
   fileMetadata: ChatSearchChannel_items_edges_node_topMessage_fileMetadata | null;
   sender: ChatSearchChannel_items_edges_node_topMessage_sender;
+  reply: ChatSearchChannel_items_edges_node_topMessage_reply[] | null;
   reactions: ChatSearchChannel_items_edges_node_topMessage_reactions[];
   urlAugmentation: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation | null;
   date: any;
@@ -3034,6 +3344,37 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   twitter: string | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
@@ -3132,6 +3473,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   isService: boolean;
   fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender;
+  reply: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions[];
   urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -3187,6 +3529,37 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions_user {
@@ -3287,6 +3660,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   isService: boolean;
   fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_fileMetadata | null;
   sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender;
+  reply: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply[] | null;
   reactions: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions[];
   urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -3358,6 +3732,37 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions_user {
@@ -3458,6 +3863,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   isService: boolean;
   fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender;
+  reply: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply[] | null;
   reactions: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions[];
   urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -3549,6 +3955,37 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions_user {
@@ -3649,6 +4086,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   isService: boolean;
   fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender;
+  reply: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions[];
   urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -3704,6 +4142,37 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions_user {
@@ -3804,6 +4273,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   isService: boolean;
   fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_fileMetadata | null;
   sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender;
+  reply: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply[] | null;
   reactions: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions[];
   urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -3875,6 +4345,37 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions_user {
@@ -3975,6 +4476,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   isService: boolean;
   fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender;
+  reply: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply[] | null;
   reactions: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions[];
   urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -7712,6 +8214,37 @@ export interface ConversationShort_AnonymousConversation_topMessage_sender {
   twitter: string | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ConversationShort_AnonymousConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
@@ -7810,6 +8343,7 @@ export interface ConversationShort_AnonymousConversation_topMessage {
   isService: boolean;
   fileMetadata: ConversationShort_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_AnonymousConversation_topMessage_sender;
+  reply: ConversationShort_AnonymousConversation_topMessage_reply[] | null;
   reactions: ConversationShort_AnonymousConversation_topMessage_reactions[];
   urlAugmentation: ConversationShort_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -7865,6 +8399,37 @@ export interface ConversationShort_GroupConversation_topMessage_sender {
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ConversationShort_GroupConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_reactions_user {
@@ -7965,6 +8530,7 @@ export interface ConversationShort_GroupConversation_topMessage {
   isService: boolean;
   fileMetadata: ConversationShort_GroupConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_GroupConversation_topMessage_sender;
+  reply: ConversationShort_GroupConversation_topMessage_reply[] | null;
   reactions: ConversationShort_GroupConversation_topMessage_reactions[];
   urlAugmentation: ConversationShort_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -8036,6 +8602,37 @@ export interface ConversationShort_ChannelConversation_topMessage_sender {
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_reply {
+  __typename: "ConversationMessage";
+  sender: ConversationShort_ChannelConversation_topMessage_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_reactions_user {
@@ -8136,6 +8733,7 @@ export interface ConversationShort_ChannelConversation_topMessage {
   isService: boolean;
   fileMetadata: ConversationShort_ChannelConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_ChannelConversation_topMessage_sender;
+  reply: ConversationShort_ChannelConversation_topMessage_reply[] | null;
   reactions: ConversationShort_ChannelConversation_topMessage_reactions[];
   urlAugmentation: ConversationShort_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
@@ -8231,6 +8829,37 @@ export interface MessageFull_sender {
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
+}
+
+export interface MessageFull_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface MessageFull_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  primaryOrganization: MessageFull_reply_sender_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface MessageFull_reply {
+  __typename: "ConversationMessage";
+  sender: MessageFull_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
 }
 
 export interface MessageFull_reactions_user {
@@ -8331,6 +8960,7 @@ export interface MessageFull {
   isService: boolean;
   fileMetadata: MessageFull_fileMetadata | null;
   sender: MessageFull_sender;
+  reply: MessageFull_reply[] | null;
   reactions: MessageFull_reactions[];
   urlAugmentation: MessageFull_urlAugmentation | null;
   date: any;
