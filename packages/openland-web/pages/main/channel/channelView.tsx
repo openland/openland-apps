@@ -109,8 +109,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     <ChannelTab path={'/channel/' + props.data.chat.flexibleId + '/members'}>Members</ChannelTab>
                 </ChannelTabs>
                 <ChannelTools>
-                    <XButton size="r-default" iconResponsive="star" text="Create listing" />
-                    <XButton size="r-default" iconResponsive="star" text="Invite members" />
+                    <XButton iconResponsive="star" text="Create listing" />
+                    <XButton iconResponsive="star" text="Invite members" />
                     <XOverflow
                         placement="bottom-end"
                         content={(

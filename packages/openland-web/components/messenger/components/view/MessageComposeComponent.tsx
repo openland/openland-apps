@@ -487,7 +487,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                             </XHorizontal>
                             <XButton
                                 text="Send"
-                                size="r-default"
                                 style="primary"
                                 action={this.handleSend}
                                 iconRight="send"

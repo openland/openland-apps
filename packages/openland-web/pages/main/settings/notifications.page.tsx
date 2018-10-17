@@ -104,7 +104,7 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     <XCheckbox square={true} label="Never notify me" trueValue="NEVER" field="input.emailFrequency" />
                                 </CheckboxWrapper>
                             </XVertical>
-                            <XFormSubmit succesText="Saved!" text="Save changes" style="primary-sky-blue" size="r-default" alignSelf="flex-start" />
+                            <XFormSubmit succesText="Saved!" text="Save changes" style="primary" alignSelf="flex-start" />
                         </XVertical>
                     </XForm>
                 </XVertical>

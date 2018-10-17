@@ -397,7 +397,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                     <XHorizontal >
                                         <FormFieldTitle>{TextOrganizationProfile.listingEditDoLinkUrlTitle}</FormFieldTitle>
                                         <DelLinkBtn
-                                            style="link_danger"
+                                            style="link-danger"
                                             text={TextOrganizationProfile.listingEditDoLinkDelete}
                                             onClick={() => {
                                                 if (store) {

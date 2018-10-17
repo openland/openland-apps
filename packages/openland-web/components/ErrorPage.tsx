@@ -120,8 +120,8 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                                     {this.props.statusCode !== 404 && 'Message Openland team to get help or return to home screen'}
                                 </Description>
                                 <ButtonsWrapper separator={12}>
-                                    <Button size="r-default" style="primary-sky-blue" path="/" text="Return home" />
-                                    <Button size="r-default" path="/support/61gk9KRrl9ComJkvYnvdcddr4o" text="Message support" />
+                                    <Button style="primary" path="/" text="Return home" />
+                                    <Button path="/support/61gk9KRrl9ComJkvYnvdcddr4o" text="Message support" />
                                 </ButtonsWrapper>
                             </Inner>
                             </Box>

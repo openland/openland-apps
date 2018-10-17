@@ -128,7 +128,6 @@ export class SortPicker extends React.Component<{ withoutFeatured?: boolean, sor
                     activated={this.state.popper}
                     text={selected ? selected.label : '?'}
                     style="flat"
-                    size="r-default"
                     icon="sort"
                     onClick={this.switch}
                 />

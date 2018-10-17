@@ -391,6 +391,6 @@ const OrgMembers = withOrganizationMembers((props) => {
 export const MembersTable = withUserInfo(props => (
     <XVertical alignItems="flex-start">
         {props.organization && <OrgMembers variables={{ orgId: props.organization.id }} {...{ orgName: props.organization.name }} />}
-        <InvitesToOrganizationModal target={<XButton style="primary-sky-blue" size="r-default" text={TextInvites.membersMgmt.inviteButton} />} />
+        <InvitesToOrganizationModal target={<XButton style="primary" text={TextInvites.membersMgmt.inviteButton} />} />
     </XVertical>
 ));

@@ -107,8 +107,7 @@ class PostChannelModalRaw extends React.Component<Partial<XModalFormProps> & XWi
                 <XFormSubmit
                     key="invites"
                     succesText="Listing posted!"
-                    style="primary-sky-blue"
-                    size="r-default"
+                    style="primary"
                     text="Create listing"
                     keyDownSubmit={true}
                 />

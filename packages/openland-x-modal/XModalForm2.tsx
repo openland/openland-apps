@@ -61,13 +61,12 @@ export class XModalForm extends React.Component<XModalFormProps> {
             <XModalFooter>
                 <XHorizontal>
                     <XFormSubmit
-                        style="primary-sky-blue"
+                        style="primary"
                         text={this.props.submitBtnText !== undefined ? this.props.submitBtnText : 'Save'}
-                        size="r-default"
                         {...submitProps}
                         keyDownSubmit={true}
                     />
-                    {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} size="r-default" />}
+                    {!this.props.useTopCloser && <XButton text="Cancel" autoClose={true} />}
                 </XHorizontal>
             </XModalFooter>
         );

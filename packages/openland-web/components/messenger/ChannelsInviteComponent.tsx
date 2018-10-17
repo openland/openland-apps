@@ -207,8 +207,8 @@ const Image = Glamorous.div({
 const JoinButton = withChannelJoin((props) => {
     return (
         <XButton
-            style="primary-sky-blue"
-            size="r-large"
+            style="primary"
+            size="large"
             text={(props as any).text}
             alignSelf="center"
             flexShrink={0}
@@ -225,8 +225,8 @@ const JoinButton = withChannelJoin((props) => {
 const JoinLinkButton = withChannelJoinInviteLink((props) => {
     return (
         <XButton
-            style="primary-sky-blue"
-            size="r-large"
+            style="primary"
+            size="large"
             text={(props as any).text}
             alignSelf="center"
             flexShrink={0}
@@ -320,7 +320,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                             {channel.myStatus === 'requested' && (
                                 <XButton
                                     style="ghost"
-                                    size="r-large"
+                                    size="large"
                                     text="Pending"
                                     alignSelf="center"
                                     flexShrink={0}
@@ -328,8 +328,8 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                             )}
                             {channel.myStatus === 'member' && (
                                 <XButton
-                                    style="primary-sky-blue"
-                                    size="r-large"
+                                    style="primary"
+                                    size="large"
                                     text="Open channel"
                                     alignSelf="center"
                                     flexShrink={0}
@@ -340,8 +340,8 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                     }
                     {this.props.signup && (
                         <XButton
-                            style="primary-sky-blue"
-                            size="r-large"
+                            style="primary"
+                            size="large"
                             text="Accept invitation"
                             alignSelf="center"
                             flexShrink={0}

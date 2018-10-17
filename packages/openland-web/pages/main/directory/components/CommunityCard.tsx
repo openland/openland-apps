@@ -112,8 +112,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper separator={5}>
                             <XButton
-                                style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                                size="r-default"
+                                style={this.state.isHovered ? 'primary' : 'default'}
                                 path={'/directory/o/' + this.props.item.id}
                                 text="View"
                             />

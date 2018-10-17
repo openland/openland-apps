@@ -156,8 +156,7 @@ class ListingItem extends React.Component<ListingItemProps, { isHovered: boolean
                         </ListingInfo>
                         <ListingTools separator={5}>
                             <XButton
-                                size="r-default"
-                                style={(this.state.isHovered) ? 'primary-sky-blue' : 'default'}
+                                style={(this.state.isHovered) ? 'primary' : 'default'}
                                 text="Message"
                             />
                             <XOverflow

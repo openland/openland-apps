@@ -5,7 +5,6 @@ import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import { withAllChats } from '../../../api/withAllChats';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
@@ -19,14 +18,13 @@ import { UserProfile } from '../profile/UserProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import PlusIcon from '../../../components/icons/ic-add-medium.svg';
+import PlusIcon from '../../../components/icons/ic-add-medium-2.svg';
 import { XFont } from 'openland-x/XFont';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { XRouter } from 'openland-x-routing/XRouter';
 import { withRouter } from 'openland-x-routing/withRouter';
 
-let ChatContainer = Glamorous.div({
+export let ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
@@ -37,7 +35,7 @@ let ChatContainer = Glamorous.div({
     overflow: 'hidden'
 });
 
-let ChatListContainer = Glamorous.div({
+export let ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -55,7 +53,7 @@ let ChatListContainer = Glamorous.div({
     }
 });
 
-let ConversationContainer = Glamorous.div({
+export let ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -73,7 +71,7 @@ let ConversationContainer = Glamorous.div({
     }
 });
 
-const Header = Glamorous(XHorizontal)({
+export const Header = Glamorous(XHorizontal)({
     height: 48,
     paddingLeft: 16,
     paddingRight: 12,
@@ -82,11 +80,11 @@ const Header = Glamorous(XHorizontal)({
     flexShrink: 0,
 });
 
-const Title = Glamorous.div({
+export const Title = Glamorous.div({
     ...XFont.h600
 });
 
-const OrganizationProfilContainer = Glamorous.div({
+export const OrganizationProfilContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -94,7 +92,7 @@ const OrganizationProfilContainer = Glamorous.div({
     flexShrink: 0
 });
 
-const ChannelInviteFromLink = withChannelInviteInfo((props) => (
+export const ChannelInviteFromLink = withChannelInviteInfo((props) => (
     props.data && props.data.invite
         ? props.data.invite.channel.myStatus === 'member'
             ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} />
@@ -102,12 +100,13 @@ const ChannelInviteFromLink = withChannelInviteInfo((props) => (
         : <XLoader loading={true} />
 ));
 
-const AddButton = Glamorous(XButton)({
+export const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
         transition: 'all .2s'
     },
     '& svg > g > path:last-child': {
-        fill: '#fff'
+        fill: '#1790ff',
+        opacity: 0.5
     }
 });
 
@@ -118,10 +117,10 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
     if (!canUseDOM) {
         return (
             <>
-            <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
-            <Scaffold>
-                {}
-            </Scaffold>
+                <XDocumentHead title={isCompose ? 'Compose' : 'Messages'} titleWithoutReverse={!isCompose} />
+                <Scaffold>
+                    {}
+                </Scaffold>
             </>
         );
     }
@@ -175,11 +174,11 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
                             <Header alignItems="center" justifyContent="space-between">
                                 <Title>Messages</Title>
                                 <AddButton
-                                    style="primary"
+                                    style="light"
                                     path="/mail/new"
                                     text="New"
                                     icon={<PlusIcon />}
-                                    size="r-small"
+                                    size="small"
                                 />
                             </Header>
                             <ChatsComponent emptyState={tab === 'empty'} />

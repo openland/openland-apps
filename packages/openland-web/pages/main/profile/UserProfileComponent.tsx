@@ -129,14 +129,12 @@ const Header = (props: { userQuery: User }) => {
             <HeaderTools>
                 {usr.isYou
                     ? (<XButton
-                        size="r-default"
                         text="Edit profile"
                         path={'/settings/profile'}
                     />)
                     : (<XButton
-                        size="r-default"
                         text="Message"
-                        style="primary-sky-blue"
+                        style="primary"
                         path={'/mail/' + usr.id}
                     />)
                 }
@@ -208,7 +206,6 @@ const About = (props: { userQuery: User }) => {
                                 <XButton
                                     href={usr.website}
                                     icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text="Website"
                                 />
                             )}
@@ -216,14 +213,12 @@ const About = (props: { userQuery: User }) => {
                                 <XButton
                                     href={usr.linkedin}
                                     icon={<SocialIconWrapper><LinkedinIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text="Linkedin"
                                 />
                             )}
                             {usr.phone && (
                                 <XButton
                                     icon={<SocialIconWrapper><PhoneIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text={usr.phone}
                                 />
                             )}
@@ -316,8 +311,7 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                 <ChannelCardTools separator={5}>
                     <XButton
                         text="View"
-                        size="r-default"
-                        style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
+                        style={this.state.isHovered ? 'primary' : 'default'}
                         path={'/mail/' + channel.id}
                     />
                 </ChannelCardTools>

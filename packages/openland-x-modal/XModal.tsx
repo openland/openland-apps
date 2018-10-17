@@ -8,6 +8,7 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XModalContext } from './XModalContext';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import CloseIcon from './ic-close.svg';
+import { XThemeDefault } from 'openland-x/XTheme';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
@@ -114,10 +115,11 @@ export const XModalFooter = Glamorous.div({
     height: 64,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: '#fafbfc',
+    backgroundColor: XThemeDefault.backyardColor,
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
-    borderTop: '1px solid rgba(220, 222, 228, 0.45)'
+    borderTop: '1px solid',
+    borderTopColor: XThemeDefault.separatorColor
 });
 
 const XModalCloserStyles = Glamorous(XLink)({

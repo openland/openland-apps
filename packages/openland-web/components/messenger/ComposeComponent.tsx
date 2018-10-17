@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { ComposeSelect } from '../../api/ChatComposeSelect';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../../routes';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
@@ -11,7 +10,7 @@ import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
-import ChannelIcon from './components/icons/ic-channel.svg';
+import ChannelIcon from './components/icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withChatCompose } from '../../api/withChatCompose';
@@ -43,6 +42,12 @@ const HeaderWrapper = Glamorous.div({
 const HeaderButton = Glamorous(XButton)({
     '& svg': {
         marginLeft: -4
+    },
+    '& svg *': {
+        fill: 'rgba(0, 0, 0, 0.2)'
+    },
+    '&:hover svg *': {
+        fill: 'rgba(0, 0, 0, 0.5)'
     },
     '&:active svg *': {
         fill: '#ffffff'
@@ -216,7 +221,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                     <Title>Find or start a conversation</Title>
                     <HeaderButton
                         text="New channel"
-                        size="r-default"
                         icon={<ChannelIcon />}
                         query={{ field: 'createChannel', value: 'true' }}
                     />

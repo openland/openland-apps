@@ -28,7 +28,7 @@ export default withApp('Invites History', 'viewer', withQueryLoader(withMyOrgani
                 <XVertical separator={12}>
                     <HeadTitle>Invites</HeadTitle>
                     <InvitesHistory />
-                    <InvitesGlobalModal target={<XButton alignSelf="flex-start" size="r-default" style="primary-sky-blue" text="Send invites" />} />
+                    <InvitesGlobalModal target={<XButton alignSelf="flex-start" style="primary" text="Send invites" />} />
                 </XVertical>
             </Content>
         </Navigation>

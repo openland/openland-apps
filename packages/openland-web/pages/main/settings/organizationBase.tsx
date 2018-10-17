@@ -110,7 +110,7 @@ const AdminTools = withSuperAccountActions(props => {
                         <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
                         <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
+                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
                 </XVertical>
             </XForm>
         </XVertical>
@@ -228,7 +228,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
                                     </XHorizontal>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
                             </XVertical>
                         </XForm>
                     </XVertical>
@@ -270,7 +270,7 @@ export const OrganizationSettigs = ((props: any) => {
                                         <XInput field="input.linkedin" placeholder="LinkedIn" size="large" />
                                     </XVertical>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
+                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
                             </XVertical>
                         </XForm>
                     </XVertical>

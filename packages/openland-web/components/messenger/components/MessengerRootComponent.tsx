@@ -39,11 +39,11 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
         <XModalForm
             title="Delete message"
             targetQuery="deleteMessage"
-            submitBtnText="delete"
+            submitBtnText="Delete"
             defaultAction={(data) => {
                 props.deleteMessage({ variables: { messageId: id } });
             }}
-            submitProps={{ succesText: 'deleted!', style: 'danger' }}
+            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
         </XModalForm >

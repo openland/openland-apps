@@ -109,7 +109,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     <XAvatarUpload field="input.photoRef" />
                                                 </XHorizontal>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
+                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
                                         </XVertical>
                                     </XVertical>
                                 </XForm>
@@ -157,7 +157,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     />
                                                 </XVertical>
                                             </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary-sky-blue" succesText="Changes saved!" size="r-default" />
+                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
                                         </XVertical>
                                     </XVertical>
                                 </XForm>

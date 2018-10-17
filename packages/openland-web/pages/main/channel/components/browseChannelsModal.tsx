@@ -101,15 +101,13 @@ const ChannelsList = (props: ChannelsProps) => (
                     <XButton
                         text="member"
                         style="ghost"
-                        size="r-default"
                         className="member"
                     />
                 )}
                 {!i.member && (
                     <XButton
                         text={i.invited ? 'Pending' : 'Reques invite'}
-                        style={i.invited ? 'ghost' : 'primary-sky-blue'}
-                        size="r-default"
+                        style={i.invited ? 'ghost' : 'primary'}
                         className={i.invited ? undefined : 'invite'}
                     />
                 )}

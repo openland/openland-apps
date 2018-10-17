@@ -243,8 +243,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                             <XHorizontal>
-                                <XButton onClick={this.loginReset} style="ghost" size="r-large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                                <XButton onClick={this.loginEmailStart} style="primary-sky-blue" size="r-large" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
+                                <XButton onClick={this.loginReset} style="ghost" size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                                <XButton onClick={this.loginEmailStart} style="primary" size="large" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </div>
@@ -263,8 +263,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                             <XHorizontal>
-                                <XButton onClick={this.loginReset} size="r-large" style="ghost" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                                <XButton onClick={this.loginCodeStart} size="r-large" style="primary-sky-blue" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
+                                <XButton onClick={this.loginReset} size="large" style="ghost" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                                <XButton onClick={this.loginCodeStart} size="large" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
                             </XHorizontal>
                         </ButtonsWrapper>
                     </div>
@@ -305,8 +305,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                     </ButtonsWrapper>
                     <ButtonsWrapper marginTop={20}>
                         <XHorizontal>
-                            <XButton onClick={this.loginReset} style="ghost" size="medium" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                            <XButton onClick={this.loginEmailStart} style="primary" size="medium" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
+                            <XButton onClick={this.loginReset} style="ghost" size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                            <XButton onClick={this.loginEmailStart} style="primary" size="large" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
                         </XHorizontal>
                     </ButtonsWrapper>
                 </>)}
@@ -319,8 +319,8 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                     </ButtonsWrapper>
                     <ButtonsWrapper marginTop={20}>
                         <XHorizontal>
-                            <XButton onClick={this.loginReset} size="medium" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                            <XButton onClick={this.loginCodeStart} size="medium" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
+                            <XButton onClick={this.loginReset} size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                            <XButton onClick={this.loginCodeStart} size="large" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
                         </XHorizontal>
                     </ButtonsWrapper>
                 </>)}

@@ -113,14 +113,12 @@ export class ProfileCard extends React.Component<ProfileCardProps, { isHovered: 
                         <ProfileToolsWrapper separator={5}>
                             {user.isYou
                                 ? (<XButton
-                                    style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                                    size="r-default"
+                                    style={this.state.isHovered ? 'primary' : 'default'}
                                     path={'/settings/profile'}
                                     text="Edit profile"
                                 />)
                                 : (<XButton
-                                    style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                                    size="r-default"
+                                    style={this.state.isHovered ? 'primary' : 'default'}
                                     path={'/mail/' + user.id}
                                     text="Message"
                                 />)

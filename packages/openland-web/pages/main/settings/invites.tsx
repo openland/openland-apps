@@ -335,8 +335,7 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
-                        style="primary-sky-blue"
-                        size="r-default"
+                        style="primary"
                         succesText={TextInvites.copied}
                         {...submitProps}
                         text={'Copy'}
@@ -346,8 +345,7 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                     <XFormSubmit
                         key="invites"
                         succesText="Invitations sent!"
-                        style="primary-sky-blue"
-                        size="r-default"
+                        style="primary"
                         keyDownSubmit={true}
                         {...submitProps}
                     />

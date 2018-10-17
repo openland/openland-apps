@@ -174,7 +174,6 @@ const Header = (props: { organizationQuery: Organization }) => {
                     <XWithRole role="super-admin" negate={true}>
                         <XWithRole role="admin" orgPermission={org.id}>
                             <XButton
-                                size="r-default"
                                 text="Edit profile"
                                 path={'/settings/organization/' + org.id}
                             />
@@ -182,13 +181,11 @@ const Header = (props: { organizationQuery: Organization }) => {
                     </XWithRole>
 
                     <XWithRole role="super-admin">
-                        < XButton
-                            size="r-default"
+                        <XButton
                             text="Edit profile"
                             path={'/settings/organization/' + org.id}
                         />
                         <XButton
-                            size="r-default"
                             text="Super edit"
                             path={'/super/orgs/' + org.superAccountId}
                         />
@@ -302,25 +299,25 @@ const About = (props: { organizationQuery: Organization }) => {
                                 {!org.about && (
                                     <AddSection>
                                         <AddSectionText>Describe your organization in a few sentences</AddSectionText>
-                                        <AboutPlaceholder target={<XButton text="About" style="light-blue" size="r-default" icon="add" />} />
+                                        <AboutPlaceholder target={<XButton text="About" style="light" icon="add" />} />
                                     </AddSection>
                                 )}
                                 {!hasLinks && (
                                     <AddSection>
                                         <AddSectionText>Add links to your website and social media</AddSectionText>
-                                        <SocialPlaceholder target={<XButton text="Links" style="light-blue" size="r-default" icon="add" />} />
+                                        <SocialPlaceholder target={<XButton text="Links" style="light" icon="add" />} />
                                     </AddSection>
                                 )}
                                 {!hasCategories && (
                                     <AddSection>
                                         <AddSectionText>Add categories</AddSectionText>
-                                        <CategoriesPlaceholder target={<XButton text="Categories" style="light-blue" size="r-default" icon="add" />} />
+                                        <CategoriesPlaceholder target={<XButton text="Categories" style="light" icon="add" />} />
                                     </AddSection>
                                 )}
                                 {!hasLocations && (
                                     <AddSection>
                                         <AddSectionText>Add locations where are you based or operate</AddSectionText>
-                                        <LocationPlaceholder target={<XButton text="Locations" style="light-blue" size="r-default" icon="add" />} />
+                                        <LocationPlaceholder target={<XButton text="Locations" style="light" icon="add" />} />
                                     </AddSection>
                                 )}
                             </AddSectionWrapper>
@@ -361,7 +358,6 @@ const About = (props: { organizationQuery: Organization }) => {
                                 <XButton
                                     href={org.website}
                                     icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text="Website"
                                 />
                             )}
@@ -369,7 +365,6 @@ const About = (props: { organizationQuery: Organization }) => {
                                 <XButton
                                     href={org.facebook}
                                     icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text="Facebook"
                                 />
                             )}
@@ -377,7 +372,6 @@ const About = (props: { organizationQuery: Organization }) => {
                                 <XButton
                                     href={org.linkedin}
                                     icon={<SocialIconWrapper><LinkedinIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text="Linkedin"
                                 />
                             )}
@@ -385,7 +379,6 @@ const About = (props: { organizationQuery: Organization }) => {
                                 <XButton
                                     href={org.twitter}
                                     icon={<SocialIconWrapper><TwitterIcon /></SocialIconWrapper>}
-                                    size="r-default"
                                     text="Twitter"
                                 />
                             )}
@@ -582,8 +575,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                 <MemberCardTools separator={5}>
                     <XButton
                         text="Message"
-                        size="r-default"
-                        style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
+                        style={this.state.isHovered ? 'primary' : 'default'}
                         path={`/mail/${user.id}`}
                     />
                     {this.props.iAmOwner && <XOverflow
@@ -664,7 +656,7 @@ const Members = (props: { organizationQuery: Organization }) => {
                         {organization.isMine && (
                             <XWithRole role="admin" orgPermission={organization.id}>
                                 <XSubHeaderRight>
-                                    <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" size="r-default" icon="add" />} />
+                                    <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" icon="add" />} />
                                 </XSubHeaderRight>
                             </XWithRole>
                         )}
@@ -770,8 +762,7 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                 <ChannelCardTools separator={5}>
                     <XButton
                         text="View"
-                        size="r-default"
-                        style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
+                        style={this.state.isHovered ? 'primary' : 'default'}
                         path={'/mail/' + channel.id}
                     />
                     <XWithRole role={['super-admin', 'editor']}>

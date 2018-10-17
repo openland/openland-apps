@@ -323,8 +323,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                         <XFormSubmit
                             succesText="Copied!"
                             key="link"
-                            style="primary-sky-blue"
-                            size="r-default"
+                            style="primary"
                             text="Copy"
                         />
                     </XHorizontal>
@@ -333,8 +332,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                     <XFormSubmit
                         key="invites"
                         succesText="Invitations sent!"
-                        style="primary-sky-blue"
-                        size="r-default"
+                        style="primary"
                         text="Send invitations"
                         keyDownSubmit={true}
                     />

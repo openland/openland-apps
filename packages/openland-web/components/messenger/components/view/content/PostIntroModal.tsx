@@ -311,8 +311,7 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                 <XFormSubmit
                     key="intro"
                     succesText="Intro posted!"
-                    style="primary-sky-blue"
-                    size="r-default"
+                    style="primary"
                     text="Send"
                     keyDownSubmit={true}
                 />

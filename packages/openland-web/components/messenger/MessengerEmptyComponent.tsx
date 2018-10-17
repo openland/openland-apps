@@ -51,8 +51,7 @@ export class MessengerEmptyComponent extends React.Component {
                     <Image />
                     <InfoText>Select a chat or start a new one</InfoText>
                     <XButton
-                        size="r-default"
-                        style="primary-sky-blue"
+                        style="primary"
                         text="New chat"
                         path="/mail/new"
                     />

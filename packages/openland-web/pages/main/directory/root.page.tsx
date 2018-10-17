@@ -474,8 +474,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                         )}
                                         <XButton
                                             text={TextDirectory.buttonSearch}
-                                            style="primary-sky-blue"
-                                            size="r-default"
+                                            style="primary"
                                             enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
                                             onClick={this.searchButtonHandler}
                                         />

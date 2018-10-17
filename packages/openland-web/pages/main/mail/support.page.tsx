@@ -1,114 +1,20 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import { withAllChats } from '../../../api/withAllChats';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
-import { XButton } from 'openland-x/XButton';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
-import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
 import { OrganizationProfile } from '../profile/ProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
-import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
-import { XLoader } from 'openland-x/XLoader';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import PlusIcon from '../../../components/icons/ic-add-medium.svg';
-import { XFont } from 'openland-x/XFont';
+import PlusIcon from '../../../components/icons/ic-add-medium-2.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { XThemeDefault } from 'openland-x/XTheme';
-import { XRouter } from 'openland-x-routing/XRouter';
 import { withRouter } from 'openland-x-routing/withRouter';
-
-let ChatContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    height: 'calc(100vh - 2px)',
-    width: '100%',
-    flexGrow: 1,
-    flexShrink: 0,
-    overflow: 'hidden'
-});
-
-let ChatListContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'calc(100vh - 2px)',
-    width: 345,
-    flexShrink: 0,
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: XThemeDefault.separatorColor,
-    backgroundColor: XThemeDefault.backgroundColor,
-    '@media (max-width: 1100px)': {
-        width: 300
-    },
-    '@media (max-width: 950px)': {
-        width: 230
-    }
-});
-
-let ConversationContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    flexShrink: 0,
-    height: 'calc(100vh - 2px)',
-    width: 'calc(100% - 345px)',
-    backgroundColor: XThemeDefault.backgroundColor,
-    justifyContent: 'center',
-    position: 'relative',
-    '@media (max-width: 1100px)': {
-        width: 'calc(100% - 300px)',
-    },
-    '@media (max-width: 950px)': {
-        width: 'calc(100% - 230px)',
-    }
-});
-
-const Header = Glamorous(XHorizontal)({
-    height: 48,
-    paddingLeft: 16,
-    paddingRight: 12,
-    marginTop: 3,
-    marginBottom: 4,
-    flexShrink: 0,
-});
-
-const Title = Glamorous.div({
-    ...XFont.h600
-});
-
-const OrganizationProfilContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
-    flexShrink: 0
-});
-
-const ChannelInviteFromLink = withChannelInviteInfo((props) => (
-    props.data && props.data.invite
-        ? props.data.invite.channel.myStatus === 'member'
-            ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} />
-            : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite} />
-        : <XLoader loading={true} />
-));
-
-const AddButton = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s'
-    },
-    '& svg > g > path:last-child': {
-        fill: '#fff'
-    }
-});
+import { ChatContainer, ChatListContainer, ConversationContainer, Header, Title, OrganizationProfilContainer, ChannelInviteFromLink, AddButton } from './root.page';
 
 let returnPath: string | undefined = undefined;
 
@@ -117,10 +23,10 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
     if (!canUseDOM) {
         return (
             <>
-            <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
-            <Scaffold>
-                {}
-            </Scaffold>
+                <XDocumentHead title={isCompose ? 'Compose' : 'Messages'} titleWithoutReverse={!isCompose} />
+                <Scaffold>
+                    {}
+                </Scaffold>
             </>
         );
     }
@@ -166,7 +72,7 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
 
     return (
         <>
-            <XDocumentHead title={isCompose ? 'Compose' : 'Mail'} />
+            <XDocumentHead title={isCompose ? 'Compose' : 'Messages'} titleWithoutReverse={!isCompose} />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <ChatContainer>
@@ -174,11 +80,11 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
                             <Header alignItems="center" justifyContent="space-between">
                                 <Title>Messages</Title>
                                 <AddButton
-                                    style="primary"
+                                    style="light"
                                     path="/mail/new"
                                     text="New"
                                     icon={<PlusIcon />}
-                                    size="r-small"
+                                    size="small"
                                 />
                             </Header>
                             <ChatsComponent emptyState={tab === 'empty'} />

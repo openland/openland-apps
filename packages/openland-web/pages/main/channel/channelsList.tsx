@@ -126,7 +126,7 @@ export const ChannelsList = withChatsAll((props) => (
             <ChannelsListItems>
                 <ChannelsItem path={'/channel/1'} title="Foreign investment" />
                 <ChannelsItem path={'/channel/2'} title="Data and analytics" unread={10}>
-                    <XButton size="r-tiny" style="primary-sky-blue" text={TextChannel.buttonRequestInvite} />
+                    <XButton size="tiny" style="primary" text={TextChannel.buttonRequestInvite} />
                 </ChannelsItem>
                 <ChannelsItem path={'/channel/3'} title="Request an intro" />
             </ChannelsListItems>

@@ -86,7 +86,7 @@ export const EmptyComponent = (props: { text: string, aloneMember: boolean, smal
                 channelTitle={props.channelTitle}
                 channelId={props.chatId}
                 target={
-                    <XButton size="r-default" style="primary-sky-blue" text="Send invitations" />
+                    <XButton style="primary" text="Send invitations" />
                 }
             />
         </EmptyContent>

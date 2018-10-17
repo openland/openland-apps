@@ -234,15 +234,13 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             {this.props.item.isMine && (
                                 <XButton
                                     style="ghost"
-                                    size="r-default"
                                     text={TextDirectory.labelYourOrganization}
                                     enabled={false}
                                 />
                             )}
                             {!this.props.item.isMine && !this.props.item.editorial && (
                                 <XButton
-                                    style={this.state.isHovered ? 'primary-sky-blue' : 'default'}
-                                    size="r-default"
+                                    style={this.state.isHovered ? 'primary' : 'default'}
                                     path={'/mail/' + this.props.item.id}
                                     text={TextDirectory.labelSendMessage}
                                 />

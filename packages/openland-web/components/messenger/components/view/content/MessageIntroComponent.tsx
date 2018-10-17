@@ -312,8 +312,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                         <SetAccesReactionButton variables={{ messageId: messageId, reaction: 'accept' }} userId={user!.id}>
                             <XButton
                                 text="Accept intro"
-                                style="primary-sky-blue"
-                                size="r-default"
+                                style="primary"
                                 alignSelf="flex-start"
                             />
                         </SetAccesReactionButton>

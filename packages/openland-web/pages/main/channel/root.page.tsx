@@ -123,7 +123,7 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
                             </ChannelsHeader>
                             <ChannelsList />
                             <ChannelsBottomContainer>
-                                <XButton size="r-default" text={TextChannel.buttonCreateChannel} icon="add" />
+                                <XButton text={TextChannel.buttonCreateChannel} icon="add" />
                             </ChannelsBottomContainer>
                         </ChannelsListContainer>
                         <ConversationContainer>

@@ -130,7 +130,6 @@ const Channels = withChatSearchChannels((props) => {
                                     text={StatusTitleMap[channel.myStatus]}
                                     path={path}
                                     style="ghost"
-                                    size="r-default"
                                     className={channel.myStatus}
                                 />
                                 <XWithRole role={['super-admin', 'editor']}>
@@ -240,8 +239,7 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
                         </XHorizontal>
                         <XButton
                             text="Search"
-                            style="primary-sky-blue"
-                            size="r-default"
+                            style="primary"
                         />
                     </SearchWrapper>
                     <FilterWrapper justifyContent="space-between" alignItems="center" flexShrink={0}>

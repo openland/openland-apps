@@ -141,7 +141,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                                         <XInput field="input.name" size="large" placeholder="Enter organization name" tooltipContent={<PopupWrapper>{InitTexts.create_profile.organizationPopup}</PopupWrapper>} />
                                     </XFormField>
                                 </XVertical>
-                                <XVertical separator={0}>
+                                <XVertical separator={4}>
                                     <XHorizontal>
                                         <XFormFieldTitle style={{ flexGrow: 1, marginTop: 0 }}>{InitTexts.create_profile.photo}</XFormFieldTitle>
                                         <XFormFieldTitle style={{ opacity: 0.4, marginTop: 0 }}>optional</XFormFieldTitle>
@@ -151,7 +151,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
                             </XHorizontal>
                         </XFormLoadingContent>
                         <XFooter padding={false}>
-                            <XFormSubmit style="primary" text={InitTexts.create_profile.continue} size="medium" alignSelf="flex-end" />
+                            <XFormSubmit size="large" style="primary" text={InitTexts.create_profile.continue} alignSelf="flex-end" />
                         </XFooter>
                     </XVertical>
                 </XForm>
@@ -246,12 +246,12 @@ class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: bo
                         </XFormLoadingContent>
                         <ResolveView view={!this.state.isOrgView}>
                             <SubmitWrapper>
-                                <XButton onClick={this.showOrgView} size="r-large" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
+                                <XButton onClick={this.showOrgView} size="large" style="primary" text={InitTexts.create_profile.continue} />
                             </SubmitWrapper>
                         </ResolveView>
                         <ResolveView view={this.state.isOrgView}>
                             <SubmitWrapper>
-                                <XFormSubmit size="r-large" style="primary-sky-blue" text={InitTexts.create_profile.continue} />
+                                <XFormSubmit size="large" style="primary" text={InitTexts.create_profile.continue} />
                             </SubmitWrapper>
                         </ResolveView>
                     </XForm>

@@ -123,8 +123,7 @@ const Accept = withChannelInvite((props) => {
     return (
         <XMutation mutation={props.invite}>
             <XButton
-                size="r-default"
-                style={((props as any).isHovered) ? 'primary-sky-blue' : 'default'}
+                style={((props as any).isHovered) ? 'primary' : 'default'}
                 text="Accept"
             />
         </XMutation>

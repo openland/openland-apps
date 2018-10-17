@@ -106,7 +106,7 @@ const CreateProfileForm = withProfileCreate((props) => {
                             </XHorizontal>
                         </XFormLoadingContent>
                         <XFooter padding={false}>
-                            <XFormSubmit style="primary" text={InitTexts.create_profile.continue} size="medium" alignSelf="flex-end" />
+                            <XFormSubmit style="primary" text={InitTexts.create_profile.continue} size="large" alignSelf="flex-end" />
                         </XFooter>
                     </XVertical>
                 </XForm>

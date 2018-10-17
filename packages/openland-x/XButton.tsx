@@ -6,11 +6,10 @@ import { XFlexStyles, applyFlex } from './basics/Flex';
 import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 
-export type XButtonSize = 'x-large' | 'large' | 'medium' | 'default' | 'small' | 'r-large' | 'r-default' | 'r-small' | 'r-tiny';
-export type XButtonStyle = 'primary' | 'primary-sky-blue' | 'light-blue' | 'danger' | 'default' | 'ghost' | 'electric' | 'flat' | 'link' | 'link_danger' | 'success';
+export type XButtonSize = 'large' | 'default' | 'small' | 'tiny';
+export type XButtonStyle = 'default' | 'primary' | 'success' | 'danger' | 'ghost' | 'electric' | 'flat' | 'light' | 'link' | 'link-danger';
 export type XButtonTooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface XButtonStyleProps extends XFlexStyles {
@@ -31,128 +30,63 @@ export interface XButtonStyleProps extends XFlexStyles {
 export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; }>>;
 
 let iconsIndentation = styleResolver({
-    'x-large': {
-        marginLeft: -8,
-        marginRight: 12
-    },
     'large': {
-        marginRight: 10
-    },
-    'medium': {
-        marginRight: 8
-    },
-    'default': {
-        marginRight: 6
-    },
-    'small': {
-        marginRight: 5
-    },
-
-    'r-large': {
         marginLeft: -4,
         marginRight: 4
     },
-    'r-default': {
+    'default': {
         marginLeft: -2,
         marginRight: 4
     },
-    'r-small': {
+    'small': {
         marginLeft: -2,
         marginRight: 4
     },
-    'r-tiny': {
+    'tiny': {
         marginLeft: -2,
         marginRight: 4
     }
 });
 
 let iconsIndentationRight = styleResolver({
-    'x-large': {
-        marginRight: -8,
-        marginLeft: 12
-    },
     'large': {
-        marginLeft: 10
-    },
-    'medium': {
-        marginLeft: 8
-    },
-    'default': {
-        marginLeft: 6
-    },
-    'small': {
-        marginLeft: 5
-    },
-
-    'r-large': {
         marginRight: -4,
         marginLeft: 8
     },
-    'r-default': {
+    'default': {
         marginRight: -2,
         marginLeft: 8
     },
-    'r-small': {
+    'small': {
         marginRight: -2,
         marginLeft: 8
     },
-    'r-tiny': {
+    'tiny': {
         marginRight: -2,
         marginLeft: 8
     }
 });
 
 let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => ({
-    'x-large': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
-    },
     'large': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 6,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 6,
-    },
-    'medium': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
-    },
-    'default': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
-    },
-    'small': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
-    },
-
-    'r-large': {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
     },
-    'r-default': {
+    'default': {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
     },
-    'r-small': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+    'small': {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 14,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 14,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 14,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 14,
     },
-    'r-tiny': {
+    'tiny': {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
@@ -161,62 +95,18 @@ let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'rig
 }));
 
 let sizeStyles = styleResolver({
-    'x-large': {
-        height: 56,
-        lineHeight: '56px',
-        fontSize: 18,
-        letterSpacing: -0.4,
-        fontWeight: 500,
-        '& .button-content': {
-            paddingLeft: 32,
-            paddingRight: 32
-        },
-        '& .icon.material': {
-            width: 32,
-            fontSize: 28,
-            lineHeight: '56px',
-        },
-        '& .loading-icon': {
-            width: 56,
-            height: 56,
-            lineHeight: 'normal',
-            top: 'calc(50% - 28px)',
-            left: 'calc(50% - 28px)'
-        }
-    },
     'large': {
-        height: 48,
-        lineHeight: '48px',
-        fontSize: 18,
-        letterSpacing: -0.4,
-        fontWeight: 500,
-        '& .button-content': {
-            paddingLeft: 26,
-            paddingRight: 26
-        },
-        '& .icon.material': {
-            fontSize: 24
-        },
-        '& .loading-icon': {
-            width: 48,
-            height: 48,
-            lineHeight: 'normal',
-            top: 'calc(50% - 24px)',
-            left: 'calc(50% - 24px)'
-        }
-    },
-    'medium': {
         height: 40,
-        lineHeight: '40px',
+        lineHeight: '38px',
         fontSize: 15,
-        letterSpacing: -0.2,
-        fontWeight: 500,
+        letterSpacing: 0,
+        fontWeight: 600,
         '& .button-content': {
             paddingLeft: 20,
             paddingRight: 20
         },
         '& .icon.material': {
-            fontSize: 20
+            fontSize: 24
         },
         '& .loading-icon': {
             width: 40,
@@ -228,74 +118,10 @@ let sizeStyles = styleResolver({
     },
     'default': {
         height: 32,
-        lineHeight: '32px',
-        fontSize: 14,
-        letterSpacing: -0.2,
-        fontWeight: 500,
-        '& .button-content': {
-            paddingLeft: 14,
-            paddingRight: 14
-        },
-        '& .icon.material': {
-            fontSize: 16
-        },
-        '& .loading-icon': {
-            width: 32,
-            height: 32,
-            lineHeight: 'normal',
-            top: 'calc(50% - 16px)',
-            left: 'calc(50% - 16px)'
-        }
-    },
-    'small': {
-        height: 24,
-        lineHeight: '24px',
-        fontSize: 12,
-        letterSpacing: -0.3,
-        fontWeight: 500,
-        '& .button-content': {
-            paddingLeft: 10,
-            paddingRight: 10
-        },
-        '& .icon.material': {
-            fontSize: 14
-        },
-        '& .loading-icon': {
-            width: 24,
-            height: 24,
-            lineHeight: 'normal',
-            top: 'calc(50% - 12px)',
-            left: 'calc(50% - 12px)'
-        }
-    },
-
-    'r-large': {
-        height: 40,
-        lineHeight: '38px',
-        fontSize: 16,
-        letterSpacing: -0.5,
-        fontWeight: 500,
-        '& .button-content': {
-            paddingLeft: 20,
-            paddingRight: 20
-        },
-        '& .icon.material': {
-            fontSize: 24
-        },
-        '& .loading-icon': {
-            width: 40,
-            height: 40,
-            lineHeight: 'normal',
-            top: 'calc(50% - 20px)',
-            left: 'calc(50% - 20px)'
-        }
-    },
-    'r-default': {
-        height: 32,
         lineHeight: '30px',
-        fontSize: 14,
-        letterSpacing: -0.4,
-        fontWeight: 500,
+        fontSize: 13,
+        letterSpacing: 0,
+        fontWeight: 600,
         '& .button-content': {
             paddingLeft: 16,
             paddingRight: 16
@@ -311,12 +137,12 @@ let sizeStyles = styleResolver({
             left: 'calc(50% - 16px)'
         }
     },
-    'r-small': {
+    'small': {
         height: 28,
         lineHeight: '26px',
-        fontSize: 14,
-        letterSpacing: -0.4,
-        fontWeight: 500,
+        fontSize: 13,
+        letterSpacing: 0,
+        fontWeight: 600,
         '& .button-content': {
             paddingLeft: 12,
             paddingRight: 12
@@ -332,15 +158,15 @@ let sizeStyles = styleResolver({
             left: 'calc(50% - 14px)'
         }
     },
-    'r-tiny': {
+    'tiny': {
         height: 18,
         lineHeight: '16px',
-        fontSize: 12,
-        letterSpacing: 0.3,
+        fontSize: 11,
+        letterSpacing: 0,
         fontWeight: 600,
         '& .button-content': {
-            paddingLeft: 8,
-            paddingRight: 8
+            paddingLeft: 9,
+            paddingRight: 9
         },
         '& .icon.material': {
             fontSize: 12
@@ -357,16 +183,16 @@ let sizeStyles = styleResolver({
 
 let colorStyles = styleResolver({
     'default': {
-        backgroundColor: '#e2e2e2',
-        color: '#575757',
+        backgroundColor: '#f6f6f6',
+        color: 'rgba(0, 0, 0, 0.7)',
         border: 'solid 1px transparent',
         '&:hover': {
-            backgroundColor: '#c6c6c8',
-            color: '#334562'
+            backgroundColor: '#e6e9ec',
+            color: 'rgba(0, 0, 0, 0.7)'
         },
         '&:active': {
-            backgroundColor: '#b3b3b5',
-            color: '#fff'
+            backgroundColor: '#1790ff',
+            color: '#ffffff'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -377,11 +203,11 @@ let colorStyles = styleResolver({
         color: '#ffffff',
         border: 'solid 1px transparent',
         '&:hover': {
-            backgroundColor: '#4F85DF',
+            backgroundColor: '#1585ed',
             color: '#ffffff'
         },
         '&:active': {
-            backgroundColor: '#4B7DD2',
+            backgroundColor: '#147ee0',
             color: '#ffffff'
         },
         '&:focus': {
@@ -420,15 +246,17 @@ let colorStyles = styleResolver({
     },
     'ghost': {
         backgroundColor: '#ffffff',
-        color: '#334562',
-        border: 'solid 1px #dcdee4',
+        color: 'rgba(0, 0, 0, 0.7)',
+        border: 'solid 1px rgba(0, 0, 0, 0.07)',
         '&:hover': {
-            backgroundColor: '#f3f3f5',
-            color: '#334562'
+            backgroundColor: 'rgba(23, 144, 255, 0.08)',
+            color: 'rgba(23, 144, 255, 0.9)',
+            borderColor: 'transparent'
         },
         '&:active': {
-            backgroundColor: '#117fe4',
-            color: '#fff'
+            backgroundColor: '#1790ff',
+            color: '#ffffff',
+            borderColor: 'transparent'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -436,15 +264,16 @@ let colorStyles = styleResolver({
     },
     'electric': {
         backgroundColor: '#ffffff',
-        color: '#5640d6',
-        border: 'solid 1px #654bfa',
+        color: 'rgba(23, 144, 255, 0.9)',
+        border: 'solid 1px #1790ff',
         '&:hover': {
-            backgroundColor: 'rgba(238, 236, 250, 0.39)',
+            backgroundColor: 'rgba(23, 144, 255, 0.08)',
+            color: 'rgba(23, 144, 255, 0.9)'
         },
         '&:active': {
-            backgroundColor: '#117fe4',
-            border: 'solid 1px transparent',
-            color: '#fff'
+            backgroundColor: '#1790ff',
+            color: '#ffffff',
+            borderColor: 'transparent'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
@@ -452,90 +281,83 @@ let colorStyles = styleResolver({
     },
     'flat': {
         backgroundColor: 'transparent',
-        color: '#334562',
+        color: 'rgba(0, 0, 0, 0.7)',
         border: 'solid 1px transparent',
         '&:hover': {
-            color: '#334562',
-            border: 'solid 1px #dcdee4'
+            color: 'rgba(0, 0, 0, 0.7)',
+            border: 'solid 1px rgba(0, 0, 0, 0.07)'
         },
         '&:active': {
-            backgroundColor: '#EDF7FF',
-            border: 'solid 1px transparent',
-            color: '#1790ff',
+            backgroundColor: 'rgba(23, 144, 255, 0.08)',
+            color: 'rgba(23, 144, 255, 0.9)',
+            borderColor: 'transparent'
         },
         '&:focus': {
             boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
-
-    'link': {
-        color: '#765efd',
+    'light': {
+        backgroundColor: 'rgba(23, 144, 255, 0.08)',
+        color: 'rgba(23, 144, 255, 0.9)',
         border: 'solid 1px transparent',
         '&:hover': {
+            backgroundColor: 'rgba(23, 144, 255, 0.12)',
+            color: 'rgba(23, 144, 255, 0.9)'
+        },
+        '&:active': {
+            backgroundColor: 'rgba(23, 144, 255, 0.16)',
+            color: 'rgba(23, 144, 255, 0.9)'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        }
+    },
+    'link': {
+        color: 'rgba(23, 144, 255, 0.9)',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            color: 'rgba(23, 144, 255, 0.9)',
+            textDecoration: 'underline'
+        },
+        '&:active': {
+            color: 'rgba(23, 144, 255, 0.9)',
             textDecoration: 'underline'
         },
         '&:focus': {
+            color: 'rgba(23, 144, 255, 0.9)',
             textDecoration: 'underline'
         }
     },
-
-    'link_danger': {
+    'link-danger': {
         color: '#d75454',
         border: 'solid 1px transparent',
         '&:hover': {
-            color: '#ec6262',
+            color: '#d75454',
+            textDecoration: 'underline'
+        },
+        '&:active': {
+            color: '#d75454',
             textDecoration: 'underline'
         },
         '&:focus': {
+            color: '#d75454',
             textDecoration: 'underline'
-        }
-    },
-
-    'primary-sky-blue': {
-        backgroundColor: '#1790ff',
-        color: '#ffffff',
-        border: 'solid 1px transparent',
-        '&:hover': {
-            backgroundColor: '#45a6ff',
-            color: '#ffffff'
-        },
-        '&:active': {
-            backgroundColor: '#117fe4',
-            color: '#ffffff'
-        },
-        '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
-    },
-
-    'light-blue': {
-        backgroundColor: 'rgba(23, 144, 255, 0.08)',
-        color: '#1790ff',
-        border: 'solid 1px transparent',
-        '&:hover': {
-            backgroundColor: 'rgba(23, 144, 255, 0.10)',
-            color: '#1790ff'
-        },
-        '&:active': {
-            backgroundColor: 'rgba(23, 144, 255, 0.15)',
-            color: '#1790ff'
-        },
-        '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
         }
     },
 });
 
 let colorDisabledStyles = styleResolver({
     'default': {
-        backgroundColor: '#f3f3f5 !important',
-        color: 'rgba(51, 69, 98, 0.7) !important',
+        backgroundColor: '#f6f6f6 !important',
+        color: 'rgba(0, 0, 0, 0.4) !important',
         border: 'solid 1px transparent !important',
     },
     'primary': {
-        backgroundColor: '#CECECE !important',
-        color: 'rgba(255, 255, 255, 0.7) !important',
+        backgroundColor: '#45a6ff !important',
+        color: 'rgba(255, 255, 255, 0.5) !important',
         border: 'solid 1px transparent !important',
+    },
+    'success': {
     },
     'danger': {
         backgroundColor: '#e28787 !important',
@@ -544,46 +366,42 @@ let colorDisabledStyles = styleResolver({
     },
     'ghost': {
         backgroundColor: '#ffffff !important',
-        color: 'rgba(51, 69, 98, 0.7) !important',
-        border: 'solid 1px #dcdee4 !important',
+        color: 'rgba(0, 0, 0, 0.4) !important',
+        border: 'solid 1px rgba(0, 0, 0, 0.07) !important',
     },
     'electric': {
         backgroundColor: '#ffffff !important',
-        color: 'rgba(86, 64, 214, 0.7) !important',
-        border: 'solid 1px #b1a4f9 !important',
+        color: 'rgba(23, 144, 255, 0.4) !important',
+        border: 'solid 1px rgba(23, 144, 255, 0.5) !important',
     },
     'flat': {
         backgroundColor: '#ffffff !important',
-        color: 'rgba(51, 69, 98, 0.7) !important',
+        color: 'rgba(0, 0, 0, 0.4) !important',
+        border: 'solid 1px transparent !important',
+    },
+    'light': {
+        backgroundColor: 'rgba(23, 144, 255, 0.08) !important',
+        color: 'rgba(23, 144, 255, 0.4) !important',
         border: 'solid 1px transparent !important',
     },
     'link': {
-        color: 'rgba(51, 69, 98, 0.7) !important',
     },
-    'link_danger': {
-        color: '#e28787 !important',
-    },
-    'primary-sky-blue': {
-        backgroundColor: '#45a6ff !important',
-        border: 'solid 1px transparent !important',
-        color: '#c7e4ff !important'
-    },
-    'success': {
-    },
-    'light-blue': {
-    },
+    'link-danger': {
+    }
 });
 
 let colorPressedStyles = styleResolver({
     'default': {
-        backgroundColor: '#117fe4 !important',
-        border: 'solid 1px transparent !important',
-        color: '#fff !important'
-    },
-    'primary': {
-        backgroundColor: '#5640d6 !important',
+        backgroundColor: '#1790ff !important',
         border: 'solid 1px transparent !important',
         color: '#ffffff !important'
+    },
+    'primary': {
+        backgroundColor: '#147ee0 !important',
+        border: 'solid 1px transparent !important',
+        color: '#ffffff !important'
+    },
+    'success': {
     },
     'danger': {
         backgroundColor: '#c54f4f !important',
@@ -591,48 +409,37 @@ let colorPressedStyles = styleResolver({
         color: '#ffffff !important'
     },
     'ghost': {
-        backgroundColor: '#117fe4 !important',
-        border: 'solid 1px transparent !important',
-        color: '#fff !important'
-    },
-    'electric': {
-        backgroundColor: '#117fe4 !important',
-        border: 'solid 1px transparent !important',
-        color: '#fff !important'
-    },
-    'flat': {
-        backgroundColor: '#117fe4 !important',
-        border: 'solid 1px transparent !important',
-        color: '#fff !important'
-    },
-    'link': {
-    },
-    'link_danger': {
-    },
-    'primary-sky-blue': {
-        backgroundColor: '#117fe4 !important',
+        backgroundColor: '#1790ff !important',
         border: 'solid 1px transparent !important',
         color: '#ffffff !important'
     },
-    'success': {
+    'electric': {
+        backgroundColor: '#1790ff !important',
+        border: 'solid 1px transparent !important',
+        color: '#ffffff !important'
     },
-    'light-blue': {
+    'flat': {
+        backgroundColor: 'rgba(23, 144, 255, 0.08) !important',
+        border: 'solid 1px transparent !important',
+        color: 'rgba(23, 144, 255, 0.9) !important'
     },
+    'light': {
+        backgroundColor: 'rgba(23, 144, 255, 0.16) !important',
+        border: 'solid 1px transparent !important',
+        color: 'rgba(23, 144, 255, 0.9) !important'
+    },
+    'link': {
+    },
+    'link-danger': {
+    }
 });
 
 let colorResponsiveStyles = styleResolver({
     'default': {
-        background: 'none!important',
-        color: '#939ca8!important',
-
-        '&:hover': {
-            color: '#85c4ff!important'
-        },
-        '&:active': {
-            color: '#1790ff!important'
-        },
     },
     'primary': {
+    },
+    'success': {
     },
     'danger': {
     },
@@ -642,16 +449,12 @@ let colorResponsiveStyles = styleResolver({
     },
     'flat': {
     },
+    'light': {
+    },
     'link': {
     },
-    'link_danger': {
-    },
-    'primary-sky-blue': {
-    },
-    'success': {
-    },
-    'light-blue': {
-    },
+    'link-danger': {
+    }
 });
 
 let loaderStyles = styleResolver({
@@ -661,6 +464,9 @@ let loaderStyles = styleResolver({
     'primary': {
         color: '#ffffff'
     },
+    'success': {
+        color: '#ffffff'
+    },
     'danger': {
         color: '#ffffff'
     },
@@ -668,22 +474,17 @@ let loaderStyles = styleResolver({
         color: '#334562'
     },
     'electric': {
-        color: '#5640d6'
+        color: '#1790ff'
     },
     'flat': {
         color: '#334562'
     },
-    'link': {
-        color: '#5640d6'
-    },
-    'primary-sky-blue': {
-        color: '#ffffff'
-    },
-    'success': {
-        color: '#ffffff'
-    },
-    'light-blue': {
+    'light': {
         color: '#1790ff'
+    },
+    'link': {
+    },
+    'link-danger': {
     }
 });
 
@@ -781,12 +582,12 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
 }));
 
 const ButtonText = Glamorous.span<StyledButtonTextProps>([
-    (props) => ({
+    {
         maxWidth: '100%',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
-    }),
+    },
     (props) => (props.responsive && {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
             maxWidth: 'initial',
@@ -835,15 +636,13 @@ interface StyledButtonProps extends XFlexStyles {
 }
 
 const StyledButton = Glamorous.a<StyledButtonProps>([
-    (props) => ({
+    {
         display: 'flex', boxSizing: 'border-box',
         '& .loading-icon': {
             position: 'absolute',
-            // left: 'calc(50% - 10px)',
-            // top: 'calc(50% - 10px)',
         },
         '& .icon-responsive': { display: 'none' }
-    }),
+    },
     (props) => ({
         pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
         cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
