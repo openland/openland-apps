@@ -82,7 +82,7 @@ const NavigationScroller = Glamorous(XScrollView)({
     minHeight: '100%',
     height: '100%',
     width: 64,
-    backgroundColor: XThemeDefault.backyardColor,
+    backgroundColor: '#f6f6f6',
     borderRightWidth: '1px',
     borderRightStyle: 'solid',
     borderRightColor: XThemeDefault.separatorColor,
@@ -107,14 +107,9 @@ const NavigationDivider = Glamorous.div<{ top?: number, bottom?: number }>((prop
     marginTop: (typeof props.top !== undefined) ? props.top : 3,
     marginBottom: (typeof props.bottom !== undefined) ? props.bottom : 3,
     alignSelf: 'center',
-    backgroundColor: XThemeDefault.separatorColor,
+    backgroundColor: 'rgba(220, 222, 228, 0.6)',
     flexShrink: 0,
 }));
-
-const NavigatorIcon = Glamorous(XIcon)({
-    fontSize: 28,
-    textAlign: 'center'
-});
 
 const NavigatorItem = Glamorous(XLink)({
     position: 'relative',
@@ -126,15 +121,15 @@ const NavigatorItem = Glamorous(XLink)({
     height: 55,
     flexShrink: 0,
     cursor: 'pointer',
-    color: '#99a2b0',
+    color: '#b4b8bd',
 
     '& > svg *': {
         fill: '#b4b8bd',
     },
 
     '.is-active': {
-        color: '#99a2b0',
-        backgroundColor: '#ececec!important',
+        color: '#b4b8bd',
+        backgroundColor: 'rgba(0, 0, 0, 0.04)!important',
         '& > .reports .hover': {
             display: 'block'
         },
@@ -143,8 +138,8 @@ const NavigatorItem = Glamorous(XLink)({
         },
     },
     '&:hover': {
-        color: '#99a2b0',
-        backgroundColor: '#ececec',
+        color: '#b4b8bd',
+        backgroundColor: 'rgba(0, 0, 0, 0.04)',
         '& > .reports .hover': {
             display: 'block'
         },
