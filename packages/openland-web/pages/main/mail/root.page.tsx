@@ -59,6 +59,7 @@ export let ConversationContainer = Glamorous.div({
     flexGrow: 1,
     flexShrink: 0,
     height: '100%',
+    maxHeight: '100vh',
     width: 'calc(100% - 345px)',
     backgroundColor: XThemeDefault.backgroundColor,
     justifyContent: 'center',

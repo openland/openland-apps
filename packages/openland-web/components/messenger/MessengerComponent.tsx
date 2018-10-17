@@ -651,7 +651,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 justifyContent="center"
                 width="100%"
                 height="calc(100% - 56px)"
-                maxHeight="calc(100vh - 56px)"
             >
                 {tab === 'chat' && (
                     <MessengerRootComponent
