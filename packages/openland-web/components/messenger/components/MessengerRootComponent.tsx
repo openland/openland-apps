@@ -62,7 +62,7 @@ const LeaveChatComponent = withChatLeave((props) => {
             }}
             submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
-            <XText>Are you sure you want to leave from chat? This cannot be undone.</XText>
+            <XText>Are you sure you want to leave the chat? This cannot be undone.</XText>
         </XModalForm >
     );
 });

@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { View, Animated, StatusBar, Dimensions, Platform } from 'react-native';
+import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { FastImageViewer } from 'react-native-s/FastImageViewer';
+import { SShareButton } from 'react-native-s/SShareButton';
+import { ActionSheetBuilder } from '../ActionSheet';
+import Share from 'react-native-share';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -119,6 +122,13 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         }
     }
 
+    handleShareClick = () => {
+        let builder = new ActionSheetBuilder();
+        builder.action('Share', () => Share.open({ url: this.props.config.url } as any));
+        builder.action('Save to Camera Roll', () => CameraRoll.saveToCameraRoll(this.props.config.url, 'photo').then());
+        builder.show();
+    }
+
     componentWillMount() {
         if (Platform.OS === 'ios') {
             StatusBar.setBarStyle('light-content');
@@ -210,7 +220,6 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         )}
                     </FastImageViewer>
                 </View>
-
                 <Animated.View
                     style={{
                         height: SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top,
@@ -225,8 +234,12 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         // }]
                     }}
                 >
-                    <SCloseButton tintColor="#fff" onPress={this.handleCloseClick} />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <SCloseButton tintColor="#fff" onPress={this.handleCloseClick} />
+                        <SShareButton tintColor="#fff" onPress={this.handleShareClick} />
+                    </View>
                 </Animated.View>
+
             </View>
         );
     }
