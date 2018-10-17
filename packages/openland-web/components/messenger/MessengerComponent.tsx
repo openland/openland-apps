@@ -72,6 +72,7 @@ const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontWeight: 600,
     color: '#000',
     opacity: 0.4,
+    letterSpacing: -0.2,
     cursor: props.href ? 'pointer' : undefined,
     marginBottom: -1,
     marginTop: props.onClick ? 2 : undefined
@@ -430,7 +431,7 @@ const LastSeen = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <LastSeenWrapper online={false}>
-                <span>last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" /></span>
+                <span>Last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" /></span>
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
