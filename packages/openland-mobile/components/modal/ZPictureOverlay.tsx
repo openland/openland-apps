@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll } from 'react-native';
+import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll, Alert } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
@@ -9,6 +9,8 @@ import { FastImageViewer } from 'react-native-s/FastImageViewer';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { ActionSheetBuilder } from '../ActionSheet';
 import Share from 'react-native-share';
+import RNFS from 'react-native-fs';
+import UUID from 'uuid/v4';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -123,10 +125,15 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     handleShareClick = () => {
-        let builder = new ActionSheetBuilder();
-        builder.action('Share', () => Share.open({ url: this.props.config.url } as any));
-        builder.action('Save to Camera Roll', () => CameraRoll.saveToCameraRoll(this.props.config.url, 'photo').then());
-        builder.show();
+        if (Platform.OS === 'ios') {
+            let builder = new ActionSheetBuilder();
+            builder.action('Share', () => Share.open({ url: this.props.config.url } as any));
+            let from = this.props.config.url;
+            let to = RNFS.CachesDirectoryPath + '/' + UUID() + '.png';
+            builder.action('Save to Camera Roll', () => RNFS.copyFile(from, to).then(r => CameraRoll.saveToCameraRoll(to)).catch(e => console.warn(e)));
+            builder.show();
+        }
+
     }
 
     componentWillMount() {
