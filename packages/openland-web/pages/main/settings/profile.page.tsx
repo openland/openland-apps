@@ -22,7 +22,8 @@ import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 
 const Content = Glamorous(XContent)({
-    paddingTop: 20
+    paddingTop: 20,
+    flexGrow: 1
 });
 
 const HeadTitle = Glamorous.div({

@@ -51,7 +51,7 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
     return (
         <Navigation title="Notifications">
             <Content>
-                <XVertical separator={12}>
+                <XVertical separator={12} maxWidth={480}>
                     <HeadTitle>Notifications</HeadTitle>
 
                     <XForm
