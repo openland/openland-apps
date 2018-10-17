@@ -22,9 +22,9 @@ const TextInputWrapper = Glamorous.div({
         height: '100%',
         '& .DraftEditor-root': {
             overflow: 'auto',
-            borderRadius: 20,
+            borderRadius: 10,
             backgroundColor: '#fff',
-            border: 'solid 1px #e4e6e9',
+            border: 'solid 1px #ececec',
             minHeight: 40,
             maxHeight: 'initial',
             paddingTop: 9,
@@ -142,7 +142,7 @@ const EditMessageInline = withEditMessage((props) => {
                 message: text
             }}
         >
-            <TextInputWrapper>
+            <TextInputWrapper style={{ marginRight: 15 }}>
                 <XTextInput valueStoreKey="fields.message" />
             </TextInputWrapper>
 
