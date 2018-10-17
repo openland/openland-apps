@@ -32,6 +32,7 @@ export interface XInputBasicProps extends XFlexStyles {
     onEnter?: () => void;
     cleanable?: boolean;
     onFocus?: () => void;
+    onBlur?: () => void;
 }
 
 let sizeStyles = styleResolver({
@@ -218,17 +219,6 @@ let titleStyles = styleResolver({
     }
 });
 
-const Title = Glamorous.div<{ format?: XInputSize }>([
-    {
-        position: 'absolute',
-        paddingLeft: 3,
-        paddingRight: 3,
-        backgroundColor: 'white',
-        color: 'rgba(0, 0, 0, 0.4)'
-    },
-    (props) => titleStyles(props.format),
-]);
-
 const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyle, invalid?: boolean, format?: XInputSize, attach?: XInputAttach }>([
     (props) => ({
         position: 'relative',
@@ -269,7 +259,7 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
 ]);
 
 const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
-    (props) => ({
+    {
         width: '100%',
         height: '100%',
         fontSize: 'inherit',
@@ -278,7 +268,7 @@ const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
         '&::placeholder': {
             color: '#9d9d9d'
         }
-    }),
+    },
     (props) => IconPaddingStyles(props.format, !!props.icon),
     (props) => NonIconPaddingStyles(props.format, !props.icon),
     (props) => RequiredPaddingStyles(props.format, !!props.required),
@@ -302,6 +292,17 @@ const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize 
     }),
     (props) => IconPaddingStyles(props.format, !!props.icon),
     (props) => NonIconPaddingStyles(props.format, !props.icon),
+]);
+
+const Title = Glamorous.div<{ format?: XInputSize }>([
+    {
+        position: 'absolute',
+        paddingLeft: 3,
+        paddingRight: 3,
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.4)'
+    },
+    (props) => titleStyles(props.format),
 ]);
 
 const PopperPlaceholder = Glamorous.div({
@@ -336,19 +337,45 @@ const ClearButton = Glamorous.a({
     cursor: 'pointer'
 });
 
-export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: string }> {
+interface XInputBasicState {
+    value: string;
+    titleInside: boolean;
+    isFocused: boolean;
+}
+
+export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBasicState> {
     inputRef: any | null = null;
 
     constructor(props: XInputBasicProps) {
         super(props);
 
-        this.state = {
-            value: this.props.value || ''
-        };
+        if (this.props.value && this.props.value.length > 0) {
+            this.state = {
+                value: this.props.value,
+                titleInside: false,
+                isFocused: false
+            };
+        } else {
+            this.state = {
+                value: '',
+                titleInside: true,
+                isFocused: false
+            };
+        }
     }
 
     componentWillReceiveProps(props: XInputBasicProps) {
-        this.setState({ value: props.value || '' });
+        if (props.value && props.value.length > 0) {
+            this.setState({
+                value: props.value,
+                titleInside: false
+            });
+        } else {
+            this.setState({
+                value: '',
+                titleInside: !this.state.isFocused
+            });
+        }
     }
 
     handleRef = (e: any) => {
@@ -395,6 +422,28 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
         this.inputRef.focus();
     }
 
+    handleFocus = () => {
+        this.setState({
+            titleInside: false,
+            isFocused: true
+        });
+
+        if (this.props.onFocus) {
+            this.props.onFocus();
+        }
+    }
+
+    handleBlur = () => {
+        this.setState({
+            titleInside: this.state.value.length <= 0,
+            isFocused: false
+        });
+
+        if (this.props.onBlur) {
+            this.props.onBlur();
+        }
+    }
+
     render() {
         const {
             type,
@@ -415,6 +464,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
             color,
             cleanable,
             onFocus,
+            onBlur,
             title,
             ...other
         } = this.props;
@@ -432,7 +482,26 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
                 invalid={invalid}
                 disabled={disabled}
             >
-                {title && (<Title format={size}>{title}</Title>)}
+                {title && (
+                    <>
+                        {!this.state.titleInside && (
+                            <Title format={size}>
+                                {title}
+                                {required && <RequireElement className="required-star">*</RequireElement>}
+                            </Title>
+                        )}
+                        {this.state.titleInside && (
+                            <InputPlaceholder
+                                className="input-placeholder"
+                                icon={icon}
+                                format={size}
+                            >
+                                <span>{title}</span>
+                                {required && <RequireElement className="required-star">*</RequireElement>}
+                            </InputPlaceholder>
+                        )}
+                    </>
+                )}
                 {icon && (
                     typeof (icon) === 'string'
                         ? <XIcon icon={icon} className="icon" />
@@ -456,7 +525,8 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, { value: 
                     autoSelect={autoSelect}
                     innerRef={this.handleRef}
                     onKeyPress={this.handleKey}
-                    onFocus={onFocus}
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
                 />
                 {(placeholder && (!v || v === '')) && (
                     <InputPlaceholder

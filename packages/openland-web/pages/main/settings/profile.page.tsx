@@ -95,8 +95,8 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                             <XFormLoadingContent>
                                                 <XHorizontal separator={12}>
                                                     <XVertical flexGrow={1} maxWidth={480}>
-                                                        <XInput title="First name" field="input.firstName" size="large" placeholder="First name" />
-                                                        <XInput title="Last name" field="input.lastName" size="large" placeholder="Last name" />
+                                                        <XInput title="First name" field="input.firstName" size="large" />
+                                                        <XInput title="Last name" field="input.lastName" size="large" />
                                                         <XSelect
                                                             rounded={true}
                                                             field="input.primaryOrganizationId"
@@ -104,7 +104,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                             clearable={false}
                                                             options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))}
                                                         />
-                                                        <XInput field="input.role" size="large" placeholder="Role" />
+                                                        <XInput title="Position" field="input.role" size="large" />
                                                     </XVertical>
                                                     <XAvatarUpload field="input.photoRef" />
                                                 </XHorizontal>
@@ -145,10 +145,10 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                         <XVertical maxWidth={480} separator={12}>
                                             <XFormLoadingContent>
                                                 <XVertical>
-                                                    <XInput field="input.phone" size="large" placeholder="Phone number" />
-                                                    <XInput field="input.email" size="large" placeholder="Email" />
-                                                    <XInput field="input.website" size="large" placeholder="Website" />
-                                                    <XInput field="input.linkedin" size="large" placeholder="LinkedIn" />
+                                                    <XInput field="input.phone" size="large" title="Phone number" />
+                                                    <XInput field="input.email" size="large" title="Email" />
+                                                    <XInput field="input.website" size="large" title="Website" />
+                                                    <XInput field="input.linkedin" size="large" title="LinkedIn" />
                                                     <XSelect
                                                         placeholder="Primary location"
                                                         rounded={true}
