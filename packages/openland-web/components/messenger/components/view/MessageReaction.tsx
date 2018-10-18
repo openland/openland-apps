@@ -6,7 +6,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { Picker } from 'emoji-mart';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
-import ReactionIcon from '../icons/ic-reaction.svg';
+import ReactionIcon from '../icons/ic-emoji2.svg';
 
 const CustomContentDiv = Glamorous(XPopper.Content)({
     padding: 0,
@@ -21,8 +21,9 @@ const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }
     cursor: 'pointer',
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
-    '&:hover svg > g': {
-        fill: '#1790ff'
+    '&:hover svg > path': {
+        fill: '#1790ff',
+        opacity: 1
     }
 }));
 
@@ -224,7 +225,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             this.props.reactions && this.props.reactions.length > 0 ? (
                 <ReactionsWrapper className="reactions-wrapper">
                     {this.reactionsRender()}
-                    <ReactionComponent messageId={this.props.messageId} marginTop={2} marginLeft={12} />
+                    <ReactionComponent messageId={this.props.messageId} marginTop={5} marginLeft={10} />
                 </ReactionsWrapper>
             ) : null
         );
