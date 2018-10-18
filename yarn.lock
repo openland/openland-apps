@@ -12082,14 +12082,6 @@ react-native-fast-image@^4.0.14:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-fs@^2.11.18:
-  version "2.11.18"
-  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.11.18.tgz#5ad9fd6d565b1bb2d77242c7a6103229e2e43170"
-  integrity sha512-ICU2g47C2+6D3VxlqYCYy+QBUe1v9JvTN5jhcCGMDn4ckQlgmYBVENePZsppwMLdTasp4bYmtF3MmHhqSvcHYQ==
-  dependencies:
-    base-64 "^0.1.0"
-    utf8 "^2.1.1"
-
 react-native-gesture-handler@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.7.tgz#86677c709c42d04555210cad9759b09e2c657720"
@@ -14896,11 +14888,6 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
-
-utf8@^2.1.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
-  integrity sha1-H6DZJw6b6FDZsFAn9jUZv0ZFfZY=
 
 util-deprecate@~1.0.1:
   version "1.0.2"
