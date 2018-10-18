@@ -323,7 +323,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 <ReplyButton query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
                                     <ReplyIcon />
                                 </ReplyButton>
-                                {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
+                                {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                                     <ReactionComponent messageId={(message as MessageFull).id} />
                                 )}
                             </XHorizontal>
