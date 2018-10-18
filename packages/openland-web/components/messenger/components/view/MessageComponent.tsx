@@ -229,6 +229,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             date={replyMessage.date}
                             message={replyMessage.message}
                             id={replyMessage.id}
+                            key={'reply'}
                         />
                     );
                 }
