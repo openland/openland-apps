@@ -37,18 +37,16 @@ const ImageWrapper = Glamorous.div({
     alignSelf: 'center'
 });
 
-const Text = Glamorous.div<{ opacity: number, marginTop: number, marginBottom?: number }>(props => ({
-    opacity: props.opacity,
+const Text = Glamorous.div({
     fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.5,
-    letterSpacing: -0.2,
-    color: '#334562',
+    fontWeight: 400,
+    lineHeight: '24px',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.4)',
     maxWidth: 430,
     textAlign: 'center',
-    marginTop: props.marginTop,
-    marginBottom: props.marginBottom
-}));
+    marginTop: 8,
+});
 
 export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: boolean) => void }) => (
     <EmptyRoot>
@@ -56,8 +54,8 @@ export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: 
             <ImageWrapper>
                 {props.conversationType === 'ChannelConversation' ? <Image isChannel={true} /> : <Image isChannel={false} />}
             </ImageWrapper>
-            {props.conversationType === 'ChannelConversation' && <Text opacity={0.5} marginTop={8}>The discussion hasn’t started yet</Text>}
-            {props.conversationType !== 'ChannelConversation' && <Text opacity={0.5} marginTop={8}>No messages yet</Text>}
+            {props.conversationType === 'ChannelConversation' && <Text>The discussion hasn’t started yet</Text>}
+            {props.conversationType !== 'ChannelConversation' && <Text>No messages yet</Text>}
         </EmptyContent>
     </EmptyRoot>
 );

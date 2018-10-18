@@ -52,11 +52,14 @@ const ItemContainer = Glamorous.a({
             backgroundColor: '#4596e1',
             color: '#334562'
         },
-        '& .title, .date, .content': {
+        '& .title, .content': {
             color: '#fff !important',
             opacity: '1 !important'
             // color: '#1790ff !important',
             // opacity: '1 !important'
+        },
+        '& .date': {
+            color: 'rgba(255, 255, 255, 0.8) !important',
         },
         '& .header:before': {
             display: 'none'
@@ -123,8 +126,7 @@ const Date = Glamorous.div({
     flexShrink: 0,
     height: 18,
     ...XFont.h100,
-    color: '#121e2b',
-    opacity: 0.3,
+    color: 'rgba(0, 0, 0, 0.3)',
     marginLeft: 5
 });
 

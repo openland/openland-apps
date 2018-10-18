@@ -34,12 +34,11 @@ const Image = Glamorous.div({
 });
 
 const InfoText = Glamorous.div({
-    opacity: 0.5,
     fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.5,
-    letterSpacing: -0.4,
-    color: '#334562',
+    fontWeight: 400,
+    lineHeight: '24px',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.4)',
     marginBottom: 32
 });
 
