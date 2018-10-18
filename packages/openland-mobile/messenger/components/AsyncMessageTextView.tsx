@@ -43,8 +43,8 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
         }
         let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
         let layout: { width: number, height: number };
-        // let resolved: any;
-        // let capInsets = { left: 1000, right: -10000, top: 10, bottom: 10 };
+        let resolved: any;
+        let capInsets = { left: 2, right: 0, top: 1, bottom: 1 };
         if (this.props.message.urlAugmentation) {
             let maxSize = Platform.select({
                 default: 400,
@@ -55,9 +55,9 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                 layout = layoutMedia(this.props.message.urlAugmentation.imageInfo!.imageWidth!, this.props.message.urlAugmentation.imageInfo!.imageHeight!, maxSize, maxSize);
             }
 
-            // // for left accent line
-            // let image = this.props.message.isOut ? require('assets/chat-bubble-in-compact.png') : require('assets/chat-bubble-out-compact.png');
-            // resolved = Image.resolveAssetSource(image);
+            // for left accent line
+            let image = this.props.message.isOut ? require('assets/chat-link-line-my.png') : require('assets/chat-link-line-foreign.png');
+            resolved = Image.resolveAssetSource(image);
 
         }
         return (
@@ -82,17 +82,18 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                     </ASText>
 
                     {this.props.message.urlAugmentation && (
-                        <ASFlex flexDirection="column" marginTop={5}>
+                        <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={15} marginBottom={15} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
                             {this.props.message.urlAugmentation.photo && (
                                 <ASImage
+                                    marginLeft={10}
                                     source={{ uri: this.props.message.urlAugmentation.imageURL }}
                                     width={layout!.width}
                                     height={layout!.height}
-                                    marginTop={10}
                                     borderRadius={10}
                                 />
                             )}
                             {!!this.props.message.urlAugmentation.title && <ASText
+                                marginLeft={10}
                                 color={this.props.message.isOut ? '#fff' : '#000'}
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
@@ -105,6 +106,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                             </ASText>
                             }
                             {!!this.props.message.urlAugmentation.description && <ASText
+                                marginLeft={10}
                                 color={this.props.message.isOut ? '#fff' : '#000'}
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
@@ -112,7 +114,6 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                                 fontWeight="400"
                             >
                                 {this.props.message.urlAugmentation.description}
-                                {this.props.message.isOut ? paddedTextOut : paddedText}
                             </ASText>}
 
                         </ASFlex>
