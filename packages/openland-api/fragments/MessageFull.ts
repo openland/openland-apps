@@ -4,6 +4,7 @@ export const MessageFull = gql`
  fragment MessageFull on ConversationMessage {
     id
     message
+    edited
     file
     repeatKey
     isService

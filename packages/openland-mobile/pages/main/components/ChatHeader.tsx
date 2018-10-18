@@ -85,9 +85,12 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                                         let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
                                         if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
                                             sub = 'last seen ' + humanize.relativeTime(time / 1000);
+                                        } else if (new Date().getTime() - time < 1000 * 60) {
+                                            sub = 'just now';
                                         } else {
                                             sub = 'last seen ' + formatDate(time);
                                         }
+                                        // 
                                     }
                                     return (
                                         <Text style={{ fontSize: 12, height: 14, color: accent ? '#4747ec' : '#000', opacity: accent ? 1 : 0.6 }}>{sub}</Text>

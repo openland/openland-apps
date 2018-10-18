@@ -32,6 +32,8 @@ export function XDate(props: XDateProps) {
         let yesterday = new Date(Date.now() - 86400000);
         if (yesterday > new Date(date)) {
             format = 'datetime_short';
+        } else if (Date.now() - date < 1000 * 60) {
+            return <span>just now</span>;
         } else {
             format = 'humanize';
         }
