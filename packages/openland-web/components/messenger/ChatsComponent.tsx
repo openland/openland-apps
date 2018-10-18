@@ -168,7 +168,7 @@ const ContentCounter = Glamorous.div({
 });
 
 const ConversationAvatar = Glamorous(XAvatar)({
-    marginTop: 2
+    
 });
 
 let Item = makeNavigable((props) => (
@@ -226,7 +226,6 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                     objectName={conv.title}
                     objectId={conv.flexibleId}
                     online={conv.online}
-                    size="medium"
                     cloudImageUuid={conv.photo}
                 />
                 <Header className="header">
