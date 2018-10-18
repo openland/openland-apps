@@ -161,7 +161,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
     render() {
         const { message } = this.props;
-        console.log(message);
+        // console.log(message);
         let content: any[] = [];
         let date: any = null;
         if (isServerMessage(message)) {
