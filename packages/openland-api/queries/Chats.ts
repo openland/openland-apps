@@ -53,6 +53,13 @@ export const MessageSetReactionMutation = gql`
     }
 `;
 
+export const SwitchReactionMutation = gql`
+    mutation SwitchReaction($messageId: ConversationMessageID!, $from: String!, $to: String!) {
+        alphaChatSetReaction(messageId: $messageId, reaction: $to)
+        alphaChatUnsetReaction(messageId: $messageId, reaction: $from)
+    }
+`;
+
 export const MessageUnsetReactionMutation = gql`
     mutation MessageUnsetReaction($messageId: ConversationMessageID!, $reaction: String!) {
         alphaChatUnsetReaction(messageId: $messageId, reaction: $reaction)

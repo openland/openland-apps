@@ -31,16 +31,11 @@ const SetReactionButton = withSetReaction((props) => (
 const ChangeReactionButton = withChangeReaction((props) => (
     <XMutation
         action={async () => {
-            await props.unsetReaction({
+            await props.switch({
                 variables: {
                     messageId: (props as any).messageId,
-                    reaction: (props as any).unset
-                }
-            });
-            await props.setReaction({
-                variables: {
-                    messageId: (props as any).messageId,
-                    reaction: (props as any).set
+                    from: (props as any).unset,
+                    to: (props as any).set
                 }
             });
         }}

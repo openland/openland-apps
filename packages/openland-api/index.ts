@@ -28,6 +28,7 @@ export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.Crea
 export const ChatListQuery = typedQuery<Types.ChatList, Types.ChatListVariables>(Chats.ChatListQuery);
 export const ChatLeaveMutation = typedMutation<Types.ChatLeave, Types.ChatLeaveVariables>(Chats.ChatLeaveMutation);
 export const MessageSetReactionMutation = typedMutation<Types.MessageSetReaction, Types.MessageSetReactionVariables>(Chats.MessageSetReactionMutation);
+export const SwitchReactionMutation = typedMutation<Types.SwitchReaction, Types.SwitchReactionVariables>(Chats.SwitchReactionMutation);
 export const MessageUnsetReactionMutation = typedMutation<Types.MessageUnsetReaction, Types.MessageUnsetReactionVariables>(Chats.MessageUnsetReactionMutation);
 export const GlobalCounterQuery = typedQuery<Types.GlobalCounter, {}>(Chats.GlobalCounterQuery);
 export const ChatHistoryQuery = typedQuery<Types.ChatHistory, Types.ChatHistoryVariables>(Chats.ChatHistoryQuery);

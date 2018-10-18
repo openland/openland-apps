@@ -977,6 +977,27 @@ export interface MessageSetReactionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: SwitchReaction
+// ====================================================
+
+export interface SwitchReaction {
+  /**
+   * Reactions
+   */
+  alphaChatSetReaction: string;
+  alphaChatUnsetReaction: string;
+}
+
+export interface SwitchReactionVariables {
+  messageId: any;
+  from: string;
+  to: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: MessageUnsetReaction
 // ====================================================
 
