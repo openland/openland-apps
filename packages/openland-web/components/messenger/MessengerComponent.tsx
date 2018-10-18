@@ -426,7 +426,7 @@ const LastSeen = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <LastSeenWrapper online={false}>
-                <span>Last seen <XDate value={props.data.user.lastSeen === 'never_online' ? String(Date.now()) : props.data.user.lastSeen} format={props.data.user.lastSeen === 'never_online' ? 'date' : 'humanize_cute'} /></span>
+                <span>Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}</span>
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
