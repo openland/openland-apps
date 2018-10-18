@@ -41,7 +41,7 @@ let sizeStyles = styleResolver({
         fontSize: 14,
         '> .icon': {
             fontSize: 20,
-            left: 16,
+            left: 14,
             top: 'calc(50% - 10px)'
         },
         '> .icon-right': {

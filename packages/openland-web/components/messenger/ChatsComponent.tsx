@@ -21,7 +21,6 @@ import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo } from '../UserInfo';
 import { XFont } from 'openland-x/XFont';
 import { XScrollView2 } from 'openland-x/XScrollView2';
-import { XMenuItem } from 'openland-x/XMenuItem';
 import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
@@ -34,7 +33,7 @@ const ItemContainer = Glamorous.a({
     color: '#334562',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 8,
+    paddingLeft: 12,
     paddingRight: 0,
     paddingTop: 4,
     paddingBottom: 4,
@@ -55,8 +54,6 @@ const ItemContainer = Glamorous.a({
         '& .title, .content': {
             color: '#fff !important',
             opacity: '1 !important'
-            // color: '#1790ff !important',
-            // opacity: '1 !important'
         },
         '& .date': {
             color: 'rgba(255, 255, 255, 0.8) !important',
@@ -76,9 +73,9 @@ const Header = Glamorous.div({
     flexGrow: 1,
     alignItems: 'stretch',
     paddingLeft: 12,
-    paddingRight: 8,
+    paddingRight: 12,
     paddingTop: 8,
-    maxWidth: 'calc(100% - 46px)',
+    maxWidth: 'calc(100% - 40px)',
     position: 'relative',
     height: 72,
     '&:before': {
@@ -102,6 +99,7 @@ const Main = Glamorous.div({
 });
 
 const Title = Glamorous.div({
+    ...XFont.h400,
     display: 'flex',
     flexDirection: 'row',
     flexGrow: 1,
@@ -115,17 +113,16 @@ const Title = Glamorous.div({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     },
-    ...XFont.h400
 });
 
 const Date = Glamorous.div({
+    ...XFont.h100,
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'flex-start',
     alignItems: 'flex-end',
     flexShrink: 0,
     height: 18,
-    ...XFont.h100,
     color: 'rgba(0, 0, 0, 0.3)',
     marginLeft: 5
 });
@@ -143,11 +140,9 @@ const Content = Glamorous.div<{ counterColor?: string }>(props => ({
 }));
 
 const ContentText = Glamorous.div({
-    height: 34,
-
     ...XFont.b300,
+    height: 34,
     opacity: 0.8,
-    // color: '#000',
 
     '& span': {
         display: 'block',
@@ -169,7 +164,7 @@ const ContentText = Glamorous.div({
 const ContentCounter = Glamorous.div({
     position: 'absolute',
     right: 11,
-    bottom: 10,
+    bottom: 8,
 });
 
 const ConversationAvatar = Glamorous(XAvatar)({
@@ -343,49 +338,21 @@ const Search = Glamorous(XInput)({
     marginLeft: 12,
     marginRight: 12,
     marginTop: 5,
-    marginBottom: 16,
+    marginBottom: 12,
+    paddingLeft: 34,
     height: 36,
     '& svg > g > path:last-child': {
         fill: '#c8c8c8'
     },
     '&:focus-within svg > g > path:last-child': {
         fill: 'rgba(23, 144, 255, 0.5)'
-    }
-});
-
-const ExploreChannels = Glamorous(XMenuItem)({
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 36,
-    marginLeft: 12,
-    marginRight: 12,
-    marginBottom: 12,
-    borderRadius: 20,
-    paddingLeft: 16,
-    paddingRight: 13,
-    paddingTop: 1,
-    paddingBottom: 0,
-    backgroundColor: '#f3f3f5',
-    color: '#334562',
-    fontWeight: 600,
-    letterSpacing: -0.1,
-    transition: 'box-shadow 0.08s ease-in 0s, color 0.08s ease-in 0s, border 0s ease 0s, all 0.15s ease 0s',
-    '& svg > path': {
-        fill: '#BCC3CC',
-        transition: 'all 0.2s ease 0s',
     },
-    '&:hover': {
-        backgroundColor: '#ecedf0',
-        color: '#334562',
+    '& .input-placeholder': {
+        paddingLeft: 33,
     },
-    '&:active': {
-        backgroundColor: '#117fe4',
-        color: '#ffffff',
-        '& svg > path': {
-            fill: '#ffffff',
-        },
-    }
+    '> .icon': {
+        left: 12
+    },
 });
 
 const LoadingWrapper = Glamorous.div({
@@ -630,14 +597,6 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     innerRef={this.handleRef}
                     onFocus={this.inputFocusHandler}
                 />
-                {/* {!search && (
-                    <ExploreChannels path={'/mail/channels'}>
-                        <XHorizontal alignItems="center" justifyContent="space-between">
-                            <XText>Explore channels</XText>
-                            <ArrowIcon />
-                        </XHorizontal>
-                    </ExploreChannels>
-                )} */}
                 <XScrollView2 flexGrow={1} flexBasis={0} className="chats-list">
                     {search && (
                         <SearchChats
