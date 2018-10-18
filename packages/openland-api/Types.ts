@@ -4931,6 +4931,26 @@ export interface ChatDeleteMessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: ChatDeleteUrlAugmentation
+// ====================================================
+
+export interface ChatDeleteUrlAugmentation_event {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
+export interface ChatDeleteUrlAugmentation {
+  event: ChatDeleteUrlAugmentation_event;
+}
+
+export interface ChatDeleteUrlAugmentationVariables {
+  messageId: any;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: ChatEditMessage
 // ====================================================
 
@@ -7963,29 +7983,6 @@ export interface SettingsUpdate {
 
 export interface SettingsUpdateVariables {
   input?: UpdateSettingsInput | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: SuperCities
-// ====================================================
-
-export interface SuperCities_superCities {
-  __typename: "SuperCity";
-  id: string;
-  key: string;
-  name: string;
-  enabled: boolean;
-  blockSource: string | null;
-  blockSourceLayer: string | null;
-  parcelSource: string | null;
-  parcelSourceLayer: string | null;
-}
-
-export interface SuperCities {
-  superCities: SuperCities_superCities[];
 }
 
 /* tslint:disable */

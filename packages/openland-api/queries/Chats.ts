@@ -682,6 +682,14 @@ export const ChatDeleteMessageMutation = gql`
     }
 `;
 
+export const ChatDeleteUrlAugmentationMutation = gql`
+    mutation ChatDeleteUrlAugmentation($messageId: ConversationMessageID!) {
+        event: alphaDeleteMessageUrlAugmentation(messageId: $messageId){
+            seq
+        }
+    }
+`;
+
 export const ChatEditMessageMutation = gql`
     mutation ChatEditMessage($messageId: ID!, $message: String) {
         event: alphaEditMessage(messageId: $messageId, message: $message){

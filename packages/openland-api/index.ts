@@ -11,7 +11,6 @@ import * as FeatureFlag from './queries/FeatureFlag';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Settings from './queries/Settings';
-import * as SuperCity from './queries/SuperCity';
 import * as User from './queries/User';
 
 export const AccountQuery = typedQuery<Types.Account, {}>(Account.AccountQuery);
@@ -71,6 +70,7 @@ export const ChannelInviteInfoQuery = typedQuery<Types.ChannelInviteInfo, Types.
 export const ChannelJoinInviteLinkMutation = typedMutation<Types.ChannelJoinInviteLink, Types.ChannelJoinInviteLinkVariables>(Chats.ChannelJoinInviteLinkMutation);
 export const ChatUpdateGroupMutation = typedMutation<Types.ChatUpdateGroup, Types.ChatUpdateGroupVariables>(Chats.ChatUpdateGroupMutation);
 export const ChatDeleteMessageMutation = typedMutation<Types.ChatDeleteMessage, Types.ChatDeleteMessageVariables>(Chats.ChatDeleteMessageMutation);
+export const ChatDeleteUrlAugmentationMutation = typedMutation<Types.ChatDeleteUrlAugmentation, Types.ChatDeleteUrlAugmentationVariables>(Chats.ChatDeleteUrlAugmentationMutation);
 export const ChatEditMessageMutation = typedMutation<Types.ChatEditMessage, Types.ChatEditMessageVariables>(Chats.ChatEditMessageMutation);
 export const SuperChannelAddMemberMutation = typedMutation<Types.SuperChannelAddMember, Types.SuperChannelAddMemberVariables>(Chats.SuperChannelAddMemberMutation);
 export const DebugReadedStatesQuery = typedQuery<Types.DebugReadedStates, {}>(Debug.DebugReadedStatesQuery);
@@ -131,7 +131,6 @@ export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdate, Types.Pr
 export const ProfileCreateMutation = typedMutation<Types.ProfileCreate, Types.ProfileCreateVariables>(Settings.ProfileCreateMutation);
 export const SettingsQuery = typedQuery<Types.Settings, {}>(Settings.SettingsQuery);
 export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.SettingsUpdateVariables>(Settings.SettingsUpdateMutation);
-export const SuperCitiesQuery = typedQuery<Types.SuperCities, {}>(SuperCity.SuperCitiesQuery);
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);
 export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.OnlineQuery);
