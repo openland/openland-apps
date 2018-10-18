@@ -35,7 +35,7 @@ import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
 
 const BackWrapper = Glamorous.div({
-    background: '#f9fafb',
+    background: '#F9F9F9',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     display: 'flex',
     alignItems: 'center',
@@ -461,7 +461,7 @@ const MemberCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() =>
     padding: '16px 0 15px',
     cursor: 'pointer',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     }
 })));
 
@@ -680,7 +680,7 @@ const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() =
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     },
     cursor: 'pointer'
 })));

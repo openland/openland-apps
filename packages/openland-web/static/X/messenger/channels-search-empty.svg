@@ -83,7 +83,7 @@
         <mask id="b" fill="#fff">
             <use xlink:href="#a"/>
         </mask>
-        <use fill="#F9FAFB" fill-rule="nonzero" xlink:href="#a"/>
+        <use fill="#F9F9F9" fill-rule="nonzero" xlink:href="#a"/>
         <g mask="url(#b)">
             <path fill="url(#c)" d="M0 152.651c20.523-7.777 72.8-26.276 118.772-26.276 45.972 0 102.96 29.944 139.736 33.342 24.518 2.265 68.31 4.182 131.377 5.751v45.64H0V152.65z" transform="scale(-1 1) rotate(-6 222.55 2865.639)"/>
             <path fill="url(#d)" d="M0 171.184c20.523-13.262 72.8-44.81 118.772-44.81 45.972 0 102.96 51.064 139.736 56.859 24.518 3.863 68.31 7.132 131.377 9.808v77.828H0v-99.685z" transform="rotate(6 -27.607 -854.088)"/>

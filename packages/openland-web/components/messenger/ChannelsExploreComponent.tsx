@@ -53,7 +53,7 @@ const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     cursor: 'pointer',
     borderBottom: '1px solid rgba(220, 222, 228, 0.3)',
     '&:hover': {
-        backgroundColor: '#f9fafb',
+        backgroundColor: '#F9F9F9',
         '& .none': {
             backgroundColor: '#1790ff',
             color: '#fff',
@@ -179,7 +179,7 @@ const SearchWrapper = Glamorous(XHorizontal)({
 
 const FilterWrapper = Glamorous(XHorizontal)({
     height: 56,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9F9F9',
     paddingLeft: 24,
     paddingRight: 24,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)'

@@ -72,12 +72,12 @@ const StickyContent = Glamorous(XVertical)({
 
 const Root = Glamorous(XVertical)({
     minHeight: '100%',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9F9F9',
     paddingBottom: 80
 });
 
 const MainContentWrapper = Glamorous(XVertical)({
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9F9F9',
     padding: '0 40px'
 });
 

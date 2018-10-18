@@ -31,14 +31,14 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     lineHeight: 1.33,
     fontWeight: 500,
     letterSpacing: -0.2,
-    backgroundColor: props.selected ? '#f9fafb' : undefined,
+    backgroundColor: props.selected ? '#F9F9F9' : undefined,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     cursor: 'pointer',
     ':hover': {
         ...(props.hover ? {
-            backgroundColor: '#f9fafb'
+            backgroundColor: '#F9F9F9'
         } : {})
     }
 }));

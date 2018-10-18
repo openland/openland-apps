@@ -15,7 +15,7 @@ import { XButton } from 'openland-x/XButton';
 let ChannelsContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9F9F9',
     boxShadow: '0 2px 4px 1px rgba(0,0,0,.05), 0 4px 24px 2px rgba(0,0,0,.05)',
     height: '100vh',
     width: '100%',

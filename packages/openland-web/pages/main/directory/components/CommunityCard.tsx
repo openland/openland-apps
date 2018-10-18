@@ -22,7 +22,7 @@ const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((p
     backgroundColor: '#fff',
     padding: '16px 25px 15px 20px',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     },
     cursor: 'pointer'
 })));

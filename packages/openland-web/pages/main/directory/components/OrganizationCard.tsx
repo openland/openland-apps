@@ -25,7 +25,7 @@ const OrganizationCardWrapper = Glamorous.div({
     backgroundColor: '#fff',
     padding: '22px 18px 19px 24px',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     }
 });
 

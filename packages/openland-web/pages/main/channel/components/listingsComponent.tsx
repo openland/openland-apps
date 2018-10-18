@@ -60,7 +60,7 @@ const Listing = Glamorous.div({
         paddingTop: 20
     },
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     }
 });
 

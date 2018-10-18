@@ -85,7 +85,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
     // hover - start
 
     '&:hover': {
-        backgroundColor: 'rgba(242, 244, 245, 0.5)',
+        backgroundColor: '#F9F9F9',
         '& .time': {
             opacity: 1
         },
@@ -97,7 +97,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
         }
     },
     '&': (props.isHovered) ? {
-        backgroundColor: 'rgba(242, 244, 245, 0.5)',
+        backgroundColor: '#F9F9F9',
         '& .time': {
             opacity: 1
         },

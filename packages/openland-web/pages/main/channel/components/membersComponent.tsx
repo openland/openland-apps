@@ -39,7 +39,7 @@ const Member = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
         paddingTop: 18
     },
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     }
 })));
 

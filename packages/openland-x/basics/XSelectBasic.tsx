@@ -319,7 +319,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         color: '#1790ff !important'
     },
     '& .Select-option.is-focused': {
-        backgroundColor: '#f9fafb !important',
+        backgroundColor: '#F9F9F9 !important',
         color: '#1790ff !important'
     },
     // '& .Select-option.is-focused': {
