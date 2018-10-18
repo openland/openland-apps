@@ -9,8 +9,8 @@ import { FastImageViewer } from 'react-native-s/FastImageViewer';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { ActionSheetBuilder } from '../ActionSheet';
 import Share from 'react-native-share';
-import RNFS from 'react-native-fs';
 import UUID from 'uuid/v4';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -124,13 +124,23 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         }
     }
 
-    handleShareClick = () => {
+    handleShareClick = async () => {
         if (Platform.OS === 'ios') {
             let builder = new ActionSheetBuilder();
             builder.action('Share', () => Share.open({ url: this.props.config.url } as any));
             let from = this.props.config.url;
-            let to = RNFS.CachesDirectoryPath + '/' + UUID() + '.png';
-            builder.action('Save to Camera Roll', () => RNFS.copyFile(from, to).then(r => CameraRoll.saveToCameraRoll(to)).catch(e => console.warn(e)));
+
+            let dir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/share/';
+            let to = dir + UUID() + '.png';
+            builder.action('Save to Camera Roll', async () => {
+                let dirExists = await (RNFetchBlob as any).fs.exists(dir);
+                if (!dirExists) {
+                    await (RNFetchBlob as any).fs.mkdir(dir);
+                }
+                await (RNFetchBlob as any).fs.cp(from, to);
+                await CameraRoll.saveToCameraRoll(to);
+
+            });
             builder.show();
         }
 

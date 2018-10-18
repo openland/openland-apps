@@ -343,6 +343,9 @@ const Search = Glamorous(XInput)({
     marginTop: 5,
     marginBottom: 16,
     height: 36,
+    '& svg > g > path:last-child': {
+        fill: '#c8c8c8'
+    },
     '&:focus-within svg > g > path:last-child': {
         fill: 'rgba(23, 144, 255, 0.5)'
     }

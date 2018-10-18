@@ -72,7 +72,7 @@ const SidebarWrapper = Glamorous(XScrollView)({
     width: 280,
     height: '100vh',
     maxHeight: '100vh',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F9F9F9',
     paddingLeft: 22,
     borderRight: '1px solid #E1E3E8'
 });
@@ -155,7 +155,7 @@ const Shadow = Glamorous.div({
     width: '100%',
     height: '100%',
     opacity: 0.6,
-    backgroundImage: 'linear-gradient(to bottom, rgba(249, 250, 251, 0), #f9fafb)'
+    backgroundImage: 'linear-gradient(to bottom, rgba(249, 250, 251, 0), #F9F9F9)'
 });
 
 export const Sidebar = () => {

@@ -133,10 +133,13 @@ const XModalCloserStyles = Glamorous(XLink)({
     border: '1px solid transparent',
     marginLeft: 'auto',
     marginTop: -2,
+    '& > svg > g > path:last-child': {
+        fill: 'rgba(0, 0, 0, 0.3)'
+    },
     '&:hover': {
         // border: 'solid 1px #dcdee4'
         '& > svg > g > path:last-child': {
-            fill: '#969ba2'
+            fill: 'rgba(0, 0, 0, 0.4)'
         }
     }
 });

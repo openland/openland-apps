@@ -514,6 +514,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -700,6 +701,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -887,6 +889,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -907,6 +910,7 @@ export interface ChatList_chats_conversations_ChannelConversation {
   unreadCount: number;
   settings: ChatList_chats_conversations_ChannelConversation_settings;
   photo: string | null;
+  myStatus: ChannelMembershipStatus;
   topMessage: ChatList_chats_conversations_ChannelConversation_topMessage | null;
 }
 
@@ -1192,6 +1196,7 @@ export interface ChatHistory_messages_messages {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -1387,6 +1392,7 @@ export interface ChatInfo_chat_ChannelConversation {
   title: string;
   photos: string[];
   settings: ChatInfo_chat_ChannelConversation_settings;
+  myStatus: ChannelMembershipStatus;
   photo: string | null;
   photoRef: ChatInfo_chat_ChannelConversation_photoRef | null;
   isRoot: boolean;
@@ -1396,7 +1402,6 @@ export interface ChatInfo_chat_ChannelConversation {
   longDescription: string;
   socialImageRef: ChatInfo_chat_ChannelConversation_socialImageRef | null;
   socialImage: string | null;
-  myStatus: ChannelMembershipStatus;
   membersCount: number;
   memberRequestsCount: number;
   organization: ChatInfo_chat_ChannelConversation_organization | null;
@@ -1582,6 +1587,7 @@ export interface ChatFullInfo_chat_ChannelConversation {
   title: string;
   photos: string[];
   settings: ChatFullInfo_chat_ChannelConversation_settings;
+  myStatus: ChannelMembershipStatus;
   members: ChatFullInfo_chat_ChannelConversation_members[];
   photo: string | null;
   photoRef: ChatFullInfo_chat_ChannelConversation_photoRef | null;
@@ -1922,6 +1928,7 @@ export interface SendMessage_sentMessage_message {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -2582,6 +2589,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -2769,6 +2777,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -2972,6 +2981,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -3016,6 +3026,7 @@ export interface ChatSearchText_items_ChannelConversation {
   featured: boolean;
   hidden: boolean;
   photo: string | null;
+  myStatus: ChannelMembershipStatus;
   photoRef: ChatSearchText_items_ChannelConversation_photoRef | null;
 }
 
@@ -3209,6 +3220,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -3260,10 +3272,10 @@ export interface ChatSearchChannel_items_edges_node {
   featured: boolean;
   hidden: boolean;
   photo: string | null;
+  myStatus: ChannelMembershipStatus;
   photoRef: ChatSearchChannel_items_edges_node_photoRef | null;
   membersCount: number;
   description: string;
-  myStatus: ChannelMembershipStatus;
   organization: ChatSearchChannel_items_edges_node_organization | null;
   isRoot: boolean;
 }
@@ -3489,6 +3501,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -3676,6 +3689,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -3879,6 +3893,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -3923,6 +3938,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation 
   featured: boolean;
   hidden: boolean;
   photo: string | null;
+  myStatus: ChannelMembershipStatus;
   photoRef: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_photoRef | null;
 }
 
@@ -4102,6 +4118,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -4289,6 +4306,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -4492,6 +4510,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -4536,6 +4555,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   featured: boolean;
   hidden: boolean;
   photo: string | null;
+  myStatus: ChannelMembershipStatus;
   photoRef: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_photoRef | null;
 }
 
@@ -8359,6 +8379,7 @@ export interface ConversationShort_AnonymousConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -8546,6 +8567,7 @@ export interface ConversationShort_GroupConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -8749,6 +8771,7 @@ export interface ConversationShort_ChannelConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
@@ -8793,6 +8816,7 @@ export interface ConversationShort_ChannelConversation {
   featured: boolean;
   hidden: boolean;
   photo: string | null;
+  myStatus: ChannelMembershipStatus;
   photoRef: ConversationShort_ChannelConversation_photoRef | null;
 }
 
@@ -8976,6 +9000,7 @@ export interface MessageFull {
   __typename: "ConversationMessage";
   id: string;
   message: string | null;
+  edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;

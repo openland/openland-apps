@@ -136,7 +136,7 @@ const RemoverInputGroup = Glamorous.div({
     justifyContent: 'center',
     border: '1px solid rgba(220, 222, 228, 0.6)',
     borderLeft: 'none',
-    borderRadius: '0 20px 20px 0',
+    borderRadius: '0 10px 10px 0',
     paddingRight: 1,
     background: 'rgba(239, 240, 243, 0.2)',
     cursor: 'pointer',

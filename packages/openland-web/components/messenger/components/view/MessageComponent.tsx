@@ -76,12 +76,12 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
         opacity: 0
     },
     '&:hover': {
-        backgroundColor: 'rgba(242, 244, 245, 0.5)',
+        backgroundColor: '#F9F9F9',
         '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
             opacity: 1
         }
     },
-    '&': (props.isHovered) ? { backgroundColor: 'rgba(242, 244, 245, 0.5)' } : {}
+    '&': (props.isHovered) ? { backgroundColor: '#F9F9F9' } : {}
 }));
 
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
@@ -253,6 +253,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             }
         }
 
+        let edited = isServerMessage(this.props.message) && this.props.message.edited;
+
         // Handle unknown messages: display empty message
         if (content.length === 0) {
             content.push(<MessageTextComponent message={''} key={'text'} isService={false} />);
@@ -296,6 +298,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
+<<<<<<< HEAD
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
@@ -320,6 +323,26 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             {menu}
                         </XHorizontal>
                     </XHorizontal>
+=======
+                    <DateComponent small={true} className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
+                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)" isIntro={isIntro}>
+                        {content}
+                        {menu}
+                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
+                            <ReactionComponent messageId={(message as MessageFull).id} />
+                        )}
+                        <ReplyButton className="reply-btn" query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                            <ReplyIcon />
+                        </ReplyButton>
+                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                            <Reactions
+                                messageId={(message as MessageFull).id}
+                                reactions={(message as MessageFull).reactions}
+                                meId={(this.props.me as UserShort).id}
+                            />
+                        )}
+                    </MessageCompactContent>
+>>>>>>> 24b475d3b9c2b769f234519681e67b5251b50513
                 </MessageContainer>
             );
         }

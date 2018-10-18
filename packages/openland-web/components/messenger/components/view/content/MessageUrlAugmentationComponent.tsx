@@ -10,7 +10,7 @@ import { layoutMedia } from './utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 
 const Container = Glamorous(XLink)({
-    marginTop: 10,
+    marginTop: '10px!important',
     border: '1px solid #edeef3',
     background: '#ffffff',
     borderRadius: 10,

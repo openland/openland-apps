@@ -410,7 +410,7 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
                         key={v.value}
                         icon="x-close"
                         size={rounded ? 'default' : 'large'}
-                        text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
+                        text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : 'Loading...'}
                         onClick={() => this.onDelete(v.value)}
                     />
                 ))}

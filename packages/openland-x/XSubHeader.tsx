@@ -4,7 +4,7 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 
 const SubHeaderWrapper = Glamorous.div({
     display: 'flex',
-    background: '#f9fafb',
+    background: '#F9F9F9',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '18px 24px',
     position: 'relative',
