@@ -44,6 +44,10 @@ const ModalBody = Glamorous.div({
     }
 });
 
+const ImgWrapper = Glamorous(XLink)({
+    alignSelf: 'flex-start'
+});
+
 const ModalPic = Glamorous(XCloudImage)({
     borderRadius: 8
 });
@@ -84,14 +88,14 @@ export const MessageImageComponent = (props: MessageImageComponentProps) => {
                 </ModalBody>
             )}
             target={(
-                <XLink>
+                <ImgWrapper>
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
                     />
-                </XLink>
+                </ImgWrapper>
             )}
         />
     );

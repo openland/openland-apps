@@ -28,10 +28,6 @@ import { Reactions } from './MessageReaction';
 import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
 import ReplyIcon from '../icons/ic-reply.svg';
 
-const MessageWrapper = Glamorous(XVertical)({
-    width: 'calc(100% - 60px)'
-});
-
 const Name = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
@@ -62,14 +58,12 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
 const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
-    // alignItems: props.compact ? 'center' : undefined,
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: props.compact ? 3 : 7,
     paddingBottom: 3,
     width: '100%',
     marginTop: props.compact ? undefined : 12,
-    // marginBottom: 12,
     borderRadius: 6,
     '& .time': {
         opacity: props.compact ? 0 : 1
@@ -78,47 +72,16 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
         height: 20,
         marginRight: -14
     },
-    '& .menu': {
-        display: 'none'
+    '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
+        opacity: 0
     },
-
-    // hover - start
-
     '&:hover': {
         backgroundColor: 'rgba(242, 244, 245, 0.5)',
-        '& .time': {
-            opacity: 1
-        },
-        '& .menu': {
-            display: 'block',
-        },
-        '& .reaction-button, & .reply-btn': {
+        '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
             opacity: 1
         }
     },
-    '&': (props.isHovered) ? {
-        backgroundColor: 'rgba(242, 244, 245, 0.5)',
-        '& .time': {
-            opacity: 1
-        },
-        '& .menu': {
-            display: 'block',
-        }
-    } : {},
-    '& .reaction-button': {
-        position: 'absolute',
-        right: 5
-    },
-    '& .reply-btn': {
-        position: 'absolute',
-        right: props.compact ? 32 : 40,
-        top: 3
-    },
-    '& .reactions-wrapper .reaction-button': {
-        position: 'static'
-    }
-
-    // hover - end
+    '&': (props.isHovered) ? { backgroundColor: 'rgba(242, 244, 245, 0.5)' } : {}
 }));
 
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
@@ -128,14 +91,8 @@ const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props 
     }
 }));
 
-const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
-    position: 'absolute',
-    right: props.compact ? -8 : 0,
-    top: 0
-}));
-
 const ReplyButton = Glamorous(XLink)({
-    opacity: 0,
+    // opacity: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -304,7 +261,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         // menu
         let menu = isServerMessage(message) && this.props.out ?
             (
-                <MenuWrapper className="menu" compact={this.props.compact}>
+                <XVertical className="menu">
                     <XOverflow
                         show={this.state.isMenuOpen}
                         flat={true}
@@ -317,16 +274,16 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             </>
                         }
                     />
-                </MenuWrapper>
+                </XVertical>
             ) : (isServerMessage(message) && this.props.conversationType === 'ChannelConversation') ? (
                 <XWithRole role="super-admin">
-                    <MenuWrapper className="menu" compact={this.props.compact}>
+                    <XVertical className="menu">
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
                             content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
                         />
-                    </MenuWrapper>
+                    </XVertical>
                 </XWithRole>
             ) : null;
         if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
@@ -340,23 +297,29 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
-                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)" isIntro={isIntro}>
-                        {content}
-                        {menu}
-                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
-                            <ReactionComponent messageId={(message as MessageFull).id} />
-                        )}
-                        <ReplyButton className="reply-btn" query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
-                            <ReplyIcon />
-                        </ReplyButton>
-                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                            <Reactions
-                                messageId={(message as MessageFull).id}
-                                reactions={(message as MessageFull).reactions}
-                                meId={(this.props.me as UserShort).id}
-                            />
-                        )}
-                    </MessageCompactContent>
+                    <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
+                        <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
+                            {content}
+                            {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                                <Reactions
+                                    messageId={(message as MessageFull).id}
+                                    reactions={(message as MessageFull).reactions}
+                                    meId={(this.props.me as UserShort).id}
+                                />
+                            )}
+                        </MessageCompactContent>
+                        <XHorizontal alignItems="center" separator={0} alignSelf="flex-start" className="menu-wrapper">
+                            <XHorizontal alignItems="center" separator={6}>
+                                <ReplyButton query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                                    <ReplyIcon />
+                                </ReplyButton>
+                                {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
+                                    <ReactionComponent messageId={(message as MessageFull).id} />
+                                )}
+                            </XHorizontal>
+                            {menu}
+                        </XHorizontal>
+                    </XHorizontal>
                 </MessageContainer>
             );
         }
@@ -371,13 +334,26 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined}
                         path={'/mail/u/' + this.props.sender!!.id}
                     />
-                    <MessageWrapper separator={2} flexGrow={1}>
-                        <XHorizontal separator={4}>
-                            <XHorizontal separator={4} alignItems="center">
-                                <Name>{this.props.sender!!.name}</Name>
-                                {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                    <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 60px)'}>
+                        <XHorizontal justifyContent="space-between">
+                            <XHorizontal separator={4}>
+                                <XHorizontal separator={4} alignItems="center">
+                                    <Name>{this.props.sender!!.name}</Name>
+                                    {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                </XHorizontal>
+                                <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
-                            <DateComponent className="time">{date}</DateComponent>
+                            <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
+                                <XHorizontal alignItems="center" separator={6}>
+                                    <ReplyButton query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                                        <ReplyIcon />
+                                    </ReplyButton>
+                                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
+                                        <ReactionComponent messageId={(message as MessageFull).id} />
+                                    )}
+                                </XHorizontal>
+                                {menu}
+                            </XHorizontal>
                         </XHorizontal>
                         {content}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
@@ -387,14 +363,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 meId={(this.props.me as UserShort).id}
                             />
                         )}
-                    </MessageWrapper>
-                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
-                        <ReactionComponent messageId={(message as MessageFull).id} />
-                    )}
-                    <ReplyButton className="reply-btn" query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
-                        <ReplyIcon />
-                    </ReplyButton>
-                    {menu}
+                    </XVertical>
                 </XHorizontal>
             </MessageContainer>
         );

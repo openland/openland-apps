@@ -21,7 +21,6 @@ const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }
     cursor: 'pointer',
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
-    opacity: 0,
     '&:hover svg > g': {
         fill: '#1790ff'
     }
