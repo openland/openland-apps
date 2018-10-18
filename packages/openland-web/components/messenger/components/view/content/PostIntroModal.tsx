@@ -351,6 +351,7 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                     <SearchPeople user={this.props.user} />
                     <XFormField field="input.about">
                         <XTextArea
+                            minHeight={240}
                             placeholder="Description"
                             resize={false}
                             valueStoreKey="fields.input.about"
