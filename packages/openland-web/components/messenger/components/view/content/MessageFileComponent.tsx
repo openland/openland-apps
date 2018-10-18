@@ -16,7 +16,8 @@ const FileButton = Glamorous(XLink)((props) => ({
     border: 'solid 1px rgba(220, 222, 228, 0.45)',
     color: '#334562',
     backgroundColor: '#ffffff',
-    width: 250,
+    minWidth: 250,
+    maxWidth: 550,
     position: 'relative',
     '&:hover': {
         '& .title': {
