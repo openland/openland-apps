@@ -95,7 +95,11 @@ const emojiPlugin = createEmojiPlugin({
 const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
 const Container = Glamorous.div<XFlexStyles>([{
-    position: 'relative'
+    position: 'relative',
+
+    '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
+        color: 'rgba(0, 0, 0, 0.5)'
+    }
 }, applyFlex]);
 
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
