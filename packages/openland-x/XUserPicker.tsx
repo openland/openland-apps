@@ -1,4 +1,3 @@
-
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Glamorous from 'glamorous';
@@ -10,7 +9,11 @@ import { XButton } from 'openland-x/XButton';
 const EntryScrollable = Glamorous(XVertical)({
     overflowY: 'scroll',
     WebkitOverflowScrolling: 'touch',
-    paddingBottom: 7,
+    paddingTop: 8,
+    paddingBottom: 8,
+    width: '100%',
+    flexGrow: 1,
+    borderRadius: 10,
 });
 
 const EntryWrapper = Glamorous(XVertical)({
@@ -72,6 +75,7 @@ interface EntriesComponentProps {
     query?: string;
     onPick: (q: { type: string | null, label: string, value: string }) => void;
     onHover?: (i: number) => void;
+    inCompose?: boolean;
 }
 
 class EntriesComponent extends React.Component<EntriesComponentProps> {
@@ -108,9 +112,7 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                 <EntryScrollable
                     innerRef={this.captureContainerRef}
                     separator="none"
-                    width="100%"
-                    maxHeight={243}
-                    flexGrow={1}
+                    maxHeight={this.props.inCompose ? 447 : 264}
                 >
                     {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
                         <div
@@ -150,14 +152,15 @@ const PickerEntries = Glamorous(XHorizontal)({
     borderTop: '1px solid rgba(220, 222, 228, 0.5)'
 });
 
-interface MultoplePickerProps {
+interface UserPickerProps {
     options: { label?: string, values: { type: string | null, label: string, value: string, photo: string | null, org: string | null }[] }[];
     query?: string;
     onPick: (location: { type: string | null, label: string, value: string }) => void;
     title?: string;
+    inCompose?: boolean;
 }
 
-interface MultiplePickerState {
+interface UserPickerState {
     selected: number[];
     empty: boolean;
     notFound: boolean;
@@ -166,10 +169,10 @@ interface MultiplePickerState {
     query?: string;
 }
 
-export class UserPicker extends React.Component<MultoplePickerProps, MultiplePickerState> {
+export class UserPicker extends React.Component<UserPickerProps, UserPickerState> {
     timer: any;
 
-    constructor(props: MultoplePickerProps) {
+    constructor(props: UserPickerProps) {
         super(props);
         let fOptions = [];
         let count = 0;
@@ -188,7 +191,7 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
         };
     }
 
-    componentWillReceiveProps(props: MultoplePickerProps) {
+    componentWillReceiveProps(props: UserPickerProps) {
         clearInterval(this.timer);
         let fOptions = [];
         let count = 0;
@@ -285,6 +288,7 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
                                 query={this.props.query}
                                 options={this.props.options[0].values}
                                 onPick={sq => this.props.onPick({ type: sq.type, label: sq.label, value: sq.value })}
+                                inCompose={this.props.inCompose}
                             />
                         )}
                         {this.props.options.length > 1 && (
@@ -298,6 +302,7 @@ export class UserPicker extends React.Component<MultoplePickerProps, MultiplePic
                                         query={this.props.query}
                                         options={o.values}
                                         onPick={sq => this.props.onPick(sq)}
+                                        inCompose={this.props.inCompose}
                                     />
                                 ))}
                             </PickerEntries>

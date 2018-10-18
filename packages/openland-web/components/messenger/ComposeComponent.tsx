@@ -33,8 +33,8 @@ const HeaderWrapper = Glamorous.div({
     paddingTop: 10,
     flexShrink: 0,
     maxWidth: 832,
-    paddingLeft: 66,
-    paddingRight: 66,
+    paddingLeft: 82,
+    paddingRight: 82,
     width: '100%',
     alignSelf: 'center'
 });
@@ -61,9 +61,9 @@ const Title = Glamorous.div({
     flexBasis: '100%',
     fontSize: 18,
     lineHeight: '20px',
-    fontWeight: 500,
-    letterSpacing: -0.5,
-    color: '#121e2b'
+    fontWeight: 600,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.9)'
 });
 
 const ComposeSelectWrapper = Glamorous.div({
@@ -111,6 +111,7 @@ const SearchPeopleModule = withChatCompose(props => {
                         rounded={true}
                         onInputChange={(data) => (props as any).onChangeInput(data)}
                         helpText="Wait..."
+                        inCompose={true}
                     />
                 }
             />
@@ -135,6 +136,7 @@ const SearchPeopleModule = withChatCompose(props => {
                     placeholder="Whom would you like to message?"
                     rounded={true}
                     onInputChange={(data) => (props as any).onChangeInput(data)}
+                    inCompose={true}
                 />
             }
         />
