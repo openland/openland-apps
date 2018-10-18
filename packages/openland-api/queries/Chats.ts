@@ -22,6 +22,7 @@ export const ChatListQuery = gql`
                 }
                 ... on ChannelConversation{
                     photo
+                    myStatus
                 }
                 topMessage{
                     ...MessageFull
@@ -125,6 +126,7 @@ export const ChatInfoQuery = gql`
                 }
             }
             ... on ChannelConversation {
+                myStatus
                 photo
                 photoRef{
                     uuid
@@ -198,6 +200,7 @@ export const ChatFullInfoQuery = gql`
                 }
             }
             ... on ChannelConversation {
+                myStatus
                 members {
                     ...UserShort
                 }
