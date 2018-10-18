@@ -426,7 +426,7 @@ const LastSeen = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <LastSeenWrapper online={false}>
-                <span>Last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" /></span>
+                <span>Last seen {props.data.user.lastSeen === 'never_online' ? 'loong time ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}</span>
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -485,7 +485,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         maxWidth={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
-                        <XHorizontal alignItems="center" separator={4} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
+                        <XHorizontal alignItems="center" separator={6} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
                                 size="small"
@@ -504,7 +504,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 objectId={props.data.chat.flexibleId}
                             />
                             <XVertical separator={0} maxWidth="calc(100% - 48px)">
-                                <XHorizontal separator={4}>
+                                <XHorizontal separator={3}>
                                     <Title path={titlePath}>
                                         {title}
                                     </Title>
