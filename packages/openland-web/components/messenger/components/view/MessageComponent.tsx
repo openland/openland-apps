@@ -298,7 +298,6 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
-<<<<<<< HEAD
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
@@ -323,26 +322,6 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             {menu}
                         </XHorizontal>
                     </XHorizontal>
-=======
-                    <DateComponent small={true} className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
-                    <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)" isIntro={isIntro}>
-                        {content}
-                        {menu}
-                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && ((message as MessageFull).reactions && (message as MessageFull).reactions.length === 0) && (
-                            <ReactionComponent messageId={(message as MessageFull).id} />
-                        )}
-                        <ReplyButton className="reply-btn" query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
-                            <ReplyIcon />
-                        </ReplyButton>
-                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                            <Reactions
-                                messageId={(message as MessageFull).id}
-                                reactions={(message as MessageFull).reactions}
-                                meId={(this.props.me as UserShort).id}
-                            />
-                        )}
-                    </MessageCompactContent>
->>>>>>> 24b475d3b9c2b769f234519681e67b5251b50513
                 </MessageContainer>
             );
         }
