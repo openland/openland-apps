@@ -51,31 +51,41 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
     alignItems: 'center',
-    maxWidth: 990,
+    maxWidth: 780,
     width: '100%',
-    flexBasis: '100%'
+    flexBasis: '100%',
+    paddingRight: 25
+});
+
+const TitleWrapper = Glamorous(XHorizontal)({
+    marginTop: '-2px!important',
 });
 
 const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontSize: 14,
     fontWeight: 600,
+    lineHeight: '18px',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     cursor: props.href ? 'pointer' : undefined,
-    marginBottom: -2,
-    opacity: 0.8
+    color: '#000000'
 })));
 
-const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
+const SubtitleWrapper = Glamorous.div({
+    marginTop: '5px!important',
+    marginBottom: '-1px!important',
+});
+
+const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps & { inTop?: boolean }>(props => ({
     fontSize: 12,
-    fontWeight: 600,
-    color: '#000',
-    opacity: 0.4,
-    letterSpacing: -0.2,
+    fontWeight: props.inTop ? 600 : 400,
+    color: 'rgba(0, 0, 0, 0.4)',
+    lineHeight: props.inTop ? '18px' : '16px',
+    letterSpacing: 0,
     cursor: props.href ? 'pointer' : undefined,
-    marginBottom: -1,
-    marginTop: props.onClick ? 2 : undefined
+    marginTop: props.inTop ? 1 : undefined,
+    marginBottom: props.inTop ? -1 : undefined
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
@@ -413,20 +423,16 @@ const AboutText = Glamorous.div({
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
     fontSize: 12,
     fontWeight: 600,
-    lineHeight: 1.33,
-    opacity: props.online ? 1 : 0.4,
-    color: props.online ? '#1790ff' : '#000',
-    letterSpacing: -0.2,
-    alignSelf: 'flex-start',
-    display: 'flex',
-    alignItems: 'center'
+    lineHeight: '16px',
+    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
+    letterSpacing: 0,
 }));
 
 const LastSeen = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <LastSeenWrapper online={false}>
-                <span>Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}</span>
+                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -485,7 +491,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         maxWidth={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
-                        <XHorizontal alignItems="center" separator={6} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
+                        <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
                                 size="small"
@@ -503,21 +509,23 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 objectName={title}
                                 objectId={props.data.chat.flexibleId}
                             />
-                            <XVertical separator={0} maxWidth="calc(100% - 48px)">
-                                <XHorizontal separator={3}>
+                            <XVertical separator="none" maxWidth="calc(100% - 48px)">
+                                <TitleWrapper separator={3}>
                                     <Title path={titlePath}>
                                         {title}
                                     </Title>
                                     {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                        <SubTitle path={subtitlePath} inTop={true}>{subtitle}</SubTitle>
+                                    )}
+                                </TitleWrapper>
+                                <SubtitleWrapper>
+                                    {(props.data.chat.__typename !== 'PrivateConversation') && (
                                         <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                                     )}
-                                </XHorizontal>
-                                {(props.data.chat.__typename !== 'PrivateConversation') && (
-                                    <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
-                                )}
-                                {(uId && props.data.chat.__typename === 'PrivateConversation') && (
-                                    <LastSeen variables={{ userId: uId }} />
-                                )}
+                                    {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                        <LastSeen variables={{ userId: uId }} />
+                                    )}
+                                </SubtitleWrapper>
                             </XVertical>
                         </XHorizontal>
                     </NavChatLeftContentStyled>
