@@ -28,6 +28,18 @@ interface ImgButtonStylesProps {
     title: string;
 }
 
+interface SearchPeopleProps {
+    user?: {
+        id: string,
+        name: string,
+        photo: string | null,
+        primaryOrganization: {
+            id?: string | null,
+            name?: string | null,
+        } | null
+    } | null;
+}
+
 const ImgButtonStyles = Glamorous(XLink)<ImgButtonStylesProps>(props => ({
     fontSize: 13,
     fontWeight: 600,
@@ -115,11 +127,11 @@ const SearchPeopleModule = withExplorePeople(props => {
             />
         </XFormField>
     );
-}) as React.ComponentType< { variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
+}) as React.ComponentType<SearchPeopleProps & { variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
 
-class SearchPeople extends React.PureComponent {
+class SearchPeople extends React.PureComponent<SearchPeopleProps> {
     state = {
-        query: ''
+        query: this.props.user ? this.props.user.name : ''
     };
 
     handleSearchText = (query: string) => {
@@ -132,6 +144,7 @@ class SearchPeople extends React.PureComponent {
         return (
             <SearchPeopleModule
                 onChangeInput={this.handleSearchText}
+                user={this.props.user}
                 variables={{
                     query: this.state.query
                 }}
@@ -242,6 +255,15 @@ interface PostIntroModalRawProps extends Partial<XModalFormProps> {
         name: string | null,
         size: string | null
     } | null;
+    user?: {
+        id: string,
+        name: string,
+        photo: string | null,
+        primaryOrganization: {
+            id?: string | null,
+            name?: string | null,
+        } | null
+    } | null;
 }
 
 interface PostIntroModalRawState {
@@ -326,7 +348,7 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                 customFooter={footer}
             >
                 <XVertical separator={8}>
-                    <SearchPeople />
+                    <SearchPeople user={this.props.user} />
                     <XFormField field="input.about">
                         <XTextArea
                             placeholder="Description"
