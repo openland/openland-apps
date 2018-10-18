@@ -8,16 +8,42 @@ import WebsiteIcon from '../../icons/website-2.svg';
 import { MessageFull_urlAugmentation } from 'openland-api/Types';
 import { layoutMedia } from './utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
+import DeleteIcon from '../../icons/ic-close.svg';
 
 const Container = Glamorous(XLink)({
-    marginTop: '10px!important',
+    position: 'relative',
+    marginTop: '10px !important',
     border: '1px solid #edeef3',
     background: '#ffffff',
     borderRadius: 10,
     padding: '9px 16px 12px',
     maxWidth: 620,
-    color: '#121e2b!important',
+    color: '#121e2b !important',
     width: '100%',
+});
+
+const DeleteButton = Glamorous(XLink)({
+    position: 'absolute',
+    right: 6,
+    top: 8,
+    width: 28,
+    height: 28,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all .15s ease',
+    borderRadius: 50,
+    border: '1px solid transparent',
+    marginLeft: 'auto',
+    marginTop: -2,
+    '& > svg > g > path:last-child': {
+        fill: 'rgba(0, 0, 0, 0.3)'
+    },
+    '&:hover': {
+        '& > svg > g > path:last-child': {
+            fill: 'rgba(0, 0, 0, 0.4)'
+        }
+    }
 });
 
 const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
@@ -124,9 +150,9 @@ const ImageBox = Glamorous.div({
     },
 });
 
-export class MessageUrlAugmentationComponent extends React.Component<MessageFull_urlAugmentation> {
+export class MessageUrlAugmentationComponent extends React.Component<MessageFull_urlAugmentation & { messageId: string, isMe: boolean }> {
     private preprocessed: Span[];
-    constructor(props: MessageFull_urlAugmentation) {
+    constructor(props: MessageFull_urlAugmentation & { messageId: string, isMe: boolean }) {
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
     }
@@ -181,6 +207,11 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                         </ImageWrapper>
                     )}
                 </Wrapper>
+                {this.props.isMe && (
+                    <DeleteButton query={{ field: 'deleteUrlAugmentation', value: this.props.messageId }}>
+                        <DeleteIcon />
+                    </DeleteButton>
+                )}
             </Container>
         );
     }

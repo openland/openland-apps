@@ -20,7 +20,7 @@ const MessageContainer = Glamorous.div({
     marginTop: 12,
     borderRadius: 6,
     '& .time': {
-        opacity: 1
+        opacity: '1 !important'
     },
     '&::before': {
         display: 'block',

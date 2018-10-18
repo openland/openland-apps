@@ -77,7 +77,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
     },
     '&:hover': {
         backgroundColor: '#F9F9F9',
-        '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
+        '& .menu-wrapper, & .time, & .reactions-wrapper .reaction-button': {
             opacity: 1
         }
     },
@@ -161,7 +161,6 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
     render() {
         const { message } = this.props;
-        // console.log(message);
         let content: any[] = [];
         let date: any = null;
         if (isServerMessage(message)) {
@@ -212,7 +211,14 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
                             content = [];
                         }
-                        content.push(<MessageUrlAugmentationComponent key="urlAugmentation" {...message.urlAugmentation} />);
+                        content.push(
+                            <MessageUrlAugmentationComponent
+                                key="urlAugmentation"
+                                {...message.urlAugmentation}
+                                messageId={message.id}
+                                isMe={this.props.sender && this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                            />
+                        );
                     }
                 }
                 if ((message as MessageFull).reply) {
@@ -344,7 +350,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                     <Name>{this.props.sender!!.name}</Name>
                                     {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                 </XHorizontal>
-                                <DateComponent className="time">{date}</DateComponent>
+                                <DateComponent small={true} className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
                             </XHorizontal>
                             <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
                                 <XHorizontal alignItems="center" separator={6}>

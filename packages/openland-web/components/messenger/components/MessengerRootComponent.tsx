@@ -15,6 +15,7 @@ import { withUserInfo } from '../../UserInfo';
 import { UserShort } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
+import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { EditMessageContext, EditMessageContextProps } from './EditMessageContext';
@@ -46,6 +47,23 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
             submitProps={{ succesText: 'Deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
+        </XModalForm >
+    );
+});
+
+const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation((props) => {
+    let id = props.router.query.deleteUrlAugmentation;
+    return (
+        <XModalForm
+            title="Delete url augmentation"
+            targetQuery="deleteUrlAugmentation"
+            submitBtnText="Delete"
+            defaultAction={(data) => {
+                props.deleteUrlAugmentation({ variables: { messageId: id } });
+            }}
+            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
+        >
+            <XText>Are you sure you want to delete this url preview? This cannot be undone.</XText>
         </XModalForm >
     );
 });
@@ -141,6 +159,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         conversationId={this.props.conversationId}
                     />
                 )}
+                <DeleteUrlAugmentationComponent/>
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
                 <ReplyMessageComponent />
