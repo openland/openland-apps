@@ -15,9 +15,9 @@ const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props)
     wordWrap: 'break-word',
     fontSize: props.big ? 44 : 14,
     minHeight: props.big ? 44 : undefined,
-    lineHeight: props.big ? '40px' : 1.57,
-    letterSpacing: -0.2,
-    color: props.isService ? '#99A2B0' : '#121e2b',
+    lineHeight: props.big ? '40px' : '22px',
+    letterSpacing: 0,
+    color: props.isService ? '#99A2B0' : 'rgba(0, 0, 0, 0.8)',
     maxWidth: '98%',
     '& .link': {
         color: '#1790ff',

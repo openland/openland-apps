@@ -30,15 +30,15 @@ import ReplyIcon from '../icons/ic-reply.svg';
 
 const Name = Glamorous.div({
     fontSize: 14,
-    fontWeight: 500,
-    color: '#121e2b'
+    fontWeight: 600,
+    color: 'rgba(0, 0, 0, 0.8)'
 });
 
 const Organization = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     fontSize: 12,
-    fontWeight: 500,
-    color: '#99A2B0',
-    letterSpacing: -0.2,
+    fontWeight: 600,
+    color: 'rgba(0, 0, 0, 0.4)',
+    letterSpacing: 0,
     alignSelf: 'flex-end',
     marginBottom: -1,
     cursor: 'pointer'
@@ -46,19 +46,19 @@ const Organization = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
 
 const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     flexShrink: 0,
-    width: props.small ? 56 : 62,
+    width: props.small ? 55 : 62,
     marginBottom: props.small ? undefined : -1,
-    fontSize: 11,
+    fontSize: props.small ? 11 : 12,
     paddingTop: props.small ? 1 : 1,
     fontWeight: 600,
     whiteSpace: 'nowrap',
-    color: '#99A2B0'
+    color: 'rgba(0, 0, 0, 0.4)',
 }));
 
 const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
-    paddingLeft: 10,
+    paddingLeft: props.compact ? 7 : 10,
     paddingRight: 10,
     paddingTop: props.compact ? 3 : 7,
     paddingBottom: 3,
@@ -100,6 +100,10 @@ const ReplyButton = Glamorous(XLink)({
         fill: '#1790ff',
         opacity: 1
     }
+});
+
+const UserAvatar = Glamorous(XAvatar)({
+    marginTop: 3
 });
 
 interface MessageComponentProps {
@@ -337,7 +341,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         return (
             <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                 <XHorizontal alignSelf="stretch">
-                    <XAvatar
+                    <UserAvatar
+                        size="small"
                         style="colorus"
                         objectName={this.props.sender!!.name}
                         objectId={this.props.sender!!.id}
@@ -351,7 +356,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                     <Name>{this.props.sender!!.name}</Name>
                                     {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                 </XHorizontal>
-                                <DateComponent small={true} className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
+                                <DateComponent className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
                             </XHorizontal>
                             <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
                                 <XHorizontal alignItems="center" separator={6}>
