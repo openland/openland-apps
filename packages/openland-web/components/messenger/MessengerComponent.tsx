@@ -258,7 +258,6 @@ const ChannelTab = Glamorous(XLink)({
 export const ChannelEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
-    let editLongDescription = (props as any).longDescription;
     let editPhotoRef = (props as any).photoRef;
     let editSocialImageRef = (props as any).socialImageRef;
     return (
@@ -269,7 +268,6 @@ export const ChannelEditComponent = withAlterChat((props) => {
             defaultAction={(data) => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
-                let newLongDescription = data.input.longDescription;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
 
@@ -278,7 +276,6 @@ export const ChannelEditComponent = withAlterChat((props) => {
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                             ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
                             ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
@@ -289,7 +286,6 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
-                    longDescription: (props as any).longDescription || '',
                     photoRef: sanitizeIamgeRef((props as any).photoRef),
                     socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
                 }
@@ -300,11 +296,10 @@ export const ChannelEditComponent = withAlterChat((props) => {
                     <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                     <XVertical flexGrow={1}>
                         <XInput field="input.title" placeholder="Title" size="large" />
-                        <XInput field="input.description" placeholder="Short Description" size="large" />
+                        <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
                     </XVertical>
                 </XHorizontal>
 
-                <XTextArea valueStoreKey="fields.input.longDescription" placeholder="Description" resize={false} />
                 <XAvatarUpload cropParams="1:1, free" field="input.socialImageRef" placeholder={{ add: 'Add social image', change: 'Change social image' }} />
             </XVertical>
         </XModalForm>
@@ -551,14 +546,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                             </AddButton>
                                         }
                                     />
-                                    {props.data.chat.longDescription && (
+                                    {props.data.chat.description && (
                                         <XPopper
                                             showOnHover={true}
                                             placement="bottom-end"
                                             content={(
                                                 <AboutWrapper separator={2} maxWidth={510}>
                                                     <AboutTitle>About channel</AboutTitle>
-                                                    <AboutText>{props.data.chat.longDescription}</AboutText>
+                                                    <AboutText>{props.data.chat.description}</AboutText>
                                                 </AboutWrapper>
                                             )}
                                         >
