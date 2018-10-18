@@ -20,12 +20,16 @@ const Container = Glamorous(XLink)({
     maxWidth: 620,
     color: '#121e2b !important',
     width: '100%',
+    '&:hover .delete-button': {
+        opacity: 1
+    }
 });
 
 const DeleteButton = Glamorous(XLink)({
+    opacity: 0,
     position: 'absolute',
     right: 6,
-    top: 8,
+    top: 6,
     width: 28,
     height: 28,
     display: 'flex',
@@ -33,13 +37,13 @@ const DeleteButton = Glamorous(XLink)({
     justifyContent: 'center',
     transition: 'all .15s ease',
     borderRadius: 50,
-    border: '1px solid transparent',
-    marginLeft: 'auto',
-    marginTop: -2,
+    background: '#ffffff',
+    border: '1px solid #ececec',
     '& > svg > g > path:last-child': {
         fill: 'rgba(0, 0, 0, 0.3)'
     },
     '&:hover': {
+        background: '#f9f9f9',
         '& > svg > g > path:last-child': {
             fill: 'rgba(0, 0, 0, 0.4)'
         }
@@ -208,7 +212,7 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                     )}
                 </Wrapper>
                 {this.props.isMe && (
-                    <DeleteButton query={{ field: 'deleteUrlAugmentation', value: this.props.messageId }}>
+                    <DeleteButton query={{ field: 'deleteUrlAugmentation', value: this.props.messageId }} className="delete-button">
                         <DeleteIcon />
                     </DeleteButton>
                 )}
