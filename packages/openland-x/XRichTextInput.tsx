@@ -122,7 +122,12 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
 
     componentDidMount() {
         if (this.props.autofocus) {
-            this.focus();
+            setTimeout(
+                () => {
+                    this.focus();
+                },
+                1
+            );
         }
     }
 
