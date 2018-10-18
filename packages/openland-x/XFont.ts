@@ -6,10 +6,10 @@ function neutral(alpha: number) {
 }
 
 const h600: CSSProperties = {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 400,
     lineHeight: '24px',
-    color: neutral(1.0)
+    color: neutral(0.9)
 };
 
 const h500: CSSProperties = {
