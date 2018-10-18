@@ -15,8 +15,9 @@ const Container = Glamorous(XLink)({
     background: '#ffffff',
     borderRadius: 10,
     padding: '9px 16px 12px',
-    maxWidth: 550,
+    maxWidth: 620,
     color: '#121e2b!important',
+    width: '100%',
 });
 
 const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
@@ -26,7 +27,8 @@ const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
 
         '& .content-wrapper': {
             flex: 1,
-            paddingRight: 15
+            paddingRight: 15,
+            width: 'calc(100% - 94px)'
         },
 
         '& .image-wrapper': {
@@ -55,7 +57,7 @@ const Hostname = Glamorous.div({
     '& span': {
         opacity: 0.5,
         fontSize: 12,
-        fontWeight: 500,
+        fontWeight: 600,
         lineHeight: '20px',
         letterSpacing: 0,
         color: '#334562'
@@ -72,11 +74,15 @@ const Favicon = Glamorous.img({
 
 const Title = Glamorous.div({
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: 400,
     lineHeight: '20px',
-    letterSpacing: -0.4,
+    letterSpacing: 0,
     color: '#1790ff',
     marginTop: 7,
+    overflow: 'hidden',
+    height: 20,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     '&:first-child': {
         marginTop: 0
     }
@@ -86,16 +92,27 @@ const Description = Glamorous.div({
     opacity: 0.9,
     fontSize: 14,
     lineHeight: '21px',
-    letterSpacing: -0.3,
+    letterSpacing: 0,
     color: '#121e2b',
     marginTop: 3,
+    maxHeight: 42,
+    display: 'block',
+    overflow: 'hidden',
     '&:first-child': {
         marginTop: 0
-    }
+    },
+    // Webkit line clamp
+    '&': {
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+    },
 });
 
 const ImageWrapper = Glamorous.div({
     marginTop: 13,
+    fontSize: 0,
+    lineHeight: 0,
 });
 
 const ImageBox = Glamorous.div({
@@ -131,7 +148,7 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
             isSquareImage = (ratio >= 0.9 && ratio <= 1.1);
 
             if (isSquareImage) {
-                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 93, 93);
+                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 94, 94);
             } else {
                 dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 200);
             }

@@ -122,7 +122,10 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
 }));
 
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
-    paddingRight: props.isIntro === true ? 0 : 20
+    paddingRight: (props.isIntro === true) ? 0 : 20,
+    '& .url-augmentation': (props.isIntro === true) ? {} : {
+        width: 'calc(100% + 20px)'
+    }
 }));
 
 const MenuWrapper = Glamorous.div<{ compact: boolean }>(props => ({
