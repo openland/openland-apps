@@ -296,6 +296,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             }
         }
 
+        let edited = isServerMessage(this.props.message) && this.props.message.edited;
+
         // Handle unknown messages: display empty message
         if (content.length === 0) {
             content.push(<MessageTextComponent message={''} key={'text'} isService={false} />);
@@ -339,7 +341,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
-                    <DateComponent small={true} className="time">{date}</DateComponent>
+                    <DateComponent small={true} className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
                     <MessageCompactContent separator={0} flexGrow={1} maxWidth="calc(100% - 64px)" isIntro={isIntro}>
                         {content}
                         {menu}

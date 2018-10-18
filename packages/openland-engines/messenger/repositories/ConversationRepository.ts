@@ -238,7 +238,7 @@ export const ConversationRepository = {
             (conv as any).unreadCount = counter;
             client.client.writeFragment({
                 id,
-                fragment: GROUP_CONVERSATION_TINY,
+                fragment: CHANNEL_CONVERSATION_TINY,
                 data: conv
             });
             return;
