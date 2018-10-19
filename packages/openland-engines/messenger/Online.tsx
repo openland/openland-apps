@@ -7,6 +7,7 @@ const SUBSCRIBE_ONLINES = gql`
             user: user {
                 id
                 online
+                lastSeen
             }
             type
             timeout
