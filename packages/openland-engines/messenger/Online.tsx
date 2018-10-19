@@ -7,6 +7,7 @@ const SUBSCRIBE_ONLINES = gql`
             user: user {
                 id
                 online
+                lastSeen
             }
             type
             timeout
@@ -46,13 +47,12 @@ export class OnlineWatcher {
                 if (!event || !event.data) {
                     return;
                 }
-                console.warn(event);
                 let evData = event.data.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
                 this.client.client.writeFragment({ id: userId, fragment: USER_ONLINE, data: { __typename: 'User', id: userId, online: evData.type === 'online' } });
-                this.onlinesData.set(userId, evData.type === 'online');
-                this.singleChangeListeners.forEach(l => l(userId, evData.type === 'online'));
+                this.onlinesData.set(userId, evData.user.online);
+                this.singleChangeListeners.forEach(l => l(userId, evData.user.online));
 
                 this.listeners.forEach(l => l(this.onlinesData));
             }
