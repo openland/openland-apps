@@ -7,7 +7,6 @@ const SUBSCRIBE_ONLINES = gql`
             user: user {
                 id
                 online
-                lastSeen
             }
             type
             timeout
@@ -47,6 +46,7 @@ export class OnlineWatcher {
                 if (!event || !event.data) {
                     return;
                 }
+                console.warn(event);
                 let evData = event.data.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
