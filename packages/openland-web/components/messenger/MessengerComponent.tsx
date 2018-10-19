@@ -468,12 +468,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     } else if (props.data.chat.__typename === 'ChannelConversation') {
         subtitle = 'Channel';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
-        subtitle = 'Person';
         uId = props.data.chat.user.id;
 
         if (props.data.chat.user.primaryOrganization) {
             titlePath = '/mail/u/' + props.data.chat.user.id;
-            subtitle = props.data.chat.user.primaryOrganization.name;
             subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
         }
     }
