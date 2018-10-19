@@ -213,6 +213,7 @@ const ShortcutsModal = () => {
                 <KeyboardShortcut><span>Cmd + S (Mac)</span><span>Ctrl + S (Windows)</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
                 <KeyboardShortcut><span><strong>↑</strong></span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + Option + ↑ (Mac)</span><span>Ctrl + Alt + ↑ (Windows)</span> Edit last message</KeyboardShortcut>
                 <KeyboardShortcut><span>Option + ↑ (Mac)</span><span>Alt + ↑ (Windows)</span> Previous chat</KeyboardShortcut>
                 <KeyboardShortcut><span>Option + ↓ (Mac)</span><span>Alt + ↓ (Windows)</span> Next chat</KeyboardShortcut>
                 <KeyboardShortcut><span>Enter</span> Send message</KeyboardShortcut>
@@ -380,7 +381,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
-        if (e.code === 'ArrowUp' && !e.altKey && this.message.length === 0 && this.input.current && this.input.current.state.editorState.getSelection().getHasFocus() && this.props.conversation) {
+        let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
+
+        if ((e.code === 'ArrowUp' && !e.altKey && this.message.length === 0 && hasFocus && this.props.conversation) || (e.code === 'ArrowUp' && e.altKey && e.ctrlKey && this.message.length === 0 && this.props.conversation)) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && this.props.user && m.sender.id === this.props.user.id);
             let message = messages[messages.length - 1];
             if (message && isServerMessage(message)) {
