@@ -104,7 +104,7 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) =
             {!user.role && user.primaryOrganization && <Role>{user.primaryOrganization.name}</Role>}
             <Buttons separator={6}>
                 {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" />}
-                <XButton path={'/mail/u/' + user.id} text={isMe ? 'View my profile' : 'View profile'} />
+                <XButton path={'/mail/u/' + user.id} text={isMe ? 'My profile' : 'View profile'} />
             </Buttons>
         </Wrapper>
     );
