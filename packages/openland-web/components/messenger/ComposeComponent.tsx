@@ -33,8 +33,8 @@ const HeaderWrapper = Glamorous.div({
     paddingTop: 10,
     flexShrink: 0,
     maxWidth: 832,
-    paddingLeft: 82,
-    paddingRight: 82,
+    paddingLeft: 77,
+    paddingRight: 77,
     width: '100%',
     alignSelf: 'center'
 });
@@ -69,8 +69,8 @@ const Title = Glamorous.div({
 const ComposeSelectWrapper = Glamorous.div({
     maxWidth: 832,
     marginTop: 10,
-    paddingLeft: 66,
-    paddingRight: 66,
+    paddingLeft: 61,
+    paddingRight: 61,
     width: '100%',
     alignSelf: 'center',
     zIndex: 2,
