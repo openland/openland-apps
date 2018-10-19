@@ -11,7 +11,7 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { UserQuery } from 'openland-api';
 
-export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'medium' | 'default' | 'small' | 'x-small';
+export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | 'user' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
@@ -50,6 +50,11 @@ let sizeStyles = styleResolver({
     's-medium': {
         height: 66,
         width: 66,
+        fontSize: 16
+    },
+    'l-medium': {
+        height: 56,
+        width: 56,
         fontSize: 16
     },
     'medium': {
@@ -105,6 +110,12 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 33 },
+    'l-medium': (props.style === 'organization' || props.style === 'channel') ? {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
+    } : { borderRadius: 28 },
     'medium': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
@@ -236,6 +247,7 @@ const DotPosition = {
     's-large': 8,
     'x-medium': 7,
     's-medium': 6,
+    'l-medium': 2,
     'medium': 2,
     'default': 3,
     'small': 2,

@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageFull, UserShort } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
@@ -27,6 +26,7 @@ import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
 import ReplyIcon from '../icons/ic-reply.svg';
+import { UserPopper } from './content/UserPopper';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -100,10 +100,6 @@ const ReplyButton = Glamorous(XLink)({
         fill: '#1790ff',
         opacity: 1
     }
-});
-
-const UserAvatar = Glamorous(XAvatar)({
-    marginTop: 3
 });
 
 interface MessageComponentProps {
@@ -341,14 +337,12 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         return (
             <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                 <XHorizontal alignSelf="stretch">
-                    <UserAvatar
-                        size="small"
-                        style="colorus"
-                        objectName={this.props.sender!!.name}
-                        objectId={this.props.sender!!.id}
-                        cloudImageUuid={this.props.sender ? this.props.sender.picture!! : undefined}
-                        path={'/mail/u/' + this.props.sender!!.id}
-                    />
+                    {this.props.sender && (
+                        <UserPopper
+                            user={this.props.sender}
+                            isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                        />
+                    )}
                     <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <XHorizontal justifyContent="space-between">
                             <XHorizontal separator={4}>
