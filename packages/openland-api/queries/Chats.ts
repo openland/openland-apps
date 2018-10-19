@@ -470,12 +470,6 @@ export const ChatSearchTextQuery = gql`
     ${UserShort}
 `;
 
-export const DocumentFetchPreviewLinkQuery = gql`
-    query DocumentFetchPreviewLink($file: String!) {
-        previewLink: alphaFilePreviewLink(uuid: $file)
-    }
-`;
-
 export const ChatSearchChannelQuery = gql`
     query ChatSearchChannel($query: String, $sort: String, $page: Int) {
         items: alphaChannels(query: $query, sort: $sort, page: $page, first: 25) {

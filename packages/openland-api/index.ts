@@ -51,7 +51,6 @@ export const BlockedListQuery = typedQuery<Types.BlockedList, Types.BlockedListV
 export const BlockUserMutation = typedMutation<Types.BlockUser, Types.BlockUserVariables>(Chats.BlockUserMutation);
 export const UnBlockUserMutation = typedMutation<Types.UnBlockUser, Types.UnBlockUserVariables>(Chats.UnBlockUserMutation);
 export const ChatSearchTextQuery = typedQuery<Types.ChatSearchText, Types.ChatSearchTextVariables>(Chats.ChatSearchTextQuery);
-export const DocumentFetchPreviewLinkQuery = typedQuery<Types.DocumentFetchPreviewLink, Types.DocumentFetchPreviewLinkVariables>(Chats.DocumentFetchPreviewLinkQuery);
 export const ChatSearchChannelQuery = typedQuery<Types.ChatSearchChannel, Types.ChatSearchChannelVariables>(Chats.ChatSearchChannelQuery);
 export const CreateChannelMutation = typedMutation<Types.CreateChannel, Types.CreateChannelVariables>(Chats.CreateChannelMutation);
 export const ChannelSetFeaturedMutation = typedMutation<Types.ChannelSetFeatured, Types.ChannelSetFeaturedVariables>(Chats.ChannelSetFeaturedMutation);

@@ -8,6 +8,16 @@ export const MessageFull = gql`
     file
     repeatKey
     isService
+    serviceMetadata{
+        ...on KickServiceMetadata{
+            user {
+                id
+            }
+            kickedBy{
+                 id
+            }
+        }
+    }
     fileMetadata {
         name
         mimeType

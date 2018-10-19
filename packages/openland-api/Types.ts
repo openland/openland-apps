@@ -356,6 +356,28 @@ export interface ChatList_chats_conversations_AnonymousConversation_settings {
   mute: boolean;
 }
 
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata = ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
+
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
   name: string;
@@ -518,6 +540,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatList_chats_conversations_AnonymousConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChatList_chats_conversations_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChatList_chats_conversations_AnonymousConversation_topMessage_sender;
   reply: ChatList_chats_conversations_AnonymousConversation_topMessage_reply[] | null;
@@ -542,6 +565,28 @@ export interface ChatList_chats_conversations_GroupConversation_settings {
   id: string;
   mute: boolean;
 }
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata = ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChatList_chats_conversations_GroupConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -705,6 +750,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatList_chats_conversations_GroupConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChatList_chats_conversations_GroupConversation_topMessage_fileMetadata | null;
   sender: ChatList_chats_conversations_GroupConversation_topMessage_sender;
   reply: ChatList_chats_conversations_GroupConversation_topMessage_reply[] | null;
@@ -730,6 +776,28 @@ export interface ChatList_chats_conversations_ChannelConversation_settings {
   id: string;
   mute: boolean;
 }
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata = ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -893,6 +961,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatList_chats_conversations_ChannelConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChatList_chats_conversations_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChatList_chats_conversations_ChannelConversation_topMessage_sender;
   reply: ChatList_chats_conversations_ChannelConversation_topMessage_reply[] | null;
@@ -1037,6 +1106,28 @@ export interface GlobalCounter {
 // ====================================================
 // GraphQL query operation: ChatHistory
 // ====================================================
+
+export interface ChatHistory_messages_messages_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatHistory_messages_messages_serviceMetadata = ChatHistory_messages_messages_serviceMetadata_InviteServiceMetadata | ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata;
 
 export interface ChatHistory_messages_messages_fileMetadata {
   __typename: "FileMetadata";
@@ -1200,6 +1291,7 @@ export interface ChatHistory_messages_messages {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatHistory_messages_messages_serviceMetadata | null;
   fileMetadata: ChatHistory_messages_messages_fileMetadata | null;
   sender: ChatHistory_messages_messages_sender;
   reply: ChatHistory_messages_messages_reply[] | null;
@@ -1770,6 +1862,28 @@ export interface GroupChatFullInfoVariables {
 // GraphQL mutation operation: SendMessage
 // ====================================================
 
+export interface SendMessage_sentMessage_message_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface SendMessage_sentMessage_message_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface SendMessage_sentMessage_message_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface SendMessage_sentMessage_message_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: SendMessage_sentMessage_message_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: SendMessage_sentMessage_message_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type SendMessage_sentMessage_message_serviceMetadata = SendMessage_sentMessage_message_serviceMetadata_InviteServiceMetadata | SendMessage_sentMessage_message_serviceMetadata_KickServiceMetadata;
+
 export interface SendMessage_sentMessage_message_fileMetadata {
   __typename: "FileMetadata";
   name: string;
@@ -1932,6 +2046,7 @@ export interface SendMessage_sentMessage_message {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: SendMessage_sentMessage_message_serviceMetadata | null;
   fileMetadata: SendMessage_sentMessage_message_fileMetadata | null;
   sender: SendMessage_sentMessage_message_sender;
   reply: SendMessage_sentMessage_message_reply[] | null;
@@ -2431,6 +2546,28 @@ export interface UnBlockUserVariables {
 // GraphQL query operation: ChatSearchText
 // ====================================================
 
+export interface ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata = ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
+
 export interface ChatSearchText_items_AnonymousConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
   name: string;
@@ -2593,6 +2730,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatSearchText_items_AnonymousConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChatSearchText_items_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChatSearchText_items_AnonymousConversation_topMessage_sender;
   reply: ChatSearchText_items_AnonymousConversation_topMessage_reply[] | null;
@@ -2618,6 +2756,28 @@ export interface ChatSearchText_items_AnonymousConversation {
   topMessage: ChatSearchText_items_AnonymousConversation_topMessage | null;
   settings: ChatSearchText_items_AnonymousConversation_settings;
 }
+
+export interface ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatSearchText_items_GroupConversation_topMessage_serviceMetadata = ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatSearchText_items_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChatSearchText_items_GroupConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -2781,6 +2941,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatSearchText_items_GroupConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChatSearchText_items_GroupConversation_topMessage_fileMetadata | null;
   sender: ChatSearchText_items_GroupConversation_topMessage_sender;
   reply: ChatSearchText_items_GroupConversation_topMessage_reply[] | null;
@@ -2822,6 +2983,28 @@ export interface ChatSearchText_items_GroupConversation {
   photo: string | null;
   photoRef: ChatSearchText_items_GroupConversation_photoRef | null;
 }
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata = ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -2985,6 +3168,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatSearchText_items_ChannelConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChatSearchText_items_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChatSearchText_items_ChannelConversation_topMessage_sender;
   reply: ChatSearchText_items_ChannelConversation_topMessage_reply[] | null;
@@ -3044,23 +3228,30 @@ export interface ChatSearchTextVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: DocumentFetchPreviewLink
-// ====================================================
-
-export interface DocumentFetchPreviewLink {
-  previewLink: string | null;
-}
-
-export interface DocumentFetchPreviewLinkVariables {
-  file: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: ChatSearchChannel
 // ====================================================
+
+export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChatSearchChannel_items_edges_node_topMessage_serviceMetadata = ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_InviteServiceMetadata | ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChatSearchChannel_items_edges_node_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -3224,6 +3415,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChatSearchChannel_items_edges_node_topMessage_serviceMetadata | null;
   fileMetadata: ChatSearchChannel_items_edges_node_topMessage_fileMetadata | null;
   sender: ChatSearchChannel_items_edges_node_topMessage_sender;
   reply: ChatSearchChannel_items_edges_node_topMessage_reply[] | null;
@@ -3342,6 +3534,28 @@ export interface CreateChannelVariables {
 // ====================================================
 // GraphQL mutation operation: ChannelSetFeatured
 // ====================================================
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -3505,6 +3719,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender;
   reply: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply[] | null;
@@ -3530,6 +3745,28 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   topMessage: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage | null;
   settings: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_settings;
 }
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata = ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -3693,6 +3930,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_fileMetadata | null;
   sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender;
   reply: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply[] | null;
@@ -3734,6 +3972,28 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation {
   photo: string | null;
   photoRef: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_photoRef | null;
 }
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata = ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -3897,6 +4157,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender;
   reply: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply[] | null;
@@ -3959,6 +4220,28 @@ export interface ChannelSetFeaturedVariables {
 // ====================================================
 // GraphQL mutation operation: ChannelSetHidden
 // ====================================================
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -4122,6 +4405,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender;
   reply: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply[] | null;
@@ -4147,6 +4431,28 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   topMessage: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage | null;
   settings: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_settings;
 }
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata = ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -4310,6 +4616,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_fileMetadata | null;
   sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender;
   reply: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply[] | null;
@@ -4351,6 +4658,28 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation {
   photo: string | null;
   photoRef: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_photoRef | null;
 }
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata = ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -4514,6 +4843,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata | null;
   fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_fileMetadata | null;
   sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender;
   reply: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply[] | null;
@@ -8218,6 +8548,28 @@ export interface ExplorePeopleVariables {
 // GraphQL fragment: ConversationShort
 // ====================================================
 
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ConversationShort_AnonymousConversation_topMessage_serviceMetadata = ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
+
 export interface ConversationShort_AnonymousConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
   name: string;
@@ -8380,6 +8732,7 @@ export interface ConversationShort_AnonymousConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ConversationShort_AnonymousConversation_topMessage_serviceMetadata | null;
   fileMetadata: ConversationShort_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_AnonymousConversation_topMessage_sender;
   reply: ConversationShort_AnonymousConversation_topMessage_reply[] | null;
@@ -8405,6 +8758,28 @@ export interface ConversationShort_AnonymousConversation {
   topMessage: ConversationShort_AnonymousConversation_topMessage | null;
   settings: ConversationShort_AnonymousConversation_settings;
 }
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ConversationShort_GroupConversation_topMessage_serviceMetadata = ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ConversationShort_GroupConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -8568,6 +8943,7 @@ export interface ConversationShort_GroupConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ConversationShort_GroupConversation_topMessage_serviceMetadata | null;
   fileMetadata: ConversationShort_GroupConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_GroupConversation_topMessage_sender;
   reply: ConversationShort_GroupConversation_topMessage_reply[] | null;
@@ -8609,6 +8985,28 @@ export interface ConversationShort_GroupConversation {
   photo: string | null;
   photoRef: ConversationShort_GroupConversation_photoRef | null;
 }
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type ConversationShort_ChannelConversation_topMessage_serviceMetadata = ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
 
 export interface ConversationShort_ChannelConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -8772,6 +9170,7 @@ export interface ConversationShort_ChannelConversation_topMessage {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: ConversationShort_ChannelConversation_topMessage_serviceMetadata | null;
   fileMetadata: ConversationShort_ChannelConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_ChannelConversation_topMessage_sender;
   reply: ConversationShort_ChannelConversation_topMessage_reply[] | null;
@@ -8838,6 +9237,28 @@ export interface GeoShort {
 // ====================================================
 // GraphQL fragment: MessageFull
 // ====================================================
+
+export interface MessageFull_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface MessageFull_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface MessageFull_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface MessageFull_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: MessageFull_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: MessageFull_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type MessageFull_serviceMetadata = MessageFull_serviceMetadata_InviteServiceMetadata | MessageFull_serviceMetadata_KickServiceMetadata;
 
 export interface MessageFull_fileMetadata {
   __typename: "FileMetadata";
@@ -9001,6 +9422,7 @@ export interface MessageFull {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  serviceMetadata: MessageFull_serviceMetadata | null;
   fileMetadata: MessageFull_fileMetadata | null;
   sender: MessageFull_sender;
   reply: MessageFull_reply[] | null;
