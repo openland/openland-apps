@@ -213,9 +213,12 @@ const ShortcutsModal = () => {
                 <KeyboardShortcut><span>Cmd + S (Mac)</span><span>Ctrl + S (Windows)</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
                 <KeyboardShortcut><span><strong>↑</strong></span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + ↑</span> Previous chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + ↓</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Option + ↑ (Mac)</span><span>Alt + ↑ (Windows)</span> Previous chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Option + ↓ (Mac)</span><span>Alt + ↓ (Windows)</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Enter</span> Send message</KeyboardShortcut>
+                <KeyboardShortcut><span>Shift + Enter</span> New line</KeyboardShortcut>
                 <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Submit form</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
@@ -376,7 +379,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
-        if (e.code === 'ArrowUp' && !e.shiftKey && this.message.length === 0 && this.input.current && this.input.current.state.editorState.getSelection().getHasFocus() && this.props.conversation) {
+        if (e.code === 'ArrowUp' && !e.altKey && this.message.length === 0 && this.input.current && this.input.current.state.editorState.getSelection().getHasFocus() && this.props.conversation) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && this.props.user && m.sender.id === this.props.user.id);
             let message = messages[messages.length - 1];
             if (message && isServerMessage(message)) {

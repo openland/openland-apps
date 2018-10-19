@@ -492,7 +492,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             }
         }
 
-        if (e.shiftKey) {
+        if (e.altKey) {
             if (canUseDOM) {
                 if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
                     return;
@@ -513,7 +513,10 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             }
             index = Math.max(0, index);
             index = Math.min(this.items.length - 1, index);
-            this.props.router.push('/mail/' + this.items[index].key);
+
+            if (this.items[index]) {
+                this.props.router.push('/mail/' + this.items[index].key);
+            }
         }
 
         if (!this.props.emptyState && e.code === 'Escape') {
