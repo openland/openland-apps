@@ -26,7 +26,7 @@ import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
 import ReplyIcon from '../icons/ic-reply.svg';
-import { UserPopper } from './content/UserPopper';
+import { UserPopper, UserAvatar } from './content/UserPopper';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -337,11 +337,14 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         return (
             <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen}>
                 <XHorizontal alignSelf="stretch">
-                    {this.props.sender && (
+                    {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
                         <UserPopper
                             user={this.props.sender}
                             isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
                         />
+                    )}
+                    {this.props.sender && (this.props.conversationType === 'PrivateConversation') && (
+                        <UserAvatar user={this.props.sender} />
                     )}
                     <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <XHorizontal justifyContent="space-between">

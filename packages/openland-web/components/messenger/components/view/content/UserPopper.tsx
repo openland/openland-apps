@@ -8,7 +8,7 @@ import { XButton } from 'openland-x/XButton';
 import { withOnline } from '../../../../../api/withOnline';
 import { XDate } from 'openland-x-format/XDate';
 
-const UserAvatar = Glamorous(XAvatar)({
+const UserAvatarWrapper = Glamorous(XAvatar)({
     marginTop: 3
 });
 
@@ -73,19 +73,23 @@ const Status = withOnline(props => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
+export class UserAvatar extends React.Component<{ user: MessageFull_sender }> {
+    render () {
+        return (
+            <UserAvatarWrapper
+                size="small"
+                style="colorus"
+                objectName={this.props.user.name}
+                objectId={this.props.user.id}
+                cloudImageUuid={this.props.user.picture || undefined}
+                path={'/mail/u/' + this.props.user.id}
+            />
+        );
+    }
+}
+
 export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) => {
     let { user, isMe } = props;
-    let avatar = (
-        <UserAvatar
-            size="small"
-            style="colorus"
-            objectName={user.name}
-            objectId={user.id}
-            cloudImageUuid={user.picture || undefined}
-            path={'/mail/u/' + user.id}
-        />
-    );
-
     let content = (
         <Wrapper>
             <XHorizontal>
@@ -117,7 +121,7 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) =
             placement="bottom-start"
             marginLeft={-2}
         >
-            {avatar}
+            <UserAvatar user={user} />
         </XPopper>
     );
 };
