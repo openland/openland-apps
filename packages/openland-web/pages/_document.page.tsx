@@ -46,35 +46,24 @@ export default class OpenlandDocument extends Document {
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
 
-                    {/* ORDER IS IMPORTANT! */}
-                    {/* <link rel="shortcut icon" href="/static/favicon.ico" /> */}
-                    <link rel="mask-icon" href="/static/favicon-safari.svg" color="#522BFF" />
-
-                    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png" />
-                    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png" />
-                    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png" />
-                    <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96.png" />
-                    <link rel="icon" type="image/png" sizes="128x128" href="/static/favicon-128.png" />
-                    <link rel="icon" type="image/png" sizes="196x196" href="/static/favicon-196.png" />
-
-                    <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57.png" />
-                    <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60.png" />
-                    <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72.png" />
-                    <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-icon-76.png" />
-                    <link rel="apple-touch-icon" sizes="114x114" href="/static/apple-icon-114.png" />
-                    <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-icon-120.png" />
-                    <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-icon-144.png" />
-                    <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-icon-152.png" />
-                    <link rel="apple-touch-icon" sizes="180" href="/static/apple-icon-180.png" />
-
-                    <link rel="manifest" href="/static/manifest.json" />
-
-                    <meta name="msapplication-TileColor" content="#6400FF" />
-                    <meta name="msapplication-TileImage" content="/static/ms-icon-144.png" />
-                    <meta name="msapplication-square70x70logo" content="/static/ms-icon-square-70.png" />
-                    <meta name="msapplication-square150x150logo" content="/static/ms-icon-square-150.png" />
-                    <meta name="msapplication-square310x310logo" content="/static/ms-icon-square-310.png" />
-                    <meta name="msapplication-wide310x150logo" content="/static/ms-icon-wide-310.png" />
+                    {/* ORDER IS IMPORTANT! */}                   
+                    <link rel="apple-touch-icon" sizes="57x57" href="/static/img/favicon/apple-icon-57x57.png" />
+                    <link rel="apple-touch-icon" sizes="60x60" href="/static/img/favicon/apple-icon-60x60.png" />
+                    <link rel="apple-touch-icon" sizes="72x72" href="/static/img/favicon/apple-icon-72x72.png" />
+                    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon/apple-icon-76x76.png" />
+                    <link rel="apple-touch-icon" sizes="114x114" href="/static/img/favicon/apple-icon-114x114.png" />
+                    <link rel="apple-touch-icon" sizes="120x120" href="/static/img/favicon/apple-icon-120x120.png" />
+                    <link rel="apple-touch-icon" sizes="144x144" href="/static/img/favicon/apple-icon-144x144.png" />
+                    <link rel="apple-touch-icon" sizes="152x152" href="/static/img/favicon/apple-icon-152x152.png" />
+                    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-icon-180x180.png" />
+                    <link rel="icon" type="image/png" sizes="192x192" href="/static/img/favicon/android-icon-192x192.png" />
+                    <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png" />
+                    <link rel="icon" type="image/png" sizes="96x96" href="/static/img/favicon/favicon-96x96.png" />
+                    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon/favicon-16x16.png" />
+                    <link rel="manifest" href="/static/img/favicon/manifest.json" />
+                    <meta name="msapplication-TileColor" content="#ffffff" />
+                    <meta name="msapplication-TileImage" content="/static/img/favicon/ms-icon-144x144.png" />
+                    <meta name="theme-color" content="#ffffff" />
 
                     {/* Styles */}
                     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css" />

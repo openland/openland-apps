@@ -12,7 +12,7 @@ const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string, borderC
     paddingRight: 2,
     lineHeight: '13px',
     borderRadius: 5,
-    backgroundColor: props.bgColor || '#e22a2a',
+    backgroundColor: props.bgColor || '#1790ff',
     border: '2px solid ' + (props.borderColor ? props.borderColor : 'white'),
     fontSize: 10,
     fontWeight: 600,

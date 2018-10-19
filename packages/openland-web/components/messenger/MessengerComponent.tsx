@@ -51,10 +51,9 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
     alignItems: 'center',
-    maxWidth: 780,
+    maxWidth: 920,
     width: '100%',
-    flexBasis: '100%',
-    paddingRight: 25
+    flexBasis: '100%'
 });
 
 const TitleWrapper = Glamorous(XHorizontal)({
