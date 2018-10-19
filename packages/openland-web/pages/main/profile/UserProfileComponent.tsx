@@ -111,7 +111,7 @@ const Header = (props: { userQuery: User }) => {
             <HeaderInfo flexGrow={1} separator={3}>
                 <XHorizontal separator={5}>
                     <HeaderTitle>{usr.name}</HeaderTitle>
-                    {usr.lastSeen && <LastSeenWrapper>last seen: <XDate value={usr.lastSeen} format="time" /></LastSeenWrapper>}
+                    {usr.lastSeen && usr.lastSeen !== 'online' && usr.lastSeen !== 'never_online' && <LastSeenWrapper>last seen: <XDate value={usr.lastSeen} format="humanize_cute" /></LastSeenWrapper>}
                 </XHorizontal>
                 {usr.primaryOrganization && (
                     <OrgName separator={2.5} alignItems="center" path={'/directory/o/' + usr.primaryOrganization.id}>
