@@ -55,7 +55,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: 'rgba(0, 0, 0, 0.4)',
 }));
 
-const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }>((props) => ({
+const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, editView: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
     paddingLeft: props.compact ? 7 : 10,
@@ -73,12 +73,13 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean }
         marginRight: -14
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
-        opacity: 0
+        opacity: 0,
+        display: props.editView ? 'none' : undefined
     },
     '&:hover': {
         backgroundColor: '#F9F9F9',
         '& .menu-wrapper, & .time, & .reactions-wrapper .reaction-button': {
-            opacity: 1
+            opacity: props.editView ? 0 : 1
         }
     },
     '&': (props.isHovered) ? { backgroundColor: '#F9F9F9' } : {}
@@ -305,7 +306,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
         if (this.props.compact) {
             return (
-                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen}>
+                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen} editView={this.state.isEditView}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
@@ -335,7 +336,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen}>
+            <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen} editView={this.state.isEditView}>
                 <XHorizontal alignSelf="stretch">
                     {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
                         <UserPopper
