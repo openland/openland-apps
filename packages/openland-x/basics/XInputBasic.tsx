@@ -238,6 +238,9 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
                 color: '#8A80E7'
             }
         },
+        '& input[type="number"], & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            appearance: 'none'
+        }
     }),
     (props) => colorStyles(props.inputStyle),
     (props) => (props.invalid && {
