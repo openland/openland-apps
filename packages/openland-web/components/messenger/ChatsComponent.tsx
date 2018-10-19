@@ -475,7 +475,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
         let { allowShortKeys } = this.state;
 
-        if (e.ctrlKey) {
+        if (!e.altKey && e.ctrlKey) {
             if (canUseDOM) {
                 if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
                     return;
@@ -492,7 +492,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             }
         }
 
-        if (e.altKey) {
+        if (e.altKey && !e.ctrlKey) {
             if (canUseDOM) {
                 if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
                     return;
@@ -516,6 +516,18 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
             if (this.items[index]) {
                 this.props.router.push('/mail/' + this.items[index].key);
+            }
+        }
+
+        if (e.altKey && e.ctrlKey) {
+            if (canUseDOM) {
+                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
+                    return;
+                }
+            }
+
+            if (e.code === 'KeyN') {
+                this.props.router.push('/mail/new');
             }
         }
 

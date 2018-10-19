@@ -219,6 +219,7 @@ const ShortcutsModal = () => {
                 <KeyboardShortcut><span>Shift + Enter</span> New line</KeyboardShortcut>
                 <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Submit form</KeyboardShortcut>
                 <KeyboardShortcut><span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + Option + N (Mac)</span><span>Ctrl + Alt + N (Windows)</span> New chat</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
