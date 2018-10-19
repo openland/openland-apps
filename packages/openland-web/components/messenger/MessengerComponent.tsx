@@ -438,7 +438,7 @@ const LastSeen = withOnline(props => {
     } else if (props.data.user && props.data.user.online) {
         return (
             <LastSeenWrapper online={true}>
-                online
+                Online
             </LastSeenWrapper>
         );
     } else {
