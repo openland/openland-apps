@@ -4,7 +4,7 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
-import { XCloudImage, XPhotoRef } from './XCloudImage';
+import { XPhotoRef } from './XCloudImage';
 import { XPImage } from 'openland-xp/XPImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
@@ -241,28 +241,41 @@ const AvatarWrapper = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
 })
 ]);
 
+const DotSize = {
+    'x-large':  17,
+    'large':    16,
+    's-large':  15,
+    'x-medium': 14,
+    's-medium': 13,
+    'l-medium': 12,
+    'medium':   11,
+    'default':  11,
+    'small':    10,
+    'x-small':  8
+};
+
 const DotPosition = {
-    'x-large': 10,
-    'large': 9,
-    's-large': 8,
-    'x-medium': 7,
-    's-medium': 6,
+    'x-large':  14,
+    'large':    11,
+    's-large':  7,
+    'x-medium': 5,
+    's-medium': 3,
     'l-medium': 2,
-    'medium': 2,
-    'default': 3,
-    'small': 2,
-    'x-small': 1
+    'medium':   1,
+    'default':  0,
+    'small':    0,
+    'x-small':  -1
 };
 
 const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     position: 'absolute',
-    width: 10,
-    height: 10,
+    width: DotSize[props.format || 'default'],
+    height: DotSize[props.format || 'default'],
     backgroundColor: 'rgb(92,212,81)',
     border: 'solid 1px #ffffff',
     borderRadius: '50%',
-    right: props.format ? DotPosition[props.format] : 3,
-    bottom: props.format ? DotPosition[props.format] : 3,
+    right: DotPosition[props.format || 'default'],
+    bottom: DotPosition[props.format || 'default'],
     cursor: 'default'
 }));
 
