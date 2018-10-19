@@ -13,10 +13,11 @@ const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props)
     display: 'inline',
     whiteSpace: 'pre-wrap',
     wordWrap: 'break-word',
-    fontSize: props.big ? 44 : 14,
+    fontSize: props.big ? 36 : 14,
     minHeight: props.big ? 44 : undefined,
     lineHeight: props.big ? '40px' : '22px',
-    letterSpacing: 0,
+    letterSpacing: props.big ? -0.5 : 0,
+    fontWeight: props.big ? 700 : 400,
     color: props.isService ? '#99A2B0' : 'rgba(0, 0, 0, 0.8)',
     maxWidth: '98%',
     '& .link': {
