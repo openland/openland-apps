@@ -44,6 +44,7 @@ const HeaderButton = Glamorous(XButton)({
         marginLeft: -4
     },
     '& svg *': {
+        transition: 'all .15s ease',
         fill: 'rgba(0, 0, 0, 0.2)'
     },
     '&:hover svg *': {
@@ -238,14 +239,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                                 organizations: this.state.values.length === 0
                             }}
                         />
-                        {/* <ComposeSelect
-                            placeholder="Whom would you like to message?"
-                            onChange={this.handleChange}
-                            value={this.state.values}
-                            multi={true}
-                            rounded={true}
-                            variables={{ organizations: this.state.values.length === 0 }}
-                        /> */}
                     </ComposeSelectWrapper>
                     <MessagesContainer>
                         {!this.state.conversationId && (
