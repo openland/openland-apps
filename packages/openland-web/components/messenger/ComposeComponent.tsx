@@ -16,6 +16,7 @@ import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withChatCompose } from '../../api/withChatCompose';
 import { withUserInfo } from '../UserInfo';
 import { UserShort } from 'openland-api/Types';
+import { TextCompose } from 'openland-text/TextCompose';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -108,10 +109,10 @@ const SearchPeopleModule = withChatCompose(props => {
                     <XSelectCustomUsersRender
                         multi={true}
                         popper={true}
-                        placeholder="Whom would you like to message?"
+                        placeholder={TextCompose.searchPlaceholder}
                         rounded={true}
                         onInputChange={(data) => (props as any).onChangeInput(data)}
-                        helpText="Wait..."
+                        helpText={TextCompose.searchLoading}
                         inCompose={true}
                     />
                 }
@@ -134,7 +135,7 @@ const SearchPeopleModule = withChatCompose(props => {
             render={
                 <XSelectCustomUsersRender
                     multi={true}
-                    placeholder="Whom would you like to message?"
+                    placeholder={TextCompose.searchPlaceholder}
                     rounded={true}
                     onInputChange={(data) => (props as any).onChangeInput(data)}
                     inCompose={true}
@@ -153,8 +154,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
     };
 
     handleChange: OnChangeHandler = (vals) => {
-        console.warn(vals);
-
         let nvals: Option<OptionValues>[] = [];
         if (vals === null) {
             nvals = [];
@@ -221,9 +220,9 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
         return (
             <Root flexGrow={1} separator={'none'}>
                 <HeaderWrapper>
-                    <Title>Find or start a conversation</Title>
+                    <Title>{TextCompose.headerTitle}</Title>
                     <HeaderButton
-                        text="New channel"
+                        text={TextCompose.headerNewChannel}
                         icon={<ChannelIcon />}
                         query={{ field: 'createChannel', value: 'true' }}
                     />
