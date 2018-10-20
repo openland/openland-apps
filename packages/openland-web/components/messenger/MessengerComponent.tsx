@@ -269,6 +269,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
     let editDescription = (props as any).description;
     let editPhotoRef = (props as any).photoRef;
     let editSocialImageRef = (props as any).socialImageRef;
+    let editLongDescription = (props as any).longDescription;
     return (
         <XModalForm
             scrollableContent={true}
@@ -279,12 +280,14 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
+                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                             ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
                             ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
@@ -295,6 +298,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
+                    longDescription: (props as any).longDescription || '',
                     photoRef: sanitizeIamgeRef((props as any).photoRef),
                     socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
                 }
@@ -305,6 +309,9 @@ export const ChannelEditComponent = withAlterChat((props) => {
                     <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                     <XVertical flexGrow={1}>
                         <XInput field="input.title" placeholder="Title" size="large" />
+                        <XWithRole role="feature-chat-embedded-attach">
+                            <XInput field="input.longDescription" flexGrow={1} placeholder="Embedded attach link" size="large" />
+                        </XWithRole>
                         <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
                     </XVertical>
                 </XHorizontal>
@@ -318,6 +325,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
 export const ChatEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editPhotoRef = (props as any).photoRef;
+    let editLongDescription = (props as any).longDescription;
     return (
         <XModalForm
             targetQuery="editChat"
@@ -325,12 +333,14 @@ export const ChatEditComponent = withAlterChat((props) => {
             defaultAction={(data) => {
                 let newTitle = data.input.title;
                 let newPhoto = data.input.photoRef;
+                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {}
+                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                         }
                     }
                 });
@@ -338,17 +348,23 @@ export const ChatEditComponent = withAlterChat((props) => {
             defaultData={{
                 input: {
                     title: (props as any).title || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef)
+                    photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    longDescription: (props as any).longDescription || '',
                 }
             }}
         >
             <XHorizontal>
                 <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-                <XInput field="input.title" flexGrow={1} placeholder="Title" size="large" />
+                <XVertical flexGrow={1}>
+                    <XInput field="input.title" flexGrow={1} placeholder="Title" size="large" />
+                    <XWithRole role="feature-chat-embedded-attach">
+                        <XInput field="input.longDescription" flexGrow={1} placeholder="Embedded attach link" size="large" />
+                    </XWithRole>
+                </XVertical>
             </XHorizontal>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ title: string, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
 const AddMemberForm = withSuperAddToChannel((props) => {
     return (
@@ -635,7 +651,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 justifyContent="center"
                 width="100%"
                 height="calc(100% - 56px)"
+                separator={0}
             >
+
+                {(props.data.chat as any).longDescription && (
+                    <iframe style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
+                )}
                 {tab === 'chat' && (
                     <MessengerRootComponent
                         key={props.data.chat.id}
@@ -665,8 +686,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         removeText="Remove from group"
                     />
                 )}
+
             </XHorizontal>
-            <ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
+            <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
             <XWithRole role={['super-admin']}>

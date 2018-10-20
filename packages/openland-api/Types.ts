@@ -1431,6 +1431,7 @@ export interface ChatInfo_chat_GroupConversation {
   settings: ChatInfo_chat_GroupConversation_settings;
   membersCount: number;
   photo: string | null;
+  longDescription: string;
   photoRef: ChatInfo_chat_GroupConversation_photoRef | null;
 }
 
