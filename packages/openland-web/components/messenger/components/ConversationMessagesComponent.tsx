@@ -25,7 +25,7 @@ const TypingContent = Glamorous(XHorizontal)({
     backgroundColor: '#fff',
     maxHeight: 33,
     maxWidth: 800,
-    paddingLeft: 67,
+    paddingLeft: 62,
     paddingRight: 40,
     margin: 'auto',
 });
