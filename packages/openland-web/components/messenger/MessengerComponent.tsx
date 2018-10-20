@@ -655,7 +655,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             >
 
                 {(props.data.chat as any).longDescription && (
-                    <iframe style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
+                    <iframe allow="microphone; camera" style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
                 )}
                 {tab === 'chat' && (
                     <MessengerRootComponent
