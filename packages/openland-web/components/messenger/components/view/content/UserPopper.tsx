@@ -38,7 +38,11 @@ const UserAvatarWrapper = Glamorous(XAvatar)({
 const Container = Glamorous(XPopper.Content)({
     padding: 0,
     animationDuration: `500ms`,
-    animationName: `${showAnimation}`
+    animationName: `${showAnimation}`,
+    '& + .arrow': {
+        animationDuration: `500ms`,
+        animationName: `${showAnimation}`
+    }
 });
 
 const Wrapper = Glamorous.div({
