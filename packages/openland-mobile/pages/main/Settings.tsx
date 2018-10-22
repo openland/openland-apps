@@ -88,7 +88,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     action="Edit profile"
                                 />
                                 <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
-                                    <ZListItem text="Share link" onPress={() => Share.share({title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com'})} />
+                                    <ZListItem text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com' })} />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Organizations">
                                     <ZListItem
@@ -116,21 +116,23 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
                                     <ZListItem text="Notifications" path="SettingsNotifications" />
-                                    <ZListItem text="Phone" description={'verify phone'} path="PhoneVerify" />
+                                    {__DEV__ && <ZListItem text="Phone" description={'verify phone'} path="PhoneVerify" />}
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Application">
                                     <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />
                                     {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
                                     {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Dev Tools">
-                                    <ZListItem text="Typography" path="DevTypography" />
-                                    <ZListItem text="Components" path="DevComponents" />
-                                    <ZListItem text="Navigation" path="DevNavigation" />
-                                    <ZListItem text="Loader" path="DevLoader" />
-                                    <ZListItem text="Reboot" onPress={this.handleReboot} />
-                                    <ZListItem text="Log out" onPress={this.handleLogout} />
-                                </ZListItemGroup>
+                                {__DEV__ && (
+                                    <ZListItemGroup header="Dev Tools">
+                                        <ZListItem text="Typography" path="DevTypography" />
+                                        <ZListItem text="Components" path="DevComponents" />
+                                        <ZListItem text="Navigation" path="DevNavigation" />
+                                        <ZListItem text="Loader" path="DevLoader" />
+                                        <ZListItem text="Reboot" onPress={this.handleReboot} />
+                                        <ZListItem text="Log out" onPress={this.handleLogout} />
+                                    </ZListItemGroup>
+                                )}
                                 <ZListItemFooter />
                                 <ZListItemFooter />
                             </SScrollView>
