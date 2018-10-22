@@ -37,6 +37,7 @@ export const MessageFull = gql`
         id
         date
         message
+        edited
     }
     reactions: reactions {
         user {

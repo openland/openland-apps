@@ -72,6 +72,7 @@ interface ReplyMessageProps {
     id: string;
     date: any;
     message: string | null;
+    edited: boolean;
 }
 
 export const MessageReplyComponent = (props: ReplyMessageProps) => {
@@ -96,7 +97,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                         <DateComponent className="time">{date}</DateComponent>
                     </MessageWrapper>
                 </XHorizontal>
-                {props.message && <MessageTextComponent message={props.message} key={'reply-text'} isService={false} />}
+                {props.message && <MessageTextComponent message={props.message} key={'reply-text'} isService={false} isEdited={props.edited} />}
             </XVertical>
         </MessageContainer>
     );

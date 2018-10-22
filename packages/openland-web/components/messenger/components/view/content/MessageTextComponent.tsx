@@ -7,6 +7,7 @@ import { emojify } from 'react-emojione';
 export interface MessageTextComponentProps {
     message: string;
     isService: boolean;
+    isEdited: boolean;
 }
 
 const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props) => ({
@@ -28,6 +29,16 @@ const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props)
         }
     }
 }));
+
+const EditLabel = Glamorous.span({
+    display: 'inline-block',
+    verticalAlign: 'baseline',
+    color: 'rgba(0, 0, 0, 0.4)',
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: '22px',
+    paddingLeft: 6,
+});
 
 let emoji = (text: string, height: number) => emojify(text, { style: { height: height, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } });
 
@@ -80,6 +91,11 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
         //         }
         //     });
         // }
-        return <TextWrapper big={this.big || this.insane} isService={this.props.isService}>{parts}</TextWrapper>;
+        return (
+            <TextWrapper big={this.big || this.insane} isService={this.props.isService}>
+                {parts}
+                {this.props.isEdited && <EditLabel>(Edited)</EditLabel>}
+            </TextWrapper>
+        );
     }
 }
