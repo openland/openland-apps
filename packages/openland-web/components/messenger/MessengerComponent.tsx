@@ -72,12 +72,12 @@ const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
 })));
 
 const SubtitleWrapper = Glamorous.div({
-    marginTop: '5px!important',
-    marginBottom: '-1px!important',
+    marginTop: '4px!important',
+    marginBottom: '0px!important',
 });
 
 const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps & { inTop?: boolean }>(props => ({
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: props.inTop ? 600 : 400,
     color: 'rgba(0, 0, 0, 0.4)',
     lineHeight: props.inTop ? '18px' : '16px',
@@ -436,8 +436,8 @@ const AboutText = Glamorous.div({
 });
 
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
-    fontSize: 12,
-    fontWeight: 600,
+    fontSize: 13,
+    fontWeight: 400,
     lineHeight: '16px',
     color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
     letterSpacing: 0,
