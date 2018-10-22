@@ -673,6 +673,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         longDescription={props.data.chat.longDescription}
                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                         emptyText="To grow the community, invite people to this channel"
+                        removeFrom="channel"
                     />
                 )}
                 {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
@@ -683,7 +684,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         description={undefined}
                         longDescription={undefined}
                         orgId={''}
-                        removeText="Remove from group"
+                        removeFrom="group"
                     />
                 )}
 

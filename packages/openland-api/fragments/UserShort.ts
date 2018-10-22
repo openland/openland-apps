@@ -9,6 +9,7 @@ export const UserShort = gql`
         email
         online
         lastSeen
+        isYou
         primaryOrganization: alphaPrimaryOrganization {
             id
             name
