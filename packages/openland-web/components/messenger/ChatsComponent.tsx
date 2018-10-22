@@ -172,7 +172,7 @@ const ContentCounter = Glamorous.div({
 });
 
 const ConversationAvatar = Glamorous(XAvatar)({
-    
+
 });
 
 let Item = makeNavigable((props) => (
@@ -188,11 +188,21 @@ let Item = makeNavigable((props) => (
     </ItemContainer>
 )) as React.ComponentType<{ ref: (e: any) => void, path: string, onClick?: () => void }>;
 
+let SelectContext = React.createContext({ select: -1 });
+
 class ConversationComponent extends React.PureComponent<{ conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean, onSelect: () => void }> {
     refComponent: any;
 
-    componentWillReceiveProps(nextProps: { conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean }) {
-        if (nextProps.selectedItem === true && nextProps.allowSelection) {
+    componentDidMount() {
+        this.checkFocus();
+    }
+
+    componentDidUpdate() {
+        this.checkFocus();
+    }
+
+    checkFocus = () => {
+        if (this.props.selectedItem === true && this.props.allowSelection) {
             this.reactDom(this.refComponent);
         }
     }
@@ -307,23 +317,29 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                 ? (
                     <>
                         {items.map((i, j) => (
-                            <ConversationComponent
-                                key={i.id}
-                                onSelect={(props as any).onSelect}
-                                conversation={{
-                                    sender: i.topMessage ? (props.user && (i.topMessage.sender.id === props.user.id) ? 'You' : i.topMessage.sender.name) : undefined,
-                                    key: i.id,
-                                    flexibleId: i.flexibleId,
-                                    message: i.topMessage && formatMessage(i.topMessage),
-                                    type: i.__typename,
-                                    title: i.title,
-                                    photo: i.photo || i.photos[0],
-                                    unread: i.unreadCount,
-                                    fileMeta: i.topMessage && i.topMessage.fileMetadata
+                            <SelectContext.Consumer>
+                                {select => {
+                                    console.warn('context changed');
+                                    return <ConversationComponent
+                                        key={i.id}
+                                        onSelect={(props as any).onSelect}
+                                        conversation={{
+                                            sender: i.topMessage ? (props.user && (i.topMessage.sender.id === props.user.id) ? 'You' : i.topMessage.sender.name) : undefined,
+                                            key: i.id,
+                                            flexibleId: i.flexibleId,
+                                            message: i.topMessage && formatMessage(i.topMessage),
+                                            type: i.__typename,
+                                            title: i.title,
+                                            photo: i.photo || i.photos[0],
+                                            unread: i.unreadCount,
+                                            fileMeta: i.topMessage && i.topMessage.fileMetadata
+                                        }}
+                                        selectedItem={select.select === j}
+                                        allowSelection={(props as any).allowSelection}
+                                    />;
                                 }}
-                                selectedItem={(props as any).selectedItem === j}
-                                allowSelection={(props as any).allowSelection}
-                            />
+                            </SelectContext.Consumer>
+
                         ))}
                     </>
                 )
@@ -335,7 +351,7 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                 )
             : <PlaceholderLoader color="#334562" />
     );
-})) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, selectedItem: number, allowSelection: boolean }>;
+})) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, allowSelection: boolean }>;
 
 const Search = Glamorous(XInput)({
     marginLeft: 12,
@@ -410,6 +426,7 @@ const InviteWrapper = Glamorous(XLink)({
 class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
     readonly dialogListEngine: DialogListEngine;
     items: DialogDataSourceItem[] = [];
+    searchCount = 0;
     inputRef: any;
 
     constructor(props: ChatsComponentInnerProps) {
@@ -567,14 +584,17 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             }
 
             let y = this.state.select + dy;
+            console.warn('y1' + y);
 
-            y = Math.min(this.items.length - 1, Math.max(-1, y));
+            y = Math.min(((this.state.query && this.state.query.length > 0) ? this.searchCount : this.items.length) - 1, Math.max(-1, y));
+            console.warn('y2' + y);
 
             if (y === -1) {
                 this.inputFocusHandler();
                 return;
             }
 
+            console.warn('set select to ' + y);
             this.setState({
                 select: y
             });
@@ -582,7 +602,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     }
 
     itemsCount = (items: number) => {
-        //
+        this.searchCount = items;
     }
 
     handleRef = (e: any) => {
@@ -602,6 +622,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
     render() {
         let search = this.state.query && this.state.query.length > 0;
+        console.warn('rnder, select: ' + this.state.select);
         return (
             <XVertical separator={'none'} flexGrow={1} flexBasis={0}>
                 <Search
@@ -614,45 +635,52 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     innerRef={this.handleRef}
                     onFocus={this.inputFocusHandler}
                 />
-                <XScrollView2 flexGrow={1} flexBasis={0} className="chats-list">
-                    {search && (
-                        <SearchChats
-                            variables={{ query: this.state.query!! }}
-                            onSelect={this.onSelect}
-                            itemsCount={this.itemsCount}
-                            selectedItem={this.state.select}
-                            allowSelection={this.state.allowShortKeys}
-                        />
-                    )}
-                    {!search && (
-                        <DataSourceRender
-                            onChange={(items) => {
-                                this.items = items;
-                            }}
-                            dataSource={this.props.messenger.dialogList.dataSource}
-                            render={(props) => (
-                                <>
-                                    {props.items.map((i, j) => {
-                                        return (
-                                            <ConversationComponent
-                                                key={i.key}
-                                                conversation={i}
-                                                onSelect={this.onSelect}
-                                                selectedItem={this.state.select === j}
-                                                allowSelection={this.state.allowShortKeys}
-                                            />
-                                        );
-                                    })}
-                                    {!props.completed && (
-                                        <LoadingWrapper>
-                                            <XButton alignSelf="center" style="flat" loading={true} />
-                                        </LoadingWrapper>
-                                    )}
-                                </>
-                            )}
-                        />
-                    )}
-                </XScrollView2>
+                <SelectContext.Provider value={{ select: this.state.select }}>
+                    <XScrollView2 flexGrow={1} flexBasis={0} className="chats-list">
+                        {search && (
+                            <SearchChats
+                                variables={{ query: this.state.query!! }}
+                                onSelect={this.onSelect}
+                                itemsCount={this.itemsCount}
+                                allowSelection={this.state.allowShortKeys}
+                            />
+                        )}
+                        {!search && (
+                            <DataSourceRender
+                                onChange={(items) => {
+                                    this.items = items;
+                                }}
+                                dataSource={this.props.messenger.dialogList.dataSource}
+                                render={(props) => (
+                                    <>
+                                        {props.items.map((i, j) => {
+                                            return (
+                                                <SelectContext.Consumer key={i.key}>
+                                                    {select => {
+                                                        return (<ConversationComponent
+                                                            key={i.key}
+                                                            conversation={i}
+                                                            onSelect={this.onSelect}
+                                                            selectedItem={select.select === j}
+                                                            allowSelection={this.state.allowShortKeys}
+                                                        />);
+                                                    }}
+                                                </SelectContext.Consumer>
+
+                                            );
+                                        })}
+                                        {!props.completed && (
+                                            <LoadingWrapper>
+                                                <XButton alignSelf="center" style="flat" loading={true} />
+                                            </LoadingWrapper>
+                                        )}
+                                    </>
+                                )}
+                            />
+                        )}
+                    </XScrollView2>
+                </SelectContext.Provider>
+
                 <InviteWrapper query={{ field: 'invite_global', value: 'true' }}>
                     <InviteIcon />
                     <span>Invite people</span>
