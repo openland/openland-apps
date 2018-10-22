@@ -47,7 +47,8 @@ export const TextInvites = {
     membersMgmt: {
         inviteButton: 'Invite new members',
 
-        removeTitle: (orgName: string) => 'Imagine ' + orgName + ' without',
+        removeTitle: (userName: string, orgName: string) => 'Remove ' + userName + ' from ' + orgName,
+        removeText: (userName: string, orgName: string) => 'Are you sure you want to remove ' + userName + '? They will be removed from all internal chats at ' + orgName + '.',
         removeSubmit: 'Remove from organization',
 
         cancelInviteTitle: 'Cancel invite for',
