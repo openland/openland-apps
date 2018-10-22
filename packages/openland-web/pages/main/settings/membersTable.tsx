@@ -264,7 +264,7 @@ export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((pro
             target={(props as any).target}
         >
             <XVertical>
-                <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: 'Owner' }, { value: 'MEMBER', label: 'Member' }]} />
+                <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: 'Admin' }, { value: 'MEMBER', label: 'Member' }]} />
                 <XStoreContext.Consumer>
                     {(store) => {
                         let role = store ? store.readValue('fields.role') : '';
