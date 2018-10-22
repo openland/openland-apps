@@ -60,6 +60,10 @@ const ItemContainer = Glamorous.a({
         },
         '& .header:before': {
             display: 'none'
+        },
+        '& .online-status-dot': {
+            borderColor: '#4596e1',
+            backgroundColor: '#ffffff'
         }
     },
     '&:last-child .header:before': {
