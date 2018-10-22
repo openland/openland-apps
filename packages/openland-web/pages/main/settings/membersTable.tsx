@@ -174,14 +174,13 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
     if (!member) {
         return null;
     }
-    console.warn(member);
     return (
         <XModalForm
             submitProps={{
                 text: TextInvites.membersMgmt.removeSubmit,
                 style: 'danger',
             }}
-            title={TextInvites.membersMgmt.removeTitle((props as any).orgName)}
+            title={TextInvites.membersMgmt.removeTitle(member.user.name, (props as any).orgName)}
             targetQuery="remove"
             defaultAction={async (data) => {
                 await props.remove({
@@ -190,21 +189,14 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
                         organizationId: (props as any).orgId
                     }
                 });
-
             }}
         >
-            <XHorizontal>
-                <XAvatar size="medium" cloudImageUuid={member.user.picture || undefined} objectName={member.user.name} objectId={member.user.id} style="colorus" />
-                <XVertical separator={4} justifyContent="center">
-                    <XText textStyle="h500">{member.user.name}</XText>
-                    {member.email && <XText opacity={0.5} >{member.email}</XText>}
-                </XVertical>
-            </XHorizontal>
+            <XText>{TextInvites.membersMgmt.removeText(member.user.firstName, (props as any).orgName)}</XText>
         </XModalForm>
     );
 }) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string, organizationId: string } }>;
 
-const RemoveInviteddModal = withOrganizationRemoveMember((props) => {
+const RemoveInvitedModal = withOrganizationRemoveMember((props) => {
     let member = (props as any).members.filter((m: any) => m.inviteId === props.router.query.remove || '')[0];
     if (!member) {
         return null;
@@ -279,7 +271,6 @@ export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((pro
 })) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string } }>;
 
 const SwitchMemberIsContact = withAlterMemberIsContact((props) => {
-    console.warn(props);
     return (
         <XMenuItem>
             <XHorizontal alignItems="center" height="100%">
@@ -378,7 +369,7 @@ const OrgMembers = withOrganizationMembers((props) => {
                     <>
                         <PermissionsModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} orgId={(props.variables as any).orgId} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
                         <RemoveJoinedModal orgName={(props as any).orgName} members={props.data.alphaOrganizationMembers} orgId={(props.variables as any).orgId} refetchVars={{ orgId: props.variables && (props.variables as any).orgId, organizationId: props.variables && (props.variables as any).orgId }} />
-                        <RemoveInviteddModal members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
+                        <RemoveInvitedModal members={props.data.alphaOrganizationMembers} refetchVars={{ orgId: props.variables && (props.variables as any).orgId }} />
                     </>
                 )
             }

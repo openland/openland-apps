@@ -446,6 +446,7 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_r
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reactions_user {
@@ -658,6 +659,7 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_reply
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatList_chats_conversations_GroupConversation_topMessage_reactions_user {
@@ -871,6 +873,7 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_rep
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_reactions_user {
@@ -1203,6 +1206,7 @@ export interface ChatHistory_messages_messages_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatHistory_messages_messages_reactions_user {
@@ -1966,6 +1970,7 @@ export interface SendMessage_sentMessage_message_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface SendMessage_sentMessage_message_reactions_user {
@@ -2656,6 +2661,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_reactions_user {
@@ -2869,6 +2875,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage_reactions_user {
@@ -3098,6 +3105,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_reactions_user {
@@ -3347,6 +3355,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_reactions_user {
@@ -3653,6 +3662,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions_user {
@@ -3866,6 +3876,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions_user {
@@ -4095,6 +4106,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions_user {
@@ -4345,6 +4357,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions_user {
@@ -4558,6 +4571,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions_user {
@@ -4787,6 +4801,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions_user {
@@ -8687,6 +8702,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_reactions_user {
@@ -8900,6 +8916,7 @@ export interface ConversationShort_GroupConversation_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_reactions_user {
@@ -9129,6 +9146,7 @@ export interface ConversationShort_ChannelConversation_topMessage_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_reactions_user {
@@ -9383,6 +9401,7 @@ export interface MessageFull_reply {
   id: string;
   date: any;
   message: string | null;
+  edited: boolean;
 }
 
 export interface MessageFull_reactions_user {

@@ -164,6 +164,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         const { message } = this.props;
         let content: any[] = [];
         let date: any = null;
+        let edited = isServerMessage(this.props.message) && this.props.message.edited;
+
         if (isServerMessage(message)) {
             if (this.state.isEditView && message.message) {
                 content.push(<EditMessageInlineWrapper message={message} key={'editForm'} onClose={this.hideEditView} />);
@@ -172,7 +174,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
                         content.push(null);
                     } else {
-                        content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} />);
+                        content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} isEdited={edited} />);
                     }
                 }
                 if (message.file && !message.urlAugmentation) {
@@ -231,6 +233,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             message={replyMessage.message}
                             id={replyMessage.id}
                             key={'reply'}
+                            edited={replyMessage.edited}
                         />
                     );
                 }
@@ -238,7 +241,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             date = <XDate value={message.date} format="time" />;
         } else {
             if (message.message && message.message.length > 0) {
-                content.push(<MessageTextComponent message={message.message} key={'text'} isService={false} />);
+                content.push(<MessageTextComponent message={message.message} key={'text'} isService={false} isEdited={edited} />);
             }
             if (message.file) {
                 content.push(
@@ -262,11 +265,9 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             }
         }
 
-        let edited = isServerMessage(this.props.message) && this.props.message.edited;
-
         // Handle unknown messages: display empty message
         if (content.length === 0) {
-            content.push(<MessageTextComponent message={''} key={'text'} isService={false} />);
+            content.push(<MessageTextComponent message={''} key={'text'} isService={false} isEdited={edited} />);
         }
 
         // menu
@@ -354,7 +355,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                     <Name>{this.props.sender!!.name}</Name>
                                     {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                 </XHorizontal>
-                                <DateComponent className="time">{date}{edited ? ' (edited)' : ''}</DateComponent>
+                                <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
                             <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
                                 <XHorizontal alignItems="center" separator={6}>

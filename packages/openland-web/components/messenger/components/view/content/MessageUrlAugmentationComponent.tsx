@@ -6,11 +6,13 @@ import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from '../../icons/website-2.svg';
 import { MessageFull_urlAugmentation } from 'openland-api/Types';
-import { layoutMedia } from './utils/MediaLayout';
+import { layoutMediaReverse } from './utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from '../../icons/ic-close.svg';
 
 const Container = Glamorous(XLink)({
+    display: 'flex',
+    flexDirection: 'row',
     position: 'relative',
     marginTop: '10px !important',
     border: '1px solid #edeef3',
@@ -28,48 +30,29 @@ const Container = Glamorous(XLink)({
 const DeleteButton = Glamorous(XLink)({
     opacity: 0,
     position: 'absolute',
-    right: 6,
-    top: 6,
-    width: 28,
-    height: 28,
+    right: 0,
+    top: 0,
+    width: 32,
+    height: 32,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'all .15s ease',
-    borderRadius: 50,
+    borderRadius: 10,
     background: '#ffffff',
-    border: '1px solid #ececec',
     '& > svg > g > path:last-child': {
         fill: 'rgba(0, 0, 0, 0.3)'
     },
-    '&:hover': {
-        background: '#f9f9f9',
-        '& > svg > g > path:last-child': {
-            fill: 'rgba(0, 0, 0, 0.4)'
-        }
+    '&:hover & > svg > g > path:last-child': {
+        fill: 'rgba(0, 0, 0, 0.4)'
     }
 });
 
-const Wrapper = Glamorous.div<{ squareImage?: boolean }>(
-    (props) => props.squareImage ? {
-        display: 'flex',
-        flexDirection: 'row',
-
-        '& .content-wrapper': {
-            flex: 1,
-            paddingRight: 15,
-            width: 'calc(100% - 94px)'
-        },
-
-        '& .image-wrapper': {
-            marginTop: 1,
-            marginRight: -6,
-            marginBottom: -2,
-            display: 'flex',
-            alignItems: 'center',
-        }
-    } : {}
-);
+const ContentWrapper = Glamorous.div({
+    flex: 1,
+    paddingRight: 15,
+    width: 'calc(100% - 94px)'
+});
 
 const Hostname = Glamorous.div({
     display: 'flex',
@@ -140,27 +123,28 @@ const Description = Glamorous.div({
 });
 
 const ImageWrapper = Glamorous.div({
-    marginTop: 13,
-    fontSize: 0,
-    lineHeight: 0,
-});
-
-const ImageBox = Glamorous.div({
+    margin: '1px -6px -2px 0',
     borderRadius: 5,
     overflow: 'hidden',
-    display: 'inline-block',
     '& img': {
         display: 'block'
     },
 });
 
-export class MessageUrlAugmentationComponent extends React.Component<MessageFull_urlAugmentation & { messageId: string, isMe: boolean }> {
+interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentation {
+    messageId: string;
+    isMe: boolean;
+}
+
+export class MessageUrlAugmentationComponent extends React.Component<MessageUrlAugmentationComponentProps> {
     private preprocessed: Span[];
-    constructor(props: MessageFull_urlAugmentation & { messageId: string, isMe: boolean }) {
+    constructor(props: MessageUrlAugmentationComponentProps) {
         super(props);
         this.preprocessed = props.description ? preprocessText(props.description) : [];
     }
     render() {
+        let { hostname, title, photo, imageInfo } = this.props;
+
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -170,47 +154,35 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageFull
                 return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>;
             }
         });
+
         let dimensions = undefined;
-        let isSquareImage = false;
-        if (this.props.photo && this.props.imageInfo && this.props.imageInfo.imageWidth && this.props.imageInfo.imageHeight) {
-            let ratio = this.props.imageInfo.imageHeight / this.props.imageInfo.imageWidth;
-
-            isSquareImage = (ratio >= 0.9 && ratio <= 1.1);
-
-            if (isSquareImage) {
-                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 94, 94);
-            } else {
-                dimensions = layoutMedia(this.props.imageInfo.imageWidth, this.props.imageInfo.imageHeight, 360, 200);
-            }
+        if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
+            dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
         }
 
         return (
             <Container href={this.props.url}>
-                <Wrapper squareImage={isSquareImage}>
-                    <div className="content-wrapper">
-                        {this.props.hostname && (
-                            <Hostname>
-                                {this.props.iconRef && <Favicon src={'https://ucarecdn.com/' + this.props.iconRef.uuid + '/'} />}
-                                {!this.props.iconRef && <WebsiteIcon />}
-                                <span>{this.props.hostname}</span>
-                            </Hostname>
-                        )}
-                        {this.props.title && <Title>{this.props.title}</Title>}
-                        {parts && <Description>{parts}</Description>}
-                    </div>
-                    {this.props.photo && dimensions && (
-                        <ImageWrapper className="image-wrapper">
-                            <ImageBox>
-                                <XCloudImage
-                                    srcCloud={'https://ucarecdn.com/' + this.props.photo.uuid + '/'}
-                                    resize={'fill'}
-                                    width={dimensions.width}
-                                    height={dimensions.height}
-                                />
-                            </ImageBox>
-                        </ImageWrapper>
+                <ContentWrapper>
+                    {hostname && (
+                        <Hostname>
+                            {this.props.iconRef && <Favicon src={'https://ucarecdn.com/' + this.props.iconRef.uuid + '/'} />}
+                            {!this.props.iconRef && <WebsiteIcon />}
+                            <span>{hostname}</span>
+                        </Hostname>
                     )}
-                </Wrapper>
+                    {title && <Title>{title}</Title>}
+                    {parts && <Description>{parts}</Description>}
+                </ContentWrapper>
+                {photo && dimensions && (
+                    <ImageWrapper>
+                        <XCloudImage
+                            srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
+                            resize="fill"
+                            width={dimensions.width}
+                            height={dimensions.height}
+                        />
+                    </ImageWrapper>
+                )}
                 {this.props.isMe && (
                     <DeleteButton query={{ field: 'deleteUrlAugmentation', value: this.props.messageId }} className="delete-button">
                         <DeleteIcon />

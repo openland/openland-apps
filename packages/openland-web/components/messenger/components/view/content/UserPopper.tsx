@@ -29,8 +29,8 @@ const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
     flex: 1,
     textAlign: 'right',
     color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
-    fontSize: 12,
-    fontWeight: 600,
+    fontSize: 13,
+    fontWeight: 400,
     lineHeight: '17px'
 }));
 
@@ -107,8 +107,8 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) =
             {user.role && <Role>{user.role}{user.primaryOrganization ? ' @ ' + user.primaryOrganization.name : ''}</Role>}
             {!user.role && user.primaryOrganization && <Role>{user.primaryOrganization.name}</Role>}
             <Buttons separator={6}>
-                {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" />}
-                <XButton path={'/mail/u/' + user.id} text={isMe ? 'My profile' : 'View profile'} />
+                {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" size="small" />}
+                <XButton path={'/mail/u/' + user.id} style="electric" text={isMe ? 'My profile' : 'View profile'} size="small" />
             </Buttons>
         </Wrapper>
     );

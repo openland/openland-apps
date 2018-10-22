@@ -271,7 +271,7 @@ const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     position: 'absolute',
     width: DotSize[props.format || 'default'],
     height: DotSize[props.format || 'default'],
-    backgroundColor: '#1790ff',
+    backgroundColor: '#5eb2ff',
     border: 'solid 1.5px #ffffff',
     borderRadius: '50%',
     right: DotPosition[props.format || 'default'],
