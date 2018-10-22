@@ -563,8 +563,7 @@ export class ConversationEngine implements MessageSendHandler {
             console.log('boom', JSON.stringify(conv));
             this.dataSource.updateItem(conv);
         } else if (event.__typename === 'ConversationEventKick') {
-            if (this.engine.user.id === event.user.id && event.user.id === event.kickedBy.id) {
-                // leaved
+            if (this.engine.user.id === event.user.id ) {
                 this.engine.dialogList.dataSource.removeItem(this.conversationId);
             }
         } else {

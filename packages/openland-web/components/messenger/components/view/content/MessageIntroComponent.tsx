@@ -247,7 +247,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                         return (
                             <Counter alignSelf="flex-end" accepted={true}>
                                 <CheckIconSmall />
-                                <span>accepted</span>
+                                <span>Accepted</span>
                             </Counter>
                         );
                     }
