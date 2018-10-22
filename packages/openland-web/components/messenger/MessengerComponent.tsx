@@ -650,7 +650,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 height="calc(100% - 56px)"
                 separator={0}
             >
-
                 <XWithRole role="feature-chat-embedded-attach">
                     {(props.data.chat as any).longDescription && (props.data.chat as any).longDescription.startsWith('http') && (
                         <iframe allow="microphone; camera" style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />

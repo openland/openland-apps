@@ -44,7 +44,16 @@ export class XScrollView2 extends React.Component<XScrollViewProps> {
                 className={this.props.className}
                 {...extractFlexProps(this.props)}
             >
-                <Scrollbars universal={true} autoHide={true} style={{ height: '100%', flexGrow: 1 }} className="scroll-bar">
+                <Scrollbars
+                    universal={true}
+                    autoHide={true}
+                    style={{ height: '100%', flexGrow: 1 }}
+                    className="scroll-bar"
+                    // renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ backgroundColor: 'green', minHeight: 6, minWidth: 6 }} />}
+                    // renderTrackVertical={props => <div {...props} className="track-vertical" style={{ backgroundColor: 'red', minHeight: 6, minWidth: 6 }} />}
+                    // renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ backgroundColor: 'blue', minHeight: 6, minWidth: 6 }} />}
+                    // renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ backgroundColor: 'yellow', minHeight: 6, minWidth: 6 }} />}
+                >
                     <ContentDiv>
                         {this.props.children}
                     </ContentDiv>

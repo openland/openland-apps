@@ -76,13 +76,13 @@ const IntroTag = Glamorous(XHorizontal)({
     paddingRight: 14
 });
 
-const UserName = Glamorous.div({
+const UserName = makeNavigable(Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.43,
     letterSpacing: -0.2,
     color: '#121e2b'
-});
+}) as any);
 
 const OrgName = Glamorous.div({
     opacity: 0.5,
