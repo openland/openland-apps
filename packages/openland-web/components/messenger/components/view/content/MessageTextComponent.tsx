@@ -45,10 +45,10 @@ let emoji = (text: string, height: number) => emojify(text, { style: { height: h
 
 let makeUrlRelative = (url: string) => {
     let rel = url.replace('http://app.openland.com/', '/')
-                 .replace('http://next.openland.com/', '/')
                  .replace('https://app.openland.com/', '/')
-                 .replace('https://next.openland.com/', '/')
                  .replace('//app.openland.com/', '/')
+                 .replace('http://next.openland.com/', '/')
+                 .replace('https://next.openland.com/', '/')
                  .replace('//next.openland.com/', '/');
 
     return rel;
