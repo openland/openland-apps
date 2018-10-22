@@ -440,6 +440,17 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_r
   twitter: string | null;
 }
 
+export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatList_chats_conversations_AnonymousConversation_topMessage_reply_sender;
@@ -447,6 +458,8 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_r
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatList_chats_conversations_AnonymousConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatList_chats_conversations_AnonymousConversation_topMessage_reactions_user {
@@ -653,6 +666,17 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_reply
   twitter: string | null;
 }
 
+export interface ChatList_chats_conversations_GroupConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatList_chats_conversations_GroupConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatList_chats_conversations_GroupConversation_topMessage_reply_sender;
@@ -660,6 +684,8 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_reply
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatList_chats_conversations_GroupConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatList_chats_conversations_GroupConversation_topMessage_reactions_user {
@@ -867,6 +893,17 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_rep
   twitter: string | null;
 }
 
+export interface ChatList_chats_conversations_ChannelConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatList_chats_conversations_ChannelConversation_topMessage_reply_sender;
@@ -874,6 +911,8 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_rep
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatList_chats_conversations_ChannelConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatList_chats_conversations_ChannelConversation_topMessage_reactions_user {
@@ -1200,6 +1239,17 @@ export interface ChatHistory_messages_messages_reply_sender {
   twitter: string | null;
 }
 
+export interface ChatHistory_messages_messages_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatHistory_messages_messages_reply {
   __typename: "ConversationMessage";
   sender: ChatHistory_messages_messages_reply_sender;
@@ -1207,6 +1257,8 @@ export interface ChatHistory_messages_messages_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatHistory_messages_messages_reply_fileMetadata | null;
 }
 
 export interface ChatHistory_messages_messages_reactions_user {
@@ -1964,6 +2016,17 @@ export interface SendMessage_sentMessage_message_reply_sender {
   twitter: string | null;
 }
 
+export interface SendMessage_sentMessage_message_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface SendMessage_sentMessage_message_reply {
   __typename: "ConversationMessage";
   sender: SendMessage_sentMessage_message_reply_sender;
@@ -1971,6 +2034,8 @@ export interface SendMessage_sentMessage_message_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: SendMessage_sentMessage_message_reply_fileMetadata | null;
 }
 
 export interface SendMessage_sentMessage_message_reactions_user {
@@ -2655,6 +2720,17 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_sen
   twitter: string | null;
 }
 
+export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatSearchText_items_AnonymousConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatSearchText_items_AnonymousConversation_topMessage_reply_sender;
@@ -2662,6 +2738,8 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatSearchText_items_AnonymousConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_reactions_user {
@@ -2869,6 +2947,17 @@ export interface ChatSearchText_items_GroupConversation_topMessage_reply_sender 
   twitter: string | null;
 }
 
+export interface ChatSearchText_items_GroupConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatSearchText_items_GroupConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatSearchText_items_GroupConversation_topMessage_reply_sender;
@@ -2876,6 +2965,8 @@ export interface ChatSearchText_items_GroupConversation_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatSearchText_items_GroupConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage_reactions_user {
@@ -3099,6 +3190,17 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_reply_sende
   twitter: string | null;
 }
 
+export interface ChatSearchText_items_ChannelConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatSearchText_items_ChannelConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatSearchText_items_ChannelConversation_topMessage_reply_sender;
@@ -3106,6 +3208,8 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatSearchText_items_ChannelConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_reactions_user {
@@ -3349,6 +3453,17 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender {
   twitter: string | null;
 }
 
+export interface ChatSearchChannel_items_edges_node_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChatSearchChannel_items_edges_node_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChatSearchChannel_items_edges_node_topMessage_reply_sender;
@@ -3356,6 +3471,8 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChatSearchChannel_items_edges_node_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_reactions_user {
@@ -3656,6 +3773,17 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   twitter: string | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender;
@@ -3663,6 +3791,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions_user {
@@ -3870,6 +4000,17 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   twitter: string | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender;
@@ -3877,6 +4018,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions_user {
@@ -4100,6 +4243,17 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   twitter: string | null;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender;
@@ -4107,6 +4261,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions_user {
@@ -4351,6 +4507,17 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   twitter: string | null;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender;
@@ -4358,6 +4525,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions_user {
@@ -4565,6 +4734,17 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   twitter: string | null;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender;
@@ -4572,6 +4752,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions_user {
@@ -4795,6 +4977,17 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   twitter: string | null;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender;
@@ -4802,6 +4995,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions_user {
@@ -8696,6 +8891,17 @@ export interface ConversationShort_AnonymousConversation_topMessage_reply_sender
   twitter: string | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ConversationShort_AnonymousConversation_topMessage_reply_sender;
@@ -8703,6 +8909,8 @@ export interface ConversationShort_AnonymousConversation_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ConversationShort_AnonymousConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_reactions_user {
@@ -8910,6 +9118,17 @@ export interface ConversationShort_GroupConversation_topMessage_reply_sender {
   twitter: string | null;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ConversationShort_GroupConversation_topMessage_reply_sender;
@@ -8917,6 +9136,8 @@ export interface ConversationShort_GroupConversation_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ConversationShort_GroupConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_reactions_user {
@@ -9140,6 +9361,17 @@ export interface ConversationShort_ChannelConversation_topMessage_reply_sender {
   twitter: string | null;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_reply {
   __typename: "ConversationMessage";
   sender: ConversationShort_ChannelConversation_topMessage_reply_sender;
@@ -9147,6 +9379,8 @@ export interface ConversationShort_ChannelConversation_topMessage_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: ConversationShort_ChannelConversation_topMessage_reply_fileMetadata | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_reactions_user {
@@ -9395,6 +9629,17 @@ export interface MessageFull_reply_sender {
   twitter: string | null;
 }
 
+export interface MessageFull_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
 export interface MessageFull_reply {
   __typename: "ConversationMessage";
   sender: MessageFull_reply_sender;
@@ -9402,6 +9647,8 @@ export interface MessageFull_reply {
   date: any;
   message: string | null;
   edited: boolean;
+  file: string | null;
+  fileMetadata: MessageFull_reply_fileMetadata | null;
 }
 
 export interface MessageFull_reactions_user {

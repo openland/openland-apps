@@ -234,6 +234,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             id={replyMessage.id}
                             key={'reply'}
                             edited={replyMessage.edited}
+                            file={replyMessage.file}
+                            fileMetadata={replyMessage.fileMetadata}
                         />
                     );
                 }

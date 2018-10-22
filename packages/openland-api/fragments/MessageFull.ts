@@ -38,6 +38,16 @@ export const MessageFull = gql`
         date
         message
         edited
+        file
+        fileMetadata {
+            name
+            mimeType
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+            size
+        }
     }
     reactions: reactions {
         user {

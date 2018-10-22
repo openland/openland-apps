@@ -61,7 +61,7 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = (props: MessageImageComponentProps) => {
     let dimensions = layoutMedia(props.width, props.height);
-    let dimensions2 = layoutMedia(props.width, props.height, 1200, 1200);
+    let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
     return (
         <XModal
             useTopCloser={true}

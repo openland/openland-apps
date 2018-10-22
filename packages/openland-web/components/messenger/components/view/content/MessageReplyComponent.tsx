@@ -5,8 +5,11 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XDate } from 'openland-x-format/XDate';
-import { MessageFull_reply_sender } from 'openland-api/Types';
+import { MessageFull_reply_sender, MessageFull_reply_fileMetadata } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
+import { MessageAnimationComponent } from './MessageAnimationComponent';
+import { MessageImageComponent } from './MessageImageComponent';
+import { MessageFileComponent } from './MessageFileComponent';
 
 const MessageContainer = Glamorous.div({
     position: 'relative',
@@ -73,10 +76,34 @@ interface ReplyMessageProps {
     date: any;
     message: string | null;
     edited: boolean;
+    file: string | null;
+    fileMetadata: MessageFull_reply_fileMetadata | null;
 }
 
 export const MessageReplyComponent = (props: ReplyMessageProps) => {
     let date = <XDate value={props.date} format="time" />;
+    let content = [];
+    if (props.message) {
+        content.push(
+            <MessageTextComponent message={props.message} key={'reply-text'} isService={false} isEdited={props.edited} />
+        );
+    }
+    if (props.file) {
+        let w = props.fileMetadata!!.imageWidth ? props.fileMetadata!!.imageWidth!! : undefined;
+        let h = props.fileMetadata!!.imageHeight ? props.fileMetadata!!.imageHeight!! : undefined;
+        let name = props.fileMetadata!!.name ? props.fileMetadata!!.name!! : undefined;
+        let size = props.fileMetadata!!.size ? props.fileMetadata!!.size!! : undefined;
+
+        if (props.fileMetadata!!.isImage && !!w && !!h) {
+            if (props.fileMetadata!!.imageFormat === 'GIF') {
+                content.push(<MessageAnimationComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
+            } else {
+                content.push(<MessageImageComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
+            }
+        } else {
+            content.push(<MessageFileComponent key={'file'} file={props.file} fileName={name} fileSize={size} />);
+        }
+    }
     return (
         <MessageContainer>
             <XVertical separator={4}>
@@ -97,7 +124,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                         <DateComponent className="time">{date}</DateComponent>
                     </MessageWrapper>
                 </XHorizontal>
-                {props.message && <MessageTextComponent message={props.message} key={'reply-text'} isService={false} isEdited={props.edited} />}
+                {content}
             </XVertical>
         </MessageContainer>
     );
