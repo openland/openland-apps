@@ -29,8 +29,8 @@ const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
     flex: 1,
     textAlign: 'right',
     color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
-    fontSize: 12,
-    fontWeight: 600,
+    fontSize: 13,
+    fontWeight: 400,
     lineHeight: '17px'
 }));
 
