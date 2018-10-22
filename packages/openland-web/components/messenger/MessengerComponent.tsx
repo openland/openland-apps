@@ -35,8 +35,9 @@ import { UserSelect } from '../../api/UserSelect';
 import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import IconInvite from './components/icons/ic-invite-3.svg';
 import IconInfo from './components/icons/ic-info.svg';
+import { XButton } from 'openland-x/XButton';
+import PlusIcon from '../icons/ic-add-medium-2.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -383,19 +384,17 @@ const AddMemberForm = withSuperAddToChannel((props) => {
     );
 }) as React.ComponentType<{ refetchVars: { conversationId: string }, channelId: string }>;
 
-const AddButton = Glamorous.div({
-    width: 32,
-    height: 32,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    '& svg > *': {
-        fill: 'rgba(0, 0, 0, 0.2)'
+const InviteButton = Glamorous(XButton)({
+    '& svg > g > path': {
+        transition: 'all .2s'
     },
-    '&:hover svg > *': {
-        fill: '#1790ff'
+    '& svg > g > path:last-child': {
+        fill: '#000000',
+        opacity: 0.4
+    },
+    '&:active svg > g > path:last-child': {
+        fill: '#ffffff',
+        opacity: 0.4
     }
 });
 
@@ -561,11 +560,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                                         channelTitle={title}
                                         channelId={props.data.chat.id}
-                                        target={
-                                            <AddButton>
-                                                <IconInvite />
-                                            </AddButton>
-                                        }
+                                        target={(
+                                            <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
+                                        )}
                                     />
                                     {props.data.chat.description && (
                                         <XPopper
