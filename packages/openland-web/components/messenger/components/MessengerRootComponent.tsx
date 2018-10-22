@@ -72,7 +72,7 @@ const LeaveChatComponent = withChatLeave((props) => {
     let id = props.router.query.leaveFromChat;
     return (
         <XModalForm
-            title="Leave from chat"
+            title="Leave the chat"
             targetQuery="leaveFromChat"
             submitBtnText="Leave"
             defaultAction={(data) => {
@@ -80,7 +80,7 @@ const LeaveChatComponent = withChatLeave((props) => {
             }}
             submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
-            <XText>Are you sure you want to leave the chat? This cannot be undone.</XText>
+            <XText>Are you sure you want to leave? You will need to request access to join it again in the future.</XText>
         </XModalForm >
     );
 });
