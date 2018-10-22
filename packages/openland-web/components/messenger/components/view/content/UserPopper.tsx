@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as glamor from 'glamor';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { MessageFull_sender } from 'openland-api/Types';
@@ -8,12 +9,36 @@ import { XButton } from 'openland-x/XButton';
 import { withOnline } from '../../../../../api/withOnline';
 import { XDate } from 'openland-x-format/XDate';
 
+const showAnimation = glamor.keyframes({
+    '0%': {
+        opacity: 0,
+        pointerEvents: 'none',
+        visibility: 'hidden',
+        display: 'none'
+    },
+    '60%': {
+        display: 'block'
+    },
+    '70%': {
+        opacity: 0,
+        pointerEvents: 'none',
+        visibility: 'hidden'
+    },
+    '100%': {
+        opacity: 1,
+        pointerEvents: 'auto',
+        visibility: 'auto'
+    }
+});
+
 const UserAvatarWrapper = Glamorous(XAvatar)({
     marginTop: 3
 });
 
 const Container = Glamorous(XPopper.Content)({
-    padding: 0
+    padding: 0,
+    animationDuration: `500ms`,
+    animationName: `${showAnimation}`
 });
 
 const Wrapper = Glamorous.div({
@@ -74,7 +99,7 @@ const Status = withOnline(props => {
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
 export class UserAvatar extends React.Component<{ user: MessageFull_sender }> {
-    render () {
+    render() {
         return (
             <UserAvatarWrapper
                 size="small"
