@@ -6,11 +6,11 @@ export const ExternalLinkDiv = Glamorous.a({
     display: 'inline',
     // flexDirection: 'row',
     alignItems: 'center',
-    color: '#3297d3',
+    color: '#1790ff',
     fontSize: '14px',
-    fontWeight: 500,
+    fontWeight: 400,
     '&:hover': {
-        color: '#32325d'
+        color: '#1790ff'
     }
 });
 

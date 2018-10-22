@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { emojify } from 'react-emojione';
+import { XLink } from 'openland-x/XLink';
 
 export interface MessageTextComponentProps {
     message: string;
@@ -42,6 +43,17 @@ const EditLabel = Glamorous.span({
 
 let emoji = (text: string, height: number) => emojify(text, { style: { height: height, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } });
 
+let makeUrlRelative = (url: string) => {
+    let rel = url.replace('http://app.openland.com/', '/')
+                 .replace('http://next.openland.com/', '/')
+                 .replace('https://app.openland.com/', '/')
+                 .replace('https://next.openland.com/', '/')
+                 .replace('//app.openland.com/', '/')
+                 .replace('//next.openland.com/', '/');
+
+    return rel;
+};
+
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
     private preprocessed: Span[];
     big = false;
@@ -65,6 +77,16 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
             } else if (v.type === 'link') {
+                if (v.link && (v.link.includes('//app.openland.com/') || v.link.includes('//next.openland.com/'))) {
+                    let path = v.link;
+                    let text = v.text || path;
+
+                    path = makeUrlRelative(path);
+                    text = text.length > 60 ? text.substring(0, 60) + '...' : text;
+
+                    return <XLink className="link" key={'link-' + i} path={path}>{text}</XLink>;
+                }
+
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
                 return (
