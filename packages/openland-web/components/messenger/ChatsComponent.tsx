@@ -388,13 +388,6 @@ interface ChatsComponentInnerState {
     allowShortKeys: boolean;
 }
 
-const getScrollView = () => {
-    if (!canUseDOM) {
-        return null;
-    }
-    return document.getElementsByClassName('chats-list')[0].getElementsByClassName('scroll-bar')[0].firstChild;
-};
-
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
     height: 48,
@@ -454,17 +447,11 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
         document.addEventListener('click', this.mouseHandler);
-        if (getScrollView()) {
-            getScrollView()!.addEventListener('scroll', this.handleScroll, { passive: true });
-        }
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
         document.removeEventListener('click', this.mouseHandler);
-        if (getScrollView()) {
-            getScrollView()!.removeEventListener('scroll', this.handleScroll);
-        }
     }
 
     componentWillReceiveProps(nextProps: ChatsComponentInnerProps) {
@@ -475,11 +462,8 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         }
     }
 
-    handleScroll = (e: any) => {
-        let childHeight = (getScrollView() as any)!.firstChild!.offsetHeight;
-        let wrapHeight = e.target.offsetHeight;
-        let scrollTop = e.target.scrollTop;
-        if ((childHeight - (wrapHeight + scrollTop)) < 100) {
+    handleScroll = (top: number) => {
+        if (top > 0.9) {
             this.dialogListEngine.loadNext();
         }
     }
@@ -636,7 +620,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     onFocus={this.inputFocusHandler}
                 />
                 <SelectContext.Provider value={{ select: this.state.select }}>
-                    <XScrollView2 flexGrow={1} flexBasis={0} className="chats-list">
+                    <XScrollView2 flexGrow={1} flexBasis={0} onScroll={this.handleScroll}>
                         {search && (
                             <SearchChats
                                 variables={{ query: this.state.query!! }}
