@@ -1,4 +1,5 @@
 import { Platform, Dimensions, PixelRatio } from 'react-native';
+import { NativeModules } from 'react-native';
 
 // Detect iPhoneX
 const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get('window');
@@ -14,7 +15,7 @@ const isIphoneXSMAX = Platform.OS === 'ios' && D_WIDTH === XSMAX_WIDTH && D_HEIG
 // Eventually we will add support for safe area api for androids.
 //
 const safeAreaTop = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 22 : 0) : 0;
-const safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : 0) : 0;
+let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : 0) : 0;
 
 //
 // Sizes of UINavigationController/AppBar
@@ -35,7 +36,7 @@ const renderBlurSupported = Platform.OS === 'ios';
 
 const pixel = 1 / PixelRatio.get();
 
-export const SDevice = {
+export let SDevice = {
     safeArea: {
         top: safeAreaTop,
         bottom: safeAreaBottom
@@ -48,3 +49,9 @@ export const SDevice = {
     renderBlurSupported: renderBlurSupported,
     pixel: pixel
 };
+
+export let prepareBottomSafeArea: Promise<number> = Platform.OS === 'ios' ? Promise.resolve() : NativeModules.RNBottomSafeAreaProvider.bottomSafeArea().then((r: number) => {
+    // wtf it's x2 ?
+    safeAreaBottom = r / PixelRatio.get() / 2;
+    SDevice = { ...SDevice, safeArea: { ...SDevice.safeArea, bottom: safeAreaBottom } };
+});
