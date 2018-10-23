@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
 
 export class HeaderTitleView extends React.PureComponent<{ manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }> {
     render() {
+        let v = this.props.page;
         return (
             <SAnimated.View name={'header--' + this.props.page.page.key} style={[styles.root, this.props.page.page.startIndex === 0 && styles.rootFirst]} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                 <View style={styles.titleContainer} pointerEvents="box-none">
@@ -52,9 +53,14 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             top: 0,
                             right: 0,
                         }}
-                        pointerEvents="none"
+                        flexDirection="row"
+                        justifyContent="space-between"
                     >
                         <Text style={[styles.title, { color: this.props.style.accentColor }]}>{this.props.page.config.title}</Text>
+                        <View flexDirection="row" alignItems="center">
+                            {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
+                        </View>
+
                     </View>
                 </View>
             </SAnimated.View>
