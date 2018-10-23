@@ -19,6 +19,9 @@ class ScrollArea extends React.PureComponent<{onScroll?: (top: number) => void}>
         top: 0
     };
 
+    renderView = ({style, ...props}: any) => (
+        <div className="view custom-scroll-view" style={{...style, width: 'calc(100% + 20px)'}} {...props}/>
+    )
     trackV = ({ style, ...props }: any) => (
         <div className="track track-vertical" style={style} {...props} />
     )
@@ -45,6 +48,7 @@ class ScrollArea extends React.PureComponent<{onScroll?: (top: number) => void}>
     render() {
         return (
             <Scrollbars
+                renderView={this.renderView}
                 renderTrackHorizontal={this.trackH}
                 renderThumbHorizontal={this.thumbH}
                 renderThumbVertical={this.thumbV}
@@ -92,6 +96,7 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
 }, applyFlex]);
 
 const ContentDiv = Glamorous.div({
+    width: 'calc(100% - 20px)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch'
