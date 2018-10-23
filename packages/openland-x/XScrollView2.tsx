@@ -123,24 +123,7 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
     position: 'relative',
     flexDirection: 'column',
     zIndex: 0,
-    display: 'flex',
-    // '& .thumb-vertical': {
-    //     position: 'relative',
-    //     display: 'block',
-    //     width: '100px',
-    //     height: '100%',
-    //     cursor: 'pointer',
-    //     backgroundColor: '#d9534f'
-    // },
-    // '& .track-vertical': {
-    //     position: 'absolute',
-    //     width: 6,
-    //     display: 'block !important',
-    //     right: 2,
-    //     bottom: 2,
-    //     top: 2,
-    //     borderRadius: 3
-    // }
+    display: 'flex'
 }, applyFlex]);
 
 const ContentDiv = Glamorous.div({
