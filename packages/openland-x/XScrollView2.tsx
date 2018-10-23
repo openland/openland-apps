@@ -62,7 +62,7 @@ class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void 
                     top: topPosition,
                     right: 0,
                     display: 'block',
-                    backgroundColor: 'rgba(23, 144, 255, 0.08)',
+                    backgroundColor: 'rgba(23, 144, 255, 0.2)',
                     borderRadius: 50,
                 }}
                 {...props}
