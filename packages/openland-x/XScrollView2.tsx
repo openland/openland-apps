@@ -14,26 +14,61 @@ interface PositionValues {
     scrollTop: number;
 }
 
-class ScrollArea extends React.PureComponent<{onScroll?: (top: number) => void}> {
+class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void }> {
     state = {
-        top: 0
+        top: 0,
+        scrollHeight: 0
     };
 
-    renderView = ({style, ...props}: any) => (
-        <div className="view custom-scroll-view" style={{...style, width: 'calc(100% + 20px)'}} {...props}/>
+    renderView = ({ style, ...props }: any) => (
+        <div className="view custom-scroll-view" style={{ ...style, width: 'calc(100% + 20px)' }} {...props} />
     )
+
     trackV = ({ style, ...props }: any) => (
-        <div className="track track-vertical" style={style} {...props} />
+        <div
+            className="track track-vertical"
+            style={{
+                ...style,
+                top: 0,
+                right: 0,
+                width: 3,
+                height: '100%',
+                backgroundColor: '#B8CCEF',
+                display: 'block'
+            }}
+            {...props}
+        />
     )
-    thumbV = ({ style, ...props }: any) => (
-        <div className="thumb thumb-vertical" style={{ ...style }} {...props} />
-    )
+
+    thumbV = ({ style, ...props }: any) => {
+        const {top, scrollHeight} = this.state;
+        let topPosition = `${Math.round(top * 100)}%`;
+        return (
+            <div
+                className="thumb thumb-vertical"
+                style={{
+                    ...style,
+                    width: 3,
+                    height: 20,
+                    top: topPosition,
+                    right: 0,
+                    display: 'block',
+                    backgroundColor: 'red',
+                    borderRadius: 50,
+                }}
+                {...props}
+            />
+        );
+    }
+
     trackH = ({ style, ...props }: any) => (
-        <div className="track track-horizontal" style={style} {...props} />
+        <div className="track track-horizontal" style={{ ...style }} {...props} />
     )
+
     thumbH = ({ style, ...props }: any) => (
-        <div className="thumb thumb-horizontal" style={style} {...props} />
+        <div className="thumb thumb-horizontal" style={{ ...style }} {...props} />
     )
+
     handleUpdate(values: PositionValues) {
         if (this.props.onScroll) {
             this.props.onScroll(values.top);
@@ -41,10 +76,12 @@ class ScrollArea extends React.PureComponent<{onScroll?: (top: number) => void}>
         if (this.state.top === values.top) {
             return;
         }
-        this.setState({ 
-            top: values.top
+        this.setState({
+            top: values.top,
+            scrollHeight: values.scrollHeight
         });
     }
+
     render() {
         return (
             <Scrollbars
