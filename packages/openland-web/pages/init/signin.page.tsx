@@ -239,7 +239,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         )}
                         <ChannelTitle>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</ChannelTitle>
                         <ButtonsWrapper marginTop={40} width={280}>
-                            <XInput autofocus={true} size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
+                            <XInput type="email" autofocus={true} size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                             <XHorizontal>
@@ -259,7 +259,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         )}
                         <ChannelTitle>Please, enter activation code</ChannelTitle>
                         <ButtonsWrapper marginTop={40} width={280}>
-                            <XInput autofocus={true} size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
+                            <XInput pattern="[0-9]*" type="number" autofocus={true} size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                             <XHorizontal>
@@ -301,7 +301,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                     <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
                     {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
                     <ButtonsWrapper>
-                        <XInput size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
+                        <XInput type="email" size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
                     </ButtonsWrapper>
                     <ButtonsWrapper marginTop={20}>
                         <XHorizontal>
@@ -315,7 +315,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                     <Title marginBottom={20}>Please, enter activation code</Title>
                     {this.state.codeError !== '' && (<><XServiceMessage title={InitTexts.auth.codeInvalid} /><EmptyBlock /></>)}
                     <ButtonsWrapper>
-                        <XInput size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
+                        <XInput pattern="[0-9]*" type="number" size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
                     </ButtonsWrapper>
                     <ButtonsWrapper marginTop={20}>
                         <XHorizontal>

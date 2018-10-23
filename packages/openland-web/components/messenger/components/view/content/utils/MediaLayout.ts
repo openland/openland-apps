@@ -18,3 +18,22 @@ export function layoutMedia(width: number, height: number, maxWidth: number = MA
 
     return { width, height };
 }
+
+export function layoutMediaReverse(width: number, height: number, minWidth: number, minHeight: number) {
+    if (width > height) {
+        return {
+            width: Math.round(width * (minHeight / height)),
+            height: Math.round(minHeight),
+        };
+    } else if (height > width) {
+        return {
+            width: Math.round(minWidth),
+            height: Math.round(height * (minWidth / width)),
+        };
+    }
+
+    return {
+        width: minWidth,
+        height: minHeight
+    };
+}

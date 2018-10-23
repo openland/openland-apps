@@ -15,9 +15,9 @@ import { withUserInfo } from '../../UserInfo';
 import { UserShort } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
+import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { EditMessageComponent } from './view/MessageEditComponent';
 import { EditMessageContext, EditMessageContextProps } from './EditMessageContext';
 import { ReplyMessageComponent } from './view/content/ReplyMessageModal';
 
@@ -51,11 +51,28 @@ const DeleteMessageComponent = withDeleteMessage((props) => {
     );
 });
 
+const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation((props) => {
+    let id = props.router.query.deleteUrlAugmentation;
+    return (
+        <XModalForm
+            title="Delete url augmentation"
+            targetQuery="deleteUrlAugmentation"
+            submitBtnText="Delete"
+            defaultAction={(data) => {
+                props.deleteUrlAugmentation({ variables: { messageId: id } });
+            }}
+            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
+        >
+            <XText>Are you sure you want to delete this url preview? This cannot be undone.</XText>
+        </XModalForm >
+    );
+});
+
 const LeaveChatComponent = withChatLeave((props) => {
     let id = props.router.query.leaveFromChat;
     return (
         <XModalForm
-            title="Leave from chat"
+            title="Leave the chat"
             targetQuery="leaveFromChat"
             submitBtnText="Leave"
             defaultAction={(data) => {
@@ -63,7 +80,7 @@ const LeaveChatComponent = withChatLeave((props) => {
             }}
             submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
-            <XText>Are you sure you want to leave the chat? This cannot be undone.</XText>
+            <XText>Are you sure you want to leave? You will need to request access to join it again in the future.</XText>
         </XModalForm >
     );
 });
@@ -142,10 +159,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         conversationId={this.props.conversationId}
                     />
                 )}
+                <DeleteUrlAugmentationComponent/>
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
                 <ReplyMessageComponent />
-                {/* <EditMessageComponent conversation={this.conversation} /> */}
             </ConversationContainer>
         );
     }

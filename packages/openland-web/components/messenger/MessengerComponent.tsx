@@ -35,8 +35,9 @@ import { UserSelect } from '../../api/UserSelect';
 import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import IconInvite from './components/icons/ic-invite-3.svg';
 import IconInfo from './components/icons/ic-info.svg';
+import { XButton } from 'openland-x/XButton';
+import PlusIcon from '../icons/ic-add-medium-2.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -51,31 +52,40 @@ const ChatHeaderWrapper = Glamorous.div({
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
     alignItems: 'center',
-    maxWidth: 990,
+    maxWidth: 920,
     width: '100%',
     flexBasis: '100%'
+});
+
+const TitleWrapper = Glamorous(XHorizontal)({
+    marginTop: '-2px!important',
 });
 
 const Title = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
     fontSize: 14,
     fontWeight: 600,
+    lineHeight: '18px',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     cursor: props.href ? 'pointer' : undefined,
-    marginBottom: -2,
-    opacity: 0.8
+    color: '#000000'
 })));
 
-const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps>(props => ({
-    fontSize: 12,
-    fontWeight: 600,
-    color: '#000',
-    opacity: 0.4,
-    letterSpacing: -0.2,
+const SubtitleWrapper = Glamorous.div({
+    marginTop: '4px!important',
+    marginBottom: '0px!important',
+});
+
+const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps & { inTop?: boolean }>(props => ({
+    fontSize: 13,
+    fontWeight: props.inTop ? 600 : 400,
+    color: 'rgba(0, 0, 0, 0.4)',
+    lineHeight: props.inTop ? '18px' : '16px',
+    letterSpacing: 0,
     cursor: props.href ? 'pointer' : undefined,
-    marginBottom: -1,
-    marginTop: props.onClick ? 2 : undefined
+    marginTop: props.inTop ? 1 : undefined,
+    marginBottom: props.inTop ? -1 : undefined
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
@@ -260,6 +270,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
     let editDescription = (props as any).description;
     let editPhotoRef = (props as any).photoRef;
     let editSocialImageRef = (props as any).socialImageRef;
+    let editLongDescription = (props as any).longDescription;
     return (
         <XModalForm
             scrollableContent={true}
@@ -270,12 +281,14 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
+                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                             ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
                             ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
@@ -286,6 +299,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
+                    longDescription: (props as any).longDescription || '',
                     photoRef: sanitizeIamgeRef((props as any).photoRef),
                     socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
                 }
@@ -296,6 +310,9 @@ export const ChannelEditComponent = withAlterChat((props) => {
                     <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
                     <XVertical flexGrow={1}>
                         <XInput field="input.title" placeholder="Title" size="large" />
+                        <XWithRole role="feature-chat-embedded-attach">
+                            <XInput field="input.longDescription" flexGrow={1} placeholder="Embedded attach link" size="large" />
+                        </XWithRole>
                         <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
                     </XVertical>
                 </XHorizontal>
@@ -309,6 +326,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
 export const ChatEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editPhotoRef = (props as any).photoRef;
+    let editLongDescription = (props as any).longDescription;
     return (
         <XModalForm
             targetQuery="editChat"
@@ -316,12 +334,14 @@ export const ChatEditComponent = withAlterChat((props) => {
             defaultAction={(data) => {
                 let newTitle = data.input.title;
                 let newPhoto = data.input.photoRef;
+                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {}
+                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                         }
                     }
                 });
@@ -329,17 +349,23 @@ export const ChatEditComponent = withAlterChat((props) => {
             defaultData={{
                 input: {
                     title: (props as any).title || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef)
+                    photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    longDescription: (props as any).longDescription || '',
                 }
             }}
         >
             <XHorizontal>
                 <XAvatarUpload size="small" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-                <XInput field="input.title" flexGrow={1} placeholder="Title" size="large" />
+                <XVertical flexGrow={1}>
+                    <XInput field="input.title" flexGrow={1} placeholder="Title" size="large" />
+                    <XWithRole role="feature-chat-embedded-attach">
+                        <XInput field="input.longDescription" flexGrow={1} placeholder="Embedded attach link" size="large" />
+                    </XWithRole>
+                </XVertical>
             </XHorizontal>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ title: string, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
 const AddMemberForm = withSuperAddToChannel((props) => {
     return (
@@ -358,19 +384,17 @@ const AddMemberForm = withSuperAddToChannel((props) => {
     );
 }) as React.ComponentType<{ refetchVars: { conversationId: string }, channelId: string }>;
 
-const AddButton = Glamorous.div({
-    width: 32,
-    height: 32,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    '& svg > *': {
-        fill: 'rgba(0, 0, 0, 0.2)'
+const InviteButton = Glamorous(XButton)({
+    '& svg > g > path': {
+        transition: 'all .2s'
     },
-    '&:hover svg > *': {
-        fill: '#1790ff'
+    '& svg > g > path:last-child': {
+        fill: '#000000',
+        opacity: 0.4
+    },
+    '&:active svg > g > path:last-child': {
+        fill: '#ffffff',
+        opacity: 0.4
     }
 });
 
@@ -411,28 +435,24 @@ const AboutText = Glamorous.div({
 });
 
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
-    fontSize: 12,
-    fontWeight: 600,
-    lineHeight: 1.33,
-    opacity: props.online ? 1 : 0.4,
-    color: props.online ? '#1790ff' : '#000',
-    letterSpacing: -0.2,
-    alignSelf: 'flex-start',
-    display: 'flex',
-    alignItems: 'center'
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: '16px',
+    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
+    letterSpacing: 0,
 }));
 
 const LastSeen = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <LastSeenWrapper online={false}>
-                <span>Last seen <XDate value={props.data.user.lastSeen} format="humanize_cute" /></span>
+                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
         return (
             <LastSeenWrapper online={true}>
-                online
+                Online
             </LastSeenWrapper>
         );
     } else {
@@ -462,12 +482,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     } else if (props.data.chat.__typename === 'ChannelConversation') {
         subtitle = 'Channel';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
-        subtitle = 'Person';
         uId = props.data.chat.user.id;
 
         if (props.data.chat.user.primaryOrganization) {
             titlePath = '/mail/u/' + props.data.chat.user.id;
-            subtitle = props.data.chat.user.primaryOrganization.name;
             subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
         }
     }
@@ -485,7 +503,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         maxWidth={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                         width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
-                        <XHorizontal alignItems="center" separator={4} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
+                        <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
                                 size="small"
@@ -503,21 +521,23 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 objectName={title}
                                 objectId={props.data.chat.flexibleId}
                             />
-                            <XVertical separator={0} maxWidth="calc(100% - 48px)">
-                                <XHorizontal separator={4}>
+                            <XVertical separator="none" maxWidth="calc(100% - 48px)">
+                                <TitleWrapper separator={3}>
                                     <Title path={titlePath}>
                                         {title}
                                     </Title>
                                     {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                        <SubTitle path={subtitlePath} inTop={true}>{subtitle}</SubTitle>
+                                    )}
+                                </TitleWrapper>
+                                <SubtitleWrapper>
+                                    {(props.data.chat.__typename !== 'PrivateConversation') && (
                                         <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                                     )}
-                                </XHorizontal>
-                                {(props.data.chat.__typename !== 'PrivateConversation') && (
-                                    <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
-                                )}
-                                {(uId && props.data.chat.__typename === 'PrivateConversation') && (
-                                    <LastSeen variables={{ userId: uId }} />
-                                )}
+                                    {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                        <LastSeen variables={{ userId: uId }} />
+                                    )}
+                                </SubtitleWrapper>
                             </XVertical>
                         </XHorizontal>
                     </NavChatLeftContentStyled>
@@ -540,11 +560,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                                         channelTitle={title}
                                         channelId={props.data.chat.id}
-                                        target={
-                                            <AddButton>
-                                                <IconInvite />
-                                            </AddButton>
-                                        }
+                                        target={(
+                                            <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
+                                        )}
                                     />
                                     {props.data.chat.description && (
                                         <XPopper
@@ -630,7 +648,13 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 justifyContent="center"
                 width="100%"
                 height="calc(100% - 56px)"
+                separator={0}
             >
+                <XWithRole role="feature-chat-embedded-attach">
+                    {(props.data.chat as any).longDescription && (props.data.chat as any).longDescription.startsWith('http') && (
+                        <iframe allow="microphone; camera" style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
+                    )}
+                </XWithRole>
                 {tab === 'chat' && (
                     <MessengerRootComponent
                         key={props.data.chat.id}
@@ -647,6 +671,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         longDescription={props.data.chat.longDescription}
                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                         emptyText="To grow the community, invite people to this channel"
+                        removeFrom="channel"
                     />
                 )}
                 {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
@@ -657,11 +682,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         description={undefined}
                         longDescription={undefined}
                         orgId={''}
-                        removeText="Remove from group"
+                        removeFrom="group"
                     />
                 )}
+
             </XHorizontal>
-            <ChatEditComponent title={props.data.chat.title} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
+            <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
             <XWithRole role={['super-admin']}>

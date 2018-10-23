@@ -28,7 +28,7 @@ const TagWrap = Glamorous.div<{ selected: boolean }>(props => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     cursor: 'pointer',
-    backgroundColor: props.selected ? '#f9fafb' : undefined
+    backgroundColor: props.selected ? '#F9F9F9' : undefined
 }));
 
 const InputWrap = Glamorous.div({
@@ -81,7 +81,7 @@ const OrgWrap = makeNavigable(Glamorous.div<{selected: boolean} & NavigableChild
         },
         ':hover': {
             color: '#1790ff',
-            backgroundColor: '#f9fafb',
+            backgroundColor: '#F9F9F9',
             '& > svg > g': {
                 fill: '#1790ff',
                 opacity: 0.5
@@ -90,7 +90,7 @@ const OrgWrap = makeNavigable(Glamorous.div<{selected: boolean} & NavigableChild
     },
     (props) => props.selected ? {
         color: '#1790ff',
-        backgroundColor: '#f9fafb',
+        backgroundColor: '#F9F9F9',
         '& > svg > g': {
             fill: '#1790ff',
             opacity: 0.5

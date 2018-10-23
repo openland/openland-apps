@@ -9,6 +9,7 @@ import { XPopper } from '../XPopper';
 import { MultiplePicker } from '../XMultiplePicker';
 import { UserPicker } from '../XUserPicker';
 import { delay } from 'openland-y-utils/timer';
+import { isNumber } from 'util';
 
 const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
     (props) => ({
@@ -68,13 +69,13 @@ interface XSelectCustomProps extends XSelectProps, XFlexStyles {
     helpText?: string;
 }
 
-const CustomContentDiv = Glamorous(XPopper.Content)({
+const CustomContentDiv = Glamorous<{ paddingTop?: number; paddingBottom?: number }>(XPopper.Content)((props) => ({
     boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
     paddingLeft: 0,
     paddingRight: 0,
-    paddingTop: 8,
-    paddingBottom: 8
-});
+    paddingTop: isNumber(props.paddingTop) ? props.paddingTop : 8,
+    paddingBottom: isNumber(props.paddingBottom) ? props.paddingBottom : 8
+}));
 
 export class XSelectCustomInputRender extends React.Component<XSelectCustomProps, XSelectCustomState> {
     input?: any;
@@ -266,7 +267,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
     }
 }
 
-export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps, XSelectCustomState> {
+export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps & { inCompose?: boolean }, XSelectCustomState> {
     input?: any;
     constructor(props: XSelectCustomProps) {
         super(props);
@@ -410,7 +411,7 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
                         key={v.value}
                         icon="x-close"
                         size={rounded ? 'default' : 'large'}
-                        text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
+                        text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : options.length === 0 ? 'Loading...' : v.label}
                         onClick={() => this.onDelete(v.value)}
                     />
                 ))}
@@ -422,13 +423,14 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
                     show={this.state.inputVal.length > 0 || this.state.focus}
                     onClickOutside={this.focusOutHandler}
                     contentContainer={(
-                        <CustomContentDiv />
+                        <CustomContentDiv paddingTop={0} paddingBottom={0} />
                     )}
                     content={
                         <UserPicker
                             query={this.state.inputVal}
                             options={[{ values: options.filter(o => !(this.state.lastValue || []).find(l => l.value === o.value)) }]}
                             onPick={this.onPick}
+                            inCompose={this.props.inCompose}
                         />
                     }
                 >

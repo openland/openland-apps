@@ -22,6 +22,7 @@ export const ChatListQuery = gql`
                 }
                 ... on ChannelConversation{
                     photo
+                    myStatus
                 }
                 topMessage{
                     ...MessageFull
@@ -114,6 +115,7 @@ export const ChatInfoQuery = gql`
             ... on GroupConversation {
                 membersCount
                 photo
+                longDescription
                 photoRef{
                     uuid
                     crop{
@@ -125,6 +127,7 @@ export const ChatInfoQuery = gql`
                 }
             }
             ... on ChannelConversation {
+                myStatus
                 photo
                 photoRef{
                     uuid
@@ -198,6 +201,7 @@ export const ChatFullInfoQuery = gql`
                 }
             }
             ... on ChannelConversation {
+                myStatus
                 members {
                     ...UserShort
                 }
@@ -467,12 +471,6 @@ export const ChatSearchTextQuery = gql`
     ${UserShort}
 `;
 
-export const DocumentFetchPreviewLinkQuery = gql`
-    query DocumentFetchPreviewLink($file: String!) {
-        previewLink: alphaFilePreviewLink(uuid: $file)
-    }
-`;
-
 export const ChatSearchChannelQuery = gql`
     query ChatSearchChannel($query: String, $sort: String, $page: Int) {
         items: alphaChannels(query: $query, sort: $sort, page: $page, first: 25) {
@@ -675,6 +673,14 @@ export const ChatDeleteMessageMutation = gql`
         event: alphaDeleteMessage(messageId: $messageId){
             seq
             messageId
+        }
+    }
+`;
+
+export const ChatDeleteUrlAugmentationMutation = gql`
+    mutation ChatDeleteUrlAugmentation($messageId: ConversationMessageID!) {
+        event: alphaDeleteMessageUrlAugmentation(messageId: $messageId){
+            seq
         }
     }
 `;

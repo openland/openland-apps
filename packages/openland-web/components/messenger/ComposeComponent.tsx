@@ -16,6 +16,7 @@ import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withChatCompose } from '../../api/withChatCompose';
 import { withUserInfo } from '../UserInfo';
 import { UserShort } from 'openland-api/Types';
+import { TextCompose } from 'openland-text/TextCompose';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -33,8 +34,8 @@ const HeaderWrapper = Glamorous.div({
     paddingTop: 10,
     flexShrink: 0,
     maxWidth: 832,
-    paddingLeft: 66,
-    paddingRight: 66,
+    paddingLeft: 77,
+    paddingRight: 77,
     width: '100%',
     alignSelf: 'center'
 });
@@ -44,6 +45,7 @@ const HeaderButton = Glamorous(XButton)({
         marginLeft: -4
     },
     '& svg *': {
+        transition: 'all .15s ease',
         fill: 'rgba(0, 0, 0, 0.2)'
     },
     '&:hover svg *': {
@@ -61,16 +63,16 @@ const Title = Glamorous.div({
     flexBasis: '100%',
     fontSize: 18,
     lineHeight: '20px',
-    fontWeight: 500,
-    letterSpacing: -0.5,
-    color: '#121e2b'
+    fontWeight: 600,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.9)'
 });
 
 const ComposeSelectWrapper = Glamorous.div({
     maxWidth: 832,
     marginTop: 10,
-    paddingLeft: 66,
-    paddingRight: 66,
+    paddingLeft: 61,
+    paddingRight: 61,
     width: '100%',
     alignSelf: 'center',
     zIndex: 2,
@@ -107,10 +109,11 @@ const SearchPeopleModule = withChatCompose(props => {
                     <XSelectCustomUsersRender
                         multi={true}
                         popper={true}
-                        placeholder="Whom would you like to message?"
+                        placeholder={TextCompose.searchPlaceholder}
                         rounded={true}
                         onInputChange={(data) => (props as any).onChangeInput(data)}
-                        helpText="Wait..."
+                        helpText={TextCompose.searchLoading}
+                        inCompose={true}
                     />
                 }
             />
@@ -132,9 +135,10 @@ const SearchPeopleModule = withChatCompose(props => {
             render={
                 <XSelectCustomUsersRender
                     multi={true}
-                    placeholder="Whom would you like to message?"
+                    placeholder={TextCompose.searchPlaceholder}
                     rounded={true}
                     onInputChange={(data) => (props as any).onChangeInput(data)}
+                    inCompose={true}
                 />
             }
         />
@@ -150,8 +154,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
     };
 
     handleChange: OnChangeHandler = (vals) => {
-        console.warn(vals);
-
         let nvals: Option<OptionValues>[] = [];
         if (vals === null) {
             nvals = [];
@@ -218,9 +220,9 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
         return (
             <Root flexGrow={1} separator={'none'}>
                 <HeaderWrapper>
-                    <Title>Find or start a conversation</Title>
+                    <Title>{TextCompose.headerTitle}</Title>
                     <HeaderButton
-                        text="New channel"
+                        text={TextCompose.headerNewChannel}
                         icon={<ChannelIcon />}
                         query={{ field: 'createChannel', value: 'true' }}
                     />
@@ -236,14 +238,6 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                                 organizations: this.state.values.length === 0
                             }}
                         />
-                        {/* <ComposeSelect
-                            placeholder="Whom would you like to message?"
-                            onChange={this.handleChange}
-                            value={this.state.values}
-                            multi={true}
-                            rounded={true}
-                            variables={{ organizations: this.state.values.length === 0 }}
-                        /> */}
                     </ComposeSelectWrapper>
                     <MessagesContainer>
                         {!this.state.conversationId && (

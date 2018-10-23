@@ -47,20 +47,21 @@ export const TextInvites = {
     membersMgmt: {
         inviteButton: 'Invite new members',
 
-        removeTitle: (orgName: string) => 'Imagine ' + orgName + ' without',
+        removeTitle: (userName: string, orgName: string) => 'Remove ' + userName + ' from ' + orgName,
+        removeText: (userName: string, orgName: string) => 'Are you sure you want to remove ' + userName + '? They will be removed from all internal chats at ' + orgName + '.',
         removeSubmit: 'Remove from organization',
 
         cancelInviteTitle: 'Cancel invite for',
         cancelInviteSubmit: 'Cancel invite',
 
-        changeRoleTitle: (userName: string, orgName: string) => 'Imagine ' + userName + ' as ' + orgName + '\'s',
+        changeRoleTitle: (userName: string, orgName: string) => 'Chane role ' + userName + ' in ' + orgName,
 
-        changeRoleOwnerHint: 'Owner can do everything',
-        changeRoleMemberHint: 'Members only watches',
+        changeRoleOwnerHint: 'Has full control over the organization account, can edit the profile, invite and confirm new members, assign and change roles.',
+        changeRoleMemberHint: 'Members can participate in the organization\'s internal chats.',
 
         tableChangeRole: 'Manage',
 
-        menuChangeRole: 'Manage Permissions',
+        menuChangeRole: 'Manage permissions',
         menuRemoveMember: 'Remove from organization',
         menuCancelInvite: 'Cancel invite',
 

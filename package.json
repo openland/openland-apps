@@ -108,7 +108,6 @@
 		"react-native-device-info": "^0.22.0",
 		"react-native-extra-dimensions-android": "^0.21.0",
 		"react-native-fast-image": "^4.0.14",
-		"react-native-fs": "^2.11.18",
 		"react-native-gesture-handler": "^1.0.7",
 		"react-native-haptic-feedback": "^1.2.0",
 		"react-native-image-capinsets": "^0.4.0",

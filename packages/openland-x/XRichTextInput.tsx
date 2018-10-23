@@ -5,27 +5,35 @@ import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } fro
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
+import EmojiIcon from './icons/ic-emoji.svg';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
     top: 11,
     right: 12,
+    '& > div': {
+        display: 'block',
+    },
     '& > div > button': {
         width: 18,
         height: 18,
         opacity: 1,
         borderRadius: 50,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        lineHeight: '10px',
-        fontSize: 26,
-        paddingBottom: 2,
-        '&:hover': {
-            backgroundColor: 'rgba(23, 144, 255, 0.05)'
+        border: 'none',
+        display: 'block',
+        paddingBottom: 0,
+        background: 'none!important',
+        '& svg': {
+            display: 'block',
+            '& *': {
+                fill: 'rgba(0, 0, 0, 0.25)',
+            },
         },
-        '&.draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu': {
-            backgroundColor: 'rgba(23, 144, 255, 0.05)'
+        '&:hover svg *': {
+            fill: '#1790ff'
+        },
+        '&.draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu svg *': {
+            fill: '#1790ff'
         }
     },
     '& > div > div': {
@@ -48,6 +56,7 @@ const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element
 };
 
 const emojiPlugin = createEmojiPlugin({
+    selectButtonContent: <EmojiIcon />,
     positionSuggestions: (args: any) => {
         let { state, filteredEmojis, popover, decoratorRect } = args;
         const relativeParent = getRelativeParent(popover.parentElement);
@@ -95,7 +104,11 @@ const emojiPlugin = createEmojiPlugin({
 const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
 const Container = Glamorous.div<XFlexStyles>([{
-    position: 'relative'
+    position: 'relative',
+
+    '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
+        color: 'rgba(0, 0, 0, 0.5)'
+    }
 }, applyFlex]);
 
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
@@ -122,7 +135,12 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
 
     componentDidMount() {
         if (this.props.autofocus) {
-            this.focus();
+            setTimeout(
+                () => {
+                    this.focus();
+                },
+                1
+            );
         }
     }
 

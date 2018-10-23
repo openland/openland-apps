@@ -115,7 +115,7 @@ android {
     defaultConfig {
         applicationId "com.openland.app"
         minSdkVersion 23
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode 41
         versionName "1.0.37"
         ndk {
@@ -163,7 +163,7 @@ configurations.all {
     resolutionStrategy {
         force 'org.webkit:android-jsc:r224109'
     }
-    exclude group: 'com.facebook.infer.annotation', module: 'infer-annotation'
+    // exclude group: 'com.facebook.infer.annotation', module: 'infer-annotation'
     exclude group: 'com.facebook.yoga', module: 'yoga'
     // exclude group: 'com.facebook.litho', module: 'litho-annotations'
     // resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'

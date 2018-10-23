@@ -97,8 +97,8 @@ const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
     maxWidth: 800,
     flexBasis: '100%',
-    paddingLeft: 50,
-    paddingRight: 50
+    paddingLeft: 45,
+    paddingRight: 45
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
@@ -210,12 +210,17 @@ const ShortcutsModal = () => {
             )}
         >
             <KeyboardShortcuts>
-                <KeyboardShortcut><span>Cmd + S (Mac)</span><span>Ctrl + S (Windows)</span> Search chats</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + S</span> Search chats</KeyboardShortcut>
                 <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
                 <KeyboardShortcut><span><strong>↑</strong></span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + ↑</span> Previous chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + ↓</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + E</span> Edit last message</KeyboardShortcut>
+                <KeyboardShortcut><span>Option + ↑ (Mac)</span><span>Alt + ↑ (Windows)</span> Previous chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Option + ↓ (Mac)</span><span>Alt + ↓ (Windows)</span> Next chat</KeyboardShortcut>
+                <KeyboardShortcut><span>Enter</span> Send message</KeyboardShortcut>
+                <KeyboardShortcut><span>Shift + Enter</span> New line</KeyboardShortcut>
                 <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Submit form</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)</KeyboardShortcut>
+                <KeyboardShortcut><span>Ctrl + Option + N (Mac)</span><span>Ctrl + Alt + N (Windows)</span> New chat</KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
@@ -376,7 +381,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
-        if (e.code === 'ArrowUp' && !e.shiftKey && this.message.length === 0 && this.input.current && this.input.current.state.editorState.getSelection().getHasFocus() && this.props.conversation) {
+        let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
+
+        if ((e.code === 'ArrowUp' && !e.altKey && this.message.length === 0 && hasFocus && this.props.conversation) || (e.code === 'KeyE' && e.ctrlKey && this.message.length === 0 && this.props.conversation)) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && this.props.user && m.sender.id === this.props.user.id);
             let message = messages[messages.length - 1];
             if (message && isServerMessage(message)) {
@@ -476,7 +483,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <span>Document</span>
                                 </AttachmentButton>
                                 <AttachmentButton
-                                    query={{ field: 'addItro', value: 'true' }}
+                                    query={this.props.enabled === false ? undefined : { field: 'addItro', value: 'true' }}
                                     className="intro-button"
                                     disable={this.props.enabled === false}
                                 >

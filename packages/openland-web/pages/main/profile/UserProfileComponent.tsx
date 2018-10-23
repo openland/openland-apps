@@ -20,7 +20,7 @@ import LinkedinIcon from './icons/linkedin-2.svg';
 import PhoneIcon from './icons/ic-phone.svg';
 
 const BackWrapper = Glamorous.div({
-    background: '#f9fafb',
+    background: '#F9F9F9',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     display: 'flex',
     alignItems: 'center',
@@ -111,7 +111,11 @@ const Header = (props: { userQuery: User }) => {
             <HeaderInfo flexGrow={1} separator={3}>
                 <XHorizontal separator={5}>
                     <HeaderTitle>{usr.name}</HeaderTitle>
-                    {usr.lastSeen && <LastSeenWrapper>last seen: <XDate value={usr.lastSeen} format="time" /></LastSeenWrapper>}
+                    {usr.lastSeen && usr.lastSeen !== 'online' && (
+                        <LastSeenWrapper>
+                            last seen: {usr.lastSeen === 'never_online' ? 'moments ago' : <XDate value={usr.lastSeen} format="humanize_cute" />}
+                        </LastSeenWrapper>
+                    )}
                 </XHorizontal>
                 {usr.primaryOrganization && (
                     <OrgName separator={2.5} alignItems="center" path={'/directory/o/' + usr.primaryOrganization.id}>
@@ -235,7 +239,7 @@ const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() =
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     },
     cursor: 'pointer'
 })));

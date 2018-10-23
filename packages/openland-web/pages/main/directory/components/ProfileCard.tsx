@@ -17,7 +17,7 @@ const ProfileCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((pro
     backgroundColor: '#fff',
     padding: '11px 24px 10px 23px',
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     },
     cursor: 'pointer'
 })));

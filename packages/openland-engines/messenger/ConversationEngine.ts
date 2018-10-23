@@ -32,6 +32,14 @@ const CHAT_SUBSCRIPTION = gql`
             ...MessageFull
         }
       }
+      ... on ConversationEventKick{
+        user {
+            id
+        }
+        kickedBy {
+            id
+        }
+      }
     }
   }
   ${MessageFull}
@@ -554,6 +562,10 @@ export class ConversationEngine implements MessageSendHandler {
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
             console.log('boom', JSON.stringify(conv));
             this.dataSource.updateItem(conv);
+        } else if (event.__typename === 'ConversationEventKick') {
+            if (this.engine.user.id === event.user.id ) {
+                this.engine.dialogList.dataSource.removeItem(this.conversationId);
+            }
         } else {
             console.warn('Received unknown message');
         }

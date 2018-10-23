@@ -39,7 +39,7 @@ const Member = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
         paddingTop: 18
     },
     '&:hover': {
-        backgroundColor: '#f9fafb'
+        backgroundColor: '#F9F9F9'
     }
 })));
 
@@ -130,8 +130,19 @@ const Accept = withChannelInvite((props) => {
     );
 }) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
-class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string, removeText?: string }, { isHovered: boolean, isHoveredDecline: boolean }> {
-    constructor(props: { item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort, channelId: string }) {
+interface MemberItemProps {
+    item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort;
+    channelId: string;
+    removeFrom: string;
+}
+
+interface MemberItemState {
+    isHovered: boolean;
+    isHoveredDecline: boolean;
+}
+
+class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
+    constructor(props: MemberItemProps) {
         super(props);
         this.state = {
             isHovered: false,
@@ -165,7 +176,9 @@ class MemberItem extends React.Component<{ item: { status: 'invited' | 'member' 
                             flat={true}
                             placement="bottom-end"
                             content={(
-                                <XMenuItem style="danger" query={{ field: 'remove', value: item.id }}>{this.props.removeText || 'Remove from channel'}</XMenuItem>
+                                <XMenuItem style="danger" query={{ field: 'remove', value: item.id }}>
+                                    {(item.isYou ? 'Leave the ' : 'Remove from ') + this.props.removeFrom}
+                                </XMenuItem>
                             )}
                         />
                     </MemberTools>
@@ -241,7 +254,7 @@ interface ChannelMembersComponentInnerProps {
     longDescription?: string;
     orgId: string;
     emptyText?: string;
-    removeText?: string;
+    removeFrom: string;
 }
 
 class ChannelMembersComponentInner extends React.Component<ChannelMembersComponentInnerProps> {
@@ -265,7 +278,12 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                     <XSubHeader title="Requests" counter={requests.length} />
                     <MembersView>
                         {requests.map(m => (
-                            <MemberItem key={m.user.id} item={{ status: m.status as any, ...m.user }} channelId={this.props.channelId} />
+                            <MemberItem
+                                key={m.user.id}
+                                item={{ status: m.status as any, ...m.user }}
+                                channelId={this.props.channelId}
+                                removeFrom={this.props.removeFrom}
+                            />
                         ))}
                     </MembersView>
                 </XWithRole>}
@@ -276,7 +294,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                             key={m.user.id}
                             item={{ status: m.status as any, ...m.user }}
                             channelId={this.props.channelId}
-                            removeText={this.props.removeText}
+                            removeFrom={this.props.removeFrom}
                         />
                     ))}
                 </MembersView>
@@ -305,6 +323,6 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         longDescription={(props as any).longDescription}
         orgId={(props as any).orgId}
         emptyText={(props as any).emptyText}
-        removeText={(props as any).removeText}
+        removeFrom={(props as any).removeFrom}
     />
-)) as React.ComponentType<{ removeText?: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;

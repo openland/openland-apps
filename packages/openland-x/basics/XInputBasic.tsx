@@ -41,7 +41,7 @@ let sizeStyles = styleResolver({
         fontSize: 14,
         '> .icon': {
             fontSize: 20,
-            left: 16,
+            left: 14,
             top: 'calc(50% - 10px)'
         },
         '> .icon-right': {
@@ -238,6 +238,9 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
                 color: '#8A80E7'
             }
         },
+        '& input[type="number"], & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            appearance: 'none'
+        }
     }),
     (props) => colorStyles(props.inputStyle),
     (props) => (props.invalid && {

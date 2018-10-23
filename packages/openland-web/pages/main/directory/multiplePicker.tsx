@@ -43,7 +43,7 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     lineHeight: 1.43,
     color: props.selected ? '#1790ff' : '#334562',
     letterSpacing: -0.2,
-    backgroundColor: props.selected ? '#f9fafb' : undefined,
+    backgroundColor: props.selected ? '#F9F9F9' : undefined,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -51,7 +51,7 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     ':hover': {
         ...(props.hover ? {
             color: '#1790ff',
-            backgroundColor: '#f9fafb'
+            backgroundColor: '#F9F9F9'
         } : {})
     }
 }));

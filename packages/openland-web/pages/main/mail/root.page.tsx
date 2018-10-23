@@ -74,10 +74,10 @@ export let ConversationContainer = Glamorous.div({
 
 export const Header = Glamorous(XHorizontal)({
     height: 48,
-    paddingLeft: 16,
+    paddingLeft: 12,
     paddingRight: 12,
-    marginTop: 3,
-    marginBottom: 4,
+    marginTop: 4,
+    marginBottom: 3,
     flexShrink: 0,
 });
 

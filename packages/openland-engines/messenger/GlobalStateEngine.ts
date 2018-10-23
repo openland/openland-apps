@@ -34,6 +34,7 @@ let GLOBAL_SUBSCRIPTION = gql`
                         photo
                     }
                     ... on ChannelConversation{
+                        myStatus
                         photo
                     }
                 }

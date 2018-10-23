@@ -44,6 +44,10 @@ const ModalBody = Glamorous.div({
     }
 });
 
+const ImgWrapper = Glamorous(XLink)({
+    alignSelf: 'flex-start'
+});
+
 const ModalPic = Glamorous(XCloudImage)({
     borderRadius: 8
 });
@@ -57,7 +61,7 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = (props: MessageImageComponentProps) => {
     let dimensions = layoutMedia(props.width, props.height);
-    let dimensions2 = layoutMedia(props.width, props.height, 1200, 1200);
+    let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
     return (
         <XModal
             useTopCloser={true}
@@ -84,14 +88,14 @@ export const MessageImageComponent = (props: MessageImageComponentProps) => {
                 </ModalBody>
             )}
             target={(
-                <XLink>
+                <ImgWrapper>
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
                     />
-                </XLink>
+                </ImgWrapper>
             )}
         />
     );

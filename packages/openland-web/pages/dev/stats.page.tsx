@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperCities } from '../../api/withSuperCities';
+// import { withSuperCities } from '../../api/withSuperCities';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XHeader } from 'openland-x/XHeader';
 import { withQueryLoader } from '../../components/withQueryLoader';
@@ -114,7 +114,65 @@ const LeaderBoard = withChatsStats((props) => (
         ) : null
 ));
 
-export default withApp('Super Organizations', 'super-admin', withSuperCities(withQueryLoader((props) => {
+// export default withApp('Super Organizations', 'super-admin', withSuperCities(withQueryLoader((props) => {
+
+//     let header: any = [(<XTable.Cell >{''}</XTable.Cell >), (<XTable.Cell >{'10 w ago'}</XTable.Cell >)];
+//     let messagesStats: any = [(<XTable.Cell ><XText>Messages</XText></XTable.Cell >)];
+//     let i = 10;
+//     do {
+//         header.push(<XTable.Cell >{''}</XTable.Cell >);
+//         messagesStats.push(
+//             <MessagesCell variables={{ fromDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * i).toString(), toDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * (i - 1)).toString() }} />
+//         );
+//     } while (--i > 0);
+//     header.pop();
+//     header.pop();
+//     header.push(<XTable.Cell >{'now'}</XTable.Cell >);
+
+//     let usersStats: any = [(<XTable.Cell ><XText>Users</XText></XTable.Cell >)];
+//     let j = 10;
+//     do {
+//         usersStats.push(
+//             <UsersCell variables={{ fromDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * j).toString(), toDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * (j - 1)).toString() }} />
+//         );
+//     } while (--j > 0);
+
+//     return (
+//         <DevToolsScaffold title="Stats">
+//             <XHeader text=" Messages daily" />
+//             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'day' }} />
+//             <XHeader text=" Messages weekly" />
+//             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'week' }} />
+//             <XHeader text=" Messages monthly, include Openland team" />
+//             <MessagesChart variables={{ fromDate: '0', toDate: new Date().getTime().toString(), trunc: 'month', excudeTeam: false }} />
+
+//             <XHeader text="Total" />
+//             <Stats variables={{ fromDate: (new Date(0).getTime()).toString(), toDate: (new Date().getTime()).toString() }} />
+
+//             <XHeader text="Messenger weekly stats" />
+//             <XTable>
+//                 <XTable.Body>
+//                     <XTable.Row>
+//                         {header}
+//                     </XTable.Row>
+//                     <XTable.Row>
+//                         {messagesStats}
+//                     </XTable.Row>
+//                     <XTable.Row>
+//                         {usersStats}
+//                     </XTable.Row>
+//                 </XTable.Body>
+
+//             </XTable>
+
+//             <Mutes variables={{ fromDate: '0', toDate: new Date().getTime().toString() }} />
+//             <LeaderBoard variables={{ fromDate: (new Date().getTime() - 1000 * 60 * 60 * 24 * 7 * 2).toString(), toDate: new Date().getTime().toString() }} />
+
+//         </DevToolsScaffold>
+//     );
+// })));
+
+export default withApp('Super Organizations', 'super-admin', withQueryLoader((props) => {
 
     let header: any = [(<XTable.Cell >{''}</XTable.Cell >), (<XTable.Cell >{'10 w ago'}</XTable.Cell >)];
     let messagesStats: any = [(<XTable.Cell ><XText>Messages</XText></XTable.Cell >)];
@@ -170,4 +228,4 @@ export default withApp('Super Organizations', 'super-admin', withSuperCities(wit
 
         </DevToolsScaffold>
     );
-})));
+}));

@@ -53,7 +53,7 @@ const ChannelRow = Glamorous(XHorizontal)({
     paddingRight: 24,
     height: 64,
     '&:hover': {
-        backgroundColor: '#f9fafb',
+        backgroundColor: '#F9F9F9',
         '& > a.invite': {
             backgroundColor: 'rgb(23, 144, 255)',
             color: 'rgb(255, 255, 255)',

@@ -4,9 +4,20 @@ export const MessageFull = gql`
  fragment MessageFull on ConversationMessage {
     id
     message
+    edited
     file
     repeatKey
     isService
+    serviceMetadata{
+        ...on KickServiceMetadata{
+            user {
+                id
+            }
+            kickedBy{
+                 id
+            }
+        }
+    }
     fileMetadata {
         name
         mimeType
@@ -26,6 +37,17 @@ export const MessageFull = gql`
         id
         date
         message
+        edited
+        file
+        fileMetadata {
+            name
+            mimeType
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+            size
+        }
     }
     reactions: reactions {
         user {

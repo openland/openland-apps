@@ -180,6 +180,9 @@ export class DialogListEngine {
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
+            if (event.message.serviceMetadata && event.message.serviceMetadata.__typename === 'KickServiceMetadata') {
+                return;
+            }
             this.dataSource.addItem(
                 {
                     key: conversationId,

@@ -76,13 +76,17 @@ const IntroTag = Glamorous(XHorizontal)({
     paddingRight: 14
 });
 
-const UserName = Glamorous.div({
+const UserName = Glamorous(XLink)(props => ({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.43,
     letterSpacing: -0.2,
-    color: '#121e2b'
-});
+    color: '#121e2b',
+    cursor: props.path ? 'pointer' : 'text !important',
+    '&:hover': {
+        color: props.path ? '#1790ff' : '#121e2b'
+    }
+}));
 
 const OrgName = Glamorous.div({
     opacity: 0.5,
@@ -247,7 +251,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                         return (
                             <Counter alignSelf="flex-end" accepted={true}>
                                 <CheckIconSmall />
-                                <span>accepted</span>
+                                <span>Accepted</span>
                             </Counter>
                         );
                     }
@@ -338,6 +342,9 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
             };
         }
 
+        const accept = reactions.find(r => r.user.id === meId && r.reaction === 'accept');
+        const pass = reactions.find(r => r.user.id === meId && r.reaction === 'pass');
+
         return (
             <Wrapper separator={6}>
                 <Root separator={0}>
@@ -346,14 +353,16 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                             <XHorizontal justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
                                     <XAvatar
-                                        path={reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? '/mail/u/' + user.id : undefined}
+                                        path={(accept || meId === senderId) ? '/mail/u/' + user.id : undefined}
                                         objectId={user.id}
                                         objectName={user.name}
                                         photoRef={urlAugmentation.photo || undefined}
                                         style="colorus"
                                     />
                                     <XVertical separator={-1}>
-                                        <UserName>{user.name}</UserName>
+                                        <UserName path={(accept || meId === senderId) ? '/mail/u/' + user.id : undefined}>
+                                            {user.name}
+                                        </UserName>
                                         {user.primaryOrganization && (
                                             <OrgName>{user.primaryOrganization.name}</OrgName>
                                         )}
@@ -369,12 +378,12 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                                         placement="bottom-end"
                                         content={
                                             <>
-                                                {reactions.find(r => r.user.id === meId && r.reaction === 'accept') ? (
+                                                {accept ? (
                                                     <ChangeReactionButton messageId={messageId} unset="accept" set="pass">
                                                         <XMenuItem>Pass</XMenuItem>
                                                     </ChangeReactionButton>
                                                 ) : null}
-                                                {reactions.find(r => r.user.id === meId && r.reaction === 'pass') ? (
+                                                {pass ? (
                                                     <ChangeReactionButton messageId={messageId} unset="pass" set="accept">
                                                         <XMenuItem>Accept</XMenuItem>
                                                     </ChangeReactionButton>

@@ -31,6 +31,7 @@ export const ConversationShort = gql`
                 featured
                 hidden
                 photo
+                myStatus
                 photoRef{
                     uuid
                     crop{
