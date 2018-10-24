@@ -40,6 +40,7 @@ const Organization = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     color: 'rgba(0, 0, 0, 0.4)',
     letterSpacing: 0,
     alignSelf: 'flex-end',
+    marginBottom: -1,
     cursor: 'pointer'
 })));
 
