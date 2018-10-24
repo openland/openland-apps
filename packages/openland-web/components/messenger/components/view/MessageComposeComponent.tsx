@@ -374,7 +374,13 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         });
     }
 
-    private handleDragLeave = () => {
+    private handleDragLeave = (e: any) => {
+        let file = e.dataTransfer.files[0];
+        if (file === undefined) {
+            this.setState({
+                dragOn: false
+            });
+        }
         this.setState({
             dragUnder: false
         });
