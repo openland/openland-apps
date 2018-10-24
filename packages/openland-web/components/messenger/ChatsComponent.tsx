@@ -226,6 +226,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
 
     render() {
         let conv = this.props.conversation;
+        let isPrivate = conv.type === 'PrivateConversation';
         return (
             <Item path={'/mail/' + conv.key} onClick={this.props.onSelect} ref={this.handleRef}>
                 <ConversationAvatar
@@ -235,7 +236,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                             ? 'group'
                             : conv.type === 'ChannelConversation'
                                 ? 'channel' :
-                                conv.type === 'PrivateConversation' ? 'user' : undefined
+                                isPrivate ? 'user' : undefined
                     )}
                     objectName={conv.title}
                     objectId={conv.flexibleId}
@@ -252,13 +253,13 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                             {conv.typing || (
                                 <>
                                     {!!(conv.message) && !conv.fileMeta && (
-                                        <span>{conv.isOut ? 'You' : conv.sender}: {conv.message}</span>
+                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
                                     )}
                                     {conv.fileMeta && conv.fileMeta.isImage && (
-                                        <span>{conv.isOut ? 'You' : conv.sender}: <PhotoIcon />Image</span>
+                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon />Image</span>
                                     )}
                                     {conv.fileMeta && !conv.fileMeta.isImage && (
-                                        <span>{conv.isOut ? 'You' : conv.sender}: <FileIcon className="document" />Document</span>
+                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className="document" />Document</span>
                                     )}
                                 </>
                             )}
@@ -641,13 +642,15 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                                             return (
                                                 <SelectContext.Consumer key={i.key}>
                                                     {select => {
-                                                        return (<ConversationComponent
-                                                            key={i.key}
-                                                            conversation={i}
-                                                            onSelect={this.onSelect}
-                                                            selectedItem={select.select === j}
-                                                            allowSelection={this.state.allowShortKeys}
-                                                        />);
+                                                        return (
+                                                            <ConversationComponent
+                                                                key={i.key}
+                                                                conversation={i}
+                                                                onSelect={this.onSelect}
+                                                                selectedItem={select.select === j}
+                                                                allowSelection={this.state.allowShortKeys}
+                                                            />
+                                                        );
                                                     }}
                                                 </SelectContext.Consumer>
 
