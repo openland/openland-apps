@@ -5,7 +5,6 @@ import { View, Platform, Text, StyleSheet, TextStyle } from 'react-native';
 import { XPImage } from './XPImage';
 import { XPLinearGradient } from './XPLinearGradient';
 import { XPStyles } from './XPStyles';
-import { XPRoundedMask } from './XPRoundedMask';
 import { AndroidAliaser } from './AndroidAliaser';
 import { createInterpolator } from 'openland-y-utils/createInterpolator';
 import { YQuery } from 'openland-y-graphql/YQuery';
@@ -38,17 +37,19 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
         let onlineSize = this.props.size / 4;
         if (this.props.src) {
             return (
-                <AndroidAliaser
-                    width={this.props.size}
-                    height={this.props.size}
-                    borderRadius={this.props.size / 2}
-                >
-                    <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
-                        <XPImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
-                        {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
-                        {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
-                    </View>
-                </AndroidAliaser>
+                <View>
+                    <AndroidAliaser
+                        width={this.props.size}
+                        height={this.props.size}
+                        borderRadius={this.props.size / 2}
+                    >
+                        <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
+                            <XPImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
+                            {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
+                        </View>
+                    </AndroidAliaser>
+                    {this.props.online && <View style={{ position: 'absolute', zIndex: 100, width: onlineSize, height: onlineSize, left: this.props.size - onlineSize, top: this.props.size - onlineSize, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
+                </View>
             );
         }
         let placeholderIndex = 0;
