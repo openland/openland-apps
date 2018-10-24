@@ -3,10 +3,13 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { StyleSheet, ViewStyle, TextStyle, View, Text } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
+import { ActionButtonAndroid } from '../buttons/ActionButtonAndroid';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { HeaderTitleViewProps } from './HeaderTitleView.ios';
 
 const styles = StyleSheet.create({
     root: {
@@ -42,7 +45,35 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class HeaderTitleView extends React.PureComponent<{ manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }> {
+export class HeaderTitleView extends React.PureComponent<{ manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }, { searchText: string }> {
+
+    handleExternalChange = () => {
+        this.setState({ searchText: this.props.page.config.searchContext!.value });
+    }
+
+    handleTextChange = (text: string) => {
+        this.setState({ searchText: text });
+        this.props.page.config.searchContext!.value = text;
+        this.props.page.config.searchContext!.headerOnChanged = this.handleExternalChange;
+        this.props.page.config.searchContext!.onChanged();
+        if (this.props.page.config.searchChanged) {
+            this.props.page.config.searchChanged(text);
+        }
+    }
+
+    componentWillReceiveProps(nextProps: HeaderTitleViewProps) {
+        if (!nextProps.page.config.search) {
+            this.setState({ searchText: '' });
+        } else {
+            nextProps.page.config.searchContext!.headerOnChanged = this.handleExternalChange;
+            nextProps.page.config.searchContext!.onChanged();
+            this.setState({ searchText: nextProps.page.config.searchContext!.value });
+            if (nextProps.page.config.searchChanged) {
+                nextProps.page.config.searchChanged(nextProps.page.config.searchContext!.value);
+            }
+        }
+    }
+
     render() {
         let v = this.props.page;
         console.warn('fooo', this.props.manager.parent, this.props.page.page.startIndex);
@@ -65,11 +96,13 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             flexDirection="row"
                             flexGrow={1}
                         >
-                            {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                            {(this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                            {title}
+                            {!v.config.searchActive && (!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                            {(this.props.manager.parent || this.props.page.page.startIndex !== 0 || v.config.searchActive) && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                            {v.config.searchActive && <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true}  placeholder="Search" />}
+                            {!v.config.searchActive && title}
                         </View>
                         <View flexDirection="row" alignItems="center" alignSelf="flex-end">
+                            {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
 

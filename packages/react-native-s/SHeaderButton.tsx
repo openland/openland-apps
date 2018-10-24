@@ -11,7 +11,7 @@ export interface FastHeaderButtonDescription {
     render: () => React.ReactElement<{}>;
 }
 
-export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void }> {
+export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void, style?: SNavigationViewStyle }> {
 
     private buttonId = UUID();
 
@@ -43,6 +43,6 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
     }
 
     render() {
-        return <HeaderConfigRegistrator config={{ buttons: [{ id: this.buttonId, render: this.renderButton }] }} />;
+        return this.props.style ? this.renderButton(this.props.style) : <HeaderConfigRegistrator config={{ buttons: [{ id: this.buttonId, render: this.renderButton }] }} />;
     }
 }

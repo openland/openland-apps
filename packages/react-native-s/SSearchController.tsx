@@ -34,7 +34,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
     }
 
     handleSearchStop = () => {
-        this.setState({ search: false, searchMounted: true });
+        this.setState({ search: false, searchMounted: false });
     }
 
     handleSearchStopCompleted = () => {
@@ -85,10 +85,14 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                     {this.state.searchMounted && (
                         <SAnimatedView
                             name={this.searchShadowView.name}
-                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.3)' }}
+                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: !this.state.query ? 'rgba(0,0,0,0.3)' : 'white' }}
                         >
                             <HeaderContextNone>
-                                <Render query={this.state.query} />
+                                <ASSafeAreaProvider top={-56}>
+                                    <View width="100%" height="100%">
+                                        <Render query={this.state.query} />
+                                    </View>
+                                </ASSafeAreaProvider>
                             </HeaderContextNone>
                         </SAnimatedView>
                     )}
