@@ -82,7 +82,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                     let text = v.text || path;
 
                     path = makeUrlRelative(path);
-                    text = text.length > 60 ? text.substring(0, 60) + '...' : text;
 
                     return <XLink className="link" key={'link-' + i} path={path}>{text}</XLink>;
                 }
