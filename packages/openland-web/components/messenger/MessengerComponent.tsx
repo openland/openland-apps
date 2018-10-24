@@ -84,8 +84,6 @@ const SubTitle = makeNavigable(Glamorous.div<NavigableChildProps & { inTop?: boo
     lineHeight: props.inTop ? '18px' : '16px',
     letterSpacing: 0,
     cursor: props.href ? 'pointer' : undefined,
-    marginTop: props.inTop ? 1 : undefined,
-    marginBottom: props.inTop ? -1 : undefined
 })));
 
 const NavChatLeftContent = makeNavigable(XHorizontal);
@@ -485,6 +483,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         uId = props.data.chat.user.id;
 
         if (props.data.chat.user.primaryOrganization) {
+            subtitle = props.data.chat.user.primaryOrganization.name;
             titlePath = '/mail/u/' + props.data.chat.user.id;
             subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
         }

@@ -40,7 +40,6 @@ const Organization = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     color: 'rgba(0, 0, 0, 0.4)',
     letterSpacing: 0,
     alignSelf: 'flex-end',
-    marginBottom: -1,
     cursor: 'pointer'
 })));
 
@@ -355,7 +354,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             <XHorizontal separator={4}>
                                 <XHorizontal separator={4} alignItems="center">
                                     <Name>{this.props.sender!!.name}</Name>
-                                    {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                    {this.props.conversationType !== 'PrivateConversation' && this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                 </XHorizontal>
                                 <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
