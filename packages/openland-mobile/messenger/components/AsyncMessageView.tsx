@@ -53,7 +53,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 22 : 0;
         let ios = Platform.OS === 'ios';
         return (
-            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
+            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? (ios ? 33 : 51) : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
                     <ASFlex marginRight={ios ? -1 : 3} marginLeft={ios ? 4 : 7} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin}>
                         <AsyncAvatar
