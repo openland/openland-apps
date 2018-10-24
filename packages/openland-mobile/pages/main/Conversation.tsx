@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, Alert, AsyncStorage } from 'react-native';
+import { View, FlatList, Text, Alert, AsyncStorage, Platform, TouchableOpacity } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -15,29 +15,30 @@ import { Deferred } from '../../components/Deferred';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ChatRight } from './components/ChatRight';
+import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { ZRoundedButton } from '../../components/ZRoundedButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { ChannelJoinMutation, SetTypingMutation } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
+import { ChatInfo_chat } from 'openland-api/Types';
 
-class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, conversationId: string }, { text: string }> {
+class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, chat: ChatInfo_chat }, { text: string }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
-    constructor(props: { provider: ZPictureModalProvider, router: any, engine: MessengerEngine, conversationId: string }) {
+    constructor(props: { provider: ZPictureModalProvider, router: any, engine: MessengerEngine, chat: ChatInfo_chat }) {
         super(props);
-        this.engine = this.props.engine.getConversation(this.props.conversationId);
-        AsyncStorage.getItem('compose_draft_' + this.props.conversationId).then(s => this.setState({ text: s || '' }));
+        this.engine = this.props.engine.getConversation(this.props.chat.id);
+        AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
         this.state = { text: '' };
     }
 
     handleTextChange = (src: string) => {
-        getMessenger().engine.client.client.mutate({ mutation: SetTypingMutation.document, variables: { conversationId: this.props.conversationId } });
+        getMessenger().engine.client.client.mutate({ mutation: SetTypingMutation.document, variables: { conversationId: this.props.chat.id } });
         this.setState({ text: src });
-        AsyncStorage.setItem('compose_draft_' + this.props.conversationId, src);
+        AsyncStorage.setItem('compose_draft_' + this.props.chat.id, src);
     }
 
     handleSubmit = () => {
@@ -46,7 +47,7 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
             this.setState({ text: '' });
             this.engine.sendMessage(tx);
         }
-        AsyncStorage.removeItem('compose_draft_' + this.props.conversationId);
+        AsyncStorage.removeItem('compose_draft_' + this.props.chat.id);
 
     }
 
@@ -56,19 +57,37 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
                 return;
             }
 
-            UploadManagerInstance.registerUpload(this.props.conversationId, response.fileName || 'image.jpg', response.uri, response.fileSize);
+            UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
         });
     }
 
     render() {
+        let path = resolveConversationProfilePath(this.props.chat);
+        let header = (
+            <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
+                <View flexDirection="row">
+                    <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
+                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
+                </View>
+            </TouchableOpacity>
+        );
+        if (Platform.OS === 'ios') {
+            header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
+        }
+        let button = null;
+        if (Platform.OS === 'ios') {
+            button = (
+                <SHeaderButton>
+                    <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
+                </SHeaderButton>
+            );
+        }
         return (
             <>
                 <SHeaderView>
-                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
+                    {header}
                 </SHeaderView>
-                <SHeaderButton>
-                    <ChatRight conversationId={this.engine.conversationId} router={this.props.router} />
-                </SHeaderButton>
+                {button}
                 <Deferred>
                     <View style={{ height: '100%', flexDirection: 'column' }}>
                         <ConversationView engine={this.engine} />
@@ -93,55 +112,49 @@ class ConversationComponent extends React.Component<PageProps> {
                     <ZPictureModalContext.Consumer>
                         {modal => (
                             <MessengerContext.Consumer>
-                                {messenger => {
-                                    if (this.props.router.params.flexibleId) {
-                                        return (
-                                            <ZQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.flexibleId }}>
-                                                {resp => {
-                                                    if (resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.myStatus !== 'member') {
-                                                        return (
-                                                            <>
-                                                                <SHeaderView>
-                                                                    <ChatHeader conversationId={resp.data.chat.id} router={this.props.router} />
-                                                                </SHeaderView>
-                                                                <View width="100%" height="100%" justifyContent="center">
-                                                                    <View alignSelf="center" flexDirection="column">
-                                                                        <Text style={{ fontSize: 14, color: '#000', textAlign: 'center', margin: 20 }}>{resp.data.chat.description}</Text>
-                                                                    </View>
-                                                                    <View alignSelf="center">
-                                                                        <YMutation mutation={ChannelJoinMutation} refetchQueriesVars={[{ query: ChatInfoQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
-                                                                            {(join) => (
-                                                                                <ZRoundedButton
-                                                                                    title={(resp.data.chat as any).myStatus === 'requested' ? 'Invite requested' : 'Join'}
-                                                                                    onPress={async () => {
-                                                                                        startLoader();
-                                                                                        try {
-                                                                                            await join({ variables: { channelId: resp.data.chat.id } });
-                                                                                        } catch (e) {
-                                                                                            Alert.alert(e.message);
-                                                                                        }
-                                                                                        stopLoader();
+                                {messenger => (
+                                    <ZQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.flexibleId || this.props.router.params.id }}>
+                                        {resp => {
+                                            if (resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.myStatus !== 'member') {
+                                                return (
+                                                    <>
+                                                        <SHeaderView>
+                                                            <ChatHeader conversationId={resp.data.chat.id} router={this.props.router} />
+                                                        </SHeaderView>
+                                                        <View width="100%" height="100%" justifyContent="center">
+                                                            <View alignSelf="center" flexDirection="column">
+                                                                <Text style={{ fontSize: 14, color: '#000', textAlign: 'center', margin: 20 }}>{resp.data.chat.description}</Text>
+                                                            </View>
+                                                            <View alignSelf="center">
+                                                                <YMutation mutation={ChannelJoinMutation} refetchQueriesVars={[{ query: ChatInfoQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
+                                                                    {(join) => (
+                                                                        <ZRoundedButton
+                                                                            title={(resp.data.chat as any).myStatus === 'requested' ? 'Invite requested' : 'Join'}
+                                                                            onPress={async () => {
+                                                                                startLoader();
+                                                                                try {
+                                                                                    await join({ variables: { channelId: resp.data.chat.id } });
+                                                                                } catch (e) {
+                                                                                    Alert.alert(e.message);
+                                                                                }
+                                                                                stopLoader();
 
-                                                                                    }}
-                                                                                />
-                                                                            )}
-                                                                        </YMutation>
-                                                                    </View>
+                                                                            }}
+                                                                        />
+                                                                    )}
+                                                                </YMutation>
+                                                            </View>
 
-                                                                </View>
+                                                        </View>
 
-                                                            </>
-                                                        );
-                                                    }
-                                                    return <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} conversationId={resp.data.chat.id} />;
-                                                }}
+                                                    </>
+                                                );
+                                            }
+                                            return <ConversationRoot provider={modal!!} key={resp.data.chat.id} router={this.props.router} engine={messenger!!} chat={resp.data.chat} />;
+                                        }}
 
-                                            </ZQuery>
-                                        );
-                                    } else {
-                                        return (<ConversationRoot provider={modal!!} key={this.props.router.params.id} router={this.props.router} engine={messenger!!} conversationId={this.props.router.params.id} />);
-                                    }
-                                }}
+                                    </ZQuery>
+                                )}
                             </MessengerContext.Consumer>
                         )
                         }

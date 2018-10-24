@@ -4,9 +4,26 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { SRouter } from 'react-native-s/SRouter';
-import { OnlineQuery } from 'openland-api';
+import { ChatInfo_chat } from 'openland-api/Types';
 
-export class ChatRight extends React.PureComponent<{ conversationId: string, router: SRouter }> {
+export let resolveConversationProfilePath = (chat: ChatInfo_chat) => {
+    let path: string | undefined = undefined;
+    let pathArgs: any = {};
+    if (chat.__typename === 'PrivateConversation') {
+        path = 'ProfileUser';
+        pathArgs = { id: chat.flexibleId };
+    } else if (chat.__typename === 'SharedConversation') {
+        path = 'ProfileOrganization';
+        pathArgs = { id: chat.flexibleId, conversationId: chat.id };
+    } else if (chat.__typename === 'GroupConversation' || chat.__typename === 'ChannelConversation') {
+        path = 'ProfileGroup';
+        pathArgs = { id: chat.id };
+    }
+
+    return { path, pathArgs };
+};
+
+export class ChatHeaderAvatar extends React.PureComponent<{ conversationId: string, router: SRouter }> {
 
     render() {
         return (
@@ -23,21 +40,10 @@ export class ChatRight extends React.PureComponent<{ conversationId: string, rou
                     //     return null;
                     // }
 
-                    let destPath: string | undefined = undefined;
-                    let destPathArgs: any = {};
-                    if (res.data!!.chat.__typename === 'PrivateConversation') {
-                        destPath = 'ProfileUser';
-                        destPathArgs = { id: res.data!!.chat.flexibleId };
-                    } else if (res.data!!.chat.__typename === 'SharedConversation') {
-                        destPath = 'ProfileOrganization';
-                        destPathArgs = { id: res.data!!.chat.flexibleId, conversationId: res.data!!.chat.id };
-                    } else if (res.data!!.chat.__typename === 'GroupConversation' || res.data!!.chat.__typename === 'ChannelConversation') {
-                        destPath = 'ProfileGroup';
-                        destPathArgs = { id: res.data!!.chat.id };
-                    }
+                    let path = resolveConversationProfilePath(res.data!!.chat);
 
                     return (
-                        <TouchableOpacity disabled={!destPath} onPress={() => this.props.router.push(destPath!!, destPathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 0, marginLeft: 10 }}>
+                        <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!!, path.pathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 10, marginLeft: Platform.OS === 'ios' ? 10 : 0 }}>
                             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                                 <XPAvatar
                                     src={(res.data!!.chat as any).photo || (res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined)}

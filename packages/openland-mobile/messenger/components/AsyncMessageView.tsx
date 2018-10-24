@@ -9,6 +9,7 @@ import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
 import { AsyncMessageIntroView, renderButtons } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
+import { Platform } from 'react-native';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -50,12 +51,13 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         // fix needed - layour breaks if wraped in one more flex
         let buttonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
         buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 22 : 0;
+        let ios = Platform.OS === 'ios';
         return (
             <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? 33 : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
                 {!this.props.message.isOut && !this.props.message.attachBottom &&
-                    <ASFlex marginRight={-1} marginLeft={4} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin}>
+                    <ASFlex marginRight={ios ? -1 : 3} marginLeft={ios ? 4 : 7} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin}>
                         <AsyncAvatar
-                            size={28}
+                            size={ios ? 28 : 36}
                             src={this.props.message.senderPhoto}
                             placeholderKey={this.props.message.senderId}
                             placeholderTitle={this.props.message.senderName}

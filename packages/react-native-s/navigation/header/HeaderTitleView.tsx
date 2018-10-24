@@ -46,6 +46,8 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
     render() {
         let v = this.props.page;
         console.warn('fooo', this.props.manager.parent, this.props.page.page.startIndex);
+        let title = <Text style={[styles.title, { color: this.props.style.textColor }]}>{this.props.page.config.title}</Text>;
+        title = (v.config.titleView && v.config.titleView()) || title;
         return (
             <SAnimated.View name={'header--' + this.props.page.page.key} style={[styles.root, this.props.page.page.startIndex === 0 && styles.rootFirst]} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                 <View style={styles.titleContainer} pointerEvents="box-none">
@@ -65,7 +67,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                         >
                             {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
                             {(this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                            <Text style={[styles.title, { color: this.props.style.textColor }]}>{this.props.page.config.title}</Text>
+                            {title}
                         </View>
                         <View flexDirection="row" alignItems="center" alignSelf="flex-end">
                             {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
