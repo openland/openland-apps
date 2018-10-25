@@ -83,7 +83,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
 
                     path = makeUrlRelative(path);
 
-                    return <XLink className="link" key={'link-' + i} path={path}>{text}</XLink>;
+                    return <XLink className="link" key={'link-' + i} path={path}>{decodeURI(text)}</XLink>;
                 }
 
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
