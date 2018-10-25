@@ -59,7 +59,7 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
                     <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                         {r => (
-                            <SScrollView paddingTop={this.state.searchHeight}>
+                            <SScrollView marginTop={this.state.searchHeight}>
                                 {r.data.items.map((v) => (<UserViewAsync key={v.id} item={v as UserShort} disabled={(this.props.router.params.disableUsers || []).indexOf(v.id) > -1} onPress={() => this.handleAddUser(v as UserShort)} />))}
                             </SScrollView>
                         )}
