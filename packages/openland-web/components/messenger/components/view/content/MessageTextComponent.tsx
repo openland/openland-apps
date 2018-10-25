@@ -115,7 +115,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 }
             });
 
-            if (isOnlyStringsInParts && oneSticker.length > 0) {
+            if (isOnlyStringsInParts && oneSticker.length > 0 && (oneSticker.startsWith(':') && oneSticker.endsWith(':'))) {
                 oneSticker = oneSticker.slice(1, oneSticker.length - 1);
             }
         }
