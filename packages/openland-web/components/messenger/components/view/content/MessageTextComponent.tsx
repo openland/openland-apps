@@ -103,27 +103,27 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             }
         });
 
-        let oneSticker = '';
+        let textSticker = '';
         let isOnlyStringsInParts = true;
 
         if (this.big && !this.insane && parts.length === 1) {
             parts[0].props.children.map((s: any) => {
                 if (typeof s === 'string') {
-                    oneSticker += s;
+                    textSticker += s;
                 } else {
                     isOnlyStringsInParts = false;
                 }
             });
 
-            if (isOnlyStringsInParts && oneSticker.length > 0 && (oneSticker.startsWith(':') && oneSticker.endsWith(':'))) {
-                oneSticker = oneSticker.slice(1, oneSticker.length - 1);
+            if (isOnlyStringsInParts && textSticker.length > 0 && (textSticker.startsWith(':') && textSticker.endsWith(':'))) {
+                textSticker = textSticker.slice(1, textSticker.length - 1);
             }
         }
 
         return (
             <TextWrapper big={this.big || this.insane} isService={this.props.isService}>
-                {(isOnlyStringsInParts && oneSticker.length > 0) && oneSticker}
-                {!(isOnlyStringsInParts && oneSticker.length > 0) && parts}
+                {(isOnlyStringsInParts && textSticker.length > 0) && textSticker}
+                {!(isOnlyStringsInParts && textSticker.length > 0) && parts}
                 {this.props.isEdited && <EditLabel>(Edited)</EditLabel>}
             </TextWrapper>
         );
