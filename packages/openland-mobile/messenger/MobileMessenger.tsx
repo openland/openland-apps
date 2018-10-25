@@ -135,7 +135,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
 
     render() {
         let item = this.props.item;
-        let showSenderName = !!(item.message && (!(item.isOut && item.type === 'PrivateConversation')) && item.sender);
+        let showSenderName = !!(item.message && ((item.isOut || item.type !== 'PrivateConversation')) && item.sender);
         let isUser = item.type === 'PrivateConversation';
         return (
             <ASFlex height={80} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress}>
@@ -156,7 +156,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                 </ASFlex>
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={18}>
-                        <ASText fontSize={15} height={18} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                        <ASText fontSize={15} height={22} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                         {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
                     </ASFlex>
                     <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
