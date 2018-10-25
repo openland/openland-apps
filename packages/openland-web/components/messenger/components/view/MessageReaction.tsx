@@ -95,31 +95,37 @@ const ReactionsWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
-    paddingTop: 3
+    paddingTop: 4
+});
+
+const ReactionsInner = Glamorous.div({
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    border: '1px solid #ebebeb',
+    background: '#ffffff',
+    borderRadius: 18,
+    padding: '0 11px 0 6px',
 });
 
 const ReactionItem = Glamorous.div<{ isMy: boolean }>(props => ({
     display: 'flex',
     alignItems: 'center',
-    height: 26,
-    borderRadius: 15,
-    paddingLeft: 7,
-    paddingRight: 9,
-    paddingTop: 6,
-    paddingBottom: 2,
+    height: 28,
+    padding: '6px 4px 2px',
     cursor: 'pointer',
     fontSize: 13,
     fontWeight: 600,
-    color: props.isMy ? '#1790ff' : '#4A4A4A',
-    '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    },
     '& span:last-child': {
-        display: 'block',
-        marginBottom: 5,
-        marginLeft: 3
+        margin: '0!important',
     }
 }));
+
+const UsersLabel = Glamorous.div({
+    color: 'rgba(0, 0, 0, 0.5)',
+    fontSize: 12,
+    paddingLeft: 5,
+});
 
 class SingleReaction extends React.PureComponent<{ messageId: string, reaction: string, isMy: boolean, mutation: MutationFunc<{}> }> {
     handleChangeReaction = () => {
@@ -158,10 +164,43 @@ interface ReactionsInnerProps {
 }
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
+    usersLabelRender = (usersList: string[], foundMyReaction: boolean) => {
+        let uniqueUsersList = usersList.filter((item: string, pos: number) => (usersList.indexOf(item) === pos));
+        let usersLabel = '';
+
+        if (foundMyReaction) {
+            usersLabel = 'You';
+
+            if (uniqueUsersList[0]) {
+                usersLabel += ', ' + uniqueUsersList[0];
+            }
+
+            if (uniqueUsersList.length > 1) {
+                usersLabel += ' and ' + (uniqueUsersList.length - 1) + ' more';
+            }
+        } else {
+            if (uniqueUsersList.length > 0) {
+                usersLabel = uniqueUsersList[0];
+
+                if (uniqueUsersList[1]) {
+                    usersLabel += ', ' + uniqueUsersList[1];
+                }
+
+                if (uniqueUsersList.length > 2) {
+                    usersLabel += ' and ' + (uniqueUsersList.length - 2) + ' more';
+                }
+            }
+        }
+
+        return (usersLabel.length > 0) ? <UsersLabel>{usersLabel}</UsersLabel> : null;
+    }
+
     reactionsRender = () => {
         let { reactions, meId } = this.props;
         let reactionsMap = {};
         let components = [];
+        let foundMyReaction = false;
+        let usersList: string[] = [];
 
         for (let i = 0; i < reactions.length; i++) {
             let reaction = reactions[i];
@@ -174,15 +213,20 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
 
         for (let k in reactionsMap) {
             if (reactionsMap[k].find((r: any) => r.user.id === meId)) {
+                foundMyReaction = true;
                 components.push(
                     <XPopper
                         key={'reaction' + reactionsMap[k][0].reaction}
                         placement="bottom"
                         style="dark"
                         showOnHover={true}
-                        content={reactionsMap[k].map((i: any) => (
-                            <div>{i.user.name}</div>
-                        ))}
+                        content={reactionsMap[k].map((i: any) => {
+                            if (i.user.id !== meId) {
+                                usersList.push(i.user.name);
+                            }
+
+                            return (<div key={k + '-' + i.user.name}>{i.user.id === meId ? 'You' : i.user.name}</div>);
+                        })}
                     >
                         <SingleReactionUnset
                             messageId={this.props.messageId}
@@ -190,7 +234,6 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             isMy={true}
                         >
                             {emojify(reactionsMap[k][0].reaction, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
-                            <span>{reactionsMap[k].length}</span>
                         </SingleReactionUnset>
                     </XPopper>
                 );
@@ -201,9 +244,13 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                         placement="bottom"
                         style="dark"
                         showOnHover={true}
-                        content={reactionsMap[k].map((i: any) => (
-                            <div>{i.user.name}</div>
-                        ))}
+                        content={reactionsMap[k].map((i: any) => {
+                            if (i.user.id !== meId) {
+                                usersList.push(i.user.name);
+                            }
+
+                            return (<div key={k + '-' + i.user.name}>{i.user.id === meId ? 'You' : i.user.name}</div>);
+                        })}
                     >
                         <SingleReactionSet
                             messageId={this.props.messageId}
@@ -211,21 +258,25 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             isMy={false}
                         >
                             {emojify(reactionsMap[k][0].reaction, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
-                            <span>{reactionsMap[k].length}</span>
                         </SingleReactionSet>
                     </XPopper>
                 );
             }
         }
 
+        components.push(this.usersLabelRender(usersList, foundMyReaction));
+
         return components;
     }
+
     render() {
         return (
             this.props.reactions && this.props.reactions.length > 0 ? (
                 <ReactionsWrapper className="reactions-wrapper">
-                    {this.reactionsRender()}
-                    <ReactionComponent messageId={this.props.messageId} marginTop={5} marginLeft={10} />
+                    <ReactionsInner>
+                        {this.reactionsRender()}
+                    </ReactionsInner>
+                    <ReactionComponent messageId={this.props.messageId} marginTop={6} marginLeft={10} />
                 </ReactionsWrapper>
             ) : null
         );
