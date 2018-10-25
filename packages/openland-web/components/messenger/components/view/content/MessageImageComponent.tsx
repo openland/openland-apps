@@ -39,6 +39,7 @@ const ModalBody = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    marginBottom: 40,
     '&:hover > .download-button': {
         opacity: 1
     }
@@ -49,7 +50,9 @@ const ImgWrapper = Glamorous(XLink)({
 });
 
 const ModalPic = Glamorous(XCloudImage)({
-    borderRadius: 8
+    borderRadius: 8,
+    objectFit: 'contain',
+    maxHeight: '90vh'
 });
 
 interface MessageImageComponentProps {
