@@ -68,7 +68,7 @@ const Openner = Glamorous.div<{ isOpen?: boolean }>((props) => ({
 }));
 
 class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
-    defaultReactions = ['❤️', '😂', '👍', '✅', '🙏', '😕'];
+    defaultReactions = ['❤️', '👍', '😢', '😂', '🤩', '😱'];
     state = {
         show: false
     };
@@ -100,7 +100,7 @@ class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
                         {emojify(r, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
                     </ReactionItem>
                 ))}
-                <XPopper
+                {/* <XPopper
                     content={(
                         <Picker
                             ref={this.props.onRef}
@@ -121,7 +121,7 @@ class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
                     <Openner isOpen={this.state.show} onClick={this.switch}>
                         <PickerArrow />
                     </Openner>
-                </XPopper>
+                </XPopper> */}
             </XHorizontal>
         );
     }
