@@ -607,7 +607,6 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
     render() {
         let search = this.state.query && this.state.query.length > 0;
-        console.warn('rnder, select: ' + this.state.select);
         return (
             <XVertical separator={'none'} flexGrow={1} flexBasis={0}>
                 <Search

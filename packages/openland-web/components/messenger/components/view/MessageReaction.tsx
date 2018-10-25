@@ -7,10 +7,15 @@ import { Picker } from 'emoji-mart';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
 import ReactionIcon from '../icons/ic-emoji2.svg';
+import PickerArrow from '../icons/picker-arrow.svg';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const CustomContentDiv = Glamorous(XPopper.Content)({
     padding: 0,
-    boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+});
+
+const CustomPickerDiv = Glamorous(XPopper.Content)({
+    padding: '1px 6px',
 });
 
 const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }>(props => ({
@@ -27,8 +32,43 @@ const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }
     }
 }));
 
-class ReactionComponentInner extends React.PureComponent<{ messageId: string, marginTop?: number, marginLeft?: number, mutation: MutationFunc<{}> }> {
+const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
+    display: 'flex',
+    alignItems: 'center',
+    height: 28,
+    padding: '6px 4px 2px',
+    cursor: 'pointer',
+    fontSize: 13,
+    fontWeight: 600,
+    '& span:last-child': {
+        margin: '0!important',
+    }
+}));
 
+const Openner = Glamorous.div<{ isOpen?: boolean }>((props) => ({
+    width: 18,
+    height: 18,
+    borderRadius: 18,
+    background: 'rgba(190, 190, 190, 0.25)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: props.isOpen ? 'rotate(180deg)' : undefined,
+    cursor: 'pointer',
+
+    '& svg': {
+        width: 8,
+        height: 5,
+        marginTop: -1,
+    },
+
+    '& svg *': {
+        fill: 'rgba(0, 0, 0, 0.3)'
+    }
+}));
+
+class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
+    defaultReactions = ['❤️', '😂', '👍', '✅', '🙏', '😕'];
     state = {
         show: false
     };
@@ -38,6 +78,7 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
             show: false
         });
     }
+
     switch = () => {
         this.setState({
             show: !this.state.show
@@ -45,10 +86,76 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
     }
 
     handleSetReaction = (emj: any) => {
+        this.props.setReaction(emj);
+        this.setState({
+            show: false
+        });
+    }
+
+    render() {
+        return (
+            <XHorizontal separator={2} alignItems="center">
+                {this.defaultReactions.map((r: string) => (
+                    <ReactionItem onClick={() => { this.handleSetReaction(r); }}>
+                        {emojify(r, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
+                    </ReactionItem>
+                ))}
+                <XPopper
+                    content={(
+                        <Picker
+                            ref={this.props.onRef}
+                            set="twitter"
+                            emojiSize={16}
+                            onSelect={(emj) => this.handleSetReaction(emj)}
+                        />
+                    )}
+                    show={this.state.show}
+                    placement="top-end"
+                    animation={null}
+                    onClickOutside={this.onClickOutside}
+                    arrow={null}
+                    contentContainer={<CustomContentDiv />}
+                    marginBottom={14}
+                    marginRight={-6}
+                >
+                    <Openner isOpen={this.state.show} onClick={this.switch}>
+                        <PickerArrow />
+                    </Openner>
+                </XPopper>
+            </XHorizontal>
+        );
+    }
+}
+
+class ReactionComponentInner extends React.PureComponent<{ messageId: string, marginTop?: number, marginLeft?: number, mutation: MutationFunc<{}> }> {
+    inner = 0;
+    state = {
+        show: false
+    };
+
+    onClickOutside = () => {
+        if (!this.inner) {
+            this.setState({
+                show: false
+            });
+        }
+    }
+
+    switch = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    onInner = (ref: any) => {
+        this.inner += ref ? 1 : -1;
+    }
+
+    handleSetReaction = (emj: any) => {
         this.props.mutation({
             variables: {
                 messageId: this.props.messageId,
-                reaction: emj.native
+                reaction: (typeof emj === 'string') ? emj : emj.native
             }
         });
         this.setState({
@@ -59,20 +166,12 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
     render() {
         return (
             <XPopper
-                content={(
-                    <Picker
-                        set="twitter"
-                        emojiSize={16}
-                        onSelect={(emj) => this.handleSetReaction(emj)}
-                    />
-                )}
+                content={<ReactionPicker onRef={this.onInner} setReaction={this.handleSetReaction} />}
                 show={this.state.show}
-                placement="bottom"
+                placement="top"
                 animation={null}
                 onClickOutside={this.onClickOutside}
-                contentContainer={(
-                    <CustomContentDiv />
-                )}
+                contentContainer={<CustomPickerDiv />}
             >
                 <ReactionButton className="reaction-button" onClick={this.switch} marginTop={this.props.marginTop} marginLeft={this.props.marginLeft}>
                     <ReactionIcon />
@@ -107,19 +206,6 @@ const ReactionsInner = Glamorous.div({
     borderRadius: 18,
     padding: '0 11px 0 6px',
 });
-
-const ReactionItem = Glamorous.div<{ isMy: boolean }>(props => ({
-    display: 'flex',
-    alignItems: 'center',
-    height: 28,
-    padding: '6px 4px 2px',
-    cursor: 'pointer',
-    fontSize: 13,
-    fontWeight: 600,
-    '& span:last-child': {
-        margin: '0!important',
-    }
-}));
 
 const UsersLabel = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)',
