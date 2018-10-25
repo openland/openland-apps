@@ -36,6 +36,7 @@ function preprocessRawText(text: string): Span[] {
 }
 
 export function preprocessText(text: string): Span[] {
+    text = text.trim();
     let res: Span[] = [];
     let offset = 0;
     let links = linkifyInstance.match(text);
