@@ -106,7 +106,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
         let oneSticker = '';
         let isOnlyStringsInParts = true;
 
-        if (this.big && parts.length === 1) {
+        if (this.big && !this.insane && parts.length === 1) {
             parts[0].props.children.map((s: any) => {
                 if (typeof s === 'string') {
                     oneSticker += s;
