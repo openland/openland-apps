@@ -102,19 +102,28 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 );
             }
         });
-        // let bigMessageParts: any[] = [];
-        // if (message.length > 3) {
-        //     emoji(message, 44).map((i: any) => {
-        //         if (typeof(i) === 'string') {
-        //             bigMessageParts.push(i.slice(1, i.length - 1));
-        //         } else {
-        //             bigMessageParts.push(i);
-        //         }
-        //     });
-        // }
+
+        let oneSticker = '';
+        let isOnlyStringsInParts = true;
+
+        if (this.big && parts.length === 1) {
+            parts[0].props.children.map((s: any) => {
+                if (typeof s === 'string') {
+                    oneSticker += s;
+                } else {
+                    isOnlyStringsInParts = false;
+                }
+            });
+
+            if (isOnlyStringsInParts && oneSticker.length > 0) {
+                oneSticker = oneSticker.slice(1, oneSticker.length - 1);
+            }
+        }
+
         return (
             <TextWrapper big={this.big || this.insane} isService={this.props.isService}>
-                {parts}
+                {(isOnlyStringsInParts && oneSticker.length > 0) && oneSticker}
+                {!(isOnlyStringsInParts && oneSticker.length > 0) && parts}
                 {this.props.isEdited && <EditLabel>(Edited)</EditLabel>}
             </TextWrapper>
         );
