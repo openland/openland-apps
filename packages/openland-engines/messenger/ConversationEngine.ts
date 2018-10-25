@@ -560,7 +560,6 @@ export class ConversationEngine implements MessageSendHandler {
             let old = this.dataSource.getItem(conv.key);
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
-            console.log('boom', JSON.stringify(conv));
             this.dataSource.updateItem(conv);
         } else if (event.__typename === 'ConversationEventKick') {
             if (this.engine.user.id === event.user.id ) {

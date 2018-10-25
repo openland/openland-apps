@@ -15,3 +15,17 @@ export class ASSafeAreaView extends React.PureComponent<ViewProps> {
         );
     }
 }
+
+export class KeyboardSafeAreaView extends React.PureComponent<ViewProps> {
+    render() {
+        return (
+            <ASSafeAreaContext.Consumer>
+                {context => (
+                    <View {...this.props} style={[this.props.style, { paddingBottom: context.keyboardHeight }]}>
+                        {this.props.children}
+                    </View>
+                )}
+            </ASSafeAreaContext.Consumer>
+        );
+    }
+}

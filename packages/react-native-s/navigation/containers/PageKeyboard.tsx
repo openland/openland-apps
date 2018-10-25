@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { NativeSyntheticEvent, Platform, View } from 'react-native';
+import { NativeSyntheticEvent, Platform, View, Keyboard } from 'react-native';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
 import { SSafeAreaProvider } from 'react-native-s/SSafeArea';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface PageKeyboardProps {
     contextKey: string;
@@ -17,6 +18,24 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
             keyboardHeight: 0,
             acessoryHeight: 0
         };
+    }
+
+    onKeyboardChange = (e: any) => {
+        this.setState({ keyboardHeight: e ? e.endCoordinates.height : 0 });
+    }
+
+    componentDidMount() {
+        if (Platform.OS !== 'ios') {
+            Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
+            Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
+        }
+    }
+
+    componentWillMount() {
+        if (Platform.OS !== 'ios') {
+            Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
+            Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
+        }
     }
 
     handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string } }>) => {
@@ -52,7 +71,9 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
         }
         return (
             <View style={{ width: '100%', height: '100%' }}>
-                {this.props.children}
+                <ASSafeAreaProvider bottom={this.state.keyboardHeight} keyboardHeight={this.state.keyboardHeight}>
+                    {this.props.children}
+                </ASSafeAreaProvider>
             </View>
         );
     }

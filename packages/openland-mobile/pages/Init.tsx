@@ -104,7 +104,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return (
                 <YApolloProvider client={getClient()}>
                     <Root routing={this.history} />
-            </YApolloProvider>
+                </YApolloProvider>
             );
         }
 

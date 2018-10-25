@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle, Animated } from 'react-native';
 import LottieView from 'lottie-react-native';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 const styles = StyleSheet.create({
     container: {
@@ -89,9 +90,11 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
         return (
             <View style={[styles.container, (this.props.transparent !== true) && styles.containerFilled]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
                 {this.state.visible && (
-                    <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
-                        <FixedLottie source={require('assets/material_loading.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />
-                    </Animated.View>
+                    <KeyboardSafeAreaView >
+                        <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
+                            <FixedLottie source={require('assets/material_loading.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />
+                        </Animated.View>
+                    </KeyboardSafeAreaView>
                 )}
             </View>
         );

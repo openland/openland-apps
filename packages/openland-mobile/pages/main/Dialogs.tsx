@@ -15,6 +15,7 @@ import { ASView } from 'react-native-async-view/ASView';
 import { DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { ZLoader } from '../../components/ZLoader';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
@@ -34,9 +35,11 @@ class DialogsSearch extends React.Component<{ query: string }> {
 
                                     if (resp.data.items.length === 0) {
                                         return (
-                                            <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                                <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No chats found' + randomEmptyPlaceholderEmoji()}</Text>
-                                            </View>
+                                            <KeyboardSafeAreaView>
+                                                <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No chats found' + randomEmptyPlaceholderEmoji()}</Text>
+                                                </View>
+                                            </KeyboardSafeAreaView>
                                         );
 
                                     }

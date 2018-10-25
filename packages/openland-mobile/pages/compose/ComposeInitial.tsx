@@ -18,6 +18,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, disabled?: boolean }> {
 
@@ -66,9 +67,9 @@ class UserSearchComponent extends React.Component<PageProps & { query: string }>
 
                             if (resp.data.items.length === 0) {
                                 return (
-                                    <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                    <KeyboardSafeAreaView><View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                         <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No people found' + randomEmptyPlaceholderEmoji()}</Text>
-                                    </View>
+                                    </View></KeyboardSafeAreaView>
                                 );
 
                             }
@@ -105,9 +106,9 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
 
                             if (resp.data.items.length === 0) {
                                 return (
-                                    <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                    <KeyboardSafeAreaView><View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                         <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No people found' + randomEmptyPlaceholderEmoji()}</Text>
-                                    </View>
+                                    </View></KeyboardSafeAreaView>
                                 );
 
                             }

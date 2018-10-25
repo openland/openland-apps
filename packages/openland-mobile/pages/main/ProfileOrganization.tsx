@@ -128,7 +128,6 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                         description={v.role === 'OWNER' ? 'owner' : undefined}
                                                                         onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })}
                                                                         onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
-                                                                            console.warn('boom', JSON.stringify(v));
                                                                             let builder = new ActionSheetBuilder();
 
                                                                             builder.action(

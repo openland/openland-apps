@@ -8,13 +8,12 @@ export interface ASSafeArea {
 
 export const ASSafeAreaContext = React.createContext<ASSafeArea>({ top: 0, bottom: 0, keyboardHeight: 0 });
 
-export const ASSafeAreaProvider = (props: { top?: number, bottom?: number, children?: any }) => {
+export const ASSafeAreaProvider = (props: { top?: number, bottom?: number, children?: any, keyboardHeight?: number }) => {
     return (
         <ASSafeAreaContext.Consumer>
-            {area => (
-                <ASSafeAreaContext.Provider value={{ top: (props.top !== undefined ? props.top : 0) + area.top, bottom: (props.bottom !== undefined ? props.bottom : 0) + area.bottom, keyboardHeight: area.keyboardHeight }}>
-                    {props.children}
-                </ASSafeAreaContext.Provider>
+            {area => (<ASSafeAreaContext.Provider value={{ top: (props.top !== undefined ? props.top : 0) + area.top, bottom: (props.bottom !== undefined ? props.bottom : 0) + area.bottom, keyboardHeight: props.keyboardHeight || area.keyboardHeight }}>
+                {props.children}
+            </ASSafeAreaContext.Provider>
             )}
         </ASSafeAreaContext.Consumer>
     );

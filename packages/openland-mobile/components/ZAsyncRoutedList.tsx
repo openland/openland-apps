@@ -12,6 +12,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { ZLoader } from './ZLoader';
 import { randomEmptyPlaceholderEmoji } from '../utils/tolerance';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 type ListQuery<Q> = {
     items: {
@@ -105,9 +106,9 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
             <ASSafeAreaContext.Consumer>
                 {area => {
                     return this.state.empty ? (
-                        <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                        <KeyboardSafeAreaView><View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{this.props.emptyText || ('Nothing found' + randomEmptyPlaceholderEmoji())}</Text>
-                        </View>
+                        </View></KeyboardSafeAreaView>
                     ) : this.state.loading ? (<ZLoader />) : (
                         <>
                             <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />

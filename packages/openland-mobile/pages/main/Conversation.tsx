@@ -23,6 +23,7 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { ChatInfo_chat } from 'openland-api/Types';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, chat: ChatInfo_chat }, { text: string }> {
     engine: ConversationEngine;
@@ -89,15 +90,17 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
                 </SHeaderView>
                 {button}
                 <Deferred>
-                    <View style={{ height: '100%', flexDirection: 'column' }}>
-                        <ConversationView engine={this.engine} />
-                        <MessageInputBar
-                            onAttachPress={this.handleAttach}
-                            onSubmitPress={this.handleSubmit}
-                            onChangeText={this.handleTextChange}
-                            text={this.state.text}
-                        />
-                    </View>
+                    <KeyboardSafeAreaView>
+                        <View style={{ height: '100%', flexDirection: 'column' }}>
+                            <ConversationView engine={this.engine} />
+                            <MessageInputBar
+                                onAttachPress={this.handleAttach}
+                                onSubmitPress={this.handleSubmit}
+                                onChangeText={this.handleTextChange}
+                                text={this.state.text}
+                            />
+                        </View>
+                    </KeyboardSafeAreaView>
                 </Deferred>
             </>
         );
