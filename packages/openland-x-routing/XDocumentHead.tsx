@@ -13,9 +13,9 @@ interface OpenGraphObject {
 }
 
 let DEFAULT_OG: OpenGraphObject = {
-    title: 'Openland — The Future of Professional Messaging',
-    description: 'Openland is a professional messaging service built for productivity and speed. It’s time to move away from endless meetings, disorganized email threads, disconnected team chats, and work invasion in your personal social media. With Openland you can manage all your professional communications in one messaging inbox.',
-    image: 'https://openland.com/img/og-messenger-3.png'
+    title: 'Openland Messenger — A better way to work with people outside of your organization',
+    description: 'Openland is a professional messenger built for productivity and speed. Create a profile, discover new connections, create chat rooms for every task, and get things done faster than ever before.',
+    image: 'https://openland.com/img/og-messenger-4.jpg'
 };
 
 const SmartHead = (props: { og?: OpenGraphObject, url?: string }) => {
