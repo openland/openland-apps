@@ -4,6 +4,7 @@ import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
+import emojiData from './data/emoji-data';
 
 export interface MessageTextComponentProps {
     message: string;
@@ -54,18 +55,55 @@ let makeUrlRelative = (url: string) => {
     return rel;
 };
 
+const asciiToUnicodeCache = new Map();
+
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
     private preprocessed: Span[];
     big = false;
     insane = false;
+    mouthpiece = false;
+    textSticker = false;
+
     constructor(props: MessageTextComponentProps) {
         super(props);
         this.preprocessed = preprocessText(props.message);
 
-        this.big = this.props.message.length <= 3 && this.props.message.search(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g) !== -1;
-        this.big = this.big || (this.props.message.length <= 32 && this.props.message.startsWith(':') && this.props.message.endsWith(':'));
-        this.insane = this.props.message.startsWith('🌈') && this.props.message.endsWith('🌈');
-        this.big = this.big || this.props.message.startsWith('📣') && this.props.message.endsWith('📣');
+        let messageText = this.props.message;
+
+        let isShortnameSmile = false;
+        let isUnicodeSmile = false;
+        let isAsciiSmile = false;
+
+        if (messageText.startsWith(':') && messageText.endsWith(':')) {
+            isShortnameSmile = emojiData.shortToUnicode.has(messageText);
+        }
+
+        if (!isShortnameSmile) {
+            isUnicodeSmile = emojiData.unicodeToShort.has(messageText);
+        }
+
+        if (!isShortnameSmile && !isUnicodeSmile) {
+            if (asciiToUnicodeCache.has(messageText)) {
+                isAsciiSmile = true;
+            }
+    
+            for (const [regExp, unicode] of emojiData.asciiToUnicode.entries()) {
+                if (messageText.replace(regExp, unicode) === unicode) {
+                    asciiToUnicodeCache.set(messageText, unicode);
+                    isAsciiSmile = true;
+                }
+            }
+        }
+
+        if (isAsciiSmile || isShortnameSmile || isUnicodeSmile) {
+            this.big = true;
+        } else {
+            this.big = messageText.length <= 32 && messageText.startsWith(':') && messageText.endsWith(':');
+            this.insane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
+            this.mouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
+
+            this.textSticker = this.big;
+        }
     }
     componentWillUpdate(nextProps: MessageTextComponentProps) {
         this.preprocessed = preprocessText(nextProps.message);
@@ -88,6 +126,18 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
 
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
+                let text = v.text!!;
+
+                if (this.textSticker) {
+                    text = text.slice(1, text.length - 1);
+                }
+
+                if (this.insane || this.mouthpiece) {
+                    text = text.replace(/🌈/g, '').replace(/📣/g, '');
+                }
+
+                let smileSize = (this.big || this.insane || this.mouthpiece) ? 44 : 18;
+
                 return (
                     <span
                         style={this.insane ? {
@@ -97,33 +147,16 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                             color: 'transparent'
                         } : {}}
                         key={'text-' + i}
-                    >{emoji(this.insane || this.big ? v.text!!.replace(/🌈/g, '').replace(/📣/g, '') : v.text!!, this.big || this.insane ? 44 : 18)}
+                    >
+                        {emoji(text, smileSize)}
                     </span>
                 );
             }
         });
 
-        let textSticker = '';
-        let isOnlyStringsInParts = true;
-
-        if (this.big && !this.insane && parts.length === 1) {
-            parts[0].props.children.map((s: any) => {
-                if (typeof s === 'string') {
-                    textSticker += s;
-                } else {
-                    isOnlyStringsInParts = false;
-                }
-            });
-
-            if (isOnlyStringsInParts && textSticker.length > 0 && (textSticker.startsWith(':') && textSticker.endsWith(':'))) {
-                textSticker = textSticker.slice(1, textSticker.length - 1);
-            }
-        }
-
         return (
-            <TextWrapper big={this.big || this.insane} isService={this.props.isService}>
-                {(isOnlyStringsInParts && textSticker.length > 0) && textSticker}
-                {!(isOnlyStringsInParts && textSticker.length > 0) && parts}
+            <TextWrapper big={this.big || this.insane || this.mouthpiece} isService={this.props.isService}>
+                {parts}
                 {this.props.isEdited && <EditLabel>(Edited)</EditLabel>}
             </TextWrapper>
         );
