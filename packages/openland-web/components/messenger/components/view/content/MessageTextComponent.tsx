@@ -85,12 +85,12 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
         if (!isShortnameSmile && !isUnicodeSmile) {
             if (asciiToUnicodeCache.has(messageText)) {
                 isAsciiSmile = true;
-            }
-    
-            for (const [regExp, unicode] of emojiData.asciiToUnicode.entries()) {
-                if (messageText.replace(regExp, unicode) === unicode) {
-                    asciiToUnicodeCache.set(messageText, unicode);
-                    isAsciiSmile = true;
+            } else {
+                for (const [regExp, unicode] of emojiData.asciiToUnicode.entries()) {
+                    if (messageText.replace(regExp, unicode) === unicode) {
+                        asciiToUnicodeCache.set(messageText, unicode);
+                        isAsciiSmile = true;
+                    }
                 }
             }
         }
