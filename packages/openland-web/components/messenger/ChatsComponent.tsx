@@ -479,13 +479,17 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
     keydownHandler = (e: any) => {
 
+        if (!canUseDOM) {
+            return;
+        }
+
         let { allowShortKeys } = this.state;
 
+        let stayChecker = document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page';
+
         if (!e.altKey && e.ctrlKey) {
-            if (canUseDOM) {
-                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
-                    return;
-                }
+            if (stayChecker) {
+                return;
             }
             switch (String.fromCharCode(e.which).toLowerCase()) {
                 case 's':
@@ -499,10 +503,8 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         }
 
         if (e.altKey && !e.ctrlKey) {
-            if (canUseDOM) {
-                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
-                    return;
-                }
+            if (stayChecker) {
+                return;
             }
 
             let index = this.items.findIndex(d => d.key === this.props.router.routeQuery.conversationId);
@@ -526,10 +528,8 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         }
 
         if (e.altKey && e.ctrlKey) {
-            if (canUseDOM) {
-                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
-                    return;
-                }
+            if (stayChecker) {
+                return;
             }
 
             if (e.code === 'KeyN') {
@@ -538,14 +538,8 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         }
 
         if (!this.props.emptyState && e.code === 'Escape') {
-            if (canUseDOM) {
-                if (document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page') {
-                    return;
-                }
-
-                if ((document as any).isEditMessage) {
-                    return;
-                }
+            if (stayChecker || (document as any).isEditMessage) {
+                return;
             }
 
             this.props.router.replace('/mail');
@@ -569,17 +563,14 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             }
 
             let y = this.state.select + dy;
-            console.warn('y1' + y);
 
             y = Math.min(((this.state.query && this.state.query.length > 0) ? this.searchCount : this.items.length) - 1, Math.max(-1, y));
-            console.warn('y2' + y);
 
             if (y === -1) {
                 this.inputFocusHandler();
                 return;
             }
 
-            console.warn('set select to ' + y);
             this.setState({
                 select: y
             });
