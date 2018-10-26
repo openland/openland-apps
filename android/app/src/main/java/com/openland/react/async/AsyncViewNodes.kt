@@ -16,6 +16,7 @@ import com.facebook.yoga.YogaEdge
 import com.openland.react.async.views.BackgroundSolidColorDrawable
 import com.openland.react.async.views.CustomLineHeightSpan
 import com.openland.react.async.views.LithoFlex
+import com.openland.react.async.views.LithoText
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
@@ -85,27 +86,10 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
                 .spec(spec)
                 .reactContext(reactContext)
                 .build()
-        is AsyncTextSpec -> {
-            val res = Text.create(context)
-                    .key(spec.key)
-                    .textSizeDip(spec.fontSize)
-                    .textColor(spec.color)
-                    .shouldIncludeFontPadding(false)
-
-            if (spec.numberOfLines != null) {
-                res.maxLines(spec.numberOfLines!!)
-                res.ellipsize(TextUtils.TruncateAt.END)
-            }
-
-            // Fix line height
-            val text = SpannableString(resolveText(spec))
-            var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else spec.fontSize * 1.6f
-            actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
-            text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            res.text(text)
-
-            // TODO: Handle styles
-            resolveStyle(context, res, spec.style)
+        is AsyncTextSpec -> { return LithoText.create(context)
+                .spec(spec)
+                .reactContext(reactContext)
+                .build()
         }
         is AsyncImageSpec -> {
             val controller = Fresco.newDraweeControllerBuilder()

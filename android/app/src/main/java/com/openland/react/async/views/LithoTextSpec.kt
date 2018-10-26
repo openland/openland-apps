@@ -1,16 +1,11 @@
 package com.openland.react.async.views
 
-import android.graphics.drawable.RippleDrawable
 import android.view.View
-import com.facebook.litho.Column
 import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
-import com.facebook.litho.Row
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.Prop
-import com.facebook.yoga.YogaAlign
-import com.facebook.yoga.YogaJustify
 import com.openland.react.async.*
 import com.facebook.litho.annotations.FromEvent
 import com.facebook.litho.ClickEvent
@@ -18,65 +13,50 @@ import com.facebook.litho.annotations.OnEvent
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.WritableNativeMap
-import android.content.res.ColorStateList
-import com.facebook.yoga.YogaEdge
-import com.facebook.yoga.YogaPositionType
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextUtils
+import android.util.Log
+import com.facebook.litho.widget.Text
+import com.facebook.react.uimanager.PixelUtil
 
 
 @LayoutSpec
-object TextClickableSpec {
+object LithoTextSpec {
 
     @OnCreateLayout
     internal fun onCreateLayout(context: ComponentContext, @Prop spec: AsyncTextSpec, @Prop reactContext: ReactContext): Component {
-
-        val alignItems: YogaAlign = when (spec.alignItems) {
-            AsyncFlexAlignItems.start -> YogaAlign.FLEX_START
-            AsyncFlexAlignItems.end -> YogaAlign.FLEX_END
-            AsyncFlexAlignItems.center -> YogaAlign.CENTER
-            AsyncFlexAlignItems.stretch -> YogaAlign.STRETCH
+        val res = Text.create(context)
+                .key(spec.key)
+                .textSizeDip(spec.fontSize)
+                .textColor(spec.color)
+                .shouldIncludeFontPadding(false)
+        if(spec.touchableKey != null){
+            res.clickHandler(LithoText.onClick(context))
         }
 
-        val justifyContent: YogaJustify = when (spec.justifyContent) {
-            AsyncFlexJustifyContent.start -> YogaJustify.FLEX_START
-            AsyncFlexJustifyContent.end -> YogaJustify.FLEX_END
-            AsyncFlexJustifyContent.center -> YogaJustify.CENTER
+        if (spec.numberOfLines != null) {
+            res.maxLines(spec.numberOfLines!!)
+            res.ellipsize(TextUtils.TruncateAt.END)
         }
 
-        val res = if (spec.direction == AsyncFlexDirection.row) {
-            Row.create(context)
-        } else {
-            Column.create(context)
-        }
+        res.linkColor(999)
 
-        res.key(spec.key)
-        res.alignItems(alignItems)
-        res.justifyContent(justifyContent)
 
-        if (spec.touchableKey != null) {
-            res.clickHandler(LithoFlex.onClick(context))
-            if (spec.highlightColor != null) {
-                res.background(RippleDrawable(ColorStateList(
-                        arrayOf(intArrayOf()),
-                        intArrayOf(spec.highlightColor!!)
-                ), null, null))
-            }
-        }
+        // Fix line height
+        val text = SpannableString(resolveText(spec))
+        var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else spec.fontSize * 1.6f
+        actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
+        text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        res.text(text)
 
-        if (spec.overlay) {
-            res.positionType(YogaPositionType.ABSOLUTE)
-            res.positionPx(YogaEdge.ALL, 0)
-        }
-
-        for (c in spec.children) {
-            res.child(resolveNode(context, c, reactContext))
-        }
-
+        // TODO: Handle styles
         return resolveStyle(context, res, spec.style)
     }
 
     @OnEvent(ClickEvent::class)
     @JvmName("onClick")
-    internal fun onClick(c: ComponentContext, @FromEvent view: View, @Prop spec: AsyncFlexSpec, @Prop reactContext: ReactContext) {
+    internal fun onClick(c: ComponentContext, @FromEvent view: View, @Prop spec: AsyncTextSpec, @Prop reactContext: ReactContext) {
         val map = WritableNativeMap()
         map.putString("key", spec.touchableKey)
         val loc = IntArray(2)
