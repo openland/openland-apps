@@ -68,18 +68,6 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
     return res.build()
 }
 
-fun resolveText(spec: AsyncTextSpec): String {
-    var res = ""
-    for (s in spec.children) {
-        if (s is String) {
-            res += s
-        } else if (s is AsyncTextSpec) {
-            res += resolveText(s)
-        }
-    }
-    return res
-}
-
 fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: ReactContext): Component {
     return when (spec) {
         is AsyncFlexSpec -> return LithoFlex.create(context)
