@@ -41,9 +41,17 @@ export function XLinkExternal(props: { href: string, content?: string, showIcon?
         }
     }
 
+    let url: string;
+
+    try {
+        url = decodeURI(content);
+    } catch {
+        url = content;
+    }
+
     return (
         <ExternalLinkDiv href={props.href} target="_blank" className={props.className}>
-            {decodeURI(content)}
+            {url}
             {props.showIcon !== false && <ExternalLinkIcon icon="launch" />}
         </ExternalLinkDiv>
     );

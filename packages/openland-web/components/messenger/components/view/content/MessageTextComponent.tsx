@@ -46,11 +46,11 @@ let emoji = (text: string, height: number) => emojify(text, { style: { height: h
 
 let makeUrlRelative = (url: string) => {
     let rel = url.replace('http://app.openland.com/', '/')
-                 .replace('https://app.openland.com/', '/')
-                 .replace('//app.openland.com/', '/')
-                 .replace('http://next.openland.com/', '/')
-                 .replace('https://next.openland.com/', '/')
-                 .replace('//next.openland.com/', '/');
+        .replace('https://app.openland.com/', '/')
+        .replace('//app.openland.com/', '/')
+        .replace('http://next.openland.com/', '/')
+        .replace('https://next.openland.com/', '/')
+        .replace('//next.openland.com/', '/');
 
     return rel;
 };
@@ -121,7 +121,15 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
 
                     path = makeUrlRelative(path);
 
-                    return <XLink className="link" key={'link-' + i} path={path}>{decodeURI(text)}</XLink>;
+                    let url: string;
+
+                    try {
+                        url = decodeURI(text);
+                    } catch {
+                        url = text;
+                    }
+
+                    return <XLink className="link" key={'link-' + i} path={path}>{url}</XLink>;
                 }
 
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
