@@ -154,16 +154,16 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         });
 
         // Hybrid link
-        link = split(
-            // split based on operation type
-            (args) => {
-                let def = getMainDefinition(args.query as any);
-                return def.kind === 'OperationDefinition' && def.operation === 'subscription';
-            },
-            wsLink,
-            httpLink,
-        );
-        // link = wsLink;
+        // link = split(
+        //     // split based on operation type
+        //     (args) => {
+        //         let def = getMainDefinition(args.query as any);
+        //         return def.kind === 'OperationDefinition' && def.operation === 'subscription';
+        //     },
+        //     wsLink,
+        //     httpLink,
+        // );
+        link = wsLink;
     }
 
     //
