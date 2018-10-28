@@ -4,7 +4,7 @@ import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import { split } from 'apollo-link';
+// import { split } from 'apollo-link';
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from 'openland-api/fragmentTypes.json';
 import { GraphqlTypedQuery } from './typed';
