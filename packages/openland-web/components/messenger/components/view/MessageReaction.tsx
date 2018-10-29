@@ -261,7 +261,11 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                 usersLabel += ', ' + uniqueUsersList[0];
             }
 
-            if (uniqueUsersList.length > 1) {
+            if (uniqueUsersList.length === 2) {
+                usersLabel += ' and ' + uniqueUsersList[1];
+            }
+
+            if (uniqueUsersList.length > 3) {
                 usersLabel += ' and ' + (uniqueUsersList.length - 1) + ' more';
             }
         } else {
@@ -272,7 +276,11 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                     usersLabel += ', ' + uniqueUsersList[1];
                 }
 
-                if (uniqueUsersList.length > 2) {
+                if (uniqueUsersList.length === 3) {
+                    usersLabel += ' and ' + uniqueUsersList[2];
+                }
+
+                if (uniqueUsersList.length > 4) {
                     usersLabel += ' and ' + (uniqueUsersList.length - 2) + ' more';
                 }
             }
