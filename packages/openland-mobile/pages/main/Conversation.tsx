@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, Alert, AsyncStorage, Platform, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, Alert, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -23,7 +23,11 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { ChatInfo_chat } from 'openland-api/Types';
-import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { ASView } from 'react-native-async-view/ASView';
+import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASImage } from 'react-native-async-view/ASImage';
+import { XPAvatar } from 'openland-xp/XPAvatar';
 
 class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, chat: ChatInfo_chat }, { text: string }> {
     engine: ConversationEngine;
@@ -124,15 +128,45 @@ class ConversationComponent extends React.Component<PageProps> {
                                                         <SHeaderView>
                                                             <ChatHeader conversationId={resp.data.chat.id} router={this.props.router} />
                                                         </SHeaderView>
-                                                        <View width="100%" height="100%" justifyContent="center">
-                                                            <View alignSelf="center" flexDirection="column">
-                                                                <Text style={{ fontSize: 14, color: '#000', textAlign: 'center', margin: 20 }}>{resp.data.chat.description}</Text>
+                                                        <ASView
+                                                            style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                                                        >
+                                                            <ASFlex
+                                                                width={Dimensions.get('window').width}
+                                                                height={Dimensions.get('window').height}
+                                                            >
+                                                                <ASImage
+                                                                    source={require('assets/img-chat-3.jpg')}
+                                                                    width={Dimensions.get('window').width}
+                                                                    height={Dimensions.get('window').height}
+                                                                />
+                                                            </ASFlex>
+                                                        </ASView>
+                                                        <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
+
+                                                            <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
+                                                                <XPAvatar
+                                                                
+                                                                    src={(resp.data!!.chat as any).photo || (resp.data!!.chat.photos.length > 0 ? resp.data!!.chat.photos[0] : undefined)}
+                                                                    size={100}
+                                                                    placeholderKey={resp.data!!.chat.flexibleId}
+                                                                    placeholderTitle={resp.data!!.chat.title}
+                                                                    userId={resp.data!!.chat.__typename === 'PrivateConversation' ? resp.data.chat.flexibleId : undefined}
+                                                                />
+                                                                <View flexDirection="column" zIndex={-1}>
+                                                                    <Image source={require('assets/back.png')}  resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} />
+                                                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{resp.data.chat.title}</Text>
+                                                                    <Text style={{ fontSize: 15, color: '#8a8a8f', textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{resp.data.chat.description}</Text>
+                                                                    <Text style={{ fontSize: 14, color: '#8a8a8f', textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{resp.data.chat.membersCount + ' members'}</Text>
+                                                                </View>
                                                             </View>
-                                                            <View alignSelf="center">
+                                                            <View alignSelf="center" marginBottom={46}>
                                                                 <YMutation mutation={ChannelJoinMutation} refetchQueriesVars={[{ query: ChatInfoQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
                                                                     {(join) => (
                                                                         <ZRoundedButton
-                                                                            title={(resp.data.chat as any).myStatus === 'requested' ? 'Invite requested' : 'Join'}
+                                                                            style="big"
+                                                                            uppercase={false}
+                                                                            title={(resp.data.chat as any).myStatus === 'requested' ? 'Invite requested' : 'Request invite'}
                                                                             onPress={async () => {
                                                                                 startLoader();
                                                                                 try {
@@ -148,7 +182,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                 </YMutation>
                                                             </View>
 
-                                                        </View>
+                                                        </ASSafeAreaView>
 
                                                     </>
                                                 );

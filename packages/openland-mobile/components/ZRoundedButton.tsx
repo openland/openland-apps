@@ -12,12 +12,27 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         paddingRight: 12
     } as ViewStyle,
+    containerBig: {
+        backgroundColor: AppStyles.primaryColor,
+        borderRadius: 18,
+        height: 56,
+        paddingLeft: 19,
+        paddingRight: 19,
+    } as ViewStyle,
     title: {
         color: '#fff',
         lineHeight: 26,
         fontSize: 13,
         fontWeight: '600',
         textTransform: 'uppercase'
+    } as TextStyle,
+    titleBig: {
+        color: '#fff',
+        lineHeight: 56,
+        fontSize: 16,
+        fontWeight: '600',
+        textTransform: 'uppercase',
+        letterSpacing: 0.2
     } as TextStyle
 });
 
@@ -25,6 +40,8 @@ export interface ZRoundedButtonProps {
     title: string;
     onPress?: () => void;
     path?: string;
+    style?: 'big';
+    uppercase?: boolean;
 }
 
 class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & { router: SRouter }> {
@@ -38,10 +55,10 @@ class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & 
     }
     render() {
         return (
-            <View backgroundColor={'#000'} borderRadius={13}>
+            <View backgroundColor={'#000'} borderRadius={this.props.style === 'big' ? 18 : 13}>
                 <TouchableOpacity onPress={this.handlePress} activeOpacity={0.6}>
-                    <View style={styles.container}>
-                        <Text style={styles.title}>{this.props.title}</Text>
+                    <View style={this.props.style === 'big' ? styles.containerBig : styles.container}>
+                        <Text style={[this.props.style === 'big' ? styles.titleBig : styles.title, this.props.uppercase === false ? { textTransform: 'none' } : {}]}>{this.props.title}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
