@@ -255,34 +255,22 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
         let usersLabel = '';
 
         if (foundMyReaction) {
-            usersLabel = 'You';
+            uniqueUsersList.unshift('You');
+        }
 
-            if (uniqueUsersList[0]) {
-                usersLabel += ', ' + uniqueUsersList[0];
-            }
+        if (uniqueUsersList.length > 0) {
+            usersLabel = uniqueUsersList[0];
 
             if (uniqueUsersList.length === 2) {
                 usersLabel += ' and ' + uniqueUsersList[1];
             }
 
-            if (uniqueUsersList.length > 3) {
-                usersLabel += ' and ' + (uniqueUsersList.length - 1) + ' more';
+            if (uniqueUsersList.length === 3) {
+                usersLabel += ', ' + uniqueUsersList[1] + ' and ' + uniqueUsersList[2];
             }
-        } else {
-            if (uniqueUsersList.length > 0) {
-                usersLabel = uniqueUsersList[0];
 
-                if (uniqueUsersList[1]) {
-                    usersLabel += ', ' + uniqueUsersList[1];
-                }
-
-                if (uniqueUsersList.length === 3) {
-                    usersLabel += ' and ' + uniqueUsersList[2];
-                }
-
-                if (uniqueUsersList.length > 4) {
-                    usersLabel += ' and ' + (uniqueUsersList.length - 2) + ' more';
-                }
+            if (uniqueUsersList.length > 3) {
+                usersLabel += ', ' + uniqueUsersList[1] + ' and ' + (uniqueUsersList.length - 2) + ' more';
             }
         }
 
