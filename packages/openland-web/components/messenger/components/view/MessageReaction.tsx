@@ -3,16 +3,10 @@ import Glamorous from 'glamorous';
 import { emojify } from 'react-emojione';
 import { MessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
-import { Picker } from 'emoji-mart';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
-import ReactionIcon from '../icons/ic-emoji2.svg';
-import PickerArrow from '../icons/picker-arrow.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-
-const CustomContentDiv = Glamorous(XPopper.Content)({
-    padding: 0,
-});
+import ReactionIcon from '../icons/ic-emoji2.svg';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '1px 6px',
@@ -42,28 +36,6 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
     fontWeight: 600,
     '& span:last-child': {
         margin: '0!important',
-    }
-}));
-
-const Openner = Glamorous.div<{ isOpen?: boolean }>((props) => ({
-    width: 18,
-    height: 18,
-    borderRadius: 18,
-    background: 'rgba(190, 190, 190, 0.25)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transform: props.isOpen ? 'rotate(180deg)' : undefined,
-    cursor: 'pointer',
-
-    '& svg': {
-        width: 8,
-        height: 5,
-        marginTop: -1,
-    },
-
-    '& svg *': {
-        fill: 'rgba(0, 0, 0, 0.3)'
     }
 }));
 
@@ -100,28 +72,6 @@ class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
                         {emojify(r, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
                     </ReactionItem>
                 ))}
-                {/* <XPopper
-                    content={(
-                        <Picker
-                            ref={this.props.onRef}
-                            set="twitter"
-                            emojiSize={16}
-                            onSelect={(emj) => this.handleSetReaction(emj)}
-                        />
-                    )}
-                    show={this.state.show}
-                    placement="top-end"
-                    animation={null}
-                    onClickOutside={this.onClickOutside}
-                    arrow={null}
-                    contentContainer={<CustomContentDiv />}
-                    marginBottom={14}
-                    marginRight={-6}
-                >
-                    <Openner isOpen={this.state.show} onClick={this.switch}>
-                        <PickerArrow />
-                    </Openner>
-                </XPopper> */}
             </XHorizontal>
         );
     }
