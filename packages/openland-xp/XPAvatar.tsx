@@ -48,7 +48,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                             {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                         </View>
                     </AndroidAliaser>
-                    {this.props.online && <View style={{ position: 'absolute', zIndex: 100, width: onlineSize, height: onlineSize, left: this.props.size - onlineSize, top: this.props.size - onlineSize, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
+                    {this.props.online && <View style={{ position: 'absolute', zIndex: 100, width: onlineSize, height: onlineSize, left: this.props.size - onlineSize, top: this.props.size - onlineSize, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 5 }} />}
                 </View>
             );
         }
