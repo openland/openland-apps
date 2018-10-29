@@ -42,7 +42,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
             placeholderIndex = doSimpleHash(this.props.message.senderId);
         }
         let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
-        let layout: { width: number, height: number };
+        let layout: { width: number, height: number } | undefined = undefined;
         let resolved: any;
         let capInsets = { left: 2, right: 0, top: 1, bottom: 1 };
         if (this.props.message.urlAugmentation) {
@@ -83,7 +83,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
 
                     {this.props.message.urlAugmentation && (
                         <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={15} marginBottom={15} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
-                            {this.props.message.urlAugmentation.photo && (
+                            {this.props.message.urlAugmentation.photo && layout && layout.width && layout.height && (
                                 <ASImage
                                     marginLeft={10}
                                     source={{ uri: this.props.message.urlAugmentation.imageURL }}
