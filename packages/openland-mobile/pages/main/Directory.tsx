@@ -51,7 +51,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="Organizations" />
-                <SHeaderButton title="+ New" onPress={() => this.props.router.push('NewOrganization')} />
+                <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New"  onPress={() => this.props.router.push('NewOrganization')} />
                 <SSearchControler searchRender={(props) => (<OrganizationSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
                         overscrollCompensation={true}

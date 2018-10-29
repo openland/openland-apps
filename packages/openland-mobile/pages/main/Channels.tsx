@@ -32,7 +32,7 @@ class ChannelsComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="Channels" />
-                <SHeaderButton title="+ New" onPress={() => this.props.router.push('CreateChannel')} />
+                <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New" onPress={() => this.props.router.push('CreateChannel')} />
                 <SSearchControler searchRender={(props) => (<ChannelSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
                         overscrollCompensation={true}
