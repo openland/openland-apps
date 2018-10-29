@@ -1,24 +1,28 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XLink } from 'openland-x/XLink';
-import { getConfig } from '../../../../config';
-import UploadCare from 'uploadcare-widget';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
+import { XModal } from 'openland-x-modal/XModal';
+import { XThemeDefault } from 'openland-x/XTheme';
+import { XLink } from 'openland-x/XLink';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { XWithRouter } from 'openland-x-routing/withRouter';
+import { ChatEditMessageVariables, ChatEditMessage } from 'openland-api/Types';
+import { isServerMessage } from 'openland-engines/messenger/types';
+import { getConfig } from '../../../../config';
+import { withEditMessage } from '../../../../api/withEditMessage';
+import { MutationFunc } from 'react-apollo';
 import PhotoIcon from '../icons/ic-photo-2.svg';
 import FileIcon from '../icons/ic-file-3.svg';
 import UloadIc from '../icons/file-upload.svg';
 import IntroIc from '../icons/ic-attach-intro-3.svg';
 import ShortcutsIcon from '../icons/ic-attach-shortcuts-3.svg';
+import CloseIcon from '../icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
-import { isServerMessage } from 'openland-engines/messenger/types';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
-import { XModal } from 'openland-x-modal/XModal';
-import { XThemeDefault } from 'openland-x/XTheme';
 import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
 
 const SendMessageWrapper = Glamorous.div({
@@ -226,6 +230,51 @@ const ShortcutsModal = () => {
     );
 };
 
+const EditWrapper = Glamorous(XHorizontal)({
+    paddingLeft: 14,
+    paddingRight: 14
+});
+
+const BlueLine = Glamorous.div({
+    width: 3,
+    height: 36,
+    borderRadius: 50,
+    backgroundColor: '#1790ff'
+});
+
+const EditTitle = Glamorous.div({
+    opacity: 0.8,
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#000'
+});
+
+const EditText = Glamorous.div({
+    opacity: 0.8,
+    fontSize: 13,
+    lineHeight: 1.69,
+    color: '#000'
+});
+
+const EditCloseBtn = Glamorous.div({
+    cursor: 'pointer'
+});
+
+const EditView = (props: { title: string, message: string, onCancel: () => void }) => (
+    <EditWrapper justifyContent="space-between" alignItems="center" separator={5}>
+        <BlueLine />
+        <XHorizontal flexGrow={1} separator={9} alignItems="center" justifyContent="space-between">
+            <XVertical separator={1}>
+                <EditTitle>{props.title}</EditTitle>
+                <EditText>{props.message}</EditText>
+            </XVertical>
+            <EditCloseBtn onClick={props.onCancel}>
+                <CloseIcon />
+            </EditCloseBtn>
+        </XHorizontal>
+    </EditWrapper>
+);
+
 export interface MessageComposeComponentProps {
     conversationType?: string;
     conversationId?: string;
@@ -236,36 +285,30 @@ export interface MessageComposeComponentProps {
     onChange?: (text: string) => void;
 }
 
-interface Draft {
-    conversationId?: string;
-    messageText?: string;
+interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
+    messageEditor: EditMessageContextProps;
+    editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
 }
 
-class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentProps & XWithRouter & UserInfoComponentProps & { messageEditor: EditMessageContextProps }> {
+class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps> {
 
     state = {
         dragOn: false,
-        dragUnder: false
+        dragUnder: false,
+        message: '',
+        messageForEdit: undefined,
+        messageIdForEdit: undefined
     };
 
     private input = React.createRef<XRichTextInput>();
     private wasFocused = false;
-    private message: string = '';
-
-    // focus = () => {
-    //     if (this.input.current) {
-    //         this.input.current.focus();
-    //     }
-    // }
 
     private handleAttach = () => {
         let dialog = UploadCare.openDialog(null, {
             publicKey: getConfig().uploadcareKey!!
         });
         dialog.done((r) => {
-            // this.props.conversation.sendFile(r);
             this.setState({ message: '', dragOn: false }, () => {
-                // this.focus();
                 if (this.props.onSendFile) {
                     this.props.onSendFile(r);
                 }
@@ -274,58 +317,38 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private handleSend = () => {
-        if (this.message.trim().length > 0) {
-            let msg = this.message.trim();
-            if (this.props.onSend) {
+        let { message, messageForEdit, messageIdForEdit } = this.state;
+        if (message.trim().length > 0) {
+            let msg = message.trim();
+            if (this.props.onSend && !messageForEdit && !messageIdForEdit) {
                 this.props.onSend(msg);
+            }
+            if (messageForEdit && messageIdForEdit) {
+                this.props.editMessage({ variables: { message: message, messageId: messageIdForEdit } });
             }
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
+            this.setState({
+                message: '',
+                messageForEdit: undefined,
+                messageIdForEdit: undefined
+            });
+            this.props.messageEditor.setEditMessage(null, null);
         }
     }
 
     private handleChange = (src: string) => {
-        this.message = src;
         if (src.length > 0 && this.props.onChange) {
-            this.props.onChange(src);
-        }
-
-        // Save or remove (if empty) draft from browser localStorage
-
-        let localDrafts = localStorage.getItem('x-openland-drafts');
-        let curDraft: Draft = {
-            conversationId: this.props.conversationId,
-            messageText: this.message
-        };
-
-        let drafts: Draft[] = [];
-
-        if (localDrafts) {
-            drafts = JSON.parse(localDrafts);
-            let alreadyInDrafts = -1;
-
-            drafts.map((item: Draft, index: number) => {
-                if (item.conversationId === curDraft.conversationId) {
-                    alreadyInDrafts = index;
-                    item.messageText = curDraft.messageText;
-                }
+            this.setState({
+                message: src
             });
-
-            if (alreadyInDrafts >= 0) {
-                if (!(this.message.length > 0)) {
-                    drafts.splice(alreadyInDrafts, 1);
-                }
-            } else {
-                if (this.message.length > 0) {
-                    drafts.push(curDraft);
-                }
-            }
+            this.props.onChange(src);
         } else {
-            drafts.push(curDraft);
+            this.setState({
+                message: ''
+            });
         }
-
-        localStorage.setItem('x-openland-drafts', JSON.stringify(drafts));
     }
 
     private focusIfNeeded = () => {
@@ -386,16 +409,34 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         });
     }
 
+    private closeEditor = () => {
+        this.props.messageEditor.setEditMessage(null, null);
+        (document as any).isEditMessage = false;
+        this.setState({
+            message: '',
+            messageForEdit: undefined,
+            messageIdForEdit: undefined
+        });
+        if (this.input.current) {
+            this.input.current!!.resetAndFocus();
+        }
+    }
+
     keydownHandler = (e: any) => {
+        let { message, messageForEdit, messageIdForEdit } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((e.code === 'ArrowUp' && !e.altKey && this.message.length === 0 && hasFocus && this.props.conversation) || (e.code === 'KeyE' && e.ctrlKey && this.message.length === 0 && this.props.conversation)) {
-            let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && this.props.user && m.sender.id === this.props.user.id);
-            let message = messages[messages.length - 1];
-            if (message && isServerMessage(message)) {
+        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey))) {
+            let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
+            let messageData = messages[messages.length - 1];
+            if (messageData && isServerMessage(messageData)) {
                 e.preventDefault();
-                this.props.messageEditor.setEditMessageId(message.id);
+                this.props.messageEditor.setEditMessage(messageData.id, messageData.message);
+                (document as any).isEditMessage = true;
             }
+        }
+        if (e.code === 'Escape' && messageForEdit && messageIdForEdit) {
+            this.closeEditor();
         }
     }
 
@@ -416,20 +457,22 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         this.focusIfNeeded();
     }
 
-    render() {
-        // Load draft from browser localStorage
-
-        let localDrafts = localStorage.getItem('x-openland-drafts');
-
-        if (localDrafts) {
-            let drafts: Draft[] = JSON.parse(localDrafts);
-
-            drafts.map((item: Draft) => {
-                if (item.conversationId === this.props.conversationId) {
-                    this.message = item.messageText || '';
-                }
+    componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
+        let { editMessage, editMessageId } = nextProps.messageEditor;
+        if (editMessage) {
+            this.setState({
+                messageForEdit: editMessage,
+                messageIdForEdit: editMessageId
             });
+            if (this.input.current) {
+                this.input.current.focus();
+            }
         }
+    }
+
+    render() {
+
+        let { messageForEdit, messageIdForEdit } = this.state;
 
         return (
             <SendMessageWrapper>
@@ -449,6 +492,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                        {(messageForEdit && messageIdForEdit) && (
+                            <EditView message={messageForEdit} title="Edit message" onCancel={this.closeEditor}/>
+                        )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 placeholder="Write a message..."
@@ -456,7 +502,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                 onChange={this.handleChange}
                                 onSubmit={this.handleSend}
                                 ref={this.input}
-                                value={this.message}
+                                value={this.state.messageForEdit}
                             />
                         </TextInputWrapper>
                         <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
@@ -469,16 +515,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <PhotoIcon />
                                     <span>Photo</span>
                                 </AttachmentButton>
-                                {/* {this.props.conversationType === 'ChannelConversation' && this.props.conversationId && (
-                                    <AttachmentButton
-                                        query={{ field: 'addListing', value: 'true' }}
-                                    // enabled={this.props.enabled === false}
-                                    // disable={this.props.enabled === false}
-                                    >
-                                        <ListingIcon />
-                                        <span>Listing</span>
-                                    </AttachmentButton>
-                                )} */}
                                 <AttachmentButton
                                     onClick={this.props.enabled === false ? undefined : this.handleAttach}
                                     enabled={this.props.enabled === false}
@@ -508,18 +544,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                         </XHorizontal>
                     </XVertical>
                 </SendMessageContent>
-                {/* <PostChannelModal targetQuery="addListing" /> */}
                 <PostIntroModal targetQuery="addItro" conversationId={this.props.conversationId || ''} />
             </SendMessageWrapper>
         );
     }
 }
 
-export let MessageComposeComponent = withUserInfo(withRouter((props) => {
+export let MessageComposeComponent = withEditMessage(withUserInfo((props) => {
     return (
         <EditMessageContext.Consumer>
             {(editor: EditMessageContextProps) => (
-                <MessageComposeComponentInner {...props} messageEditor={editor} />
+                <MessageComposeComponentInner {...props} messageEditor={editor} editMessage={props.editMessage} />
             )}
         </EditMessageContext.Consumer>
     );

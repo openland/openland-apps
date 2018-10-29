@@ -126,11 +126,10 @@ export interface XRichTextInputProps extends XFlexStyles {
     autofocus?: boolean;
 }
 
-export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beePasted: boolean }> {
+export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState }> {
     private editorRef = React.createRef<Editor>();
     state = {
-        editorState: EditorState.createEmpty(),
-        beePasted: false
+        editorState: EditorState.createEmpty()
     };
 
     componentDidMount() {
@@ -171,18 +170,18 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     onChange = (editorState: EditorState) => {
-        if (this.props.value !== undefined && !this.state.beePasted) {
-            this.setState((src) => ({
-                editorState: EditorState.push(src.editorState, ContentState.createFromText(this.props.value || ''), 'remove-range'),
-                beePasted: true
-            }));
-            return;
-        }
-
         this.setState({ editorState: editorState });
 
         if (this.props.onChange) {
             this.props.onChange(editorState.getCurrentContent().getPlainText());
+        }
+    }
+
+    componentWillReceiveProps(nextProps: XRichTextInputProps) {
+        if (this.props.value !== nextProps.value) {
+            this.setState({
+                editorState: EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''))
+            });
         }
     }
 

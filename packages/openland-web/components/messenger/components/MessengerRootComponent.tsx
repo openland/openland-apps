@@ -200,13 +200,15 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
 
         this.state = {
             editMessageId: null,
-            setEditMessageId: this.setEditMessageId
+            editMessage: null,
+            setEditMessage: this.setEditMessage
         };
     }
 
-    setEditMessageId = (id: string | null) => {
+    setEditMessage = (id: string | null, message: string | null) => {
         this.setState({
-            editMessageId: id
+            editMessageId: id,
+            editMessage: message
         });
     }
 

@@ -21,7 +21,6 @@ import { XOverflow } from '../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
-import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
@@ -152,12 +151,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
     showEditView = () => {
         if (isServerMessage(this.props.message)) {
-            this.props.messageEditor.setEditMessageId(this.props.message.id);
+            this.props.messageEditor.setEditMessage(this.props.message.id, this.props.message.message);
         }
-    }
-
-    hideEditView = () => {
-        this.props.messageEditor.setEditMessageId(null);
     }
 
     render() {
@@ -167,78 +162,74 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         let edited = isServerMessage(this.props.message) && this.props.message.edited;
 
         if (isServerMessage(message)) {
-            if (this.state.isEditView && message.message) {
-                content.push(<EditMessageInlineWrapper message={message} key={'editForm'} onClose={this.hideEditView} />);
-            } else {
-                if (message.message && message.message.length > 0) {
-                    if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
-                        content.push(null);
-                    } else {
-                        content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} isEdited={edited} />);
-                    }
+            if (message.message && message.message.length > 0) {
+                if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+                    content.push(null);
+                } else {
+                    content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} isEdited={edited} />);
                 }
-                if (message.file && !message.urlAugmentation) {
-                    let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
-                    let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
-                    let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
-                    let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
+            }
+            if (message.file && !message.urlAugmentation) {
+                let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
+                let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
+                let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
+                let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
 
-                    if (message.fileMetadata!!.isImage && !!w && !!h) {
-                        if (message.fileMetadata!!.imageFormat === 'GIF') {
-                            content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
-                        } else {
-                            content.push(<MessageImageComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
-                        }
+                if (message.fileMetadata!!.isImage && !!w && !!h) {
+                    if (message.fileMetadata!!.imageFormat === 'GIF') {
+                        content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
                     } else {
-                        content.push(<MessageFileComponent key={'file'} file={message.file} fileName={name} fileSize={size} />);
+                        content.push(<MessageImageComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
                     }
+                } else {
+                    content.push(<MessageFileComponent key={'file'} file={message.file} fileName={name} fileSize={size} />);
                 }
-                if (message.urlAugmentation) {
-                    if (message.urlAugmentation.type === 'intro') {
-                        content.push(
-                            <MessageIntroComponent
-                                key="intro"
-                                urlAugmentation={message.urlAugmentation}
-                                file={message.file}
-                                fileMetadata={message.fileMetadata}
-                                user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User}
-                                messageId={(message as MessageFull).id}
-                                reactions={(message as MessageFull).reactions}
-                                meId={(this.props.me as UserShort).id}
-                                senderId={message.sender.id}
-                                conversationType={this.props.conversationType}
-                            />
-                        );
-                    }
-                    if (message.urlAugmentation.type !== 'intro') {
-                        if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
-                            content = [];
-                        }
-                        content.push(
-                            <MessageUrlAugmentationComponent
-                                key="urlAugmentation"
-                                {...message.urlAugmentation}
-                                messageId={message.id}
-                                isMe={this.props.sender && this.props.me ? (this.props.sender.id === this.props.me.id) : false}
-                            />
-                        );
-                    }
-                }
-                if ((message as MessageFull).reply) {
-                    let replyMessage = (message as MessageFull).reply![0];
+            }
+            if (message.urlAugmentation) {
+                if (message.urlAugmentation.type === 'intro') {
                     content.push(
-                        <MessageReplyComponent
-                            sender={replyMessage.sender}
-                            date={replyMessage.date}
-                            message={replyMessage.message}
-                            id={replyMessage.id}
-                            key={'reply'}
-                            edited={replyMessage.edited}
-                            file={replyMessage.file}
-                            fileMetadata={replyMessage.fileMetadata}
+                        <MessageIntroComponent
+                            key="intro"
+                            urlAugmentation={message.urlAugmentation}
+                            file={message.file}
+                            fileMetadata={message.fileMetadata}
+                            user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User}
+                            messageId={(message as MessageFull).id}
+                            reactions={(message as MessageFull).reactions}
+                            meId={(this.props.me as UserShort).id}
+                            senderId={message.sender.id}
+                            conversationType={this.props.conversationType}
                         />
                     );
                 }
+                if (message.urlAugmentation.type !== 'intro') {
+                    if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
+                        content = [];
+                    }
+                    content.push(
+                        <MessageUrlAugmentationComponent
+                            key="urlAugmentation"
+                            {...message.urlAugmentation}
+                            messageId={message.id}
+                            isMe={this.props.sender && this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                        />
+                    );
+                }
+            }
+            if ((message as MessageFull).reply) {
+                let replyMessage = (message as MessageFull).reply![0];
+                content.push(
+                    <MessageReplyComponent
+                        sender={replyMessage.sender}
+                        date={replyMessage.date}
+                        message={replyMessage.message}
+                        id={replyMessage.id}
+                        key={'reply'}
+                        edited={replyMessage.edited}
+                        file={replyMessage.file}
+                        fileMetadata={replyMessage.fileMetadata}
+                    />
+                );
             }
             date = <XDate value={message.date} format="time" />;
         } else {
