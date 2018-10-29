@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatSearchForComposeMobileQuery } from 'openland-api';
-import { View, LayoutChangeEvent } from 'react-native';
+import { View, LayoutChangeEvent, Image } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZQuery } from '../../../components/ZQuery';
 import { UserShort } from 'openland-api/Types';
@@ -18,6 +18,22 @@ interface UserMultiplePickerComponentState {
     query: string;
     users: { id: string, name: string }[];
     searchHeight: number;
+}
+
+export class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
+    render() {
+        return (
+            <View flexDirection="row">
+                <View flexGrow={1}>
+                    {this.props.children}
+                </View>
+                <View position="absolute" pointerEvents="none"  alignSelf="center" right={15} backgroundColor={this.props.checked ? '#4747ec' : '#fff'} borderColor={this.props.checked ? '#4747ec' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
+                    {this.props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} />}
+                </View>
+
+            </View>
+        );
+    }
 }
 
 class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMultiplePickerComponentState> {
@@ -60,7 +76,11 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                     <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
                         {r => (
                             <SScrollView marginTop={this.state.searchHeight}>
-                                {r.data.items.map((v) => (<UserViewAsync key={v.id} item={v as UserShort} disabled={(this.props.router.params.disableUsers || []).indexOf(v.id) > -1} onPress={() => this.handleAddUser(v as UserShort)} />))}
+                                {r.data.items.map((v) => (
+                                    <CheckListBoxWraper checked={!!this.state.users.find(u => u.id === v.id)}>
+                                        <UserViewAsync key={v.id} item={v as UserShort} disabled={(this.props.router.params.disableUsers || []).indexOf(v.id) > -1} onPress={() => this.handleAddUser(v as UserShort)} />
+                                    </CheckListBoxWraper>
+                                ))}
                             </SScrollView>
                         )}
                     </ZQuery>
