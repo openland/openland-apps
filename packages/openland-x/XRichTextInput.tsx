@@ -134,12 +134,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
 
     componentDidMount() {
         if (this.props.autofocus) {
-            setTimeout(
-                () => {
-                    this.focus();
-                },
-                1
-            );
+            this.focus();
         }
     }
 
@@ -179,8 +174,9 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         if (this.props.value !== nextProps.value) {
+            const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
             this.setState({
-                editorState: EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''))
+                editorState: EditorState.moveSelectionToEnd(state)
             });
         }
     }
