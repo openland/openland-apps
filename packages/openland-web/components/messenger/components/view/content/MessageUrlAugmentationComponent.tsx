@@ -37,7 +37,6 @@ const DeleteButton = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'all .15s ease',
     borderRadius: 10,
     background: '#ffffff',
     '& > svg > g > path:last-child': {
