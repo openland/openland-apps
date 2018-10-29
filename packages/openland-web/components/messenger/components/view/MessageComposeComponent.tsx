@@ -235,11 +235,20 @@ const EditWrapper = Glamorous(XHorizontal)({
     paddingRight: 14
 });
 
+const VerticalHidden = Glamorous(XVertical)({
+    overflow: 'hidden'
+});
+
+const HorizontalHidden = Glamorous(XHorizontal)({
+    overflow: 'hidden'
+});
+
 const BlueLine = Glamorous.div({
     width: 3,
     height: 36,
     borderRadius: 50,
-    backgroundColor: '#1790ff'
+    backgroundColor: '#1790ff',
+    flexShrink: 0
 });
 
 const EditTitle = Glamorous.div({
@@ -253,7 +262,11 @@ const EditText = Glamorous.div({
     opacity: 0.8,
     fontSize: 13,
     lineHeight: 1.69,
-    color: '#000'
+    color: '#000',
+    minWidth: 0,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
 });
 
 const EditCloseBtn = Glamorous.div({
@@ -263,15 +276,15 @@ const EditCloseBtn = Glamorous.div({
 const EditView = (props: { title: string, message: string, onCancel: () => void }) => (
     <EditWrapper justifyContent="space-between" alignItems="center" separator={5}>
         <BlueLine />
-        <XHorizontal flexGrow={1} separator={9} alignItems="center" justifyContent="space-between">
-            <XVertical separator={1}>
+        <HorizontalHidden flexGrow={1} separator={9} alignItems="center" justifyContent="space-between">
+            <VerticalHidden separator={1}>
                 <EditTitle>{props.title}</EditTitle>
                 <EditText>{props.message}</EditText>
-            </XVertical>
+            </VerticalHidden>
             <EditCloseBtn onClick={props.onCancel}>
                 <CloseIcon />
             </EditCloseBtn>
-        </XHorizontal>
+        </HorizontalHidden>
     </EditWrapper>
 );
 
