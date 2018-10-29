@@ -97,6 +97,7 @@ export class MessageSender {
     private doSendMessage(conversationId: string, message: string | null, file: string | null, key: string, callback: MessageSendHandler) {
         this.pending.set(key, { conversationId, message, file });
         (async () => {
+            let start = Date.now();
             try {
                 await this.client.client.mutate({
                     mutation: SendMessageMutation.document,
@@ -117,6 +118,7 @@ export class MessageSender {
                     return;
                 }
             }
+            console.log('Message sent in ' + (Date.now() - start) + ' ms');
             this.pending.delete(key);
             callback.onCompleted(key);
         })();
