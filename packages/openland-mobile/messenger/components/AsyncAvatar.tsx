@@ -11,6 +11,7 @@ export interface AsyncAvatarProps {
     src?: string | null;
     placeholderKey?: string | null;
     placeholderTitle?: string | null;
+    round?: boolean;
 }
 
 export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
@@ -23,7 +24,7 @@ export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
                     width={this.props.size}
                     height={this.props.size}
                     source={{ uri: url }}
-                    borderRadius={this.props.size / 2}
+                    borderRadius={this.props.round !== false ? this.props.size / 2 : undefined}
                 />
             );
         }
@@ -68,7 +69,7 @@ export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
                 justifyContent="center"
                 backgroundColor={placeholderStyle.placeholderColor}
                 backgroundGradient={{ start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd }}
-                borderRadius={this.props.size / 2}
+                borderRadius={this.props.round !== false ? this.props.size / 2 : undefined}
             >
                 <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
             </ASFlex>

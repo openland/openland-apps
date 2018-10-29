@@ -16,11 +16,16 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {
     render() {
         return (
-            <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('ProfileOrganization', { id: this.props.item.id })}>
+            <ASFlex height={70} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('ProfileOrganization', { id: this.props.item.id })}>
                 <ASFlex marginLeft={15} marginRight={15}>
-                    <AsyncAvatar size={32} placeholderKey={this.props.item.id} placeholderTitle={this.props.item.name} src={this.props.item.photo} />
+                    <AsyncAvatar round={false} size={60} placeholderKey={this.props.item.id} placeholderTitle={this.props.item.name} src={this.props.item.photo} />
                 </ASFlex>
-                <ASText fontSize={16} height={56} lineHeight={38} color="#181818" numberOfLines={1}>{this.props.item.name}</ASText>
+                <ASFlex  marginRight={10} marginTop={15} marginBottom={14} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                    {/* <ASText backgroundColor="green" height={33} fontSize={16} color="#181818" numberOfLines={1}>{this.props.item.name}</ASText> */}
+                    {/* {this.props.item.locations && this.props.item.locations[0] && <ASText fontSize={16} lineHeight={18} color="#181818" numberOfLines={1}>{this.props.item.locations && this.props.item.locations[0]}</ASText>} */}
+                    <ASText fontSize={16} lineHeight={19} height={19} color="#181818" numberOfLines={1}>{this.props.item.name}</ASText>
+                    {!!(this.props.item.locations && this.props.item.locations[0]) && <ASText  marginTop={7} fontSize={13} lineHeight={15} color="#8a8a8f" numberOfLines={1}>{this.props.item.locations && this.props.item.locations[0]}</ASText>}
+                </ASFlex>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
                     <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.selectedListItem} />
                 </ASFlex>
@@ -51,7 +56,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
         return (
             <>
                 <SHeader title="Organizations" />
-                <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New"  onPress={() => this.props.router.push('NewOrganization')} />
+                <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New" onPress={() => this.props.router.push('NewOrganization')} />
                 <SSearchControler searchRender={(props) => (<OrganizationSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
                         overscrollCompensation={true}
