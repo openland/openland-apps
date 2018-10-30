@@ -203,48 +203,6 @@ export interface AccountInviteJoinVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: AccountInvites
-// ====================================================
-
-export interface AccountInvites_invites {
-  __typename: "Invite";
-  id: string;
-  key: string;
-}
-
-export interface AccountInvites {
-  invites: AccountInvites_invites[] | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: AccountInvitesHistory
-// ====================================================
-
-export interface AccountInvitesHistory_invites_acceptedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  picture: string | null;
-}
-
-export interface AccountInvitesHistory_invites {
-  __typename: "InviteHistotyInfo";
-  forEmail: string;
-  isGlobal: boolean;
-  acceptedBy: AccountInvitesHistory_invites_acceptedBy | null;
-}
-
-export interface AccountInvitesHistory {
-  invites: AccountInvitesHistory_invites[] | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: AccountCreateInvite
 // ====================================================
 
