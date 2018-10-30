@@ -55,6 +55,23 @@ export const AccountInviteInfoQuery = gql`
     ${UserShort}
 `;
 
+export const AccountGlobalInviteInfoQuery = gql`
+    query AccountGlobalInviteInfo($inviteKey: String!) {
+        invite: alphaInviteInfo(key: $inviteKey) {
+            creator{
+                ...UserShort
+            }
+        }
+    }
+    ${UserShort}
+`;
+
+export const AccountGlobalInviteQuery = gql`
+    query AccountGlobalInvite {
+        invite: alphaGlobalInvite
+    }
+`;
+
 export const AccountInviteJoinMutation = gql`
     mutation AccountInviteJoin($inviteKey: String!) {
         alphaJoinInvite(key: $inviteKey)
