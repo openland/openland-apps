@@ -284,15 +284,8 @@ export const SendMessageMutation = gql`
     mutation SendMessage($conversationId: ID!, $message: String, $file: String, $repeatKey: String!) {
         sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message, file: $file, repeatKey: $repeatKey) {
             seq
-            ... on ConversationEventMessage {
-                message {
-                    ...MessageFull
-                }
-            }
         }
     }
-    ${MessageFull}
-    ${UserShort}
 `;
 
 export const ReplyMessageMutation = gql`
