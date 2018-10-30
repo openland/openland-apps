@@ -180,6 +180,10 @@ class MessagePageInner extends React.Component<{ router: XRouter }, { pageTitle:
         if (uid) {
             tab = 'user';
         }
+
+        if (tab === 'empty') {
+            pageTitle = undefined;
+        }
     
         return (
             <>
