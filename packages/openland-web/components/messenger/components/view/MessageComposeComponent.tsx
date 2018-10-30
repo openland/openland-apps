@@ -352,15 +352,18 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private handleChange = (src: string) => {
-        if (src.length > 0 && this.props.onChange) {
+        if (src.length > 0) {
             this.setState({
                 message: src
             });
-            this.props.onChange(src);
         } else {
             this.setState({
                 message: ''
             });
+        }
+
+        if (this.props.onChange) {
+            this.props.onChange(src);
         }
     }
 
