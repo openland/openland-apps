@@ -63,7 +63,7 @@
             "deprecationReason": null
           },
           {
-            "name": "alphaGlobalInvite",
+            "name": "alphaAppInvite",
             "description": "",
             "args": [],
             "type": {
@@ -79,7 +79,7 @@
             "deprecationReason": null
           },
           {
-            "name": "alphaGlobalInviteInfo",
+            "name": "alphaAppInviteInfo",
             "description": "",
             "args": [
               {
@@ -99,7 +99,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GlobalInviteInfo",
+              "name": "AppInviteInfo",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6697,11 +6697,11 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GlobalInviteInfo",
+        "name": "AppInviteInfo",
         "description": "",
         "fields": [
           {
-            "name": "creator",
+            "name": "inviter",
             "description": "",
             "args": [],
             "type": {

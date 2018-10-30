@@ -24,7 +24,7 @@ import PlusIcon from './icons/ic-add-small.svg';
 import LinkIcon from './icons/ic-link.svg';
 import EmailIcon from './icons/ic-email.svg';
 import CloseIcon from './icons/ic-close-1.svg';
-import { withGlobalnvite } from 'openland-web/api/withGlobalInvite';
+import { withAppInvite } from '../../../api/withAppInvite';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,
@@ -188,7 +188,7 @@ interface OwnerLinkComponentProps {
         key: string,
         ttl: string | null
     } | null;
-    globalInvite?: string | null;
+    appInvite?: string | null;
     organization: boolean;
 }
 
@@ -215,13 +215,13 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
     render() {
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
-                {this.props.invite || this.props.globalInvite && (
+                {this.props.invite || this.props.appInvite && (
                     <LinkHolder separator={4}>
                         <XInput
                             size="large"
                             flexGrow={1}
                             ref={this.handleRef}
-                            value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.organization ? '/invite/' : '/join/') + (this.props.globalInvite || this.props.invite!.key)}
+                            value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.organization ? '/invite/' : '/join/') + (this.props.appInvite || this.props.invite!.key)}
                         />
                         <InviteText>Anyone with the link will be able to join</InviteText>
                     </LinkHolder>
@@ -243,8 +243,8 @@ const OwnerLink = withPublicInvite(withRouter((props) => (
     <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} organization={false} />
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
-const OwnerLinkOrganization = withGlobalnvite(withRouter((props) => (
-    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} globalInvite={props.data ? props.data.invite : null} organization={true}  />
+const OwnerLinkOrganization = withAppInvite(withRouter((props) => (
+    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} appInvite={props.data ? props.data.invite : null} organization={true}  />
 ))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
 
 interface InvitesModalRawProps {

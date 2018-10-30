@@ -55,10 +55,15 @@ export const AccountInviteInfoQuery = gql`
     ${UserShort}
 `;
 
-export const AccountGlobalInviteInfoQuery = gql`
-    query AccountGlobalInviteInfo($inviteKey: String!) {
+export const AccountAppInviteInfoQuery = gql`
+    query AccountAppInviteInfo($inviteKey: String!) {
         invite: alphaInviteInfo(key: $inviteKey) {
             creator{
+                ...UserShort
+            }
+        }
+        appInvite: alphaAppInviteInfo(key: $inviteKey) {
+            inviter{
                 ...UserShort
             }
         }
@@ -66,9 +71,9 @@ export const AccountGlobalInviteInfoQuery = gql`
     ${UserShort}
 `;
 
-export const AccountGlobalInviteQuery = gql`
-    query AccountGlobalInvite {
-        invite: alphaGlobalInvite
+export const AccountAppInviteQuery = gql`
+    query AccountAppInvite {
+        invite: alphaAppInvite
     }
 `;
 

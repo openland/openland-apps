@@ -188,17 +188,17 @@ export interface AccountInviteInfoVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: AccountGlobalInviteInfo
+// GraphQL query operation: AccountAppInviteInfo
 // ====================================================
 
-export interface AccountGlobalInviteInfo_invite_creator_primaryOrganization {
+export interface AccountAppInviteInfo_invite_creator_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface AccountGlobalInviteInfo_invite_creator {
+export interface AccountAppInviteInfo_invite_creator {
   __typename: "User";
   id: string;
   name: string;
@@ -209,22 +209,52 @@ export interface AccountGlobalInviteInfo_invite_creator {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
-  primaryOrganization: AccountGlobalInviteInfo_invite_creator_primaryOrganization | null;
+  primaryOrganization: AccountAppInviteInfo_invite_creator_primaryOrganization | null;
   role: string | null;
   linkedin: string | null;
   twitter: string | null;
 }
 
-export interface AccountGlobalInviteInfo_invite {
+export interface AccountAppInviteInfo_invite {
   __typename: "InviteInfo";
-  creator: AccountGlobalInviteInfo_invite_creator | null;
+  creator: AccountAppInviteInfo_invite_creator | null;
 }
 
-export interface AccountGlobalInviteInfo {
-  invite: AccountGlobalInviteInfo_invite | null;
+export interface AccountAppInviteInfo_appInvite_inviter_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface AccountGlobalInviteInfoVariables {
+export interface AccountAppInviteInfo_appInvite_inviter {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: AccountAppInviteInfo_appInvite_inviter_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface AccountAppInviteInfo_appInvite {
+  __typename: "AppInviteInfo";
+  inviter: AccountAppInviteInfo_appInvite_inviter;
+}
+
+export interface AccountAppInviteInfo {
+  invite: AccountAppInviteInfo_invite | null;
+  appInvite: AccountAppInviteInfo_appInvite | null;
+}
+
+export interface AccountAppInviteInfoVariables {
   inviteKey: string;
 }
 
@@ -232,10 +262,10 @@ export interface AccountGlobalInviteInfoVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: AccountGlobalInvite
+// GraphQL query operation: AccountAppInvite
 // ====================================================
 
-export interface AccountGlobalInvite {
+export interface AccountAppInvite {
   invite: string;
 }
 

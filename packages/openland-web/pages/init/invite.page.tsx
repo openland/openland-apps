@@ -35,10 +35,10 @@ export default withAppBase('Invite', withInviteActivation((props) => {
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
                 <MessagePage>
-                    {props.data.invite && (
+                    {props.data.invite || props.data.appInvite && (
                         <AcceptInviteComponent mutation={props.activate} />
                     )}
-                    {!props.data.invite && (
+                    {!(props.data.invite || props.data.appInvite) && (
                         <MessagePageContent title="Invite">
                             <InfoText>{InitTexts.invite.unableToFindInvite}</InfoText>
                         </MessagePageContent>
