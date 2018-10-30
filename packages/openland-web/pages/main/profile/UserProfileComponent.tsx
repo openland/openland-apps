@@ -327,6 +327,8 @@ class ChannelCard extends React.Component<ChannelCardProps> {
 interface UserProfileInnerProps extends XWithRouter {
     userQuery: User;
     onBack: () => void;
+    handlePageTitle?: any;
+    onDirectory?: boolean;
 }
 
 const Channels = (props: { channels: any }) => {
@@ -342,19 +344,54 @@ const Channels = (props: { channels: any }) => {
     );
 };
 
-const UserProfileInner = (props: UserProfileInnerProps) => {
-    let usr = props.userQuery.user;
-    return (
-        <>
-            <Back callback={props.onBack} />
-            <Header userQuery={props.userQuery} />
-            <XScrollView height="calc(100% - 160px)">
-                <About userQuery={props.userQuery} />
-                <Channels channels={usr.channels.filter(c => c && !c.hidden)} />
-            </XScrollView>
-        </>
-    );
-};
+class UserProfileInner extends React.Component<UserProfileInnerProps> {
+    pageTitle: string | undefined = undefined;
+
+    constructor (props: UserProfileInnerProps) {
+        super(props);
+
+        if (this.props.handlePageTitle) {
+            this.pageTitle = props.userQuery.user.name;
+            this.props.handlePageTitle(this.pageTitle);
+        }
+    }
+
+    componentWillReceiveProps (newProps: UserProfileInnerProps) {
+        if (newProps.handlePageTitle) {
+            let title = newProps.userQuery.user.name;
+
+            if (title !== this.pageTitle) {
+                this.pageTitle = title;
+
+                newProps.handlePageTitle(title);
+            }
+        }
+    }
+
+    handleRef = (ref?: any) => {
+        if (!ref && this.props.onDirectory) {
+            if (this.props.handlePageTitle) {
+                this.pageTitle = undefined;
+                this.props.handlePageTitle(undefined);
+            }
+        }
+    }
+
+    render() {
+        let usr = this.props.userQuery.user;
+
+        return (
+            <div ref={this.handleRef}>
+                <Back callback={this.props.onBack} />
+                <Header userQuery={this.props.userQuery} />
+                <XScrollView height="calc(100% - 160px)">
+                    <About userQuery={this.props.userQuery} />
+                    <Channels channels={usr.channels.filter(c => c && !c.hidden)} />
+                </XScrollView>
+            </div>
+        );
+    }
+}
 
 const UserProvider = withUser(withRouter((props) => (
     props.data.user
@@ -363,14 +400,18 @@ const UserProvider = withUser(withRouter((props) => (
                 userQuery={props.data}
                 onBack={(props as any).onBack}
                 router={props.router}
+                handlePageTitle={(props as any).handlePageTitle}
+                onDirectory={(props as any).onDirectory}
             />
         )
         : <XLoader loading={true} />
-))) as React.ComponentType<{ onBack: () => void, variables: { userId: string } }>;
+))) as React.ComponentType<{ onBack: () => void, variables: { userId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
 
-export const UserProfile = (props: { userId: string, onBack: () => void }) => (
+export const UserProfile = (props: { userId: string, onBack: () => void, onDirectory?: boolean; handlePageTitle?: any }) => (
     <UserProvider
         variables={{ userId: props.userId }}
         onBack={props.onBack}
+        handlePageTitle={props.handlePageTitle}
+        onDirectory={props.onDirectory}
     />
 );

@@ -49,7 +49,7 @@ const CheckboxWrapper = Glamorous(XVertical)({
 
 export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((props) => {
     return (
-        <Navigation title="Notifications">
+        <Navigation title="Notifications settings">
             <Content>
                 <XVertical separator={12} maxWidth={480}>
                     <HeadTitle>Notifications</HeadTitle>

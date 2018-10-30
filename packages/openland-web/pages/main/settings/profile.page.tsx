@@ -55,7 +55,7 @@ const CardText = Glamorous.div({
 
 export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
-        <Navigation title="Profile">
+        <Navigation title="Edit profile">
             <Content>
                 <XVertical separator={21}>
                     <Query query={MyOrganizationsQuery.document}>

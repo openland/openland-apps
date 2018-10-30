@@ -458,6 +458,46 @@ const LastSeen = withOnline(props => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
+interface MessengerWrapperProps {
+    chatTitle: string;
+    chatType: string;
+    userName?: string;
+    handlePageTitle?: any;
+}
+
+class MessengerWrapper extends React.Component<MessengerWrapperProps> {
+    pageTitle: string | undefined = undefined;
+
+    constructor (props: MessengerWrapperProps) {
+        super(props);
+
+        if (this.props.handlePageTitle) {
+            this.pageTitle = (this.props.chatType === 'PrivateConversation') ? 'Chat with ' + this.props.userName : this.props.chatTitle;
+            this.props.handlePageTitle(this.pageTitle);
+        }
+    }
+
+    componentWillReceiveProps (newProps: MessengerWrapperProps) {
+        if (newProps.handlePageTitle) {
+            let title = (newProps.chatType === 'PrivateConversation') ? 'Chat with ' + newProps.userName : newProps.chatTitle;
+
+            if (title !== this.pageTitle) {
+                this.pageTitle = title;
+
+                newProps.handlePageTitle(title);
+            }
+        }
+    }
+
+    render() {
+        return (
+            <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
+                {this.props.children}
+            </XVertical>
+        );
+    }
+}
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' = 'chat';
     if (props.router.query.tab === 'members') {
@@ -489,8 +529,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         }
     }
 
+    let chatType = props.data.chat.__typename;
+    let userName = (props.data.chat.__typename === 'PrivateConversation') ? props.data.chat.user.name : undefined;
+
     return (
-        <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
+        <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
@@ -692,10 +735,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <XWithRole role={['super-admin']}>
                 <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
             </XWithRole>
-        </XVertical>
+        </MessengerWrapper>
     );
-})) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean }>;
+})) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean, handlePageTitle?: any }>;
 
-export const MessengerComponent = (props: { conversationId: string, onDirectory?: boolean }) => {
-    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} onDirectory={props.onDirectory} />);
+export const MessengerComponent = (props: { conversationId: string, onDirectory?: boolean, handlePageTitle?: any }) => {
+    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} onDirectory={props.onDirectory} handlePageTitle={props.handlePageTitle} />);
 };
