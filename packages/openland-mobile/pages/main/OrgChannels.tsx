@@ -95,6 +95,8 @@ class OrgChannelsComponent extends React.PureComponent<PageProps> {
                         <ChannelsList router={this.props.router} channels={resp.data.organization.channels} />
                     )}
                 </ZQuery>}
+                {this.props.router.params.channels && <ChannelsList router={this.props.router} channels={this.props.router.params.channels} />}
+
             </>
         );
     }

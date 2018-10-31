@@ -13,6 +13,7 @@ export interface ZListItemBaseProps {
     onPress?: () => void;
     onLongPress?: () => void;
     path?: string;
+    pathParams?: any;
     pathRemove?: boolean;
     navigationIcon?: boolean;
     backgroundColor?: string;
@@ -29,7 +30,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
             if (this.props.pathRemove) {
                 this.props.router.pushAndRemove(this.props.path);
             } else {
-                this.props.router.push(this.props.path);
+                this.props.router.push(this.props.path, this.props.pathParams);
             }
         }
     }

@@ -39,6 +39,7 @@ export const UserQuery = gql`
                 hidden
                 photos
                 photo
+                membersCount
                 organization{
                     ...OrganizationShort
                 }

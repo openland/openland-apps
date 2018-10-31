@@ -86,6 +86,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                     {!!resp.data.user.phone && <ZListItem title="phone" text={resp.data.user.phone} />}
                                     {!!resp.data.user.website && <ZListItem title="website" text={resp.data.user.website} />}
                                     {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
+                                    {!!resp.data.user.channels && <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} title="Channels" compact={true} description={resp.data.user.channels.length.toString()} path={'OrgChannels'} pathParams={{ channels: resp.data.user.channels, title: resp.data.user.name + '`s channels' }} />}
                                 </ZListItemGroup>
                             </SScrollView>
                         );

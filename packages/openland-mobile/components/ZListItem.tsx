@@ -12,6 +12,7 @@ export interface ZListItemProps {
     leftIcon?: any | null;
     separator?: boolean | null;
     title?: string | null;
+    compact?: boolean;
     text?: string | null;
     description?: string;
     toggle?: boolean | null;
@@ -20,6 +21,7 @@ export interface ZListItemProps {
     checkmarkField?: { key: string, value: string };
     onToggle?: (value: boolean) => void;
     path?: string;
+    pathParams?: any;
     pathRemove?: boolean;
     onPress?: () => void;
     onLongPress?: () => void;
@@ -56,12 +58,13 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         let enabled = !!this.props.onPress || !!this.props.onToggle || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled);
 
         return (
-            <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} pathRemove={this.props.pathRemove} height={this.props.multiline ? null : (this.props.title ? 66 : 44)} navigationIcon={this.props.navigationIcon}>
-                <View paddingLeft={15} paddingRight={15} flexGrow={1} paddingVertical={this.props.title ? 8 : 11}>
-                    {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
+            <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} pathParams={this.props.pathParams} pathRemove={this.props.pathRemove} height={this.props.multiline ? null : (this.props.title && !this.props.compact ? 66 : 44)} navigationIcon={this.props.navigationIcon}>
+                <View paddingLeft={15} paddingRight={15} flexGrow={1} paddingVertical={this.props.title ? 6 : 11}>
+                    {this.props.title && !this.props.compact && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                     <View flexDirection="row" alignItems="center">
                         {this.props.leftIcon && <Image source={this.props.leftIcon} />}
                         {this.props.leftAvatar && <View paddingRight={8}><XPAvatar size={24} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
+                        {this.props.title && this.props.compact && <ZText style={{ fontSize: 15, marginLeft: 15, color: '#000', fontWeight: '500', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.title} />}
                         <ZText linkify={this.props.linkify === true} style={{ fontSize: 16, color: this.props.appearance === 'action' ? AppStyles.primaryColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0 }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
                         {this.props.description && (
                             <ZText linkify={this.props.linkify === true} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
