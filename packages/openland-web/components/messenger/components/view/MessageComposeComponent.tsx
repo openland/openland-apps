@@ -512,6 +512,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (replyMessage && replyMessageId && replyMessageSender && conversationId) {
             (document as any).isEditMessage = true;
             this.setState({
+                statlesMessage: undefined,
                 statlesMessageReply: replyMessage,
                 statlesMessageId: replyMessageId,
                 statlesMessageSender: replyMessageSender,
