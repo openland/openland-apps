@@ -32,7 +32,7 @@ export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPres
         return (
             <ASView style={{ height: 60, opacity: this.props.disabled ? 0.5 : 1 }}>
                 <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
-                    <ASFlex width={60} height={60} alignItems="center" justifyContent="center">
+                    <ASFlex width={70} height={60} alignItems="center" justifyContent="center">
                         <ASAvatar
                             src={item.picture}
                             size={40}
@@ -40,9 +40,9 @@ export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPres
                             placeholderTitle={item.name}
                         />
                     </ASFlex>
-                    <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                        <ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{item.name}</ASText>
-                        {!!item.primaryOrganization && <ASText fontSize={14} lineHeight={18} height={18} color="#7b7b7b" numberOfLines={1}>{item.primaryOrganization.name}</ASText>}
+                    <ASFlex marginRight={10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                        <ASText fontSize={16} fontWeight="500" lineHeight={19} height={19} color="#181818" numberOfLines={1}>{item.name}</ASText>
+                        {!!item.primaryOrganization && <ASText marginTop={5} fontSize={13} lineHeight={15} height={15} color="#8a8a8f" numberOfLines={1} opacity={0.8}>{item.primaryOrganization.name}</ASText>}
                     </ASFlex>
                     <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
                         <ASFlex height={0.5} flexGrow={1} marginLeft={60} backgroundColor={XPStyles.colors.selectedListItem} />
