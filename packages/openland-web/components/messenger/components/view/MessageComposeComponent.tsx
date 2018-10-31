@@ -356,14 +356,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             this.setState({
                 message: src
             });
+
+            if (this.props.onChange) {
+                this.props.onChange(src);
+            }
         } else {
             this.setState({
                 message: ''
             });
-        }
-
-        if (this.props.onChange) {
-            this.props.onChange(src);
         }
     }
 
