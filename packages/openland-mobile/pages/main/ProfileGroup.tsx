@@ -21,6 +21,7 @@ import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
+import { UserViewAsync } from '../compose/ComposeInitial';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -155,46 +156,49 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         key="add"
                                         text="  🔗   Invite via Link"
                                         appearance="action"
-                                        onPress={() => this.props.router.push('ChannelInviteLinkModal', {id: resp.data.chat.id})}
+                                        onPress={() => this.props.router.push('ChannelInviteLinkModal', { id: resp.data.chat.id })}
                                     />}
                                     <SDeferred>
                                         {resp.data.members.map((v) => (
                                             <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>
                                                 {(kick) => (
-                                                    <UserView
-                                                        user={v.user}
-                                                        role={v.role}
-                                                        onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
+                                                    <View>
+                                                        <UserViewAsync
+                                                            item={v.user}
+                                                            onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
 
-                                                            let builder = new ActionSheetBuilder();
-                                                            builder.action(
-                                                                'Kick',
-                                                                () => {
-                                                                    Alert.alert(`Are you sure you want to kick ${v.user.name}?`, undefined, [{
-                                                                        onPress: async () => {
-                                                                            startLoader();
-                                                                            try {
-                                                                                await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
-                                                                            } catch (e) {
-                                                                                Alert.alert(e.message);
-                                                                            }
-                                                                            stopLoader();
+                                                                let builder = new ActionSheetBuilder();
+                                                                builder.action(
+                                                                    'Kick',
+                                                                    () => {
+                                                                        Alert.alert(`Are you sure you want to kick ${v.user.name}?`, undefined, [{
+                                                                            onPress: async () => {
+                                                                                startLoader();
+                                                                                try {
+                                                                                    await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                                } catch (e) {
+                                                                                    Alert.alert(e.message);
+                                                                                }
+                                                                                stopLoader();
+                                                                            },
+                                                                            text: 'Kick',
+                                                                            style: 'destructive'
                                                                         },
-                                                                        text: 'Kick',
-                                                                        style: 'destructive'
+                                                                        {
+                                                                            text: 'Cancel',
+                                                                            style: 'cancel'
+                                                                        }]);
                                                                     },
-                                                                    {
-                                                                        text: 'Cancel',
-                                                                        style: 'cancel'
-                                                                    }]);
-                                                                },
-                                                                true
-                                                            );
-                                                            builder.show();
+                                                                    true
+                                                                );
+                                                                builder.show();
 
-                                                        } : undefined}
-                                                        onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
-                                                    />
+                                                            } : undefined}
+                                                            onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
+
+                                                        />
+                                                        <Text style={{ position: 'absolute', right: 16, height: 60, lineHeight: 60, fontSize: 15, color: '#99a2b0' }}>{v.role}</Text>
+                                                    </View>
                                                 )}
                                             </YMutation>
                                         ))}
