@@ -27,7 +27,7 @@ export class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean 
                 <View flexGrow={1}>
                     {this.props.children}
                 </View>
-                <View position="absolute" pointerEvents="none"  alignSelf="center" right={16} backgroundColor={this.props.checked ? '#4747ec' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#4747ec' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
+                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={this.props.checked ? '#4747ec' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#4747ec' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
                     {this.props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} />}
                 </View>
 

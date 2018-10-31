@@ -29,6 +29,7 @@ import { CreateChannel } from './pages/compose/CreateChannel';
 import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
 import { ChannelInviteLinkModal } from './pages/main/modals/ChannelInviteLinkModal';
+import { OrgChannels } from './pages/main/OrgChannels';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -57,7 +58,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('OrganizationInviteLinkModal', OrganizationInviteLinkModal)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('ChannelInviteLinkModal', ChannelInviteLinkModal)
-
+  .addRoute('OrgChannels', OrgChannels)
+  
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)
 

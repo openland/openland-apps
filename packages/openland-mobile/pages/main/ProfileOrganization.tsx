@@ -11,11 +11,13 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { Alert, View, Text } from 'react-native';
+import { Alert, View, Text, Image, TouchableHighlight } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api';
 import { UserViewAsync } from '../compose/ComposeInitial';
+import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -98,14 +100,16 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 {resp.data.organization.twitter && <ZListItem title="twitter" text={resp.data.organization.twitter} />}
                                             </ZListItemGroup>
 
-                                            <ZListItemGroup header="Public channels">
-                                                {resp.data.organization.channels.map((v) => (
-                                                    <ZListItem
-                                                        key={v!!.id}
-                                                        leftAvatar={{ photo: v!!.photo, title: v!!.title, key: v!!.id }}
-                                                        text={v!!.title}
-                                                        onPress={() => this.props.router.pushAndReset('Conversation', { flexibleId: v!!.id })}
-                                                    />
+                                            <ZListItemGroup header="Public channels" divider={false} actionRight={resp.data.organization.channels.length > 3 ? { title: 'Show all', onPress: () => this.props.router.push('OrgChannels', { organizationId: resp.data.organization.id, title: resp.data.organization.name + ' channels' }) } : undefined}>
+                                                {resp.data.organization.channels.filter((c, i) => i <= 2).map((v) => (
+                                                    <ArrowWrapper>
+                                                        <ChannelViewAsync
+                                                            key={v!!.id}
+                                                            item={v!}
+                                                            onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
+                                                        />
+
+                                                    </ArrowWrapper>
                                                 ))}
                                             </ZListItemGroup>
 
@@ -114,12 +118,18 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                     <YMutation mutation={OrganizationRemoveMemberMutation} refetchQueriesVars={[{ query: OrganizationQuery, variables: { organizationId: this.props.router.params.id } }]}>
                                                         {remove => (
                                                             <ZListItemGroup header="Members" divider={false}>
-                                                                {resp.data.organization.isMine && <ZListItem
-                                                                    key="add"
-                                                                    text=" 👋 Invite via Link"
-                                                                    appearance="action"
-                                                                    path="OrganizationInviteLinkModal"
-                                                                />}
+                                                                {resp.data.organization.isMine &&
+                                                                    <TouchableHighlight underlayColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('OrganizationInviteLinkModal')}>
+                                                                        <View flexDirection="row" height={60} alignItems="center" >
+                                                                            <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor="#4747ec" justifyContent="center" alignItems="center">
+                                                                                <Image source={require('assets/ic-add.png')} />
+                                                                            </View>
+                                                                            <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
+                                                                            <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={1} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.selectedListItem} />
+
+                                                                        </View>
+                                                                    </TouchableHighlight>
+                                                                }
 
                                                                 {resp.data.organization.members.map((v) => (
                                                                     // <ZListItem

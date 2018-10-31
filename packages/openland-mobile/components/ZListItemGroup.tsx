@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
-export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null, divider?: boolean }> {
+export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
     render() {
         let components: any[] = [];
         React.Children.forEach(this.props.children, (c) => {
@@ -39,7 +39,8 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                     <View
                         style={{
                             paddingTop: 35,
-                            paddingBottom: 10
+                            paddingBottom: 10,
+                            flexDirection: 'row'
                         }}
                     >
                         <Text
@@ -51,12 +52,32 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                 lineHeight: 20,
                                 paddingLeft: 15,
                                 paddingRight: 15,
+                                flexGrow: 1
                             }}
                             numberOfLines={1}
                             ellipsizeMode="tail"
                         >
                             {this.props.header}
                         </Text>
+
+                        {this.props.actionRight && (
+                            <Text
+                                onPress={this.props.actionRight.onPress}
+                                style={{
+                                    color: '#4747ec',
+                                    fontSize: 15,
+                                    fontWeight: '500',
+                                    height: 18,
+                                    lineHeight: 18,
+                                    paddingLeft: 16,
+                                    paddingRight: 16,
+                                }}
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                            >
+                                {this.props.actionRight.title}
+                            </Text>
+                        )}
                     </View>
                 }
                 {this.props.header === null && <View height={30} />}
