@@ -23,6 +23,7 @@ import { XFont } from 'openland-x/XFont';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 export let ChatContainer = Glamorous.div({
     display: 'flex',
@@ -113,109 +114,133 @@ export const AddButton = Glamorous(XButton)({
 
 let returnPath: string | undefined = undefined;
 
-export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
-    let isCompose = props.router.path.endsWith('/new');
-    if (!canUseDOM) {
+class MessagePageInner extends React.Component<{ router: XRouter }, { pageTitle: string | undefined }> {
+    state = {
+        pageTitle: undefined
+    };
+
+    handlePageTitle = (title?: string) => {
+        this.setState({
+            pageTitle: title
+        });
+    }
+
+    render() {
+        let { props, state } = this;
+
+        let isCompose = props.router.path.endsWith('/new');
+        let pageTitle = isCompose ? 'New chat' : state.pageTitle;
+
+        if (!canUseDOM) {
+            return (
+                <>
+                    <XDocumentHead title={pageTitle} />
+                    <Scaffold>
+                        {}
+                    </Scaffold>
+                </>
+            );
+        }
+    
+        let isChannels = props.router.path.endsWith('/channels');
+        let isInvite = props.router.path.includes('joinChannel');
+        let oid = props.router.routeQuery.organizationId;
+        let uid = props.router.routeQuery.userId;
+    
+        let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
+    
+        if (isCompose) {
+            tab = 'compose';
+        }
+    
+        if (!isCompose && !props.router.routeQuery.conversationId) {
+            tab = 'empty';
+        }
+    
+        if (!isCompose && props.router.routeQuery.conversationId) {
+            tab = 'conversation';
+            // returnPath = props.router.path;
+    
+            let r = props.router;
+            returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
+        }
+    
+        if (isInvite) {
+            tab = 'invite';
+        }
+    
+        if (isChannels) {
+            tab = 'channels';
+        }
+    
+        if (oid) {
+            tab = 'organization';
+        }
+    
+        if (uid) {
+            tab = 'user';
+        }
+
+        if (tab === 'empty') {
+            pageTitle = undefined;
+        }
+    
         return (
             <>
-                <XDocumentHead title={isCompose ? 'Compose' : 'Messages'} titleWithoutReverse={!isCompose} />
+                <XDocumentHead title={pageTitle} />
                 <Scaffold>
-                    {}
+                    <Scaffold.Content padding={false} bottomOffset={false}>
+                        <ChatContainer>
+                            <ChatListContainer>
+                                <Header alignItems="center" justifyContent="space-between">
+                                    <Title>Messages</Title>
+                                    <AddButton
+                                        style="light"
+                                        path="/mail/new"
+                                        text="New"
+                                        icon={<PlusIcon />}
+                                        size="small"
+                                    />
+                                </Header>
+                                <ChatsComponent emptyState={tab === 'empty'} />
+                            </ChatListContainer>
+                            <ConversationContainer>
+                                {tab === 'compose' && (
+                                    <MessengerContainer>
+                                        <ComposeComponent conversationId={props.router.routeQuery.conversationId} />
+                                    </MessengerContainer>
+                                )}
+                                {tab === 'empty' && (
+                                    <MessengerEmptyComponent />
+                                )}
+                                {tab === 'conversation' && (
+                                    <MessengerComponent conversationId={props.router.routeQuery.conversationId} handlePageTitle={this.handlePageTitle} />
+                                )}
+                                {tab === 'channels' && (
+                                    <ChannelsExploreComponent />
+                                )}
+                                {tab === 'invite' && (
+                                    <ChannelInviteFromLink />
+                                )}
+                                {tab === 'organization' && (
+                                    <OrganizationProfilContainer>
+                                        <OrganizationProfile organizationId={oid} onBack={() => returnPath ? props.router.push(returnPath) : null} handlePageTitle={this.handlePageTitle} />
+                                    </OrganizationProfilContainer>
+                                )}
+                                {tab === 'user' && (
+                                    <OrganizationProfilContainer>
+                                        <UserProfile userId={uid} onBack={() => returnPath ? props.router.push(returnPath) : null} handlePageTitle={this.handlePageTitle} />
+                                    </OrganizationProfilContainer>
+                                )}
+                            </ConversationContainer>
+                        </ChatContainer>
+                    </Scaffold.Content>
                 </Scaffold>
             </>
         );
     }
+}
 
-    let isChannels = props.router.path.endsWith('/channels');
-    let isInvite = props.router.path.includes('joinChannel');
-    let oid = props.router.routeQuery.organizationId;
-    let uid = props.router.routeQuery.userId;
-
-    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
-
-    if (isCompose) {
-        tab = 'compose';
-    }
-
-    if (!isCompose && !props.router.routeQuery.conversationId) {
-        tab = 'empty';
-    }
-
-    if (!isCompose && props.router.routeQuery.conversationId) {
-        tab = 'conversation';
-        // returnPath = props.router.path;
-
-        let r = props.router;
-        returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
-    }
-
-    if (isInvite) {
-        tab = 'invite';
-    }
-
-    if (isChannels) {
-        tab = 'channels';
-    }
-
-    if (oid) {
-        tab = 'organization';
-    }
-
-    if (uid) {
-        tab = 'user';
-    }
-
-    return (
-        <>
-            <XDocumentHead title={isCompose ? 'Compose' : 'Messages'} titleWithoutReverse={!isCompose} />
-            <Scaffold>
-                <Scaffold.Content padding={false} bottomOffset={false}>
-                    <ChatContainer>
-                        <ChatListContainer>
-                            <Header alignItems="center" justifyContent="space-between">
-                                <Title>Messages</Title>
-                                <AddButton
-                                    style="light"
-                                    path="/mail/new"
-                                    text="New"
-                                    icon={<PlusIcon />}
-                                    size="small"
-                                />
-                            </Header>
-                            <ChatsComponent emptyState={tab === 'empty'} />
-                        </ChatListContainer>
-                        <ConversationContainer>
-                            {tab === 'compose' && (
-                                <MessengerContainer>
-                                    <ComposeComponent conversationId={props.router.routeQuery.conversationId} />
-                                </MessengerContainer>
-                            )}
-                            {tab === 'empty' && (
-                                <MessengerEmptyComponent />
-                            )}
-                            {tab === 'conversation' && (
-                                <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
-                            )}
-                            {tab === 'channels' && (
-                                <ChannelsExploreComponent />
-                            )}
-                            {tab === 'invite' && (
-                                <ChannelInviteFromLink />
-                            )}
-                            {tab === 'organization' && (
-                                <OrganizationProfilContainer>
-                                    <OrganizationProfile organizationId={oid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
-                                </OrganizationProfilContainer>
-                            )}
-                            {tab === 'user' && (
-                                <OrganizationProfilContainer>
-                                    <UserProfile userId={uid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
-                                </OrganizationProfilContainer>
-                            )}
-                        </ConversationContainer>
-                    </ChatContainer>
-                </Scaffold.Content>
-            </Scaffold>
-        </>
-    );
+export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
+    return <MessagePageInner router={props.router} />;
 })));

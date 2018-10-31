@@ -16,7 +16,6 @@ import {
 } from './components/Layout';
 
 class RootComponent extends React.Component<XWithRouter> {
-
     render() {
         let tab = 'channels';
 
@@ -24,7 +23,6 @@ class RootComponent extends React.Component<XWithRouter> {
             tab = 'invite';
         }
 
-        console.log(this.props.router);
         return (
             <RootWrapper>
                 <Sidebar>
@@ -62,7 +60,7 @@ class RootComponent extends React.Component<XWithRouter> {
                 </Sidebar>
                 <Container>
                     {tab === 'channels' && <ChannelsExploreComponent onDirectory={true}/>}
-                    {tab === 'invite' && <MessengerComponent conversationId={this.props.router.routeQuery.conversationId} onDirectory={true}/>}
+                    {tab === 'invite' && <MessengerComponent conversationId={this.props.router.routeQuery.conversationId} onDirectory={true} />}
                 </Container>
                 <CreateOrganization />
             </RootWrapper>
@@ -73,7 +71,7 @@ class RootComponent extends React.Component<XWithRouter> {
 export default withApp('Directory', 'viewer', withRouter((props) => {
     return (
         <>
-            <XDocumentHead title="Directory" />
+            <XDocumentHead title="Channels Directory" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <RootComponent router={props.router} />

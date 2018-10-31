@@ -92,16 +92,17 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
             fromOutside: false,
         };
         if (props.router.query.email) {
+            let noValue = props.router.query.email === 'true';
             this.state = {
                 ...state,
                 email: true,
-                emailValue: props.router.query.email,
-                emailSending: true,
+                emailValue: noValue ? '' : props.router.query.email,
+                emailSending: noValue ? false : true,
                 emailError: '',
                 emailSent: false,
                 fromOutside: true,
             };
-            if (canUseDOM) {
+            if (canUseDOM && !noValue) {
                 this.fireEmail();
             }
         } else if (props.router.query.google) {
@@ -271,61 +272,61 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                 )}
             </ChannelSignup>
         ) : (
-            <SignContainer
-                signin={signin}
-                text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
-                path={signin ? '/signup' : '/signin'}
-                linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
-            >
-                {!this.state.fromOutside && !this.state.email && (<>
-                    <Title>{signin ? InitTexts.auth.signinTitle : InitTexts.auth.signupTitle}</Title>
-                    {signin && <Description>{InitTexts.auth.signinSubtitle}</Description>}
-                    <ButtonsWrapper marginTop={52}>
-                        <GoogleButton
-                            onClick={this.loginWithGoogle}
-                            text={signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle}
-                        />
-                        <Separator />
-                        <EmailButton
-                            onClick={this.loginWithEmail}
-                            text={signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
-                        />
-                    </ButtonsWrapper>
-                </>)}
+                <SignContainer
+                    signin={signin}
+                    text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
+                    path={signin ? '/signup' : '/signin'}
+                    linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
+                >
+                    {!this.state.fromOutside && !this.state.email && (<>
+                        <Title>{signin ? InitTexts.auth.signinTitle : InitTexts.auth.signupTitle}</Title>
+                        {signin && <Description>{InitTexts.auth.signinSubtitle}</Description>}
+                        <ButtonsWrapper marginTop={52}>
+                            <GoogleButton
+                                onClick={this.loginWithGoogle}
+                                text={signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle}
+                            />
+                            <Separator />
+                            <EmailButton
+                                onClick={this.loginWithEmail}
+                                text={signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
+                            />
+                        </ButtonsWrapper>
+                    </>)}
 
-                {this.state.fromOutside && (this.state.emailSending || this.state.googleStarting) && (
-                    <XLoader loading={!this.state.emailSent} />
-                )}
+                    {this.state.fromOutside && (this.state.emailSending || this.state.googleStarting) && (
+                        <XLoader loading={!this.state.emailSent} />
+                    )}
 
-                {this.state.email && !this.state.emailSent && (<>
-                    <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
-                    {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
-                    <ButtonsWrapper>
-                        <XInput type="email" size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
-                    </ButtonsWrapper>
-                    <ButtonsWrapper marginTop={20}>
-                        <XHorizontal>
-                            <XButton onClick={this.loginReset} style="ghost" size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                            <XButton onClick={this.loginEmailStart} style="primary" size="large" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
-                        </XHorizontal>
-                    </ButtonsWrapper>
-                </>)}
+                    {this.state.email && !this.state.emailSent && (<>
+                        <Title marginBottom={20}>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</Title>
+                        {this.state.emailError !== '' && (<><XServiceMessage title={InitTexts.auth.emailInvalid} /><EmptyBlock /></>)}
+                        <ButtonsWrapper>
+                            <XInput type="email" size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
+                        </ButtonsWrapper>
+                        <ButtonsWrapper marginTop={20}>
+                            <XHorizontal>
+                                <XButton onClick={this.loginReset} style="ghost" size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                                <XButton onClick={this.loginEmailStart} style="primary" size="large" alignSelf="stretch" flexGrow={1} loading={this.state.emailSending} text={InitTexts.auth.next} />
+                            </XHorizontal>
+                        </ButtonsWrapper>
+                    </>)}
 
-                {this.state.emailSent && (<>
-                    <Title marginBottom={20}>Please, enter activation code</Title>
-                    {this.state.codeError !== '' && (<><XServiceMessage title={InitTexts.auth.codeInvalid} /><EmptyBlock /></>)}
-                    <ButtonsWrapper>
-                        <XInput pattern="[0-9]*" type="number" size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
-                    </ButtonsWrapper>
-                    <ButtonsWrapper marginTop={20}>
-                        <XHorizontal>
-                            <XButton onClick={this.loginReset} size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
-                            <XButton onClick={this.loginCodeStart} size="large" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
-                        </XHorizontal>
-                    </ButtonsWrapper>
-                </>)}
-            </SignContainer>
-        );
+                    {this.state.emailSent && (<>
+                        <Title marginBottom={20}>Please, enter activation code</Title>
+                        {this.state.codeError !== '' && (<><XServiceMessage title={InitTexts.auth.codeInvalid} /><EmptyBlock /></>)}
+                        <ButtonsWrapper>
+                            <XInput pattern="[0-9]*" type="number" size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
+                        </ButtonsWrapper>
+                        <ButtonsWrapper marginTop={20}>
+                            <XHorizontal>
+                                <XButton onClick={this.loginReset} size="large" alignSelf="stretch" flexGrow={1} text={InitTexts.auth.reset} />
+                                <XButton onClick={this.loginCodeStart} size="large" style="primary" alignSelf="stretch" flexGrow={1} loading={this.state.codeSending} text={InitTexts.auth.complete} />
+                            </XHorizontal>
+                        </ButtonsWrapper>
+                    </>)}
+                </SignContainer>
+            );
     }
 }
 

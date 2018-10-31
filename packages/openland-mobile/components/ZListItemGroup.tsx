@@ -2,12 +2,12 @@ import * as React from 'react';
 import { View, Text } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
-export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null }> {
+export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null, divider?: boolean }> {
     render() {
         let components: any[] = [];
         React.Children.forEach(this.props.children, (c) => {
             if (c !== null && c !== undefined) {
-                if (components.length > 0) {
+                if (components.length > 0 && this.props.divider !== false) {
                     components.push(<View key={'div-' + components.length} style={{ paddingLeft: 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
                 }
                 components.push(c);
@@ -64,7 +64,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                 <View>
                     {components}
                 </View>
-                <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />
+                {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />}
                 {this.props.footer !== null && this.props.footer !== undefined && (
                     <Text style={{ color: '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 15, paddingRight: 15, paddingBottom: 15, paddingTop: 6 }} >{this.props.footer}</Text>
                 )}

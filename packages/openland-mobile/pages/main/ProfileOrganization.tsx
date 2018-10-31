@@ -11,10 +11,11 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { Alert } from 'react-native';
+import { Alert, View, Text } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChatInfoQuery } from 'openland-api';
+import { UserViewAsync } from '../compose/ComposeInitial';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -112,7 +113,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 {changeRole => (
                                                     <YMutation mutation={OrganizationRemoveMemberMutation} refetchQueriesVars={[{ query: OrganizationQuery, variables: { organizationId: this.props.router.params.id } }]}>
                                                         {remove => (
-                                                            <ZListItemGroup header="Members" >
+                                                            <ZListItemGroup header="Members" divider={false}>
                                                                 {resp.data.organization.isMine && <ZListItem
                                                                     key="add"
                                                                     text=" 👋 Invite via Link"
@@ -121,64 +122,71 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                 />}
 
                                                                 {resp.data.organization.members.map((v) => (
-                                                                    <ZListItem
-                                                                        key={v.user.id}
-                                                                        text={v.user.name}
-                                                                        leftAvatar={{ photo: v.user.picture, title: v.user.name, key: v.user.id }}
-                                                                        description={v.role === 'OWNER' ? 'owner' : undefined}
-                                                                        onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })}
-                                                                        onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
-                                                                            let builder = new ActionSheetBuilder();
+                                                                    // <ZListItem
+                                                                    //     key={v.user.id}
+                                                                    //     text={v.user.name}
+                                                                    //     leftAvatar={{ photo: v.user.picture, title: v.user.name, key: v.user.id }}
+                                                                    //     description={v.role === 'OWNER' ? 'owner' : undefined}
 
-                                                                            builder.action(
-                                                                                v.role === 'MEMBER' ? 'Make owner' : 'Make member',
-                                                                                () => {
-                                                                                    Alert.alert(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'owner' : 'member'}?`, undefined, [{
-                                                                                        onPress: async () => {
-                                                                                            startLoader();
-                                                                                            try {
-                                                                                                await changeRole({ variables: { memberId: v.user.id, organizationId: this.props.router.params.id, newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any } });
-                                                                                            } catch (e) {
-                                                                                                Alert.alert(e.message);
-                                                                                            }
-                                                                                            stopLoader();
+                                                                    // />
+                                                                    <View>
+                                                                        <UserViewAsync
+                                                                            item={v.user}
+                                                                            onPress={() => this.props.router.push('ProfileUser', { id: v.user.id })}
+                                                                            onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
+                                                                                let builder = new ActionSheetBuilder();
+
+                                                                                builder.action(
+                                                                                    v.role === 'MEMBER' ? 'Make owner' : 'Make member',
+                                                                                    () => {
+                                                                                        Alert.alert(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'owner' : 'member'}?`, undefined, [{
+                                                                                            onPress: async () => {
+                                                                                                startLoader();
+                                                                                                try {
+                                                                                                    await changeRole({ variables: { memberId: v.user.id, organizationId: this.props.router.params.id, newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any } });
+                                                                                                } catch (e) {
+                                                                                                    Alert.alert(e.message);
+                                                                                                }
+                                                                                                stopLoader();
+                                                                                            },
+                                                                                            text: v.role === 'MEMBER' ? 'Make owner' : 'Make member',
                                                                                         },
-                                                                                        text: v.role === 'MEMBER' ? 'Make owner' : 'Make member',
+                                                                                        {
+                                                                                            text: 'Cancel',
+                                                                                            style: 'cancel'
+                                                                                        }]);
                                                                                     },
-                                                                                    {
-                                                                                        text: 'Cancel',
-                                                                                        style: 'cancel'
-                                                                                    }]);
-                                                                                },
-                                                                            );
+                                                                                );
 
-                                                                            builder.action(
-                                                                                'Remove',
-                                                                                () => {
-                                                                                    Alert.alert(`Are you sure you want to remove ${v.user.name}?`, undefined, [{
-                                                                                        onPress: async () => {
-                                                                                            startLoader();
-                                                                                            try {
-                                                                                                await remove({ variables: { memberId: v.user.id, organizationId: this.props.router.params.id } });
-                                                                                            } catch (e) {
-                                                                                                Alert.alert(e.message);
-                                                                                            }
-                                                                                            stopLoader();
+                                                                                builder.action(
+                                                                                    'Remove',
+                                                                                    () => {
+                                                                                        Alert.alert(`Are you sure you want to remove ${v.user.name}?`, undefined, [{
+                                                                                            onPress: async () => {
+                                                                                                startLoader();
+                                                                                                try {
+                                                                                                    await remove({ variables: { memberId: v.user.id, organizationId: this.props.router.params.id } });
+                                                                                                } catch (e) {
+                                                                                                    Alert.alert(e.message);
+                                                                                                }
+                                                                                                stopLoader();
+                                                                                            },
+                                                                                            text: 'Remove',
+                                                                                            style: 'destructive'
                                                                                         },
-                                                                                        text: 'Remove',
-                                                                                        style: 'destructive'
+                                                                                        {
+                                                                                            text: 'Cancel',
+                                                                                            style: 'cancel'
+                                                                                        }]);
                                                                                     },
-                                                                                    {
-                                                                                        text: 'Cancel',
-                                                                                        style: 'cancel'
-                                                                                    }]);
-                                                                                },
-                                                                                true
-                                                                            );
-                                                                            builder.show();
+                                                                                    true
+                                                                                );
+                                                                                builder.show();
 
-                                                                        } : undefined}
-                                                                    />
+                                                                            } : undefined}
+                                                                        />
+                                                                        <Text style={{ position: 'absolute', right: 16, height: 60, lineHeight: 60, fontSize: 15, color: '#99a2b0' }}>{v.role === 'OWNER' ? 'Owner' : undefined}</Text>
+                                                                    </View>
                                                                 ))}
                                                             </ZListItemGroup>
                                                         )}

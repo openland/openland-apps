@@ -20,7 +20,7 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
-export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, disabled?: boolean }> {
+export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, onLongPress?: () => void, disabled?: boolean }> {
 
     handlePress = () => {
         this.props.onPress(this.props.item.id);
@@ -31,7 +31,7 @@ export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPres
         console.warn(JSON.stringify(item));
         return (
             <ASView style={{ height: 60, opacity: this.props.disabled ? 0.5 : 1 }}>
-                <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress}>
+                <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
                     <ASFlex width={60} height={60} alignItems="center" justifyContent="center">
                         <ASAvatar
                             src={item.picture}

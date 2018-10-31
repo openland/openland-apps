@@ -87,6 +87,7 @@ interface RootComponentState {
     searchText: string;
     sort: { orderBy: string, featured: boolean };
     orgCount: number;
+    pageTitle: string;
 }
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
@@ -98,8 +99,15 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         this.state = {
             searchText: '',
             sort: { orderBy: 'createdAt', featured: true },
-            orgCount: 0
+            orgCount: 0,
+            pageTitle: 'People Directory'
         };
+    }
+
+    handlePageTitle = (title?: string) => {
+        this.setState({
+            pageTitle: title || 'People Directory'
+        });
     }
 
     handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -141,111 +149,109 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         let uid = this.props.router.routeQuery.userId;
 
         return (
-            <RootWrapper>
-                <Sidebar>
-                    <SidebarHeader>Directory</SidebarHeader>
-                    <XVertical separator={0}>
-                        <SidebarItemWrapper>
-                            <SidebarItemHeadLink
-                                path="/directory"
-                                title="Organizations"
-                                icon="organizations"
-                            />
-                        </SidebarItemWrapper>
-                        <SidebarItemWrapper>
-                            <SidebarItemHeadLink
-                                path="/directory/communities"
-                                title="Communities"
-                                icon="communities"
-                            />
-                        </SidebarItemWrapper>
-                        <SidebarItemWrapper>
-                            <SidebarItemHeadLink
-                                path="/directory/channels"
-                                title="Channels"
-                                icon="channels"
-                            />
-                        </SidebarItemWrapper>
-                        <SidebarItemWrapper active={true}>
-                            <SidebarItemHeadLink
-                                path="/directory/people"
-                                title="People"
-                                icon="people"
-                            />
-                        </SidebarItemWrapper>
-                    </XVertical>
-                </Sidebar>
-                <Container>
-                    {!uid && (
-                        <XVertical separator={0}>
-                            <SearchRow>
-                                <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                    <SearchFormContent separator={4} flexGrow={1}>
-                                        <SearchIcon />
-                                        <SearchInput
-                                            value={this.state.searchText}
-                                            onChange={this.handleSearchChange}
-                                            placeholder="Search people"
+            <>
+                <XDocumentHead title={this.state.pageTitle} />
+                <Scaffold>
+                    <Scaffold.Content padding={false} bottomOffset={false}>
+                        <RootWrapper>
+                            <Sidebar>
+                                <SidebarHeader>Directory</SidebarHeader>
+                                <XVertical separator={0}>
+                                    <SidebarItemWrapper>
+                                        <SidebarItemHeadLink
+                                            path="/directory"
+                                            title="Organizations"
+                                            icon="organizations"
                                         />
-                                    </SearchFormContent>
-                                    <XHorizontal separator={2}>
-                                        {this.state.searchText.length > 0 && (
-                                            <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
+                                    </SidebarItemWrapper>
+                                    <SidebarItemWrapper>
+                                        <SidebarItemHeadLink
+                                            path="/directory/communities"
+                                            title="Communities"
+                                            icon="communities"
+                                        />
+                                    </SidebarItemWrapper>
+                                    <SidebarItemWrapper>
+                                        <SidebarItemHeadLink
+                                            path="/directory/channels"
+                                            title="Channels"
+                                            icon="channels"
+                                        />
+                                    </SidebarItemWrapper>
+                                    <SidebarItemWrapper active={true}>
+                                        <SidebarItemHeadLink
+                                            path="/directory/people"
+                                            title="People"
+                                            icon="people"
+                                        />
+                                    </SidebarItemWrapper>
+                                </XVertical>
+                            </Sidebar>
+                            <Container>
+                                {!uid && (
+                                    <XVertical separator={0}>
+                                        <SearchRow>
+                                            <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
+                                                <SearchFormContent separator={4} flexGrow={1}>
+                                                    <SearchIcon />
+                                                    <SearchInput
+                                                        value={this.state.searchText}
+                                                        onChange={this.handleSearchChange}
+                                                        placeholder="Search people"
+                                                    />
+                                                </SearchFormContent>
+                                                <XHorizontal separator={2}>
+                                                    {this.state.searchText.length > 0 && (
+                                                        <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
+                                                    )}
+                                                    <XButton
+                                                        text={TextDirectory.buttonSearch}
+                                                        style="primary"
+                                                        enabled={!!this.state.searchText}
+                                                    />
+                                                </XHorizontal>
+                                            </SearchFormWrapper>
+                                        </SearchRow>
+                                        {(this.state.searchText.length <= 0) && (
+                                            <XSubHeader title="All people">
+                                                <XSubHeaderRight>
+                                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
+                                                </XSubHeaderRight>
+                                            </XSubHeader>
                                         )}
-                                        <XButton
-                                            text={TextDirectory.buttonSearch}
-                                            style="primary"
-                                            enabled={!!this.state.searchText}
-                                        />
-                                    </XHorizontal>
-                                </SearchFormWrapper>
-                            </SearchRow>
-                            {(this.state.searchText.length <= 0) && (
-                                <XSubHeader title="All people">
-                                    <XSubHeaderRight>
-                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
-                                    </XSubHeaderRight>
-                                </XSubHeader>
-                            )}
-                            {(this.state.searchText.length > 0) && (orgCount > 0) && (
-                                <XSubHeader title="People" counter={orgCount}>
-                                    <XSubHeaderRight>
-                                        <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
-                                    </XSubHeaderRight>
-                                </XSubHeader>
-                            )}
-                            {(this.state.searchText.length > 0) && (orgCount <= 0) && (
-                                <XSubHeader title="No results" />
-                            )}
-                            <Results>
-                                <Communities
-                                    featuredFirst={this.state.sort.featured}
-                                    searchText={this.state.searchText}
-                                    orderBy={this.state.sort.orderBy}
-                                    tagsCount={this.tagsCount}
-                                />
-                            </Results>
-                        </XVertical>
-                    )}
-                    {uid && <UserProfile userId={uid} onBack={() => this.props.router.push('/directory/people')} />}
-                </Container>
+                                        {(this.state.searchText.length > 0) && (orgCount > 0) && (
+                                            <XSubHeader title="People" counter={orgCount}>
+                                                <XSubHeaderRight>
+                                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
+                                                </XSubHeaderRight>
+                                            </XSubHeader>
+                                        )}
+                                        {(this.state.searchText.length > 0) && (orgCount <= 0) && (
+                                            <XSubHeader title="No results" />
+                                        )}
+                                        <Results>
+                                            <Communities
+                                                featuredFirst={this.state.sort.featured}
+                                                searchText={this.state.searchText}
+                                                orderBy={this.state.sort.orderBy}
+                                                tagsCount={this.tagsCount}
+                                            />
+                                        </Results>
+                                    </XVertical>
+                                )}
+                                {uid && <UserProfile userId={uid} onBack={() => this.props.router.push('/directory/people')} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
+                            </Container>
 
-                <CreateOrganization />
-                <CreateChannel />
-            </RootWrapper>
+                            <CreateOrganization />
+                            <CreateChannel />
+                        </RootWrapper>
+                    </Scaffold.Content>
+                </Scaffold>
+            </>
         );
     }
 }
 
 export default withApp('Directory', 'viewer', withRouter((props) => {
-    return (
-        <>
-            <XDocumentHead title="Directory" />
-            <Scaffold>
-                <Scaffold.Content padding={false} bottomOffset={false}>
-                    <RootComponent router={props.router} />
-                </Scaffold.Content>
-            </Scaffold>
-        </>
-    );
+    return <RootComponent router={props.router} />;
 }));

@@ -83,15 +83,17 @@ const ChannelInviteSmartHead = withChannelInviteInfo(withRouter((props) => {
     }
 }));
 
-export const XDocumentHead = withRouter<{ title: string | string[], titleWithoutReverse?: boolean, titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
+export const XDocumentHead = withRouter<{ title?: string | string[], titleWithoutReverse?: boolean, titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
     if (Cookie.get('x-openland-token')) {
-        let parts = ['Openland'];
+        let parts = ['Openland Messenger'];
         if (typeof (props.title) === 'string') {
-            parts = ['Openland', props.title];
+            parts = ['Openland Messenger', props.title];
+        } else if (Array.isArray(props.title)) {
+            parts = ['Openland Messenger', ...props.title];
         } else {
-            parts = ['Openland', ...props.title];
+            parts = ['Openland Messenger'];
         }
-        let title = props.titleWithoutReverse ? parts.join(' — ') : parts.reverse().join(' — ');
+        let title = props.titleWithoutReverse ? parts.join(' | ') : parts.reverse().join(' | ');
 
         let img = 'https://openland.com/img/og-messenger-3.png';
         if (props.imgUrl) {

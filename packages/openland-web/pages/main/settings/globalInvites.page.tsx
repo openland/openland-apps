@@ -23,7 +23,7 @@ const Content = Glamorous(XContent)({
 
 export default withApp('Invites History', 'viewer', withQueryLoader(withMyOrganizationProfile((props) => {
     return (
-        <Navigation title="Invites">
+        <Navigation title="My invites">
             <Content>
                 <XVertical separator={12}>
                     <HeadTitle>Invites</HeadTitle>

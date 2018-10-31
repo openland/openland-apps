@@ -55,9 +55,54 @@ export const AccountInviteInfoQuery = gql`
     ${UserShort}
 `;
 
+export const AccountAppInviteInfoQuery = gql`
+    query AccountAppInviteInfo($inviteKey: String!) {
+        invite: alphaInviteInfo(key: $inviteKey) {
+            creator{
+                ...UserShort
+            }
+        }
+        appInvite: alphaAppInviteInfo(key: $inviteKey) {
+            inviter{
+                ...UserShort
+            }
+        }
+    }
+    ${UserShort}
+`;
+
+export const AccountAppInviteQuery = gql`
+    query AccountAppInvite {
+        invite: alphaAppInvite
+    }
+`;
+
 export const AccountInviteJoinMutation = gql`
     mutation AccountInviteJoin($inviteKey: String!) {
         alphaJoinInvite(key: $inviteKey)
+    }
+`;
+
+export const AccountInvitesQuery = gql`
+    query AccountInvites {
+        invites: alphaInvites {
+            id
+            key
+        }
+    }
+`;
+
+export const AccountInvitesHistoryQuery = gql`
+    query AccountInvitesHistory {
+        invites: alphaInvitesHistory {
+            forEmail
+            isGlobal
+            acceptedBy {
+                id
+                name
+                picture
+            }
+        }
     }
 `;
 

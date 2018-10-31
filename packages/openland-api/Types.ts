@@ -188,6 +188,91 @@ export interface AccountInviteInfoVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: AccountAppInviteInfo
+// ====================================================
+
+export interface AccountAppInviteInfo_invite_creator_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface AccountAppInviteInfo_invite_creator {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: AccountAppInviteInfo_invite_creator_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface AccountAppInviteInfo_invite {
+  __typename: "InviteInfo";
+  creator: AccountAppInviteInfo_invite_creator | null;
+}
+
+export interface AccountAppInviteInfo_appInvite_inviter_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface AccountAppInviteInfo_appInvite_inviter {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: AccountAppInviteInfo_appInvite_inviter_primaryOrganization | null;
+  role: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+}
+
+export interface AccountAppInviteInfo_appInvite {
+  __typename: "AppInviteInfo";
+  inviter: AccountAppInviteInfo_appInvite_inviter;
+}
+
+export interface AccountAppInviteInfo {
+  invite: AccountAppInviteInfo_invite | null;
+  appInvite: AccountAppInviteInfo_appInvite | null;
+}
+
+export interface AccountAppInviteInfoVariables {
+  inviteKey: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: AccountAppInvite
+// ====================================================
+
+export interface AccountAppInvite {
+  invite: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: AccountInviteJoin
 // ====================================================
 
@@ -197,6 +282,48 @@ export interface AccountInviteJoin {
 
 export interface AccountInviteJoinVariables {
   inviteKey: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: AccountInvites
+// ====================================================
+
+export interface AccountInvites_invites {
+  __typename: "Invite";
+  id: string;
+  key: string;
+}
+
+export interface AccountInvites {
+  invites: AccountInvites_invites[] | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: AccountInvitesHistory
+// ====================================================
+
+export interface AccountInvitesHistory_invites_acceptedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  picture: string | null;
+}
+
+export interface AccountInvitesHistory_invites {
+  __typename: "InviteHistotyInfo";
+  forEmail: string;
+  isGlobal: boolean;
+  acceptedBy: AccountInvitesHistory_invites_acceptedBy | null;
+}
+
+export interface AccountInvitesHistory {
+  invites: AccountInvitesHistory_invites[] | null;
 }
 
 /* tslint:disable */
@@ -7385,82 +7512,6 @@ export interface OrganizationDeletePublicInviteVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: OrganizationInviteOrganization
-// ====================================================
-
-export interface OrganizationInviteOrganization {
-  alphaOrganizationInviteOrganization: string;
-}
-
-export interface OrganizationInviteOrganizationVariables {
-  inviteRequests: InviteRequestOrganization[];
-  organizationId?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: OrganizationPublicInviteOrganizatons
-// ====================================================
-
-export interface OrganizationPublicInviteOrganizatons_publicInvite {
-  __typename: "Invite";
-  id: string;
-  key: string;
-  ttl: string | null;
-}
-
-export interface OrganizationPublicInviteOrganizatons {
-  publicInvite: OrganizationPublicInviteOrganizatons_publicInvite | null;
-}
-
-export interface OrganizationPublicInviteOrganizatonsVariables {
-  organizationId?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: OrganizationCreatePublicInviteOrganizatons
-// ====================================================
-
-export interface OrganizationCreatePublicInviteOrganizatons_alphaOrganizationCreatePublicInviteForOrganizations {
-  __typename: "Invite";
-  id: string;
-  key: string;
-  ttl: string | null;
-}
-
-export interface OrganizationCreatePublicInviteOrganizatons {
-  alphaOrganizationCreatePublicInviteForOrganizations: OrganizationCreatePublicInviteOrganizatons_alphaOrganizationCreatePublicInviteForOrganizations;
-}
-
-export interface OrganizationCreatePublicInviteOrganizatonsVariables {
-  expirationDays?: number | null;
-  organizationId?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: OrganizationDeletePublicInviteOrganizatons
-// ====================================================
-
-export interface OrganizationDeletePublicInviteOrganizatons {
-  alphaOrganizationDeletePublicInviteForOrganizations: string;
-}
-
-export interface OrganizationDeletePublicInviteOrganizatonsVariables {
-  organizationId?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: OrganizationActivateByInvite
 // ====================================================
 
@@ -10340,13 +10391,6 @@ export interface InviteRequest {
   email: string;
   emailText?: string | null;
   role: OrganizationMemberRole;
-  firstName?: string | null;
-  lastName?: string | null;
-}
-
-export interface InviteRequestOrganization {
-  email: string;
-  emailText?: string | null;
   firstName?: string | null;
   lastName?: string | null;
 }

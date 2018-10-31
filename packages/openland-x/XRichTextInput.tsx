@@ -126,10 +126,11 @@ export interface XRichTextInputProps extends XFlexStyles {
     autofocus?: boolean;
 }
 
-export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState }> {
+export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beChanged: boolean }> {
     private editorRef = React.createRef<Editor>();
     state = {
-        editorState: EditorState.createEmpty()
+        editorState: EditorState.createEmpty(),
+        beChanged: false
     };
 
     componentDidMount() {
@@ -165,6 +166,13 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     onChange = (editorState: EditorState) => {
+        if (this.props.value !== undefined && !this.state.beChanged) {
+            this.setState({
+                beChanged: true
+            });
+            return;
+        }
+        
         this.setState({ editorState: editorState });
 
         if (this.props.onChange) {
@@ -176,7 +184,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
         if (this.props.value !== nextProps.value) {
             const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
             this.setState({
-                editorState: EditorState.moveSelectionToEnd(state)
+                editorState: EditorState.moveFocusToEnd(state)
             });
         }
     }

@@ -787,6 +787,8 @@ class ChannelCard extends React.Component<ChannelCardProps> {
 interface OrganizationProfileInnerProps extends XWithRouter {
     organizationQuery: Organization;
     onBack: () => void;
+    handlePageTitle?: any;
+    onDirectory?: boolean;
 }
 
 const Channels = (props: { items?: any, organization: any }) => {
@@ -802,21 +804,55 @@ const Channels = (props: { items?: any, organization: any }) => {
     );
 };
 
-const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
-    let org = props.organizationQuery.organization;
+class OrganizationProfileInner extends React.Component<OrganizationProfileInnerProps> {
+    pageTitle: string | undefined = undefined;
 
-    return (
-        <>
-            <Back callback={props.onBack} />
-            <Header organizationQuery={props.organizationQuery} />
-            <XScrollView height="calc(100% - 160px)">
-                <About organizationQuery={props.organizationQuery} />
-                <Members organizationQuery={props.organizationQuery} />
-                <Channels items={org.channels.filter(c => c && !c.hidden)} organization={org} />
-            </XScrollView>
-        </>
-    );
-};
+    constructor (props: OrganizationProfileInnerProps) {
+        super(props);
+
+        if (this.props.handlePageTitle) {
+            this.pageTitle = props.organizationQuery.organization.name;
+            this.props.handlePageTitle(this.pageTitle);
+        }
+    }
+
+    componentWillReceiveProps (newProps: OrganizationProfileInnerProps) {
+        if (newProps.handlePageTitle) {
+            let title = newProps.organizationQuery.organization.name;
+
+            if (title !== this.pageTitle) {
+                this.pageTitle = title;
+
+                newProps.handlePageTitle(title);
+            }
+        }
+    }
+
+    handleRef = (ref?: any) => {
+        if (!ref && this.props.onDirectory) {
+            if (this.props.handlePageTitle) {
+                this.pageTitle = undefined;
+                this.props.handlePageTitle(undefined);
+            }
+        }
+    }
+
+    render() {
+        let org = this.props.organizationQuery.organization;
+
+        return (
+            <div ref={this.handleRef}>
+                <Back callback={this.props.onBack} />
+                <Header organizationQuery={this.props.organizationQuery} />
+                <XScrollView height="calc(100% - 160px)">
+                    <About organizationQuery={this.props.organizationQuery} />
+                    <Members organizationQuery={this.props.organizationQuery} />
+                    <Channels items={org.channels.filter(c => c && !c.hidden)} organization={org} />
+                </XScrollView>
+            </div>
+        );
+    }
+}
 
 const OrganizationProvider = withOrganization(withRouter((props) => (
     props.data.organization
@@ -825,14 +861,18 @@ const OrganizationProvider = withOrganization(withRouter((props) => (
                 organizationQuery={props.data}
                 onBack={(props as any).onBack}
                 router={props.router}
+                handlePageTitle={(props as any).handlePageTitle}
+                onDirectory={(props as any).onDirectory}
             />
         )
         : <XLoader loading={true} />
-))) as React.ComponentType<{ onBack: () => void, variables: { organizationId: string } }>;
+))) as React.ComponentType<{ onBack: () => void, variables: { organizationId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
 
-export const OrganizationProfile = (props: { organizationId: string, onBack: () => void }) => (
+export const OrganizationProfile = (props: { organizationId: string, onBack: () => void, onDirectory?: boolean; handlePageTitle?: any }) => (
     <OrganizationProvider
         variables={{ organizationId: props.organizationId }}
         onBack={props.onBack}
+        handlePageTitle={props.handlePageTitle}
+        onDirectory={props.onDirectory}
     />
 );
