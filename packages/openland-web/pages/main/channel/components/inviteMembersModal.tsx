@@ -295,17 +295,13 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
             <FooterWrap>
                 <XHorizontal flexGrow={1}>
                     {!this.state.showLink && (
-                        <XWithRole role="admin" orgPermission={this.props.orgId}>
-                            {!this.state.showLink && (
-                                <InviteButton
-                                    onClick={() => this.setState({ showLink: true })}
-                                    title="Invite with a link"
-                                    icon={<LinkIcon />}
-                                    marginLeft={4}
-                                    marginRight={10}
-                                />
-                            )}
-                        </XWithRole>
+                        <InviteButton
+                            onClick={() => this.setState({ showLink: true })}
+                            title="Invite with a link"
+                            icon={<LinkIcon />}
+                            marginLeft={4}
+                            marginRight={10}
+                        />
                     )}
                     {this.state.showLink && (
                         <InviteButton
