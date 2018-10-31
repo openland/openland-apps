@@ -115,6 +115,7 @@ interface MessageListProps {
     conversationType?: string;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
+    conversationId: string;
 }
 
 interface MessageListState {
@@ -230,6 +231,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
                         conversation={props.conversation}
                         out={!!(props.me && props.me.id === m.sender.id)}
                         conversationType={this.props.conversationType}
+                        conversationId={this.props.conversationId}
                     />
                 );
             } else {
@@ -242,6 +244,7 @@ export class MessageListComponent extends React.Component<MessageListProps, Mess
                         conversation={props.conversation}
                         out={true}
                         conversationType={this.props.conversationType}
+                        conversationId={this.props.conversationId}
                     />
                 );
             }

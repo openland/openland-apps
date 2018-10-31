@@ -11,9 +11,10 @@ import { XLink } from 'openland-x/XLink';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { ChatEditMessageVariables, ChatEditMessage } from 'openland-api/Types';
+import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { getConfig } from '../../../../config';
-import { withEditMessage } from '../../../../api/withEditMessage';
+import { withEditAndReplyMessage } from '../../../../api/withEditAndReplyMessage';
 import { MutationFunc } from 'react-apollo';
 import PhotoIcon from '../icons/ic-photo-2.svg';
 import FileIcon from '../icons/ic-file-3.svg';
@@ -23,7 +24,7 @@ import ShortcutsIcon from '../icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from '../icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
-import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
+import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -299,8 +300,9 @@ export interface MessageComposeComponentProps {
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    messageEditor: EditMessageContextProps;
+    messagesContext: MessagesStateContextProps;
     editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
+    replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
 }
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps> {
@@ -309,8 +311,11 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         dragOn: false,
         dragUnder: false,
         message: '',
-        messageForEdit: undefined,
-        messageIdForEdit: undefined
+        statlesMessage: undefined,
+        statlesMessageReply: undefined,
+        statlesMessageId: undefined,
+        statlesMessageSender: undefined,
+        statlesChatId: undefined
     };
 
     private input = React.createRef<XRichTextInput>();
@@ -330,24 +335,31 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private handleSend = () => {
-        let { message, messageForEdit, messageIdForEdit } = this.state;
+        let { message, statlesMessage, statlesMessageReply, statlesMessageId, statlesChatId } = this.state;
         if (message.trim().length > 0) {
             let msg = message.trim();
-            if (this.props.onSend && !messageForEdit && !messageIdForEdit) {
+            if (this.props.onSend && !statlesMessage && !statlesMessageId) {
                 this.props.onSend(msg);
             }
-            if (messageForEdit && messageIdForEdit) {
-                this.props.editMessage({ variables: { message: message, messageId: messageIdForEdit } });
+            if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
+                if (statlesChatId) {
+                    this.props.replyMessage({
+                        variables: {
+                            conversationId: statlesChatId,
+                            message: message,
+                            replyMessages: statlesMessageId
+                        }
+                    });
+                } else {
+                    this.props.editMessage({
+                        variables: {
+                            message: message,
+                            messageId: statlesMessageId
+                        }
+                    });
+                }
             }
-            if (this.input.current) {
-                this.input.current!!.resetAndFocus();
-            }
-            this.setState({
-                message: '',
-                messageForEdit: undefined,
-                messageIdForEdit: undefined
-            });
-            this.props.messageEditor.setEditMessage(null, null);
+            this.closeEditor();
         }
     }
 
@@ -426,12 +438,16 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private closeEditor = () => {
-        this.props.messageEditor.setEditMessage(null, null);
+        this.props.messagesContext.setEditMessage(null, null);
+        this.props.messagesContext.setReplyMessage(null, null, null, null);
         (document as any).isEditMessage = false;
         this.setState({
             message: '',
-            messageForEdit: undefined,
-            messageIdForEdit: undefined
+            statlesMessage: undefined,
+            statlesMessageReply: undefined,
+            statlesMessageId: undefined,
+            statlesMessageSender: undefined,
+            statlesChatId: undefined
         });
         if (this.input.current) {
             this.input.current!!.resetAndFocus();
@@ -439,19 +455,19 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
-        let { message, messageForEdit, messageIdForEdit } = this.state;
+        let { message, statlesMessage, statlesMessageReply, statlesMessageId } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && (!messageForEdit && !messageIdForEdit)) {
+        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && (!statlesMessage && !statlesMessageId)) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
                 e.preventDefault();
-                this.props.messageEditor.setEditMessage(messageData.id, messageData.message);
+                this.props.messagesContext.setEditMessage(messageData.id, messageData.message);
                 (document as any).isEditMessage = true;
             }
         }
-        if (e.code === 'Escape' && messageForEdit && messageIdForEdit) {
+        if (e.code === 'Escape' && (statlesMessage || statlesMessageReply) && statlesMessageId) {
             this.closeEditor();
         }
     }
@@ -474,11 +490,33 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
-        let { editMessage, editMessageId } = nextProps.messageEditor;
+        let {
+            editMessage,
+            editMessageId,
+            replyMessage,
+            replyMessageId,
+            replyMessageSender,
+            conversationId
+        } = nextProps.messagesContext;
+
         if (editMessage) {
             this.setState({
-                messageForEdit: editMessage,
-                messageIdForEdit: editMessageId
+                statlesMessage: editMessage,
+                statlesMessageId: editMessageId
+            });
+            if (this.input.current) {
+                this.input.current.focus();
+            }
+        }
+
+        if (replyMessage && replyMessageId && replyMessageSender && conversationId) {
+            (document as any).isEditMessage = true;
+            this.setState({
+                statlesMessage: undefined,
+                statlesMessageReply: replyMessage,
+                statlesMessageId: replyMessageId,
+                statlesMessageSender: replyMessageSender,
+                statlesChatId: conversationId
             });
             if (this.input.current) {
                 this.input.current.focus();
@@ -487,9 +525,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     render() {
-
-        let { messageForEdit, messageIdForEdit } = this.state;
-
+        let { statlesMessage, statlesMessageReply, statlesMessageId, statlesMessageSender } = this.state;
+        let stateMessage = undefined;
+        if (statlesMessage) {
+            stateMessage = statlesMessage;
+        }
+        if (statlesMessageReply) {
+            stateMessage = statlesMessageReply;
+        }
         return (
             <SendMessageWrapper>
                 <DropArea
@@ -508,8 +551,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {(messageForEdit && messageIdForEdit) && (
-                            <EditView message={messageForEdit} title="Edit message" onCancel={this.closeEditor}/>
+                        {(stateMessage && statlesMessageId) && (
+                            <EditView message={stateMessage} title={statlesMessageSender !== undefined ? statlesMessageSender : 'Edit message'} onCancel={this.closeEditor} />
                         )}
                         <TextInputWrapper>
                             <XRichTextInput
@@ -518,7 +561,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                 onChange={this.handleChange}
                                 onSubmit={this.handleSend}
                                 ref={this.input}
-                                value={this.state.messageForEdit}
+                                value={this.state.statlesMessage}
                             />
                         </TextInputWrapper>
                         <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
@@ -566,12 +609,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 }
 
-export let MessageComposeComponent = withEditMessage(withUserInfo((props) => {
+export let MessageComposeComponent = withEditAndReplyMessage(withUserInfo((props) => {
     return (
-        <EditMessageContext.Consumer>
-            {(editor: EditMessageContextProps) => (
-                <MessageComposeComponentInner {...props} messageEditor={editor} editMessage={props.editMessage} />
+        <MessagesStateContext.Consumer>
+            {(state: MessagesStateContextProps) => (
+                <MessageComposeComponentInner
+                    {...props}
+                    messagesContext={state}
+                    editMessage={props.editMessage}
+                    replyMessage={props.replyMessage}
+                />
             )}
-        </EditMessageContext.Consumer>
+        </MessagesStateContext.Consumer>
     );
 })) as React.ComponentType<MessageComposeComponentProps>;

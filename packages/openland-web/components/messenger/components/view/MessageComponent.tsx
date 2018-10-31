@@ -23,7 +23,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
-import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
+import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import ReplyIcon from '../icons/ic-reply.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 
@@ -54,7 +54,7 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: 'rgba(0, 0, 0, 0.4)',
 }));
 
-const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, editView: boolean }>((props) => ({
+const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, isSelected: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
     paddingLeft: props.compact ? 7 : 10,
@@ -73,12 +73,12 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, 
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
         opacity: 0,
-        display: props.editView ? 'none' : undefined
+        display: props.isSelected ? 'none' : undefined
     },
     '&:hover': {
         backgroundColor: '#F9F9F9',
         '& .menu-wrapper, & .time, & .reactions-wrapper .reaction-button': {
-            opacity: props.editView ? 0 : 1
+            opacity: props.isSelected ? 0 : 1
         }
     },
     '&': (props.isHovered) ? { backgroundColor: '#F9F9F9' } : {}
@@ -110,23 +110,24 @@ interface MessageComponentProps {
     out: boolean;
     me?: UserShort | null;
     conversationType?: string;
+    conversationId: string;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
-    messageEditor: EditMessageContextProps;
+    messagesContext: MessagesStateContextProps;
 }
 
-class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
+class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isSelected: boolean, isMenuOpen: boolean }> {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean, isMenuOpen: boolean }) => {
         if (isServerMessage(props.message)) {
-            if (props.messageEditor.editMessageId === props.message.id) {
+            if (props.messagesContext.editMessageId === props.message.id) {
                 return {
-                    isEditView: true,
+                    isSelected: true,
                     isMenuOpen: false
                 };
             } else {
                 return {
-                    isEditView: false
+                    isSelected: false
                 };
             }
         }
@@ -138,7 +139,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         super(props);
 
         this.state = {
-            isEditView: false,
+            isSelected: false,
             isMenuOpen: false
         };
     }
@@ -149,9 +150,18 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         });
     }
 
-    showEditView = () => {
+    setEditMessage = () => {
+        let { message } = this.props;
         if (isServerMessage(this.props.message)) {
-            this.props.messageEditor.setEditMessage(this.props.message.id, this.props.message.message);
+            this.props.messagesContext.setEditMessage((message as MessageFull).id, message.message);
+        }
+    }
+
+    setReplyMessage = () => {
+        let { message, conversationId } = this.props;
+
+        if (isServerMessage(this.props.message)) {
+            this.props.messagesContext.setReplyMessage((message as MessageFull).id, message.message, (message as MessageFull).sender.name, conversationId);
         }
     }
 
@@ -274,7 +284,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         onClickTarget={this.switchMenu}
                         content={
                             <>
-                                {message.message && <XMenuItem onClick={this.showEditView}>Edit</XMenuItem>}
+                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
                                 <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
                             </>
                         }
@@ -294,13 +304,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
             menu = null;
         }
+
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
         }
+
         if (this.props.compact) {
             return (
-                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen} editView={this.state.isEditView}>
+                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
@@ -315,7 +327,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         </MessageCompactContent>
                         <XHorizontal alignItems="center" separator={0} alignSelf="flex-start" className="menu-wrapper">
                             <XHorizontal alignItems="center" separator={6}>
-                                <ReplyButton query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                                <ReplyButton onClick={this.setReplyMessage}>
                                     <ReplyIcon />
                                 </ReplyButton>
                                 {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
@@ -330,7 +342,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <MessageContainer className="full-message" compact={false} isHovered={this.state.isEditView || this.state.isMenuOpen} editView={this.state.isEditView}>
+            <MessageContainer className="full-message" compact={false} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>
                 <XHorizontal alignSelf="stretch">
                     {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
                         <UserPopper
@@ -352,7 +364,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             </XHorizontal>
                             <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
                                 <XHorizontal alignItems="center" separator={6}>
-                                    <ReplyButton query={{ field: 'replyMessage', value: (message as MessageFull).id }}>
+                                    <ReplyButton onClick={this.setReplyMessage}>
                                         <ReplyIcon />
                                     </ReplyButton>
                                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
@@ -380,11 +392,11 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 export class MessageComponent extends React.Component<MessageComponentProps> {
     render() {
         return (
-            <EditMessageContext.Consumer>
-                {(editor: EditMessageContextProps) => (
-                    <MessageComponentInner {...this.props} messageEditor={editor} />
+            <MessagesStateContext.Consumer>
+                {(state: MessagesStateContextProps) => (
+                    <MessageComponentInner {...this.props} messagesContext={state} />
                 )}
-            </EditMessageContext.Consumer>
+            </MessagesStateContext.Consumer>
         );
     }
 }

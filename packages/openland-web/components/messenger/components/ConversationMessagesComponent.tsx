@@ -161,6 +161,7 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
                     messages={this.state.messages}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
+                    conversationId={this.props.conversationId}
                 />
                 <XLoader loading={!this.state.mounted || this.state.loading} />
                 <TypingComponent chatId={this.props.conversationId} />

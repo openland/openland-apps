@@ -18,8 +18,7 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { EditMessageContext, EditMessageContextProps } from './EditMessageContext';
-import { ReplyMessageComponent } from './view/content/ReplyMessageModal';
+import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -162,7 +161,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 <DeleteUrlAugmentationComponent/>
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
-                <ReplyMessageComponent />
             </ConversationContainer>
         );
     }
@@ -194,14 +192,21 @@ const MessagesWithUser = withUserInfo((props) => (
     />
 )) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
 
-export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, EditMessageContextProps> {
+export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, MessagesStateContextProps> {
     constructor(props: MessengerRootComponentProps) {
         super(props);
 
         this.state = {
             editMessageId: null,
             editMessage: null,
-            setEditMessage: this.setEditMessage
+            forwardMessagesId: null,
+            conversationId: null,
+            replyMessageId: null,
+            replyMessage: null,
+            replyMessageSender: null,
+            setEditMessage: this.setEditMessage,
+            setForwardMessages: this.setForwardMessages,
+            setReplyMessage: this.setReplyMessage
         };
     }
 
@@ -212,13 +217,29 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
         });
     }
 
+    setForwardMessages = (id: string[] | null, conversationId: string | null) => {
+        this.setState({
+            forwardMessagesId: id,
+            conversationId: conversationId
+        });
+    }
+
+    setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
+        this.setState({
+            replyMessageId: id,
+            replyMessage: message,
+            replyMessageSender: sender,
+            conversationId: conversationId
+        });
+    }
+
     render() {
         // We are not allowing messenger to be rendered on server side: just preload history and that's all
         if (!canUseDOM) {
             return <Placeholder variables={{ conversationId: this.props.conversationId }} />;
         }
         return (
-            <EditMessageContext.Provider value={this.state}>
+            <MessagesStateContext.Provider value={this.state}>
                 <MessengerContext.Consumer>
                     {messenger => (
                         <MessagesWithUser
@@ -228,7 +249,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
                         />
                     )}
                 </MessengerContext.Consumer>
-            </EditMessageContext.Provider>
+            </MessagesStateContext.Provider>
         );
     }
 }
