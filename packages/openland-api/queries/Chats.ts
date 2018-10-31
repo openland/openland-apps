@@ -3,6 +3,8 @@ import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
 import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { MessageShort } from 'openland-api/fragments/MessageShort';
+import { UserTiny } from 'openland-api/fragments/UserTiny';
 
 export const ChatListQuery = gql`
     query ChatList($after: String) {
@@ -13,10 +15,6 @@ export const ChatListQuery = gql`
                 title
                 photos
                 unreadCount
-                settings{
-                    id
-                    mute
-                }
                 ... on GroupConversation{
                     photo
                 }
@@ -24,11 +22,10 @@ export const ChatListQuery = gql`
                     photo
                     myStatus
                 }
-                topMessage{
-                    ...MessageFull
+                topMessage {
+                    ...MessageShort
                 }
             }
-            seq
             next
         }
         counter: alphaNotificationCounter {
@@ -36,8 +33,8 @@ export const ChatListQuery = gql`
             unreadCount
         }
     }
-    ${MessageFull}
-    ${UserShort}
+    ${MessageShort}
+    ${UserTiny}
 `;
 
 export const ChatLeaveMutation = gql`

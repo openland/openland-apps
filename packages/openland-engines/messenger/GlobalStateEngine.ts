@@ -105,11 +105,13 @@ export class GlobalStateEngine {
         });
 
         // Loading initial chat state
+        let start = Date.now();
         let res = (await backoff(async () => {
             return await this.engine.client.client.query({
                 query: ChatListQuery.document
             });
         })).data;
+        console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
         let seq = (res as any).chats.seq;
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
         this.engine.dialogList.handleInitialConversations((res as any).chats.conversations, (res as any).chats.next);

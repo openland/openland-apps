@@ -208,6 +208,7 @@ export class DialogListEngine {
     loadNext = async () => {
         if (!this.loading && this.next !== null) {
             this.loading = true;
+            let start = Date.now();
             let initialDialogs: any = await backoff(async () => {
                 try {
                     return await this.engine.client.client.query({
@@ -221,15 +222,9 @@ export class DialogListEngine {
                     throw e;
                 }
             });
+            console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
-            // Write to storage
-            this.conversations = [...this.conversations, ...initialDialogs.data.chats.conversations.filter((d: ConversationShort) => !(this.conversations).find(existing => existing.id === d.id))].map(c => ({ ...c }));
             this.next = initialDialogs.data.chats.next;
-            this.engine.client.client.writeQuery({
-                query: ChatListQuery.document,
-                data: { ...initialDialogs, chats: { ...initialDialogs.data.chats, conversations: [...this.conversations] } },
-            });
-
             this.dialogListCallback(this.conversations.map(i => i.id));
 
             // Write to datasource
