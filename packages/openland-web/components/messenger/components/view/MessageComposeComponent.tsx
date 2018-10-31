@@ -23,7 +23,7 @@ import ShortcutsIcon from '../icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from '../icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
-import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
+import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -299,7 +299,7 @@ export interface MessageComposeComponentProps {
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    messageEditor: EditMessageContextProps;
+    messageEditor: MessagesStateContextProps;
     editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
 }
 
@@ -568,10 +568,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
 export let MessageComposeComponent = withEditMessage(withUserInfo((props) => {
     return (
-        <EditMessageContext.Consumer>
-            {(editor: EditMessageContextProps) => (
+        <MessagesStateContext.Consumer>
+            {(editor: MessagesStateContextProps) => (
                 <MessageComposeComponentInner {...props} messageEditor={editor} editMessage={props.editMessage} />
             )}
-        </EditMessageContext.Consumer>
+        </MessagesStateContext.Consumer>
     );
 })) as React.ComponentType<MessageComposeComponentProps>;

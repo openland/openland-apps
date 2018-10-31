@@ -23,7 +23,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
-import { EditMessageContext, EditMessageContextProps } from '../EditMessageContext';
+import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import ReplyIcon from '../icons/ic-reply.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 
@@ -113,7 +113,7 @@ interface MessageComponentProps {
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
-    messageEditor: EditMessageContextProps;
+    messageEditor: MessagesStateContextProps;
 }
 
 class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
@@ -294,10 +294,12 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
             menu = null;
         }
+        
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
         }
+
         if (this.props.compact) {
             return (
                 <MessageContainer className="compact-message" compact={true} isHovered={this.state.isEditView || this.state.isMenuOpen} editView={this.state.isEditView}>
@@ -380,11 +382,11 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 export class MessageComponent extends React.Component<MessageComponentProps> {
     render() {
         return (
-            <EditMessageContext.Consumer>
-                {(editor: EditMessageContextProps) => (
+            <MessagesStateContext.Consumer>
+                {(editor: MessagesStateContextProps) => (
                     <MessageComponentInner {...this.props} messageEditor={editor} />
                 )}
-            </EditMessageContext.Consumer>
+            </MessagesStateContext.Consumer>
         );
     }
 }

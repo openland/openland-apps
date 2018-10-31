@@ -18,7 +18,7 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { EditMessageContext, EditMessageContextProps } from './EditMessageContext';
+import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
 import { ReplyMessageComponent } from './view/content/ReplyMessageModal';
 
 interface MessagesComponentProps {
@@ -194,14 +194,17 @@ const MessagesWithUser = withUserInfo((props) => (
     />
 )) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
 
-export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, EditMessageContextProps> {
+export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, MessagesStateContextProps> {
     constructor(props: MessengerRootComponentProps) {
         super(props);
 
         this.state = {
             editMessageId: null,
             editMessage: null,
-            setEditMessage: this.setEditMessage
+            forwardMessagesId: null,
+            conversationId: null,
+            setEditMessage: this.setEditMessage,
+            forwardMessages: this.forwardMessages
         };
     }
 
@@ -212,13 +215,20 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
         });
     }
 
+    forwardMessages = (id: string[] | null, conversationId: string | null) => {
+        this.setState({
+            forwardMessagesId: id,
+            conversationId: conversationId
+        });
+    }
+
     render() {
         // We are not allowing messenger to be rendered on server side: just preload history and that's all
         if (!canUseDOM) {
             return <Placeholder variables={{ conversationId: this.props.conversationId }} />;
         }
         return (
-            <EditMessageContext.Provider value={this.state}>
+            <MessagesStateContext.Provider value={this.state}>
                 <MessengerContext.Consumer>
                     {messenger => (
                         <MessagesWithUser
@@ -228,7 +238,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
                         />
                     )}
                 </MessengerContext.Consumer>
-            </EditMessageContext.Provider>
+            </MessagesStateContext.Provider>
         );
     }
 }
