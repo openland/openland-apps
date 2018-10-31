@@ -215,7 +215,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
     render() {
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
-                {this.props.invite || this.props.appInvite && (
+                {!!(this.props.invite || this.props.appInvite) && (
                     <LinkHolder separator={4}>
                         <XInput
                             size="large"
