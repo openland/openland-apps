@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { ConversationShort } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { ChatListQuery } from 'openland-api';
+import { ChatListQuery, ChatInfoQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
@@ -150,19 +150,19 @@ export class DialogListEngine {
         }
     }
 
-    handleNewMessage = (event: any, visible: boolean) => {
-        const conversation = event.conversation;
-        const conversationId = event.conversationId as string;
-        const messageId = event.message.id as string;
+    handleNewMessage = async (event: any, visible: boolean) => {
+        console.log(event);
+        const conversationId = event.cid as string;
+        // const messageId = event.message.id as string;
         const unreadCount = event.unread as number;
 
         // Improve resolving for faster chat switch via flexibleId
-        ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
+        // ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
 
-        this.userConversationMap.set(conversation.flexibleId, conversationId);
+        // this.userConversationMap.set(conversation.flexibleId, conversationId);
 
         // Write Message to Repository
-        ConversationRepository.writeNewMessage(this.engine.client, conversationId, messageId, unreadCount, visible);
+        // ConversationRepository.writeNewMessage(this.engine.client, conversationId, messageId, unreadCount, visible);
 
         // Write message to datasource
         let res = this.dataSource.getItem(conversationId);
@@ -183,13 +183,16 @@ export class DialogListEngine {
             if (event.message.serviceMetadata && event.message.serviceMetadata.__typename === 'KickServiceMetadata') {
                 return;
             }
+
+            let info = await this.engine.client.query(ChatInfoQuery, { conversationId });
+
             this.dataSource.addItem(
                 {
                     key: conversationId,
-                    flexibleId: conversation.flexibleId,
-                    type: conversation.__typename,
-                    title: conversation.title,
-                    photo: (conversation as any).photo || (conversation.photos.length > 0 ? conversation.photos[0] : undefined),
+                    flexibleId: conversationId,
+                    type: info.data.chat!.__typename,
+                    title: info.data.chat!.title,
+                    photo: (info.data.chat as any).photo || (info.data.chat.photos.length > 0 ? info.data.chat.photos[0] : undefined),
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,

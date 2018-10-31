@@ -10,10 +10,6 @@ import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
-import { Alert } from 'react-native';
-import { keyframes } from 'glamor';
-import { size } from 'lodash-es';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $seq: Int!) {

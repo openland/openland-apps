@@ -1,53 +1,66 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { UserShort } from 'openland-api/fragments/UserShort';
-import { MessageFull } from 'openland-api/fragments/MessageFull';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
 import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SequenceWatcher } from '../core/SequenceWatcher';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
-import { Platform } from 'react-native';
+import { UserShort } from 'openland-api/fragments/UserShort';
+import { MessageFull } from 'openland-api/fragments/MessageFull';
+import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
-        event: alphaSubscribeEvents(fromSeq: $seq) {
-            seq
-            ... on UserEventMessage {
-                __typename
-                unread
-                globalUnread
-                conversationId
-                isOut
-                repeatKey
-                conversation {
-                    id
-                    flexibleId
-                    title
-                    photos
-                    unreadCount
-                    settings{
-                        id
-                        mute
-                    }
-                    ... on GroupConversation{
-                        photo
-                    }
-                    ... on ChannelConversation{
-                        myStatus
-                        photo
-                    }
-                }
-                message {
-                    ...MessageFull
+        event: dialogsUpdates(fromSeq: $seq) {
+            ... on DialogUpdateSingle {
+                seq
+                state
+                update {
+                    ...DialogUpdateFragment
                 }
             }
-            ... on UserEventRead {
-                __typename
-                unread
-                globalUnread
-                conversationId
+            ... on DialogUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...DialogUpdateFragment
+                }
             }
+        }
+    }
+    fragment DialogUpdateFragment on DialogUpdate {
+        ... on DialogMessageReceived {
+            cid
+            unread
+            globalUnread
+            message {
+                ...MessageFull
+            }
+        }
+        ... on DialogMessageUpdated {
+            message {
+                ...MessageFull
+            }
+        }
+        ... on DialogMessageDeleted {
+            message {
+                ...MessageFull
+            }
+        }
+        ... on DialogMessageRead {
+            cid
+            unread
+            globalUnread
+        }
+        ... on DialogMessageRead {
+            cid
+            unread
+            globalUnread
+        }
+        ... on DialogTitleUpdated {
+            cid
+            title
         }
     }
     ${UserShort}
@@ -71,7 +84,7 @@ const SUBSCRIBE_SETTINGS = gql`
 
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
-    private watcher: SequenceWatcher | null = null;
+    private watcher: SequenceModernWatcher | null = null;
     private visibleConversations = new Set<string>();
     private isVisible = true;
     private maxSeq = 0;
@@ -103,7 +116,7 @@ export class GlobalStateEngine {
         console.info('[global] Initial state loaded with seq #' + seq);
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceWatcher('global', GLOBAL_SUBSCRIPTION, seq, {}, this.handleGlobalEvent, this.engine.client, this.handleSeqUpdated);
+        this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client, this.handleGlobalEvent, this.handleSeqUpdated);
 
         // Subscribe for settings update
         let settingsSubscription = this.engine.client.client.subscribe({
@@ -154,10 +167,11 @@ export class GlobalStateEngine {
     }
 
     destroy = () => {
-        if (this.watcher) {
-            this.watcher.destroy();
-            this.watcher = null;
-        }
+        // TODO: Implement
+        // if (this.watcher) {
+        //     this.watcher.destroy();
+        //     this.watcher = null;
+        // }
     }
 
     onVisible = (isVisible: boolean) => {
@@ -189,22 +203,24 @@ export class GlobalStateEngine {
         }
     }
 
-    private handleGlobalEvent = (event: any) => {
-        if (event.__typename === 'UserEventMessage') {
-            let visible = this.visibleConversations.has(event.conversationId);
+    private handleGlobalEvent = async (event: any) => {
+        if (event.__typename === 'DialogMessageReceived') {
+            let visible = this.visibleConversations.has(event.cid);
 
             // Global counter
             this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
-            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+            let res = this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
             if (!visible && !event.isOut) {
-                this.engine.notifications.handleIncomingMessage(event);
+                this.engine.notifications.handleIncomingMessage(event.cid, event.message);
             }
 
             // Dialogs List
-            this.engine.dialogList.handleNewMessage(event, visible);
-        } else if (event.__typename === 'UserEventRead') {
+            let res2 = this.engine.dialogList.handleNewMessage(event, visible);
+            await res;
+            await res2;
+        } else if (event.__typename === 'DialogMessageRead') {
             let visible = this.visibleConversations.has(event.conversationId);
 
             // Global counter
@@ -214,7 +230,9 @@ export class GlobalStateEngine {
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
             // Dialogs List
-            this.engine.dialogList.handleUserRead(event.conversationId, event.unread, visible);
+            this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
+        } else {
+            console.log('Unhandled update: ' + event.__typename);
         }
     }
 

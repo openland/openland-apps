@@ -1,5 +1,5 @@
 import { MessengerEngine } from './MessengerEngine';
-import { SettingsQuery } from 'openland-api';
+import { SettingsQuery, ChatInfoQuery } from 'openland-api';
 import { Settings as SettingsQueryType } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
@@ -16,36 +16,38 @@ export class NotificationsEngine {
         AppBadge.setBadge(counter);
     }
 
-    handleIncomingMessage = (msg: any) => {
+    handleIncomingMessage = async (cid: string, msg: any) => {
         let settings = this.engine.client.client.readQuery<SettingsQueryType>({
             query: SettingsQuery.document
         })!!.settings;
 
+        let info = (await this.engine.client.query(ChatInfoQuery, { conversationId: cid })).data.chat;
+
         if (settings.desktopNotifications === 'NONE') {
             return;
         } else if (settings.desktopNotifications === 'DIRECT') {
-            if (msg.conversation.__typename !== 'PrivateConversation') {
+            if (info.__typename !== 'PrivateConversation') {
                 return;
             }
         }
 
-        if (!msg.conversation.settings.mute) {
-            let conversationId = msg.conversation.flexibleId;
-            if (msg.message.message) {
+        if (!info.settings.mute) {
+            let conversationId = info.flexibleId;
+            if (msg.message) {
                 AppNotifications.displayNotification({
                     title: 'New Message',
-                    body: msg.message.sender.name + ': ' + msg.message.message,
-                    path: '/mail/' + conversationId,
-                    image: msg.message.sender.picture,
-                    id: doSimpleHash(msg.conversation.id).toString(),
+                    body: msg.sender.name + ': ' + msg.message,
+                    path: '/mail/' + cid,
+                    image: msg.sender.picture,
+                    id: doSimpleHash(cid).toString(),
                 });
             } else {
                 AppNotifications.displayNotification({
                     title: 'New Message',
-                    body: msg.message.sender.name + ': <file>',
+                    body: msg.sender.name + ': <file>',
                     path: '/mail/' + conversationId,
-                    image: msg.message.sender.picture,
-                    id: doSimpleHash(msg.conversation.id).toString(),
+                    image: msg.sender.picture,
+                    id: doSimpleHash(cid).toString(),
                 });
             }
         }
