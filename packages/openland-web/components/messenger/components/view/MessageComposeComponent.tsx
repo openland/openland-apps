@@ -442,7 +442,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         let { message, messageForEdit, messageIdForEdit } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey))) {
+        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && (!messageForEdit && !messageIdForEdit)) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
