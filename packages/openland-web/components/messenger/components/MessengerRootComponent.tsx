@@ -19,7 +19,6 @@ import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentatio
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
-import { ReplyMessageComponent } from './view/content/ReplyMessageModal';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -162,7 +161,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 <DeleteUrlAugmentationComponent/>
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
-                <ReplyMessageComponent />
             </ConversationContainer>
         );
     }
@@ -203,8 +201,12 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
             editMessage: null,
             forwardMessagesId: null,
             conversationId: null,
+            replyMessageId: null,
+            replyMessage: null,
+            replyMessageSender: null,
             setEditMessage: this.setEditMessage,
-            forwardMessages: this.forwardMessages
+            setForwardMessages: this.setForwardMessages,
+            setReplyMessage: this.setReplyMessage
         };
     }
 
@@ -215,9 +217,18 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
         });
     }
 
-    forwardMessages = (id: string[] | null, conversationId: string | null) => {
+    setForwardMessages = (id: string[] | null, conversationId: string | null) => {
         this.setState({
             forwardMessagesId: id,
+            conversationId: conversationId
+        });
+    }
+
+    setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
+        this.setState({
+            replyMessageId: id,
+            replyMessage: message,
+            replyMessageSender: sender,
             conversationId: conversationId
         });
     }

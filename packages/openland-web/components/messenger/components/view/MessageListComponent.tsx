@@ -87,6 +87,7 @@ interface MessageListProps {
     conversationType?: string;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
+    conversationId: string;
 }
 
 const getScrollView = () => {
@@ -209,6 +210,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         out={!!(this.props.me && this.props.me.id === m.sender.id)}
                         me={this.props.me}
                         conversationType={this.props.conversationType}
+                        conversationId={this.props.conversationId}
                     />
                 );
             } else {
@@ -222,6 +224,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         out={true}
                         me={this.props.me}
                         conversationType={this.props.conversationType}
+                        conversationId={this.props.conversationId}
                     />
                 );
             }
