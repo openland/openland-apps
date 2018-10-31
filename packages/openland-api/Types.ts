@@ -245,7 +245,7 @@ export interface AccountAppInviteInfo_appInvite_inviter {
 }
 
 export interface AccountAppInviteInfo_appInvite {
-  __typename: "AppInviteInfo";
+  __typename: "AppInvite";
   inviter: AccountAppInviteInfo_appInvite_inviter;
 }
 
@@ -7516,7 +7516,7 @@ export interface OrganizationDeletePublicInviteVariables {
 // ====================================================
 
 export interface OrganizationActivateByInvite {
-  alphaJoinGlobalInvite: string;
+  joinAppInvite: string;
 }
 
 export interface OrganizationActivateByInviteVariables {

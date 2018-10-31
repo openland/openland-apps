@@ -266,7 +266,7 @@ export const OrganizationDeletePublicInviteMutation = gql`
 
 export const OrganizationActivateByInviteMutation = gql`
     mutation OrganizationActivateByInvite($inviteKey: String!) {
-        alphaJoinGlobalInvite(key: $inviteKey)
+        joinAppInvite(key: $inviteKey)
     }
 `;
 

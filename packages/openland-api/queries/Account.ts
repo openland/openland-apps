@@ -62,7 +62,7 @@ export const AccountAppInviteInfoQuery = gql`
                 ...UserShort
             }
         }
-        appInvite: alphaAppInviteInfo(key: $inviteKey) {
+        appInvite: appInviteInfo(key: $inviteKey) {
             inviter{
                 ...UserShort
             }
@@ -73,7 +73,7 @@ export const AccountAppInviteInfoQuery = gql`
 
 export const AccountAppInviteQuery = gql`
     query AccountAppInvite {
-        invite: alphaAppInvite
+        invite: appInvite
     }
 `;
 
