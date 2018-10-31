@@ -10,8 +10,6 @@ import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
 
 import { BrowseChannelsModal } from '../../main/channel/components/browseChannelsModal';
-import { InviteMembersModal } from '../../main/channel/components/inviteMembersModal';
-import { PostChannelModal } from '../../main/channel/components/postChannelModal';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 
@@ -40,7 +38,6 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
 
                     <XTitle>for channels</XTitle>
                     <BrowseChannelsModal title="Browse channels" target={<XButton text="Browse channels" />} />
-                    <PostChannelModal defaultAction={() => null} title="Post listing" target={<XButton text="Post channel" />} />
 
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>

@@ -53,7 +53,6 @@ export const ChatSearchChannelQuery = typedQuery<Types.ChatSearchChannel, Types.
 export const CreateChannelMutation = typedMutation<Types.CreateChannel, Types.CreateChannelVariables>(Chats.CreateChannelMutation);
 export const ChannelSetFeaturedMutation = typedMutation<Types.ChannelSetFeatured, Types.ChannelSetFeaturedVariables>(Chats.ChannelSetFeaturedMutation);
 export const ChannelSetHiddenMutation = typedMutation<Types.ChannelSetHidden, Types.ChannelSetHiddenVariables>(Chats.ChannelSetHiddenMutation);
-export const UserChannelsQuery = typedQuery<Types.UserChannels, {}>(Chats.UserChannelsQuery);
 export const ChannelMembersQuery = typedQuery<Types.ChannelMembers, Types.ChannelMembersVariables>(Chats.ChannelMembersQuery);
 export const ChannelInviteMutation = typedMutation<Types.ChannelInvite, Types.ChannelInviteVariables>(Chats.ChannelInviteMutation);
 export const ConversationKickMutation = typedMutation<Types.ConversationKick, Types.ConversationKickVariables>(Chats.ConversationKickMutation);

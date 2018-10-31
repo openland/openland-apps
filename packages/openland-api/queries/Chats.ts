@@ -528,17 +528,6 @@ export const ChannelSetHiddenMutation = gql`
     ${UserShort}
 `;
 
-export const UserChannelsQuery = gql`
-    query UserChannels{
-        channels: alphaChannelsList(first: 100){
-            conversations {
-                id
-                title
-            }
-        }
-    }
-`;
-
 export const ChannelMembersQuery = gql`
     query ChannelMembers($channelId: ID!){
         members: alphaChannelMembers(channelId: $channelId){

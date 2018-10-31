@@ -4905,28 +4905,6 @@ export interface ChannelSetHiddenVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: UserChannels
-// ====================================================
-
-export interface UserChannels_channels_conversations {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
-  id: string;
-  title: string;
-}
-
-export interface UserChannels_channels {
-  __typename: "ConversationConnection";
-  conversations: UserChannels_channels_conversations[];
-}
-
-export interface UserChannels {
-  channels: UserChannels_channels;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: ChannelMembers
 // ====================================================
 
