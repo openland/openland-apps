@@ -455,7 +455,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
-        let { message, statlesMessage, statlesMessageId } = this.state;
+        let { message, statlesMessage, statlesMessageReply, statlesMessageId } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
         if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && (!statlesMessage && !statlesMessageId)) {
@@ -467,7 +467,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 (document as any).isEditMessage = true;
             }
         }
-        if (e.code === 'Escape' && statlesMessage && statlesMessageId) {
+        if (e.code === 'Escape' && (statlesMessage || statlesMessageReply) && statlesMessageId) {
             this.closeEditor();
         }
     }
@@ -510,6 +510,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         if (replyMessage && replyMessageId && replyMessageSender && conversationId) {
+            (document as any).isEditMessage = true;
             this.setState({
                 statlesMessageReply: replyMessage,
                 statlesMessageId: replyMessageId,
