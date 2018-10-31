@@ -120,6 +120,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 // Invoke router
                 if (this.props.__router) {
                     if (this.props.path) {
+                        console.warn(this.props.path);
                         this.props.__router.push(this.props.path!!);
                     } else if (this.props.query) {
                         this.props.__router.pushQuery(this.props.query.field, this.props.query.value, this.props.query.clear);

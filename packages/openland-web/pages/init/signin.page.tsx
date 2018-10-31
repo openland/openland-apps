@@ -195,10 +195,12 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
 
     render() {
         const signin = this.props.router.path.endsWith('signin');
+        let redirect = this.props.router.query.redirect ? ('?redirect=' + encodeURIComponent(this.props.router.query.redirect)) : '';
+        console.warn(redirect);
         return this.props.channelView ? (
             <ChannelSignup
                 text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
-                path={signin ? '/signup' : '/signin'}
+                path={(signin ? '/signup' : '/signin') + redirect}
                 linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
                 headerStyle={signin ? 'signin' : 'signup'}
             >
@@ -275,7 +277,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                 <SignContainer
                     signin={signin}
                     text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
-                    path={signin ? '/signup' : '/signin'}
+                    path={(signin ? '/signup' : '/signin') + redirect}
                     linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
                 >
                     {!this.state.fromOutside && !this.state.email && (<>
