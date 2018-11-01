@@ -3,8 +3,8 @@ import { UserShort } from '../fragments/UserShort';
 import { MessageFull } from '../fragments/MessageFull';
 import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { MessageShort } from 'openland-api/fragments/MessageShort';
-import { UserTiny } from 'openland-api/fragments/UserTiny';
+import { MessageShort } from '../fragments/MessageShort';
+import { UserTiny } from '../fragments/UserTiny';
 
 export const ChatListQuery = gql`
     query ChatList($after: String) {

@@ -11,6 +11,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { next } from './signup';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -42,11 +43,11 @@ const styles = StyleSheet.create({
 export const HeaderButton = (props: { title: string, handlePress: () => void }) => {
     if (Platform.OS === 'android') {
         return (
-            <ActionButtonAndroid title={props.title} onPress={props.handlePress} tintColor="#4747ec" />
+            <ActionButtonAndroid title={props.title} onPress={props.handlePress} tintColor={XPStyles.colors.brand} />
         );
     } else if (Platform.OS === 'ios') {
         return (
-            <ActionButtonIOS title={props.title} tintColor="#4747ec" onPress={props.handlePress} />
+            <ActionButtonIOS title={props.title} tintColor={XPStyles.colors.brand} onPress={props.handlePress} />
         );
     }
     return (<Button color="#000" onPress={props.handlePress} title={props.title} />);

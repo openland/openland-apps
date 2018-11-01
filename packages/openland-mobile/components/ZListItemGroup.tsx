@@ -7,10 +7,11 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
         let components: any[] = [];
         React.Children.forEach(this.props.children, (c) => {
             if (c !== null && c !== undefined) {
-                if (components.length > 0 && this.props.divider !== false) {
-                    components.push(<View key={'div-' + components.length} style={{ paddingLeft: 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
-                }
                 components.push(c);
+                console.warn('boom', (c as any).props.compact);
+                if (components.length > 0 && this.props.divider !== false && !(c as any).props.divider) {
+                    components.push(<View key={'div-' + components.length} style={{ paddingLeft: (c as any).props.compact ? 64 : 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
+                }
             }
         });
 
@@ -85,7 +86,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                 <View>
                     {components}
                 </View>
-                {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />}
+                {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
                 {this.props.footer !== null && this.props.footer !== undefined && (
                     <Text style={{ color: '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 15, paddingRight: 15, paddingBottom: 15, paddingTop: 6 }} >{this.props.footer}</Text>
                 )}

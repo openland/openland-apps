@@ -13,7 +13,7 @@ import * as humanize from 'humanize';
 import { formatDate } from '../../utils/formatDate';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
@@ -47,16 +47,23 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                                 photo={resp.data.user.photo}
                                                 id={resp.data.user.id}
                                                 title={resp.data.user.name}
-                                                subtitle={resp.data.user.primaryOrganization ? resp.data.user.primaryOrganization.name : 'Person'}
-                                                subsubtitle={sub}
+                                                subtitle={sub || (resp.data.user.primaryOrganization ? resp.data.user.primaryOrganization.name : 'Person')}
                                                 action="Send message"
                                                 onPress={this.handleSend}
                                             />
                                         );
                                     }}
                                 </YQuery>
-                                <ZListItemGroup>
-                                    <YMutation mutation={ConversationSettingsUpdateMutation}>
+
+                                <ZListItemGroup header="Contacts">
+                                    {!!resp.data.user.about && <ZListItem title="about" multiline={true} text={resp.data.user.about} />}
+                                    {!!resp.data.user.email && <ZListItem title="email" text={resp.data.user.email} />}
+                                    {!!resp.data.user.phone && <ZListItem title="phone" text={resp.data.user.phone} />}
+                                    {!!resp.data.user.website && <ZListItem title="website" text={resp.data.user.website} />}
+                                    {!!resp.data.user.primaryOrganization && <ZListItem leftAvatar={{ photo: resp.data.user.primaryOrganization.photo, key: resp.data.user.primaryOrganization.id, title: resp.data.user.primaryOrganization.name }} multiline={true} text={resp.data.user.primaryOrganization.name} title="organization" path="ProfileOrganization" pathParams={{ id: resp.data.user.primaryOrganization.id }} />}
+                                    <View style={{ marginTop: 20 }} {...{ divider: true }} />
+                                    {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
+                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ compact: true }}>
                                         {(update) => {
                                             let toggle = async () => {
                                                 startLoader();
@@ -69,7 +76,9 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                             };
                                             return (
                                                 <ZListItem
-                                                    text="Notifications"
+                                                    leftIcon={require('assets/ic-cell-notif-ios.png')}
+                                                    title="Notifications"
+                                                    compact={true}
                                                     toggle={!resp.data.conversation.settings.mute}
                                                     onToggle={toggle}
                                                     onPress={toggle}
@@ -78,15 +87,8 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                         }
                                         }
                                     </YMutation>
-                                </ZListItemGroup>
-
-                                <ZListItemGroup header="Contacts">
-                                    {!!resp.data.user.about && <ZListItem title="about" multiline={true} text={resp.data.user.about} />}
-                                    {!!resp.data.user.email && <ZListItem title="email" text={resp.data.user.email} />}
-                                    {!!resp.data.user.phone && <ZListItem title="phone" text={resp.data.user.phone} />}
-                                    {!!resp.data.user.website && <ZListItem title="website" text={resp.data.user.website} />}
-                                    {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
                                     {!!resp.data.user.channels && <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} title="Channels" compact={true} description={resp.data.user.channels.length.toString()} path={'OrgChannels'} pathParams={{ channels: resp.data.user.channels, title: resp.data.user.name + '`s channels' }} />}
+
                                 </ZListItemGroup>
                             </SScrollView>
                         );
