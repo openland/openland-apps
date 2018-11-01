@@ -6,6 +6,7 @@ import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -70,7 +71,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             <ZText linkify={this.props.linkify === true} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined)) && (
-                            <Switch style={{ marginLeft: 15 }} value={this.props.toggle ? this.props.toggle : undefined} onValueChange={this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
+                            <Switch style={{ marginLeft: 15, }} value={this.props.toggle ? this.props.toggle : undefined} onTintColor={XPStyles.colors.brand} onValueChange={this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
                         )}
                         {showCheckmark && (
                             <Image source={require('assets/ic-checkmark-cell.png')} style={{ width: 20, height: 20, opacity: checkmarkEnabled ? 1 : 0 }} resizeMode="center" />

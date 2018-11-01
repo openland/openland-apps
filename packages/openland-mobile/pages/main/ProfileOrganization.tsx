@@ -46,7 +46,38 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             />
                                             {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
                                                 <ZListItemGroup header={null}>
-                                                    {resp.data.organization.isOwner && <ZListItem text="Edit info" appearance="action" onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })} />}
+
+                                                    {this.props.router.params.conversationId &&
+                                                        <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.conversationId }} {...{ compact: true }}>
+                                                            {conv => conv.data ? (
+                                                                <YMutation mutation={ConversationSettingsUpdateMutation}>
+                                                                    {(update) => {
+                                                                        let toggle = async () => {
+                                                                            startLoader();
+                                                                            try {
+                                                                                await update({ variables: { conversationId: conv.data!.chat.id, settings: { mute: !conv.data!.chat.settings.mute } } });
+                                                                            } catch (e) {
+                                                                                Alert.alert(e.message);
+                                                                            }
+                                                                            stopLoader();
+                                                                        };
+                                                                        return (
+                                                                            <ZListItem
+                                                                                leftIcon={require('assets/ic-cell-notif-ios.png')}
+                                                                                title="Notifications"
+                                                                                compact={true}
+                                                                                toggle={!conv.data!.chat.settings.mute}
+                                                                                onToggle={toggle}
+                                                                                onPress={toggle}
+                                                                            />
+                                                                        );
+                                                                    }
+                                                                    }
+                                                                </YMutation>
+                                                            ) : null}
+                                                        </YQuery>
+
+                                                    }
                                                     {resp.data.organization.isMine && resp.data.organization.id !== (settings.data && settings.data.primaryOrganization && settings.data.primaryOrganization.id) && <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountSettingsQuery]}>
                                                         {updateProfile => (
                                                             <ZListItem
@@ -62,38 +93,9 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                             />
                                                         )}
                                                     </YMutation>}
-                                                    {this.props.router.params.conversationId &&
-                                                        <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.conversationId }}>
-                                                            {conv => conv.data ? (
-                                                                <YMutation mutation={ConversationSettingsUpdateMutation}>
-                                                                    {(update) => {
-                                                                        let toggle = async () => {
-                                                                            startLoader();
-                                                                            try {
-                                                                                await update({ variables: { conversationId: conv.data!.chat.id, settings: { mute: !conv.data!.chat.settings.mute } } });
-                                                                            } catch (e) {
-                                                                                Alert.alert(e.message);
-                                                                            }
-                                                                            stopLoader();
-                                                                        };
-                                                                        return (
-                                                                            <ZListItem
-                                                                                text="Notifications"
-                                                                                toggle={!conv.data!.chat.settings.mute}
-                                                                                onToggle={toggle}
-                                                                                onPress={toggle}
-                                                                            />
-                                                                        );
-                                                                    }
-                                                                    }
-                                                                </YMutation>
-                                                            ) : null}
-                                                        </YQuery>
-
-                                                    }
                                                 </ZListItemGroup>
                                             )}
-                                            <ZListItemGroup header="Information">
+                                            <ZListItemGroup header="Information" actionRight={resp.data.organization.isOwner ? { title: 'Edit info', onPress: () => this.props.router.push('EditOrganization', { id: this.props.router.params.id }) } : undefined}>
                                                 {resp.data.organization.about && <ZListItem multiline={true} title="about" text={resp.data.organization.about} />}
                                                 {resp.data.organization.website && <ZListItem title="website" text={resp.data.organization.website} />}
                                                 {resp.data.organization.facebook && <ZListItem title="facebook" text={resp.data.organization.facebook} />}
@@ -121,7 +123,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                 {resp.data.organization.isMine &&
                                                                     <TouchableHighlight underlayColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('OrganizationInviteLinkModal')}>
                                                                         <View flexDirection="row" height={60} alignItems="center" >
-                                                                            <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor="#4747ec" justifyContent="center" alignItems="center">
+                                                                            <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
                                                                                 <Image source={require('assets/ic-add.png')} />
                                                                             </View>
                                                                             <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
