@@ -19,7 +19,24 @@ export class SequenceModernWatcher {
         this.client = client;
         this.currentState = null;
         this.sequenceHandler = new SequenceHandler(this.handleInternal);
+        this.client.status.subscribe(this.handleConnectionChanged);
         this.startSubsctiption();
+    }
+
+    private handleConnectionChanged = (isConnected: boolean) => {
+        // if (!this.started) {
+        //     console.warn('[' + this.name + ']: Connection state handler called after destruction');
+        //     return;
+        // }
+        if (isConnected) {
+            console.info('[' + this.name + ']: Connected');
+            if (!this.observable) {
+                this.startSubsctiption();
+            }
+        } else {
+            console.info('[' + this.name + ']: Disconnected');
+            this.stopSubscription();
+        }
     }
 
     private startSubsctiption = () => {
