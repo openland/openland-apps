@@ -2,12 +2,11 @@ import { MessengerEngine } from '../MessengerEngine';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
 import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery } from 'openland-api';
-import { SequenceWatcher } from '../core/SequenceWatcher';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
-import { UserShort } from 'openland-api/fragments/UserShort';
-import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { MessageShort } from 'openland-api/fragments/MessageShort';
+import { UserTiny } from 'openland-api/fragments/UserTiny';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($seq: Int) {
@@ -35,17 +34,17 @@ let GLOBAL_SUBSCRIPTION = gql`
             unread
             globalUnread
             message {
-                ...MessageFull
+                ...MessageShort
             }
         }
         ... on DialogMessageUpdated {
             message {
-                ...MessageFull
+                ...MessageShort
             }
         }
         ... on DialogMessageDeleted {
             message {
-                ...MessageFull
+                ...MessageShort
             }
         }
         ... on DialogMessageRead {
@@ -63,8 +62,8 @@ let GLOBAL_SUBSCRIPTION = gql`
             title
         }
     }
-    ${UserShort}
-    ${MessageFull}
+    ${MessageShort}
+    ${UserTiny}
 `;
 
 const MARK_SEQ_READ = gql`
