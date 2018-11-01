@@ -157,6 +157,12 @@ const NavigatorItem = Glamorous(XLink)({
         position: 'absolute',
         right: 14,
         top: 12
+    },
+    '&:not(.is-active) > .counter': {
+        borderColor: '#f6f6f6'
+    },
+    '&:hover > .counter': {
+        borderColor: '#ececec'
     }
 });
 
@@ -581,7 +587,7 @@ export const MessengerButton = withNotificationCounter((props) => {
         >
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <MessagesIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#e9ecf0" count={props.data.counter.unreadCount} />}
+                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#ececec" count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
     );
