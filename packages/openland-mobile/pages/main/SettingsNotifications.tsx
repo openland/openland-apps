@@ -43,13 +43,15 @@ class SettingsNotifciationsComponent extends React.Component<PageProps> {
                                                 mobileNotifications: resp.data.settings.mobileNotifications,
                                                 desktopNotifications: resp.data.settings.desktopNotifications,
                                                 emailFrequency: resp.data.settings.emailFrequency,
+                                                mobileAlert: resp.data.settings.mobileAlert,
+                                                mobileIncludeText: resp.data.settings.mobileIncludeText,
                                             }
                                         }}
                                     >
-                                        {/* <ZListItemGroup header="Push notifications">
-                                            <ZListItem text="Alert" toggle={true} />
-                                            <ZListItem text="Include preview of messages" toggle={true} />
-                                        </ZListItemGroup> */}
+                                        <ZListItemGroup header="Push notifications">
+                                            <ZListItem text="Alert" toggleField={{ key: 'input.mobileAlert' }}/>
+                                            <ZListItem text="Include preview of messages"  toggleField={{ key: 'input.mobileIncludeText' }} />
+                                        </ZListItemGroup>
                                         <ZListItemGroup header="Send notification about">
                                             <ZListItem text="All new messages" checkmarkField={{ key: 'input.mobileNotifications', value: 'ALL' }} />
                                             <ZListItem text="Direct messages" checkmarkField={{ key: 'input.mobileNotifications', value: 'DIRECT' }} />

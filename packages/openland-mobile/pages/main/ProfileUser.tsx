@@ -61,8 +61,8 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                     {!!resp.data.user.phone && <ZListItem title="phone" text={resp.data.user.phone} />}
                                     {!!resp.data.user.website && <ZListItem title="website" text={resp.data.user.website} />}
                                     {!!resp.data.user.primaryOrganization && <ZListItem leftAvatar={{ photo: resp.data.user.primaryOrganization.photo, key: resp.data.user.primaryOrganization.id, title: resp.data.user.primaryOrganization.name }} multiline={true} text={resp.data.user.primaryOrganization.name} title="organization" path="ProfileOrganization" pathParams={{ id: resp.data.user.primaryOrganization.id }} />}
-                                    <View style={{ marginTop: 20 }} {...{ divider: true }} />
                                     {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
+                                    <View style={{ marginTop: 20 }} {...{ divider: true }} />
                                     <YMutation mutation={ConversationSettingsUpdateMutation} {...{ compact: true }}>
                                         {(update) => {
                                             let toggle = async () => {

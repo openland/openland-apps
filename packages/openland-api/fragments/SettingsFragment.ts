@@ -7,5 +7,7 @@ export const SettingsFull = gql`
         emailFrequency
         desktopNotifications
         mobileNotifications
+        mobileAlert
+        mobileIncludeText
     }
 `;

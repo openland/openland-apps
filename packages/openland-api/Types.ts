@@ -7756,6 +7756,8 @@ export interface Settings_settings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   mobileNotifications: NotificationMessages;
+  mobileAlert: boolean;
+  mobileIncludeText: boolean;
 }
 
 export interface Settings {
@@ -7776,6 +7778,8 @@ export interface SettingsUpdate_updateSettings {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   mobileNotifications: NotificationMessages;
+  mobileAlert: boolean;
+  mobileIncludeText: boolean;
 }
 
 export interface SettingsUpdate {
@@ -9665,6 +9669,8 @@ export interface SettingsFull {
   emailFrequency: EmailFrequency;
   desktopNotifications: NotificationMessages;
   mobileNotifications: NotificationMessages;
+  mobileAlert: boolean;
+  mobileIncludeText: boolean;
 }
 
 /* tslint:disable */
