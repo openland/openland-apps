@@ -9,8 +9,8 @@ import { MessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 
 let GLOBAL_SUBSCRIPTION = gql`
-    subscription GlobalSubscription($seq: Int) {
-        event: dialogsUpdates(fromSeq: $seq) {
+    subscription GlobalSubscription($state: String) {
+        event: dialogsUpdates(fromState: $state) {
             ... on DialogUpdateSingle {
                 seq
                 state

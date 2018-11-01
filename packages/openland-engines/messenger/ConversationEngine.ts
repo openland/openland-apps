@@ -10,32 +10,43 @@ import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
+import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 
 const CHAT_SUBSCRIPTION = gql`
-  subscription ChatSubscription($conversationId: ID!, $seq: Int!) {
-    event: alphaChatSubscribe(conversationId: $conversationId, fromSeq: $seq) {
-      seq
-      ... on ConversationEventMessage {
+  subscription ChatSubscription($conversationId: ID!, $state: String) {
+    event: alphaChatSubscribe2(conversationId: $conversationId, fromState: $state) {
+        ... on ConversationUpdateSingle {
+            seq
+            state
+            update {
+                ...ConversationUpdateFragment
+            }
+        }
+        ... on ConversationUpdateBatch {
+            fromSeq
+            seq
+            state
+            updates {
+                ...ConversationUpdateFragment
+            }
+        }
+    }
+  }
+  fragment ConversationUpdateFragment on ConversationUpdate {
+    ... on ConversationMessageReceived {
         message {
             ...MessageFull
         }
-      }
-      ... on ConversationEventDelete{
-            messageId
-      }
-      ... on ConversationEventEditMessage{
+    }
+    ... on ConversationMessageUpdated {
         message {
             ...MessageFull
         }
-      }
-      ... on ConversationEventKick{
-        user {
+    }
+    ... on ConversationMessageDeleted {
+        message {
             id
         }
-        kickedBy {
-            id
-        }
-      }
     }
   }
   ${MessageFull}
@@ -126,7 +137,7 @@ export class ConversationEngine implements MessageSendHandler {
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
-    private watcher: SequenceWatcher | null = null;
+    private watcher: SequenceModernWatcher | null = null;
     private isOpen = false;
     private messages: (MessageFullFragment | PendingMessage)[] = [];
     private state: ConversationState;
@@ -174,7 +185,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         let seq = (initialChat.data as any).messages.seq as number;
         console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
-        this.watcher = new SequenceWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, seq, { conversationId: this.conversationId }, this.updateHandler, this.engine.client);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId });
         this.onMessagesUpdated();
 
         // Update Data Source
@@ -422,9 +433,9 @@ export class ConversationEngine implements MessageSendHandler {
             throw Error('ConversationEngine not started!');
         }
         this.isStarted = false;
-        if (this.watcher) {
-            this.watcher!!.destroy();
-        }
+        // if (this.watcher) {
+        //     this.watcher!!.destroy();
+        // }
     }
 
     private onMessagesUpdated = () => {
@@ -459,7 +470,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private updateHandler = async (event: any) => {
-        if (event.__typename === 'ConversationEventMessage') {
+        if (event.__typename === 'ConversationMessageReceived') {
             // Handle message
             console.info('Received new message');
             // Write message to store
@@ -467,7 +478,6 @@ export class ConversationEngine implements MessageSendHandler {
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId }
             });
-            (data as any).messages.seq = event.seq;
             (data as any).messages.messages = [event.message, ...(data as any).messages.messages];
             this.engine.client.client.writeQuery({
                 query: ChatHistoryQuery.document,
@@ -504,7 +514,7 @@ export class ConversationEngine implements MessageSendHandler {
                 console.warn(account);
                 this.engine.client.client.writeQuery({ query: AccountQuery.document, data: { ...account, permissions: { ...account.permissions, roles: [...account.permissions.roles, 'feature-insane-buttons'] } } });
             }
-        } else if (event.__typename === 'ConversationEventDelete') {
+        } else if (event.__typename === 'ConversationMessageDeleted') {
             // Handle message
             console.info('Received delete message');
             // Write message to store
@@ -512,14 +522,13 @@ export class ConversationEngine implements MessageSendHandler {
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId }
             });
-            (data as any).messages.seq = event.seq;
-            (data as any).messages.messages = (data as any).messages.messages.filter((m: any) => m.id !== event.messageId);
+            (data as any).messages.messages = (data as any).messages.messages.filter((m: any) => m.id !== event.message.id);
             this.engine.client.client.writeQuery({
                 query: ChatHistoryQuery.document,
                 variables: { conversationId: this.conversationId },
                 data: data
             });
-            this.messages = this.messages.filter((m: any) => m.id !== event.messageId);
+            this.messages = this.messages.filter((m: any) => m.id !== event.messageId.id);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -530,7 +539,7 @@ export class ConversationEngine implements MessageSendHandler {
                 this.dataSource.removeItem(id);
             }
 
-        } else if (event.__typename === 'ConversationEventEditMessage') {
+        } else if (event.__typename === 'ConversationMessageUpdated') {
             // Handle message
             console.info('Received edit message');
             // Write message to store
@@ -557,10 +566,6 @@ export class ConversationEngine implements MessageSendHandler {
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
             this.dataSource.updateItem(conv);
-        } else if (event.__typename === 'ConversationEventKick') {
-            if (this.engine.user.id === event.user.id ) {
-                this.engine.dialogList.dataSource.removeItem(this.conversationId);
-            }
         } else {
             console.warn('Received unknown message');
         }

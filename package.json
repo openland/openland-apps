@@ -260,7 +260,7 @@
 		"schema": "yarn schema:download && yarn schema:generate",
 		"schema:local": "yarn schema:download:local && yarn schema:generate",
 		"schema:download": "yarn apollo schema:download --endpoint=https://api.statecrafthq.com/api",
-		"schema:download:local": "yarn apollo-codegen introspect-schema http://localhost:9000/api --output schema.json",
+		"schema:download:local": "yarn apollo schema:download --endpoint=http://localhost:9000/api",
 		"schema:generate": "yarn schema:generate:1 && yarn schema:generate:2 && yarn schema:generate:3",
 		"schema:generate:1": "rimraf ./node_modules/apollo/node_modules/graphql && yarn apollo codegen:generate --queries=./packages/openland-api/*/*.ts --schema=schema.json --target=typescript --outputFlat=./packages/openland-api/Types.ts --addTypename --tagName=gql",
 		"schema:generate:2": "./node_modules/.bin/ts-node --compilerOptions '{\"module\":\"commonjs\"}' ./packages/openland-y-graphql-gen/generator.ts",

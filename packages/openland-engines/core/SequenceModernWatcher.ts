@@ -8,16 +8,18 @@ export class SequenceModernWatcher {
     private readonly seqHandler?: (seq: number) => void;
     private readonly query: any;
     private readonly sequenceHandler: SequenceHandler;
+    private readonly variables?: any;
     private currentState: string | null;
     private observable: ZenObservable.Subscription | null = null;
 
-    constructor(name: string, query: any, client: OpenApolloClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void) {
+    constructor(name: string, query: any, client: OpenApolloClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: any) {
         this.name = name;
         this.query = query;
         this.handler = handler;
         this.seqHandler = seqHandler;
         this.client = client;
         this.currentState = null;
+        this.variables = variables;
         this.sequenceHandler = new SequenceHandler(this.handleInternal);
         this.client.status.subscribe(this.handleConnectionChanged);
         this.startSubsctiption();
@@ -51,7 +53,7 @@ export class SequenceModernWatcher {
         }
         let subscription = this.client.client.subscribe({
             query: this.query,
-            variables: { fromState: this.currentState }
+            variables: { ...this.variables, state: this.currentState }
         });
         this.observable = subscription.subscribe({
             error: this.handleError,
