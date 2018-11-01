@@ -118,7 +118,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
 
         return this.props.render ? <this.props.render url={valueUrl} file={this.state.file} loading={this.state.loading} showPicker={this.handlePicker} /> : (
             <TouchableOpacity onPress={this.handlePicker}>
-                <View width={90} height={90} borderRadius={}>
+                <View width={90} height={90} borderRadius={45}>
                     {!this.state.file && valueUrl && <ZImage source={{ uri: valueUrl }} width={66} height={66} style={{ borderRadius: 33 }} />}
                     {this.state.file && <Image source={{ uri: this.state.file }} style={{ width: 66, height: 66, borderRadius: 33 }} />}
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: 90, height: 90, borderRadius: 45, backgroundColor: 'white', borderWidth: 1, borderColor: '#eff0f2' }}>
