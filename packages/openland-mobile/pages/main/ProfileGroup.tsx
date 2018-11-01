@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Image, TouchableHighlight } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
@@ -22,6 +22,7 @@ import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -61,14 +62,20 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                     id={resp.data.chat.id}
                                 />
 
-                                <ZListItemGroup header={null}>
-                                    <YMutation mutation={ChatUpdateGroupMutation}>
+                                <ZListItemGroup header={'Settings'}>
+                                    <YMutation mutation={ChatUpdateGroupMutation} {...{ compact: true }}>
                                         {(save) => (
                                             <ZAvatarPicker
                                                 showLoaderOnUpload={true}
                                                 render={(props) => {
 
-                                                    return <ZListItem appearance="action" onPress={props.showPicker} text={`${setOrChange} ${groupOrChannel} photo`} />;
+                                                    return <ZListItem
+                                                        onPress={props.showPicker}
+                                                        leftIcon={require('assets/ic-cell-photo-ios.png')}
+                                                        compact={true}
+                                                        title={`${setOrChange} ${groupOrChannel} photo`}
+                                                        path="arrow"
+                                                    />;
                                                 }}
                                                 onChanged={(val) => {
                                                     save({
@@ -85,11 +92,13 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
 
-                                    <YMutation mutation={ChatChangeGroupTitleMutation}>
+                                    <YMutation mutation={ChatChangeGroupTitleMutation} {...{ compact: true }}>
                                         {(save) => (
                                             <ZListItem
-                                                appearance="action"
-                                                text="Change name"
+                                                leftIcon={require('assets/ic-cell-name-ios.png')}
+                                                compact={true}
+                                                title="Change name"
+                                                path="arrow"
                                                 onPress={() =>
                                                     Modals.showTextEdit(
                                                         this.props.router,
@@ -100,7 +109,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             />
                                         )}
                                     </YMutation>
-                                    <YMutation mutation={ConversationSettingsUpdateMutation}>
+                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ compact: true }}>
                                         {(update) => {
                                             let toggle = async () => {
                                                 startLoader();
@@ -113,7 +122,9 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             };
                                             return (
                                                 <ZListItem
-                                                    text="Notifications"
+                                                    leftIcon={require('assets/ic-cell-notif-ios.png')}
+                                                    compact={true}
+                                                    title="Notifications"
                                                     toggle={!resp.data.chat.settings.mute}
                                                     onToggle={toggle}
                                                     onPress={toggle}
@@ -122,43 +133,55 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         }
                                         }
                                     </YMutation>
+                                    {resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.organization!.isOwner &&
+                                        < ZListItem
+                                            leftIcon={require('assets/ic-cell-link-ios.png')}
+                                            compact={true}
+                                            title="Invite via Link"
+                                            appearance="action"
+                                            path="ChannelInviteLinkModal"
+                                            pathParams={{ id: resp.data.chat.id }}
+                                        />}
                                 </ZListItemGroup>
 
                                 <ZListItemGroup header="Members">
-                                    <YMutation mutation={ChatAddMembersMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]} >
-                                        {(add) => (
-                                            <ZListItem
-                                                appearance="action"
-                                                text="  👋   Add members"
-                                                onPress={() => {
-                                                    Modals.showUserMuptiplePicker(
-                                                        this.props.router,
-                                                        {
-                                                            title: 'Add', action: async (users) => {
-                                                                startLoader();
-                                                                try {
-                                                                    await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: resp.data.chat.id } });
-                                                                    this.props.router.back();
-                                                                } catch (e) {
-                                                                    Alert.alert(e.messagew);
-                                                                }
-                                                                stopLoader();
-                                                            }
-                                                        },
-                                                        'Add members',
-                                                        resp.data.members.map(m => m.user.id)
-                                                    );
-                                                }}
-                                            />
-                                        )}
-                                    </YMutation>
-                                    {resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.organization!.isOwner && < ZListItem
-                                        key="add"
-                                        text="  🔗   Invite via Link"
-                                        appearance="action"
-                                        onPress={() => this.props.router.push('ChannelInviteLinkModal', { id: resp.data.chat.id })}
-                                    />}
+
                                     <SDeferred>
+                                        <YMutation mutation={ChatAddMembersMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]} >
+                                            {(add) => (
+                                                <TouchableHighlight
+                                                    underlayColor={XPStyles.colors.selectedListItem}
+                                                    onPress={() => {
+                                                        Modals.showUserMuptiplePicker(
+                                                            this.props.router,
+                                                            {
+                                                                title: 'Add', action: async (users) => {
+                                                                    startLoader();
+                                                                    try {
+                                                                        await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: resp.data.chat.id } });
+                                                                        this.props.router.back();
+                                                                    } catch (e) {
+                                                                        Alert.alert(e.messagew);
+                                                                    }
+                                                                    stopLoader();
+                                                                }
+                                                            },
+                                                            'Add members',
+                                                            resp.data.members.map(m => m.user.id)
+                                                        );
+                                                    }}
+                                                >
+                                                    <View flexDirection="row" height={60} alignItems="center" >
+                                                        <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
+                                                            <Image source={require('assets/ic-add.png')} />
+                                                        </View>
+                                                        <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
+                                                        <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={1} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.selectedListItem} />
+
+                                                    </View>
+                                                </TouchableHighlight>
+                                            )}
+                                        </YMutation>
                                         {resp.data.members.map((v) => (
                                             <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>
                                                 {(kick) => (

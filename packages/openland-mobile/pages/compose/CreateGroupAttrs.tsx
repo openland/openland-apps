@@ -35,7 +35,7 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
     render() {
         return (
             <>
-                <SHeader title="👥 New group" />
+                <SHeader title="New group" />
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
                 <YMutation mutation={ChatCreateGroupMutation}>
                     {create => (
