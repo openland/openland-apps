@@ -14,6 +14,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
 import { DownloadState } from 'openland-shared/DownloadManagerInterface';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 const styles = StyleSheet.create({
     name: {
@@ -61,7 +62,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
         }
     }
 
-    private handlePress = () => {
+    private handleOpen = () => {
         if (this.state.path) {
             Share.open({
                 // type: 'application/pdf',
@@ -75,14 +76,15 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
         return (
             <>
                 <SHeader title="Document" />
+                <SHeaderButton title="Share" icon={require('assets/ic-export-white-ios.png')} onPress={this.handleOpen} />
                 <View backgroundColor="#fff" flexGrow={1}>
-                    <TouchableHighlight underlayColor="#fff" onPress={this.handlePress}>
+                    <TouchableHighlight underlayColor="#fff" onPress={this.handleOpen}>
                         <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
                             <Text style={styles.name}>{config.name}</Text>
                             <Text style={styles.size}>{formatBytes(config.size)}</Text>
                             < View height={46} justifyContent="center" marginTop={5}>
-                                {this.state.path && <ZRoundedButton title="Open" onPress={this.handlePress} />}
+                                {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
                                 {!this.state.path && <XPCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
                             </View>
                         </ASSafeAreaView>
