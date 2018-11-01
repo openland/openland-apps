@@ -14,7 +14,7 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $state: String) {
-    event: alphaChatSubscribe2(conversationId: $conversationId, fromState: $state) {
+    event: conversationUpdates(conversationId: $conversationId, fromState: $state) {
         ... on ConversationUpdateSingle {
             seq
             state
