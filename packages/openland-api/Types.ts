@@ -1083,6 +1083,7 @@ export interface ChatInfo_chat_ChannelConversation {
   membersCount: number;
   memberRequestsCount: number;
   organization: ChatInfo_chat_ChannelConversation_organization | null;
+  myRole: string | null;
 }
 
 export type ChatInfo_chat = ChatInfo_chat_AnonymousConversation | ChatInfo_chat_SharedConversation | ChatInfo_chat_PrivateConversation | ChatInfo_chat_GroupConversation | ChatInfo_chat_ChannelConversation;

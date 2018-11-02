@@ -159,6 +159,7 @@ export const ChatInfoQuery = gql`
                     isOwner: alphaIsOwner
                     name
                 }
+                myRole
             }
         }
     }
