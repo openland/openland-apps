@@ -85,7 +85,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     id={resp.data!!.me!!.id}
                                     title={resp.data!!.me!!.name}
                                     subtitle={primary.name}
-                                    path="SettingsProfile"
+                                    path="NewOrganization"
                                     action="Edit profile"
                                 />
                                 <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">

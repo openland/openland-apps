@@ -528,7 +528,7 @@ export class ConversationEngine implements MessageSendHandler {
                 variables: { conversationId: this.conversationId },
                 data: data
             });
-            this.messages = this.messages.filter((m: any) => m.id !== event.messageId.id);
+            this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();

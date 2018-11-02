@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     hint: {
         paddingHorizontal: 16,
         fontSize: 16,
+        marginTop: 15,
+        marginBottom: 26,
+        lineHeight: 24,
         fontWeight: '400',
         color: '#000',
         opacity: 0.9
@@ -51,7 +54,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Enter your email" />
+                <SHeader title="Email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
 
                 <ZForm
@@ -102,7 +105,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Enter code" />
+                <SHeader title="Confirm email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm
                     ref={this.ref}

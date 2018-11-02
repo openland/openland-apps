@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextStyle, Platform, Button, View, Text } from 'react-native';
+import { StyleSheet, TextStyle, Platform, Button, View, Text, Alert } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
 import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
 import { ActionButtonIOS } from 'react-native-s/navigation/buttons/ActionButtonIOS';
@@ -12,6 +12,7 @@ import { ZForm } from '../../components/ZForm';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { next } from './signup';
 import { XPStyles } from 'openland-xp/XPStyles';
+import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -33,10 +34,11 @@ export const signupStyles = StyleSheet.create({
 const styles = StyleSheet.create({
     hint: {
         paddingHorizontal: 16,
-        fontSize: 16,
-        fontWeight: '400',
-        color: '#000',
-        opacity: 0.9
+        fontSize: 13,
+        lineHeight: 17,
+        fontWeight: '300',
+        color: '#666666',
+        opacity: 0.8
     } as TextStyle
 });
 
@@ -59,7 +61,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Your full name" />
+                <SHeader title="Full name" />
                 <SHeaderButton title="Next" onPress={() => this.ref.current!.submitForm()} />
 
                 <YMutation mutation={ProfileCreateMutation}>
@@ -69,13 +71,17 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                             defaultData={{ input: { firstName: '' } }}
                             action={async (src) => {
                                 // await delay(1000);
+                                if (!src.input.firstName) {
+                                    Alert.alert('Name can\'t be empty');
+                                    return;
+                                }
                                 await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });
                                 await next(this.props.router);
                             }}
                         >
-                            <Text style={styles.hint}>
-                                Please, provide your name. This information is part of your public profile.
-                            </Text>
+                            <View alignSelf="center" marginTop={30} marginBottom={10}>
+                                <ZAvatarPicker field="input.photoRef" />
+                            </View>
                             <ZTextInput
                                 field="input.firstName"
                                 placeholder="First name"
@@ -88,6 +94,10 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                                 style={signupStyles.input}
                                 width="100%"
                             />
+
+                            <Text style={styles.hint}>
+                                Please, provide your name. This information is part of your public profile.
+                            </Text>
                         </ZForm>
                     )}
                 </YMutation>
