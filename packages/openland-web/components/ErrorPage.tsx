@@ -15,13 +15,13 @@ const Root = Glamorous.div({
 });
 
 const HeaderWrapper = Glamorous.div({
-    padding: '28px 32px'
+    padding: '19px 32px'
 });
 
 const HeaderLogo = Glamorous.div({
-    width: 132,
-    height: 24,
-    background: 'url(/static/X/signup/logo.svg) no-repeat',
+    width: 145,
+    height: 42,
+    background: 'url(/static/X/signup/logo-2.svg) no-repeat',
     backgroundSize: '100% 100%'
 });
 
@@ -34,20 +34,6 @@ const Box = Glamorous.div({
 const Inner = Glamorous.div({
     position: 'relative',
     flex: 1
-});
-
-const Rectangle = Glamorous.div({
-    width: '100%',
-    height: 600,
-    position: 'absolute',
-    top: 'calc(50% - 300px)',
-    left: 0,
-    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'bottom',
-    zIndex: 0,
-    pointerEvents: 'none'
 });
 
 const Image = Glamorous.div({
@@ -63,25 +49,33 @@ const Image = Glamorous.div({
 const Title = Glamorous.div({
     textAlign: 'center',
     fontSize: 24,
-    fontWeight: 500,
+    fontWeight: 400,
     lineHeight: '29px',
-    letterSpacing: 0.8,
-    color: '#1f3449',
-    marginBottom: 12,
+    letterSpacing: 0,
+    color: '#000000',
+    marginBottom: 10,
 });
 
 const Description = Glamorous.div({
     textAlign: 'center',
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 400,
     lineHeight: '22px',
-    letterSpacing: -0.4,
-    color: '#606f7e',
-    marginBottom: 40,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.6)',
+    marginBottom: 28,
+
+    '& a': {
+        color: '#1790ff',
+
+        '&:hover': {
+            textDecoration: 'underline'
+        }
+    }
 });
 
 const ButtonsWrapper = Glamorous(XHorizontal)({
-    width: 360,
+    width: 150,
     margin: '0 auto'
 });
 
@@ -92,12 +86,11 @@ const Button = Glamorous(XButton)({
 const Copyrights = Glamorous.div({
     padding: '14px 0',
     textAlign: 'center',
-    opacity: 0.4,
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 400,
     lineHeight: '24px',
-    letterSpacing: -0.2,
-    color: '#1f3449'
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.4)'
 });
 
 export class ErrorPage extends React.Component<{ statusCode: number | null | undefined, message?: string }> {
@@ -112,19 +105,21 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                         </HeaderWrapper>
                         <Box>
                             <Inner>
-                                <Rectangle />
                                 <Image />
                                 <Title>{this.props.statusCode === 404 ? 'Not found' : (this.props.message || 'Something went wrong')}</Title>
                                 <Description>
                                     {this.props.statusCode === 404 && 'We can\'t seem to find the page you are looking for.'}
-                                    {this.props.statusCode !== 404 && 'Message Openland team to get help or return to home screen'}
+                                    {this.props.statusCode !== 404 && (
+                                        <>
+                                            Return home or contact our team at <a href="mailto:hello@openland.com">hello@openland.com</a>
+                                        </>
+                                    )}
                                 </Description>
                                 <ButtonsWrapper separator={12}>
-                                    <Button style="primary" path="/" text="Return home" />
-                                    <Button path="/support/61gk9KRrl9ComJkvYnvdcddr4o" text="Message support" />
+                                    <Button style="primary" path="/" text="Return home" size="large" />
                                 </ButtonsWrapper>
                             </Inner>
-                            </Box>
+                        </Box>
                         <Copyrights>© Openland {new Date().getFullYear()}</Copyrights>
                     </Root>
                 </XTrack>
