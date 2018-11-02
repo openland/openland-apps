@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemEdit } from '../../components/ZListItemEdit';
 import { ZQuery } from '../../components/ZQuery';
@@ -16,6 +16,28 @@ import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+
+class ListItemEdit extends React.PureComponent<{ autoFocus?: boolean, title: string, value?: string, valueStoreKey?: string, field?: string, onChange?: (val: string) => void, placehodler?: string }> {
+    render() {
+        return (
+            <ZListItemBase separator={false}>
+                <View flexDirection="row" alignItems="stretch" flexGrow={1}>
+                    <Text style={{ width: 104, color: '#8a8a8f', fontSize: 13, lineHeight: 22, marginLeft: 16, alignSelf: 'center' }}>{this.props.title}</Text>
+                    <ZTextInput
+                        placeholder={this.props.placehodler}
+                        flexGrow={1}
+                        value={this.props.value}
+                        onChangeText={this.props.onChange}
+                        style={{ paddingRight: 15 }}
+                        field={this.props.field}
+                        valueStoreKey={this.props.valueStoreKey}
+                        autoFocus={this.props.autoFocus}
+                    />
+                </View>
+            </ZListItemBase>
+        );
+    }
+}
 
 class SettingsProfileComponent extends React.Component<PageProps, { loaded: boolean }> {
 
@@ -61,23 +83,23 @@ class SettingsProfileComponent extends React.Component<PageProps, { loaded: bool
                                         }
                                     }}
                                 >
-                                    <ZListItemGroup>
-                                        <ZListItemBase height={96} separator={false}>
-                                            <View padding={15}>
-                                                <ZAvatarPicker field="input.photoRef" />
-                                            </View>
-                                            <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4}>
-                                                <ZTextInput placeholder="First name" field="input.firstName" height={44} style={{ fontSize: 16 }} />
-                                                <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                                                <ZTextInput placeholder="Last name" field="input.lastName" height={44} style={{ fontSize: 16 }} />
-                                            </View>
-                                        </ZListItemBase>
-                                    </ZListItemGroup>
-                                    <ZListItemGroup header="Contacts">
-                                        <ZListItemEdit title="Phone number" field="input.phone" />
-                                        <ZListItemEdit title="Email" field="input.email" />
-                                        <ZListItemEdit title="Web Site" field="input.website" />
-                                        <ZListItemEdit title="Linkedin" field="input.alphaLinkedin" />
+                                    <ZListItemBase height={96} separator={false}>
+                                        <View paddingHorizontal={16} marginTop={15}>
+                                            <ZAvatarPicker field="input.photoRef" />
+                                        </View>
+                                        <View flexDirection="column" flexGrow={1} flexBasis={0} marginTop={15}>
+                                            <ZTextInput placeholder="First name" field="input.firstName" height={44} style={{ fontSize: 16 }} />
+                                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                                            <ZTextInput placeholder="Last name" field="input.lastName" height={44} style={{ fontSize: 16 }} />
+                                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                                        </View>
+                                    </ZListItemBase>
+                                    <View marginTop={31} />
+                                    <ZListItemGroup >
+                                        <ListItemEdit title="Phone" field="input.phone" placehodler="123-456-7890" />
+                                        <ListItemEdit title="Email" field="input.email" placehodler="your@email.com" />
+                                        <ListItemEdit title="Website" field="input.website" placehodler="yoursite.com" />
+                                        <ListItemEdit title="Linkedin" field="input.alphaLinkedin" placehodler="linkedin.com/in/you"/>
                                     </ZListItemGroup>
                                 </ZForm>
                             )}
