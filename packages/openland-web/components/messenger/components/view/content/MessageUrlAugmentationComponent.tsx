@@ -9,6 +9,7 @@ import { MessageFull_urlAugmentation } from 'openland-api/Types';
 import { layoutMediaReverse } from './utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from '../../icons/ic-close.svg';
+import { makeInternalLinkRelative, isInternalLink } from './MessageTextComponent';
 
 const Container = Glamorous(XLink)({
     display: 'flex',
@@ -159,8 +160,16 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageUrlA
             dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
         }
 
+        let href: string | undefined = this.props.url;
+        let path: string | undefined = undefined;
+
+        if (isInternalLink(href)) {
+            path = makeInternalLinkRelative(href);
+            href = undefined;
+        }
+
         return (
-            <Container href={this.props.url}>
+            <Container href={href} path={path}>
                 <ContentWrapper>
                     {hostname && (
                         <Hostname>

@@ -44,7 +44,7 @@ const EditLabel = Glamorous.span({
 
 let emoji = (text: string, height: number) => emojify(text, { style: { height: height, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } });
 
-let makeUrlRelative = (url: string) => {
+export let makeInternalLinkRelative = (url: string) => {
     let rel = url.replace('http://app.openland.com/', '/')
         .replace('https://app.openland.com/', '/')
         .replace('//app.openland.com/', '/')
@@ -53,6 +53,10 @@ let makeUrlRelative = (url: string) => {
         .replace('//next.openland.com/', '/');
 
     return rel;
+};
+
+export let isInternalLink = (url: string) => {
+    return url.includes('//app.openland.com/') || url.includes('//next.openland.com/');
 };
 
 const asciiToUnicodeCache = new Map();
@@ -115,11 +119,11 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
             } else if (v.type === 'link') {
-                if (v.link && (v.link.includes('//app.openland.com/') || v.link.includes('//next.openland.com/'))) {
+                if (v.link && isInternalLink(v.link)) {
                     let path = v.link;
                     let text = v.text || path;
 
-                    path = makeUrlRelative(path);
+                    path = makeInternalLinkRelative(path);
 
                     let url: string;
 
