@@ -226,6 +226,7 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
                         <XButton
                             text="Search"
                             style="primary"
+                            enabled={this.state.query.length > 0}
                         />
                     </SearchWrapper>
                     <XSubHeader title="Featured channels">
