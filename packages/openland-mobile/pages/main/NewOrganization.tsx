@@ -29,16 +29,16 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                                 this.props.router.params.action ? await this.props.router.params.action(this.props.router) : this.props.router.back();
                             }}
                         >
-                            <ZListItemGroup footer="Please, provide organization name and optional logo">
-                                <ZListItemBase height={96} separator={false}>
-                                    <View padding={15}>
-                                        <ZAvatarPicker field="input.photoRef" />
-                                    </View>
-                                    <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4} alignContent="center" alignSelf="center">
-                                        <ZTextInput placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16, borderBottomColor: AppStyles.separatorColor, borderBottomWidth: 1 }} />
-                                    </View>
-                                </ZListItemBase>
-                            </ZListItemGroup>
+
+                            <View>
+                                <View alignSelf="center" marginTop={30} marginBottom={10}>
+                                    <ZAvatarPicker field="input.photoRef" />
+                                </View>
+                                <ZTextInput marginLeft={16} marginTop={21} placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16 }} />
+                                <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                                <Text style={{ color: '#666666', opacity: 0.8, fontSize: 13, lineHeight: 17, marginTop: 8, marginLeft: 16}}>Please, provide organization name and optional logo</Text>
+                            </View>
+
                         </ZForm>
                     )}
                 </YMutation>

@@ -69,15 +69,13 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                                     src.title);
                             }}
                         >
-                            <ZListItemBase height={96} separator={false}>
-                                <View padding={15}>
+                            <View>
+                                <View alignSelf="center" marginTop={30} marginBottom={10}>
                                     <ZAvatarPicker field="photoRef" />
                                 </View>
-                                <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4} alignContent="center" alignSelf="center">
-                                    <ZTextInput autoFocus={true} placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} />
-                                    <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                                </View>
-                            </ZListItemBase>
+                                <ZTextInput marginLeft={16} marginTop={21} placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} />
+                                <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                            </View>
                         </ZForm>
                     )}
                 </YMutation>

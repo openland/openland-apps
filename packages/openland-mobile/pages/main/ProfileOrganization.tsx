@@ -48,7 +48,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 <ZListItemGroup header={null}>
 
                                                     {this.props.router.params.conversationId &&
-                                                        <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.conversationId }} {...{ compact: true }}>
+                                                        <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.conversationId }} {...{ leftIcon: true }}>
                                                             {conv => conv.data ? (
                                                                 <YMutation mutation={ConversationSettingsUpdateMutation}>
                                                                     {(update) => {
@@ -64,8 +64,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                         return (
                                                                             <ZListItem
                                                                                 leftIcon={require('assets/ic-cell-notif-ios.png')}
-                                                                                title="Notifications"
-                                                                                compact={true}
+                                                                                text="Notifications"
                                                                                 toggle={!conv.data!.chat.settings.mute}
                                                                                 onToggle={toggle}
                                                                                 onPress={toggle}

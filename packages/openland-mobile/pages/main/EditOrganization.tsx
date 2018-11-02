@@ -44,18 +44,14 @@ class EditOrganizationComponent extends React.PureComponent<PageProps> {
                                         }}
                                         onSuccess={() => { this.props.router.back(); }}
                                     >
-                                        <ZListItemGroup>
-                                            <ZListItemBase height={96} separator={false}>
-                                                <View padding={15}>
-                                                    <ZAvatarPicker field="input.photoRef" />
-                                                </View>
-                                                <View flexDirection="column" flexGrow={1} flexBasis={0} paddingVertical={4}>
-                                                    <ZTextInput placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16 }} />
-                                                    <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                                                    {/* <ZTextInput placeholder="Last name" field="input.lastName" height={44} style={{ fontSize: 16 }} /> */}
-                                                </View>
-                                            </ZListItemBase>
-                                        </ZListItemGroup>
+                                        <View>
+                                            <View alignSelf="center" marginTop={30} marginBottom={10}>
+                                                <ZAvatarPicker field="input.photoRef" />
+                                            </View>
+                                            <ZTextInput marginLeft={16} marginTop={21} placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16 }} />
+                                            <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                                        </View>
+
                                     </ZForm>
                                 );
                             }}

@@ -8,9 +8,8 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
         React.Children.forEach(this.props.children, (c) => {
             if (c !== null && c !== undefined) {
                 components.push(c);
-                console.warn('boom', (c as any).props.compact);
                 if (components.length > 0 && this.props.divider !== false && !(c as any).props.divider) {
-                    components.push(<View key={'div-' + components.length} style={{ paddingLeft: (c as any).props.compact ? 64 : 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
+                    components.push(<View key={'div-' + components.length} style={{ paddingLeft: (c as any).props.leftIcon ? 64 : (c as any).props.leftAvatar ? 69 : 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
                 }
             }
         });

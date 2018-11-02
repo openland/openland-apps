@@ -63,7 +63,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 />
 
                                 <ZListItemGroup header={'Settings'}>
-                                    <YMutation mutation={ChatUpdateGroupMutation} {...{ compact: true }}>
+                                    <YMutation mutation={ChatUpdateGroupMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZAvatarPicker
                                                 showLoaderOnUpload={true}
@@ -72,9 +72,8 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     return <ZListItem
                                                         onPress={props.showPicker}
                                                         leftIcon={require('assets/ic-cell-photo-ios.png')}
-                                                        compact={true}
-                                                        title={`${setOrChange} ${groupOrChannel} photo`}
-                                                        path="arrow"
+                                                        text={`${setOrChange} ${groupOrChannel} photo`}
+                                                        navigationIcon
                                                     />;
                                                 }}
                                                 onChanged={(val) => {
@@ -92,13 +91,12 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
 
-                                    <YMutation mutation={ChatChangeGroupTitleMutation} {...{ compact: true }}>
+                                    <YMutation mutation={ChatChangeGroupTitleMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZListItem
                                                 leftIcon={require('assets/ic-cell-name-ios.png')}
-                                                compact={true}
-                                                title="Change name"
-                                                path="arrow"
+                                                text="Change name"
+                                                navigationIcon
                                                 onPress={() =>
                                                     Modals.showTextEdit(
                                                         this.props.router,
@@ -109,7 +107,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             />
                                         )}
                                     </YMutation>
-                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ compact: true }}>
+                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ leftIcon: true }}>
                                         {(update) => {
                                             let toggle = async () => {
                                                 startLoader();
@@ -123,8 +121,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             return (
                                                 <ZListItem
                                                     leftIcon={require('assets/ic-cell-notif-ios.png')}
-                                                    compact={true}
-                                                    title="Notifications"
+                                                    text="Notifications"
                                                     toggle={!resp.data.chat.settings.mute}
                                                     onToggle={toggle}
                                                     onPress={toggle}
@@ -136,9 +133,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                     {resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.organization!.isOwner &&
                                         < ZListItem
                                             leftIcon={require('assets/ic-cell-link-ios.png')}
-                                            compact={true}
-                                            title="Invite via Link"
-                                            appearance="action"
+                                            text="Invite via Link"
                                             path="ChannelInviteLinkModal"
                                             pathParams={{ id: resp.data.chat.id }}
                                         />}

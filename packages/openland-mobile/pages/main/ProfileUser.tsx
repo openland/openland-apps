@@ -63,7 +63,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                     {!!resp.data.user.primaryOrganization && <ZListItem leftAvatar={{ photo: resp.data.user.primaryOrganization.photo, key: resp.data.user.primaryOrganization.id, title: resp.data.user.primaryOrganization.name }} multiline={true} text={resp.data.user.primaryOrganization.name} title="organization" path="ProfileOrganization" pathParams={{ id: resp.data.user.primaryOrganization.id }} />}
                                     {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
                                     <View style={{ marginTop: 20 }} {...{ divider: true }} />
-                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ compact: true }}>
+                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ leftIcon: true }}>
                                         {(update) => {
                                             let toggle = async () => {
                                                 startLoader();
@@ -77,8 +77,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                             return (
                                                 <ZListItem
                                                     leftIcon={require('assets/ic-cell-notif-ios.png')}
-                                                    title="Notifications"
-                                                    compact={true}
+                                                    text="Notifications"
                                                     toggle={!resp.data.conversation.settings.mute}
                                                     onToggle={toggle}
                                                     onPress={toggle}
@@ -87,7 +86,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                         }
                                         }
                                     </YMutation>
-                                    {!!resp.data.user.channels && <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} title="Channels" compact={true} description={resp.data.user.channels.length.toString()} path={'OrgChannels'} pathParams={{ channels: resp.data.user.channels, title: resp.data.user.name + '`s channels' }} />}
+                                    {!!resp.data.user.channels && <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Channels" description={resp.data.user.channels.length.toString()} path={'OrgChannels'} pathParams={{ channels: resp.data.user.channels, title: resp.data.user.name + '`s channels' }} />}
 
                                 </ZListItemGroup>
                             </SScrollView>

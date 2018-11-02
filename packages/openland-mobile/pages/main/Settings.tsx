@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, Share } from 'react-native';
+import { AsyncStorage, Share, TouchableHighlight, View, Image, Text } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { AppUpdateTracker, UpdateStatus, UpdateStatusCode } from '../../utils/UpdateTracker';
 import { ZListItem } from '../../components/ZListItem';
@@ -11,6 +11,7 @@ import { PageProps } from '../../components/PageProps';
 import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
+import { XPStyles } from 'openland-xp/XPStyles';
 
 function convertStatus(status: UpdateStatus) {
     switch (status.status) {
@@ -88,9 +89,9 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     action="Edit profile"
                                 />
                                 <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
-                                    <ZListItem text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com' })} />
+                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com' })} />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Organizations">
+                                <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }}>
                                     <ZListItem
                                         text={primary.name}
                                         leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
@@ -107,12 +108,15 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                             navigationIcon={true}
                                         />
                                     ))}
-                                    {secondaryFiltered.length < secondary.length && <ZListItem text="More" path="SettingsOrganizations" />}
-                                    <ZListItem
-                                        text="New organization"
-                                        onPress={() => this.props.router.push('NewOrganization')}
-                                        appearance="action"
-                                    />
+                                    <TouchableHighlight underlayColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('NewOrganization')}>
+                                        <View flexDirection="row" height={60} alignItems="center" >
+                                            <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
+                                                <Image source={require('assets/ic-add.png')} />
+                                            </View>
+                                            <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>New organization</Text>
+
+                                        </View>
+                                    </TouchableHighlight>
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
                                     <ZListItem text="Notifications" path="SettingsNotifications" />
