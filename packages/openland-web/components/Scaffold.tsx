@@ -615,7 +615,8 @@ export const CreateOrganization = withCreateOrganization((props) => {
                         }
                     }
                 });
-                switchOrganization(res.data.createOrganization.id);
+                let redirect = (community ? '/directory/c/' : '/directory/o/') + res.data.createOrganization.id;
+                switchOrganization(res.data.createOrganization.id, redirect);
                 await delayForewer();
             }}
             defaultData={{
