@@ -99,7 +99,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 </YApolloProvider>
             );
         } else if (this.state.state === 'initial') {
-            return <Root routing={SRouting.create(Routes, 'Login')} />;
+            return <Root routing={SRouting.create(Routes, 'Login')} padLayout={false}/>;
         } else if (this.state.state === 'signup') {
             return (
                 <YApolloProvider client={getClient()}>

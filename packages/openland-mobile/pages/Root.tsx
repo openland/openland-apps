@@ -8,6 +8,7 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 
 export interface RootProps {
     routing: SRouting;
+    padLayout?: boolean;
 }
 
 let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
@@ -20,6 +21,8 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height
         };
+
+        isPad = isPad && this.props.padLayout !== false;
 
         if (isPad) {
             this.props.routing.navigationManager.setPushHandler(this.handlePush);
