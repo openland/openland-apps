@@ -498,7 +498,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 <XSubHeaderLink query={{ field: 'createOrganization', value: 'true' }}>
                                                     <XIcon icon="add" />
                                                     New organization
-                                            </XSubHeaderLink>
+                                                </XSubHeaderLink>
                                                 <XSubHeaderRight>
                                                     <SortPicker sort={this.state.sort} onPick={this.changeSort} />
                                                 </XSubHeaderRight>

@@ -16,6 +16,8 @@ import { XOverflow } from '../Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { ChannelSetFeatured, ChannelSetHidden } from './MessengerComponent';
 import SearchIcon from '../icons/ic-search-small.svg';
+import { XSubHeader, XSubHeaderLink, XSubHeaderRight } from 'openland-x/XSubHeader';
+import { XIcon } from 'openland-x/XIcon';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -177,22 +179,6 @@ const SearchWrapper = Glamorous(XHorizontal)({
     }
 });
 
-const FilterWrapper = Glamorous(XHorizontal)({
-    height: 56,
-    backgroundColor: '#F9F9F9',
-    paddingLeft: 24,
-    paddingRight: 24,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
-});
-
-const CounterText = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.14,
-    letterSpacing: -0.2,
-    color: '#5c6a81'
-});
-
 interface ChannelsExploreComponentState {
     query: string;
     sort: {
@@ -242,22 +228,27 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
                             style="primary"
                         />
                     </SearchWrapper>
-                    <FilterWrapper justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <CounterText>Featured channels</CounterText>
-                        <SortPicker
-                            sort={this.state.sort}
-                            onPick={this.changeSort}
-                            options={
-                                {
-                                    label: 'Sort by', values: [
-                                        { label: 'Members count', value: 'membersCount' },
-                                        { label: 'Last updated', value: 'updatedAt' },
-                                        { label: 'Create date', value: 'createdAt' }
-                                    ]
+                    <XSubHeader title="Featured channels">
+                        <XSubHeaderLink query={{ field: 'createChannel', value: 'true' }}>
+                            <XIcon icon="add" />
+                            New channel
+                        </XSubHeaderLink>
+                        <XSubHeaderRight>
+                            <SortPicker
+                                sort={this.state.sort}
+                                onPick={this.changeSort}
+                                options={
+                                    {
+                                        label: 'Sort by', values: [
+                                            { label: 'Members count', value: 'membersCount' },
+                                            { label: 'Last updated', value: 'updatedAt' },
+                                            { label: 'Create date', value: 'createdAt' }
+                                        ]
+                                    }
                                 }
-                            }
-                        />
-                    </FilterWrapper>
+                            />
+                        </XSubHeaderRight>
+                    </XSubHeader>
                 </XVertical>
                 <ChannelsListWrapper>
                     <XVertical separator={0} flexGrow={1} flexShrink={0}>
