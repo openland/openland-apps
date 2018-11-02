@@ -919,6 +919,7 @@ export interface ChatInfo_chat_AnonymousConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatInfo_chat_AnonymousConversation_settings;
 }
 
@@ -940,6 +941,7 @@ export interface ChatInfo_chat_SharedConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatInfo_chat_SharedConversation_settings;
   organization: ChatInfo_chat_SharedConversation_organization | null;
 }
@@ -981,6 +983,7 @@ export interface ChatInfo_chat_PrivateConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatInfo_chat_PrivateConversation_settings;
   blocked: boolean;
   user: ChatInfo_chat_PrivateConversation_user;
@@ -1013,6 +1016,7 @@ export interface ChatInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatInfo_chat_GroupConversation_settings;
   membersCount: number;
   photo: string | null;
@@ -1069,6 +1073,7 @@ export interface ChatInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatInfo_chat_ChannelConversation_settings;
   myStatus: ChannelMembershipStatus;
   photo: string | null;
@@ -1116,6 +1121,7 @@ export interface ChatFullInfo_chat_AnonymousConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatFullInfo_chat_AnonymousConversation_settings;
 }
 
@@ -1156,6 +1162,7 @@ export interface ChatFullInfo_chat_PrivateConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatFullInfo_chat_PrivateConversation_settings;
   user: ChatFullInfo_chat_PrivateConversation_user;
 }
@@ -1211,6 +1218,7 @@ export interface ChatFullInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatFullInfo_chat_GroupConversation_settings;
   members: ChatFullInfo_chat_GroupConversation_members[];
   photo: string | null;
@@ -1268,6 +1276,7 @@ export interface ChatFullInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatFullInfo_chat_ChannelConversation_settings;
   myStatus: ChannelMembershipStatus;
   members: ChatFullInfo_chat_ChannelConversation_members[];
@@ -1295,6 +1304,7 @@ export interface ChatFullInfo_chat_SharedConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: ChatFullInfo_chat_SharedConversation_settings;
   organizations: ChatFullInfo_chat_SharedConversation_organizations[];
 }
@@ -1329,6 +1339,7 @@ export interface GroupChatFullInfo_chat_AnonymousConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: GroupChatFullInfo_chat_AnonymousConversation_settings;
 }
 
@@ -1367,6 +1378,7 @@ export interface GroupChatFullInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: GroupChatFullInfo_chat_ChannelConversation_settings;
   photo: string | null;
   photoRef: GroupChatFullInfo_chat_ChannelConversation_photoRef | null;
@@ -1400,6 +1412,7 @@ export interface GroupChatFullInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   photos: string[];
+  unreadCount: number;
   settings: GroupChatFullInfo_chat_GroupConversation_settings;
   photo: string | null;
   photoRef: GroupChatFullInfo_chat_GroupConversation_photoRef | null;

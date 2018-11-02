@@ -93,6 +93,7 @@ export const ChatInfoQuery = gql`
             flexibleId
             title
             photos
+            unreadCount
             settings{
                 id
                 mobileNotifications
@@ -173,7 +174,8 @@ export const ChatFullInfoQuery = gql`
             flexibleId
             title
             photos
-            settings{
+            unreadCount
+               settings{
                 id
                 mobileNotifications
                 mute
@@ -232,7 +234,8 @@ export const GroupChatFullInfoQuery = gql`
             flexibleId
             title
             photos
-            settings{
+            unreadCount
+             settings{
                 id
                 mobileNotifications
                 mute
