@@ -271,7 +271,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
             return;
         }
         let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
-        invites.push({ role: 'MEMBER' });
+        invites.push({});
         store.writeValue('fields.inviteRequests', invites);
     }
 
