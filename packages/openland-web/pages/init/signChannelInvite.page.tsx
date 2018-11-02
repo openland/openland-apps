@@ -30,13 +30,13 @@ const InfoText = Glamorous.div({
 
 const HeaderWrapper = Glamorous.div({
     paddingLeft: 32,
-    paddingTop: 28
+    paddingTop: 19
 });
 
 const HeaderLogo = Glamorous.div({
-    width: 132,
-    height: 24,
-    background: 'url(/static/X/signup/logo.svg) no-repeat',
+    width: 145,
+    height: 42,
+    background: 'url(/static/X/signup/logo-2.svg) no-repeat',
     backgroundSize: '100% 100%'
 });
 

@@ -79,7 +79,7 @@ const InfoCardWrapper = Glamorous.div({
         bottom: 0,
         right: 0,
         pointerEvents: 'none',
-        border: 'solid 1px #edeef3',
+        border: 'solid 1px #ececec',
         borderRadius: 15,
     },
 
@@ -96,24 +96,23 @@ const InfoCardWrapper = Glamorous.div({
 });
 
 const InfoCardHeader = Glamorous(XHorizontal)({
-    borderBottom: '1px solid #edeef3',
+    borderBottom: '1px solid #ececec',
     paddingBottom: 20,
     marginBottom: 12,
 });
 
 const InfoCardBody = Glamorous.div({
-    opacity: 0.8,
     fontSize: 16,
     lineHeight: '24px',
-    letterSpacing: -0.1,
-    color: '#121e2b'
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.8)'
 });
 
 const Text = Glamorous.div<{ width?: number, autoMargin?: boolean }>(props => ({
     fontSize: 14,
     lineHeight: 1.43,
-    letterSpacing: -0.3,
-    color: '#5c6a81',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.8)',
     textAlign: 'center',
     width: props.width,
     margin: props.autoMargin ? 'auto' : undefined
@@ -123,8 +122,8 @@ const ChannelTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
     lineHeight: '24px',
-    letterSpacing: -0.3,
-    color: '#121e2b',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.9)',
     margin: '2px 0 8px'
 });
 
@@ -151,7 +150,7 @@ const ChannelAvatar = Glamorous(XAvatar)({
 
 const ChannelCounter = Glamorous.div({
     borderRadius: 16,
-    backgroundColor: '#F5F7F8',
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
     paddingLeft: 9,
     paddingRight: 11,
     display: 'inline-block',
@@ -163,19 +162,22 @@ const ChannelCounter = Glamorous.div({
         paddingBottom: 3,
         display: 'inline-block',
         verticalAlign: 'top',
-        opacity: 0.5,
         fontSize: 13,
-        fontWeight: 500,
+        fontWeight: 400,
         lineHeight: '16px',
-        letterSpacing: -0.4,
-        color: '#121e2b'
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.5)'
     },
     '& > svg': {
         display: 'inline-block',
         verticalAlign: 'top',
         marginTop: 5,
         marginBottom: 6,
-        marginRight: 5
+        marginRight: 5,
+
+        '& path:last-child': {
+            fill: 'rgba(0, 0, 0, 0.25)'
+        }
     }
 });
 
@@ -288,7 +290,7 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                                 objectName={this.props.invite.invitedByUser.name}
                                 objectId={this.props.invite.invitedByUser.id}
                             />
-                            <Text><b>{this.props.invite.invitedByUser.name}</b> has invited you</Text>
+                            <Text>{this.props.invite.invitedByUser.name} has invited you</Text>
                         </UserInfoWrapper> : <div style={{ height: 50 }} />
                     }
                     <InfoCardWrapper>
