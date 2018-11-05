@@ -19,22 +19,6 @@ export const OrganizationProfileFull = gql`
         facebook
         linkedin
         location
-        contacts {
-            name
-            photoRef {
-                uuid
-                crop{
-                    x
-                    y
-                    w
-                    h
-                }
-            }
-            position
-            email
-            phone
-            link
-        }
         
         published: alphaPublished
         editorial: alphaEditorial

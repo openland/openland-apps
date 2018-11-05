@@ -127,6 +127,7 @@ const Separator = Glamorous.div({
 });
 
 export const OrganizationSettigs = ((props: any) => {
+    console.log(props);
     return (
         <Navigation title="Organization profile">
             <Content>
@@ -137,16 +138,16 @@ export const OrganizationSettigs = ((props: any) => {
                             defaultData={{
 
                                 input: {
-                                    name: props.data.organizationProfile!!.name,
-                                    photo: props.data.organizationProfile!!.photoRef,
-                                    photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
-                                    published: props.data.organizationProfile!!.published ? 'published' : 'unpublished',
-                                    editorial: props.data.organizationProfile!!.editorial ? 'editorial' : 'noneditorial',
+                                    name: props.data.organizationProfile.name,
+                                    photo: props.data.organizationProfile.photoRef,
+                                    photoRef: sanitizeIamgeRef(props.data.organizationProfile.photoRef),
+                                    published: props.data.organizationProfile.published ? 'published' : 'unpublished',
+                                    editorial: props.data.organizationProfile.editorial ? 'editorial' : 'noneditorial',
 
-                                    website: props.data.organizationProfile!!.website,
-                                    twitter: props.data.organizationProfile!!.twitter,
-                                    facebook: props.data.organizationProfile!!.facebook,
-                                    linkedin: props.data.organizationProfile!!.linkedin,
+                                    website: props.data.organizationProfile.website,
+                                    twitter: props.data.organizationProfile.twitter,
+                                    facebook: props.data.organizationProfile.facebook,
+                                    linkedin: props.data.organizationProfile.linkedin,
                                 }
                             }}
                             defaultAction={async (data) => {

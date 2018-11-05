@@ -5353,30 +5353,6 @@ export interface MyOrganizationProfile_organizationProfile_photoRef {
   crop: MyOrganizationProfile_organizationProfile_photoRef_crop | null;
 }
 
-export interface MyOrganizationProfile_organizationProfile_contacts_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_contacts_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganizationProfile_organizationProfile_contacts_photoRef_crop | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_contacts {
-  __typename: "OrganizationContact";
-  name: string;
-  photoRef: MyOrganizationProfile_organizationProfile_contacts_photoRef | null;
-  position: string | null;
-  email: string | null;
-  phone: string | null;
-  link: string | null;
-}
-
 export interface MyOrganizationProfile_organizationProfile_posts_image_crop {
   __typename: "ImageCrop";
   x: number;
@@ -5560,7 +5536,6 @@ export interface MyOrganizationProfile_organizationProfile {
   facebook: string | null;
   linkedin: string | null;
   location: string | null;
-  contacts: MyOrganizationProfile_organizationProfile_contacts[];
   published: boolean;
   editorial: boolean;
   featured: boolean;
@@ -5637,30 +5612,6 @@ export interface UpdateOrganization_updateOrganizationProfile_photoRef {
   __typename: "ImageRef";
   uuid: string;
   crop: UpdateOrganization_updateOrganizationProfile_photoRef_crop | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_contacts_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_contacts_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: UpdateOrganization_updateOrganizationProfile_contacts_photoRef_crop | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_contacts {
-  __typename: "OrganizationContact";
-  name: string;
-  photoRef: UpdateOrganization_updateOrganizationProfile_contacts_photoRef | null;
-  position: string | null;
-  email: string | null;
-  phone: string | null;
-  link: string | null;
 }
 
 export interface UpdateOrganization_updateOrganizationProfile_posts_image_crop {
@@ -5846,7 +5797,6 @@ export interface UpdateOrganization_updateOrganizationProfile {
   facebook: string | null;
   linkedin: string | null;
   location: string | null;
-  contacts: UpdateOrganization_updateOrganizationProfile_contacts[];
   published: boolean;
   editorial: boolean;
   featured: boolean;
@@ -6228,30 +6178,6 @@ export interface OrganizationProfile_organizationProfile_photoRef {
   crop: OrganizationProfile_organizationProfile_photoRef_crop | null;
 }
 
-export interface OrganizationProfile_organizationProfile_contacts_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfile_organizationProfile_contacts_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfile_organizationProfile_contacts_photoRef_crop | null;
-}
-
-export interface OrganizationProfile_organizationProfile_contacts {
-  __typename: "OrganizationContact";
-  name: string;
-  photoRef: OrganizationProfile_organizationProfile_contacts_photoRef | null;
-  position: string | null;
-  email: string | null;
-  phone: string | null;
-  link: string | null;
-}
-
 export interface OrganizationProfile_organizationProfile_posts_image_crop {
   __typename: "ImageCrop";
   x: number;
@@ -6435,7 +6361,6 @@ export interface OrganizationProfile_organizationProfile {
   facebook: string | null;
   linkedin: string | null;
   location: string | null;
-  contacts: OrganizationProfile_organizationProfile_contacts[];
   published: boolean;
   editorial: boolean;
   featured: boolean;
@@ -9348,30 +9273,6 @@ export interface OrganizationProfileFull_photoRef {
   crop: OrganizationProfileFull_photoRef_crop | null;
 }
 
-export interface OrganizationProfileFull_contacts_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfileFull_contacts_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfileFull_contacts_photoRef_crop | null;
-}
-
-export interface OrganizationProfileFull_contacts {
-  __typename: "OrganizationContact";
-  name: string;
-  photoRef: OrganizationProfileFull_contacts_photoRef | null;
-  position: string | null;
-  email: string | null;
-  phone: string | null;
-  link: string | null;
-}
-
 export interface OrganizationProfileFull_posts_image_crop {
   __typename: "ImageCrop";
   x: number;
@@ -9555,7 +9456,6 @@ export interface OrganizationProfileFull {
   facebook: string | null;
   linkedin: string | null;
   location: string | null;
-  contacts: OrganizationProfileFull_contacts[];
   published: boolean;
   editorial: boolean;
   featured: boolean;
