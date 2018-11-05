@@ -18,6 +18,9 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import PhoneIcon from './icons/ic-phone.svg';
+import { XModal } from 'openland-x-modal/XModal';
+import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
+import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
 
 const BackWrapper = Glamorous.div({
     background: '#F9F9F9',
@@ -94,19 +97,55 @@ const OrgName = makeNavigable(Glamorous(XHorizontal)({
     cursor: 'pointer'
 }) as any) as any;
 
+const AvatarModal = (props: { photo?: string, userName?: string, userId?: string }) => {
+    return (
+        <XModal
+            useTopCloser={true}
+            width={512}
+            heading={null}
+            transparent={true}
+            body={(
+                <ModalBody>
+                    <ModalCloser autoClose={true} className="closer">
+                        <ModalCloseIcon />
+                    </ModalCloser>
+                    <ModalPic
+                        srcCloud={props.photo}
+                        resize={'fill'}
+                        width={512}
+                        height={512}
+                    />
+                </ModalBody>
+            )}
+            target={(
+                <XAvatar
+                    cloudImageUuid={props.photo || undefined}
+                    size="s-medium"
+                    style="user"
+                    objectName={props.userName}
+                    objectId={props.userId}
+                />
+            )}
+        />
+    );
+};
+
 const Header = (props: { userQuery: User }) => {
     let usr = props.userQuery.user;
 
     return (
         <HeaderWrapper>
             <HeaderAvatar>
-                <XAvatar
-                    cloudImageUuid={usr.photo || undefined}
-                    size="s-medium"
-                    style="user"
-                    objectName={usr.name}
-                    objectId={usr.id}
-                />
+                {usr.photo && <AvatarModal photo={usr.photo} userName={usr.name} userId={usr.id} />}
+                {!usr.photo && (
+                    <XAvatar
+                        cloudImageUuid={undefined}
+                        size="s-medium"
+                        style="user"
+                        objectName={usr.name}
+                        objectId={usr.id}
+                    />
+                )}
             </HeaderAvatar>
             <HeaderInfo flexGrow={1} separator={3}>
                 <XHorizontal separator={5}>

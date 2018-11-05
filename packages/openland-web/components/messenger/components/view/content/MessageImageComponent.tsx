@@ -7,7 +7,7 @@ import { XLink } from 'openland-x/XLink';
 import ModalCloseIcon from '../../icons/ic-modal-close.svg';
 import DownloadButtonIcon from '../../icons/ic_file_download.svg';
 
-const ModalCloser = Glamorous(XLink)({
+export const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
     right: 20,
     top: 20,
@@ -34,7 +34,7 @@ const ImgDownload = Glamorous.a({
     right: 20
 });
 
-const ModalBody = Glamorous.div({
+export const ModalBody = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -49,7 +49,7 @@ const ImgWrapper = Glamorous(XLink)({
     alignSelf: 'flex-start'
 });
 
-const ModalPic = Glamorous(XCloudImage)({
+export const ModalPic = Glamorous(XCloudImage)({
     borderRadius: 8,
     objectFit: 'contain',
     maxHeight: '90vh'
