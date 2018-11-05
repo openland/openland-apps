@@ -33,7 +33,7 @@ const ItemContainer = Glamorous.a({
     color: '#334562',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 12,
+    paddingLeft: 16,
     paddingRight: 0,
     paddingTop: 4,
     paddingBottom: 4,
@@ -73,7 +73,7 @@ const Header = Glamorous.div({
     flexGrow: 1,
     alignItems: 'stretch',
     paddingLeft: 12,
-    paddingRight: 12,
+    paddingRight: 16,
     paddingTop: 8,
     maxWidth: 'calc(100% - 40px)',
     position: 'relative',
@@ -163,7 +163,7 @@ const ContentText = Glamorous.div({
 
 const ContentCounter = Glamorous.div({
     position: 'absolute',
-    right: 11,
+    right: 16,
     bottom: 8,
 });
 
@@ -351,8 +351,8 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
 })) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, allowSelection: boolean }>;
 
 const Search = Glamorous(XInput)({
-    marginLeft: 12,
-    marginRight: 12,
+    marginLeft: 16,
+    marginRight: 16,
     marginTop: 5,
     marginBottom: 12,
     height: 36,

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import Scrollbars from 'react-custom-scrollbars';
 
@@ -14,7 +15,7 @@ interface PositionValues {
     scrollTop: number;
 }
 
-class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void }> {
+class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void, isCustom: boolean }> {
     state = {
         top: 0,
         scrollHeight: 0,
@@ -82,6 +83,9 @@ class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void 
         if (this.props.onScroll) {
             this.props.onScroll(values.top);
         }
+        if (!this.props.isCustom) {
+            return;
+        }
         if (this.state.top === values.top) {
             return;
         }
@@ -93,14 +97,22 @@ class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void 
     }
 
     render() {
+        let isCustom = this.props.isCustom;
 
+        let scrollProps = undefined;
+
+        if (isCustom) {
+            scrollProps = {
+                renderView: this.renderView,
+                renderTrackHorizontal: this.trackH,
+                renderThumbHorizontal: this.thumbH,
+                renderThumbVertical: this.thumbV,
+                renderTrackVertical: this.trackV
+            };
+        }
         return (
             <Scrollbars
-                renderView={this.renderView}
-                renderTrackHorizontal={this.trackH}
-                renderThumbHorizontal={this.thumbH}
-                renderThumbVertical={this.thumbV}
-                renderTrackVertical={this.trackV}
+                {...scrollProps}
                 onUpdate={(values) => this.handleUpdate(values)}
                 autoHide={false}
             >
@@ -126,22 +138,38 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
     display: 'flex'
 }, applyFlex]);
 
-const ContentDiv = Glamorous.div({
-    width: 'calc(100% - 20px)',
+const ContentDiv = Glamorous.div<{ isCustom: boolean }>(props => ({
+    width: props.isCustom ? 'calc(100% - 20px)' : '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch'
-});
+}));
 
 export class XScrollView2 extends React.PureComponent<XScrollViewProps> {
+    state = {
+        isCustom: true
+    };
+
+    componentDidMount() {
+        if (canUseDOM) {
+            let isSafari = (window as any).safari !== undefined;
+            let isChrome = (window as any).chrome !== undefined;
+            if (isSafari || isChrome) {
+                this.setState({
+                    isCustom: false
+                });
+            }
+        }
+    }
+
     render() {
         return (
             <ScrollDiv
                 className={this.props.className}
                 {...extractFlexProps(this.props)}
             >
-                <ScrollArea onScroll={this.props.onScroll}>
-                    <ContentDiv>
+                <ScrollArea onScroll={this.props.onScroll} isCustom={this.state.isCustom}>
+                    <ContentDiv isCustom={this.state.isCustom}>
                         {this.props.children}
                     </ContentDiv>
                 </ScrollArea>
