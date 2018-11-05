@@ -308,7 +308,7 @@ const About = (props: { organizationQuery: Organization }) => {
                                         <SocialPlaceholder target={<XButton text="Links" style="light" icon="add" />} />
                                     </AddSection>
                                 )}
-                                {!hasCategories && (
+                                {/* {!hasCategories && (
                                     <AddSection>
                                         <AddSectionText>Add categories</AddSectionText>
                                         <CategoriesPlaceholder target={<XButton text="Categories" style="light" icon="add" />} />
@@ -319,7 +319,7 @@ const About = (props: { organizationQuery: Organization }) => {
                                         <AddSectionText>Add locations where are you based or operate</AddSectionText>
                                         <LocationPlaceholder target={<XButton text="Locations" style="light" icon="add" />} />
                                     </AddSection>
-                                )}
+                                )} */}
                             </AddSectionWrapper>
                         </>
                     )}
@@ -386,7 +386,7 @@ const About = (props: { organizationQuery: Organization }) => {
                     </SectionContent>
                 </>
             )}
-            {hasCategories && (
+            {/* {hasCategories && (
                 <>
                     <XSubHeader title="Categories" counter={org.organizationType ? org.organizationType.length : undefined}>
                         {org.isMine && (
@@ -450,7 +450,7 @@ const About = (props: { organizationQuery: Organization }) => {
                         })}
                     </SectionContent>
                 </>
-            )}
+            )} */}
         </>
     );
 };
@@ -804,6 +804,11 @@ const Channels = (props: { items?: any, organization: any }) => {
     );
 };
 
+const OrgInfoWrapper = Glamorous.div({
+    overflow: 'hidden',
+    height: '100%'
+});
+
 class OrganizationProfileInner extends React.Component<OrganizationProfileInnerProps> {
     pageTitle: string | undefined = undefined;
 
@@ -841,7 +846,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
         let org = this.props.organizationQuery.organization;
 
         return (
-            <div ref={this.handleRef}>
+            <OrgInfoWrapper innerRef={this.handleRef}>
                 <Back callback={this.props.onBack} />
                 <Header organizationQuery={this.props.organizationQuery} />
                 <XScrollView height="calc(100% - 160px)">
@@ -849,7 +854,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
                     <Members organizationQuery={this.props.organizationQuery} />
                     <Channels items={org.channels.filter(c => c && !c.hidden)} organization={org} />
                 </XScrollView>
-            </div>
+            </OrgInfoWrapper>
         );
     }
 }
