@@ -241,8 +241,8 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                             {!this.props.item.isMine && !this.props.item.editorial && (
                                 <XButton
                                     style={this.state.isHovered ? 'primary' : 'default'}
-                                    path={'/mail/' + this.props.item.id}
-                                    text={TextDirectory.labelSendMessage}
+                                    path={'/directory/o/' + this.props.item.id}
+                                    text="View"
                                 />
                             )}
                             <XOverflow

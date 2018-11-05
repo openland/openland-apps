@@ -115,7 +115,8 @@ export class XScrollView extends React.Component<XScrollViewProps> {
     handleRef = (el: any) => {
         if (canUseDOM && el) {
             let isSafari = (window as any).safari !== undefined;
-            if (!isSafari || this.props.optimize !== true) {
+            let isChrome = (window as any).chrome !== undefined;
+            if ((!isSafari && !isChrome) || this.props.optimize !== true) {
                 // tslint:disable
                 new this.Simplebar(el);
                 // tslint:enable
