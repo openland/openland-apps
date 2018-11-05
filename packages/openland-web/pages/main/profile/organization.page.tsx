@@ -47,7 +47,7 @@ import {
 import {
     DOARListingPlaceholder,
     SocialPlaceholder,
-    ContactPlaceholder,
+    // ContactPlaceholder,
     LocationPlaceholder,
     AvatartPlaceholder,
     CategoriesPlaceholder,
@@ -794,7 +794,7 @@ export default withApp('Organization profile', 'viewer', withOrganization(withQu
                                                         {!((organization.contacts || []).length || organization.website || organization.facebook || organization.linkedin || organization.twitter) && (
                                                             <XCardStyled padding={18}>
                                                                 <XVertical>
-                                                                    {!(organization.contacts || []).length && <ContactPlaceholder />}
+                                                                    {/* {!(organization.contacts || []).length && <ContactPlaceholder />} */}
                                                                     {!(organization.website || organization.facebook || organization.linkedin || organization.twitter) && <SocialPlaceholder />}
                                                                 </XVertical>
                                                             </XCardStyled>

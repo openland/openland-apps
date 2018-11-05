@@ -487,71 +487,71 @@ export const SocialPlaceholder = withMyOrganizationProfile((props) => {
     );
 }) as React.ComponentType<{ target?: any }>;
 
-export const ContactPlaceholder = withMyOrganizationProfile((props) => {
-    if (!(props.data && props.data.organizationProfile)) {
-        return null;
-    }
-    return (
-        <XModalForm
-            title={TextOrganizationProfile.placeholderContactsModalTitle}
-            defaultData={{
-                contacts: props.data.organizationProfile!!.contacts,
-            }}
-            defaultAction={async (data) => {
-                data.contacts.push({
-                    name: (data.firstName || '') + ' ' + (data.lastName || ''),
-                    phone: data.phone,
-                    photoRef: data.avatar,
-                    email: data.email,
-                    link: data.link,
-                    role: data.role,
-                });
-                await props.updateOrganizaton({
-                    variables: {
-                        input: {
-                            contacts: data.contacts
-                        }
-                    }
-                });
-            }}
-            target={(
-                <div style={{ cursor: 'pointer' }}>
-                    <XHorizontal alignItems="center">
-                        <PlaceholderContact />
-                        <Text marginWidth={18}>{TextOrganizationProfile.placeholderContacts}</Text>
-                    </XHorizontal>
-                </div>
-            )}
-        >
-            <ModalFormContentWrapper>
-                <XFormLoadingContent>
-                    <XHorizontal>
-                        <XVertical flexGrow={1} separator={8}>
-                            <XFormField field="firstName" title={TextOrganizationProfile.placeholderContactsModalFirstNameTitle}>
-                                <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} size="large" />
-                            </XFormField>
-                            <XFormField field="lastName" title={TextOrganizationProfile.placeholderContactsModalLastNameTitle}>
-                                <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} size="large" />
-                            </XFormField>
-                            <XFormField field="position" title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
-                                <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} size="large" />
-                            </XFormField>
-                            <XFormField field="link" title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
-                                <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} size="large" />
-                            </XFormField>
-                            <XFormField field="twitter" title={TextOrganizationProfile.placeholderContactsModalTwitterTitle}>
-                                <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} size="large" />
-                            </XFormField>
-                        </XVertical>
-                        <XFormField field="photoRef" title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
-                            <XAvatarUpload field="photoRef" />
-                        </XFormField>
-                    </XHorizontal>
-                </XFormLoadingContent>
-            </ModalFormContentWrapper>
-        </XModalForm>
-    );
-});
+// export const ContactPlaceholder = withMyOrganizationProfile((props) => {
+//     if (!(props.data && props.data.organizationProfile)) {
+//         return null;
+//     }
+//     return (
+//         <XModalForm
+//             title={TextOrganizationProfile.placeholderContactsModalTitle}
+//             defaultData={{
+//                 contacts: props.data.organizationProfile!!.contacts,
+//             }}
+//             defaultAction={async (data) => {
+//                 data.contacts.push({
+//                     name: (data.firstName || '') + ' ' + (data.lastName || ''),
+//                     phone: data.phone,
+//                     photoRef: data.avatar,
+//                     email: data.email,
+//                     link: data.link,
+//                     role: data.role,
+//                 });
+//                 await props.updateOrganizaton({
+//                     variables: {
+//                         input: {
+//                             contacts: data.contacts
+//                         }
+//                     }
+//                 });
+//             }}
+//             target={(
+//                 <div style={{ cursor: 'pointer' }}>
+//                     <XHorizontal alignItems="center">
+//                         <PlaceholderContact />
+//                         <Text marginWidth={18}>{TextOrganizationProfile.placeholderContacts}</Text>
+//                     </XHorizontal>
+//                 </div>
+//             )}
+//         >
+//             <ModalFormContentWrapper>
+//                 <XFormLoadingContent>
+//                     <XHorizontal>
+//                         <XVertical flexGrow={1} separator={8}>
+//                             <XFormField field="firstName" title={TextOrganizationProfile.placeholderContactsModalFirstNameTitle}>
+//                                 <XInput field="firstName" placeholder={TextOrganizationProfile.placeholderContactsModalFirstNamePlaceholder} size="large" />
+//                             </XFormField>
+//                             <XFormField field="lastName" title={TextOrganizationProfile.placeholderContactsModalLastNameTitle}>
+//                                 <XInput field="lastName" placeholder={TextOrganizationProfile.placeholderContactsModalLastNamePlaceholder} size="large" />
+//                             </XFormField>
+//                             <XFormField field="position" title={TextOrganizationProfile.placeholderContactsModalPositionTitle}>
+//                                 <XInput field="position" placeholder={TextOrganizationProfile.placeholderContactsModalPositionPlaceholder} size="large" />
+//                             </XFormField>
+//                             <XFormField field="link" title={TextOrganizationProfile.placeholderContactsModalLinkedinTitle}>
+//                                 <XInput field="link" placeholder={TextOrganizationProfile.placeholderContactsModalLinkedinPlaceholder} size="large" />
+//                             </XFormField>
+//                             <XFormField field="twitter" title={TextOrganizationProfile.placeholderContactsModalTwitterTitle}>
+//                                 <XInput field="twitter" placeholder={TextOrganizationProfile.placeholderContactsModalTwitterPlaceholder} size="large" />
+//                             </XFormField>
+//                         </XVertical>
+//                         <XFormField field="photoRef" title={TextOrganizationProfile.placeholderContactsModalPhotoTitle}>
+//                             <XAvatarUpload field="photoRef" />
+//                         </XFormField>
+//                     </XHorizontal>
+//                 </XFormLoadingContent>
+//             </ModalFormContentWrapper>
+//         </XModalForm>
+//     );
+// });
 
 export const InterestsPlaceholder = withMyOrganizationProfile((props) => {
     if (!(props.data && props.data.organizationProfile)) {
