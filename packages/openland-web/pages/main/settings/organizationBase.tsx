@@ -24,7 +24,8 @@ import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 import { MembersTable } from './membersTable';
 
 const Content = Glamorous(XContent)({
-    paddingTop: 20
+    paddingTop: 20,
+    flexGrow: 1
 });
 
 const CategoryTitle = Glamorous.div({
@@ -138,106 +139,10 @@ export const OrganizationSettigs = ((props: any) => {
                                 input: {
                                     name: props.data.organizationProfile!!.name,
                                     photo: props.data.organizationProfile!!.photoRef,
-                                    primaryLocation: [(props.data.organizationProfile!!.locations || [])[0]].filter(l => !!(l)),
-                                    locations: shiftArray(props.data.organizationProfile!!.locations || []),
                                     photoRef: sanitizeIamgeRef(props.data.organizationProfile!!.photoRef),
-                                    organizationType: props.data.organizationProfile!!.organizationType,
-                                    interests: props.data.organizationProfile!!.interests,
                                     published: props.data.organizationProfile!!.published ? 'published' : 'unpublished',
                                     editorial: props.data.organizationProfile!!.editorial ? 'editorial' : 'noneditorial',
-                                }
-                            }}
-                            defaultAction={async (data) => {
-                                // console.warn(data);
-                                await props.updateOrganizaton({
-                                    variables: {
-                                        input: {
-                                            name: data.input.name,
-                                            photoRef: data.input.photoRef,
-                                            alphaOrganizationType: data.input.organizationType,
-                                            alphaInterests: data.input.interests,
-                                            alphaLocations: [...(data.input.primaryLocation || []), ...(data.input.locations || [])],
-                                            alphaPublished: data.input.published === 'published',
-                                            alphaEditorial: data.input.editorial === 'editorial',
-                                        }
-                                    }
-                                });
-                            }}
-                            defaultLayout={false}
-                        >
-                            <XVertical separator={12}>
-                                <XFormLoadingContent>
-                                    <XHorizontal separator={12}>
-                                        <XVertical flexGrow={1} maxWidth={480}>
-                                            <XInput field="input.name" size="large" placeholder="Organization name" />
-                                            <Separator />
-                                            <XSelect
-                                                creatable={true}
-                                                multi={true}
-                                                field="input.primaryLocation"
-                                                options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
-                                                render={
-                                                    <XSelectCustomInputRender
-                                                        popper={true}
-                                                        placeholder="Primary location"
-                                                        rounded={true}
-                                                    />
-                                                }
-                                            />
-                                            <XSelect
-                                                creatable={true}
-                                                multi={true}
-                                                field="input.locations"
-                                                options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
-                                                render={
-                                                    <XSelectCustomInputRender
-                                                        popper={true}
-                                                        placeholder="More locations"
-                                                        rounded={true}
-                                                    />
-                                                }
-                                            />
-                                            <XSelect
-                                                options={OrgCategoties}
-                                                multi={true}
-                                                field="input.organizationType"
-                                                render={
-                                                    <XSelectCustomInputRender
-                                                        popper={true}
-                                                        placeholder="Categories"
-                                                        rounded={true}
-                                                    />
-                                                }
-                                            />
-                                            <XSelect
-                                                large={true}
-                                                creatable={true}
-                                                multi={true}
-                                                field="input.interests"
-                                                options={TextDirectoryData.interestPicker}
-                                                render={
-                                                    <XSelectCustomInputRender
-                                                        popper={true}
-                                                        placeholder="Interests"
-                                                        rounded={true}
-                                                    />
-                                                }
-                                            />
 
-                                        </XVertical>
-                                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
-                                    </XHorizontal>
-                                </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
-                            </XVertical>
-                        </XForm>
-                    </XVertical>
-
-                    <XVertical separator={12}>
-                        <CategoryTitle id="links">Links</CategoryTitle>
-                        <XForm
-                            defaultData={{
-                                input: {
                                     website: props.data.organizationProfile!!.website,
                                     twitter: props.data.organizationProfile!!.twitter,
                                     facebook: props.data.organizationProfile!!.facebook,
@@ -248,27 +153,35 @@ export const OrganizationSettigs = ((props: any) => {
                                 await props.updateOrganizaton({
                                     variables: {
                                         input: {
+                                            name: data.input.name,
+                                            photoRef: data.input.photoRef,
+                                            alphaPublished: data.input.published === 'published',
+                                            alphaEditorial: data.input.editorial === 'editorial',
                                             website: data.input.website,
                                             twitter: data.input.twitter,
                                             facebook: data.input.facebook,
-                                            linkedin: data.input.linkedin,
+                                            linkedin: data.input.linkedin
                                         }
                                     }
                                 });
                             }}
                             defaultLayout={false}
                         >
-                            <XVertical separator={12}>
+                            <XVertical separator={12} maxWidth={660}>
                                 <XFormLoadingContent>
-                                    <XVertical flexGrow={1} maxWidth={480}>
-                                        <XInputGroup>
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="large" />
-                                        </XInputGroup>
-                                        <XInput field="input.twitter" placeholder="Twitter" size="large" />
-                                        <XInput field="input.facebook" placeholder="Facebook" size="large" />
-                                        <XInput field="input.linkedin" placeholder="LinkedIn" size="large" />
-                                    </XVertical>
+                                    <XHorizontal separator={12}>
+                                        <XVertical flexGrow={1} maxWidth={480}>
+                                            <XInput field="input.name" size="large" placeholder="Organization name" />
+                                            <XInputGroup>
+                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
+                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="large" />
+                                            </XInputGroup>
+                                            <XInput field="input.twitter" placeholder="Twitter" size="large" />
+                                            <XInput field="input.facebook" placeholder="Facebook" size="large" />
+                                            <XInput field="input.linkedin" placeholder="LinkedIn" size="large" />
+                                        </XVertical>
+                                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
+                                    </XHorizontal>
                                 </XFormLoadingContent>
                                 <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
                             </XVertical>
@@ -278,7 +191,7 @@ export const OrganizationSettigs = ((props: any) => {
                     {!props.hideMembers && (
                         <XVertical separator={12}>
                             <CategoryTitle id="members">Members</CategoryTitle>
-                            <MembersTable/>
+                            <MembersTable />
                         </XVertical>
                     )}
 

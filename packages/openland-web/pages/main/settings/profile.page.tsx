@@ -14,6 +14,7 @@ import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XSelect } from 'openland-x/XSelect';
+import { XTextArea } from 'openland-x/XTextArea';
 import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { DateFormater } from 'openland-x-format/XDate';
@@ -53,6 +54,29 @@ const CardText = Glamorous.div({
     }
 });
 
+const TextAreaWrapper = Glamorous.div({
+    position: 'relative',
+    '& > textarea': {
+        height: 85,
+        minHeight: 85
+    }
+});
+
+const TextAreaTitle = Glamorous.div({
+    top: -10,
+    left: 13,
+    height: 20,
+    fontSize: 12,
+    lineHeight: '20px',
+    position: 'absolute',
+    paddingLeft: 3,
+    paddingRight: 3,
+    backgroundColor: 'white',
+    color: 'rgba(0, 0, 0, 0.4)',
+    zIndex: 2,
+    pointerEvents: 'none'
+});
+
 export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
     return (
         <Navigation title="Edit profile">
@@ -68,7 +92,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                             lastName: props.data.profile!!.lastName,
                                             primaryOrganizationId: props.data.profile!!.primaryOrganization && props.data.profile!!.primaryOrganization!!.id,
                                             role: props.data.profile!!.role,
-
+                                            about: props.data.profile!!.about,
                                             photoRef: sanitizeIamgeRef(props.data.profile!!.photoRef)
                                         }
                                     }}
@@ -80,7 +104,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     lastName: data.input.lastName,
                                                     alphaPrimaryOrganizationId: data.input.primaryOrganizationId,
                                                     alphaRole: data.input.role,
-
+                                                    about: data.input.about,
                                                     photoRef: sanitizeIamgeRef(data.input.photoRef)
                                                 }
                                             }
@@ -104,7 +128,10 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                             clearable={false}
                                                             options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))}
                                                         />
-                                                        <XInput title="Position" field="input.role" size="large" />
+                                                        <TextAreaWrapper>
+                                                            <TextAreaTitle>About</TextAreaTitle>
+                                                            <XTextArea valueStoreKey="fields.input.about" resize={false} />
+                                                        </TextAreaWrapper>
                                                     </XVertical>
                                                     <XAvatarUpload field="input.photoRef" />
                                                 </XHorizontal>
@@ -120,7 +147,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                             email: props.data.profile!!.email,
                                             website: props.data.profile!!.website,
                                             linkedin: props.data.profile!!.linkedin,
-                                            locations: props.data.profile!!.locations
+                                            // locations: props.data.profile!!.locations
                                         }
                                     }}
                                     defaultAction={async (data) => {
@@ -131,7 +158,7 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     email: data.input.email,
                                                     website: data.input.website,
                                                     alphaLinkedin: data.input.linkedin,
-                                                    alphaLocations: data.input.locations
+                                                    // alphaLocations: data.input.locations
                                                 }
 
                                             }
@@ -149,11 +176,11 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     <XInput field="input.email" size="large" title="Email" />
                                                     <XInput field="input.website" size="large" title="Website" />
                                                     <XInput field="input.linkedin" size="large" title="LinkedIn" />
-                                                    <XSelect
+                                                    {/* <XSelect
                                                         title="Primary location"
                                                         field="input.location"
                                                         options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
-                                                    />
+                                                    /> */}
                                                 </XVertical>
                                             </XFormLoadingContent>
                                             <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
