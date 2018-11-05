@@ -127,7 +127,6 @@ const Separator = Glamorous.div({
 });
 
 export const OrganizationSettigs = ((props: any) => {
-    console.log(props);
     return (
         <Navigation title="Organization profile">
             <Content>
