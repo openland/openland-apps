@@ -411,7 +411,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             title="Organizations"
                                             icon="organizations"
                                         />
-                                        <SidebarItemBody>
+                                        {/* <SidebarItemBody>
                                             <CategoryPicker
                                                 title="Category"
                                                 conditionType="organizationType"
@@ -430,7 +430,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 shown={this.state.shownSelect === 2}
                                                 noResultsText={'Press Enter to add "{0}" location'}
                                             />
-                                        </SidebarItemBody>
+                                        </SidebarItemBody> */}
                                     </SidebarItemWrapper>
                                     <SidebarItemWrapper>
                                         <SidebarItemHeadLink
