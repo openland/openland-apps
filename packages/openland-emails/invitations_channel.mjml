@@ -8,15 +8,15 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    Join the insider community
+                    An invitation from {{firstName}} {{lastName}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}} {{lastName}}</strong> is inviting you to join <strong>{{channelName}}</strong> discussion channel at Openland. Join the conversation to connect with industry insiders, exchange market data, and discover new opportunities.
+                    <strong>{{firstName}} invites you to <strong>{{channelName}}</strong> channel at Openland. There you can seek and share advice, discover new opportunities, and collaborate with other organizations.
                     <br/> <br/>
                     {{customText}}
                     <br/> <br/>
                 </mj-text>
-                <mj-button mj-class="button" href="{{link}}">Accept invitation</mj-button>
+                <mj-button mj-class="button" href="{{link}}">View / Accept</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer.mjml" />
