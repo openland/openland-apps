@@ -10,6 +10,7 @@ import createMentionPlugin, {
     MentionT,
     defaultSuggestionsFilter
 } from 'draft-js-mention-plugin';
+import { XAvatar } from 'openland-x/XAvatar';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
@@ -190,6 +191,9 @@ const MentionSuggestionsWrapper = Glamorous.div({
 });
 
 const MentionSuggestionsEntryContainer = Glamorous.div({
+    ':hover': {
+        background: '#f9f9f9',
+    },
     display: 'table',
     width: '100%',
 });
@@ -220,26 +224,17 @@ const MentionSuggestionsEntryText = Glamorous.div({
     textOverflow: 'ellipsis'
 });
 
-const MentionSuggestionsEntryAvatar = Glamorous.img({
-    display: 'block',
-    width: '30px',
-    height: '30px',
-    borderRadius: '50%'
-});
-
 export const MentionsEntry = ({
     mention
 }: {
-    mention: MentionT;
-}) => {
+        mention: MentionT;
+    }) => {
     return (
         <div>
             <MentionSuggestionsEntryContainer>
                 <MentionSuggestionsEntryContainerLeft>
-                    <MentionSuggestionsEntryAvatar
-                        src={mention.avatar}
-                        role="presentation"
-                    />
+                    <XAvatar src={mention.avatar} online={mention.online} />
+
                 </MentionSuggestionsEntryContainerLeft>
 
                 <MentionSuggestionsEntryContainerRight>

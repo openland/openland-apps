@@ -523,7 +523,7 @@ declare module "draft-js-emoji-plugin" {
 }
 
 declare module 'draft-js-mention-plugin' {
-    export type MentionT = { avatar: string; name: string; title: string };
+    export type MentionT = { avatar: string; name: string; title: string, online?: boolean };
     function createMentionPlugin(config?: object): any;
     export function defaultSuggestionsFilter(src: string, arr: object[]): Array<MentionT>;
     export default createMentionPlugin;

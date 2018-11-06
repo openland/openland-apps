@@ -17,6 +17,9 @@ export default withApp('UI Framework - Mentions', 'viewer', (props) => {
                     <XHorizontal>
                         <MentionsEntry mention={mentionsData[0]} />
                     </XHorizontal>
+                    <XHorizontal>
+                        <MentionsEntry mention={{ ...mentionsData[0], online: true }} />
+                    </XHorizontal>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>
