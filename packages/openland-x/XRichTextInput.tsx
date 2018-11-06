@@ -132,7 +132,7 @@ export interface XRichTextInputProps extends XFlexStyles {
 
 /// Mentions
 
-const mentions = [
+export const mentionsData = [
     {
         name: 'Matthew Russell',
         title: 'Senior Software Engineer',
@@ -171,7 +171,7 @@ const positionSuggestions = ({ state, props }: any) => {
 };
 
 const mentionPlugin = createMentionPlugin({
-    mentions,
+    mentions: mentionsData,
     entityMutability: 'IMMUTABLE',
     positionSuggestions,
     mentionPrefix: '@',
@@ -227,11 +227,11 @@ const MentionSuggestionsEntryAvatar = Glamorous.img({
     borderRadius: '50%'
 });
 
-const Entry = ({
+export const MentionsEntry = ({
     mention
 }: {
-        mention: MentionT;
-    }) => {
+    mention: MentionT;
+}) => {
     return (
         <div>
             <MentionSuggestionsEntryContainer>
@@ -261,7 +261,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     private editorRef = React.createRef<Editor>();
     state = {
         editorState: EditorState.createEmpty(),
-        suggestions: mentions,
+        suggestions: mentionsData,
         beChanged: false
     };
 
@@ -273,7 +273,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
 
     onSearchChange = ({ value }: any) => {
         this.setState({
-            suggestions: defaultSuggestionsFilter(value, mentions)
+            suggestions: defaultSuggestionsFilter(value, mentionsData)
         });
     }
 
@@ -343,7 +343,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
                             onSearchChange={this.onSearchChange}
                             suggestions={this.state.suggestions}
                             onAddMention={this.onAddMention}
-                            entryComponent={Entry}
+                            entryComponent={MentionsEntry}
 
                         />
                     </MentionSuggestionsWrapper>
