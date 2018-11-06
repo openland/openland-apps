@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+// import decorateComponentWithProps from 'decorate-component-with-props';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -178,20 +179,17 @@ const positionSuggestions = ({ state, props }: any) => {
 const mentionPlugin = createMentionPlugin({
     mentions: mentionsData,
     entityMutability: 'IMMUTABLE',
-    positionSuggestions,
     mentionPrefix: '@',
-    // TODO fails here for some reason: fix
-    // TODO different styding if user is author
-    // mentionComponent: Mention,
-    // mentionComponent: (props: any) => (
-    //     <span
-    //         //   className={props.className}
-    //         // eslint-disable-next-line no-alert
-    //         onClick={() => alert('Clicked on the Mention!')}
-    //     >
-    //         <Mention {...props} />
-    //     </span>
-    // ),
+    positionSuggestions,
+    mentionComponent: (props: any) => (
+        <span
+            className={props.className}
+            // eslint-disable-next-line no-alert
+            onClick={() => console.log('Clicked on the Mention!')}
+        >
+            {props.children}
+        </span>
+    ),
 });
 
 const MentionSuggestionsWrapper = Glamorous.div({
