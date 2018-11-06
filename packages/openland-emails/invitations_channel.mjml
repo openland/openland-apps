@@ -11,7 +11,7 @@
                     An invitation from {{firstName}} {{lastName}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}} invites you to <strong>{{channelName}}</strong> channel at Openland. There you can seek and share advice, discover new opportunities, and collaborate with other organizations.
+                    {{firstName}} invites you to <strong>{{channelName}}</strong> channel at Openland. There you can seek and share advice, discover new opportunities, and collaborate with other organizations.
                     <br/> <br/>
                     {{customText}}
                     <br/> <br/>
