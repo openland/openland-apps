@@ -7,7 +7,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
-import { MentionsEntry, mentionsData } from 'openland-x/XRichTextInput';
+import { mentionsData } from 'openland-x/XRichTextInput';
 import createMentionPlugin, {
     defaultSuggestionsFilter
 } from 'draft-js-mention-plugin';
@@ -103,12 +103,12 @@ export default withApp('UI Framework - Mentions', 'viewer', (props) => {
             <XContent>
                 <XVertical>
                     <XTitle>MentionsEntry</XTitle>
-                    <XHorizontal>
+                    {/* <XHorizontal>
                         <MentionsEntry mention={mentionsData[0]} />
-                    </XHorizontal>
-                    <XHorizontal>
+                    </XHorizontal> */}
+                    {/* <XHorizontal>
                         <MentionsEntry mention={{ ...mentionsData[0], online: true }} />
-                    </XHorizontal>
+                    </XHorizontal> */}
                     <SimpleMentionEditor />
                 </XVertical>
             </XContent>

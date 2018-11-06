@@ -181,6 +181,7 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionPrefix: '@',
     // TODO fails here for some reason: fix
+    // TODO different styding if user is author
     // mentionComponent: Mention,
     // mentionComponent: (props: any) => (
     //     <span
@@ -207,6 +208,38 @@ const MentionSuggestionsWrapper = Glamorous.div({
         }
     }
 });
+
+const MentionEntry = (props: any) => {
+    const {
+        mention,
+        theme,
+        searchValue, // eslint-disable-line no-unused-vars
+        ...parentProps
+    } = props;
+
+    return (
+        <div {...parentProps}>
+            <div className={theme.mentionSuggestionsEntryContainer}>
+                <div className={theme.mentionSuggestionsEntryContainerLeft}>
+                    <XAvatar
+                        src={mention.avatar}
+                        online={mention.online}
+                    />
+                </div>
+
+                <div className={theme.mentionSuggestionsEntryContainerRight}>
+                    <div className={theme.mentionSuggestionsEntryText}>
+                        {mention.name}
+                    </div>
+
+                    <div className={theme.mentionSuggestionsEntryTitle}>
+                        {mention.title}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beChanged: boolean, suggestions: Array<MentionT> }> {
@@ -289,6 +322,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
                         <MentionSuggestions
                             onSearchChange={this.onSearchChange}
                             suggestions={this.state.suggestions}
+                            entryComponent={MentionEntry}
                         />
 
                         <Editor
