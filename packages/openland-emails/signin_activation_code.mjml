@@ -1,0 +1,39 @@
+<mjml>
+    <mj-head>
+        <mj-title>Activation code for Openland: {{code}}</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    Your activation code
+                </mj-text>
+
+                <mj-raw>
+                    {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        To get in your Openland account, use the following one-time code on your sign-in page.
+                        <strong>{{code}}</strong> 
+                        Don’t share this activation code with anyone. If you didn't request it, simply ignore this email.
+                        Enter with a click
+                        You can also enter by clicking the button below.
+                     <mj-button mj-class="button" href="{{link}}">Enter the app</mj-button>
+                    <mj-text mj-class="text">   
+                    </mj-text>
+                <mj-raw>
+                    {% elsif send == 'code' %}
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        To get in your Openland account, paste the activation code <strong>{{code}}</strong> into the signin form. To keep your account safe, don’t share this email with anyone. If you didn't request this code, simply ignore this message.
+                    </mj-text>
+                <mj-raw>
+                    {% endif %}
+                </mj-raw>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer.mjml" />
+    </mj-body>
+</mjml>
