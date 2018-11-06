@@ -8,12 +8,12 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    Thanks for expanding our community!
+                    Invitation accepted
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to join Openland. Now you can use instant messaging to exchange ideas, share opportunities, and collaborate on transactions.
+                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to join Openland. Happy chatting!
                 </mj-text>
-                <mj-button mj-class="button" href="{{link}}">Message them</mj-button>
+                <mj-button mj-class="button" href="{{link}}">Message {{firstName}}</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer-registered.mjml" />
