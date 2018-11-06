@@ -358,7 +358,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             <XHorizontal separator={4}>
                                 <XHorizontal separator={4} alignItems="center">
                                     <Name>{this.props.sender!!.name}</Name>
-                                    {this.props.conversationType !== 'PrivateConversation' && this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                    {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                 </XHorizontal>
                                 <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
