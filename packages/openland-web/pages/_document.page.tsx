@@ -70,6 +70,7 @@ export default class OpenlandDocument extends Document {
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
                     <link rel="stylesheet" href="/static/css/draft.css" />
                     <link rel="stylesheet" href="/static/css/draft-emoji.css" />
+                    <link rel="stylesheet" href="/static/css/draft-mentions.css" />
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
 

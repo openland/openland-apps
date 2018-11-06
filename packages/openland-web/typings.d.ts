@@ -529,6 +529,11 @@ declare module 'draft-js-mention-plugin' {
     export default createMentionPlugin;
 }
 
+declare module 'draft-js-mention-plugin/lib/Mention' {
+    const ReturnType: React.ComponentClass<any>;
+    export default ReturnType;
+}
+
 declare module "react-emojione" {
     export function emojify(src: string, opts?: any): any
 }

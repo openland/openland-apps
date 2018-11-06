@@ -10,6 +10,9 @@ import createMentionPlugin, {
     MentionT,
     defaultSuggestionsFilter
 } from 'draft-js-mention-plugin';
+import Mention from 'draft-js-mention-plugin/lib/Mention';
+
+// console.log(Mention)
 import { XAvatar } from 'openland-x/XAvatar';
 
 const EmojiWrapper = Glamorous.div({
@@ -143,7 +146,8 @@ export const mentionsData = [
     {
         name: 'Julian Krispel-Samsel',
         title: 'United Kingdom',
-        avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400'
+        avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
+        online: true
     },
     {
         name: 'Jyoti Puri',
@@ -176,82 +180,35 @@ const mentionPlugin = createMentionPlugin({
     entityMutability: 'IMMUTABLE',
     positionSuggestions,
     mentionPrefix: '@',
-    supportWhitespace: true
+    // TODO fails here for some reason: fix
+    // mentionComponent: Mention,
+    // mentionComponent: (props: any) => (
+    //     <span
+    //         //   className={props.className}
+    //         // eslint-disable-next-line no-alert
+    //         onClick={() => alert('Clicked on the Mention!')}
+    //     >
+    //         <Mention {...props} />
+    //     </span>
+    // ),
 });
 
 const MentionSuggestionsWrapper = Glamorous.div({
-    position: 'absolute',
-    borderTop: '1px solid #eee',
-    background: '#fff',
-    zIndex: 100,
-    bottom: 50,
-    left: 16,
-    borderRadius: '2px',
-    cursor: 'pointer',
+    '& ': {
+        '&.draftJsMentionPlugin__mentionSuggestions__2DWjA': {
+            position: 'absolute',
+            borderTop: '1px solid #eee',
+            background: '#fff',
+            zIndex: 100,
+            bottom: 50,
+            left: 16,
+            borderRadius: '2px',
+            cursor: 'pointer',
+        }
+    }
 });
-
-const MentionSuggestionsEntryContainer = Glamorous.div({
-    ':hover': {
-        background: '#f9f9f9',
-    },
-    display: 'table',
-    width: '100%',
-});
-
-const MentionSuggestionsEntryContainerLeft = Glamorous.div({
-    display: 'table-cell',
-    verticalAlign: 'middle'
-});
-
-const MentionSuggestionsEntryContainerRight = Glamorous.div({
-    width: '100%',
-    paddingLeft: '8px',
-    marginRight: 50,
-    textAlign: 'right'
-});
-
-const MentionSuggestionsEntryTitle = Glamorous.div({
-    fontSize: '80%',
-    color: '#a7a7a7',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-});
-
-const MentionSuggestionsEntryText = Glamorous.div({
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-});
-
-export const MentionsEntry = ({
-    mention
-}: {
-        mention: MentionT;
-    }) => {
-    return (
-        <div>
-            <MentionSuggestionsEntryContainer>
-                <MentionSuggestionsEntryContainerLeft>
-                    <XAvatar src={mention.avatar} online={mention.online} />
-
-                </MentionSuggestionsEntryContainerLeft>
-
-                <MentionSuggestionsEntryContainerRight>
-                    <MentionSuggestionsEntryText>
-                        {mention.name}
-                    </MentionSuggestionsEntryText>
-                    <MentionSuggestionsEntryTitle>
-                        {mention.title}
-                    </MentionSuggestionsEntryTitle>
-                </MentionSuggestionsEntryContainerRight>
-            </MentionSuggestionsEntryContainer>
-        </div>
-    );
-};
 
 /// End Mentions
-
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beChanged: boolean, suggestions: Array<MentionT> }> {
     private editorRef = React.createRef<Editor>();
     state = {
@@ -298,11 +255,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
         return 'not-handled';
     }
 
-    onAddMention = (value: any) => {
-        console.log(value);
-        // get the mention object selected
-    }
-
     onChange = (editorState: EditorState) => {
         if (this.props.value !== undefined && !this.state.beChanged) {
             this.setState({
@@ -337,21 +289,18 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
                         <MentionSuggestions
                             onSearchChange={this.onSearchChange}
                             suggestions={this.state.suggestions}
-                            onAddMention={this.onAddMention}
-                            entryComponent={MentionsEntry}
+                        />
 
+                        <Editor
+                            editorState={this.state.editorState}
+                            onChange={this.onChange}
+                            placeholder={this.props.placeholder}
+                            keyBindingFn={keyBinding}
+                            handleKeyCommand={this.onHandleKey}
+                            ref={this.editorRef}
+                            plugins={[emojiPlugin, mentionPlugin]}
                         />
                     </MentionSuggestionsWrapper>
-                    <Editor
-                        editorState={this.state.editorState}
-                        onChange={this.onChange}
-                        placeholder={this.props.placeholder}
-                        keyBindingFn={keyBinding}
-                        handleKeyCommand={this.onHandleKey}
-                        ref={this.editorRef}
-                        plugins={[emojiPlugin, mentionPlugin]}
-                    />
-
                     <EmojiSuggestions />
                     <EmojiWrapper className="emoji-button">
                         <EmojiSelect />
