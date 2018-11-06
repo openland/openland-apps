@@ -1,0 +1,27 @@
+<mjml>
+    <mj-head>
+        <mj-title>You’ve got a new message</mj-title>
+        <mj-include path="./attributes.mjml" />
+    </mj-head>
+    <mj-body background-color="#ffffff">
+        <mj-include path="./header.mjml" />
+        <mj-section>
+            <mj-column>
+                <mj-text mj-class="title">
+                    You’ve got a new message
+                </mj-text>
+
+                <mj-raw>
+                </mj-raw>
+                    <mj-text mj-class="text">
+                        There is 1 new message in your inbox. Go to Openland app to see it now.
+                    </mj-text>
+                <mj-raw>
+                </mj-raw>
+
+                <mj-button mj-class="button" href="https://app.openland.com/mail">View message</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./footer-registered.mjml" />
+    </mj-body>
+</mjml>
