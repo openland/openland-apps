@@ -153,9 +153,9 @@ export const mentionsData = [
     {
         name: 'Jyoti Puri',
         title: 'New Delhi, India',
-        avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400'
+        avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
+        isMyself: true
     },
-
 ];
 
 const positionSuggestions = ({ state, props }: any) => {
@@ -176,20 +176,36 @@ const positionSuggestions = ({ state, props }: any) => {
     };
 };
 
+const MentionComponent = Glamorous.span(
+    {},
+    ({ isMyself }: { isMyself: boolean }) => {
+        if (isMyself) {
+            return {
+                // different style for myself mention
+                color: 'red',
+            };
+        }
+        return {};
+    }
+);
+
 const mentionPlugin = createMentionPlugin({
     mentions: mentionsData,
     entityMutability: 'IMMUTABLE',
     mentionPrefix: '@',
     positionSuggestions,
-    mentionComponent: (props: any) => (
-        <span
-            className={props.className}
-            // eslint-disable-next-line no-alert
-            onClick={() => console.log('Clicked on the Mention!')}
-        >
-            {props.children}
-        </span>
-    ),
+    mentionComponent: (props: any) => {
+        return (
+            <MentionComponent
+                isMyself={props.mention.isMyself}
+                className={props.className}
+                // eslint-disable-next-line no-alert
+                onClick={() => console.log('Clicked on the Mention!')}
+            >
+                {props.children}
+            </MentionComponent>
+        );
+    },
 });
 
 const MentionSuggestionsWrapper = Glamorous.div({
