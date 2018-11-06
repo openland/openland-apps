@@ -8,16 +8,22 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    Almost there
+                    Activate account with a click
                 </mj-text>
 
                 <mj-raw>
                     {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
                 </mj-raw>
                     <mj-text mj-class="text">
-                        To get in your Openland account, simply click the button below. Alternatively, you can manually paste the activation code <strong>{{code}}</strong> into the signin form. To keep your account safe, don’t share this email with anyone. If you didn't request this code, simply ignore this message.
+                        Thank you for signing up for Openland!
+                        Click the button below to activate your account.
                     </mj-text>
-                    <mj-button mj-class="button" href="{{link}}">Enter the app</mj-button>
+                    <mj-button mj-class="button" href="{{link}}">Activate account</mj-button>
+                    <mj-text mj-class="text">
+                        Activate account with the code
+                        You can also activate the account by using the following code on your signup page.
+                        Activation code: <strong>{{code}}</strong>
+                    </mj-text>
                 <mj-raw>
                     {% elsif send == 'code' %}
                 </mj-raw>
