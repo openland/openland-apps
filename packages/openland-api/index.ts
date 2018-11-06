@@ -46,7 +46,6 @@ export const ChatCreateGroupMutation = typedMutation<Types.ChatCreateGroup, Type
 export const ChatCreateIntroMutation = typedMutation<Types.ChatCreateIntro, Types.ChatCreateIntroVariables>(Chats.ChatCreateIntroMutation);
 export const ChatEditIntroMutation = typedMutation<Types.ChatEditIntro, Types.ChatEditIntroVariables>(Chats.ChatEditIntroMutation);
 export const SetTypingMutation = typedMutation<Types.SetTyping, Types.SetTypingVariables>(Chats.SetTypingMutation);
-export const ChatChangeGroupTitleMutation = typedMutation<Types.ChatChangeGroupTitle, Types.ChatChangeGroupTitleVariables>(Chats.ChatChangeGroupTitleMutation);
 export const ChatAddMemberMutation = typedMutation<Types.ChatAddMember, Types.ChatAddMemberVariables>(Chats.ChatAddMemberMutation);
 export const ChatAddMembersMutation = typedMutation<Types.ChatAddMembers, Types.ChatAddMembersVariables>(Chats.ChatAddMembersMutation);
 export const BlockedListQuery = typedQuery<Types.BlockedList, Types.BlockedListVariables>(Chats.BlockedListQuery);

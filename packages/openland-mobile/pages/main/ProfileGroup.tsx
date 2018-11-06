@@ -9,7 +9,7 @@ import { ZListItemBase } from '../../components/ZListItemBase';
 import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChatChangeGroupTitleMutation, ConversationKickMutation, ConversationSettingsUpdateMutation, ChatUpdateGroupMutation } from 'openland-api';
+import { ConversationKickMutation, ConversationSettingsUpdateMutation, ChatUpdateGroupMutation } from 'openland-api';
 import { ChatAddMembersMutation } from 'openland-api';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
@@ -91,7 +91,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
 
-                                    <YMutation mutation={ChatChangeGroupTitleMutation} {...{ leftIcon: true }}>
+                                    <YMutation mutation={ChatUpdateGroupMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZListItem
                                                 leftIcon={require('assets/ic-cell-name-ios.png')}
@@ -101,7 +101,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     Modals.showTextEdit(
                                                         this.props.router,
                                                         resp.data.chat.title,
-                                                        async (src) => await save({ variables: { name: src, conversationId: resp.data.chat.id } })
+                                                        async (src) => await save({ variables: { input: {title: src}, conversationId: resp.data.chat.id } })
                                                     )
                                                 }
                                             />

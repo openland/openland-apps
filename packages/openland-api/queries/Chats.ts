@@ -397,18 +397,6 @@ export const SetTypingMutation = gql`
     }
 `;
 
-export const ChatChangeGroupTitleMutation = gql`
-    mutation ChatChangeGroupTitle($conversationId: ID!, $name: String!) {
-        alphaChatChangeGroupTitle(conversationId: $conversationId, title: $name) {
-            chat {
-                id
-                flexibleId
-                title
-            }
-        }
-    }
-`;
-
 export const ChatAddMemberMutation = gql`
     mutation ChatAddMember($conversationId: ID!, $userId: ID!) {
         alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}]){
@@ -644,11 +632,14 @@ export const ChatUpdateGroupMutation = gql`
     mutation ChatUpdateGroup($conversationId: ID!, $input: UpdateGroupInput!) {
         event: alphaChatUpdateGroup(conversationId: $conversationId, input: $input){
             chat{
-                id
+               ...ConversationShort
             }
             curSeq
         }
     }
+    ${ConversationShort}
+    ${MessageFull}
+    ${UserShort}
 `;
 
 export const ChatDeleteMessageMutation = gql`
