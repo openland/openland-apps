@@ -219,6 +219,8 @@ routes.add('/ui/profile', '/dev/ui/profile');
 routes.add('/ui/profile/', '/dev/ui/profile');
 routes.add('/ui/lists', '/dev/ui/lists');
 routes.add('/ui/lists/', '/dev/ui/lists');
+routes.add('/ui/mentions', '/dev/ui/mentions');
+routes.add('/ui/mentions/', '/dev/ui/mentions');
 
 //
 // Dev Tools
