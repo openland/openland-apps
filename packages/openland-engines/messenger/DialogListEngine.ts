@@ -189,9 +189,9 @@ export class DialogListEngine {
             this.dataSource.addItem(
                 {
                     key: conversationId,
-                    flexibleId: conversationId,
-                    type: info.data.chat!.__typename,
-                    title: info.data.chat!.title,
+                    flexibleId: info.data.chat.flexibleId,
+                    type: info.data.chat.__typename,
+                    title: info.data.chat.title,
                     photo: (info.data.chat as any).photo || (info.data.chat.photos.length > 0 ? info.data.chat.photos[0] : undefined),
                     unread: unreadCount,
                     isOut: isOut,
@@ -199,7 +199,7 @@ export class DialogListEngine {
                     message: formatMessage(event.message),
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,
-                    online: false,
+                    online: info.data.chat.__typename === 'PrivateConversation' ? info.data.chat.user.online : false,
                 },
                 0);
         }
