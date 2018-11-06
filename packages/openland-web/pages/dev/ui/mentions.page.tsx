@@ -97,6 +97,7 @@ class SimpleMentionEditor extends React.Component<any, any> {
     }
 }
 
+// 
 export default withApp('UI Framework - Mentions', 'viewer', (props) => {
     return (
         <DevDocsScaffold title="Mentions">
