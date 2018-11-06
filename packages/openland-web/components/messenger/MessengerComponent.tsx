@@ -472,14 +472,14 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
         super(props);
 
         if (this.props.handlePageTitle) {
-            this.pageTitle = (this.props.chatType === 'PrivateConversation') ? 'Chat with ' + this.props.userName : this.props.chatTitle;
+            this.pageTitle = (this.props.chatType === 'PrivateConversation') ? this.props.userName : this.props.chatTitle;
             this.props.handlePageTitle(this.pageTitle);
         }
     }
 
     componentWillReceiveProps (newProps: MessengerWrapperProps) {
         if (newProps.handlePageTitle) {
-            let title = (newProps.chatType === 'PrivateConversation') ? 'Chat with ' + newProps.userName : newProps.chatTitle;
+            let title = (newProps.chatType === 'PrivateConversation') ? newProps.userName : newProps.chatTitle;
 
             if (title !== this.pageTitle) {
                 this.pageTitle = title;
