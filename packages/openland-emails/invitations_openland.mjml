@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Invitation for Openland</mj-title>
+        <mj-title>Invitation to Openland</mj-title>
         <mj-include path="./attributes.mjml" />
     </mj-head>
     <mj-body background-color="#ffffff">
@@ -8,15 +8,15 @@
         <mj-section>
             <mj-column>
                 <mj-text mj-class="title">
-                    Instant messaging is changing real estate. Join the movement!
+                    An invitation from {{firstName}} {{lastName}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}} {{lastName}}</strong> from <strong>{{organizationName}}</strong> invites you to join Openland, a new messaging app for real estate industry. There you can participate in insider discussions, source and qualify opportunities, and collaborate on deals with other organizations.
+                    {{firstName}} {{lastName}} invites you to join Openland, a professional messenger built for productivity and speed. There you can seek and share advice, discover new opportunities, and collaborate with other organizations.
                     <br/> <br/>
                     {{customText}}
                     <br/> <br/>
                 </mj-text>
-                <mj-button mj-class="button" href="{{link}}">Accept invitation</mj-button>
+                <mj-button mj-class="button" href="{{link}}">View / Accept</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./footer.mjml" />
