@@ -200,7 +200,7 @@ interface ReactionsInnerProps {
 }
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
-    usersLabelRender = (usersList: string[], foundMyReaction: boolean) => {
+    usersLabelRender = (usersList: string[], foundMyReaction: boolean, key?: string) => {
         let uniqueUsersList = usersList.filter((item: string, pos: number) => (usersList.indexOf(item) === pos));
         let usersLabel = '';
 
@@ -224,7 +224,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             }
         }
 
-        return (usersLabel.length > 0) ? <UsersLabel>{usersLabel}</UsersLabel> : null;
+        return (usersLabel.length > 0) ? <UsersLabel key={key}>{usersLabel}</UsersLabel> : null;
     }
 
     reactionsRender = () => {
@@ -296,7 +296,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             }
         }
 
-        components.push(this.usersLabelRender(usersList, foundMyReaction));
+        components.push(this.usersLabelRender(usersList, foundMyReaction, 'reactions' + this.props.messageId));
 
         return components;
     }
