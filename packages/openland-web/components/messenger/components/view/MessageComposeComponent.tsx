@@ -328,7 +328,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         statlesMessageReply: undefined,
         statlesMessageId: undefined,
         statlesMessageSender: undefined,
-        statlesChatId: undefined
+        statlesChatId: undefined,
+        beDrafted: false
     };
 
     private input = React.createRef<XRichTextInput>();
@@ -356,17 +357,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             statlesChatId
         } = this.state;
 
-        let msg = '';
-
-        if (statlesMessage !== undefined) {
-            msg = statlesMessage as string;
-        }
-
         if (message.trim().length > 0) {
-            msg = message;
-        }
-
-        if (msg.trim().length > 0) {
+            let msg = message.trim();
             if (this.props.onSend && !statlesMessageId) {
                 this.props.onSend(msg);
             }
@@ -545,6 +537,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
         if (editMessage) {
             this.setState({
+                message: '',
                 statlesMessage: editMessage,
                 statlesMessageId: editMessageId
             });
@@ -568,15 +561,19 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        if (draft && !(replyMessage && replyMessageId && replyMessageSender && conversationId && editMessage)) {
+        if (draft && !(replyMessage || replyMessageId || replyMessageSender || conversationId || editMessage)) {
+            if (this.state.beDrafted) {
+                return;
+            }
             this.setState({
-                statlesMessage: draft
+                message: draft,
+                statlesMessage: draft,
+                beDrafted: true
             });
         }
     }
 
     render() {
-
         let {
             statlesMessage,
             statlesMessageReply,
