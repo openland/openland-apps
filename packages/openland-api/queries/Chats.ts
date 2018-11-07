@@ -64,6 +64,18 @@ export const MessageUnsetReactionMutation = gql`
     }
 `;
 
+export const SaveDraftMessageMutation = gql`
+    mutation SaveDraftMessage($conversationId: ID!, $message: String!) {
+        alphaSaveDraftMessage(conversationId: $conversationId, message: $message)
+    }
+`;
+
+export const GetDraftMessageQuery = gql`
+    query GetDraftMessage($conversationId: ID!) {
+        message: alphaDraftMessage(conversationId: $conversationId)
+    }
+`;
+
 export const GlobalCounterQuery = gql`
     query GlobalCounter {
         counter: alphaNotificationCounter {

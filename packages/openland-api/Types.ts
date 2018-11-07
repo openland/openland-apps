@@ -655,6 +655,37 @@ export interface MessageUnsetReactionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: SaveDraftMessage
+// ====================================================
+
+export interface SaveDraftMessage {
+  alphaSaveDraftMessage: string;
+}
+
+export interface SaveDraftMessageVariables {
+  conversationId: string;
+  message: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GetDraftMessage
+// ====================================================
+
+export interface GetDraftMessage {
+  message: string | null;
+}
+
+export interface GetDraftMessageVariables {
+  conversationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GlobalCounter
 // ====================================================
 

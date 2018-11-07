@@ -10,11 +10,8 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { ChatEditMessageVariables, ChatEditMessage } from 'openland-api/Types';
-import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { getConfig } from '../../../../config';
-import { withEditAndReplyMessage } from '../../../../api/withEditAndReplyMessage';
 import { MutationFunc } from 'react-apollo';
 import PhotoIcon from '../icons/ic-photo-2.svg';
 import FileIcon from '../icons/ic-file-3.svg';
@@ -25,6 +22,16 @@ import CloseIcon from '../icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
+import { withMessageState } from '../../../../api/withMessageState';
+import { withGetDraftMessage } from '../../../../api/withMessageState';
+import {
+    ChatEditMessageVariables,
+    ChatEditMessage,
+    ReplyMessageVariables,
+    ReplyMessage,
+    SaveDraftMessageVariables,
+    SaveDraftMessage
+} from 'openland-api/Types';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -303,6 +310,7 @@ interface MessageComposeComponentInnerProps extends MessageComposeComponentProps
     messagesContext: MessagesStateContextProps;
     editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
+    saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
 }
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps> {
@@ -364,6 +372,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private handleChange = (src: string) => {
+        let { statlesMessage, statlesMessageReply, statlesMessageId } = this.state;
+        let stateChecker = !(statlesMessage || statlesMessageReply) && !statlesMessageId;
+
         if (src.length > 0) {
             this.setState({
                 message: src
@@ -372,10 +383,26 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (this.props.onChange) {
                 this.props.onChange(src);
             }
+            if (stateChecker) {
+                this.props.saveDraft({
+                    variables: {
+                        conversationId: this.props.conversationId,
+                        message: src
+                    }
+                });
+            }
         } else {
             this.setState({
                 message: ''
             });
+            if (stateChecker) {
+                this.props.saveDraft({
+                    variables: {
+                        conversationId: this.props.conversationId,
+                        message: ''
+                    }
+                });
+            }
         }
     }
 
@@ -609,17 +636,16 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 }
 
-export let MessageComposeComponent = withEditAndReplyMessage(withUserInfo((props) => {
-    return (
-        <MessagesStateContext.Consumer>
-            {(state: MessagesStateContextProps) => (
-                <MessageComposeComponentInner
-                    {...props}
-                    messagesContext={state}
-                    editMessage={props.editMessage}
-                    replyMessage={props.replyMessage}
-                />
-            )}
-        </MessagesStateContext.Consumer>
-    );
-})) as React.ComponentType<MessageComposeComponentProps>;
+export const MessageComposeComponent = withMessageState(withUserInfo((props) => (
+    <MessagesStateContext.Consumer>
+        {(state: MessagesStateContextProps) => (
+            <MessageComposeComponentInner
+                {...props}
+                messagesContext={state}
+                editMessage={props.editMessage}
+                replyMessage={props.replyMessage}
+                saveDraft={props.saveDraft}
+            />
+        )}
+    </MessagesStateContext.Consumer>
+))) as React.ComponentType<MessageComposeComponentProps>;
