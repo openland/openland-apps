@@ -380,9 +380,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 message: src
             });
 
-            if (this.props.onChange) {
-                this.props.onChange(src);
-            }
             if (stateChecker) {
                 this.props.saveDraft({
                     variables: {
@@ -403,6 +400,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     }
                 });
             }
+        }
+
+        if (this.props.onChange) {
+            this.props.onChange(src);
         }
     }
 

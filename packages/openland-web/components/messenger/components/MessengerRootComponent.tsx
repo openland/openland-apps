@@ -88,6 +88,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     readonly conversation: ConversationEngine;
     messagesList = React.createRef<MessageListComponent>();
+    messageText: string = '';
 
     constructor(props: MessagesComponentProps) {
         super(props);
@@ -111,12 +112,23 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     handleChange = async (text: string) => {
-        let res = await this.props.messenger.client.client.mutate({
-            mutation: SetTypingMutation.document,
-            variables: {
-                conversationId: this.props.conversationId
-            }
-        });
+        let prevLength = this.messageText.length;
+        let curLength = text.length;
+
+        if (prevLength < curLength) {
+            await this.props.messenger.client.client.mutate({
+                mutation: SetTypingMutation.document,
+                variables: {
+                    conversationId: this.props.conversationId
+                }
+            });
+        }
+
+        if (prevLength > 0 && curLength <= 0) {
+            // UnSetTyping MUTATION
+        }
+
+        this.messageText = text;
     }
 
     handleSend = (text: string) => {
