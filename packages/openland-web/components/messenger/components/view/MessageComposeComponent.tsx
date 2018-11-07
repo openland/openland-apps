@@ -306,11 +306,16 @@ export interface MessageComposeComponentProps {
     onChange?: (text: string) => void;
 }
 
+interface MessageComposeWithDraft extends MessageComposeComponentProps {
+    draft: string | null;
+}
+
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
     messagesContext: MessagesStateContextProps;
     editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
+    draft: string | null;
 }
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps> {
@@ -343,10 +348,26 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private handleSend = () => {
-        let { message, statlesMessage, statlesMessageReply, statlesMessageId, statlesChatId } = this.state;
+        let {
+            message,
+            statlesMessage,
+            statlesMessageReply,
+            statlesMessageId,
+            statlesChatId
+        } = this.state;
+
+        let msg = '';
+
+        if (statlesMessage !== undefined) {
+            msg = statlesMessage as string;
+        }
+
         if (message.trim().length > 0) {
-            let msg = message.trim();
-            if (this.props.onSend && !statlesMessage && !statlesMessageId) {
+            msg = message;
+        }
+
+        if (msg.trim().length > 0) {
+            if (this.props.onSend && !statlesMessageId) {
                 this.props.onSend(msg);
             }
             if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
@@ -368,42 +389,39 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 }
             }
             this.closeEditor();
+            this.changeDraft('');
         }
     }
 
     private handleChange = (src: string) => {
-        let { statlesMessage, statlesMessageReply, statlesMessageId } = this.state;
-        let stateChecker = !(statlesMessage || statlesMessageReply) && !statlesMessageId;
+        let { statlesMessageId } = this.state;
+
+        this.setState({
+            message: src
+        });
 
         if (src.length > 0) {
-            this.setState({
-                message: src
-            });
-
             if (this.props.onChange) {
                 this.props.onChange(src);
             }
-            if (stateChecker) {
-                this.props.saveDraft({
-                    variables: {
-                        conversationId: this.props.conversationId,
-                        message: src
-                    }
-                });
-            }
-        } else {
-            this.setState({
-                message: ''
-            });
-            if (stateChecker) {
-                this.props.saveDraft({
-                    variables: {
-                        conversationId: this.props.conversationId,
-                        message: ''
-                    }
-                });
-            }
         }
+
+        if (statlesMessageId) {
+            return;
+        }
+
+        if (src.length > 0) {
+            this.changeDraft(src);
+        }
+    }
+
+    private changeDraft = (src: string) => {
+        this.props.saveDraft({
+            variables: {
+                conversationId: this.props.conversationId,
+                message: src
+            }
+        });
     }
 
     private focusIfNeeded = () => {
@@ -482,10 +500,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
-        let { message, statlesMessage, statlesMessageReply, statlesMessageId } = this.state;
+        let { message, statlesMessageId } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && (!statlesMessage && !statlesMessageId)) {
+        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && !statlesMessageId) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
@@ -494,7 +512,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 (document as any).isEditMessage = true;
             }
         }
-        if (e.code === 'Escape' && (statlesMessage || statlesMessageReply) && statlesMessageId) {
+        if (e.code === 'Escape' && statlesMessageId) {
             this.closeEditor();
         }
     }
@@ -525,6 +543,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessageSender,
             conversationId
         } = nextProps.messagesContext;
+        let { draft } = nextProps;
 
         if (editMessage) {
             this.setState({
@@ -539,6 +558,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (replyMessage && replyMessageId && replyMessageSender && conversationId) {
             (document as any).isEditMessage = true;
             this.setState({
+                message: '',
                 statlesMessage: undefined,
                 statlesMessageReply: replyMessage,
                 statlesMessageId: replyMessageId,
@@ -546,13 +566,26 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 statlesChatId: conversationId
             });
             if (this.input.current) {
-                this.input.current.focus();
+                this.input.current!!.resetAndFocus();
             }
+        }
+
+        if (draft && !(replyMessage && replyMessageId && replyMessageSender && conversationId && editMessage)) {
+            this.setState({
+                statlesMessage: draft
+            });
         }
     }
 
     render() {
-        let { statlesMessage, statlesMessageReply, statlesMessageId, statlesMessageSender } = this.state;
+
+        let {
+            statlesMessage,
+            statlesMessageReply,
+            statlesMessageId,
+            statlesMessageSender
+        } = this.state;
+
         let stateMessage = undefined;
         if (statlesMessage) {
             stateMessage = statlesMessage;
@@ -560,6 +593,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (statlesMessageReply) {
             stateMessage = statlesMessageReply;
         }
+
         return (
             <SendMessageWrapper>
                 <DropArea
@@ -636,7 +670,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 }
 
-export const MessageComposeComponent = withMessageState(withUserInfo((props) => (
+const ComposeWithDraft = withMessageState(withUserInfo((props) => (
     <MessagesStateContext.Consumer>
         {(state: MessagesStateContextProps) => (
             <MessageComposeComponentInner
@@ -645,7 +679,14 @@ export const MessageComposeComponent = withMessageState(withUserInfo((props) => 
                 editMessage={props.editMessage}
                 replyMessage={props.replyMessage}
                 saveDraft={props.saveDraft}
+                draft={props.draft}
             />
         )}
     </MessagesStateContext.Consumer>
-))) as React.ComponentType<MessageComposeComponentProps>;
+))) as React.ComponentType<MessageComposeWithDraft>;
+
+export const MessageComposeComponent = withGetDraftMessage(props => {
+    return (
+        <ComposeWithDraft draft={props.data.message} {...props} />
+    );
+}) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string } }>;

@@ -156,6 +156,9 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         enabled={this.state.mounted}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
+                        variables={{
+                            conversationId: this.props.conversationId
+                        }}
                     />
                 )}
                 <DeleteUrlAugmentationComponent/>
