@@ -413,6 +413,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (src.length > 0) {
             this.changeDraft(src);
         }
+
+        if (this.props.onChange) {
+            this.props.onChange(src);
+        }
     }
 
     private changeDraft = (src: string) => {

@@ -25,11 +25,6 @@
                     </mj-text>
                 <mj-raw>
                     {% elsif send == 'code' %}
-                </mj-raw>
-                    <mj-text mj-class="text">
-                        To get in your Openland account, paste the activation code <strong>{{code}}</strong> into the signin form. To keep your account safe, don’t share this email with anyone. If you didn't request this code, simply ignore this message.
-                    </mj-text>
-                <mj-raw>
                     {% endif %}
                 </mj-raw>
             </mj-column>
