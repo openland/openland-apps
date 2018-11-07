@@ -400,10 +400,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             message: src
         });
 
-        if (src.length > 0) {
-            if (this.props.onChange) {
-                this.props.onChange(src);
-            }
+        if (this.props.onChange) {
+            this.props.onChange(src);
         }
 
         if (statlesMessageId) {
@@ -412,10 +410,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
         if (src.length > 0) {
             this.changeDraft(src);
-        }
-
-        if (this.props.onChange) {
-            this.props.onChange(src);
         }
     }
 
