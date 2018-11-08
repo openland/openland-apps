@@ -14,7 +14,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
-import { XWithRole, hasPermission } from 'openland-x-permissions/XWithRole';
+import { XWithRole, hasRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
@@ -539,7 +539,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
 
     let headerQuery = undefined;
     if (props.data.chat.__typename === 'ChannelConversation') {
-        headerQuery = (ownerRole || hasPermission(['editor', 'super-admin'])) ? { field: 'editChat', value: 'true' } : undefined;
+        headerQuery = (ownerRole || hasRole(['editor', 'super-admin'])) ? { field: 'editChat', value: 'true' } : undefined;
     } else if (props.data.chat.__typename === 'GroupConversation') {
         headerQuery = { field: 'editChat', value: 'true' };
     }
