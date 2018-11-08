@@ -6,7 +6,7 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageListComponent } from './view/MessageListComponent';
 import { withChatHistory } from '../../../api/withChatHistory';
-import { MessageComposeComponent } from './view/MessageComposeComponent';
+import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
@@ -160,7 +160,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     inputShower={this.handleShowIput}
                 />
                 {this.state.hideInput === false && (
-                    <MessageComposeComponent
+                    <MessageComposeComponentDraft
                         conversation={this.conversation}
                         onChange={this.handleChange}
                         onSend={this.handleSend}
@@ -187,7 +187,7 @@ const Placeholder = withChatHistory(() => {
             <MessagesContainer>
                 <XLoader loading={true} />
             </MessagesContainer>
-            <MessageComposeComponent enabled={false} />
+            <MessageComposeComponentDraft enabled={false} />
         </ConversationContainer>
     );
 });

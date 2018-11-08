@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../../routes';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
-import { MessageComposeComponent } from './components/view/MessageComposeComponent';
+import { MessageComposeComponentDraft, MessageComposeComponent } from './components/view/MessageComposeComponent';
 import { ConversationContainer } from './components/view/ConversationContainer';
 import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
@@ -100,6 +100,7 @@ const EmptyImage = Glamorous.div({
 
 const SearchPeopleModule = withChatCompose(props => {
     if (!(props.data && props.data.items)) {
+        console.warn(props);
         return (
             <XSelect
                 creatable={true}

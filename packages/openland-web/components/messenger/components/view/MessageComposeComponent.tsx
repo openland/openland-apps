@@ -307,7 +307,7 @@ export interface MessageComposeComponentProps {
 }
 
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
-    draft: string | null;
+    draft?: string | null;
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
@@ -315,7 +315,7 @@ interface MessageComposeComponentInnerProps extends MessageComposeComponentProps
     editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
-    draft: string | null;
+    draft?: string | null;
 }
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps> {
@@ -665,7 +665,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 }
 
-const ComposeWithDraft = withMessageState(withUserInfo((props) => (
+export const MessageComposeComponent = withMessageState(withUserInfo((props) => (
     <MessagesStateContext.Consumer>
         {(state: MessagesStateContextProps) => (
             <MessageComposeComponentInner
@@ -680,8 +680,8 @@ const ComposeWithDraft = withMessageState(withUserInfo((props) => (
     </MessagesStateContext.Consumer>
 ))) as React.ComponentType<MessageComposeWithDraft>;
 
-export const MessageComposeComponent = withGetDraftMessage(props => {
+export const MessageComposeComponentDraft = withGetDraftMessage(props => {
     return (
-        <ComposeWithDraft draft={props.data.message} {...props} />
+        <MessageComposeComponent draft={props.data.message} {...props} />
     );
 }) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string } }>;
