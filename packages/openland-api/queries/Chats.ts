@@ -405,7 +405,13 @@ export const ChatEditIntroMutation = gql`
 
 export const SetTypingMutation = gql`
     mutation SetTyping($conversationId: ID!) {
-        setTyping: alphaSetTyping(conversationId: $conversationId)
+        typingSend(conversationId: $conversationId, type: TEXT)
+    }
+`;
+
+export const CancelTypingMutation = gql`
+    mutation CancelTyping($conversationId: ConversationID!) {
+        typingCancel(conversationId: $conversationId)
     }
 `;
 

@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 const SUBSCRIBE_TYPINGS = gql`
     subscription SubscribeTypings {
-        alphaSubscribeTypings {
+        typings {
             conversation {
                 id
             }
@@ -50,20 +50,20 @@ export class TypingsWatcher {
         this.sub = typingSubscription.subscribe({
             next: (event) => {
                 if (event.data) {
-                    if (event.data.alphaSubscribeTypings.user.id === currentuserId) {
+                    if (event.data.typings.user.id === currentuserId) {
                         return;
                     }
-                    let cId: string = event.data.alphaSubscribeTypings.conversation.id;
-                    let type: string = event.data.alphaSubscribeTypings.conversation.__typename;
+                    let cId: string = event.data.typings.conversation.id;
+                    let type: string = event.data.typings.conversation.__typename;
     
                     // add new typings
                     let existing = this.typings[cId] || {};
     
-                    if (!event.data.alphaSubscribeTypings.cancel) {
-                        existing[event.data.alphaSubscribeTypings.user.id] = {
-                            userName: event.data.alphaSubscribeTypings.user.name,
-                            userPic: event.data.alphaSubscribeTypings.user.picture,
-                            userId: event.data.alphaSubscribeTypings.user.id
+                    if (!event.data.typings.cancel) {
+                        existing[event.data.typings.user.id] = {
+                            userName: event.data.typings.user.name,
+                            userPic: event.data.typings.user.picture,
+                            userId: event.data.typings.user.id
                         };
                         this.typings[cId] = existing;
     
@@ -72,14 +72,14 @@ export class TypingsWatcher {
     
                     // clear scehduled typing clear
                     let existingTimeouts = this.timeouts[cId] || {};
-                    clearTimeout(existingTimeouts[event.data.alphaSubscribeTypings.user.id]);
+                    clearTimeout(existingTimeouts[event.data.typings.user.id]);
                     // schedule typing clear
-                    existingTimeouts[event.data.alphaSubscribeTypings.user.id] = setTimeout(
+                    existingTimeouts[event.data.typings.user.id] = setTimeout(
                         () => {
-                            existing[event.data.alphaSubscribeTypings.user.id] = undefined;
+                            existing[event.data.typings.user.id] = undefined;
                             onChange(cId, this.renderTypings(cId));
                         },
-                        event.data.alphaSubscribeTypings.cancel ? 0 : 4000);
+                        event.data.typings.cancel ? 0 : 4000);
                     this.timeouts[cId] = existingTimeouts;
                 }
             }

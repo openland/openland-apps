@@ -368,34 +368,54 @@ export interface ProfilePrefill {
 // GraphQL mutation operation: CreateUserProfileAndOrganization
 // ====================================================
 
-export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
+export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_photoRef_crop | null;
+export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels_organization | null;
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user {
   __typename: "User";
   id: string;
+  name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  photoRef: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_photoRef | null;
-  email: string | null;
+  photo: string | null;
   phone: string | null;
+  email: string | null;
   website: string | null;
   about: string | null;
   location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  primaryOrganization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels[];
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_organization {
@@ -1758,14 +1778,26 @@ export interface ChatEditIntroVariables {
 // ====================================================
 
 export interface SetTyping {
-  /**
-   * Deprecated
-   */
-  setTyping: string;
+  typingSend: string;
 }
 
 export interface SetTypingVariables {
   conversationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: CancelTyping
+// ====================================================
+
+export interface CancelTyping {
+  typingCancel: string;
+}
+
+export interface CancelTypingVariables {
+  conversationId: any;
 }
 
 /* tslint:disable */
