@@ -113,7 +113,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                         style="colorus"
                         objectName={props.sender!!.name}
                         objectId={props.sender!!.id}
-                        cloudImageUuid={props.sender ? props.sender.picture!! : undefined}
+                        cloudImageUuid={props.sender ? props.sender.photo : undefined}
                         path={'/mail/u/' + props.sender!!.id}
                     />
                     <MessageWrapper separator={2} flexGrow={1}>

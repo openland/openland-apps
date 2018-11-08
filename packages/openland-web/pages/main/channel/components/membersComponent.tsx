@@ -160,7 +160,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
                 path={'/mail/u/' + item.id}
             >
                 <MemberAvatar
-                    cloudImageUuid={item.picture || undefined}
+                    cloudImageUuid={item.photo || undefined}
                     objectId={item.id}
                     style="user"
                     objectName={item.name}

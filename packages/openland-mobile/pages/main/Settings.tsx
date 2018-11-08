@@ -81,7 +81,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                         return (
                             <SScrollView>
                                 <ZListItemHeader
-                                    photo={resp.data!!.me!!.picture}
+                                    photo={resp.data!!.me!!.photo}
                                     id={resp.data!!.me!!.id}
                                     title={resp.data!!.me!!.name}
                                     subtitle={primary.name}

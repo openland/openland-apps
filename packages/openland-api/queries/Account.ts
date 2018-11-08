@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { SessionStateFull } from '../fragments/SessionStateFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { UserFull } from 'openland-api/fragments/UserFull';
 
 export const AccountQuery = gql`
     query Account {
@@ -135,23 +136,7 @@ export const CreateUserProfileAndOrganizationMutation = gql`
  mutation CreateUserProfileAndOrganization($user: ProfileInput!, $organization: CreateOrganizationInput!) {
         alphaCreateUserProfileAndOrganization(user: $user, organization: $organization){
             user{
-                id
-                firstName
-                lastName
-                photoRef {
-                    uuid
-                    crop {
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-                email
-                phone
-                website
-                about
-                location
+                ...UserFull
             }
             organization{
                 id
@@ -159,4 +144,5 @@ export const CreateUserProfileAndOrganizationMutation = gql`
             }
         }
     }
+    ${UserFull}
 `;

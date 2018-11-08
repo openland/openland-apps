@@ -110,7 +110,7 @@ export class UserAvatar extends React.Component<{ user: MessageFull_sender }> {
                 style="colorus"
                 objectName={this.props.user.name}
                 objectId={this.props.user.id}
-                cloudImageUuid={this.props.user.picture || undefined}
+                cloudImageUuid={this.props.user.photo || undefined}
                 path={'/mail/u/' + this.props.user.id}
             />
         );
@@ -127,14 +127,12 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) =
                     style="user"
                     objectName={user.name}
                     objectId={user.id}
-                    cloudImageUuid={user.picture || undefined}
+                    cloudImageUuid={user.photo || undefined}
                     path={'/mail/u/' + user.id}
                 />
                 <Status variables={{ userId: user.id }} />
             </XHorizontal>
             <Name>{user.name}</Name>
-            {user.role && <Role>{user.role}{user.primaryOrganization ? ' @ ' + user.primaryOrganization.name : ''}</Role>}
-            {!user.role && user.primaryOrganization && <Role>{user.primaryOrganization.name}</Role>}
             <Buttons separator={6}>
                 {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" size="small" />}
                 <XButton path={'/mail/u/' + user.id} style="electric" text={isMe ? 'My profile' : 'View profile'} size="small" />

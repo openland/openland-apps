@@ -29,10 +29,11 @@ export const UserQuery = gql`
             isYou
             online
             lastSeen
+            linkedin
+            twitter
             primaryOrganization: alphaPrimaryOrganization {
                 ...OrganizationShort
             }
-            linkedin: alphaLinkedin
             channels: channelsJoined {
                 id
                 title

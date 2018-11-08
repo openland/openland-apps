@@ -34,7 +34,7 @@ export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPres
                 <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
                     <ASFlex width={70} height={60} alignItems="center" justifyContent="center">
                         <ASAvatar
-                            src={item.picture}
+                            src={item.photo}
                             size={40}
                             placeholderKey={item.id}
                             placeholderTitle={item.name}

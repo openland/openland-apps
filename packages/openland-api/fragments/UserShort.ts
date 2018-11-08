@@ -5,7 +5,7 @@ export const UserShort = gql`
         name
         firstName
         lastName
-        picture
+        photo
         email
         online
         lastSeen
@@ -15,8 +15,5 @@ export const UserShort = gql`
             name
             photo
         }
-        role: alphaRole
-        linkedin: alphaLinkedin
-        twitter: alphaTwitter
     }
 `;

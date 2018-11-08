@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { UserShort } from './UserShort';
+import { UserFull } from './UserFull';
 
 export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
@@ -22,17 +23,7 @@ export const OrganizationFull = gql`
         members: alphaOrganizationMembers{
             role
             user{
-                ...UserShort
-
-                photoRef {
-                    uuid
-                    crop {
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
+                ...UserFull
             }
         }
 
@@ -48,5 +39,5 @@ export const OrganizationFull = gql`
             featured
         }
     }
-    ${UserShort}
+    ${UserFull}
 `;

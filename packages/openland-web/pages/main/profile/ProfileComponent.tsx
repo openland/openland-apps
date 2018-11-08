@@ -417,14 +417,13 @@ interface MemberCardProps {
         name: string,
         firstName: string,
         lastName: string | null,
-        picture: string | null,
+        photo: string | null,
         email: string | null,
         online: boolean,
         primaryOrganization: {
             id: string,
             name: string,
         } | null,
-        role: string | null,
         linkedin: string | null,
         twitter: string | null
     };
@@ -448,7 +447,7 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
             >
                 <MemberCardAvatar>
                     <XAvatar
-                        cloudImageUuid={user.picture || undefined}
+                        cloudImageUuid={user.photo || undefined}
                         objectName={user.name}
                         objectId={user.id}
                         style="user"
@@ -463,7 +462,6 @@ class MemberCard extends React.PureComponent<MemberCardProps> {
                             {user.twitter && <MemberCardSocial href={user.twitter}><TwitterIcon /></MemberCardSocial>}
                             {this.props.isCommunity && user.primaryOrganization && <MemberCardOrg path={`/directory/o/${user.primaryOrganization.id}`}>{user.primaryOrganization.name}</MemberCardOrg>}
                         </XHorizontal>
-                        {user.role && <MemberCardRole>{user.role}</MemberCardRole>}
                     </XVertical>
                 </XHorizontal>
                 <MemberCardTools separator={5}>

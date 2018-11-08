@@ -112,7 +112,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                     {
                         label: i.node.name,
                         value: i.node.id,
-                        photo: i.node.picture,
+                        photo: i.node.photo,
                         org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null)
                     })
                 ) || []}

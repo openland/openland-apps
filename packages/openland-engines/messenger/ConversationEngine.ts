@@ -103,7 +103,7 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         isOut: src.sender.id === engine.user.id,
         senderId: src.sender.id,
         senderName: src.sender.name,
-        senderPhoto: src.sender.picture ? src.sender.picture : undefined,
+        senderPhoto: src.sender.photo ? src.sender.photo : undefined,
         text: src.message ? src.message : undefined,
         file: src.file ? {
             fileName: src.fileMetadata!!.name,
@@ -590,7 +590,7 @@ export class ConversationEngine implements MessageSendHandler {
                 date: parseInt(src.date, 10),
                 senderId: this.engine.user.id,
                 senderName: this.engine.user.name,
-                senderPhoto: this.engine.user.picture ? this.engine.user.picture : undefined,
+                senderPhoto: this.engine.user.photo ? this.engine.user.photo : undefined,
                 isOut: true,
                 isSending: true,
                 text: src.message ? src.message : undefined,

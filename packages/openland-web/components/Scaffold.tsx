@@ -349,7 +349,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
         <Query query={MyOrganizationsQuery.document}>
             {(data) =>
                 <UserPopper
-                    picture={props.user!!.picture}
+                    picture={props.user!!.photo}
                     name={props.user!!.name}
                     id={props.user!!.id}
                     primaryOrganization={props.organization || undefined}

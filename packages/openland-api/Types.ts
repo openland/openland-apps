@@ -18,21 +18,12 @@ export interface Account_me {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: Account_me_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface Account_organization {
@@ -88,21 +79,12 @@ export interface AccountSettings_me {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: AccountSettings_me_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface AccountSettings_primaryOrganization {
@@ -164,21 +146,12 @@ export interface AccountInviteInfo_invite_creator {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: AccountInviteInfo_invite_creator_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface AccountInviteInfo_invite {
@@ -222,21 +195,12 @@ export interface AccountAppInviteInfo_invite_creator {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: AccountAppInviteInfo_invite_creator_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface AccountAppInviteInfo_invite {
@@ -257,21 +221,12 @@ export interface AccountAppInviteInfo_appInvite_inviter {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: AccountAppInviteInfo_appInvite_inviter_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface AccountAppInviteInfo_appInvite {
@@ -342,9 +297,6 @@ export interface AccountInvitesHistory_invites_acceptedBy {
   __typename: "User";
   id: string;
   name: string;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -435,6 +387,9 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   id: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   photoRef: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_photoRef | null;
   email: string | null;
   phone: string | null;
@@ -484,9 +439,6 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_s
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -524,9 +476,6 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_sende
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -565,9 +514,6 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_sen
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -794,21 +740,12 @@ export interface ChatHistory_messages_messages_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatHistory_messages_messages_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatHistory_messages_messages_reply_sender_primaryOrganization {
@@ -824,21 +761,12 @@ export interface ChatHistory_messages_messages_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatHistory_messages_messages_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatHistory_messages_messages_reply_fileMetadata {
@@ -1051,21 +979,12 @@ export interface ChatInfo_chat_PrivateConversation_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatInfo_chat_PrivateConversation_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatInfo_chat_PrivateConversation {
@@ -1236,21 +1155,12 @@ export interface ChatFullInfo_chat_PrivateConversation_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatFullInfo_chat_PrivateConversation_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatFullInfo_chat_PrivateConversation {
@@ -1284,21 +1194,12 @@ export interface ChatFullInfo_chat_GroupConversation_members {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatFullInfo_chat_GroupConversation_members_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatFullInfo_chat_GroupConversation_photoRef_crop {
@@ -1348,21 +1249,12 @@ export interface ChatFullInfo_chat_ChannelConversation_members {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatFullInfo_chat_ChannelConversation_members_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatFullInfo_chat_ChannelConversation_photoRef_crop {
@@ -1542,21 +1434,12 @@ export interface GroupChatFullInfo_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: GroupChatFullInfo_members_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface GroupChatFullInfo_members {
@@ -1712,21 +1595,12 @@ export interface ChatSearchForComposeMobile_items_User {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchForComposeMobile_items_User_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchForComposeMobile_items_Organization {
@@ -1816,21 +1690,12 @@ export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatCreateIntro_intro_message_urlAugmentation_extra_User_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export type ChatCreateIntro_intro_message_urlAugmentation_extra = ChatCreateIntro_intro_message_urlAugmentation_extra_Organization | ChatCreateIntro_intro_message_urlAugmentation_extra_User;
@@ -1975,21 +1840,12 @@ export interface BlockedList_blocked_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: BlockedList_blocked_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface BlockedList_blocked_blockedBy_primaryOrganization {
@@ -2005,21 +1861,12 @@ export interface BlockedList_blocked_blockedBy {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: BlockedList_blocked_blockedBy_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface BlockedList_blocked {
@@ -2120,21 +1967,12 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchText_items_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
@@ -2150,21 +1988,12 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_sen
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchText_items_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_fileMetadata {
@@ -2359,21 +2188,12 @@ export interface ChatSearchText_items_GroupConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchText_items_GroupConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage_reply_sender_primaryOrganization {
@@ -2389,21 +2209,12 @@ export interface ChatSearchText_items_GroupConversation_topMessage_reply_sender 
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchText_items_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage_reply_fileMetadata {
@@ -2614,21 +2425,12 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchText_items_ChannelConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_reply_sender_primaryOrganization {
@@ -2644,21 +2446,12 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_reply_sende
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchText_items_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_reply_fileMetadata {
@@ -2889,21 +2682,12 @@ export interface ChatSearchChannel_items_edges_node_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender_primaryOrganization {
@@ -2919,21 +2703,12 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_reply_fileMetadata {
@@ -3221,21 +2996,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
@@ -3251,21 +3017,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_fileMetadata {
@@ -3460,21 +3217,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender_primaryOrganization {
@@ -3490,21 +3238,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_fileMetadata {
@@ -3715,21 +3454,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender_primaryOrganization {
@@ -3745,21 +3475,12 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_fileMetadata {
@@ -3991,21 +3712,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
@@ -4021,21 +3733,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_fileMetadata {
@@ -4230,21 +3933,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender_primaryOrganization {
@@ -4260,21 +3954,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_fileMetadata {
@@ -4485,21 +4170,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender_primaryOrganization {
@@ -4515,21 +4191,12 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_fileMetadata {
@@ -4728,21 +4395,12 @@ export interface ChannelMembers_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelMembers_members_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelMembers_members {
@@ -4963,21 +4621,12 @@ export interface ChannelInviteInfo_invite_invitedByUser {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChannelInviteInfo_invite_invitedByUser_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChannelInviteInfo_invite {
@@ -5062,21 +4711,12 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sen
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
@@ -5092,21 +4732,12 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_rep
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_fileMetadata {
@@ -5301,21 +4932,12 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender 
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_sender_primaryOrganization {
@@ -5331,21 +4953,12 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_s
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_fileMetadata {
@@ -5556,21 +5169,12 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sende
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_sender_primaryOrganization {
@@ -5586,21 +5190,12 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_fileMetadata {
@@ -5982,18 +5577,22 @@ export interface MyOrganization_myOrganization_members_user_primaryOrganization 
   photo: string | null;
 }
 
-export interface MyOrganization_myOrganization_members_user_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
+export interface MyOrganization_myOrganization_members_user_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface MyOrganization_myOrganization_members_user_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganization_myOrganization_members_user_photoRef_crop | null;
+export interface MyOrganization_myOrganization_members_user_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: MyOrganization_myOrganization_members_user_channels_organization | null;
 }
 
 export interface MyOrganization_myOrganization_members_user {
@@ -6002,22 +5601,23 @@ export interface MyOrganization_myOrganization_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
+  phone: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
   online: boolean;
   lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: MyOrganization_myOrganization_members_user_primaryOrganization | null;
-  role: string | null;
   linkedin: string | null;
   twitter: string | null;
-  photoRef: MyOrganization_myOrganization_members_user_photoRef | null;
+  primaryOrganization: MyOrganization_myOrganization_members_user_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: MyOrganization_myOrganization_members_user_channels[];
 }
 
 export interface MyOrganization_myOrganization_members {
@@ -6178,18 +5778,22 @@ export interface Organization_organization_members_user_primaryOrganization {
   photo: string | null;
 }
 
-export interface Organization_organization_members_user_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
+export interface Organization_organization_members_user_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface Organization_organization_members_user_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: Organization_organization_members_user_photoRef_crop | null;
+export interface Organization_organization_members_user_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: Organization_organization_members_user_channels_organization | null;
 }
 
 export interface Organization_organization_members_user {
@@ -6198,22 +5802,23 @@ export interface Organization_organization_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
+  phone: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
   online: boolean;
   lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
-  role: string | null;
   linkedin: string | null;
   twitter: string | null;
-  photoRef: Organization_organization_members_user_photoRef | null;
+  primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: Organization_organization_members_user_channels[];
 }
 
 export interface Organization_organization_members {
@@ -6317,9 +5922,6 @@ export interface ExploreOrganizations_items_edges_node_members_user {
   __typename: "User";
   id: string;
   name: string;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -6397,9 +5999,6 @@ export interface ExploreComunity_items_edges_node_members_user {
   __typename: "User";
   id: string;
   name: string;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -6599,9 +6198,6 @@ export interface OrganizationAlterPublished_alphaAlterPublished_members_user {
   __typename: "User";
   id: string;
   name: string;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -6654,9 +6250,6 @@ export interface OrganizationByPrefix_organizationByPrefix_members_user {
   __typename: "User";
   id: string;
   name: string;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -6733,21 +6326,12 @@ export interface SuperAdmins_superAdmins_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: SuperAdmins_superAdmins_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface SuperAdmins_superAdmins {
@@ -6800,21 +6384,12 @@ export interface SuperAccount_superAccount_members {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: SuperAccount_superAccount_members_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface SuperAccount_superAccount_features {
@@ -6976,21 +6551,12 @@ export interface SuperAccountMemberAdd_superAccountMemberAdd_members {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: SuperAccountMemberAdd_superAccountMemberAdd_members_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface SuperAccountMemberAdd_superAccountMemberAdd {
@@ -7028,21 +6594,12 @@ export interface SuperAccountMemberRemove_superAccountMemberRemove_members {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: SuperAccountMemberRemove_superAccountMemberRemove_members_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface SuperAccountMemberRemove_superAccountMemberRemove {
@@ -7373,13 +6930,11 @@ export interface User_user {
   location: string | null;
   isBot: boolean;
   isYou: boolean;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
-  primaryOrganization: User_user_primaryOrganization | null;
   linkedin: string | null;
+  twitter: string | null;
+  primaryOrganization: User_user_primaryOrganization | null;
   /**
    * TODO: Refactor
    */
@@ -7418,9 +6973,6 @@ export interface UserVariables {
 export interface Online_user {
   __typename: "User";
   id: string;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
 }
@@ -7453,21 +7005,12 @@ export interface ExplorePeople_items_edges_node {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ExplorePeople_items_edges_node_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ExplorePeople_items_edges {
@@ -7559,21 +7102,12 @@ export interface ConversationShort_AnonymousConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ConversationShort_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
@@ -7589,21 +7123,12 @@ export interface ConversationShort_AnonymousConversation_topMessage_reply_sender
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ConversationShort_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_reply_fileMetadata {
@@ -7798,21 +7323,12 @@ export interface ConversationShort_GroupConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ConversationShort_GroupConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_reply_sender_primaryOrganization {
@@ -7828,21 +7344,12 @@ export interface ConversationShort_GroupConversation_topMessage_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ConversationShort_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_reply_fileMetadata {
@@ -8053,21 +7560,12 @@ export interface ConversationShort_ChannelConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ConversationShort_ChannelConversation_topMessage_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_reply_sender_primaryOrganization {
@@ -8083,21 +7581,12 @@ export interface ConversationShort_ChannelConversation_topMessage_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: ConversationShort_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_reply_fileMetadata {
@@ -8320,21 +7809,12 @@ export interface MessageFull_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: MessageFull_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface MessageFull_reply_sender_primaryOrganization {
@@ -8350,21 +7830,12 @@ export interface MessageFull_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: MessageFull_reply_sender_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 export interface MessageFull_reply_fileMetadata {
@@ -8515,9 +7986,6 @@ export interface MessageShort_sender {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -8546,18 +8014,22 @@ export interface OrganizationFull_members_user_primaryOrganization {
   photo: string | null;
 }
 
-export interface OrganizationFull_members_user_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
+export interface OrganizationFull_members_user_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface OrganizationFull_members_user_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationFull_members_user_photoRef_crop | null;
+export interface OrganizationFull_members_user_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: OrganizationFull_members_user_channels_organization | null;
 }
 
 export interface OrganizationFull_members_user {
@@ -8566,22 +8038,23 @@ export interface OrganizationFull_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
+  phone: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
   online: boolean;
   lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
-  role: string | null;
   linkedin: string | null;
   twitter: string | null;
-  photoRef: OrganizationFull_members_user_photoRef | null;
+  primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: OrganizationFull_members_user_channels[];
 }
 
 export interface OrganizationFull_members {
@@ -8669,9 +8142,6 @@ export interface OrganizationSearch_members_user {
   __typename: "User";
   id: string;
   name: string;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 
@@ -8761,6 +8231,63 @@ export interface SettingsFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: UserFull
+// ====================================================
+
+export interface UserFull_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface UserFull_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface UserFull_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: UserFull_channels_organization | null;
+}
+
+export interface UserFull {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  primaryOrganization: UserFull_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: UserFull_channels[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: UserShort
 // ====================================================
 
@@ -8777,21 +8304,12 @@ export interface UserShort {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
-  picture: string | null;
+  photo: string | null;
   email: string | null;
-  /**
-   * TODO: Move to extensions and use separate type
-   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
   primaryOrganization: UserShort_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
 }
 
 /* tslint:disable */
@@ -8807,9 +8325,6 @@ export interface UserTiny {
   name: string;
   firstName: string;
   lastName: string | null;
-  /**
-   * Deprecated: Will be removed soon
-   */
   picture: string | null;
 }
 

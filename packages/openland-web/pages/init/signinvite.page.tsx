@@ -122,7 +122,7 @@ const InviteInfo = withAppInviteInfo((props) => {
 
                 <XVertical separator={12}>
                     <XHorizontal separator={5}>
-                        <XAvatar size="medium" cloudImageUuid={inviter.picture || undefined} style="colorus" objectName={inviter.name} objectId={inviter.id} />
+                        <XAvatar size="medium" cloudImageUuid={inviter.photo || undefined} style="colorus" objectName={inviter.name} objectId={inviter.id} />
                         <BubbleMsg separator={3}>
                             <XText letterSpacing={-0.2} fontWeight={500} fontSize={16} color="#334562">{inviter.name}</XText>
                             <XText letterSpacing={-0.2} fontSize={16} color="#61707e">{inviter.name + ' has invited you to join Openland'}</XText>

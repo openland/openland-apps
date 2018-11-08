@@ -5,6 +5,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
+import { User, User_user } from 'openland-api/Types';
 
 interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -59,23 +60,7 @@ const ProfileToolsWrapper = Glamorous(XHorizontal)({
 });
 
 interface ProfileCardProps {
-    item: {
-        id: string,
-        name: string,
-        firstName: string,
-        lastName: string | null,
-        picture: string | null,
-        email: string | null,
-        primaryOrganization: {
-            id: string,
-            name: string,
-            photo: string | null,
-        } | null,
-        role: string | null,
-        linkedin: string | null,
-        twitter: string | null,
-        isYou: boolean,
-    };
+    item: Partial<User_user>;
     onPick: (q: SearchCondition) => void;
 }
 
@@ -99,7 +84,7 @@ export class ProfileCard extends React.Component<ProfileCardProps, { isHovered: 
                 <XHorizontal justifyContent="space-between" separator={12}>
                     <XLink path={'/directory/u/' + user.id}>
                         <ProfileAvatar
-                            cloudImageUuid={user.picture || undefined}
+                            cloudImageUuid={user.photo || undefined}
                             objectId={user.id}
                             objectName={user.name}
                             style="colorus"
