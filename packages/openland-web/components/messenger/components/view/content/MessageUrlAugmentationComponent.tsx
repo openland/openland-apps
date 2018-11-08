@@ -10,6 +10,7 @@ import { layoutMediaReverse } from './utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from '../../icons/ic-close.svg';
 import { makeInternalLinkRelative, isInternalLink } from './MessageTextComponent';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 
 const Container = Glamorous(XLink)({
     display: 'flex',
@@ -28,7 +29,7 @@ const Container = Glamorous(XLink)({
     }
 });
 
-const DeleteButton = Glamorous(XLink)({
+const DeleteButton = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     opacity: 0,
     position: 'absolute',
     right: 0,
@@ -46,7 +47,7 @@ const DeleteButton = Glamorous(XLink)({
     '&:hover & > svg > g > path:last-child': {
         fill: 'rgba(0, 0, 0, 0.4)'
     }
-});
+})));
 
 const ContentWrapper = Glamorous.div({
     flex: 1,
