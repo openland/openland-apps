@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 const OnlineMutation = gql`
     mutation ReportOnline {
-        alphaReportOnline(timeout: 5000)
+        presenceReportOnline(timeout: 5000)
     }
 `;
 
