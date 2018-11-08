@@ -672,10 +672,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                 </XWithRole>
 
                                                 <XWithRole role={['editor', 'super-admin']} negate={true}>
-                                                    {(props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin') && (
+                                                    {(props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner') && (
                                                         <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                                     )}
-                                                    {!(props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin') && (
+                                                    {!(props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner') && (
                                                         <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
                                                             <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                                         </XWithRole>
