@@ -440,7 +440,8 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 };
 
 const SelectWrapper = Glamorous.div({
-    position: 'relative'
+    position: 'relative',
+    zIndex: 10
 });
 
 const Title = Glamorous.div<{ inside?: boolean }>(
