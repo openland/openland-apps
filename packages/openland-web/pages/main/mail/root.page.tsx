@@ -115,9 +115,7 @@ export const AddButton = Glamorous(XButton)({
 let returnPath: string | undefined = undefined;
 
 class ChatListContainerWrapper extends React.PureComponent<{emptyState: boolean}> {
-
     render() {
-        return <div/>;
         const emptyState = this.props.emptyState;
         return (
             <ChatListContainer>
