@@ -46,20 +46,20 @@ export const ChatLeaveMutation = gql`
 `;
 
 export const MessageSetReactionMutation = gql`
-    mutation MessageSetReaction($messageId: ConversationMessageID!, $reaction: String!) {
+    mutation MessageSetReaction($messageId: MessageID!, $reaction: String!) {
         alphaChatSetReaction(messageId: $messageId, reaction: $reaction)
     }
 `;
 
 export const SwitchReactionMutation = gql`
-    mutation SwitchReaction($messageId: ConversationMessageID!, $from: String!, $to: String!) {
+    mutation SwitchReaction($messageId: MessageID!, $from: String!, $to: String!) {
         alphaChatSetReaction(messageId: $messageId, reaction: $to)
         alphaChatUnsetReaction(messageId: $messageId, reaction: $from)
     }
 `;
 
 export const MessageUnsetReactionMutation = gql`
-    mutation MessageUnsetReaction($messageId: ConversationMessageID!, $reaction: String!) {
+    mutation MessageUnsetReaction($messageId: MessageID!, $reaction: String!) {
         alphaChatUnsetReaction(messageId: $messageId, reaction: $reaction)
     }
 `;
@@ -302,7 +302,7 @@ export const SendMessageMutation = gql`
 `;
 
 export const ReplyMessageMutation = gql`
-    mutation ReplyMessage($conversationId: ID!, $message: String, $replyMessages: [ConversationMessageID!]) {
+    mutation ReplyMessage($conversationId: ID!, $message: String, $replyMessages: [MessageID!]) {
         replyMessage: alphaSendMessage(conversationId: $conversationId, message: $message, replyMessages: $replyMessages) {
             seq
         }
@@ -664,7 +664,7 @@ export const ChatDeleteMessageMutation = gql`
 `;
 
 export const ChatDeleteUrlAugmentationMutation = gql`
-    mutation ChatDeleteUrlAugmentation($messageId: ConversationMessageID!) {
+    mutation ChatDeleteUrlAugmentation($messageId: MessageID!) {
         event: alphaDeleteMessageUrlAugmentation(messageId: $messageId){
             seq
         }

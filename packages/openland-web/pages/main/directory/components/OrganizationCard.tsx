@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withOrganizationFollow } from '../../../../api/withOrganizationFollow';
 import { XMutation } from 'openland-x/XMutation';
 import { withOrganizationPublishedAlter } from '../../../../api/withOrganizationPublishedAlter';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -104,20 +103,6 @@ class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q
         return elements;
     }
 }
-
-const OrganizationFollowBtn = withOrganizationFollow((props) => (
-    <XMutation
-        mutation={props.followOrganization}
-        variables={{ organizationId: (props as any).organizationId, follow: !(props as any).followed }}
-    >
-        <XButton
-            iconOpacity={0.4}
-            style={(props as any).followed ? 'ghost' : 'default'}
-            text={(props as any).followed ? TextDirectory.buttonFollowing : TextDirectory.buttonFollow}
-            icon={(props as any).followed ? 'check' : undefined}
-        />
-    </XMutation>
-)) as React.ComponentType<{ organizationId: string, followed: boolean }>;
 
 export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
     <XButton

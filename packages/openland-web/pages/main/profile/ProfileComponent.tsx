@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Organization } from 'openland-api/Types';
+import { Organization, OrganizationMemberRole } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -13,7 +13,7 @@ import { XTag } from 'openland-x/XTag';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
-import { AboutPlaceholder, SocialPlaceholder, LocationPlaceholder, CategoriesPlaceholder } from './placeholders';
+import { AboutPlaceholder, SocialPlaceholder } from './placeholders';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem, XMenuTitle } from 'openland-x/XMenuItem';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -21,7 +21,6 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
-import { PermissionsModal, RemoveJoinedModal } from '../settings/membersTable';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { ChannelSetFeatured, ChannelSetHidden } from '../../../components/messenger/MessengerComponent';
 import WebsiteIcon from './icons/website-2.svg';
@@ -33,6 +32,11 @@ import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
+import { withOrganizationRemoveMember } from '../../../api/withOrganizationRemoveMember';
+import { withOrganizationMemberChangeRole } from '../../../api/withOrganizationMemberChangeRole';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { XSelect } from 'openland-x/XSelect';
+import { XText } from 'openland-x/XText';
 
 const BackWrapper = Glamorous.div({
     background: '#F9F9F9',
@@ -106,30 +110,6 @@ const HeaderFeatured = Glamorous.div({
     margin: '1px 0 -1px',
 });
 
-// const HeaderTabs = Glamorous(XSwitcher)({
-//     border: 'none',
-//     boxShadow: 'none',
-//     padding: 0,
-//     borderRadius: 0,
-//     background: 'none',
-//     margin: '0 0 -1px -7px',
-//     '& > a': {
-//         padding: '17px 7px 16px!important',
-//         borderBottom: '3px solid transparent',
-//         fontSize: 14,
-//         lineHeight: '20px',
-//         fontWeight: '500!important',
-//         margin: '0 15px 0 0!important',
-//         color: '#334562',
-//         opacity: 0.5,
-//         '&.is-active': {
-//             opacity: 1,
-//             color: '#334562',
-//             borderBottomColor: '#1790ff'
-//         }
-//     }
-// });
-
 const HeaderTools = Glamorous.div({
     padding: 24
 });
@@ -163,11 +143,6 @@ const Header = (props: { organizationQuery: Organization }) => {
                         </HeaderFeatured>
                     )}
                 </HeaderBox>
-                {/* <HeaderTabs>
-                    {(props.tabs.indexOf('channels') > -1) && <XSwitcher.Item query={{ field: 'orgTab' }}>Channels</XSwitcher.Item>}
-                    {(props.tabs.indexOf('about') > -1) && <XSwitcher.Item query={{ field: 'orgTab', value: 'about' }}>About</XSwitcher.Item>}
-                    <XSwitcher.Item query={{ field: 'orgTab', value: 'members' }}>{org.isCommunity ? 'Admins' : 'Members'}</XSwitcher.Item>
-                </HeaderTabs> */}
             </HeaderInfo>
             <HeaderTools>
                 <XHorizontal>
@@ -280,19 +255,15 @@ const SocialIconWrapper = Glamorous.div({
     display: 'flex'
 });
 
-const LinkTag = makeNavigable(XTag);
-
 const About = (props: { organizationQuery: Organization }) => {
     let org = props.organizationQuery.organization;
     let hasLinks = (org.linkedin || org.twitter || org.website || org.facebook);
-    let hasCategories = (org.organizationType || []).length > 0;
-    let hasLocations = (org.locations || []).length > 0;
 
     return (
         <>
             {org.isMine && (
                 <XWithRole role="admin" orgPermission={org.id}>
-                    {(!org.about || !hasLinks || !hasLocations || !hasCategories) && (
+                    {(!org.about || !hasLinks) && (
                         <>
                             <XSubHeader title="Add sections" />
                             <AddSectionWrapper>
@@ -308,18 +279,6 @@ const About = (props: { organizationQuery: Organization }) => {
                                         <SocialPlaceholder target={<XButton text="Links" style="light" icon="add" />} />
                                     </AddSection>
                                 )}
-                                {/* {!hasCategories && (
-                                    <AddSection>
-                                        <AddSectionText>Add categories</AddSectionText>
-                                        <CategoriesPlaceholder target={<XButton text="Categories" style="light" icon="add" />} />
-                                    </AddSection>
-                                )}
-                                {!hasLocations && (
-                                    <AddSection>
-                                        <AddSectionText>Add locations where are you based or operate</AddSectionText>
-                                        <LocationPlaceholder target={<XButton text="Locations" style="light" icon="add" />} />
-                                    </AddSection>
-                                )} */}
                             </AddSectionWrapper>
                         </>
                     )}
@@ -361,7 +320,7 @@ const About = (props: { organizationQuery: Organization }) => {
                                     text="Website"
                                 />
                             )}
-                             {org.facebook && (
+                            {org.facebook && (
                                 <XButton
                                     href={org.facebook}
                                     icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
@@ -386,71 +345,6 @@ const About = (props: { organizationQuery: Organization }) => {
                     </SectionContent>
                 </>
             )}
-            {/* {hasCategories && (
-                <>
-                    <XSubHeader title="Categories" counter={org.organizationType ? org.organizationType.length : undefined}>
-                        {org.isMine && (
-                            <XWithRole role="admin" orgPermission={org.id}>
-                                <XSubHeaderRight>
-                                    <CategoriesPlaceholder target={<EditButton>Edit</EditButton>} />
-                                </XSubHeaderRight>
-                            </XWithRole>
-                        )}
-                    </XSubHeader>
-                    <SectionContent withTags={true}>
-                        {(org.organizationType || []).map((l, i) => {
-                            let clauses = [{
-                                type: 'organizationType',
-                                label: l,
-                                value: l
-                            }];
-
-                            return (
-                                <LinkTag
-                                    key={l + i}
-                                    path={'/directory?clauses=' + encodeURIComponent(JSON.stringify(clauses))}
-                                    size="large"
-                                    rounded={true}
-                                    text={l}
-                                />
-                            );
-                        })}
-                    </SectionContent>
-                </>
-            )}
-            {hasLocations && (
-                <>
-                    <XSubHeader title="Locations" counter={org.locations ? org.locations.length : undefined}>
-                        {org.isMine && (
-                            <XWithRole role="admin" orgPermission={org.id}>
-                                <XSubHeaderRight>
-                                    <LocationPlaceholder target={<EditButton>Edit</EditButton>} />
-                                </XSubHeaderRight>
-                            </XWithRole>
-                        )}
-                    </XSubHeader>
-                    <SectionContent withTags={true}>
-                        {(org.locations || []).map((l, i) => {
-
-                            let clauses = [{
-                                type: 'location',
-                                label: l,
-                                value: l
-                            }];
-
-                            return (
-                                <LinkTag
-                                    key={l + i}
-                                    path={'/directory?clauses=' + encodeURIComponent(JSON.stringify(clauses))}
-                                    size="large"
-                                    rounded={true}
-                                    text={l}
-                                />
-                            );
-                        })}
-                    </SectionContent>
-                </>
-            )} */}
         </>
     );
 };
@@ -646,8 +540,77 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
     );
 }) as React.ComponentType<{ members: any[] }>;
 
+export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((props) => {
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.changeRole || '')[0];
+    if (!member) {
+        return null;
+    }
+    return (
+        <XModalForm
+            title={TextInvites.membersMgmt.changeRoleTitle(member.user.name, (props as any).orgName)}
+            defaultData={{
+                role: member.role
+            }}
+
+            targetQuery="changeRole"
+
+            defaultAction={async (data) => {
+                await props.changeRole({
+                    variables: {
+                        memberId: member.user.id,
+                        newRole: data.role as OrganizationMemberRole,
+                        organizationId: (props as any).orgId
+                    }
+                });
+
+            }}
+            target={(props as any).target}
+        >
+            <XVertical>
+                <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: 'Admin' }, { value: 'MEMBER', label: 'Member' }]} />
+                <XStoreContext.Consumer>
+                    {(store) => {
+                        let role = store ? store.readValue('fields.role') : '';
+                        return (
+                            <XText>{role === 'OWNER' ? TextInvites.membersMgmt.changeRoleOwnerHint : role === 'MEMBER' ? TextInvites.membersMgmt.changeRoleMemberHint : ''}</XText>
+                        );
+                    }}
+                </XStoreContext.Consumer>
+            </XVertical>
+        </XModalForm>
+    );
+})) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string } }>;
+
+export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
+    if (!member) {
+        return null;
+    }
+    return (
+        <XModalForm
+            submitProps={{
+                text: TextInvites.membersMgmt.removeSubmit,
+                style: 'danger',
+            }}
+            title={TextInvites.membersMgmt.removeTitle(member.user.name, (props as any).orgName)}
+            targetQuery="remove"
+            defaultAction={async (data) => {
+                await props.remove({
+                    variables: {
+                        memberId: member.user.id,
+                        organizationId: (props as any).orgId
+                    }
+                });
+            }}
+        >
+            <XText>{TextInvites.membersMgmt.removeText(member.user.firstName, (props as any).orgName)}</XText>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string, organizationId: string } }>;
+
 const Members = (props: { organizationQuery: Organization }) => {
     let organization = props.organizationQuery.organization;
+    console.warn(organization);
     return (
         <>
             {(organization.members || []).length > 0 && (
@@ -812,7 +775,7 @@ const OrgInfoWrapper = Glamorous.div({
 class OrganizationProfileInner extends React.Component<OrganizationProfileInnerProps> {
     pageTitle: string | undefined = undefined;
 
-    constructor (props: OrganizationProfileInnerProps) {
+    constructor(props: OrganizationProfileInnerProps) {
         super(props);
 
         if (this.props.handlePageTitle) {
@@ -821,7 +784,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
         }
     }
 
-    componentWillReceiveProps (newProps: OrganizationProfileInnerProps) {
+    componentWillReceiveProps(newProps: OrganizationProfileInnerProps) {
         if (newProps.handlePageTitle) {
             let title = newProps.organizationQuery.organization.name;
 

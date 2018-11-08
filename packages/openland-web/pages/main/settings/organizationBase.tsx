@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XSelect } from 'openland-x/XSelect';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { Navigation } from './_navigation';
 import { XForm } from 'openland-x-forms/XForm2';
@@ -15,13 +14,8 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { DateFormater } from 'openland-x-format/XDate';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { OrgCategoties } from '../directory/categoryPicker';
-import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
-import { TextDirectoryData } from 'openland-text/TextDirectory';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
-import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
-import { MembersTable } from './membersTable';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,
@@ -187,13 +181,6 @@ export const OrganizationSettigs = ((props: any) => {
                             </XVertical>
                         </XForm>
                     </XVertical>
-
-                    {!props.hideMembers && (
-                        <XVertical separator={12}>
-                            <CategoryTitle id="members">Members</CategoryTitle>
-                            <MembersTable />
-                        </XVertical>
-                    )}
 
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>

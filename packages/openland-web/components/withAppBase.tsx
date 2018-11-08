@@ -19,7 +19,7 @@ export function withAppBase(name: string, WrappedComponent: React.ComponentType<
                     sessionState={props.data.sessionState}
                     user={props.data.me}
                     organization={props.data.me && props.data.me.primaryOrganization}
-                    roles={props.data.permissions.roles}
+                    roles={props.data.myPermissions.roles}
                 >
                     <MessengerProvider user={hasMessenger ? props.data.me!! : undefined}>
                         <WrappedComponent />

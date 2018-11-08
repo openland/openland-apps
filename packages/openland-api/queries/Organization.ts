@@ -59,15 +59,6 @@ export const OrganizationProfileQuery = gql`
     ${OrganizationProfileFull}
 `;
 
-export const FollowOrganizationMutation = gql`
-    mutation FollowOrganization($organizationId: ID!, $follow: Boolean!) {
-        followOrganization: alphaFollowOrganization(id: $organizationId, follow: $follow) {
-            id
-            alphaFollowed
-        }
-    }
-`;
-
 export const ExploreOrganizationsQuery = gql`
     query ExploreOrganizations($query: String, $prefix: String, $sort: String, $page: Int, $after: String) {
         items: alphaOrganizations(query: $query, prefix: $prefix, sort: $sort, page: $page, first: 25, after: $after) {
@@ -110,114 +101,6 @@ export const ExploreComunityQuery = gql`
         }
     }
     ${OrganizationSearch}
-`;
-
-export const CreateListingMutation = gql`
-    mutation CreateListing($type: String!, $input: AlphaOrganizationListingInput!) {
-        createListing: alphaOrganizationCreateListing(type: $type, input: $input) {
-            name
-            id
-            name
-            summary
-            specialAttributes
-            status
-            updatedAt
-
-            location{
-                lat
-                lon
-            }
-            locationTitle
-            availability
-            area
-            price
-            dealType
-            shapeAndForm
-            currentUse
-            goodFitFor
-            additionalLinks{
-                text
-                url
-            }
-
-            shortDescription
-            areaRange{
-                from
-                to
-            }
-            geographies
-            landUse
-            unitCapacity
-        }
-    }
-`;
-
-export const EditListingMutation = gql`
-    mutation EditListing($id: ID!, $input: AlphaOrganizationListingInput!) {
-        editListing: alphaOrganizationEditListing(id: $id, input: $input) {
-            name
-            id
-            name
-            summary
-            specialAttributes
-            status
-            updatedAt
-
-            location{
-                lat
-                lon
-            }
-            locationTitle
-            availability
-            area
-            price
-            dealType
-            shapeAndForm
-            currentUse
-            goodFitFor
-            additionalLinks{
-                text
-                url
-            }
-
-            shortDescription
-            areaRange{
-                from
-                to
-            }
-            geographies
-            landUse
-            unitCapacity
-        }
-    }
-`;
-
-export const DeleteListingMutation = gql`
-    mutation DeleteListing($id: ID!) {
-        alphaOrganizationDeleteListing(id: $id)
-    }
-`;
-
-export const OrganizationMembersQuery = gql`
-    query OrganizationMembers($orgId: ID!) {
-        alphaOrganizationMembers(orgId: $orgId) {
-            ... on  OrganizationJoinedMember{
-                user {
-                    ...UserShort
-                }
-                joinedAt
-                showInContacts
-            }
-            ... on  OrganizationIvitedMember{
-                firstName
-                lastName
-                inviteId
-            }
-            email
-            role
-        }
-    }
-    ${UserShort}
 `;
 
 export const OrganizationChangeMemberRoleMutation = gql`
@@ -279,27 +162,6 @@ export const OrganizationAlterPublishedMutation = gql`
     ${OrganizationSearch}
 `;
 
-export const HitsPopularQuery = gql`
-    query HitsPopular($categories: [String!]!){
-        hitsPopular: alphaHitsPopular(categories: $categories){
-            category
-            tags
-        }
-    }
-`;
-
-export const HitsAddMutation = gql`
-    mutation HitsAdd($hits: [HitInput!]!){
-        hitsAdd: alphaHitsAdd(hits: $hits)
-    }
-`;
-
-export const AlterMemberAsContactMutation = gql`
-    mutation AlterMemberAsContact($orgId: ID!, $memberId: ID!, $showInContacts: Boolean!){
-        alphaAlterMemberAsContact(orgId: $orgId, memberId: $memberId,  showInContacts: $showInContacts)
-    }
-`;
-
 export const OrganizationByPrefixQuery = gql`
     query OrganizationByPrefix($query: String!){
         organizationByPrefix: alphaOrganizationByPrefix(query: $query){
@@ -307,10 +169,4 @@ export const OrganizationByPrefixQuery = gql`
         }
     }
     ${OrganizationSearch}
-`;
-
-export const TopCategoriesQuery = gql`
-    query TopCategories{
-        topCategories: alphaTopCategories
-    }
 `;

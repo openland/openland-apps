@@ -8,7 +8,7 @@ export const AccountQuery = gql`
         me: me { ...UserShort }
         organization: myOrganization { ...OrganizationShort }
         sessionState: sessionState { ...SessionStateFull }
-        permissions: myPermissions { roles }
+        myPermissions { roles }
     }
     ${UserShort}
     ${SessionStateFull}
@@ -132,7 +132,7 @@ export const ProfilePrefillQuery = gql`
 `;
 
 export const CreateUserProfileAndOrganizationMutation = gql`
- mutation CreateUserProfileAndOrganization($user: CreateProfileInput!, $organization: CreateOrganizationInput!) {
+ mutation CreateUserProfileAndOrganization($user: ProfileInput!, $organization: CreateOrganizationInput!) {
         alphaCreateUserProfileAndOrganization(user: $user, organization: $organization){
             user{
                 id

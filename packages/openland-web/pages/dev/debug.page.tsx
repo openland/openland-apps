@@ -8,13 +8,8 @@ import { XTable } from 'openland-x/XTable';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { withMyOrganizations } from '../../api/withMyOrganizations';
 import { withQueryLoader } from '../../components/withQueryLoader';
-import { withDebugSendWelcomeEmail } from '../../api/withDebugSendWelcomeEmail';
 import { XButton } from 'openland-x/XButton';
 import { getConfig } from '../../config';
-
-export const SendWelcome = withDebugSendWelcomeEmail((props) => {
-    return <XButton action={async () => props.sendWelcome({})} alignSelf="flex-start" text="Send Email" />;
-});
 
 class ErrorButton extends React.Component<{}, { error: boolean }> {
     state = {
@@ -69,10 +64,6 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], wit
                     ))}
                 </XTable.Body>
             </XTable>
-            <XHeader text="Send welcome email" />
-            <XContent>
-                <SendWelcome />
-            </XContent>
             <XHeader text="Release" />
             <XContent>
                 {getConfig().release}

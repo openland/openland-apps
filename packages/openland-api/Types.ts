@@ -18,8 +18,14 @@ export interface Account_me {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -43,14 +49,14 @@ export interface Account_sessionState {
   isAccountActivated: boolean;
   isAccountExists: boolean;
   /**
-   * depricated
+   * deprecated
    */
   isAccountPicked: boolean;
   isCompleted: boolean;
   isBlocked: boolean;
 }
 
-export interface Account_permissions {
+export interface Account_myPermissions {
   __typename: "Permissions";
   roles: string[];
 }
@@ -59,7 +65,7 @@ export interface Account {
   me: Account_me | null;
   organization: Account_organization | null;
   sessionState: Account_sessionState;
-  permissions: Account_permissions;
+  myPermissions: Account_myPermissions;
 }
 
 /* tslint:disable */
@@ -82,8 +88,14 @@ export interface AccountSettings_me {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -152,8 +164,14 @@ export interface AccountInviteInfo_invite_creator {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -204,8 +222,14 @@ export interface AccountAppInviteInfo_invite_creator {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -233,8 +257,14 @@ export interface AccountAppInviteInfo_appInvite_inviter {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -312,6 +342,9 @@ export interface AccountInvitesHistory_invites_acceptedBy {
   __typename: "User";
   id: string;
   name: string;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -398,9 +431,9 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user {
-  __typename: "Profile";
+  __typename: "User";
   id: string;
-  firstName: string | null;
+  firstName: string;
   lastName: string | null;
   photoRef: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_photoRef | null;
   email: string | null;
@@ -411,15 +444,15 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_organization {
-  __typename: "OrganizationProfile";
+  __typename: "Organization";
   id: string;
   name: string;
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization {
   __typename: "AlphaSignupData";
-  user: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user;
-  organization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_organization;
+  user: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user | null;
+  organization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_organization | null;
 }
 
 export interface CreateUserProfileAndOrganization {
@@ -427,7 +460,7 @@ export interface CreateUserProfileAndOrganization {
 }
 
 export interface CreateUserProfileAndOrganizationVariables {
-  user: CreateProfileInput;
+  user: ProfileInput;
   organization: CreateOrganizationInput;
 }
 
@@ -451,6 +484,9 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_s
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -488,6 +524,9 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_sende
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -526,6 +565,9 @@ export interface ChatList_chats_conversations_ChannelConversation_topMessage_sen
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -752,8 +794,14 @@ export interface ChatHistory_messages_messages_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -776,8 +824,14 @@ export interface ChatHistory_messages_messages_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -861,8 +915,8 @@ export interface ChatHistory_messages_messages_urlAugmentation_photo {
   crop: ChatHistory_messages_messages_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatHistory_messages_messages_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatHistory_messages_messages_urlAugmentation_user_User_primaryOrganization {
@@ -879,7 +933,7 @@ export interface ChatHistory_messages_messages_urlAugmentation_user_User {
   primaryOrganization: ChatHistory_messages_messages_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatHistory_messages_messages_urlAugmentation_user = ChatHistory_messages_messages_urlAugmentation_user_AlphaOrganizationListing | ChatHistory_messages_messages_urlAugmentation_user_User;
+export type ChatHistory_messages_messages_urlAugmentation_user = ChatHistory_messages_messages_urlAugmentation_user_Organization | ChatHistory_messages_messages_urlAugmentation_user_User;
 
 export interface ChatHistory_messages_messages_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -997,8 +1051,14 @@ export interface ChatInfo_chat_PrivateConversation_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1176,8 +1236,14 @@ export interface ChatFullInfo_chat_PrivateConversation_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1218,8 +1284,14 @@ export interface ChatFullInfo_chat_GroupConversation_members {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1276,8 +1348,14 @@ export interface ChatFullInfo_chat_ChannelConversation_members {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1464,8 +1542,14 @@ export interface GroupChatFullInfo_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1628,8 +1712,14 @@ export interface ChatSearchForComposeMobile_items_User {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1709,8 +1799,8 @@ export interface ChatCreateGroupVariables {
 // GraphQL mutation operation: ChatCreateIntro
 // ====================================================
 
-export interface ChatCreateIntro_intro_message_urlAugmentation_extra_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatCreateIntro_intro_message_urlAugmentation_extra_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User_primaryOrganization {
@@ -1726,8 +1816,14 @@ export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1737,7 +1833,7 @@ export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User {
   twitter: string | null;
 }
 
-export type ChatCreateIntro_intro_message_urlAugmentation_extra = ChatCreateIntro_intro_message_urlAugmentation_extra_AlphaOrganizationListing | ChatCreateIntro_intro_message_urlAugmentation_extra_User;
+export type ChatCreateIntro_intro_message_urlAugmentation_extra = ChatCreateIntro_intro_message_urlAugmentation_extra_Organization | ChatCreateIntro_intro_message_urlAugmentation_extra_User;
 
 export interface ChatCreateIntro_intro_message_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -1797,6 +1893,9 @@ export interface ChatEditIntroVariables {
 // ====================================================
 
 export interface SetTyping {
+  /**
+   * Deprecated
+   */
   setTyping: string;
 }
 
@@ -1876,8 +1975,14 @@ export interface BlockedList_blocked_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -1900,8 +2005,14 @@ export interface BlockedList_blocked_blockedBy {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2009,8 +2120,14 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2033,8 +2150,14 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_reply_sen
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2118,8 +2241,8 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
   crop: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -2136,7 +2259,7 @@ export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmen
   primaryOrganization: ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user = ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User;
+export type ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user = ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChatSearchText_items_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -2236,8 +2359,14 @@ export interface ChatSearchText_items_GroupConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2260,8 +2389,14 @@ export interface ChatSearchText_items_GroupConversation_topMessage_reply_sender 
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2345,8 +2480,8 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
   crop: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -2363,7 +2498,7 @@ export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentati
   primaryOrganization: ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user = ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User;
+export type ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user = ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_Organization | ChatSearchText_items_GroupConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChatSearchText_items_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -2479,8 +2614,14 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2503,8 +2644,14 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_reply_sende
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2588,8 +2735,8 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
   crop: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -2606,7 +2753,7 @@ export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmenta
   primaryOrganization: ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user = ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User;
+export type ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user = ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChatSearchText_items_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -2742,8 +2889,14 @@ export interface ChatSearchChannel_items_edges_node_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2766,8 +2919,14 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -2851,8 +3010,8 @@ export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_p
   crop: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -2869,7 +3028,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_u
   primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user = ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User;
+export type ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user = ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_Organization | ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User;
 
 export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -3062,8 +3221,14 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3086,8 +3251,14 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3171,8 +3342,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   crop: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -3189,7 +3360,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User;
+export type ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -3289,8 +3460,14 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3313,8 +3490,14 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3398,8 +3581,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   crop: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -3416,7 +3599,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User;
+export type ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_Organization | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -3532,8 +3715,14 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3556,8 +3745,14 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3641,8 +3836,8 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   crop: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -3659,7 +3854,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User;
+export type ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -3796,8 +3991,14 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3820,8 +4021,14 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -3905,8 +4112,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   crop: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -3923,7 +4130,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User;
+export type ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -4023,8 +4230,14 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4047,8 +4260,14 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4132,8 +4351,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   crop: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -4150,7 +4369,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User;
+export type ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_Organization | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -4266,8 +4485,14 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4290,8 +4515,14 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4375,8 +4606,8 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   crop: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -4393,7 +4624,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User;
+export type ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -4497,8 +4728,14 @@ export interface ChannelMembers_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4726,8 +4963,14 @@ export interface ChannelInviteInfo_invite_invitedByUser {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4819,8 +5062,14 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sen
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4843,8 +5092,14 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_rep
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -4928,8 +5183,8 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_url
   crop: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -4946,7 +5201,7 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_url
   primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User;
+export type ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -5046,8 +5301,14 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender 
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -5070,8 +5331,14 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_s
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -5155,8 +5422,8 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugm
   crop: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -5173,7 +5440,7 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugm
   primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User;
+export type ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_Organization | ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -5289,8 +5556,14 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sende
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -5313,8 +5586,14 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -5398,8 +5677,8 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAu
   crop: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -5416,7 +5695,7 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAu
   primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User;
+export type ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User;
 
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -5594,53 +5873,6 @@ export interface SuperChannelAddMemberVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: DebugReadedStates
-// ====================================================
-
-export interface DebugReadedStates_debugReaderStates {
-  __typename: "DebugReaderState";
-  id: string;
-  title: string;
-  remaining: number;
-}
-
-export interface DebugReadedStates {
-  debugReaderStates: DebugReadedStates_debugReaderStates[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: DebugSendWelcomeEmail
-// ====================================================
-
-export interface DebugSendWelcomeEmail {
-  debugSendWelcomeEmail: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: PersonalTokens
-// ====================================================
-
-export interface PersonalTokens_devPersonalTokens {
-  __typename: "PersonalToken";
-  id: string;
-  token: string;
-  createdAt: string;
-}
-
-export interface PersonalTokens {
-  devPersonalTokens: PersonalTokens_devPersonalTokens[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 
@@ -5743,24 +5975,6 @@ export interface FeatureFlagDisableVariables {
 // GraphQL query operation: MyOrganization
 // ====================================================
 
-export interface MyOrganization_myOrganization_contacts_photo {
-  __typename: "ImageRef";
-  uuid: string;
-}
-
-export interface MyOrganization_myOrganization_contacts {
-  __typename: "Profile";
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  photo: MyOrganization_myOrganization_contacts_photo | null;
-  phone: string | null;
-  email: string | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-}
-
 export interface MyOrganization_myOrganization_members_user_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -5788,8 +6002,14 @@ export interface MyOrganization_myOrganization_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -5819,184 +6039,12 @@ export interface MyOrganization_myOrganization_channels {
   featured: boolean;
 }
 
-export interface MyOrganization_myOrganization_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganization_myOrganization_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganization_myOrganization_posts_image_crop | null;
-}
-
-export interface MyOrganization_myOrganization_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface MyOrganization_myOrganization_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: MyOrganization_myOrganization_posts_image | null;
-  activity: string[] | null;
-  links: MyOrganization_myOrganization_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface MyOrganization_myOrganization_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganization_myOrganization_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganization_myOrganization_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface MyOrganization_myOrganization_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface MyOrganization_myOrganization_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: MyOrganization_myOrganization_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: MyOrganization_myOrganization_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface MyOrganization_myOrganization_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganization_myOrganization_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganization_myOrganization_acquisitionRequests_photo_crop | null;
-}
-
-export interface MyOrganization_myOrganization_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganization_myOrganization_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: MyOrganization_myOrganization_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: MyOrganization_myOrganization_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface MyOrganization_myOrganization_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface MyOrganization_myOrganization_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface MyOrganization_myOrganization_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganization_myOrganization_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganization_myOrganization_listingsAll_photo_crop | null;
-}
-
-export interface MyOrganization_myOrganization_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganization_myOrganization_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: MyOrganization_myOrganization_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: MyOrganization_myOrganization_listingsAll_additionalLinks[] | null;
-  photo: MyOrganization_myOrganization_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: MyOrganization_myOrganization_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface MyOrganization_myOrganization {
   __typename: "Organization";
   id: string;
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
-  editorial: boolean;
   featured: boolean;
   isCommunity: boolean;
   name: string;
@@ -6007,41 +6055,8 @@ export interface MyOrganization_myOrganization {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  contacts: MyOrganization_myOrganization_contacts[];
   members: MyOrganization_myOrganization_members[];
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
   channels: (MyOrganization_myOrganization_channels | null)[];
-  posts: MyOrganization_myOrganization_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  followed: boolean;
-  potentialSites: MyOrganization_myOrganization_potentialSites[] | null;
-  siteSizes: MyOrganization_myOrganization_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: MyOrganization_myOrganization_developmentOportunities[] | null;
-  acquisitionRequests: MyOrganization_myOrganization_acquisitionRequests[] | null;
-  listingsAll: MyOrganization_myOrganization_listingsAll[] | null;
 }
 
 export interface MyOrganization {
@@ -6069,177 +6084,6 @@ export interface MyOrganizationProfile_organizationProfile_photoRef {
   crop: MyOrganizationProfile_organizationProfile_photoRef_crop | null;
 }
 
-export interface MyOrganizationProfile_organizationProfile_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganizationProfile_organizationProfile_posts_image_crop | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface MyOrganizationProfile_organizationProfile_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: MyOrganizationProfile_organizationProfile_posts_image | null;
-  activity: string[] | null;
-  links: MyOrganizationProfile_organizationProfile_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface MyOrganizationProfile_organizationProfile_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: MyOrganizationProfile_organizationProfile_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: MyOrganizationProfile_organizationProfile_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganizationProfile_organizationProfile_acquisitionRequests_photo_crop | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: MyOrganizationProfile_organizationProfile_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: MyOrganizationProfile_organizationProfile_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface MyOrganizationProfile_organizationProfile_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganizationProfile_organizationProfile_listingsAll_photo_crop | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: MyOrganizationProfile_organizationProfile_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: MyOrganizationProfile_organizationProfile_listingsAll_additionalLinks[] | null;
-  photo: MyOrganizationProfile_organizationProfile_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: MyOrganizationProfile_organizationProfile_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface MyOrganizationProfile_organizationProfile {
   __typename: "OrganizationProfile";
   id: string;
@@ -6251,40 +6095,7 @@ export interface MyOrganizationProfile_organizationProfile {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
-  posts: MyOrganizationProfile_organizationProfile_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  potentialSites: MyOrganizationProfile_organizationProfile_potentialSites[] | null;
-  siteSizes: MyOrganizationProfile_organizationProfile_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: MyOrganizationProfile_organizationProfile_developmentOportunities[] | null;
-  acquisitionRequests: MyOrganizationProfile_organizationProfile_acquisitionRequests[] | null;
-  listingsAll: MyOrganizationProfile_organizationProfile_listingsAll[] | null;
 }
 
 export interface MyOrganizationProfile {
@@ -6330,177 +6141,6 @@ export interface UpdateOrganization_updateOrganizationProfile_photoRef {
   crop: UpdateOrganization_updateOrganizationProfile_photoRef_crop | null;
 }
 
-export interface UpdateOrganization_updateOrganizationProfile_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: UpdateOrganization_updateOrganizationProfile_posts_image_crop | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: UpdateOrganization_updateOrganizationProfile_posts_image | null;
-  activity: string[] | null;
-  links: UpdateOrganization_updateOrganizationProfile_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: UpdateOrganization_updateOrganizationProfile_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: UpdateOrganization_updateOrganizationProfile_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: UpdateOrganization_updateOrganizationProfile_acquisitionRequests_photo_crop | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: UpdateOrganization_updateOrganizationProfile_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: UpdateOrganization_updateOrganizationProfile_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: UpdateOrganization_updateOrganizationProfile_listingsAll_photo_crop | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface UpdateOrganization_updateOrganizationProfile_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: UpdateOrganization_updateOrganizationProfile_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: UpdateOrganization_updateOrganizationProfile_listingsAll_additionalLinks[] | null;
-  photo: UpdateOrganization_updateOrganizationProfile_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: UpdateOrganization_updateOrganizationProfile_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface UpdateOrganization_updateOrganizationProfile {
   __typename: "OrganizationProfile";
   id: string;
@@ -6512,40 +6152,7 @@ export interface UpdateOrganization_updateOrganizationProfile {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
-  posts: UpdateOrganization_updateOrganizationProfile_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  potentialSites: UpdateOrganization_updateOrganizationProfile_potentialSites[] | null;
-  siteSizes: UpdateOrganization_updateOrganizationProfile_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: UpdateOrganization_updateOrganizationProfile_developmentOportunities[] | null;
-  acquisitionRequests: UpdateOrganization_updateOrganizationProfile_acquisitionRequests[] | null;
-  listingsAll: UpdateOrganization_updateOrganizationProfile_listingsAll[] | null;
 }
 
 export interface UpdateOrganization {
@@ -6563,24 +6170,6 @@ export interface UpdateOrganizationVariables {
 // ====================================================
 // GraphQL query operation: Organization
 // ====================================================
-
-export interface Organization_organization_contacts_photo {
-  __typename: "ImageRef";
-  uuid: string;
-}
-
-export interface Organization_organization_contacts {
-  __typename: "Profile";
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  photo: Organization_organization_contacts_photo | null;
-  phone: string | null;
-  email: string | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-}
 
 export interface Organization_organization_members_user_primaryOrganization {
   __typename: "Organization";
@@ -6609,8 +6198,14 @@ export interface Organization_organization_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -6640,184 +6235,12 @@ export interface Organization_organization_channels {
   featured: boolean;
 }
 
-export interface Organization_organization_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface Organization_organization_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: Organization_organization_posts_image_crop | null;
-}
-
-export interface Organization_organization_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface Organization_organization_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: Organization_organization_posts_image | null;
-  activity: string[] | null;
-  links: Organization_organization_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface Organization_organization_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface Organization_organization_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface Organization_organization_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface Organization_organization_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface Organization_organization_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: Organization_organization_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: Organization_organization_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface Organization_organization_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface Organization_organization_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: Organization_organization_acquisitionRequests_photo_crop | null;
-}
-
-export interface Organization_organization_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface Organization_organization_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: Organization_organization_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: Organization_organization_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface Organization_organization_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface Organization_organization_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface Organization_organization_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface Organization_organization_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: Organization_organization_listingsAll_photo_crop | null;
-}
-
-export interface Organization_organization_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface Organization_organization_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: Organization_organization_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: Organization_organization_listingsAll_additionalLinks[] | null;
-  photo: Organization_organization_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: Organization_organization_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface Organization_organization {
   __typename: "Organization";
   id: string;
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
-  editorial: boolean;
   featured: boolean;
   isCommunity: boolean;
   name: string;
@@ -6828,41 +6251,8 @@ export interface Organization_organization {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  contacts: Organization_organization_contacts[];
   members: Organization_organization_members[];
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
   channels: (Organization_organization_channels | null)[];
-  posts: Organization_organization_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  followed: boolean;
-  potentialSites: Organization_organization_potentialSites[] | null;
-  siteSizes: Organization_organization_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: Organization_organization_developmentOportunities[] | null;
-  acquisitionRequests: Organization_organization_acquisitionRequests[] | null;
-  listingsAll: Organization_organization_listingsAll[] | null;
 }
 
 export interface Organization {
@@ -6894,177 +6284,6 @@ export interface OrganizationProfile_organizationProfile_photoRef {
   crop: OrganizationProfile_organizationProfile_photoRef_crop | null;
 }
 
-export interface OrganizationProfile_organizationProfile_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfile_organizationProfile_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfile_organizationProfile_posts_image_crop | null;
-}
-
-export interface OrganizationProfile_organizationProfile_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationProfile_organizationProfile_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: OrganizationProfile_organizationProfile_posts_image | null;
-  activity: string[] | null;
-  links: OrganizationProfile_organizationProfile_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface OrganizationProfile_organizationProfile_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfile_organizationProfile_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfile_organizationProfile_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface OrganizationProfile_organizationProfile_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationProfile_organizationProfile_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: OrganizationProfile_organizationProfile_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: OrganizationProfile_organizationProfile_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface OrganizationProfile_organizationProfile_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfile_organizationProfile_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfile_organizationProfile_acquisitionRequests_photo_crop | null;
-}
-
-export interface OrganizationProfile_organizationProfile_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfile_organizationProfile_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: OrganizationProfile_organizationProfile_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: OrganizationProfile_organizationProfile_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface OrganizationProfile_organizationProfile_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface OrganizationProfile_organizationProfile_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationProfile_organizationProfile_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfile_organizationProfile_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfile_organizationProfile_listingsAll_photo_crop | null;
-}
-
-export interface OrganizationProfile_organizationProfile_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfile_organizationProfile_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: OrganizationProfile_organizationProfile_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: OrganizationProfile_organizationProfile_listingsAll_additionalLinks[] | null;
-  photo: OrganizationProfile_organizationProfile_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: OrganizationProfile_organizationProfile_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface OrganizationProfile_organizationProfile {
   __typename: "OrganizationProfile";
   id: string;
@@ -7076,40 +6295,7 @@ export interface OrganizationProfile_organizationProfile {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
-  posts: OrganizationProfile_organizationProfile_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  potentialSites: OrganizationProfile_organizationProfile_potentialSites[] | null;
-  siteSizes: OrganizationProfile_organizationProfile_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: OrganizationProfile_organizationProfile_developmentOportunities[] | null;
-  acquisitionRequests: OrganizationProfile_organizationProfile_acquisitionRequests[] | null;
-  listingsAll: OrganizationProfile_organizationProfile_listingsAll[] | null;
 }
 
 export interface OrganizationProfile {
@@ -7124,28 +6310,6 @@ export interface OrganizationProfileVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: FollowOrganization
-// ====================================================
-
-export interface FollowOrganization_followOrganization {
-  __typename: "Organization";
-  id: string;
-  alphaFollowed: boolean;
-}
-
-export interface FollowOrganization {
-  followOrganization: FollowOrganization_followOrganization;
-}
-
-export interface FollowOrganizationVariables {
-  organizationId: string;
-  follow: boolean;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: ExploreOrganizations
 // ====================================================
 
@@ -7153,6 +6317,9 @@ export interface ExploreOrganizations_items_edges_node_members_user {
   __typename: "User";
   id: string;
   name: string;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -7230,6 +6397,9 @@ export interface ExploreComunity_items_edges_node_members_user {
   __typename: "User";
   id: string;
   name: string;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -7292,198 +6462,6 @@ export interface ExploreComunityVariables {
   query?: string | null;
   sort?: string | null;
   page?: number | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: CreateListing
-// ====================================================
-
-export interface CreateListing_createListing_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface CreateListing_createListing_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface CreateListing_createListing_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface CreateListing_createListing {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: CreateListing_createListing_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: CreateListing_createListing_additionalLinks[] | null;
-  shortDescription: string | null;
-  areaRange: CreateListing_createListing_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface CreateListing {
-  createListing: CreateListing_createListing;
-}
-
-export interface CreateListingVariables {
-  type: string;
-  input: AlphaOrganizationListingInput;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: EditListing
-// ====================================================
-
-export interface EditListing_editListing_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface EditListing_editListing_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface EditListing_editListing_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface EditListing_editListing {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: EditListing_editListing_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: EditListing_editListing_additionalLinks[] | null;
-  shortDescription: string | null;
-  areaRange: EditListing_editListing_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface EditListing {
-  editListing: EditListing_editListing;
-}
-
-export interface EditListingVariables {
-  id: string;
-  input: AlphaOrganizationListingInput;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: DeleteListing
-// ====================================================
-
-export interface DeleteListing {
-  alphaOrganizationDeleteListing: string;
-}
-
-export interface DeleteListingVariables {
-  id: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: OrganizationMembers
-// ====================================================
-
-export interface OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember_user_primaryOrganization | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-}
-
-export interface OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember {
-  __typename: "OrganizationJoinedMember";
-  user: OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember_user;
-  joinedAt: string | null;
-  showInContacts: boolean;
-  email: string;
-  role: OrganizationMemberRole;
-}
-
-export interface OrganizationMembers_alphaOrganizationMembers_OrganizationIvitedMember {
-  __typename: "OrganizationIvitedMember";
-  firstName: string | null;
-  lastName: string | null;
-  inviteId: string;
-  email: string;
-  role: OrganizationMemberRole;
-}
-
-export type OrganizationMembers_alphaOrganizationMembers = OrganizationMembers_alphaOrganizationMembers_OrganizationJoinedMember | OrganizationMembers_alphaOrganizationMembers_OrganizationIvitedMember;
-
-export interface OrganizationMembers {
-  alphaOrganizationMembers: OrganizationMembers_alphaOrganizationMembers[];
-}
-
-export interface OrganizationMembersVariables {
-  orgId: string;
 }
 
 /* tslint:disable */
@@ -7621,6 +6599,9 @@ export interface OrganizationAlterPublished_alphaAlterPublished_members_user {
   __typename: "User";
   id: string;
   name: string;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -7666,59 +6647,6 @@ export interface OrganizationAlterPublishedVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: HitsPopular
-// ====================================================
-
-export interface HitsPopular_hitsPopular {
-  __typename: "CategoryHits";
-  category: string;
-  tags: string[];
-}
-
-export interface HitsPopular {
-  hitsPopular: HitsPopular_hitsPopular[] | null;
-}
-
-export interface HitsPopularVariables {
-  categories: string[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: HitsAdd
-// ====================================================
-
-export interface HitsAdd {
-  hitsAdd: string | null;
-}
-
-export interface HitsAddVariables {
-  hits: HitInput[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: AlterMemberAsContact
-// ====================================================
-
-export interface AlterMemberAsContact {
-  alphaAlterMemberAsContact: string;
-}
-
-export interface AlterMemberAsContactVariables {
-  orgId: string;
-  memberId: string;
-  showInContacts: boolean;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: OrganizationByPrefix
 // ====================================================
 
@@ -7726,6 +6654,9 @@ export interface OrganizationByPrefix_organizationByPrefix_members_user {
   __typename: "User";
   id: string;
   name: string;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -7770,27 +6701,16 @@ export interface OrganizationByPrefixVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: TopCategories
-// ====================================================
-
-export interface TopCategories {
-  topCategories: string[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: Permissions
 // ====================================================
 
-export interface Permissions_permissions {
+export interface Permissions_myPermissions {
   __typename: "Permissions";
   roles: string[];
 }
 
 export interface Permissions {
-  permissions: Permissions_permissions;
+  myPermissions: Permissions_myPermissions;
 }
 
 /* tslint:disable */
@@ -7813,8 +6733,14 @@ export interface SuperAdmins_superAdmins_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -7874,8 +6800,14 @@ export interface SuperAccount_superAccount_members {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8044,8 +6976,14 @@ export interface SuperAccountMemberAdd_superAccountMemberAdd_members {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8090,8 +7028,14 @@ export interface SuperAccountMemberRemove_superAccountMemberRemove_members {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8151,105 +7095,6 @@ export interface SuperAdminRemoveVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: SuperChatsStats
-// ====================================================
-
-export interface SuperChatsStats_statsChats_messagesLeaderboard_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface SuperChatsStats_statsChats_messagesLeaderboard {
-  __typename: "MessagesLeaderboardItem";
-  user: SuperChatsStats_statsChats_messagesLeaderboard_user;
-  count: number;
-}
-
-export interface SuperChatsStats_statsChats {
-  __typename: "ChatStats";
-  messagesSent: number;
-  usersActive: number;
-  usersMutedEmail: number;
-  messagesLeaderboard: SuperChatsStats_statsChats_messagesLeaderboard[];
-  usersMutedOpenlandBeta: number;
-}
-
-export interface SuperChatsStats {
-  statsChats: SuperChatsStats_statsChats;
-}
-
-export interface SuperChatsStatsVariables {
-  fromDate: string;
-  toDate: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: SuperMessagesSentStats
-// ====================================================
-
-export interface SuperMessagesSentStats_messagesSentStats {
-  __typename: "MessagesSentEntry";
-  date: any;
-  count: number;
-}
-
-export interface SuperMessagesSentStats {
-  messagesSentStats: SuperMessagesSentStats_messagesSentStats[];
-}
-
-export interface SuperMessagesSentStatsVariables {
-  fromDate: string;
-  toDate: string;
-  trunc?: string | null;
-  excudeTeam?: boolean | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: SuperOnlineUserStats
-// ====================================================
-
-export interface SuperOnlineUserStats_onlineUsers_location_coordinates {
-  __typename: "Geo";
-  latitude: number;
-  longitude: number;
-}
-
-export interface SuperOnlineUserStats_onlineUsers_location {
-  __typename: "GeoIPLocation";
-  locationCode: string;
-  locationName: string;
-  coordinates: SuperOnlineUserStats_onlineUsers_location_coordinates | null;
-}
-
-export interface SuperOnlineUserStats_onlineUsers_user {
-  __typename: "User";
-  id: string;
-  photo: string | null;
-  name: string;
-}
-
-export interface SuperOnlineUserStats_onlineUsers {
-  __typename: "OnlineUser";
-  location: SuperOnlineUserStats_onlineUsers_location | null;
-  user: SuperOnlineUserStats_onlineUsers_user;
-}
-
-export interface SuperOnlineUserStats {
-  onlineUsers: SuperOnlineUserStats_onlineUsers[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: Profile
 // ====================================================
 
@@ -8291,6 +7136,9 @@ export interface Profile_profile {
   location: string | null;
   role: string | null;
   locations: string[] | null;
+  /**
+   * Deprecated
+   */
   linkedin: string | null;
   primaryOrganization: Profile_profile_primaryOrganization | null;
   joinedAt: string | null;
@@ -8340,6 +7188,9 @@ export interface ProfileUpdate_updateProfile {
   location: string | null;
   role: string | null;
   locations: string[] | null;
+  /**
+   * Deprecated
+   */
   linkedin: string | null;
   primaryOrganizationId: string | null;
   joinedAt: string | null;
@@ -8390,6 +7241,9 @@ export interface ProfileCreate_createProfile {
 }
 
 export interface ProfileCreate {
+  /**
+   * Deprecated
+   */
   createProfile: ProfileCreate_createProfile;
 }
 
@@ -8438,55 +7292,14 @@ export interface SettingsUpdate_updateSettings {
 }
 
 export interface SettingsUpdate {
+  /**
+   * Deprecated
+   */
   updateSettings: SettingsUpdate_updateSettings;
 }
 
 export interface SettingsUpdateVariables {
   input?: UpdateSettingsInput | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: RefreshTask
-// ====================================================
-
-export interface RefreshTask_task {
-  __typename: "Task";
-  id: string;
-  status: TaskStatus;
-  result: string | null;
-}
-
-export interface RefreshTask {
-  task: RefreshTask_task;
-}
-
-export interface RefreshTaskVariables {
-  id: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: SampleTask
-// ====================================================
-
-export interface SampleTask_task {
-  __typename: "Task";
-  id: string;
-  status: TaskStatus;
-  result: string | null;
-}
-
-export interface SampleTask {
-  task: SampleTask_task;
-}
-
-export interface SampleTaskVariables {
-  value: number;
 }
 
 /* tslint:disable */
@@ -8504,6 +7317,9 @@ export interface Users_items {
 }
 
 export interface Users {
+  /**
+   * Deprecated
+   */
   items: Users_items[];
 }
 
@@ -8557,10 +7373,16 @@ export interface User_user {
   location: string | null;
   isBot: boolean;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   primaryOrganization: User_user_primaryOrganization | null;
   linkedin: string | null;
+  /**
+   * TODO: Refactor
+   */
   channels: User_user_channels[];
 }
 
@@ -8596,6 +7418,9 @@ export interface UserVariables {
 export interface Online_user {
   __typename: "User";
   id: string;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
 }
@@ -8628,8 +7453,14 @@ export interface ExplorePeople_items_edges_node {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8662,6 +7493,9 @@ export interface ExplorePeople_items {
 }
 
 export interface ExplorePeople {
+  /**
+   * Deprecated
+   */
   items: ExplorePeople_items;
 }
 
@@ -8725,8 +7559,14 @@ export interface ConversationShort_AnonymousConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8749,8 +7589,14 @@ export interface ConversationShort_AnonymousConversation_topMessage_reply_sender
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8834,8 +7680,8 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   crop: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -8852,7 +7698,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   primaryOrganization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user = ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User;
+export type ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user = ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User;
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -8952,8 +7798,14 @@ export interface ConversationShort_GroupConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -8976,8 +7828,14 @@ export interface ConversationShort_GroupConversation_topMessage_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -9061,8 +7919,8 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
   crop: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -9079,7 +7937,7 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
   primaryOrganization: ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ConversationShort_GroupConversation_topMessage_urlAugmentation_user = ConversationShort_GroupConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User;
+export type ConversationShort_GroupConversation_topMessage_urlAugmentation_user = ConversationShort_GroupConversation_topMessage_urlAugmentation_user_Organization | ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User;
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -9195,8 +8053,14 @@ export interface ConversationShort_ChannelConversation_topMessage_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -9219,8 +8083,14 @@ export interface ConversationShort_ChannelConversation_topMessage_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -9304,8 +8174,8 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   crop: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
@@ -9322,7 +8192,7 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   primaryOrganization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ConversationShort_ChannelConversation_topMessage_urlAugmentation_user = ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_AlphaOrganizationListing | ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User;
+export type ConversationShort_ChannelConversation_topMessage_urlAugmentation_user = ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_Organization | ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User;
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -9401,19 +8271,6 @@ export type ConversationShort = ConversationShort_AnonymousConversation | Conver
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: GeoShort
-// ====================================================
-
-export interface GeoShort {
-  __typename: "Geo";
-  latitude: number;
-  longitude: number;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL fragment: MessageFull
 // ====================================================
 
@@ -9463,8 +8320,14 @@ export interface MessageFull_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -9487,8 +8350,14 @@ export interface MessageFull_reply_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -9572,8 +8441,8 @@ export interface MessageFull_urlAugmentation_photo {
   crop: MessageFull_urlAugmentation_photo_crop | null;
 }
 
-export interface MessageFull_urlAugmentation_user_AlphaOrganizationListing {
-  __typename: "AlphaOrganizationListing" | "Organization" | "ChannelConversation";
+export interface MessageFull_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
 }
 
 export interface MessageFull_urlAugmentation_user_User_primaryOrganization {
@@ -9590,7 +8459,7 @@ export interface MessageFull_urlAugmentation_user_User {
   primaryOrganization: MessageFull_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type MessageFull_urlAugmentation_user = MessageFull_urlAugmentation_user_AlphaOrganizationListing | MessageFull_urlAugmentation_user_User;
+export type MessageFull_urlAugmentation_user = MessageFull_urlAugmentation_user_Organization | MessageFull_urlAugmentation_user_User;
 
 export interface MessageFull_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -9646,6 +8515,9 @@ export interface MessageShort_sender {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -9666,24 +8538,6 @@ export interface MessageShort {
 // ====================================================
 // GraphQL fragment: OrganizationFull
 // ====================================================
-
-export interface OrganizationFull_contacts_photo {
-  __typename: "ImageRef";
-  uuid: string;
-}
-
-export interface OrganizationFull_contacts {
-  __typename: "Profile";
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  photo: OrganizationFull_contacts_photo | null;
-  phone: string | null;
-  email: string | null;
-  role: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-}
 
 export interface OrganizationFull_members_user_primaryOrganization {
   __typename: "Organization";
@@ -9712,8 +8566,14 @@ export interface OrganizationFull_members_user {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -9743,184 +8603,12 @@ export interface OrganizationFull_channels {
   featured: boolean;
 }
 
-export interface OrganizationFull_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationFull_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationFull_posts_image_crop | null;
-}
-
-export interface OrganizationFull_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationFull_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: OrganizationFull_posts_image | null;
-  activity: string[] | null;
-  links: OrganizationFull_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface OrganizationFull_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationFull_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationFull_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface OrganizationFull_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationFull_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: OrganizationFull_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: OrganizationFull_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface OrganizationFull_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationFull_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationFull_acquisitionRequests_photo_crop | null;
-}
-
-export interface OrganizationFull_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationFull_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: OrganizationFull_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: OrganizationFull_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface OrganizationFull_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface OrganizationFull_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationFull_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationFull_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationFull_listingsAll_photo_crop | null;
-}
-
-export interface OrganizationFull_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationFull_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: OrganizationFull_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: OrganizationFull_listingsAll_additionalLinks[] | null;
-  photo: OrganizationFull_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: OrganizationFull_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface OrganizationFull {
   __typename: "Organization";
   id: string;
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
-  editorial: boolean;
   featured: boolean;
   isCommunity: boolean;
   name: string;
@@ -9931,41 +8619,8 @@ export interface OrganizationFull {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  contacts: OrganizationFull_contacts[];
   members: OrganizationFull_members[];
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
   channels: (OrganizationFull_channels | null)[];
-  posts: OrganizationFull_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  followed: boolean;
-  potentialSites: OrganizationFull_potentialSites[] | null;
-  siteSizes: OrganizationFull_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: OrganizationFull_developmentOportunities[] | null;
-  acquisitionRequests: OrganizationFull_acquisitionRequests[] | null;
-  listingsAll: OrganizationFull_listingsAll[] | null;
 }
 
 /* tslint:disable */
@@ -9989,177 +8644,6 @@ export interface OrganizationProfileFull_photoRef {
   crop: OrganizationProfileFull_photoRef_crop | null;
 }
 
-export interface OrganizationProfileFull_posts_image_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfileFull_posts_image {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfileFull_posts_image_crop | null;
-}
-
-export interface OrganizationProfileFull_posts_links {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationProfileFull_posts {
-  __typename: "AlphaDummyPost";
-  text: string;
-  type: string;
-  description: string | null;
-  date: string;
-  image: OrganizationProfileFull_posts_image | null;
-  activity: string[] | null;
-  links: OrganizationProfileFull_posts_links[] | null;
-  pinned: boolean | null;
-}
-
-export interface OrganizationProfileFull_potentialSites {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfileFull_siteSizes {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfileFull_developmentOportunities_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface OrganizationProfileFull_developmentOportunities_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationProfileFull_developmentOportunities {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: OrganizationProfileFull_developmentOportunities_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: OrganizationProfileFull_developmentOportunities_additionalLinks[] | null;
-}
-
-export interface OrganizationProfileFull_acquisitionRequests_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfileFull_acquisitionRequests_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfileFull_acquisitionRequests_photo_crop | null;
-}
-
-export interface OrganizationProfileFull_acquisitionRequests_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfileFull_acquisitionRequests {
-  __typename: "AlphaOrganizationListing";
-  name: string;
-  id: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  photo: OrganizationProfileFull_acquisitionRequests_photo | null;
-  shortDescription: string | null;
-  areaRange: OrganizationProfileFull_acquisitionRequests_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
-export interface OrganizationProfileFull_listingsAll_location {
-  __typename: "MapPoint";
-  lat: number;
-  lon: number;
-}
-
-export interface OrganizationProfileFull_listingsAll_additionalLinks {
-  __typename: "AlphaOrganizationListingLink";
-  text: string;
-  url: string;
-}
-
-export interface OrganizationProfileFull_listingsAll_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface OrganizationProfileFull_listingsAll_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: OrganizationProfileFull_listingsAll_photo_crop | null;
-}
-
-export interface OrganizationProfileFull_listingsAll_areaRange {
-  __typename: "Range";
-  from: number | null;
-  to: number | null;
-}
-
-export interface OrganizationProfileFull_listingsAll {
-  __typename: "AlphaOrganizationListing";
-  id: string;
-  name: string;
-  type: string;
-  summary: string | null;
-  specialAttributes: string[] | null;
-  status: string | null;
-  updatedAt: string;
-  location: OrganizationProfileFull_listingsAll_location | null;
-  locationTitle: string | null;
-  availability: string | null;
-  area: number | null;
-  price: number | null;
-  dealType: string[] | null;
-  shapeAndForm: string[] | null;
-  currentUse: string[] | null;
-  goodFitFor: string[] | null;
-  additionalLinks: OrganizationProfileFull_listingsAll_additionalLinks[] | null;
-  photo: OrganizationProfileFull_listingsAll_photo | null;
-  shortDescription: string | null;
-  areaRange: OrganizationProfileFull_listingsAll_areaRange | null;
-  geographies: string[] | null;
-  landUse: string[] | null;
-  unitCapacity: string[] | null;
-}
-
 export interface OrganizationProfileFull {
   __typename: "OrganizationProfile";
   id: string;
@@ -10171,40 +8655,7 @@ export interface OrganizationProfileFull {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
-  location: string | null;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  locations: string[] | null;
-  posts: OrganizationProfileFull_posts[] | null;
-  lookingFor: string[] | null;
-  geographies: string[] | null;
-  doShapeAndForm: string[] | null;
-  doCurrentUse: string[] | null;
-  doGoodFitFor: string[] | null;
-  doSpecialAttributes: string[] | null;
-  doAvailability: string[] | null;
-  arGeographies: string[] | null;
-  arAreaRange: string[] | null;
-  arHeightLimit: string[] | null;
-  arActivityStatus: string[] | null;
-  arAquisitionBudget: string[] | null;
-  arAquisitionRate: string[] | null;
-  arClosingTime: string[] | null;
-  arSpecialAttributes: string[] | null;
-  arLandUse: string[] | null;
-  potentialSites: OrganizationProfileFull_potentialSites[] | null;
-  siteSizes: OrganizationProfileFull_siteSizes[] | null;
-  developmentModels: string[] | null;
-  availability: string[] | null;
-  landUse: string[] | null;
-  goodFor: string[] | null;
-  specialAttributes: string[] | null;
-  developmentOportunities: OrganizationProfileFull_developmentOportunities[] | null;
-  acquisitionRequests: OrganizationProfileFull_acquisitionRequests[] | null;
-  listingsAll: OrganizationProfileFull_listingsAll[] | null;
 }
 
 /* tslint:disable */
@@ -10218,6 +8669,9 @@ export interface OrganizationSearch_members_user {
   __typename: "User";
   id: string;
   name: string;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -10278,7 +8732,7 @@ export interface SessionStateFull {
   isAccountActivated: boolean;
   isAccountExists: boolean;
   /**
-   * depricated
+   * deprecated
    */
   isAccountPicked: boolean;
   isCompleted: boolean;
@@ -10323,8 +8777,14 @@ export interface UserShort {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
   email: string | null;
+  /**
+   * TODO: Move to extensions and use separate type
+   */
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
@@ -10347,6 +8807,9 @@ export interface UserTiny {
   name: string;
   firstName: string;
   lastName: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
   picture: string | null;
 }
 
@@ -10401,52 +8864,6 @@ export enum SuperAdminRole {
   SUPER_ADMIN = "SUPER_ADMIN",
 }
 
-export enum TaskStatus {
-  COMPLETED = "COMPLETED",
-  FAILED = "FAILED",
-  IN_PROGRESS = "IN_PROGRESS",
-}
-
-export interface AlphaDummyPostInput {
-  text: string;
-  type: string;
-  description?: string | null;
-  date: string;
-  image?: ImageRefInput | null;
-  activity?: string[] | null;
-  links?: AlphaOrganizationListingLinkInput[] | null;
-  pinned?: boolean | null;
-}
-
-export interface AlphaOrganizationListingInput {
-  name?: string | null;
-  summary?: string | null;
-  specialAttributes?: string[] | null;
-  status?: string | null;
-  photo?: ImageRefInput | null;
-  location?: MapPointInput | null;
-  locationTitle?: string | null;
-  availability?: string | null;
-  area?: number | null;
-  price?: number | null;
-  dealType?: string[] | null;
-  shapeAndForm?: string[] | null;
-  currentUse?: string[] | null;
-  goodFitFor?: string[] | null;
-  additionalLinks?: AlphaOrganizationListingLinkInput[] | null;
-  shortDescription?: string | null;
-  areaRange?: RangeInput | null;
-  geographies?: string[] | null;
-  landUse?: string[] | null;
-  unitCapacity?: string[] | null;
-  channels?: string[] | null;
-}
-
-export interface AlphaOrganizationListingLinkInput {
-  text: string;
-  url: string;
-}
-
 export interface ChannelInviteRequest {
   email: string;
   emailText?: string | null;
@@ -10473,25 +8890,26 @@ export interface CreateOrganizationInput {
   isCommunity?: boolean | null;
 }
 
+/**
+ * Deprecated
+ */
 export interface CreateProfileInput {
   firstName: string;
   lastName?: string | null;
   photoRef?: ImageRefInput | null;
   phone?: string | null;
   email?: string | null;
-  website?: string | null;
   about?: string | null;
   location?: string | null;
+  website?: string | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  primaryOrganization?: string | null;
 }
 
 export interface GroupConversationInvite {
   userId: string;
   role: string;
-}
-
-export interface HitInput {
-  category: string;
-  tags: string[];
 }
 
 export interface ImageCropInput {
@@ -10514,11 +8932,18 @@ export interface InviteRequest {
   lastName?: string | null;
 }
 
-export interface MapPointInput {
-  ref?: string | null;
-  count?: number | null;
-  lat: number;
-  lon: number;
+export interface ProfileInput {
+  firstName?: string | null;
+  lastName?: string | null;
+  photoRef?: ImageRefInput | null;
+  phone?: string | null;
+  email?: string | null;
+  website?: string | null;
+  about?: string | null;
+  location?: string | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  primaryOrganization?: string | null;
 }
 
 export interface RangeInput {
@@ -10556,7 +8981,6 @@ export interface UpdateOrganizationProfileInput {
   alphaLocations?: string[] | null;
   alphaInterests?: string[] | null;
   alphaOrganizationType?: string[] | null;
-  alphaDummyPosts?: AlphaDummyPostInput[] | null;
   alphaPotentialSites?: (RangeInput | null)[] | null;
   alphaSiteSizes?: (RangeInput | null)[] | null;
   alphaDevelopmentModels?: (string | null)[] | null;
@@ -10582,6 +9006,9 @@ export interface UpdateOrganizationProfileInput {
   alphaARLandUse?: string[] | null;
 }
 
+/**
+ * Deprecated
+ */
 export interface UpdateProfileInput {
   firstName?: string | null;
   lastName?: string | null;
@@ -10591,6 +9018,9 @@ export interface UpdateProfileInput {
   website?: string | null;
   about?: string | null;
   location?: string | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  primaryOrganization?: string | null;
   alphaRole?: string | null;
   alphaLocations?: string[] | null;
   alphaLinkedin?: string | null;

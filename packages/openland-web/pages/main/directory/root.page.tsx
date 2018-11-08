@@ -34,7 +34,6 @@ import {
     SidebarItemHeadLink
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
-import { withTopCategories } from '../../../api/withTopCategories';
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -240,18 +239,6 @@ interface RootComponentState {
     shownSelect: number;
     pageTitle: string;
 }
-
-const CategoryPicker = withTopCategories((props) => (
-    <SearchSelect
-        title={(props as any).title}
-        conditionType={(props as any).conditionType}
-        onPick={(props as any).onPick}
-        options={[...props.data.topCategories].reverse().map(c => ({ label: c, value: c }))}
-        onShow={(props as any).onShow}
-        shown={(props as any).shown}
-        noResultsText={(props as any).noResultsText}
-    />
-)) as React.ComponentType<SearchSelectProps>;
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     input?: any;

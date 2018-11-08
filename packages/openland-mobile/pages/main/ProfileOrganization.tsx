@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, OrganizationMembersQuery, OrganizationPublicInviteQuery, ConversationSettingsUpdateMutation } from 'openland-api';
+import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, ConversationSettingsUpdateMutation } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
