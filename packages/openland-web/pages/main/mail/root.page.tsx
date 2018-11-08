@@ -114,7 +114,30 @@ export const AddButton = Glamorous(XButton)({
 
 let returnPath: string | undefined = undefined;
 
-class MessagePageInner extends React.Component<{ router: XRouter }, { pageTitle: string | undefined }> {
+class ChatListContainerWrapper extends React.PureComponent<{emptyState: boolean}> {
+
+    render() {
+        return <div/>;
+        const emptyState = this.props.emptyState;
+        return (
+            <ChatListContainer>
+                <Header alignItems="center" justifyContent="space-between">
+                    <Title>Messages</Title>
+                    <AddButton
+                        style="light"
+                        path="/mail/new"
+                        text="New"
+                        icon={<PlusIcon />}
+                        size="small"
+                    />
+                </Header>
+                <ChatsComponent emptyState={emptyState} />
+            </ChatListContainer>
+        );
+    }
+}
+
+class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTitle: string | undefined }> {
     state = {
         pageTitle: undefined
     };
@@ -191,19 +214,8 @@ class MessagePageInner extends React.Component<{ router: XRouter }, { pageTitle:
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <ChatContainer>
-                            <ChatListContainer>
-                                <Header alignItems="center" justifyContent="space-between">
-                                    <Title>Messages</Title>
-                                    <AddButton
-                                        style="light"
-                                        path="/mail/new"
-                                        text="New"
-                                        icon={<PlusIcon />}
-                                        size="small"
-                                    />
-                                </Header>
-                                <ChatsComponent emptyState={tab === 'empty'} />
-                            </ChatListContainer>
+                        <ChatListContainerWrapper emptyState={tab === 'empty'} />
+            
                             <ConversationContainer>
                                 {tab === 'compose' && (
                                     <MessengerContainer>

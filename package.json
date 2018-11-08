@@ -203,6 +203,7 @@
 		"@zeit/next-css": "1.0.1",
 		"@zeit/next-source-maps": "0.0.3",
 		"apollo": "^1.9.2",
+		"babel-plugin-glamorous-displayname": "^2.2.0",
 		"babel-plugin-graphql-tag": "^1.6.0",
 		"babel-plugin-inline-import-graphql-ast": "^2.1.2",
 		"babel-plugin-inline-react-svg": "^0.5.2",

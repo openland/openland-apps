@@ -35,6 +35,7 @@
         "development": {
             "presets": ["module:metro-react-native-babel-preset"],
             "plugins": [
+                "glamorous-displayname",
                 ["module-resolver", {
                     "root": ["."],
                     "alias": {
