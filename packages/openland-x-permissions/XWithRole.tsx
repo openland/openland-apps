@@ -42,3 +42,25 @@ export const XWithRole = (props: { role: string | string[], orgPermission?: stri
         </XRoleContext.Consumer>
     );
 };
+
+export const hasPermission = (role: string | string[], orgPermission?: string | 'primary', negate?: boolean) => {
+    return (
+        <XRoleContext.Consumer>
+            {userRoles => {
+                if (!userRoles) {
+                    return true;
+                }
+                let targetRoles = (Array.isArray(role) ? role : [role]).map(r => orgPermission ? ('org-' + ((orgPermission === 'primary' ? userRoles.currentOrganizatonId : orgPermission) || '') + '-' + r) : r);
+
+                let hasRole = false;
+                for (let r of targetRoles) {
+                    if (userRoles.roles.indexOf(r) >= 0) {
+                        hasRole = true;
+                        break;
+                    }
+                }
+                return negate ? !hasRole : hasRole;
+            }}
+        </XRoleContext.Consumer>
+    );
+};

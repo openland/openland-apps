@@ -14,7 +14,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole, hasPermission } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
@@ -532,13 +532,25 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let chatType = props.data.chat.__typename;
     let userName = (props.data.chat.__typename === 'PrivateConversation') ? props.data.chat.user.name : undefined;
 
+    let ownerRole = false;
+    if (props.data.chat.__typename === 'ChannelConversation') {
+        ownerRole = props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner';
+    }
+
+    let headerQuery = undefined;
+    if (props.data.chat.__typename === 'ChannelConversation') {
+        headerQuery = (ownerRole || hasPermission(['editor', 'super-admin'])) ? { field: 'editChat', value: 'true' } : undefined;
+    } else if (props.data.chat.__typename === 'GroupConversation') {
+        headerQuery = { field: 'editChat', value: 'true' };
+    }
+
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
                     <NavChatLeftContentStyled
                         path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
-                        query={props.data.chat.__typename === 'ChannelConversation' || props.data.chat.__typename === 'GroupConversation' ? { field: 'editChat', value: 'true' } : undefined}
+                        query={headerQuery}
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
@@ -672,10 +684,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                 </XWithRole>
 
                                                 <XWithRole role={['editor', 'super-admin']} negate={true}>
-                                                    {(props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner') && (
+                                                    {ownerRole && (
                                                         <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                                     )}
-                                                    {!(props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner') && (
+                                                    {!ownerRole && (
                                                         <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
                                                             <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                                         </XWithRole>
