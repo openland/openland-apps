@@ -5682,7 +5682,6 @@ export interface MyOrganization_myOrganization {
   name: string;
   photo: string | null;
   website: string | null;
-  websiteTitle: string | null;
   about: string | null;
   twitter: string | null;
   facebook: string | null;
@@ -5883,7 +5882,6 @@ export interface Organization_organization {
   name: string;
   photo: string | null;
   website: string | null;
-  websiteTitle: string | null;
   about: string | null;
   twitter: string | null;
   facebook: string | null;
@@ -8119,7 +8117,6 @@ export interface OrganizationFull {
   name: string;
   photo: string | null;
   website: string | null;
-  websiteTitle: string | null;
   about: string | null;
   twitter: string | null;
   facebook: string | null;

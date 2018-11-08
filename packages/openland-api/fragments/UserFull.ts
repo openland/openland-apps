@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { OrganizationShort } from './OrganizationShort';
 export const UserFull = gql`
     fragment UserFull on User {
         id
@@ -32,4 +33,5 @@ export const UserFull = gql`
             }
         }
     }
+    ${OrganizationShort}
 `;

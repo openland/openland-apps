@@ -166,10 +166,7 @@ export const OrganizationSettigs = ((props: any) => {
                                     <XHorizontal separator={12}>
                                         <XVertical flexGrow={1} maxWidth={480}>
                                             <XInput field="input.name" size="large" placeholder="Organization name" />
-                                            <XInputGroup>
-                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
-                                                <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialLinkTitlePlaceholder} field="input.websiteTitle" size="large" />
-                                            </XInputGroup>
+                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
                                             <XInput field="input.twitter" placeholder="Twitter" size="large" />
                                             <XInput field="input.facebook" placeholder="Facebook" size="large" />
                                             <XInput field="input.linkedin" placeholder="LinkedIn" size="large" />
