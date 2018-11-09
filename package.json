@@ -234,6 +234,8 @@
 	},
 	"scripts": {
 		"dev": "BABEL_ENV=default API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
+		"prod:start": "BABEL_ENV=default NODE_ENV=production API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
+		"prod": "yarn bundle && yarn prod:start",
 		"dev:ngrok": "ngrok http 3000 -subdomain=openweb --region=eu",
 		"dev:local": "BABEL_ENV=default API_WS_ENDPOINT=\"ws://localhost:9000/api\" nodemon ./packages/openland-web/server.ts",
 		"lint": "BABEL_ENV=default NODE_ENV=production ./node_modules/.bin/tslint --project . --config ./tslint.json",
