@@ -123,13 +123,7 @@ interface OrganizationCardProps {
         superAccountId: string,
         name: string,
         photo: string | null,
-        locations: string[] | null,
-        interests: string[] | null,
-        organizationType: string[] | null,
         isMine: boolean,
-        followed: boolean,
-        published: boolean,
-        editorial: boolean,
         members: {
             user: {
                 id: string,
@@ -201,19 +195,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                     <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
                                 </OrganizationMembers>
                             )}
-                            <OrganizationCardTypeWrapper separator={0}>
-                                {this.props.item.locations && (this.props.item.locations.length > 0) && (
-                                    <XTag
-                                        color="gray"
-                                        rounded={true}
-                                        text={(this.props.item.locations || [])[0]}
-                                        onClick={() => this.props.onPick({ type: 'location', value: (this.props.item.locations || [])[0], label: (this.props.item.locations || [])[0] })}
-                                    />
-                                )}
-                                {this.props.item.organizationType && (
-                                    <OrganizationTypes orgTypes={this.props.item.organizationType} onPick={this.props.onPick} />
-                                )}
-                            </OrganizationCardTypeWrapper>
+                           
                         </OrganizationInfoWrapper>
                         <OrganizationToolsWrapper separator={5}>
                             {this.props.item.isMine && (
@@ -223,7 +205,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                     enabled={false}
                                 />
                             )}
-                            {!this.props.item.isMine && !this.props.item.editorial && (
+                            {!this.props.item.isMine && (
                                 <XButton
                                     style={this.state.isHovered ? 'primary' : 'default'}
                                     path={'/directory/o/' + this.props.item.id}
@@ -251,10 +233,10 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                             </XWithRole>
                                         )}
 
-                                        <XWithRole role={['super-admin', 'editor']}>
+                                        {/* <XWithRole role={['super-admin', 'editor']}>
                                             <AlterOrgPublishedButton orgId={this.props.item.id} published={this.props.item.published} />
                                             <XMenuItem href={'/super/orgs/' + this.props.item.superAccountId}>{TextDirectory.buttonSuperEdit}</XMenuItem>
-                                        </XWithRole>
+                                        </XWithRole> */}
                                     </>
                                 )}
                             />

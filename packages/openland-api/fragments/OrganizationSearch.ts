@@ -6,13 +6,7 @@ export const OrganizationSearch = gql`
         superAccountId
         name
         photo
-        locations: alphaLocations
         isMine
-        organizationType: alphaOrganizationType
-        interests: alphaInterests
-        followed: alphaFollowed
-        published: alphaPublished
-        editorial: alphaEditorial
         featured: alphaFeatured
         members: alphaOrganizationMembers{
             user{

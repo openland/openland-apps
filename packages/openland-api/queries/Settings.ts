@@ -22,7 +22,6 @@ export const ProfileQuery = gql`
             about
             location
             role: alphaRole
-            locations: alphaLocations
             linkedin: alphaLinkedin
             primaryOrganization: alphaPrimaryOrganization{
                 id
@@ -57,7 +56,6 @@ export const ProfileUpdateMutation = gql`
             about
             location
             role: alphaRole
-            locations: alphaLocations
             linkedin: alphaLinkedin
             primaryOrganizationId: alphaPrimaryOrganizationId
             joinedAt: alphaJoinedAt

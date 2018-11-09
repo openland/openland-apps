@@ -67,13 +67,7 @@ interface CommunityCardProps {
         id: string,
         name: string,
         photo: string | null,
-        locations: string[] | null,
-        interests: string[] | null,
-        organizationType: string[] | null,
         isMine: boolean,
-        followed: boolean,
-        published: boolean,
-        editorial: boolean,
         channels: any[],
     };
     onPick: (q: SearchCondition) => void;
@@ -137,9 +131,9 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                                             </XWithRole>
                                         )}
 
-                                        <XWithRole role={['super-admin', 'editor']}>
+                                        {/* <XWithRole role={['super-admin', 'editor']}>
                                             <AlterOrgPublishedButton orgId={this.props.item.id} published={this.props.item.published} />
-                                        </XWithRole>
+                                        </XWithRole> */}
                                     </>
                                 )}
                             />

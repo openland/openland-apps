@@ -5674,6 +5674,9 @@ export interface MyOrganization_myOrganization_channels {
 export interface MyOrganization_myOrganization {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
@@ -5874,6 +5877,9 @@ export interface Organization_organization_channels {
 export interface Organization_organization {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
@@ -5969,16 +5975,13 @@ export interface ExploreOrganizations_items_edges_node_channels {
 export interface ExploreOrganizations_items_edges_node {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   name: string;
   photo: string | null;
-  locations: string[] | null;
   isMine: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  followed: boolean;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
   members: ExploreOrganizations_items_edges_node_members[];
   channels: (ExploreOrganizations_items_edges_node_channels | null)[];
@@ -6046,16 +6049,13 @@ export interface ExploreComunity_items_edges_node_channels {
 export interface ExploreComunity_items_edges_node {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   name: string;
   photo: string | null;
-  locations: string[] | null;
   isMine: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  followed: boolean;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
   members: ExploreComunity_items_edges_node_members[];
   channels: (ExploreComunity_items_edges_node_channels | null)[];
@@ -6245,16 +6245,13 @@ export interface OrganizationAlterPublished_alphaAlterPublished_channels {
 export interface OrganizationAlterPublished_alphaAlterPublished {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   name: string;
   photo: string | null;
-  locations: string[] | null;
   isMine: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  followed: boolean;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
   members: OrganizationAlterPublished_alphaAlterPublished_members[];
   channels: (OrganizationAlterPublished_alphaAlterPublished_channels | null)[];
@@ -6297,16 +6294,13 @@ export interface OrganizationByPrefix_organizationByPrefix_channels {
 export interface OrganizationByPrefix_organizationByPrefix {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   name: string;
   photo: string | null;
-  locations: string[] | null;
   isMine: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  followed: boolean;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
   members: OrganizationByPrefix_organizationByPrefix_members[];
   channels: (OrganizationByPrefix_organizationByPrefix_channels | null)[];
@@ -6722,7 +6716,6 @@ export interface Profile_profile {
   about: string | null;
   location: string | null;
   role: string | null;
-  locations: string[] | null;
   /**
    * Deprecated
    */
@@ -8109,6 +8102,9 @@ export interface OrganizationFull_channels {
 export interface OrganizationFull {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
@@ -8188,16 +8184,13 @@ export interface OrganizationSearch_channels {
 export interface OrganizationSearch {
   __typename: "Organization";
   id: string;
+  /**
+   * # Refactor?
+   */
   superAccountId: string;
   name: string;
   photo: string | null;
-  locations: string[] | null;
   isMine: boolean;
-  organizationType: string[] | null;
-  interests: string[] | null;
-  followed: boolean;
-  published: boolean;
-  editorial: boolean;
   featured: boolean;
   members: OrganizationSearch_members[];
   channels: (OrganizationSearch_channels | null)[];
