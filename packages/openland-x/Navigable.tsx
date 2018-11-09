@@ -65,7 +65,11 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             }
             if (this.props.path) {
                 let ncurrent = normalizePath(this.props.__router.path);
-                let ntarget = normalizePath(this.props.path!!);
+                let ntarget = undefined;
+                if (typeof(this.props.path) === 'string') {
+                    ntarget = normalizePath(this.props.path);
+                }
+                
                 if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && this.props.activateForSubpaths)) {
                     return true;
                 }
@@ -121,7 +125,9 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 if (this.props.__router) {
                     if (this.props.path) {
                         console.warn(this.props.path);
-                        this.props.__router.push(this.props.path!!);
+                        if (typeof(this.props.path) === 'string') {
+                            this.props.__router.push(this.props.path);
+                        }
                     } else if (this.props.query) {
                         this.props.__router.pushQuery(this.props.query.field, this.props.query.value, this.props.query.clear);
                     }
@@ -141,14 +147,14 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             let isActive = this.resolveIsActive();
 
             // Resolving Url
-            if (this.props.anchor) {
+            if (typeof(this.props.anchor) === 'string') {
                 linkHref = this.props.anchor!;
-            } else if (this.props.path) {
-                linkHref = this.props.__router.resolveLink(this.props.path!!);
+            } else if (typeof(this.props.path) === 'string') {
+                linkHref = this.props.__router.resolveLink(this.props.path);
             } else if (this.props.query) {
                 let linkPath = resolveActionPath(this.props, this.props.__router);
                 linkHref = this.props.__router.resolveLink(linkPath);
-            } else if (this.props.href) {
+            } else if (typeof(this.props.href) === 'string') {
                 linkHref = this.props.href!!;
                 target = '_blank';
             }
