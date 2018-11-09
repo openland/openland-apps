@@ -155,7 +155,6 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
             <MessagesContainer>
                 <MessageListComponent
                     me={this.props.me}
-                    key={this.props.conversationId}
                     loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
                     conversationType={this.props.conversationType}
