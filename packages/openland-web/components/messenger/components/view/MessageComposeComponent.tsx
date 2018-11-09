@@ -401,13 +401,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (this.props.onChange) {
             this.props.onChange(src);
         }
+        
+        if (statlesMessageId) {
+            return;
+        }
 
         this.localDraftSaver(src);
 
         if (src.length > 0) {
-            if (statlesMessageId) {
-                return;
-            }
             this.changeDraft(src);
         }
     }
