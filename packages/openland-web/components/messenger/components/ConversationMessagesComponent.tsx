@@ -129,6 +129,7 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading, messages: state.messages });
     }
+    
     onMessageSend = () => {
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
