@@ -1,10 +1,19 @@
 {
     "env": {
         "default": {
-            "presets": ["next/babel", "@zeit/next-typescript/babel"],
-            "plugins": ["inline-react-svg", ["react-native-web", {
+          "presets": ["next/babel", "@zeit/next-typescript/babel"],
+          "plugins": [
+            "inline-react-svg",
+            "transform-react-constant-elements",
+            "transform-react-remove-prop-types",
+            "glamorous-displayname",
+            [
+              "react-native-web",
+              {
                 "commonjs": true
-            }]]
+              }
+            ]
+          ]
         },
         "production": {
             "presets": ["module:metro-react-native-babel-preset"],
@@ -35,8 +44,6 @@
         "development": {
             "presets": ["module:metro-react-native-babel-preset"],
             "plugins": [
-                "react-optimize",
-                "glamorous-displayname",
                 ["module-resolver", {
                     "root": ["."],
                     "alias": {
