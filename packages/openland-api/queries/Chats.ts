@@ -302,7 +302,7 @@ export const SendMessageMutation = gql`
 `;
 
 export const ReplyMessageMutation = gql`
-    mutation ReplyMessage($conversationId: ID!, $message: String, $replyMessages: [MessageID!]) {
+    mutation ReplyMessage($conversationId: ID!, $message: String, $replyMessages: [ID!]) {
         replyMessage: alphaSendMessage(conversationId: $conversationId, message: $message, replyMessages: $replyMessages) {
             seq
         }
