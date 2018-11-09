@@ -1666,6 +1666,13 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-web@npm:@types/react-native":
+  version "0.57.7"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.7.tgz#4cbc81de4f0f54985b20dc25010744889176e775"
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/react" "*"
+
 "@types/react-native@*", "@types/react-native@0.56.4":
   version "0.56.4"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.56.4.tgz#2643ca2a9a81e30da9fde96cfd8587fca4e3c19d"
