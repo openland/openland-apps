@@ -33,7 +33,8 @@ export let ChatContainer = Glamorous.div({
     width: '100%',
     flexGrow: 1,
     flexShrink: 0,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'absolute'
 });
 
 export let ChatListContainer = Glamorous.div({
@@ -114,7 +115,7 @@ export const AddButton = Glamorous(XButton)({
 
 let returnPath: string | undefined = undefined;
 
-class ChatListContainerWrapper extends React.PureComponent<{emptyState: boolean}> {
+class ChatListContainerWrapper extends React.PureComponent<{ emptyState: boolean }> {
     render() {
         const emptyState = this.props.emptyState;
         return (
@@ -162,42 +163,42 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                 </>
             );
         }
-    
+
         let isChannels = props.router.path.endsWith('/channels');
         let isInvite = props.router.path.includes('joinChannel');
         let oid = props.router.routeQuery.organizationId;
         let uid = props.router.routeQuery.userId;
-    
+
         let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
-    
+
         if (isCompose) {
             tab = 'compose';
         }
-    
+
         if (!isCompose && !props.router.routeQuery.conversationId) {
             tab = 'empty';
         }
-    
+
         if (!isCompose && props.router.routeQuery.conversationId) {
             tab = 'conversation';
             // returnPath = props.router.path;
-    
+
             let r = props.router;
             returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
         }
-    
+
         if (isInvite) {
             tab = 'invite';
         }
-    
+
         if (isChannels) {
             tab = 'channels';
         }
-    
+
         if (oid) {
             tab = 'organization';
         }
-    
+
         if (uid) {
             tab = 'user';
         }
@@ -205,15 +206,15 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
         if (tab === 'empty') {
             pageTitle = undefined;
         }
-    
+
         return (
             <>
                 <XDocumentHead title={pageTitle} />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <ChatContainer>
-                        <ChatListContainerWrapper emptyState={tab === 'empty'} />
-            
+                            <ChatListContainerWrapper emptyState={tab === 'empty'} />
+
                             <ConversationContainer>
                                 {tab === 'compose' && (
                                     <MessengerContainer>

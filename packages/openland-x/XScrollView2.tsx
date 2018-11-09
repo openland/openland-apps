@@ -115,6 +115,7 @@ class ScrollArea extends React.PureComponent<{ onScroll?: (top: number) => void,
                 {...scrollProps}
                 onUpdate={(values) => this.handleUpdate(values)}
                 autoHide={false}
+                style={{flex: 1}}
             >
                 {this.props.children}
             </Scrollbars>
