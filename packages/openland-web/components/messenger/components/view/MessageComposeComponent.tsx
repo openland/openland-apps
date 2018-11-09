@@ -318,6 +318,11 @@ interface MessageComposeComponentInnerProps extends MessageComposeComponentProps
     draft?: string | null;
 }
 
+interface Draft {
+    conversationId?: string;
+    message?: string;
+}
+
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps> {
 
     state = {
@@ -382,6 +387,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
             this.closeEditor();
             this.changeDraft('');
+            this.localDraftCleaner();
         }
     }
 
@@ -396,12 +402,85 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             this.props.onChange(src);
         }
 
-        if (statlesMessageId) {
-            return;
-        }
+        this.localDraftSaver(src);
 
         if (src.length > 0) {
+            if (statlesMessageId) {
+                return;
+            }
             this.changeDraft(src);
+        }
+    }
+
+    private localDraftSaver = (src: string) => {
+        let { conversationId } = this.props;
+        let localDrafts = localStorage.getItem('drafts');
+        let curDraft: Draft = {
+            conversationId: conversationId,
+            message: src
+        };
+
+        let drafts: Draft[] = [];
+
+        if (localDrafts) {
+            drafts = JSON.parse(localDrafts);
+            let alreadyInDrafts = -1;
+
+            drafts.map((i: Draft, j: number) => {
+                if (i.conversationId === curDraft.conversationId) {
+                    alreadyInDrafts = j;
+                    if (this.state.beDrafted) {
+                        i.message = curDraft.message;
+                    }
+                }
+            });
+
+            if (alreadyInDrafts >= 0) {
+                if (src.length === 0) {
+                    if (this.state.beDrafted) {
+                        curDraft = {
+                            conversationId: conversationId,
+                            message: ''
+                        };
+                        drafts.splice(alreadyInDrafts, 1);
+                        drafts.push(curDraft);
+                        this.changeDraft('');
+                    }
+                }
+                if (src.length > 0) {
+                    this.setState({
+                        beDrafted: true
+                    });
+                }
+            } else {
+                if (src.length > 0) {
+                    this.setState({
+                        beDrafted: true
+                    });
+                    drafts.push(curDraft);
+                }
+            }
+        } else {
+            drafts.push(curDraft);
+        }
+
+        localStorage.setItem('drafts', JSON.stringify(drafts));
+    }
+
+    private localDraftCleaner = () => {
+        const { conversationId } = this.props;
+
+        let localDrafts = localStorage.getItem('drafts');
+        if (localDrafts) {
+            let drafts = JSON.parse(localDrafts);
+
+            drafts.map((i: Draft) => {
+                if (i.conversationId === conversationId) {
+                    i.message = '';
+                }
+            });
+
+            localStorage.setItem('drafts', JSON.stringify(drafts));
         }
     }
 
@@ -546,7 +625,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        if (replyMessage && replyMessageId && replyMessageSender && conversationId) {
+        let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
+        let draftChecker = draft && !(replyMessage || replyMessageId || replyMessageSender || conversationId || editMessage);
+
+        if (replyChecker) {
             (document as any).isEditMessage = true;
             this.setState({
                 message: '',
@@ -561,15 +643,28 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        if (draft && !(replyMessage || replyMessageId || replyMessageSender || conversationId || editMessage)) {
-            if (this.state.beDrafted) {
-                return;
+        if (draftChecker) {
+            let localDrafts = localStorage.getItem('drafts');
+            let k = false;
+            if (localDrafts) {
+                let drafts = JSON.parse(localDrafts);
+                let cId = this.props.conversationId;
+                drafts.map((i: Draft) => {
+                    if (i.conversationId === cId && i.message === '') {
+                        k = true;
+                        return;
+                    }
+                });
             }
-            this.setState({
-                message: draft,
-                statlesMessage: draft,
-                beDrafted: true
-            });
+
+            if (!localDrafts || !k) {
+                let text = k ? undefined : draft;
+                this.setState({
+                    message: k ? '' : draft,
+                    statlesMessage: text,
+                    beDrafted: true
+                });
+            }
         }
     }
 
