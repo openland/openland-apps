@@ -34,13 +34,13 @@ class BadgeStub implements AppBadgeAPi {
 
     setBadge(count: number) {
         if (this.isVisible) {
-            if (this.items) {
-                this.items!!.then((v) => {
-                    for (let i of v) {
-                        i.badge(count);
-                    }
-                });
-            }
+            // if (this.items) {
+            //     this.items!!.then((v) => {
+            //         for (let i of v) {
+            //             i.badge(count);
+            //         }
+            //     });
+            // }
         }
     }
 }

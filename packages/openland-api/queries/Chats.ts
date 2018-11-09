@@ -46,20 +46,20 @@ export const ChatLeaveMutation = gql`
 `;
 
 export const MessageSetReactionMutation = gql`
-    mutation MessageSetReaction($messageId: MessageID!, $reaction: String!) {
+    mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
         alphaChatSetReaction(messageId: $messageId, reaction: $reaction)
     }
 `;
 
 export const SwitchReactionMutation = gql`
-    mutation SwitchReaction($messageId: MessageID!, $from: String!, $to: String!) {
+    mutation SwitchReaction($messageId: ID!, $from: String!, $to: String!) {
         alphaChatSetReaction(messageId: $messageId, reaction: $to)
         alphaChatUnsetReaction(messageId: $messageId, reaction: $from)
     }
 `;
 
 export const MessageUnsetReactionMutation = gql`
-    mutation MessageUnsetReaction($messageId: MessageID!, $reaction: String!) {
+    mutation MessageUnsetReaction($messageId: ID!, $reaction: String!) {
         alphaChatUnsetReaction(messageId: $messageId, reaction: $reaction)
     }
 `;
@@ -410,7 +410,7 @@ export const SetTypingMutation = gql`
 `;
 
 export const CancelTypingMutation = gql`
-    mutation CancelTyping($conversationId: ConversationID!) {
+    mutation CancelTyping($conversationId: ID!) {
         typingCancel(conversationId: $conversationId)
     }
 `;
@@ -670,7 +670,7 @@ export const ChatDeleteMessageMutation = gql`
 `;
 
 export const ChatDeleteUrlAugmentationMutation = gql`
-    mutation ChatDeleteUrlAugmentation($messageId: MessageID!) {
+    mutation ChatDeleteUrlAugmentation($messageId: ID!) {
         event: alphaDeleteMessageUrlAugmentation(messageId: $messageId){
             seq
         }

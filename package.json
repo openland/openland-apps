@@ -6,7 +6,6 @@
 	"license": "MIT",
 	"private": true,
 	"engines": {
-		"node": ">=v8.0.0",
 		"yarn": ">=1.0.0"
 	},
 	"dependencies": {
