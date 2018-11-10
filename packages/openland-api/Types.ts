@@ -26,13 +26,6 @@ export interface Account_me {
   primaryOrganization: Account_me_primaryOrganization | null;
 }
 
-export interface Account_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
 export interface Account_sessionState {
   __typename: "SessionState";
   isLoggedIn: boolean;
@@ -54,7 +47,6 @@ export interface Account_myPermissions {
 
 export interface Account {
   me: Account_me | null;
-  organization: Account_organization | null;
   sessionState: Account_sessionState;
   myPermissions: Account_myPermissions;
 }
@@ -87,11 +79,6 @@ export interface AccountSettings_me {
   primaryOrganization: AccountSettings_me_primaryOrganization | null;
 }
 
-export interface AccountSettings_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-}
-
 export interface AccountSettings_organizations {
   __typename: "Organization";
   id: string;
@@ -101,7 +88,6 @@ export interface AccountSettings_organizations {
 
 export interface AccountSettings {
   me: AccountSettings_me | null;
-  primaryOrganization: AccountSettings_primaryOrganization | null;
   organizations: AccountSettings_organizations[];
 }
 
@@ -618,7 +604,7 @@ export interface MessageSetReaction {
 }
 
 export interface MessageSetReactionVariables {
-  messageId: any;
+  messageId: string;
   reaction: string;
 }
 
@@ -638,7 +624,7 @@ export interface SwitchReaction {
 }
 
 export interface SwitchReactionVariables {
-  messageId: any;
+  messageId: string;
   from: string;
   to: string;
 }
@@ -655,7 +641,7 @@ export interface MessageUnsetReaction {
 }
 
 export interface MessageUnsetReactionVariables {
-  messageId: any;
+  messageId: string;
   reaction: string;
 }
 
@@ -1519,7 +1505,7 @@ export interface ReplyMessage {
 export interface ReplyMessageVariables {
   conversationId: string;
   message?: string | null;
-  replyMessages?: any[] | null;
+  replyMessages?: string[] | null;
 }
 
 /* tslint:disable */
@@ -1742,7 +1728,7 @@ export interface ChatCreateIntro {
 
 export interface ChatCreateIntroVariables {
   conversationId: string;
-  userId?: any | null;
+  userId?: string | null;
   about?: string | null;
   file?: string | null;
 }
@@ -1765,7 +1751,7 @@ export interface ChatEditIntro {
 
 export interface ChatEditIntroVariables {
   messageId: string;
-  userId?: any | null;
+  userId?: string | null;
   about?: string | null;
   file?: string | null;
 }
@@ -1797,7 +1783,7 @@ export interface CancelTyping {
 }
 
 export interface CancelTypingVariables {
-  conversationId: any;
+  conversationId: string;
 }
 
 /* tslint:disable */
@@ -5450,7 +5436,7 @@ export interface ChatDeleteUrlAugmentation {
 }
 
 export interface ChatDeleteUrlAugmentationVariables {
-  messageId: any;
+  messageId: string;
 }
 
 /* tslint:disable */
@@ -5593,108 +5579,6 @@ export interface FeatureFlagDisable {
 export interface FeatureFlagDisableVariables {
   accountId: string;
   featureId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: MyOrganization
-// ====================================================
-
-export interface MyOrganization_myOrganization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface MyOrganization_myOrganization_members_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface MyOrganization_myOrganization_members_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: MyOrganization_myOrganization_members_user_channels_organization | null;
-}
-
-export interface MyOrganization_myOrganization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  primaryOrganization: MyOrganization_myOrganization_members_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: MyOrganization_myOrganization_members_user_channels[];
-}
-
-export interface MyOrganization_myOrganization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: MyOrganization_myOrganization_members_user;
-}
-
-export interface MyOrganization_myOrganization_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  isRoot: boolean;
-  title: string;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  memberRequestsCount: number;
-  hidden: boolean;
-  featured: boolean;
-}
-
-export interface MyOrganization_myOrganization {
-  __typename: "Organization";
-  id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
-  isMine: boolean;
-  isOwner: boolean;
-  featured: boolean;
-  isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: MyOrganization_myOrganization_members[];
-  channels: (MyOrganization_myOrganization_channels | null)[];
-}
-
-export interface MyOrganization {
-  myOrganization: MyOrganization_myOrganization | null;
 }
 
 /* tslint:disable */
@@ -6767,7 +6651,6 @@ export interface ProfileUpdate_updateProfile {
   about: string | null;
   location: string | null;
   role: string | null;
-  locations: string[] | null;
   /**
    * Deprecated
    */

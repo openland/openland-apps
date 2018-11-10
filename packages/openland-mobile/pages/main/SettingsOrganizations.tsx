@@ -17,7 +17,7 @@ class SettingsOrganizatonsComponent extends React.Component<PageProps> {
                 <SScrollView>
                     <ZQuery query={AccountSettingsQuery}>
                         {resp => {
-                            let primary = resp.data.organizations.find((v) => v.id === resp.data.primaryOrganization!!.id)!!;
+                            let primary = resp.data.organizations.find((v) => v.id === resp.data.me!.primaryOrganization!.id)!!;
                             let secondary = resp.data.organizations.filter((v) => v.id !== primary.id);
                             secondary.sort((a, b) => a.name.localeCompare(b.name));
                             return (

@@ -77,7 +77,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                         </YQuery>
 
                                                     }
-                                                    {resp.data.organization.isMine && resp.data.organization.id !== (settings.data && settings.data.primaryOrganization && settings.data.primaryOrganization.id) && <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountSettingsQuery]}>
+                                                    {resp.data.organization.isMine && resp.data.organization.id !== (settings.data && settings.data.me!.primaryOrganization && settings.data.me!.primaryOrganization!.id ) && <YMutation mutation={ProfileUpdateMutation} refetchQueries={[AccountSettingsQuery]}>
                                                         {updateProfile => (
                                                             <ZListItem
                                                                 text="Make primary"

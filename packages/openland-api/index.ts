@@ -77,7 +77,6 @@ export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
-export const MyOrganizationQuery = typedQuery<Types.MyOrganization, {}>(Organization.MyOrganizationQuery);
 export const MyOrganizationProfileQuery = typedQuery<Types.MyOrganizationProfile, {}>(Organization.MyOrganizationProfileQuery);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);

@@ -7,7 +7,6 @@ import { UserFull } from 'openland-api/fragments/UserFull';
 export const AccountQuery = gql`
     query Account {
         me: me { ...UserShort }
-        organization: myOrganization { ...OrganizationShort }
         sessionState: sessionState { ...SessionStateFull }
         myPermissions { roles }
     }
@@ -19,7 +18,6 @@ export const AccountQuery = gql`
 export const AccountSettingsQuery = gql`
     query AccountSettings {
         me: me { ...UserShort }
-        primaryOrganization: myOrganization { id }
         organizations: myOrganizations {
             ...OrganizationShort
         }

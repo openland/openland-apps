@@ -5,15 +5,6 @@ import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { UserShort } from '../fragments/UserShort';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 
-export const MyOrganizationQuery = gql`
-    query MyOrganization {
-        myOrganization {
-            ...OrganizationFull
-        }
-    }
-    ${OrganizationFull}
-`;
-
 export const MyOrganizationProfileQuery = gql`
     query MyOrganizationProfile {
         organizationProfile: myOrganizationProfile {

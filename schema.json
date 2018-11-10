@@ -8262,7 +8262,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "MessageID",
+                      "name": "ID",
                       "ofType": null
                     }
                   }
@@ -8280,7 +8280,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "UserID",
+                      "name": "ID",
                       "ofType": null
                     }
                   }
@@ -8349,7 +8349,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "MessageID",
+                      "name": "ID",
                       "ofType": null
                     }
                   }
@@ -8367,7 +8367,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "UserID",
+                      "name": "ID",
                       "ofType": null
                     }
                   }
@@ -8410,7 +8410,7 @@
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
-                  "name": "UserID",
+                  "name": "ID",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -8491,7 +8491,7 @@
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
-                  "name": "UserID",
+                  "name": "ID",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -8551,7 +8551,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "MessageID",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -9222,7 +9222,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "MessageID",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -9267,7 +9267,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "MessageID",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -9312,7 +9312,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "ConversationID",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -9323,7 +9323,7 @@
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
-                  "name": "MessageID",
+                  "name": "ID",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -11362,7 +11362,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "ConversationID",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -11493,26 +11493,6 @@
         ],
         "inputFields": null,
         "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "MessageID",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "UserID",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -12097,16 +12077,6 @@
             "defaultValue": null
           }
         ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "ConversationID",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -13756,9 +13726,17 @@
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "UserID",
-                    "ofType": null
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "ID",
+                        "ofType": null
+                      }
+                    }
                   }
                 },
                 "defaultValue": null
@@ -16460,22 +16438,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "UNION",
-        "name": "ConversationEventBatch",
-        "description": "",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "ConversationEventSimpleBatch",
-            "ofType": null
-          }
-        ]
-      },
-      {
         "kind": "OBJECT",
         "name": "ConversationEventNewMembers",
         "description": "",
@@ -17056,6 +17018,16 @@
       },
       {
         "kind": "SCALAR",
+        "name": "UserID",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
         "name": "ProfileID",
         "description": null,
         "fields": null,
@@ -17166,6 +17138,16 @@
       },
       {
         "kind": "SCALAR",
+        "name": "ConversationID",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
         "name": "ConversationSettingsID",
         "description": null,
         "fields": null,
@@ -17227,6 +17209,16 @@
       {
         "kind": "SCALAR",
         "name": "DialogID",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "MessageID",
         "description": null,
         "fields": null,
         "inputFields": null,
@@ -17529,7 +17521,7 @@
         "args": []
       },
       {
-        "name": "messageID",
+        "name": "conversationMessageID",
         "description": "",
         "locations": [
           "ARGUMENT_DEFINITION",
