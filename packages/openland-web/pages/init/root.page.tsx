@@ -12,9 +12,7 @@ export default withAppBase('Root', withUserInfo((props) => {
         <AuthRouter>
             <XDocumentHead title={InitTexts.rootPageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="View Root">
-                {props.organization && (
-                    <XPageRedirect path={'/mail'} />
-                )}
+                <XPageRedirect path={'/mail'} />
             </XTrack>
         </AuthRouter>
     );
