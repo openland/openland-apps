@@ -312,7 +312,6 @@ interface MessageComposeWithDraft extends MessageComposeComponentProps {
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
     messagesContext: MessagesStateContextProps;
-    editMessage: MutationFunc<ChatEditMessage, Partial<ChatEditMessageVariables>>;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
     draft?: string | null;
@@ -399,13 +398,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                             conversationId: statlesChatId,
                             message: message,
                             replyMessages: statlesMessageId
-                        }
-                    });
-                } else {
-                    this.props.editMessage({
-                        variables: {
-                            message: message,
-                            messageId: statlesMessageId
                         }
                     });
                 }
@@ -577,8 +569,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
     componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
         let {
-            editMessage,
-            editMessageId,
             replyMessage,
             replyMessageId,
             replyMessageSender,
@@ -586,18 +576,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         } = nextProps.messagesContext;
 
         let newState: any = {};
-
-        if (editMessage) {
-            newState = {
-                ...newState,
-                message: '',
-                statlesMessage: editMessage,
-                statlesMessageId: editMessageId
-            };
-            if (this.input.current) {
-                this.input.current.focus();
-            }
-        }
 
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
 
@@ -617,7 +595,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        let draftChecker = (!editMessage && !replyChecker && !this.state.beDrafted);
+        let draftChecker = (!replyChecker && !this.state.beDrafted);
 
         if (nextProps.draft && draftChecker) {
             let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId);
@@ -745,7 +723,6 @@ export const MessageComposeComponent = withMessageState(withUserInfo((props) => 
             <MessageComposeComponentInner
                 {...props}
                 messagesContext={state}
-                editMessage={props.editMessage}
                 replyMessage={props.replyMessage}
                 saveDraft={props.saveDraft}
                 draft={props.draft}
