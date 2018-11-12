@@ -5,7 +5,6 @@ import { XLoader } from 'openland-x/XLoader';
 // import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
-import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { TypignsComponent, TypingContext } from './TypingsComponent';
@@ -100,50 +99,18 @@ interface ConversationMessagesComponentProps {
     conversation: ConversationEngine;
     conversationId: string;
     conversationType?: string;
+    loading: boolean;
+    messages: ModelMessage[];
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
 }
 
-export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps, { mounted: boolean, loading: boolean, messages: ModelMessage[] }> implements ConversationStateHandler {
-
+export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps>  {
     messagesList = React.createRef<MessageListComponent>();
-    unmounter: (() => void) | null = null;
-    unmounter2: (() => void) | null = null;
 
-    constructor(props: ConversationMessagesComponentProps) {
-        super(props);
-        let convState = props.conversation.getState();
-        this.state = {
-            messages: convState.messages,
-            loading: convState.loading,
-            mounted: false
-        };
-    }
-
-    componentDidMount() {
-        this.setState({ mounted: true });
-        this.unmounter = this.props.conversation.engine.mountConversation(this.props.conversation.conversationId);
-        this.unmounter2 = this.props.conversation.subscribe(this);
-    }
-
-    onConversationUpdated = (state: ConversationState) => {
-        this.setState({ loading: state.loading, messages: state.messages });
-    }
-    
-    onMessageSend = () => {
+    scrollToBottom = () => {
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
-        }
-    }
-
-    componentWillUnmount() {
-        if (this.unmounter) {
-            this.unmounter();
-            this.unmounter = null;
-        }
-        if (this.unmounter2) {
-            this.unmounter2();
-            this.unmounter2 = null;
         }
     }
 
@@ -159,12 +126,12 @@ export class ConversationMessagesComponent extends React.PureComponent<Conversat
                     loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
                     conversationType={this.props.conversationType}
-                    messages={this.state.messages}
+                    messages={this.props.messages}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
                     conversationId={this.props.conversationId}
                 />
-                <XLoader loading={!this.state.mounted || this.state.loading} />
+                <XLoader loading={this.props.loading} />
                 <TypingComponent chatId={this.props.conversationId} />
             </MessagesContainer>
         );
