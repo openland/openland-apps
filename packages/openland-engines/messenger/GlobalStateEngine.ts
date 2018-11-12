@@ -38,11 +38,13 @@ let GLOBAL_SUBSCRIPTION = gql`
             }
         }
         ... on DialogMessageUpdated {
+            cid
             message {
                 ...MessageShort
             }
         }
         ... on DialogMessageDeleted {
+            cid
             message {
                 ...MessageShort
             }
@@ -249,7 +251,9 @@ export class GlobalStateEngine {
 
             // TODO: Update dialog list
         } else if (event.__typename === 'DialogMessageUpdated') {
-            // TODO: Handle
+            // Dialogs List
+            console.log(event);
+            await this.engine.dialogList.handleMessageUpdated(event);
         } else if (event.__typename === 'DialogDeleted') {
             let visible = this.visibleConversations.has(event.conversationId);
 

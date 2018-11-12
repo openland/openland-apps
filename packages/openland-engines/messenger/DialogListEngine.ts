@@ -16,6 +16,7 @@ export interface DialogDataSourceItem {
     online?: boolean;
     typing?: string;
 
+    messageId?: string;
     date?: number;
     message?: string;
     sender?: string;
@@ -45,22 +46,21 @@ export function formatMessage(message: any): string {
     }
 }
 
-export const extractDialog = (c: any, uid: string) => (
-    {
-        key: c.id,
-        flexibleId: c.flexibleId,
-        type: c.__typename,
-        title: c.title,
-        photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
-        unread: c.unreadCount,
-        isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
-        sender: c.topMessage ? (c.topMessage!!.sender.id === uid ? 'You' : c.topMessage!!.sender.name) : undefined,
-        message: c.topMessage ? formatMessage(c.topMessage) : undefined,
-        date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
-        fileMeta: c.topMessage ? c.topMessage.fileMetadata : undefined,
-        online: false,
-    }
-);
+export const extractDialog = (c: any, uid: string) => ({
+    key: c.id,
+    flexibleId: c.flexibleId,
+    type: c.__typename,
+    title: c.title,
+    photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
+    unread: c.unreadCount,
+    isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
+    sender: c.topMessage ? (c.topMessage!!.sender.id === uid ? 'You' : c.topMessage!!.sender.name) : undefined,
+    message: c.topMessage ? formatMessage(c.topMessage) : undefined,
+    messageId: c.topMessage ? formatMessage(c.topMessage.id) : undefined,
+    date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
+    fileMeta: c.topMessage ? c.topMessage.fileMetadata : undefined,
+    online: false,
+});
 
 export class DialogListEngine {
 
@@ -155,6 +155,20 @@ export class DialogListEngine {
         this.dataSource.removeItem(cid);
     }
 
+    handleMessageUpdated = async (event: any) => {
+        const conversationId = event.cid as string;
+        let existing = this.dataSource.getItem(conversationId);
+        if (existing) {
+            if (existing.messageId === event.message.id) {
+                this.dataSource.updateItem({
+                    ...existing,
+                    message: formatMessage(event.message),
+                    fileMeta: event.message.fileMetadata,
+                });
+            }
+        }
+    }
+
     handleNewMessage = async (event: any, visible: boolean) => {
         console.log(event);
         const conversationId = event.cid as string;
@@ -170,6 +184,7 @@ export class DialogListEngine {
                 unread: (!visible || res.unread > unreadCount) ? unreadCount : res.unread,
                 isOut: isOut,
                 sender: sender,
+                messageId: event.message.id,
                 message: formatMessage(event.message),
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
@@ -192,6 +207,7 @@ export class DialogListEngine {
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,
+                    messageId: event.message.id,
                     message: formatMessage(event.message),
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,
@@ -234,6 +250,7 @@ export class DialogListEngine {
                 isOut: c.topMessage ? c.topMessage!!.sender.id === this.engine.user.id : undefined,
                 sender: c.topMessage ? (c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name) : undefined,
                 message: c.topMessage ? formatMessage(c.topMessage) : undefined,
+                messageId: c.topMessage ? formatMessage(c.topMessage.id) : undefined,
                 date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
                 fileMeta: c.topMessage ? c.topMessage.fileMetadata : undefined,
                 online: false,
