@@ -378,7 +378,7 @@ export const ChatCreateGroupMutation = gql`
 `;
 
 export const ChatCreateIntroMutation = gql`
-    mutation ChatCreateIntro($conversationId: ID!, $userId: ID, $about: String, $file: String) {
+    mutation ChatCreateIntro($conversationId: ID!, $userId: ID!, $about: String, $file: String) {
         intro: alphaSendIntro(conversationId: $conversationId, userId: $userId, about: $about, file: $file, message: $about) {
             seq
             message {
@@ -396,7 +396,7 @@ export const ChatCreateIntroMutation = gql`
 `;
 
 export const ChatEditIntroMutation = gql`
-    mutation ChatEditIntro($messageId: ID!, $userId: ID, $about: String, $file: String) {
+    mutation ChatEditIntro($messageId: ID!, $userId: ID!, $about: String, $file: String) {
         intro: alphaEditIntro(messageId: $messageId, userId: $userId, about: $about, file: $file, message: $about) {
             seq
         }

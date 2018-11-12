@@ -1728,7 +1728,7 @@ export interface ChatCreateIntro {
 
 export interface ChatCreateIntroVariables {
   conversationId: string;
-  userId?: string | null;
+  userId: string;
   about?: string | null;
   file?: string | null;
 }
@@ -1751,7 +1751,7 @@ export interface ChatEditIntro {
 
 export interface ChatEditIntroVariables {
   messageId: string;
-  userId?: string | null;
+  userId: string;
   about?: string | null;
   file?: string | null;
 }
@@ -5579,45 +5579,6 @@ export interface FeatureFlagDisable {
 export interface FeatureFlagDisableVariables {
   accountId: string;
   featureId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: MyOrganizationProfile
-// ====================================================
-
-export interface MyOrganizationProfile_organizationProfile_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MyOrganizationProfile_organizationProfile_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MyOrganizationProfile_organizationProfile_photoRef_crop | null;
-}
-
-export interface MyOrganizationProfile_organizationProfile {
-  __typename: "OrganizationProfile";
-  id: string;
-  name: string;
-  photoRef: MyOrganizationProfile_organizationProfile_photoRef | null;
-  website: string | null;
-  websiteTitle: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  featured: boolean;
-}
-
-export interface MyOrganizationProfile {
-  organizationProfile: MyOrganizationProfile_organizationProfile;
 }
 
 /* tslint:disable */

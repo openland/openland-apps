@@ -8409,9 +8409,13 @@
                 "name": "userId",
                 "description": "",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": null
               },
@@ -8490,9 +8494,13 @@
                 "name": "userId",
                 "description": "",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": null
               },
@@ -8654,9 +8662,13 @@
                 "name": "toSeq",
                 "description": "",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": null
               }
@@ -11169,9 +11181,13 @@
                 "name": "input",
                 "description": "",
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "CreateOrganizationInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateOrganizationInput",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": null
               }
