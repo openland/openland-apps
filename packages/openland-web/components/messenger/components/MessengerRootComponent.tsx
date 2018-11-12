@@ -3,7 +3,9 @@ import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
+import { ModelMessage } from 'openland-engines/messenger/types';
+import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { MessageListComponent } from './view/MessageListComponent';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
@@ -29,8 +31,9 @@ interface MessagesComponentProps {
 }
 
 interface MessagesComponentState {
-    mounted: boolean;
     hideInput: boolean;
+    loading: boolean;
+    messages: ModelMessage[];
 }
 
 const DeleteMessageComponent = withDeleteMessage((props) => {
@@ -84,31 +87,56 @@ const LeaveChatComponent = withChatLeave((props) => {
     );
 });
 
-class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> {
-
-    readonly conversation: ConversationEngine;
-    messagesList = React.createRef<MessageListComponent>();
+class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements ConversationStateHandler {
+    messagesList = React.createRef<ConversationMessagesComponent>();
+    private conversation: ConversationEngine | null;
     messageText: string = '';
+    unmounter: (() => void) | null = null;
+    unmounter2: (() => void) | null = null;
 
     constructor(props: MessagesComponentProps) {
         super(props);
-        this.conversation = this.props.messenger.getConversation(this.props.conversationId);
+
+        this.conversation = null;
         this.state = {
-            mounted: false,
-            hideInput: false
+            hideInput: false,
+            messages: [],
+            loading: true
         };
+    }
+
+    onMessageSend = () => {
+        if (this.messagesList.current) {
+            this.messagesList.current.scrollToBottom();
+        }
     }
 
     //
     // Lifecycle
     //
 
-    shouldComponentUpdate(nextProps: MessagesComponentProps, nextState: MessagesComponentState) {
-        return this.state.mounted !== nextState.mounted || this.props.loading !== nextProps.loading || this.state.hideInput !== nextState.hideInput;
+    onConversationUpdated = (state: ConversationState) => {
+        this.setState({ loading: state.loading, messages: state.messages });
+    }
+    
+    updateConversation = (props: MessagesComponentProps) => {
+        this.conversation = props.messenger.getConversation(props.conversationId);
+        let convState = this.conversation.getState();
+
+        this.setState({
+            messages: convState.messages,
+            loading: convState.loading
+        });
+        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
+        this.unmounter2 = this.conversation.subscribe(this);
     }
 
-    componentDidMount() {
-        this.setState({ mounted: true });
+    componentWillMount() {
+        this.updateConversation(this.props);
+    }
+
+    componentWillReceiveProps(props: MessagesComponentProps) {
+        this.updateConversation(props);
     }
 
     handleChange = async (text: string) => {
@@ -132,10 +160,16 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     handleSend = (text: string) => {
+        if (!this.conversation) {
+            throw Error('conversation shoulde be defined here');
+        }
         this.conversation.sendMessage(text);
     }
 
     handleSendFile = (file: UploadCare.File) => {
+        if (!this.conversation) {
+            throw Error('conversation shoulde be defined here');
+        }
         this.conversation.sendFile(new UplaodCareUploading(file));
     }
 
@@ -150,10 +184,17 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     render() {
+        if (!this.conversation) {
+            throw Error('conversation shoulde be defined here');
+        }
         return (
             <ConversationContainer>
                 <ConversationMessagesComponent
+                    ref={this.messagesList} 
+                    key={this.props.conversationId}
                     me={this.props.me}
+                    messages={this.state.messages}
+                    loading={this.state.loading}
                     conversation={this.conversation}
                     conversationId={this.props.conversationId}
                     conversationType={this.props.conversationType}
@@ -165,7 +206,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         onChange={this.handleChange}
                         onSend={this.handleSend}
                         onSendFile={this.handleSendFile}
-                        enabled={this.state.mounted}
+                        enabled={true}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
