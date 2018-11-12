@@ -597,9 +597,6 @@ export interface ChatLeaveVariables {
 // ====================================================
 
 export interface MessageSetReaction {
-  /**
-   * Reactions
-   */
   alphaChatSetReaction: string;
 }
 
@@ -616,9 +613,6 @@ export interface MessageSetReactionVariables {
 // ====================================================
 
 export interface SwitchReaction {
-  /**
-   * Reactions
-   */
   alphaChatSetReaction: string;
   alphaChatUnsetReaction: string;
 }
@@ -653,7 +647,7 @@ export interface MessageUnsetReactionVariables {
 // ====================================================
 
 export interface SaveDraftMessage {
-  alphaSaveDraftMessage: string;
+  conversationDraftUpdate: string;
 }
 
 export interface SaveDraftMessageVariables {
@@ -6553,6 +6547,9 @@ export interface ProfileUpdate_updateProfile {
    * Deprecated
    */
   linkedin: string | null;
+  /**
+   * Deprecated
+   */
   primaryOrganizationId: string | null;
   joinedAt: string | null;
   invitedBy: ProfileUpdate_updateProfile_invitedBy | null;

@@ -66,13 +66,13 @@ export const MessageUnsetReactionMutation = gql`
 
 export const SaveDraftMessageMutation = gql`
     mutation SaveDraftMessage($conversationId: ID!, $message: String!) {
-        alphaSaveDraftMessage(conversationId: $conversationId, message: $message)
+        conversationDraftUpdate(conversationId: $conversationId, message: $message)
     }
 `;
 
 export const GetDraftMessageQuery = gql`
     query GetDraftMessage($conversationId: ID!) {
-        message: alphaDraftMessage(conversationId: $conversationId)
+        message: conversationDraft(conversationId: $conversationId)
     }
 `;
 

@@ -339,8 +339,13 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
     constructor(props: any) {
         super(props);
-        console.warn('restore', props.conversationId, window.localStorage.getItem('conversation_draft_' + props.conversationId) || '');
         let message = window.localStorage.getItem('conversation_draft_' + props.conversationId) || '';
+        let draftKey = 'conversation_draft_' + this.props.conversationId;
+
+        if (message === draftKey) {
+            message = '';
+        }
+
         this.state = {
             dragOn: false,
             dragUnder: false,
@@ -383,6 +388,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             let msg = message.trim();
             if (this.props.onSend && !statlesMessageId) {
                 this.props.onSend(msg);
+                this.setState({
+                    beDrafted: false
+                })
             }
             if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
                 if (statlesChatId) {
@@ -409,34 +417,43 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private handleChange = (src: string) => {
-        let { statlesMessageId } = this.state;
-
-        console.warn(src);
+        let { statlesMessageId, beDrafted } = this.state;
 
         this.setState({
             message: src
         });
 
+        if (src.length > 0) {
+            this.setState({
+                beDrafted: true
+            });
+            this.localDraftSaver(src);
+        }
+
+        if (src.length === 0) {
+            this.localDraftCleaner();
+        }
+
         if (this.props.onChange) {
             this.props.onChange(src);
         }
 
-        if (statlesMessageId) {
+        if (statlesMessageId || !beDrafted) {
             return;
         }
-
-        this.localDraftSaver(src);
 
         this.changeDraft(src);
 
     }
 
     private localDraftSaver = (src: string) => {
-        window.localStorage.setItem('conversation_draft_' + this.props.conversationId, src);
+        let draftKey = 'conversation_draft_' + this.props.conversationId;
+        window.localStorage.setItem(draftKey, src);
     }
 
     private localDraftCleaner = () => {
-        window.localStorage.setItem('conversation_draft_' + this.props.conversationId, '');
+        let draftKey = 'conversation_draft_' + this.props.conversationId;
+        window.localStorage.setItem(draftKey, draftKey);
     }
 
     private changeDraft = (src: string) => {
@@ -600,15 +617,33 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        console.warn('componentWillReceiveProps', nextProps, this.props);
+        let draftChecker = (!editMessage && !replyChecker && !this.state.beDrafted);
 
-        if (nextProps.conversationId !== this.props.conversationId) {
-            newState = {
-                ...newState,
-                message: window.localStorage.getItem('conversation_draft_' + nextProps.conversationId)
-            };
+        if (nextProps.draft && draftChecker) {
+            let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId);
+            let draftKey = 'conversation_draft_' + this.props.conversationId;
 
+            if (!draft) {
+                draft = nextProps.draft
+            }
+
+            if (draft === draftKey) {
+                newState = {
+                    ...newState,
+                    message: '',
+                    statlesMessage: undefined,
+                    beDrafted: true
+                };
+            } else if (draft !== draftKey) {
+                newState = {
+                    ...newState,
+                    message: draft,
+                    statlesMessage: draft,
+                    beDrafted: true
+                };
+            }
         }
+
         this.setState(newState);
     }
 
@@ -656,7 +691,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                 onChange={this.handleChange}
                                 onSubmit={this.handleSend}
                                 ref={this.input}
-                                value={this.state.statlesMessage}
+                                value={statlesMessage}
                             />
                         </TextInputWrapper>
                         <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
