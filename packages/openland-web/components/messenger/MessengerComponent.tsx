@@ -716,6 +716,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 </XWithRole>
                 {tab === 'chat' && (
                     <MessengerRootComponent
+                        key={props.data.chat.id}
                         conversationId={props.data.chat.id}
                         conversationType={props.data.chat.__typename}
                     />
