@@ -21,7 +21,6 @@ export const AuthRouter = withUserInfo((props) => {
             '/suspended',
             '/createProfile',
             '/createProfileAndOrganization',
-            '/pickOrganization',
             '/signin',
             '/signup'
         ].indexOf(props.router.path) < 0) {

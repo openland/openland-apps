@@ -25,8 +25,6 @@ routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
 routes.add('/createProfile', '/init/createProfile');
 routes.add('/createProfile/', '/init/createProfile');
-routes.add('/pickOrganization', '/init/pickOrganization');
-routes.add('/pickOrganization/', '/init/pickOrganization');
 routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
 routes.add('/createProfileAndOrganization', '/init/createProfileAndOrganization');
