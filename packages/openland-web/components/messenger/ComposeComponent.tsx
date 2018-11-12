@@ -4,10 +4,12 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../../routes';
 import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
-import { MessageComposeComponentDraft, MessageComposeComponent } from './components/view/MessageComposeComponent';
+import { MessageComposeComponent } from './components/view/MessageComposeComponent';
 import { ConversationContainer } from './components/view/ConversationContainer';
 import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
+import { ConversationState } from 'openland-engines/messenger/ConversationState';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import ChannelIcon from './components/icons/ic-channel-2.svg';
@@ -17,6 +19,7 @@ import { withChatCompose } from '../../api/withChatCompose';
 import { withUserInfo } from '../UserInfo';
 import { UserShort } from 'openland-api/Types';
 import { TextCompose } from 'openland-text/TextCompose';
+import { ModelMessage } from 'openland-engines/messenger/types';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -146,13 +149,70 @@ const SearchPeopleModule = withChatCompose(props => {
     );
 }) as React.ComponentType<{ value?: any, variables: { query?: string, organizations?: boolean }, onChange: (data: Option<OptionValues>[]) => void, onChangeInput: (data: string) => void }>;
 
-class ComposeComponentRender extends React.Component<{ messenger: MessengerEngine, conversationId: string, me?: UserShort }, { values: Option<OptionValues>[], resolving: boolean, conversationId: string | null, query: string }> {
-    state = {
-        values: [] as Option<OptionValues>[],
-        resolving: false,
-        conversationId: null,
-        query: ''
-    };
+type ComposeComponentRenderProps = { 
+    messenger: MessengerEngine, 
+    conversationId: string, 
+    me?: UserShort 
+};
+
+type ComposeComponentRenderState = { 
+    values: Option<OptionValues>[], 
+    resolving: boolean, 
+    conversationId: string | null,
+    query: string 
+    loading: boolean;
+    messages: ModelMessage[];
+};
+
+class ComposeComponentRender extends React.Component<ComposeComponentRenderProps, ComposeComponentRenderState> {
+    conversationMessages = React.createRef<ConversationMessagesComponent>();
+    private conversation: ConversationEngine | null;
+    unmounter: (() => void) | null = null;
+    unmounter2: (() => void) | null = null;
+    
+    constructor(props: ComposeComponentRenderProps) {
+        super(props);
+
+        this.conversation = null;
+        this.state = {
+            values: [] as Option<OptionValues>[],
+            resolving: false,
+            conversationId: null,
+            query: '',
+            messages: [],
+            loading: true
+        };
+    }
+
+    onMessageSend = () => {
+        if (this.conversationMessages.current) {
+            this.conversationMessages.current.scrollToBottom();
+        }
+    }
+
+    onConversationUpdated = (state: ConversationState) => {
+        this.setState({ loading: state.loading, messages: state.messages });
+    }
+    
+    updateConversation = (props: ComposeComponentRenderProps) => {
+        this.conversation = props.messenger.getConversation(props.conversationId);
+        let convState = this.conversation.getState();
+
+        this.setState({
+            messages: convState.messages,
+            loading: convState.loading
+        });
+        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
+        this.unmounter2 = this.conversation.subscribe(this);
+    }
+
+    componentWillMount() {
+        this.updateConversation(this.props);
+    }
+
+    componentWillReceiveProps(props: ComposeComponentRenderProps) {
+        this.updateConversation(props);
+    }
 
     handleChange: OnChangeHandler = (vals) => {
         let nvals: Option<OptionValues>[] = [];
@@ -248,6 +308,8 @@ class ComposeComponentRender extends React.Component<{ messenger: MessengerEngin
                         )}
                         {this.state.conversationId && (
                             <ConversationMessagesComponent
+                                messages={this.state.messages}
+                                loading={this.state.loading}
                                 me={this.props.me}
                                 conversation={this.props.messenger.getConversation(this.state.conversationId!!)}
                                 conversationId={this.props.conversationId}
