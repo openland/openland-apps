@@ -15,6 +15,7 @@ import Mention from 'draft-js-mention-plugin/lib/Mention';
 
 // console.log(Mention)
 import { XAvatar } from 'openland-x/XAvatar';
+import { XSGroupItemProps } from 'openland-xs/XSGroupItem';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
@@ -257,12 +258,16 @@ const MentionEntry = (props: any) => {
 
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beChanged: boolean, suggestions: Array<MentionT> }> {
+    constructor(props: XRichTextInputProps) {
+        super(props);
+        this.state = {
+            suggestions: mentionsData,
+            beChanged: false,
+            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
+        };
+
+    }
     private editorRef = React.createRef<Editor>();
-    state = {
-        editorState: EditorState.createEmpty(),
-        suggestions: mentionsData,
-        beChanged: false
-    };
 
     componentDidMount() {
         if (this.props.autofocus) {
