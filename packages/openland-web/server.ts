@@ -75,11 +75,11 @@ async function start() {
     server.use('/sandbox', graphiqlExpress(req => ({
         endpointURL: '/graphql',
         subscriptionsEndpoint: url.format({
-          host: req!!.get('host'),
-          protocol: (req!!.header('x-forwarded-proto') === 'https' || req!!.protocol === 'https') ? 'wss' : 'ws',
-          pathname: '/graphql'
+            host: req!!.get('host'),
+            protocol: req!!.get('host') !== 'localhost' ? 'wss' : 'ws',
+            pathname: '/graphql'
         })
-      })));
+    })));
 
     //
     // Favicon support endpoint
