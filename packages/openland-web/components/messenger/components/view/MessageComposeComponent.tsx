@@ -390,7 +390,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 this.props.onSend(msg);
                 this.setState({
                     beDrafted: false
-                })
+                });
             }
             if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
                 if (statlesChatId) {
@@ -624,7 +624,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 
             if (!draft) {
-                draft = nextProps.draft
+                draft = nextProps.draft;
             }
 
             if (draft === draftKey) {
