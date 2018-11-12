@@ -179,8 +179,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (isServerMessage(message)) {
             if (this.state.isSelected && message.message) {
                 content.push(<EditMessageInlineWrapper message={message} key={'editForm'} onClose={this.hideEditView} />);
-            }
-            else {
+            } else {
                 if (message.message && message.message.length > 0) {
                     if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
                         content.push(null);
