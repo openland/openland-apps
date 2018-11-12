@@ -435,19 +435,6 @@ export const ChatAddMembersMutation = gql`
     }
 `;
 
-export const BlockedListQuery = gql`
-    query BlockedList($conversationId: ID!) {
-        blocked: alphaBlockedList(conversationId: $conversationId) {
-            user{
-                ...UserShort
-            }
-            blockedBy{
-                ...UserShort
-            }
-        }
-    }${UserShort}
-`;
-
 export const BlockUserMutation = gql`
     mutation BlockUser($userId: ID!) {
         blockUser: alphaBlockUser(userId: $userId)

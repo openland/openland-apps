@@ -1842,69 +1842,6 @@ export interface ChatAddMembersVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: BlockedList
-// ====================================================
-
-export interface BlockedList_blocked_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface BlockedList_blocked_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: BlockedList_blocked_user_primaryOrganization | null;
-}
-
-export interface BlockedList_blocked_blockedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface BlockedList_blocked_blockedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: BlockedList_blocked_blockedBy_primaryOrganization | null;
-}
-
-export interface BlockedList_blocked {
-  __typename: "ConversationBlockedUser";
-  user: BlockedList_blocked_user;
-  blockedBy: BlockedList_blocked_blockedBy;
-}
-
-export interface BlockedList {
-  blocked: BlockedList_blocked[];
-}
-
-export interface BlockedListVariables {
-  conversationId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: BlockUser
 // ====================================================
 
