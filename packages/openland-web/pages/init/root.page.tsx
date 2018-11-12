@@ -15,9 +15,6 @@ export default withAppBase('Root', withUserInfo((props) => {
                 {props.organization && (
                     <XPageRedirect path={'/mail'} />
                 )}
-                {!props.organization && (
-                    <XPageRedirect path={'/pickOrganization'} />
-                )}
             </XTrack>
         </AuthRouter>
     );
