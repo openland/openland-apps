@@ -46,6 +46,8 @@ let GLOBAL_SUBSCRIPTION = gql`
             message {
                 ...MessageShort
             }
+            unread
+            globalUnread
         }
         ... on DialogMessageRead {
             cid
@@ -60,6 +62,10 @@ let GLOBAL_SUBSCRIPTION = gql`
         ... on DialogTitleUpdated {
             cid
             title
+        }
+        ... on DialogDeleted {
+            cid
+            globalUnread
         }
     }
     ${MessageShort}
@@ -232,6 +238,29 @@ export class GlobalStateEngine {
 
             // Dialogs List
             this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
+        } else if (event.__typename === 'DialogMessageDeleted') {
+            let visible = this.visibleConversations.has(event.conversationId);
+
+            // Global counter
+            this.writeGlobalCounter(event.globalUnread, visible);
+
+            // Notifications
+            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+
+            // TODO: Update dialog list
+        } else if (event.__typename === 'DialogMessageUpdated') {
+            // TODO: Handle
+        } else if (event.__typename === 'DialogDeleted') {
+            let visible = this.visibleConversations.has(event.conversationId);
+
+            // Global counter
+            this.writeGlobalCounter(event.globalUnread, visible);
+
+            // Notifications
+            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+
+            // Remove dialog from lust
+            this.engine.dialogList.handleDialogDeleted(event);
         } else {
             console.log('Unhandled update: ' + event.__typename);
         }

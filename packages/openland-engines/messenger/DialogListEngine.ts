@@ -150,19 +150,15 @@ export class DialogListEngine {
         }
     }
 
+    handleDialogDeleted = async (event: any) => {
+        const cid = event.cid as string;
+        this.dataSource.removeItem(cid);
+    }
+
     handleNewMessage = async (event: any, visible: boolean) => {
         console.log(event);
         const conversationId = event.cid as string;
-        // const messageId = event.message.id as string;
         const unreadCount = event.unread as number;
-
-        // Improve resolving for faster chat switch via flexibleId
-        // ConversationRepository.improveConversationResolving(this.engine.client, conversationId);
-
-        // this.userConversationMap.set(conversation.flexibleId, conversationId);
-
-        // Write Message to Repository
-        // ConversationRepository.writeNewMessage(this.engine.client, conversationId, messageId, unreadCount, visible);
 
         // Write message to datasource
         let res = this.dataSource.getItem(conversationId);
