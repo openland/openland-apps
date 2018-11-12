@@ -10,7 +10,7 @@ export const UserShort = gql`
         online
         lastSeen
         isYou
-        primaryOrganization: alphaPrimaryOrganization {
+        primaryOrganization {
             id
             name
             photo

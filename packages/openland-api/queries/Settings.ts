@@ -23,7 +23,7 @@ export const ProfileQuery = gql`
             location
             role: alphaRole
             linkedin: alphaLinkedin
-            primaryOrganization: alphaPrimaryOrganization{
+            primaryOrganization{
                 id
                 name
             }

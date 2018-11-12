@@ -96,7 +96,7 @@ export const MessageFull = gql`
                 id
                 name
                 photo
-                primaryOrganization: alphaPrimaryOrganization {
+                primaryOrganization {
                     id
                     name
                 }

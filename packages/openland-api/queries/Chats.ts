@@ -331,7 +331,7 @@ export const ChatSearchForComposeQuery = gql`
                 id
                 title: name
                 photo
-                organization: alphaPrimaryOrganization {
+                primaryOrganization {
                     id
                     name
                 }

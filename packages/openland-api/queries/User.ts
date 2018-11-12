@@ -31,7 +31,7 @@ export const UserQuery = gql`
             lastSeen
             linkedin
             twitter
-            primaryOrganization: alphaPrimaryOrganization {
+            primaryOrganization {
                 ...OrganizationShort
             }
             channels: channelsJoined {

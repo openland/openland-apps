@@ -156,7 +156,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                         await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: resp.data.chat.id } });
                                                                         this.props.router.back();
                                                                     } catch (e) {
-                                                                        Alert.alert(e.messagew);
+                                                                        Alert.alert(e.message);
                                                                     }
                                                                     stopLoader();
                                                                 }

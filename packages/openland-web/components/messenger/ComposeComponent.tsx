@@ -127,7 +127,7 @@ const SearchPeopleModule = withChatCompose(props => {
             multi={true}
             options={props.data.items.map(i => {
                 if (i.__typename === 'User') {
-                    return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: i.organization ? i.organization.name : '' };
+                    return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: i.primaryOrganization ? i.primaryOrganization.name : '' };
                 } else {
                     return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: 'Organization' };
                 }

@@ -1549,7 +1549,7 @@ export interface ChatReadVariables {
 // GraphQL query operation: ChatSearchForCompose
 // ====================================================
 
-export interface ChatSearchForCompose_items_User_organization {
+export interface ChatSearchForCompose_items_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1560,7 +1560,7 @@ export interface ChatSearchForCompose_items_User {
   id: string;
   title: string;
   photo: string | null;
-  organization: ChatSearchForCompose_items_User_organization | null;
+  primaryOrganization: ChatSearchForCompose_items_User_primaryOrganization | null;
 }
 
 export interface ChatSearchForCompose_items_Organization {
