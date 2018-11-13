@@ -323,7 +323,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value) {
+        if (this.props.value !== nextProps.value && !this.state.beChanged) {
             const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
             this.setState({
                 editorState: EditorState.moveFocusToEnd(state)
