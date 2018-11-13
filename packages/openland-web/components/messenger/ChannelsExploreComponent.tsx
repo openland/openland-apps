@@ -71,6 +71,14 @@ const ChannelName = Glamorous.div({
     color: '#000000',
     marginTop: '-2px!important',
     marginBottom: 2,
+
+    '&': {
+        height: 22,
+        overflow: 'hidden',
+        display: '-webkit-box',
+        WebkitLineClamp: 1,
+        WebkitBoxOrient: 'vertical'
+    }
 });
 
 const MembersText = Glamorous.div({
@@ -122,7 +130,7 @@ const Channels = withChatSearchChannels((props) => {
                                         objectName={channel.title}
                                         objectId={channel.id}
                                     />
-                                    <XVertical separator={0}>
+                                    <XVertical separator={0} flexGrow={1}>
                                         <ChannelName>{title}</ChannelName>
                                         <MembersText>{channel.membersCount} {channel.membersCount === 1 ? 'member' : 'members'}</MembersText>
                                     </XVertical>

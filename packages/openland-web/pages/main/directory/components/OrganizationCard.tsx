@@ -47,7 +47,15 @@ const OrganizationTitle = Glamorous(XLink)({
     lineHeight: '19px',
     fontWeight: 600,
     letterSpacing: 0,
-    color: '#000000!important'
+    color: '#000000!important',
+
+    '&': {
+        height: 19,
+        overflow: 'hidden',
+        display: '-webkit-box',
+        WebkitLineClamp: 1,
+        WebkitBoxOrient: 'vertical'
+    }
 });
 
 const OrganizationAbout = Glamorous.div({
@@ -62,7 +70,15 @@ const OrganizationAbout = Glamorous.div({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     width: '100%',
-    maxWidth: 450
+    maxWidth: 450,
+
+    '&': {
+        height: 22,
+        overflow: 'hidden',
+        display: '-webkit-box',
+        WebkitLineClamp: 1,
+        WebkitBoxOrient: 'vertical'
+    }
 });
 
 const OrganizationMembers = makeNavigable(Glamorous.div({

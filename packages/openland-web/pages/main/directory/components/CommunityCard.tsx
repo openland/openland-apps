@@ -42,7 +42,15 @@ const CommunityTitle = Glamorous(XLink)({
     color: '#000000!important',
     marginTop: '-2px!important',
     marginBottom: 2,
-    display: 'block'
+    display: 'block',
+
+    '&': {
+        height: 22,
+        overflow: 'hidden',
+        display: '-webkit-box',
+        WebkitLineClamp: 1,
+        WebkitBoxOrient: 'vertical'
+    }
 });
 
 const CommunityCounter = Glamorous.div({

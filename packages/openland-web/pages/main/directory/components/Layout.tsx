@@ -36,6 +36,12 @@ const SidebarWrapper = Glamorous.div({
     height: '100%',
     borderRight: '1px solid #ececec',
     backgroundColor: '#ffffff',
+    '@media (max-width: 1100px)': {
+        width: 300
+    },
+    '@media (max-width: 950px)': {
+        width: 230
+    }
 });
 
 const SidebarHeader = Glamorous.div({
