@@ -291,7 +291,9 @@ const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize 
         top: 0,
         left: 0,
         color: 'rgba(0, 0, 0, 0.4)',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        fontWeight: 400,
+        letterSpacing: 0,
     }),
     (props) => IconPaddingStyles(props.format, !!props.icon),
     (props) => NonIconPaddingStyles(props.format, !props.icon),

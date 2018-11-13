@@ -1,103 +1,58 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink, XLinkProps } from 'openland-x/XLink';
+import { XContentWrapper } from './XContentWrapper';
 
-const SubHeaderWrapper = Glamorous.div({
+const Wrapper = Glamorous.div<{ border?: boolean }>((props) => ({
     display: 'flex',
-    background: '#F9F9F9',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    padding: '18px 24px',
+    borderTop: props.border ? '1px solid #ececec' : undefined,
+    padding: '11px 0 16px',
     position: 'relative',
-});
+}));
 
-const SubHeaderTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#5c6a81'
-});
-
-const SubHeaderCounter = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#5c6a81',
-    opacity: 0.5,
-    marginLeft: 3
-});
-
-export const XSubHeaderRight = Glamorous.div({
-    position: 'absolute',
-    top: 12,
-    right: 14
-});
-
-const SubHeaderLink = Glamorous(XLink)({
+const Content = Glamorous(XContentWrapper)({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 24,
-    opacity: 0.5,
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#5c6a81',
-    '& svg': {
-        marginRight: 4
-    },
-    '& svg *': {
-        fill: '#5c6a81',
-    },
-    '& i': {
-        fontSize: 20,
-        marginRight: 4,
-        color: '#5c6a81',
-    },
-    '&:hover': {
-        opacity: 1,
-        color: '#5c6a81',
-        '& svg *': {
-            opacity: 0.75,
-        },
-        '& i': {
-            opacity: 0.75,
-        },
-    },
-    '&:active': {
-        opacity: 1,
-        color: '#1790ff',
-        '& svg *': {
-            opacity: 0.5,
-            fill: '#1790ff',
-        },
-        '& i': {
-            opacity: 0.5,
-            color: '#1790ff',
-        },
-    }
 });
 
-export class XSubHeaderLink extends React.Component<XLinkProps> {
-    render() {
-        return (
-            <SubHeaderLink {...this.props}>
-                {this.props.children}
-            </SubHeaderLink>
-        );
-    }
+const Title = Glamorous.div({
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: '30px',
+    letterSpacing: 0,
+    color: '#000000',
+    paddingTop: 2,
+    display: 'flex',
+});
+
+const Counter = Glamorous.div({
+    fontSize: 15,
+    fontWeight: 400,
+    lineHeight: '30px',
+    letterSpacing: 0,
+    color: '#000000',
+    opacity: 0.4,
+    marginLeft: 5
+});
+
+const Right = Glamorous.div({
+    
+});
+
+interface XSubHeaderProps {
+    title: string;
+    counter?: string | number;
+    right?: any;
+    border?: boolean;
 }
 
-export class XSubHeader extends React.Component<{ title: string, counter?: string | number }> {
-    render() {
-        return (
-            <SubHeaderWrapper>
-                <SubHeaderTitle>{this.props.title}</SubHeaderTitle>
-                {this.props.counter && (<SubHeaderCounter>{this.props.counter}</SubHeaderCounter>)}
-                {this.props.children}
-            </SubHeaderWrapper>
-        );
-    }
-}
+export const XSubHeader = (props: XSubHeaderProps) => (
+    <Wrapper border={props.border}>
+        <Content>
+            <Title>
+                {props.title}
+                {props.counter && (<Counter>{props.counter}</Counter>)}
+            </Title>
+            {props.right && (<Right>{props.right}</Right>)}
+        </Content>
+    </Wrapper>
+);

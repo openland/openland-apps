@@ -2,13 +2,13 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withExplorePeople } from '../../../api/withExplorePeople';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold, CreateOrganization, CreateChannel } from '../../../components/Scaffold';
+import { Scaffold } from '../../../components/Scaffold';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
-import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
+import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { ProfileCard } from './components/ProfileCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
@@ -178,18 +178,17 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             </SearchFormWrapper>
                                         </SearchRow>
                                         {(this.state.searchText.length <= 0) && (
-                                            <XSubHeader title="All people">
-                                                <XSubHeaderRight>
-                                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
-                                                </XSubHeaderRight>
-                                            </XSubHeader>
+                                            <XSubHeader
+                                                title="All people"
+                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
+                                            />
                                         )}
                                         {(this.state.searchText.length > 0) && (orgCount > 0) && (
-                                            <XSubHeader title="People" counter={orgCount}>
-                                                <XSubHeaderRight>
-                                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />
-                                                </XSubHeaderRight>
-                                            </XSubHeader>
+                                            <XSubHeader
+                                                title="People"
+                                                counter={orgCount}
+                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
+                                            />
                                         )}
                                         {(this.state.searchText.length > 0) && (orgCount <= 0) && (
                                             <XSubHeader title="No results" />
@@ -206,9 +205,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 )}
                                 {uid && <UserProfile userId={uid} onBack={() => this.props.router.push('/directory/people')} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
                             </Container>
-
-                            <CreateOrganization />
-                            <CreateChannel />
                         </RootWrapper>
                     </Scaffold.Content>
                 </Scaffold>

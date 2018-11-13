@@ -26,7 +26,6 @@ class RootComponent extends React.Component<XWithRouter> {
                     {tab === 'channels' && <ChannelsExploreComponent onDirectory={true}/>}
                     {tab === 'invite' && <MessengerComponent conversationId={this.props.router.routeQuery.conversationId} onDirectory={true} />}
                 </Container>
-                <CreateOrganization />
             </RootWrapper>
         );
     }

@@ -21,78 +21,6 @@ export const RootWrapper = Glamorous.div({
     display: 'flex'
 });
 
-export const SidebarWrapper = Glamorous.div({
-    width: 344,
-    height: '100%',
-    borderRight: '1px solid #ececec',
-    backgroundColor: '#ffffff',
-});
-
-export const SidebarHeader = Glamorous.div({
-    display: 'flex',
-    padding: '15px 16px 18px',
-
-    '& > span': {
-        flex: 1,
-        fontSize: 22,
-        lineHeight: '28px',
-        letterSpacing: 0,
-        fontWeight: 400,
-        color: '#000000',
-        opacity: 0.9
-    }
-});
-
-export const SidebarItemWrapper = Glamorous(XLink)({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    color: '#000000 !important',
-    padding: '12px 15px 12px 44px',
-    position: 'relative',
-
-    '& .icon-wrapper': {
-        position: 'absolute',
-        top: 0,
-        left: 14,
-        bottom: 0,
-        width: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        '& svg *': {
-            opacity: 0.25,
-            fill: '#000000'
-        },
-    },
-
-    '& span': {
-        flex: 1,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        fontWeight: 400,
-        letterSpacing: 0,
-        paddingRight: 10,
-    },
-
-    '& .right-icon path:last-child': {
-        opacity: 0.2,
-        fill: '#000000'
-    },
-
-    '&:hover': {
-        background: '#f9f9f9',
-        cursor: 'pointer !important',
-    },
-
-    '&.is-active': {
-        background: '#f9f9f9',
-        cursor: 'default !important'
-    },
-});
-
 export const Container = Glamorous.div({
     flex: 1,
     height: '100%',
@@ -158,6 +86,78 @@ export const ResetButton = Glamorous.div({
     },
     '&:active': {
         color: '#1790ff',
+    },
+});
+
+const SidebarWrapper = Glamorous.div({
+    width: 344,
+    height: '100%',
+    borderRight: '1px solid #ececec',
+    backgroundColor: '#ffffff',
+});
+
+const SidebarHeader = Glamorous.div({
+    display: 'flex',
+    padding: '15px 16px 18px',
+
+    '& > span': {
+        flex: 1,
+        fontSize: 22,
+        lineHeight: '28px',
+        letterSpacing: 0,
+        fontWeight: 400,
+        color: '#000000',
+        opacity: 0.9
+    }
+});
+
+const SidebarItemWrapper = Glamorous(XLink)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    color: '#000000 !important',
+    padding: '12px 15px 12px 44px',
+    position: 'relative',
+
+    '& .icon-wrapper': {
+        position: 'absolute',
+        top: 0,
+        left: 14,
+        bottom: 0,
+        width: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        '& svg *': {
+            opacity: 0.25,
+            fill: '#000000'
+        },
+    },
+
+    '& span': {
+        flex: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        fontWeight: 400,
+        letterSpacing: 0,
+        paddingRight: 10,
+    },
+
+    '& .right-icon path:last-child': {
+        opacity: 0.2,
+        fill: '#000000'
+    },
+
+    '&:hover': {
+        background: '#f9f9f9',
+        cursor: 'pointer !important',
+    },
+
+    '&.is-active': {
+        background: '#f9f9f9',
+        cursor: 'default !important'
     },
 });
 

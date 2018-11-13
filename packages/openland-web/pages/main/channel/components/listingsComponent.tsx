@@ -3,11 +3,10 @@ import Glamorous from 'glamorous';
 import { XOverflow } from '../../../../components/Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
-import { XSubHeader, XSubHeaderLink } from 'openland-x/XSubHeader';
+import { XSubHeader } from 'openland-x/XSubHeader';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
-import FilterIcon from './icons/ic-filter-1.svg';
 
 interface ListingType {
     organization: {
@@ -180,12 +179,7 @@ export class ListingsComponent extends React.Component {
     render() {
         return (
             <ListingsWrapper>
-                <XSubHeader title="Channel listings" counter={ListingsExamples.length}>
-                    <XSubHeaderLink>
-                        <FilterIcon />
-                        Filters
-                    </XSubHeaderLink>
-                </XSubHeader>
+                <XSubHeader title="Channel listings" counter={ListingsExamples.length} />
                 <ListingsView>
                     {ListingsExamples.map((listing) => (
                         <ListingItem item={listing} />

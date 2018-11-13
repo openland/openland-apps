@@ -8,28 +8,13 @@ const EmptyWrapper = Glamorous(XVertical)({
     paddingBottom: 30
 });
 
-const Reactangle = Glamorous.div({
-    width: '100%',
-    height: 600,
-    position: 'absolute',
-    top: 'calc(50% - 300px)',
-    left: 0,
-    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'bottom',
-    zIndex: 0,
-    pointerEvents: 'none'
-});
-
 const EmptyContent = Glamorous.div({
     zIndex: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    flexShrink: 0,
-    marginBottom: 50
+    flexShrink: 0
 });
 
 const Image = Glamorous.div({
@@ -52,7 +37,6 @@ const EmptyText = Glamorous.div({
 
 export const EmptyComponent = () => (
     <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
-        <Reactangle />
         <EmptyContent>
             <Image />
             <EmptyText>No channel matches your search</EmptyText>

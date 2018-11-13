@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XInput } from 'openland-x/XInput';
 import { withChatSearchChannels } from '../../api/withChatSearchChannels';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -15,9 +14,9 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { ChannelSetFeatured, ChannelSetHidden } from './MessengerComponent';
-import SearchIcon from '../icons/ic-search-small.svg';
-import { XSubHeader, XSubHeaderLink, XSubHeaderRight } from 'openland-x/XSubHeader';
-import { XIcon } from 'openland-x/XIcon';
+import { XSubHeader } from 'openland-x/XSubHeader';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { SearchBox } from '../../pages/main/directory/components/SearchBox';
 
 const ChannelsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -38,22 +37,15 @@ const StatusTitleMap = {
     requested: 'Pending',
 };
 
-const Avatar = Glamorous(XAvatar)({
-    width: 38,
-    height: 38,
-    '& img': {
-        width: '38px !important',
-        height: '38px !important'
-    }
-});
-
 const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
-    height: 70,
-    paddingLeft: 20,
-    paddingRight: 24,
+    height: 64,
+    paddingLeft: 16,
+    paddingRight: 16,
     flexShrink: 0,
     cursor: 'pointer',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.3)',
+    marginLeft: -16,
+    marginRight: -16,
+    borderRadius: 8,
     '&:hover': {
         backgroundColor: '#F9F9F9',
         '& .none': {
@@ -66,25 +58,27 @@ const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     },
     '& .none': {
         backgroundColor: 'rgba(238, 240, 242, 0.5)',
-        color: '#979EAA',
+        color: 'rgba(0, 0, 0, 0.7)',
         border: '1px solid transparent'
     }
 }) as any) as any;
 
 const ChannelName = Glamorous.div({
     fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.43,
-    letterSpacing: -0.4,
-    color: '#1790ff'
+    fontWeight: 600,
+    lineHeight: '22px',
+    letterSpacing: 0,
+    color: '#000000',
+    marginTop: '-2px!important',
+    marginBottom: 2,
 });
 
 const MembersText = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.29,
-    letterSpacing: -0.4,
-    color: '#99a2b0'
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: '18px',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.5)'
 });
 
 interface WithChatSearchChannelsProps {
@@ -93,13 +87,18 @@ interface WithChatSearchChannelsProps {
         query: string,
         sort: string
     };
+    tagsCount: (n: number) => void;
 }
 
 const Channels = withChatSearchChannels((props) => {
+    if (props.data && props.data.items) {
+        (props as any).tagsCount(props.data.items.edges.length);
+    }
+
     return (
         props.data && props.data.items ? props.data.items.edges.length
             ? (
-                <>
+                <XContentWrapper>
                     {props.data.items.edges.map(c => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' / ') : '') + channel.title;
@@ -116,14 +115,14 @@ const Channels = withChatSearchChannels((props) => {
                                 key={c.node.id}
                                 alignItems="center"
                             >
-                                <XHorizontal separator={6} alignItems="center" flexGrow={1}>
-                                    <Avatar
+                                <XHorizontal separator={8} alignItems="center" flexGrow={1}>
+                                    <XAvatar
                                         style="channel"
                                         cloudImageUuid={channel.photo || channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
                                         objectName={channel.title}
                                         objectId={channel.id}
                                     />
-                                    <XVertical separator={1}>
+                                    <XVertical separator={0}>
                                         <ChannelName>{title}</ChannelName>
                                         <MembersText>{channel.membersCount} {channel.membersCount === 1 ? 'member' : 'members'}</MembersText>
                                     </XVertical>
@@ -150,36 +149,15 @@ const Channels = withChatSearchChannels((props) => {
                             </ChannelItemWrapper>
                         );
                     })}
-                </>
+                </XContentWrapper>
             )
             : <EmptyComponent />
             : <XLoader loading={true} />
     );
 }) as React.ComponentType<WithChatSearchChannelsProps>;
 
-const SearchWrapper = Glamorous(XHorizontal)({
-    height: 61,
-    borderBottom: '1px solid #ececec',
-    paddingRight: 24,
-    paddingLeft: 20,
-    '& > div > div': {
-        height: 59,
-        border: 'none',
-        fontSize: 16,
-        fontWeight: 500,
-        '&:focus-within': {
-            boxShadow: 'none',
-            border: 'none'
-        }
-    },
-    '& > div:focus-within': {
-        '& svg > g > path:last-child': {
-            fill: 'rgba(23, 144, 255, 0.5)'
-        }
-    }
-});
-
 interface ChannelsExploreComponentState {
+    count: number;
     query: string;
     sort: {
         orderBy: string,
@@ -191,12 +169,19 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
     constructor(props: { onDirectory?: boolean }) {
         super(props);
         this.state = {
-            query: '', sort: { orderBy: 'membersCount', featured: true }
+            count: 0,
+            query: '',
+            sort: {
+                orderBy: 'membersCount',
+                featured: true
+            }
         };
     }
 
     changeSort = (sort: { orderBy: string, featured: boolean }) => {
-        this.setState({ sort: sort });
+        this.setState({
+            sort: sort
+        });
     }
 
     onQueryChange = (q: string) => {
@@ -205,59 +190,59 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
         });
     }
 
+    handleCount = (n: number) => {
+        if (n !== this.state.count) {
+            this.setState({
+                count: n
+            });
+        }
+    }
+
     render() {
         let sort = [{ [this.state.sort.orderBy]: { order: 'desc' } }];
         if (this.state.sort.featured) {
             sort.unshift({ ['featured']: { order: 'desc' } });
         }
+
+        let sortBox = (
+            <SortPicker
+                sort={this.state.sort}
+                onPick={this.changeSort}
+                options={{
+                    label: 'Sort by', values: [
+                        { label: 'Members count', value: 'membersCount' },
+                        { label: 'Creation date', value: 'createdAt' }
+                    ]
+                }}
+            />
+        );
+
         return (
             <Root>
-                <XVertical separator={0} flexShrink={0}>
-                    <SearchWrapper justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <XHorizontal separator={0} alignItems="center" flexGrow={1}>
-                            <SearchIcon />
-                            <XInput
-                                value={this.state.query}
-                                onChange={this.onQueryChange}
-                                flexGrow={1}
-                                placeholder="Search channels"
-                            />
-                        </XHorizontal>
-                        <XButton
-                            text="Search"
-                            style="primary"
-                            enabled={this.state.query.length > 0}
-                        />
-                    </SearchWrapper>
-                    <XSubHeader title="Featured channels">
-                        <XSubHeaderLink query={{ field: 'createChannel', value: 'true' }}>
-                            <XIcon icon="add" />
-                            New channel
-                        </XSubHeaderLink>
-                        <XSubHeaderRight>
-                            <SortPicker
-                                sort={this.state.sort}
-                                onPick={this.changeSort}
-                                options={
-                                    {
-                                        label: 'Sort by', values: [
-                                            { label: 'Members count', value: 'membersCount' },
-                                            { label: 'Last updated', value: 'updatedAt' },
-                                            { label: 'Create date', value: 'createdAt' }
-                                        ]
-                                    }
-                                }
-                            />
-                        </XSubHeaderRight>
-                    </XSubHeader>
-                </XVertical>
+                <SearchBox
+                    value={this.state.query}
+                    onChange={this.onQueryChange}
+                    placeholder="Search channels"
+                />
                 <ChannelsListWrapper>
-                    <XVertical separator={0} flexGrow={1} flexShrink={0}>
-                        <Channels
-                            variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }}
-                            onDirectory={this.props.onDirectory}
+                    {this.state.query.length <= 0 && (
+                        <XSubHeader
+                            title="Featured channels"
+                            right={sortBox}
                         />
-                    </XVertical>
+                    )}
+                    {(this.state.query.length > 0 && this.state.count > 0) && (
+                        <XSubHeader
+                            title={'Channels'}
+                            counter={this.state.count}
+                            right={sortBox}
+                        />
+                    )}
+                    <Channels
+                        variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }}
+                        onDirectory={this.props.onDirectory}
+                        tagsCount={this.handleCount}
+                    />
                 </ChannelsListWrapper>
             </Root>
         );

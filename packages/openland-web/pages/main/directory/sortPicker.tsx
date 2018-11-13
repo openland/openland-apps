@@ -9,10 +9,6 @@ import { XCheckboxBasic } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
-    borderRadius: 10,
-    boxShadow: '0 4px 12px 0 rgba(0, 0, 0, 0.06)',
-    backgroundColor: '#fff',
-    border: 'solid 1px #dcdee4',
     minWidth: 180
 });
 
@@ -20,8 +16,15 @@ const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
     backgroundColor: props.activated ? '#fff' : 'none',
     borderColor: props.activated ? '#dcdee4' : 'none',
     borderRadius: 10,
+    fontWeight: 400,
+    fontSize: 14,
     '& .icon': {
-        fontSize: 20
+        fontSize: 22,
+        marginRight: '5px!important'
+    },
+    '& > div': {
+        paddingLeft: '10px!important',
+        paddingRight: '12px!important',
     }
 }));
 

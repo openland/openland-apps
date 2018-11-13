@@ -6,7 +6,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XDate } from 'openland-x-format/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
+import { XSubHeader } from 'openland-x/XSubHeader';
 import { XLink } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { withRouter } from 'next/router';
@@ -236,13 +236,12 @@ const About = (props: { userQuery: User }) => {
         <>
             {hasLinks && (
                 <>
-                    <XSubHeader title="Links">
-                        {usr.isYou && (
-                            <XSubHeaderRight>
-                                <EditButton path={'/settings/profile'}>Edit</EditButton>
-                            </XSubHeaderRight>
-                        )}
-                    </XSubHeader>
+                    <XSubHeader
+                        title="Links"
+                        right={usr.isYou ? (
+                            <EditButton path={'/settings/profile'}>Edit</EditButton>
+                        ) : undefined}
+                    />
                     <SectionContent>
                         <XHorizontal>
                             {usr.website && (

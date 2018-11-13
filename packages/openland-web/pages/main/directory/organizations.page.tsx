@@ -11,7 +11,7 @@ import { XTag } from 'openland-x/XTag';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { SortPicker } from './sortPicker';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
-import { XSubHeader, XSubHeaderLink, XSubHeaderRight } from 'openland-x/XSubHeader';
+import { XSubHeader } from 'openland-x/XSubHeader';
 import { OrganizationCard } from './components/OrganizationCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
@@ -395,22 +395,17 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             </SearchFormWrapper>
                                         </SearchRow>
                                         {(this.state.conditions.length <= 0) && (
-                                            <XSubHeader title="All organizations">
-                                                <XSubHeaderLink query={{ field: 'createOrganization', value: 'true' }}>
-                                                    <XIcon icon="add" />
-                                                    New organization
-                                                </XSubHeaderLink>
-                                                <XSubHeaderRight>
-                                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                                </XSubHeaderRight>
-                                            </XSubHeader>
+                                            <XSubHeader
+                                                title="All organizations"
+                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                            />
                                         )}
                                         {(this.state.conditions.length > 0) && (orgCount > 0) && (
-                                            <XSubHeader title="Organizations" counter={orgCount}>
-                                                <XSubHeaderRight>
-                                                    <SortPicker sort={this.state.sort} onPick={this.changeSort} />
-                                                </XSubHeaderRight>
-                                            </XSubHeader>
+                                            <XSubHeader
+                                                title="Organizations"
+                                                counter={orgCount}
+                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                            />
                                         )}
                                         {(this.state.conditions.length > 0) && (orgCount <= 0) && (
                                             <XSubHeader title="No results" />

@@ -6,7 +6,7 @@ import { Organization, OrganizationMemberRole } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XSubHeader, XSubHeaderRight } from 'openland-x/XSubHeader';
+import { XSubHeader } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
 // import { XSwitcher } from 'openland-x/XSwitcher';
@@ -286,15 +286,14 @@ const About = (props: { organizationQuery: Organization }) => {
             )}
             {org.about && (
                 <>
-                    <XSubHeader title="About">
-                        {org.isMine && (
+                    <XSubHeader
+                        title="About"
+                        right={org.isMine ? (
                             <XWithRole role="admin" orgPermission={org.id}>
-                                <XSubHeaderRight>
-                                    <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
-                                </XSubHeaderRight>
+                                <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
                             </XWithRole>
-                        )}
-                    </XSubHeader>
+                        ) : undefined}
+                    />
                     <SectionContent>
                         <AboutText>{org.about}</AboutText>
                     </SectionContent>
@@ -302,15 +301,14 @@ const About = (props: { organizationQuery: Organization }) => {
             )}
             {hasLinks && (
                 <>
-                    <XSubHeader title="Links">
-                        {org.isMine && (
+                    <XSubHeader
+                        title="Links"
+                        right={org.isMine ? (
                             <XWithRole role="admin" orgPermission={org.id}>
-                                <XSubHeaderRight>
-                                    <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
-                                </XSubHeaderRight>
+                                <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
                             </XWithRole>
-                        )}
-                    </XSubHeader>
+                        ) : undefined}
+                    />
                     <SectionContent>
                         <XHorizontal>
                             {org.website && (
@@ -613,15 +611,15 @@ const Members = (props: { organizationQuery: Organization }) => {
         <>
             {(organization.members || []).length > 0 && (
                 <>
-                    <XSubHeader title={organization.isCommunity ? 'Admins' : 'Organization members'} counter={organization.members.length}>
-                        {organization.isMine && (
+                    <XSubHeader
+                        title={organization.isCommunity ? 'Admins' : 'Organization members'}
+                        counter={organization.members.length}
+                        right={organization.isMine ? (
                             <XWithRole role="admin" orgPermission={organization.id}>
-                                <XSubHeaderRight>
-                                    <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" icon="add" />} />
-                                </XSubHeaderRight>
+                                <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" icon="add" />} />
                             </XWithRole>
-                        )}
-                    </XSubHeader>
+                        ) : undefined}
+                    />
                     {(organization.members || []).map((member, i) => {
                         return (
                             <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
