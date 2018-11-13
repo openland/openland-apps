@@ -1540,92 +1540,6 @@ export interface ChatReadVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ChatSearchForCompose
-// ====================================================
-
-export interface ChatSearchForCompose_items_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChatSearchForCompose_items_User {
-  __typename: "User";
-  id: string;
-  title: string;
-  photo: string | null;
-  primaryOrganization: ChatSearchForCompose_items_User_primaryOrganization | null;
-}
-
-export interface ChatSearchForCompose_items_Organization {
-  __typename: "Organization";
-  id: string;
-  title: string;
-  photo: string | null;
-}
-
-export type ChatSearchForCompose_items = ChatSearchForCompose_items_User | ChatSearchForCompose_items_Organization;
-
-export interface ChatSearchForCompose {
-  items: ChatSearchForCompose_items[];
-}
-
-export interface ChatSearchForComposeVariables {
-  query: string;
-  organizations: boolean;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: ChatSearchForComposeMobile
-// ====================================================
-
-export interface ChatSearchForComposeMobile_items_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatSearchForComposeMobile_items_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatSearchForComposeMobile_items_User_primaryOrganization | null;
-}
-
-export interface ChatSearchForComposeMobile_items_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export type ChatSearchForComposeMobile_items = ChatSearchForComposeMobile_items_User | ChatSearchForComposeMobile_items_Organization;
-
-export interface ChatSearchForComposeMobile {
-  items: ChatSearchForComposeMobile_items[];
-}
-
-export interface ChatSearchForComposeMobileVariables {
-  query: string;
-  organizations: boolean;
-  limit?: number | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: ChatSearchGroup
 // ====================================================
 
@@ -6826,9 +6740,6 @@ export interface ExplorePeople_items {
 }
 
 export interface ExplorePeople {
-  /**
-   * Deprecated
-   */
   items: ExplorePeople_items;
 }
 

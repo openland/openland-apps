@@ -15,11 +15,11 @@ import { XButton } from 'openland-x/XButton';
 import ChannelIcon from './components/icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { withChatCompose } from '../../api/withChatCompose';
 import { withUserInfo } from '../UserInfo';
 import { UserShort } from 'openland-api/Types';
 import { TextCompose } from 'openland-text/TextCompose';
 import { ModelMessage } from 'openland-engines/messenger/types';
+import { withExplorePeople } from '../../api/withExplorePeople';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -101,7 +101,7 @@ const EmptyImage = Glamorous.div({
     marginBottom: 50
 });
 
-const SearchPeopleModule = withChatCompose(props => {
+const SearchPeopleModule = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
         console.warn(props);
         return (
@@ -128,12 +128,10 @@ const SearchPeopleModule = withChatCompose(props => {
             value={(props as any).value}
             creatable={true}
             multi={true}
-            options={props.data.items.map(i => {
-                if (i.__typename === 'User') {
-                    return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: i.primaryOrganization ? i.primaryOrganization.name : '' };
-                } else {
-                    return { type: i.__typename, label: i.title, value: i.id, photo: i.photo, org: 'Organization' };
-                }
+            options={props.data.items.edges.map(i => {
+                let u = i.node;
+                return { label: u.name, value: u.id, photo: u.photo, org: u.primaryOrganization ? u.primaryOrganization.name : '' };
+
             }) || []}
             onChange={(data) => (props as any).onChange(data)}
             render={
@@ -149,17 +147,17 @@ const SearchPeopleModule = withChatCompose(props => {
     );
 }) as React.ComponentType<{ value?: any, variables: { query?: string, organizations?: boolean }, onChange: (data: Option<OptionValues>[]) => void, onChangeInput: (data: string) => void }>;
 
-type ComposeComponentRenderProps = { 
-    messenger: MessengerEngine, 
-    conversationId: string, 
-    me?: UserShort 
+type ComposeComponentRenderProps = {
+    messenger: MessengerEngine,
+    conversationId: string,
+    me?: UserShort
 };
 
-type ComposeComponentRenderState = { 
-    values: Option<OptionValues>[], 
-    resolving: boolean, 
+type ComposeComponentRenderState = {
+    values: Option<OptionValues>[],
+    resolving: boolean,
     conversationId: string | null,
-    query: string 
+    query: string
     loading: boolean;
     messages: ModelMessage[];
 };
@@ -169,7 +167,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
     private conversation: ConversationEngine | null;
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
-    
+
     constructor(props: ComposeComponentRenderProps) {
         super(props);
 
@@ -193,7 +191,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading, messages: state.messages });
     }
-    
+
     updateConversation = (props: ComposeComponentRenderProps) => {
         if (this.unmounter) {
             this.unmounter();
@@ -205,7 +203,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
         this.conversation = props.messenger.getConversation(props.conversationId);
         this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
         this.unmounter2 = this.conversation.subscribe(this);
-        
+
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }

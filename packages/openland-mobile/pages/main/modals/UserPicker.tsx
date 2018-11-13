@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { ZQuery } from '../../../components/ZQuery';
-import { ChatSearchForComposeMobileQuery } from 'openland-api';
 import { Keyboard } from 'react-native';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { PageProps } from '../../../components/PageProps';
@@ -12,6 +11,7 @@ import { SSearchControler } from 'react-native-s/SSearchController';
 import { SHeader } from 'react-native-s/SHeader';
 import { SRouter } from 'react-native-s/SRouter';
 import { UserShort } from 'openland-api/Types';
+import { ExplorePeopleQuery } from 'openland-api';
 
 class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 
@@ -33,12 +33,12 @@ class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 
     render() {
         return (
-            <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.props.query, limit: 200 }} fetchPolicy="cache-and-network">
+            <ZQuery query={ExplorePeopleQuery} variables={{ query: this.props.query }} fetchPolicy="cache-and-network">
                 {(reponse) => (
                     <SScrollView>
                         <ZListItemGroup>
-                            {reponse.data.items.filter(u => u.__typename === 'User').map((v) => (
-                                <UserView key={v.id} user={v as any} role={(v as any).primaryOrganization ? (v as any).primaryOrganization.name : undefined} onPress={() => this.handlePicked(v as UserShort)} />
+                            {reponse.data.items.edges.map((v) => (
+                                <UserView key={v.node.id} user={v as any} role={(v as any).primaryOrganization ? (v as any).primaryOrganization.name : undefined} onPress={() => this.handlePicked(v.node)} />
                             ))}
                         </ZListItemGroup>
 

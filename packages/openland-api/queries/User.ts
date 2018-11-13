@@ -70,7 +70,7 @@ export const OnlineQuery = gql`
 
 export const ExplorePeopleQuery = gql`
     query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
-        items: alphaProfiles(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
+        items: userSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
             edges {
                 node {
                     ...UserShort

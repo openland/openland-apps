@@ -324,42 +324,6 @@ export const ChatReadMutation = gql`
     }
 `;
 
-export const ChatSearchForComposeQuery = gql`
-    query ChatSearchForCompose($query: String!, $organizations: Boolean!) {
-        items: alphaChatsSearchForCompose(query: $query, organizations: $organizations) {
-            ... on User {
-                id
-                title: name
-                photo
-                primaryOrganization {
-                    id
-                    name
-                }
-            }
-            ... on Organization {
-                id
-                title: name
-                photo
-            }
-        }
-    }
-`;
-
-export const ChatSearchForComposeMobileQuery = gql`
-    query ChatSearchForComposeMobile($query: String!, $organizations: Boolean!, $limit: Int) {
-        items: alphaChatsSearchForCompose(query: $query, organizations: $organizations, limit: $limit) {
-            ... on User {
-                ...UserShort
-            }
-            ... on Organization {
-                ...OrganizationShort
-            }
-        }
-    }
-    ${UserShort}
-    ${OrganizationShort}
-`;
-
 export const ChatSearchGroupQuery = gql`
     query ChatSearchGroup($members: [ID!]!) {
         group: alphaChatSearch(members: $members) {

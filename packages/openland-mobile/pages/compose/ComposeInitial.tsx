@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { ChatSearchForComposeMobileQuery } from 'openland-api';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ZQuery } from '../../components/ZQuery';
 import { ZLoader } from '../../components/ZLoader';
@@ -19,6 +18,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { ExplorePeopleQuery } from 'openland-api';
 
 export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, onLongPress?: () => void, disabled?: boolean }> {
 
@@ -58,14 +58,14 @@ class UserSearchComponent extends React.Component<PageProps & { query: string }>
         return this.props.query.trim().length > 0 ? (
             <SRouterContext.Consumer>
                 {r => (
-                    <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ query: this.props.query, organizations: false }}>
+                    <ZQuery query={ExplorePeopleQuery} variables={{ query: this.props.query }}>
                         {resp => {
 
                             if (resp.loading) {
                                 return <ZLoader />;
                             }
 
-                            if (resp.data.items.length === 0) {
+                            if (resp.data.items.edges.length === 0) {
                                 return (
                                     <KeyboardSafeAreaView><View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                         <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No people found' + randomEmptyPlaceholderEmoji()}</Text>
@@ -76,8 +76,8 @@ class UserSearchComponent extends React.Component<PageProps & { query: string }>
                             return (
                                 <SScrollView keyboardDismissMode="on-drag">
                                     <View style={{ flexDirection: 'column', width: '100%' }}>
-                                        {resp.data.items.map((item) => (
-                                            <UserViewAsync item={item as UserShort} onPress={(id) => r!.pushAndRemove('Conversation', { flexibleId: id })} />
+                                        {resp.data.items.edges.map((item) => (
+                                            <UserViewAsync item={item.node} onPress={(id) => r!.pushAndRemove('Conversation', { flexibleId: id })} />
                                         ))}
                                     </View>
 
@@ -97,14 +97,14 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
             <>
                 <SHeader title="New message" />
                 <SSearchControler searchRender={(props) => (<UserSearchComponent query={props.query} router={this.props.router} />)}>
-                    <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ query: '', organizations: false }}>
+                    <ZQuery query={ExplorePeopleQuery} variables={{ query: '' }}>
                         {resp => {
 
                             if (resp.loading) {
                                 return <ZLoader />;
                             }
 
-                            if (resp.data.items.length === 0) {
+                            if (resp.data.items.edges.length === 0) {
                                 return (
                                     <KeyboardSafeAreaView><View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                         <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No people found' + randomEmptyPlaceholderEmoji()}</Text>
@@ -119,8 +119,8 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
                                         <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Create channel" path="CreateChannel" pathRemove={true} />
                                     </ZListItemGroup>
                                     <ZListItemGroup divider={false} header="People">
-                                        {resp.data.items.map((item) => (
-                                            <UserViewAsync item={item as UserShort} onPress={(id) => this.props.router.pushAndRemove('Conversation', { flexibleId: id })} />
+                                        {resp.data.items.edges.map((item) => (
+                                            <UserViewAsync item={item.node} onPress={(id) => this.props.router.pushAndRemove('Conversation', { flexibleId: id })} />
                                         ))}
                                     </ZListItemGroup>
 

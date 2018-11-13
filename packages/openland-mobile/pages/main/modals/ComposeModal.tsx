@@ -5,7 +5,6 @@ import { ZBlurredView } from '../../../components/ZBlurredView';
 import { AppStyles } from '../../../styles/AppStyles';
 import { MessageInputBar } from '../components/MessageInputBar';
 import { ZQuery } from '../../../components/ZQuery';
-import { ChatSearchForComposeMobileQuery } from 'openland-api/ChatSearchForComposeMobileQuery';
 import { ZUserListItem } from '../components/ZUserListItem';
 import { UserShort, MessageFull } from 'openland-api/Types';
 import { ZTagView } from '../../../components/ZTagView';
@@ -17,6 +16,7 @@ import { ConversationView } from '../components/ConversationView';
 import { PageProps } from '../../../components/PageProps';
 import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { ExplorePeopleQuery } from 'openland-api';
 
 interface ComposeModalState {
     message: string;
@@ -139,10 +139,10 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                     <View style={{ flexGrow: 1, flexBasis: 0, flexDirection: 'column' }}>
                         <ASSafeAreaProvider top={this.state.searchHeight}>
                             {(this.state.users.length === 0 || this.state.query !== '') && (
-                                <ZQuery query={ChatSearchForComposeMobileQuery} variables={{ organizations: false, query: this.state.query }} fetchPolicy="cache-and-network">
+                                <ZQuery query={ExplorePeopleQuery} variables={{ query: this.state.query }} fetchPolicy="cache-and-network">
                                     {r => (
                                         <ScrollView keyboardShouldPersistTaps={true} style={{ flexGrow: 1, flexBasis: 0 }} keyboardDismissMode="on-drag">
-                                            {r.data.items.map((v) => (<ZUserListItem key={v.id} id={v.id} name={v.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v as UserShort)} />))}
+                                            {r.data.items.edges.map((v) => (<ZUserListItem key={v.node.id} id={v.node.id} name={v.node.name} photo={(v as any).picture} onPress={() => this.handleAddUser(v.node)} />))}
                                         </ScrollView>
                                     )}
                                 </ZQuery>
