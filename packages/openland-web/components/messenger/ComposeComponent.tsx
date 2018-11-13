@@ -195,7 +195,21 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
     }
     
     updateConversation = (props: ComposeComponentRenderProps) => {
+        if (this.props.conversationId !== props.conversationId) {
+            if (this.unmounter) {
+                this.unmounter();
+            }
+            if (this.unmounter2) {
+                this.unmounter2();
+            }
+        }
         this.conversation = props.messenger.getConversation(props.conversationId);
+        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
+        this.unmounter2 = this.conversation.subscribe(this);
+        
+        if (!this.conversation) {
+            throw Error('conversation should be defined here');
+        }
         let convState = this.conversation.getState();
 
         this.setState({

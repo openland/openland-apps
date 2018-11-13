@@ -120,7 +120,21 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
     
     updateConversation = (props: MessagesComponentProps) => {
+        if (this.props.conversationId !== props.conversationId) {
+            if (this.unmounter) {
+                this.unmounter();
+            }
+            if (this.unmounter2) {
+                this.unmounter2();
+            }
+        }
         this.conversation = props.messenger.getConversation(props.conversationId);
+        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
+        this.unmounter2 = this.conversation.subscribe(this);
+        
+        if (!this.conversation) {
+            throw Error('conversation should be defined here');
+        }
         let convState = this.conversation.getState();
 
         this.setState({
@@ -161,14 +175,14 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     handleSend = (text: string) => {
         if (!this.conversation) {
-            throw Error('conversation shoulde be defined here');
+            throw Error('conversation should be defined here');
         }
         this.conversation.sendMessage(text);
     }
 
     handleSendFile = (file: UploadCare.File) => {
         if (!this.conversation) {
-            throw Error('conversation shoulde be defined here');
+            throw Error('conversation should be defined here');
         }
         this.conversation.sendFile(new UplaodCareUploading(file));
     }
@@ -185,7 +199,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     render() {
         if (!this.conversation) {
-            throw Error('conversation shoulde be defined here');
+            throw Error('conversation should be defined here');
         }
         return (
             <ConversationContainer>
