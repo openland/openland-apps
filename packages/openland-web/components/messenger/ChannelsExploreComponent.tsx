@@ -99,13 +99,17 @@ interface WithChatSearchChannelsProps {
 }
 
 const Channels = withChatSearchChannels((props) => {
-    if (props.data && props.data.items) {
-        (props as any).tagsCount(props.data.items.edges.length);
+    if (!(props.data && props.data.items)) {
+        return <XLoader loading={true} />;
     }
 
+    let noData = props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0;
+
+    (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
+
     return (
-        props.data && props.data.items ? props.data.items.edges.length
-            ? (
+        <>
+            {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map(c => {
                         let channel = c.node;
@@ -158,9 +162,11 @@ const Channels = withChatSearchChannels((props) => {
                         );
                     })}
                 </XContentWrapper>
-            )
-            : <EmptyComponent />
-            : <XLoader loading={true} />
+            )}
+            {noData && (
+                <EmptyComponent />
+            )}
+        </> 
     );
 }) as React.ComponentType<WithChatSearchChannelsProps>;
 

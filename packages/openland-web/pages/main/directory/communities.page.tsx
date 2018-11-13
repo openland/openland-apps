@@ -29,10 +29,14 @@ const CommunitiesCards = withExploreCommunities((props) => {
     if (!(props.data && props.data.items)) {
         return null;
     }
+
+    let noData = props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0;
+
+    (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
+
     return (
         <>
-            {(props as any).tagsCount(props.data.items.pageInfo.itemsCount)}
-            {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
+            {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
                         <CommunityCard key={'_org_card_' + i.node.id} item={i.node} />))
@@ -40,7 +44,7 @@ const CommunitiesCards = withExploreCommunities((props) => {
                     <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/communities" />
                 </XContentWrapper>
             )}
-            {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
+            {noData && (
                 <EmptySearchBlock text="No community matches your search" />
             )}
         </>
