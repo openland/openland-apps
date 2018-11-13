@@ -40,7 +40,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
         <>
             {(props as any).tagsCount(props.data.items.pageInfo.itemsCount)}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
-                <XContentWrapper>
+                <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
                         <OrganizationCard key={'_org_card_' + i.node.id} item={i.node} />))
                     }

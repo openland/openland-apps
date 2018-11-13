@@ -106,7 +106,7 @@ const Channels = withChatSearchChannels((props) => {
     return (
         props.data && props.data.items ? props.data.items.edges.length
             ? (
-                <XContentWrapper>
+                <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map(c => {
                         let channel = c.node;
                         let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' / ') : '') + channel.title;
