@@ -341,7 +341,8 @@ const ChannelSignupWrapper = Glamorous.div({
     background: 'rgba(0, 0, 0, 0.8) url(/static/X/signup/background-blur.jpg) no-repeat',
     backgroundSize: 'cover',
     height: '100vh',
-    width: '100%'
+    width: '100%',
+    minWidth: 650
 });
 
 const ChannelToggler = Glamorous.div({
