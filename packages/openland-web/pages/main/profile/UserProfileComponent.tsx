@@ -21,6 +21,8 @@ import PhoneIcon from './icons/ic-phone.svg';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { Back } from './ProfileComponent';
 
 const BackWrapper = Glamorous.div({
     background: '#F9F9F9',
@@ -42,13 +44,6 @@ const BackWrapper = Glamorous.div({
         color: '#5c6a81'
     }
 });
-
-const Back = (props: { callback: () => void }) => (
-    <BackWrapper onClick={props.callback}>
-        <XIcon icon="chevron_left" />
-        <span>Back</span>
-    </BackWrapper>
-);
 
 const HeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -364,7 +359,6 @@ class ChannelCard extends React.Component<ChannelCardProps> {
 
 interface UserProfileInnerProps extends XWithRouter {
     userQuery: User;
-    onBack: () => void;
     handlePageTitle?: any;
     onDirectory?: boolean;
 }
@@ -420,7 +414,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
 
         return (
             <div ref={this.handleRef}>
-                <Back callback={this.props.onBack} />
+                <Back />
                 <Header userQuery={this.props.userQuery} />
                 <XScrollView height="calc(100% - 160px)">
                     <About userQuery={this.props.userQuery} />
@@ -436,19 +430,17 @@ const UserProvider = withUser(withRouter((props) => (
         ? (
             <UserProfileInner
                 userQuery={props.data}
-                onBack={(props as any).onBack}
                 router={props.router}
                 handlePageTitle={(props as any).handlePageTitle}
                 onDirectory={(props as any).onDirectory}
             />
         )
         : <XLoader loading={true} />
-))) as React.ComponentType<{ onBack: () => void, variables: { userId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
+))) as React.ComponentType<{ variables: { userId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
 
-export const UserProfile = (props: { userId: string, onBack: () => void, onDirectory?: boolean; handlePageTitle?: any }) => (
+export const UserProfile = (props: { userId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
     <UserProvider
         variables={{ userId: props.userId }}
-        onBack={props.onBack}
         handlePageTitle={props.handlePageTitle}
         onDirectory={props.onDirectory}
     />

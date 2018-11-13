@@ -7,7 +7,7 @@ import { OrganizationProfile } from '../../main/profile/ProfileComponent';
 export default withApp('UI Framework - Profile', 'viewer', (props) => {
     return (
         <DevDocsScaffold>
-            <OrganizationProfile organizationId="61gk9KRrl9ComJkvYnvdcddr4o" onBack={() => true} />
+            <OrganizationProfile organizationId="61gk9KRrl9ComJkvYnvdcddr4o" />
         </DevDocsScaffold>
     );
 });

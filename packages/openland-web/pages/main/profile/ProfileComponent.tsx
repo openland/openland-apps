@@ -37,6 +37,7 @@ import { withOrganizationMemberChangeRole } from '../../../api/withOrganizationM
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const BackWrapper = Glamorous.div({
     background: '#F9F9F9',
@@ -59,8 +60,8 @@ const BackWrapper = Glamorous.div({
     }
 });
 
-const Back = (props: { callback: () => void }) => (
-    <BackWrapper onClick={props.callback}>
+export const Back = () => (
+    <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
         <XIcon icon="chevron_left" />
         <span>Back</span>
     </BackWrapper>
@@ -745,7 +746,6 @@ class ChannelCard extends React.Component<ChannelCardProps> {
 
 interface OrganizationProfileInnerProps extends XWithRouter {
     organizationQuery: Organization;
-    onBack: () => void;
     handlePageTitle?: any;
     onDirectory?: boolean;
 }
@@ -806,7 +806,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
 
         return (
             <OrgInfoWrapper innerRef={this.handleRef}>
-                <Back callback={this.props.onBack} />
+                <Back />
                 <Header organizationQuery={this.props.organizationQuery} />
                 <XScrollView height="calc(100% - 160px)">
                     <About organizationQuery={this.props.organizationQuery} />
@@ -823,19 +823,17 @@ const OrganizationProvider = withOrganization(withRouter((props) => (
         ? (
             <OrganizationProfileInner
                 organizationQuery={props.data}
-                onBack={(props as any).onBack}
                 router={props.router}
                 handlePageTitle={(props as any).handlePageTitle}
                 onDirectory={(props as any).onDirectory}
             />
         )
         : <XLoader loading={true} />
-))) as React.ComponentType<{ onBack: () => void, variables: { organizationId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
+))) as React.ComponentType<{ variables: { organizationId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
 
-export const OrganizationProfile = (props: { organizationId: string, onBack: () => void, onDirectory?: boolean; handlePageTitle?: any }) => (
+export const OrganizationProfile = (props: { organizationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
     <OrganizationProvider
         variables={{ organizationId: props.organizationId }}
-        onBack={props.onBack}
         handlePageTitle={props.handlePageTitle}
         onDirectory={props.onDirectory}
     />

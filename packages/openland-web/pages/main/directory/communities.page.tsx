@@ -179,7 +179,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                         </Results>
                                     </XVertical>
                                 )}
-                                {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory/communities')} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
+                                {oid && <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
                             </Container>
                         </RootWrapper>
                     </Scaffold.Content>

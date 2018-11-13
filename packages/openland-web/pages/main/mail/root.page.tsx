@@ -113,8 +113,6 @@ export const AddButton = Glamorous(XButton)({
     }
 });
 
-let returnPath: string | undefined = undefined;
-
 class ChatListContainerWrapper extends React.PureComponent<{ emptyState: boolean }> {
     render() {
         const emptyState = this.props.emptyState;
@@ -181,10 +179,6 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
 
         if (!isCompose && props.router.routeQuery.conversationId) {
             tab = 'conversation';
-            // returnPath = props.router.path;
-
-            let r = props.router;
-            returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
         }
 
         if (isInvite) {
@@ -235,12 +229,12 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                                 )}
                                 {tab === 'organization' && (
                                     <OrganizationProfilContainer>
-                                        <OrganizationProfile organizationId={oid} onBack={() => returnPath ? props.router.push(returnPath) : null} handlePageTitle={this.handlePageTitle} />
+                                        <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} />
                                     </OrganizationProfilContainer>
                                 )}
                                 {tab === 'user' && (
                                     <OrganizationProfilContainer>
-                                        <UserProfile userId={uid} onBack={() => returnPath ? props.router.push(returnPath) : null} handlePageTitle={this.handlePageTitle} />
+                                        <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} />
                                     </OrganizationProfilContainer>
                                 )}
                             </ConversationContainer>

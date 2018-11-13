@@ -175,7 +175,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                         </Results>
                                     </XVertical>
                                 )}
-                                {uid && <UserProfile userId={uid} onBack={() => this.props.router.push('/directory/people')} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
+                                {uid && <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
                             </Container>
                         </RootWrapper>
                     </Scaffold.Content>

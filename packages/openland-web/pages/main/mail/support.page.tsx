@@ -16,8 +16,6 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { ChatContainer, ChatListContainer, ConversationContainer, Header, Title, OrganizationProfilContainer, ChannelInviteFromLink, AddButton } from './root.page';
 
-let returnPath: string | undefined = undefined;
-
 export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
     let isCompose = props.router.path.endsWith('/new');
     if (!canUseDOM) {
@@ -48,10 +46,6 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
 
     if (!isCompose && props.router.routeQuery.conversationId) {
         tab = 'conversation';
-        // returnPath = props.router.path;
-
-        let r = props.router;
-        returnPath = r.href.replace(r.protocol + '://' + r.hostName, '');
     }
 
     if (isInvite) {
@@ -109,12 +103,12 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
                             )}
                             {tab === 'organization' && (
                                 <OrganizationProfilContainer>
-                                    <OrganizationProfile organizationId={oid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
+                                    <OrganizationProfile organizationId={oid} />
                                 </OrganizationProfilContainer>
                             )}
                             {tab === 'user' && (
                                 <OrganizationProfilContainer>
-                                    <UserProfile userId={uid} onBack={() => returnPath ? props.router.push(returnPath) : null} />
+                                    <UserProfile userId={uid} />
                                 </OrganizationProfilContainer>
                             )}
                         </ConversationContainer>
