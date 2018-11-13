@@ -9,18 +9,13 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { AlterOrgPublishedButton } from './OrganizationCard';
-
-interface SearchCondition {
-    type: 'name' | 'location' | 'organizationType' | 'interest';
-    value: string | string[];
-    label: string;
-}
 
 const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
-    padding: '16px 25px 15px 20px',
+    padding: '12px 16px',
+    marginLeft: -16,
+    marginRight: -16,
+    borderRadius: 8,
     '&:hover': {
         backgroundColor: '#F9F9F9'
     },
@@ -28,8 +23,7 @@ const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((p
 })));
 
 const CommunityContentWrapper = Glamorous(XHorizontal)({
-    flexGrow: 1,
-    marginLeft: 1
+    flexGrow: 1
 });
 
 const CommunityInfoWrapper = Glamorous.div({
@@ -42,24 +36,25 @@ const CommunityAvatar = Glamorous(XAvatar)({
 
 const CommunityTitle = Glamorous(XLink)({
     fontSize: 14,
-    lineHeight: '16px',
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#1790ff',
-    display: 'block',
-    marginBottom: 3
+    fontWeight: 600,
+    lineHeight: '22px',
+    letterSpacing: 0,
+    color: '#000000!important',
+    marginTop: '-2px!important',
+    marginBottom: 2,
+    display: 'block'
 });
 
 const CommunityCounter = Glamorous.div({
-    fontSize: 14,
-    lineHeight: '20px',
-    fontWeight: 500,
-    letterSpacing: -0.5,
-    color: '#99a2b0'
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: '18px',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.5)'
 });
 
 const CommunityToolsWrapper = Glamorous(XHorizontal)({
-    paddingTop: 2
+    paddingTop: 4
 });
 
 interface CommunityCardProps {
@@ -70,7 +65,6 @@ interface CommunityCardProps {
         isMine: boolean,
         channels: any[],
     };
-    onPick: (q: SearchCondition) => void;
 }
 
 export class CommunityCard extends React.Component<CommunityCardProps, { isHovered: boolean }> {
@@ -89,11 +83,10 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
-                <XHorizontal justifyContent="space-between" separator={12}>
+                <XHorizontal justifyContent="space-between" separator={8}>
                     <XLink path={'/directory/c/' + this.props.item.id}>
                         <CommunityAvatar
                             cloudImageUuid={this.props.item.photo!!}
-                            size="small"
                             style="channel"
                             objectName={this.props.item.name}
                             objectId={this.props.item.id}
@@ -105,11 +98,13 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                             <CommunityCounter>{channelsCount + (channelsCount === 1 ? ' channel' : ' channels')}</CommunityCounter>
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper separator={5}>
-                            <XButton
-                                style={this.state.isHovered ? 'primary' : 'default'}
-                                path={'/directory/o/' + this.props.item.id}
-                                text="View"
-                            />
+                            {this.state.isHovered && (
+                                <XButton
+                                    style="primary"
+                                    path={'/directory/o/' + this.props.item.id}
+                                    text="View"
+                                />
+                            )}
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}

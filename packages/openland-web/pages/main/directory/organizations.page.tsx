@@ -3,31 +3,22 @@ import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XButton } from 'openland-x/XButton';
-import { XIcon } from 'openland-x/XIcon';
-import { XTag } from 'openland-x/XTag';
-import { TextDirectory } from 'openland-text/TextDirectory';
 import { SortPicker } from './sortPicker';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { OrganizationCard } from './components/OrganizationCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import SearchIcon from './icons/ic-search-small.svg';
 import {
     RootWrapper,
     Sidebar,
     Container,
-    SearchRow,
     Results,
-    SearchFormWrapper,
-    SearchFormContent,
-    SearchInput,
-    ResetButton
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { SearchBox } from './components/SearchBox';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
 
 export interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -36,10 +27,8 @@ export interface SearchCondition {
 }
 
 interface OrganizationCardsProps {
-    onPick: (q: SearchCondition) => void;
-    onPageChange: (q: SearchCondition) => void;
-    variables: { query?: string, sort?: string };
-    onSearchReset?: React.MouseEventHandler<any>;
+    onPageChange?: (q: SearchCondition) => void;
+    variables: { query?: string, prefix?: string, sort?: string };
     tagsCount: (n: number) => void;
 }
 
@@ -51,12 +40,12 @@ const OrganizationCards = withExploreOrganizations((props) => {
         <>
             {(props as any).tagsCount(props.data.items.pageInfo.itemsCount)}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
-                <>
+                <XContentWrapper>
                     {props.data.items.edges.map((i, j) => (
-                        <OrganizationCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
+                        <OrganizationCard key={'_org_card_' + i.node.id} item={i.node} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} onPageChange={(props as any).onPageChange} />
-                </>
+                </XContentWrapper>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
                 <EmptySearchBlock text="No organization matches your search" />
@@ -68,150 +57,40 @@ const OrganizationCards = withExploreOrganizations((props) => {
 interface OrganizationsProps {
     featuredFirst: boolean;
     orderBy: string;
-    conditions: SearchCondition[];
-    onPick: (q: SearchCondition) => void;
-    onSearchReset?: React.MouseEventHandler<any>;
+    query: string;
     tagsCount: (n: number) => void;
 }
 
 class Organizations extends React.PureComponent<OrganizationsProps> {
-    queryhash?: number;
-    scrollRef?: any;
-    buildQuery = (clauses: any[], operator: '$and' | '$or'): any | null => {
-        if (clauses.length === 0) {
-            return undefined;
-        } else if (clauses.length === 1) {
-            return clauses[0];
-        } else {
-            let clause = {};
-            clause[operator] = clauses;
-            return clause;
-        }
-    }
-
-    groupByType = (conditions: SearchCondition[]) => {
-        return conditions.reduce(
-            (res, x) => {
-                (res[x.type] = res[x.type] || []).push(x);
-                return res;
-            },
-            {}
-        );
-    }
-
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
     }
 
-    handleScrollRef = (el: any) => {
-        this.scrollRef = el;
-    }
-
-    scrolTop = () => {
-        if (this.scrollRef) {
-            this.scrollRef.scrollTo(0, 0);
-        }
-    }
-
     render() {
-        let clauses: any[] = [];
-        let groups: { [type: string]: SearchCondition[] } = this.groupByType(this.props.conditions);
-        let hits = [];
-        for (let type of Object.keys(groups)) {
-            let group = groups[type];
-
-            let groupedValues: ({ type: string, value: string })[] = [];
-
-            clauses.push(this.buildQuery(
-                [...group.map((c: SearchCondition) => {
-                    if (Array.isArray(c.value)) {
-                        c.value.map((v: string) => {
-                            groupedValues.push({
-                                type: c.type,
-                                value: v
-                            });
-                        });
-
-                        return undefined;
-                    } else {
-                        let clause = {};
-                        clause[c.type] = c.value;
-                        return clause;
-                    }
-                }).filter((c: any) => c !== undefined),
-                ...groupedValues.map((c: { type: string, value: string }) => {
-                    let clause = {};
-                    clause[c.type] = c.value;
-                    return clause;
-                })],
-                '$or'));
-
-            hits.push({
-                category: 'directory_' + type, tags: group.map((c: SearchCondition) => c.value).reduce(
-                    (res, x) => {
-                        if (Array.isArray(x)) {
-                            (res as string[]).push(...x);
-                        } else {
-                            (res as string[]).push(x);
-                        }
-                        return res;
-                    },
-                    []
-                )
-            });
-        }
-
-        let q = this.buildQuery(clauses, '$and');
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
         if (this.props.featuredFirst) {
             sort.unshift({ ['featured']: { order: 'desc' } });
         }
 
         return (
-            <Results contentContainerRef={this.handleScrollRef}>
-                <OrganizationCards
-                    onPick={this.props.onPick}
-                    onSearchReset={this.props.onSearchReset}
-                    tagsCount={this.tagsCount}
-                    variables={{
-                        query: q ? JSON.stringify(q) : undefined,
-                        sort: JSON.stringify(sort),
-                    }}
-                    onPageChange={this.scrolTop}
-                />
-            </Results>
-
-        );
-    }
-}
-
-class ConditionsRender extends React.Component<{ conditions: SearchCondition[], removeCallback: (conditon: SearchCondition) => void }> {
-    render() {
-        return (
-            <>
-                {this.props.conditions.map((condition, i) => (
-                    <XTag
-                        key={condition.type + '_' + condition.value + i}
-                        text={condition.label}
-                        size="large"
-                        rounded={true}
-                        color={condition.type === 'name' ? 'gray' : 'default'}
-                        icon="x-close"
-                        onIconClick={() => this.props.removeCallback(condition)}
-                    />
-                ))}
-            </>
+            <OrganizationCards
+                tagsCount={this.tagsCount}
+                variables={{
+                    prefix: this.props.query,
+                    sort: JSON.stringify(sort),
+                }}
+            />
         );
     }
 }
 
 interface RootComponentState {
-    searchText: string;
-    conditions: SearchCondition[];
-    sort: { orderBy: string, featured: boolean };
+    query: string;
+    sort: {
+        orderBy: string,
+        featured: boolean
+    };
     orgCount: number;
-    showFilters: boolean;
-    shownSelect: number;
     pageTitle: string;
 }
 
@@ -223,12 +102,12 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         super(props);
 
         this.state = {
-            searchText: '',
-            conditions: [],
-            sort: { orderBy: 'createdAt', featured: true },
+            query: '',
+            sort: {
+                orderBy: 'createdAt',
+                featured: true
+            },
             orgCount: 0,
-            showFilters: false,
-            shownSelect: 1,
             pageTitle: 'Organizations Directory'
         };
     }
@@ -239,106 +118,20 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         });
     }
 
-    handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let val = (e.target as any).value as string;
-        this.setState({
-            searchText: val
-        });
-    }
-
     changeSort = (sort: { orderBy: string, featured: boolean }) => {
-        this.setState({ sort: sort });
-    }
-
-    addCondition = (condition: SearchCondition, reload?: boolean) => {
-        // prevent empty search
-        if (condition.value !== undefined && condition.value.length === 0) {
-            return;
-        }
-        let res = [...this.state.conditions];
-        let same = res.filter(c => c.type === condition.type && c.value === condition.value)[0];
-        if (!same) {
-            res.push(condition);
-        }
-        this.resetPage();
-        this.setState({ conditions: res, searchText: '' });
-
-        this.props.router.replaceQueryParams({ clauses: JSON.stringify(res), page: undefined });
-
-        if (this.organizationListRef.current) {
-            this.organizationListRef.current.scrolTop();
-        }
-    }
-
-    replaceConditions = (condition: SearchCondition) => {
-        let res: any[] = [];
-        res.push(condition);
-        this.resetPage();
-        this.setState({ conditions: res, searchText: '' });
-    }
-
-    removeCondition = (condition: SearchCondition) => {
-        let res = [...this.state.conditions.filter(c => (c.type !== condition.type) || (condition.value !== undefined && c.value !== condition.value))];
-        this.resetPage();
         this.setState({
-            conditions: res
+            sort: sort
         });
     }
 
     resetPage = () => {
         this.props.router.replaceQueryParams({ page: undefined });
-        this.props.router.replaceQueryParams({ clauses: undefined });
     }
 
-    reset = () => {
+    onQueryChange = (q: string) => {
         this.resetPage();
-        this.setState({ conditions: [] });
-    }
-
-    keydownHandler = (e: any) => {
-        if (e.target !== this.input) {
-            return;
-        }
-        if (e.code === 'Backspace' && this.state.searchText === '') {
-            e.preventDefault();
-            this.removeCondition(this.state.conditions[this.state.conditions.length - 1]);
-        }
-    }
-
-    searchButtonHandler = (e: any) => {
-        this.addCondition({ type: 'name', label: this.state.searchText, value: this.state.searchText });
-    }
-
-    componentDidMount() {
-        document.addEventListener('keydown', this.keydownHandler);
-        if (this.props.router.query.clauses !== undefined) {
-            this.routerParser();
-        }
-    }
-
-    componentWillReceiveProps(nextProps: XWithRouter) {
-        if (nextProps.router.query.clauses) {
-            let clauses: SearchCondition[] = JSON.parse(nextProps.router.query.clauses);
-            this.setState({
-                conditions: clauses,
-                searchText: ''
-            });
-        } else {
-            this.setState({
-                conditions: [],
-                searchText: ''
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.keydownHandler);
-    }
-
-    onSearchFocus = (e: any) => {
-        this.input = e.target;
         this.setState({
-            showFilters: true
+            query: q
         });
     }
 
@@ -348,14 +141,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         });
     }
 
-    routerParser = () => {
-        let clauses: SearchCondition[] = JSON.parse(this.props.router.query.clauses);
-
-        this.setState({ conditions: clauses, searchText: '' });
-    }
-
     render() {
-        const { searchText, conditions, orgCount } = this.state;
+        const { query, orgCount } = this.state;
         let oid = this.props.router.routeQuery.organizationId;
 
         return (
@@ -368,57 +155,32 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             <Container>
                                 {!oid && (
                                     <XVertical separator={0}>
-                                        <SearchRow>
-                                            <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                                <SearchFormContent separator={4} flexGrow={1}>
-                                                    <SearchIcon />
-                                                    <ConditionsRender conditions={this.state.conditions} removeCallback={this.removeCondition} />
-                                                    <SearchInput
-                                                        onFocus={this.onSearchFocus}
-                                                        autoFocus={true}
-                                                        value={searchText}
-                                                        onChange={this.handleSearchChange}
-                                                        placeholder={TextDirectory.searchInputPlaceholder}
-                                                    />
-                                                </SearchFormContent>
-                                                <XHorizontal separator={2}>
-                                                    {this.state.conditions.length > 0 && (
-                                                        <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
-                                                    )}
-                                                    <XButton
-                                                        text={TextDirectory.buttonSearch}
-                                                        style="primary"
-                                                        enabled={!!(this.state.searchText) || this.state.conditions.length > 0}
-                                                        onClick={this.searchButtonHandler}
-                                                    />
-                                                </XHorizontal>
-                                            </SearchFormWrapper>
-                                        </SearchRow>
-                                        {(this.state.conditions.length <= 0) && (
-                                            <XSubHeader
-                                                title="All organizations"
-                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
-                                            />
-                                        )}
-                                        {(this.state.conditions.length > 0) && (orgCount > 0) && (
-                                            <XSubHeader
-                                                title="Organizations"
-                                                counter={orgCount}
-                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
-                                            />
-                                        )}
-                                        {(this.state.conditions.length > 0) && (orgCount <= 0) && (
-                                            <XSubHeader title="No results" />
-                                        )}
-                                        <Organizations
-                                            ref={this.organizationListRef}
-                                            featuredFirst={this.state.sort.featured}
-                                            orderBy={this.state.sort.orderBy}
-                                            conditions={conditions}
-                                            onPick={this.replaceConditions}
-                                            onSearchReset={this.reset}
-                                            tagsCount={this.tagsCount}
+                                        <SearchBox
+                                            value={query}
+                                            onChange={this.onQueryChange}
+                                            placeholder="Search organizations"
                                         />
+                                        <Results>
+                                            {(query.length <= 0) && (
+                                                <XSubHeader
+                                                    title="All organizations"
+                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                />
+                                            )}
+                                            {(query.length > 0) && (orgCount > 0) && (
+                                                <XSubHeader
+                                                    title="Organizations"
+                                                    counter={orgCount}
+                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                />
+                                            )}
+                                            <Organizations
+                                                featuredFirst={this.state.sort.featured}
+                                                orderBy={this.state.sort.orderBy}
+                                                query={query}
+                                                tagsCount={this.tagsCount}
+                                            />
+                                        </Results>
                                     </XVertical>
                                 )}
                                 {oid && <OrganizationProfile organizationId={oid} onBack={() => this.props.router.push('/directory')} handlePageTitle={this.handlePageTitle} onDirectory={true} />}

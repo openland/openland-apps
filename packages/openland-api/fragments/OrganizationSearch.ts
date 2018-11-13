@@ -7,6 +7,7 @@ export const OrganizationSearch = gql`
         name
         photo
         isMine
+        about
         featured: alphaFeatured
         members: alphaOrganizationMembers{
             user{

@@ -3,30 +3,22 @@ import { withApp } from '../../../components/withApp';
 import { withExploreCommunities } from '../../../api/withExploreCommunities';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XButton } from 'openland-x/XButton';
-import { XIcon } from 'openland-x/XIcon';
-import { TextDirectory } from 'openland-text/TextDirectory';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { CommunityCard } from './components/CommunityCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import SearchIcon from './icons/ic-search-small.svg';
 import {
     RootWrapper,
     Sidebar,
     Container,
-    SearchRow,
-    Results,
-    SearchFormWrapper,
-    SearchFormContent,
-    SearchInput,
-    ResetButton
+    Results
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
+import { SearchBox } from './components/SearchBox';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
 
 interface CommunitiesCardsProps {
     variables: { query?: string, sort?: string };
@@ -41,12 +33,12 @@ const CommunitiesCards = withExploreCommunities((props) => {
         <>
             {(props as any).tagsCount(props.data.items.pageInfo.itemsCount)}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
-                <>
+                <XContentWrapper>
                     {props.data.items.edges.map((i, j) => (
-                        <CommunityCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
+                        <CommunityCard key={'_org_card_' + i.node.id} item={i.node} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/communities" />
-                </>
+                </XContentWrapper>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
                 <EmptySearchBlock text="No community matches your search" />
@@ -59,7 +51,7 @@ interface CommunitiesProps {
     featuredFirst: boolean;
     orderBy: string;
     tagsCount: (n: number) => void;
-    searchText: string;
+    query: string;
 }
 
 class Communities extends React.PureComponent<CommunitiesProps> {
@@ -77,7 +69,7 @@ class Communities extends React.PureComponent<CommunitiesProps> {
             <CommunitiesCards
                 tagsCount={this.tagsCount}
                 variables={{
-                    query: this.props.searchText,
+                    query: this.props.query,
                     sort: JSON.stringify(sort),
                 }}
             />
@@ -86,7 +78,7 @@ class Communities extends React.PureComponent<CommunitiesProps> {
 }
 
 interface RootComponentState {
-    searchText: string;
+    query: string;
     sort: { orderBy: string, featured: boolean };
     orgCount: number;
     pageTitle: string;
@@ -99,7 +91,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         super(props);
 
         this.state = {
-            searchText: '',
+            query: '',
             sort: { orderBy: 'createdAt', featured: true },
             orgCount: 0,
             pageTitle: 'Communities Directory'
@@ -112,10 +104,9 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         });
     }
 
-    handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let val = (e.target as any).value as string;
+    onQueryChange = (q: string) => {
         this.resetPage();
-        this.setState({ searchText: val });
+        this.setState({ query: q });
     }
 
     changeSort = (sort: { orderBy: string, featured: boolean }) => {
@@ -129,7 +120,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     reset = () => {
         this.resetPage();
-        this.setState({ searchText: '' });
+        this.setState({ query: '' });
     }
 
     componentDidMount() {
@@ -143,7 +134,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     }
 
     routerParser = () => {
-        this.setState({ searchText: '' });
+        this.setState({ query: '' });
     }
 
     render() {
@@ -160,48 +151,28 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             <Container>
                                 {!oid && (
                                     <XVertical separator={0}>
-                                        <SearchRow>
-                                            <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                                <SearchFormContent separator={4} flexGrow={1}>
-                                                    <SearchIcon />
-                                                    <SearchInput
-                                                        value={this.state.searchText}
-                                                        onChange={this.handleSearchChange}
-                                                        placeholder="Search communities"
-                                                    />
-                                                </SearchFormContent>
-                                                <XHorizontal separator={2}>
-                                                    {this.state.searchText.length > 0 && (
-                                                        <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
-                                                    )}
-                                                    <XButton
-                                                        text={TextDirectory.buttonSearch}
-                                                        style="primary"
-                                                        enabled={!!this.state.searchText}
-                                                    />
-                                                </XHorizontal>
-                                            </SearchFormWrapper>
-                                        </SearchRow>
-                                        {(this.state.searchText.length <= 0) && (
-                                            <XSubHeader
-                                                title="All communities"
-                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
-                                            />
-                                        )}
-                                        {(this.state.searchText.length > 0) && (orgCount > 0) && (
-                                            <XSubHeader
-                                                title="Communities"
-                                                counter={orgCount}
-                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
-                                            />
-                                        )}
-                                        {(this.state.searchText.length > 0) && (orgCount <= 0) && (
-                                            <XSubHeader title="No results" />
-                                        )}
+                                        <SearchBox
+                                            value={this.state.query}
+                                            onChange={this.onQueryChange}
+                                            placeholder="Search communities"
+                                        />
                                         <Results>
+                                            {(this.state.query.length <= 0) && (
+                                                <XSubHeader
+                                                    title="All communities"
+                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                />
+                                            )}
+                                            {(this.state.query.length > 0) && (orgCount > 0) && (
+                                                <XSubHeader
+                                                    title="Communities"
+                                                    counter={orgCount}
+                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                />
+                                            )}
                                             <Communities
                                                 featuredFirst={this.state.sort.featured}
-                                                searchText={this.state.searchText}
+                                                query={this.state.query}
                                                 orderBy={this.state.sort.orderBy}
                                                 tagsCount={this.tagsCount}
                                             />

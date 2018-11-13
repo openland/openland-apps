@@ -3,27 +3,18 @@ import { withApp } from '../../../components/withApp';
 import { withExplorePeople } from '../../../api/withExplorePeople';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XButton } from 'openland-x/XButton';
-import { TextDirectory } from 'openland-text/TextDirectory';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { ProfileCard } from './components/ProfileCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import SearchIcon from './icons/ic-search-small.svg';
 import {
     RootWrapper,
     Sidebar,
     Container,
-    SearchRow,
-    Results,
-    SearchFormWrapper,
-    SearchFormContent,
-    SearchInput,
-    ResetButton
+    Results
 } from './components/Layout';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { SearchBox } from './components/SearchBox';
@@ -130,13 +121,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     resetPage = () => {
         this.props.router.replaceQueryParams({ page: undefined });
-        this.props.router.replaceQueryParams({ clauses: undefined });
-    }
-
-    componentDidMount() {
-        if (this.props.router.query.clauses !== undefined) {
-            this.routerParser();
-        }
     }
 
     tagsCount = (n: number) => {

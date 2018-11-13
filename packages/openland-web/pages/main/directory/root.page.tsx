@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold, CreateOrganization } from '../../../components/Scaffold';
+import { Scaffold } from '../../../components/Scaffold';
 import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
 import {

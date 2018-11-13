@@ -8,21 +8,16 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../../../components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
-import { XTag } from 'openland-x/XTag';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 
-interface SearchCondition {
-    type: 'name' | 'location' | 'organizationType' | 'interest';
-    value: string | string[];
-    label: string;
-}
-
 const OrganizationCardWrapper = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
-    padding: '22px 18px 19px 24px',
+    padding: 16,
+    marginLeft: -16,
+    marginRight: -16,
+    borderRadius: 8,
     '&:hover': {
         backgroundColor: '#F9F9F9'
     }
@@ -38,34 +33,52 @@ const OrganizationInfoWrapper = Glamorous.div({
 });
 
 const OrganizationAvatar = Glamorous(XAvatar)({
-    cursor: 'pointer'
+    width: 74,
+    height: 74,
+    cursor: 'pointer',
+    '& img': {
+        width: '74px!important',
+        height: '74px!important'
+    }
 });
 
 const OrganizationTitle = Glamorous(XLink)({
     fontSize: 16,
-    lineHeight: '20px',
-    fontWeight: 500,
-    letterSpacing: -0.5,
-    color: '#5c6a81',
-    '&:hover': {
-        color: '#1790ff',
-    }
+    lineHeight: '19px',
+    fontWeight: 600,
+    letterSpacing: 0,
+    color: '#000000!important'
+});
+
+const OrganizationAbout = Glamorous.div({
+    fontSize: 14,
+    lineHeight: '22px',
+    fontWeight: 400,
+    letterSpacing: 0,
+    color: '#000000',
+    marginTop: 4,
+    height: 22,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
+    maxWidth: 450
 });
 
 const OrganizationMembers = makeNavigable(Glamorous.div({
     display: 'flex',
     flexAlign: 'center',
-    marginTop: 7,
+    marginTop: 8,
     cursor: 'pointer',
     '& *': {
         cursor: 'pointer'
     },
     '& span': {
         marginLeft: 8,
-        fontSize: 14,
-        letterSpacing: -0.4,
-        color: '#99a2b0',
-        fontWeight: 500,
+        fontSize: 13,
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.4)',
+        fontWeight: 600,
         lineHeight: '18px'
     },
     '&:hover': {
@@ -73,36 +86,7 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
             color: '#1790ff'
         }
     }
-})as any);
-
-const OrganizationToolsWrapper = Glamorous(XHorizontal)({
-    paddingTop: 1
-});
-
-class OrganizationTypes extends React.Component<{ orgTypes: string[], onPick: (q: SearchCondition) => void }> {
-    render() {
-        let elements = this.props.orgTypes.filter((e, i) => i <= 2).map((orgType, i) => (
-            <XTag
-                color="gray"
-                rounded={true}
-                key={'_org_type_text_' + i}
-                onClick={() => this.props.onPick({ type: 'organizationType', value: orgType, label: orgType })}
-                text={orgType}
-            />
-        ));
-        if (this.props.orgTypes.length > 3) {
-            elements.push(
-                <XTag
-                    color="gray"
-                    rounded={true}
-                    key={'_org_type_text_more'}
-                    text={'+ ' + String(this.props.orgTypes.length - 3) + ' more'}
-                />
-            );
-        }
-        return elements;
-    }
-}
+}) as any);
 
 export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
     <XButton
@@ -123,6 +107,7 @@ interface OrganizationCardProps {
         superAccountId: string,
         name: string,
         photo: string | null,
+        about: string | null,
         isMine: boolean,
         members: {
             user: {
@@ -132,30 +117,9 @@ interface OrganizationCardProps {
             }
         }[]
     };
-    onPick: (q: SearchCondition) => void;
 }
 
-const OrganizationCardTypeWrapper = Glamorous(XHorizontal)({
-    flexWrap: 'wrap',
-    marginTop: 11,
-    '& > div': {
-        marginRight: 8
-    }
-});
-
 export class OrganizationCard extends React.Component<OrganizationCardProps, { isHovered: boolean }> {
-    tagsCounter = (data: string[]) => {
-        let arr = [];
-        for (let i = 0; i < data.length; i++) {
-            if (i === 2) {
-                arr.push({ label: `+ ${data.length - 2} more`, value: undefined });
-                break;
-            }
-            arr.push({ label: data[i], value: data[i] });
-        }
-        return arr;
-    }
-
     constructor(props: OrganizationCardProps) {
         super(props);
         this.state = {
@@ -170,7 +134,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
-                <XHorizontal justifyContent="space-between" separator={12}>
+                <XHorizontal justifyContent="space-between" separator={10}>
                     <XLink path={'/directory/o/' + this.props.item.id}>
                         <OrganizationAvatar
                             cloudImageUuid={this.props.item.photo!!}
@@ -183,31 +147,31 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                     <OrganizationContentWrapper>
                         <OrganizationInfoWrapper>
                             <OrganizationTitle path={'/directory/o/' + this.props.item.id}>{this.props.item.name}</OrganizationTitle>
+                            {this.props.item.about && <OrganizationAbout>{this.props.item.about}</OrganizationAbout>}
                             {firstMember && (
                                 <OrganizationMembers path={'/directory/u/' + firstMember.user.id}>
                                     <XAvatar
                                         objectName={firstMember.user.name}
                                         objectId={firstMember.user.id}
-                                        size="x-small"
+                                        size="l-small"
                                         style="colorus"
                                         cloudImageUuid={firstMember.user.picture || undefined}
                                     />
                                     <span>{firstMember.user.name + (this.props.item.members.length > 1 ? (' +' + (this.props.item.members.length - 1) + ' more') : '')}</span>
                                 </OrganizationMembers>
                             )}
-                           
                         </OrganizationInfoWrapper>
-                        <OrganizationToolsWrapper separator={5}>
-                            {this.props.item.isMine && (
+                        <XHorizontal separator={5}>
+                            {this.props.item.isMine && this.state.isHovered && (
                                 <XButton
                                     style="ghost"
                                     text={TextDirectory.labelYourOrganization}
                                     enabled={false}
                                 />
                             )}
-                            {!this.props.item.isMine && (
+                            {!this.props.item.isMine && this.state.isHovered && (
                                 <XButton
-                                    style={this.state.isHovered ? 'primary' : 'default'}
+                                    style="primary"
                                     path={'/directory/o/' + this.props.item.id}
                                     text="View"
                                 />
@@ -240,7 +204,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                     </>
                                 )}
                             />
-                        </OrganizationToolsWrapper>
+                        </XHorizontal>
                     </OrganizationContentWrapper>
                 </XHorizontal>
             </OrganizationCardWrapper>

@@ -27,66 +27,8 @@ export const Container = Glamorous.div({
     position: 'relative',
 });
 
-export const SearchRow = Glamorous.div({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
-});
-
 export const Results = Glamorous(XScrollView)({
     height: 'calc(100vh - 61px)'
-});
-
-export const SearchFormWrapper = Glamorous(XHorizontal)({
-    paddingLeft: 14,
-    paddingRight: 14,
-    minHeight: 60,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-});
-
-export const SearchFormContent = Glamorous(XHorizontal)({
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 5,
-    '&:focus-within': {
-        '& > svg > g > path:last-child': {
-            fill: '#1790ff',
-            opacity: 0.5
-        },
-    }
-});
-
-export const SearchInput = Glamorous.input({
-    height: '100%',
-    minHeight: 40,
-    paddingLeft: 9,
-    lineHeight: 1.43,
-    flexGrow: 1,
-    fontSize: 16,
-    fontWeight: 500,
-    '::placeholder': {
-        color: '#99A2B0'
-    }
-});
-
-export const ResetButton = Glamorous.div({
-    color: '#99a2b0',
-    height: 32,
-    lineHeight: '32px',
-    fontSize: 14,
-    letterSpacing: -0.2,
-    fontWeight: 500,
-    padding: '0 14px',
-    cursor: 'pointer',
-    '&:hover': {
-        color: '#334562',
-    },
-    '&:active': {
-        color: '#1790ff',
-    },
 });
 
 const SidebarWrapper = Glamorous.div({

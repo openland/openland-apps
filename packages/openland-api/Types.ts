@@ -5758,6 +5758,7 @@ export interface ExploreOrganizations_items_edges_node {
   name: string;
   photo: string | null;
   isMine: boolean;
+  about: string | null;
   featured: boolean;
   members: ExploreOrganizations_items_edges_node_members[];
   channels: (ExploreOrganizations_items_edges_node_channels | null)[];
@@ -5832,6 +5833,7 @@ export interface ExploreComunity_items_edges_node {
   name: string;
   photo: string | null;
   isMine: boolean;
+  about: string | null;
   featured: boolean;
   members: ExploreComunity_items_edges_node_members[];
   channels: (ExploreComunity_items_edges_node_channels | null)[];
@@ -6028,6 +6030,7 @@ export interface OrganizationAlterPublished_alphaAlterPublished {
   name: string;
   photo: string | null;
   isMine: boolean;
+  about: string | null;
   featured: boolean;
   members: OrganizationAlterPublished_alphaAlterPublished_members[];
   channels: (OrganizationAlterPublished_alphaAlterPublished_channels | null)[];
@@ -6077,6 +6080,7 @@ export interface OrganizationByPrefix_organizationByPrefix {
   name: string;
   photo: string | null;
   isMine: boolean;
+  about: string | null;
   featured: boolean;
   members: OrganizationByPrefix_organizationByPrefix_members[];
   channels: (OrganizationByPrefix_organizationByPrefix_channels | null)[];
@@ -7969,6 +7973,7 @@ export interface OrganizationSearch {
   name: string;
   photo: string | null;
   isMine: boolean;
+  about: string | null;
   featured: boolean;
   members: OrganizationSearch_members[];
   channels: (OrganizationSearch_channels | null)[];

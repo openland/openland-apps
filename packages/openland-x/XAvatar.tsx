@@ -11,7 +11,7 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { UserQuery } from 'openland-api';
 
-export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'x-small';
+export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | 'user' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
@@ -71,6 +71,11 @@ let sizeStyles = styleResolver({
         height: 36,
         width: 36,
         fontSize: 14
+    },
+    'l-small': {
+        height: 20,
+        width: 20,
+        fontSize: 10
     },
     'x-small': {
         height: 16,
@@ -134,6 +139,12 @@ let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, a
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
     } : { borderRadius: 18 },
+    'l-small': (props.style === 'organization' || props.style === 'channel') ? {
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
+    } : { borderRadius: 10 },
     'x-small': (props.style === 'organization' || props.style === 'channel') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
@@ -251,6 +262,7 @@ const DotSize = {
     'medium':   11,
     'default':  11,
     'small':    10,
+    'l-small':  8,
     'x-small':  8
 };
 
@@ -264,6 +276,7 @@ const DotPosition = {
     'medium':   1,
     'default':  0,
     'small':    0,
+    'l-small':  0,
     'x-small':  -1
 };
 
