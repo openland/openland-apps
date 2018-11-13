@@ -22,9 +22,15 @@ export const RootWrapper = Glamorous.div({
 });
 
 export const Container = Glamorous.div({
-    flex: 1,
+    width: 'calc(100% - 344px)',
     height: '100%',
     position: 'relative',
+    '@media (max-width: 1100px)': {
+        width: 'calc(100% - 300px)'
+    },
+    '@media (max-width: 950px)': {
+        width: 'calc(100% - 230px)'
+    }
 });
 
 export const Results = Glamorous(XScrollView)({

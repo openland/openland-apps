@@ -65,12 +65,6 @@ const OrganizationAbout = Glamorous.div({
     letterSpacing: 0,
     color: '#000000',
     marginTop: 4,
-    height: 22,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    width: '100%',
-    maxWidth: 450,
 
     '&': {
         height: 22,
