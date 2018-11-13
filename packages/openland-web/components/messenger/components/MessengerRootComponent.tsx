@@ -120,14 +120,13 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
     
     updateConversation = (props: MessagesComponentProps) => {
-        if (this.props.conversationId !== props.conversationId) {
-            if (this.unmounter) {
-                this.unmounter();
-            }
-            if (this.unmounter2) {
-                this.unmounter2();
-            }
+        if (this.unmounter) {
+            this.unmounter();
         }
+        if (this.unmounter2) {
+            this.unmounter2();
+        }
+    
         this.conversation = props.messenger.getConversation(props.conversationId);
         this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
         this.unmounter2 = this.conversation.subscribe(this);
@@ -141,8 +140,16 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             messages: convState.messages,
             loading: convState.loading
         });
-        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-        this.unmounter2 = this.conversation.subscribe(this);
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
+        if (this.unmounter) {
+            this.unmounter();
+        }
+        if (this.unmounter2) {
+            this.unmounter2();
+        }
     }
 
     componentWillMount() {
