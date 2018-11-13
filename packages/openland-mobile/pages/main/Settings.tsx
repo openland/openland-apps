@@ -71,8 +71,8 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                 <SHeader title="Settings" />
                 <ZQuery query={AccountSettingsQuery}>
                     {resp => {
-                        let primary = resp.data.organizations.find((v) => v.id === resp.data.me!.primaryOrganization!.id)!!;
-                        let secondary = resp.data.organizations.filter((v) => v.id !== primary.id);
+                        let primary = resp.data.me!.primaryOrganization;
+                        let secondary = resp.data.organizations.filter((v) => v.id !== (primary && primary.id));
                         secondary.sort((a, b) => a.name.localeCompare(b.name));
                         let secondaryFiltered = [];
                         for (let i = 0; i < secondary.length && i < 2; i++) {
@@ -84,7 +84,7 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     photo={resp.data!!.me!!.photo}
                                     id={resp.data!!.me!!.id}
                                     title={resp.data!!.me!!.name}
-                                    subtitle={primary.name}
+                                    subtitle={primary ? primary.name : undefined}
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
@@ -92,13 +92,13 @@ class SettingsComponent extends React.Component<PageProps, { status: UpdateStatu
                                     <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com' })} />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }}>
-                                    <ZListItem
+                                    {primary && <ZListItem
                                         text={primary.name}
                                         leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
                                         description="Primary"
-                                        onPress={() => this.props.router.push('ProfileOrganization', { id: primary.id })}
+                                        onPress={() => this.props.router.push('ProfileOrganization', { id: primary!.id })}
                                         navigationIcon={true}
-                                    />
+                                    />}
                                     {secondaryFiltered.map((v) => (
                                         <ZListItem
                                             key={v.id}
