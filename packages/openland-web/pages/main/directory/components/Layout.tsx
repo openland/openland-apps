@@ -32,7 +32,7 @@ export const SearchRow = Glamorous.div({
 });
 
 export const Results = Glamorous(XScrollView)({
-    height: 'calc(100vh - 118px)'
+    height: 'calc(100vh - 61px)'
 });
 
 export const SearchFormWrapper = Glamorous(XHorizontal)({

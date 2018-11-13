@@ -6,6 +6,8 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { User, User_user } from 'openland-api/Types';
+import { withOnline } from '../../../../api/withOnline';
+import { XDate } from 'openland-x-format/XDate';
 
 interface SearchCondition {
     type: 'name' | 'location' | 'organizationType' | 'interest';
@@ -14,23 +16,24 @@ interface SearchCondition {
 }
 
 const ProfileCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     backgroundColor: '#fff',
-    padding: '11px 24px 10px 23px',
+    padding: '12px 16px',
+    marginLeft: -16,
+    marginRight: -16,
+    borderRadius: 8,
+    height: 64,
     '&:hover': {
-        backgroundColor: '#F9F9F9'
+        backgroundColor: '#f9f9f9'
     },
     cursor: 'pointer'
 })));
 
 const ProfileContentWrapper = Glamorous(XHorizontal)({
     flexGrow: 1,
-    marginLeft: -1
 });
 
 const ProfileInfoWrapper = Glamorous.div({
     flexGrow: 1,
-    paddingTop: 1,
 });
 
 const ProfileAvatar = Glamorous(XAvatar)({
@@ -39,20 +42,24 @@ const ProfileAvatar = Glamorous(XAvatar)({
 
 const ProfileName = Glamorous(XLink)({
     fontSize: 14,
-    lineHeight: '16px',
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#1790ff',
-    display: 'block',
-    marginBottom: 4
+    lineHeight: '22px',
+    fontWeight: 600,
+    letterSpacing: 0,
+    color: '#000000',
+    display: 'flex',
+    marginTop: '-2px!important',
+    marginBottom: 2,
 });
 
 const ProfileOrganization = Glamorous.div({
-    fontSize: 14,
-    lineHeight: '20px',
-    fontWeight: 500,
-    letterSpacing: -0.5,
-    color: '#99a2b0'
+    fontSize: 12,
+    lineHeight: '22px',
+    fontWeight: 600,
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.4)',
+    marginTop: 1,
+    marginBottom: -1,
+    marginLeft: 8,
 });
 
 const ProfileToolsWrapper = Glamorous(XHorizontal)({
@@ -63,6 +70,31 @@ interface ProfileCardProps {
     item: Partial<User_user>;
     onPick: (q: SearchCondition) => void;
 }
+
+const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
+    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.5)',
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: '18px'
+}));
+
+const ProfileStatus = withOnline(props => {
+    if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
+        return (
+            <StatusWrapper online={false}>
+                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
+            </StatusWrapper>
+        );
+    } else if (props.data.user && props.data.user.online) {
+        return (
+            <StatusWrapper online={true}>
+                Online
+            </StatusWrapper>
+        );
+    } else {
+        return null;
+    }
+}) as React.ComponentType<{ variables: { userId: string } }>;
 
 export class ProfileCard extends React.Component<ProfileCardProps, { isHovered: boolean }> {
     constructor(props: ProfileCardProps) {
@@ -81,7 +113,7 @@ export class ProfileCard extends React.Component<ProfileCardProps, { isHovered: 
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
-                <XHorizontal justifyContent="space-between" separator={12}>
+                <XHorizontal justifyContent="space-between" separator={8}>
                     <XLink path={'/directory/u/' + user.id}>
                         <ProfileAvatar
                             cloudImageUuid={user.photo || undefined}
@@ -92,8 +124,8 @@ export class ProfileCard extends React.Component<ProfileCardProps, { isHovered: 
                     </XLink>
                     <ProfileContentWrapper>
                         <ProfileInfoWrapper>
-                            <ProfileName path={'/directory/u/' + user.id}>{user.name}</ProfileName>
-                            {user.primaryOrganization && <ProfileOrganization>{user.primaryOrganization.name}</ProfileOrganization>}
+                            <ProfileName path={'/directory/u/' + user.id}>{user.name} {user.primaryOrganization && <ProfileOrganization>{user.primaryOrganization.name}</ProfileOrganization>}</ProfileName>
+                            {user.id && <ProfileStatus variables={{ userId: user.id }}/>}
                         </ProfileInfoWrapper>
                         <ProfileToolsWrapper separator={5}>
                             {user.isYou

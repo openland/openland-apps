@@ -26,6 +26,8 @@ import {
     ResetButton
 } from './components/Layout';
 import { UserProfile } from '../profile/UserProfileComponent';
+import { SearchBox } from './components/SearchBox';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
 
 interface CommunitiesCardsProps {
     variables: { query?: string, sort?: string };
@@ -40,12 +42,12 @@ const CommunitiesCards = withExplorePeople((props) => {
         <>
             {(props as any).tagsCount(props.data.items.pageInfo.itemsCount)}
             {!props.error && props.data && props.data.items && props.data.items.edges.length > 0 && (
-                <>
+                <XContentWrapper>
                     {props.data.items.edges.map((i, j) => (
                         <ProfileCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/people" />
-                </>
+                </XContentWrapper>
             )}
             {(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0) && (
                 <EmptySearchBlock text="No people matches your search" />
@@ -81,8 +83,11 @@ class Communities extends React.PureComponent<CommunitiesProps> {
 }
 
 interface RootComponentState {
-    searchText: string;
-    sort: { orderBy: string, featured: boolean };
+    query: string;
+    sort: {
+        orderBy: string,
+        featured: boolean
+    };
     orgCount: number;
     pageTitle: string;
 }
@@ -94,8 +99,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         super(props);
 
         this.state = {
-            searchText: '',
-            sort: { orderBy: 'createdAt', featured: true },
+            query: '',
+            sort: {
+                orderBy: 'createdAt',
+                featured: true
+            },
             orgCount: 0,
             pageTitle: 'People Directory'
         };
@@ -107,24 +115,22 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
         });
     }
 
-    handleSearchChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        let val = (e.target as any).value as string;
+    onQueryChange = (q: string) => {
         this.resetPage();
-        this.setState({ searchText: val });
+        this.setState({
+            query: q
+        });
     }
 
     changeSort = (sort: { orderBy: string, featured: boolean }) => {
-        this.setState({ sort: sort });
+        this.setState({
+            sort: sort
+        });
     }
 
     resetPage = () => {
         this.props.router.replaceQueryParams({ page: undefined });
         this.props.router.replaceQueryParams({ clauses: undefined });
-    }
-
-    reset = () => {
-        this.resetPage();
-        this.setState({ searchText: '' });
     }
 
     componentDidMount() {
@@ -138,7 +144,9 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     }
 
     routerParser = () => {
-        this.setState({ searchText: '' });
+        this.setState({
+            query: ''
+        });
     }
 
     render() {
@@ -155,48 +163,28 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             <Container>
                                 {!uid && (
                                     <XVertical separator={0}>
-                                        <SearchRow>
-                                            <SearchFormWrapper alignItems="center" justifyContent="space-between" separator={5}>
-                                                <SearchFormContent separator={4} flexGrow={1}>
-                                                    <SearchIcon />
-                                                    <SearchInput
-                                                        value={this.state.searchText}
-                                                        onChange={this.handleSearchChange}
-                                                        placeholder="Search people"
-                                                    />
-                                                </SearchFormContent>
-                                                <XHorizontal separator={2}>
-                                                    {this.state.searchText.length > 0 && (
-                                                        <ResetButton onClick={this.reset}>{TextDirectory.buttonReset}</ResetButton>
-                                                    )}
-                                                    <XButton
-                                                        text={TextDirectory.buttonSearch}
-                                                        style="primary"
-                                                        enabled={!!this.state.searchText}
-                                                    />
-                                                </XHorizontal>
-                                            </SearchFormWrapper>
-                                        </SearchRow>
-                                        {(this.state.searchText.length <= 0) && (
-                                            <XSubHeader
-                                                title="All people"
-                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
-                                            />
-                                        )}
-                                        {(this.state.searchText.length > 0) && (orgCount > 0) && (
-                                            <XSubHeader
-                                                title="People"
-                                                counter={orgCount}
-                                                right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
-                                            />
-                                        )}
-                                        {(this.state.searchText.length > 0) && (orgCount <= 0) && (
-                                            <XSubHeader title="No results" />
-                                        )}
+                                        <SearchBox
+                                            value={this.state.query}
+                                            onChange={this.onQueryChange}
+                                            placeholder="Search people"
+                                        />
                                         <Results>
+                                            {(this.state.query.length <= 0) && (
+                                                <XSubHeader
+                                                    title="All people"
+                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
+                                                />
+                                            )}
+                                            {(this.state.query.length > 0) && (orgCount > 0) && (
+                                                <XSubHeader
+                                                    title="People"
+                                                    counter={orgCount}
+                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
+                                                />
+                                            )}
                                             <Communities
                                                 featuredFirst={this.state.sort.featured}
-                                                searchText={this.state.searchText}
+                                                searchText={this.state.query}
                                                 orderBy={this.state.sort.orderBy}
                                                 tagsCount={this.tagsCount}
                                             />
