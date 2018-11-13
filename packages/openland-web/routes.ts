@@ -77,20 +77,20 @@ routes.add('/new/invite', '/main/onboarding/invite');
 
 routes.add('/directory', '/main/directory/root');
 routes.add('/directory/', '/main/directory/root');
-routes.add('/directory/communities', '/main/directory/communities');
-routes.add('/directory/communities/', '/main/directory/communities');
-routes.add('/directory/channels', '/main/directory/channels');
-routes.add('/directory/channels/', '/main/directory/channels');
 routes.add('/directory/people', '/main/directory/people');
 routes.add('/directory/people/', '/main/directory/people');
-routes.add('/directory/o/:organizationId', '/main/directory/root');
-routes.add('/directory/o/:organizationId/', '/main/directory/root');
-routes.add('/directory/c/:organizationId', '/main/directory/communities');
-routes.add('/directory/c/:organizationId/', '/main/directory/communities');
-routes.add('/directory/ch/:conversationId', '/main/directory/channels');
-routes.add('/directory/ch/:conversationId/', '/main/directory/channels');
+routes.add('/directory/organizations', '/main/directory/organizations');
+routes.add('/directory/organizations/', '/main/directory/organizations');
+routes.add('/directory/communities', '/main/directory/communities');
+routes.add('/directory/communities/', '/main/directory/communities');
+routes.add('/directory/ch/:conversationId', '/main/directory/root');
+routes.add('/directory/ch/:conversationId/', '/main/directory/root');
 routes.add('/directory/u/:userId', '/main/directory/people');
 routes.add('/directory/u/:userId/', '/main/directory/people');
+routes.add('/directory/o/:organizationId', '/main/directory/organizations');
+routes.add('/directory/o/:organizationId/', '/main/directory/organizations');
+routes.add('/directory/c/:organizationId', '/main/directory/communities');
+routes.add('/directory/c/:organizationId/', '/main/directory/communities');
 
 //
 // Profiles

@@ -15,7 +15,6 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XSelect } from 'openland-x/XSelect';
 import { XTextArea } from 'openland-x/XTextArea';
-import { Cities, MetropolitanAreas, States, MultiStateRegions } from '../directory/locationPicker';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { DateFormater } from 'openland-x-format/XDate';
 import { Query } from '../../../../../node_modules/react-apollo';
@@ -176,11 +175,6 @@ export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) 
                                                     <XInput field="input.email" size="large" title="Email" />
                                                     <XInput field="input.website" size="large" title="Website" />
                                                     <XInput field="input.linkedin" size="large" title="LinkedIn" />
-                                                    {/* <XSelect
-                                                        title="Primary location"
-                                                        field="input.location"
-                                                        options={[...Cities, ...MetropolitanAreas, ...States, ...MultiStateRegions].map(e => ({ label: e, value: e }))}
-                                                    /> */}
                                                 </XVertical>
                                             </XFormLoadingContent>
                                             <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />

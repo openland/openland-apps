@@ -5,8 +5,10 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import RightIcon from './icons/ic-right-1.svg';
-import DrowdownChatIcon from './icons/ic-dropdown-message.svg';
-import DrowdownChannelIcon from './icons/ic-dropdown-channel.svg';
+import DropdownChatIcon from './icons/ic-dropdown-message.svg';
+import DropdownChannelIcon from './icons/ic-dropdown-channel.svg';
+import DropdownCommunityIcon from './icons/ic-dropdown-community.svg';
+import DropdownOrganizationIcon from './icons/ic-dropdown-organization.svg';
 
 type XMenuItemStyle = 'default' | 'danger';
 
@@ -20,10 +22,10 @@ let XMenuItemColorStyles = styleResolver({
     'default': {
         color: '#000000',
         '& i': {
-            color: '#bcc3cc'
+            color: 'rgba(0, 0, 0, 0.25)'
         },
         '& svg *': {
-            fill: '#bcc3cc'
+            fill: 'rgba(0, 0, 0, 0.25)'
         },
         ':hover': {
             color: '#1790ff',
@@ -98,13 +100,15 @@ const XMenuItemText = Glamorous.div({
 });
 
 export class XMenuItem extends React.Component<XMenuItemProps> {
-    CustomIcons = ['x-right', 'x-dropdown-chat', 'x-dropdown-channel'];
+    CustomIcons = ['x-right', 'x-dropdown-chat', 'x-dropdown-channel', 'x-dropdown-community', 'x-dropdown-organization'];
 
     getCustomIcon (i: string, position?: string) {
         switch (i) {
             case this.CustomIcons[0]: return <RightIcon className={(position) ? 'svg-icon-' + position : undefined} />;
-            case this.CustomIcons[1]: return <DrowdownChatIcon className={(position) ? 'svg-icon-' + position : undefined} />;
-            case this.CustomIcons[2]: return <DrowdownChannelIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            case this.CustomIcons[1]: return <DropdownChatIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            case this.CustomIcons[2]: return <DropdownChannelIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            case this.CustomIcons[3]: return <DropdownCommunityIcon className={(position) ? 'svg-icon-' + position : undefined} />;
+            case this.CustomIcons[4]: return <DropdownOrganizationIcon className={(position) ? 'svg-icon-' + position : undefined} />;
             default: return undefined;
         }
     }

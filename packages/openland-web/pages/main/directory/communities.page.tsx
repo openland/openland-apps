@@ -18,16 +18,13 @@ import SearchIcon from './icons/ic-search-small.svg';
 import {
     RootWrapper,
     Sidebar,
-    SidebarHeader,
-    SidebarItemWrapper,
     Container,
     SearchRow,
     Results,
     SearchFormWrapper,
     SearchFormContent,
     SearchInput,
-    ResetButton,
-    SidebarItemHeadLink
+    ResetButton
 } from './components/Layout';
 import { OrganizationProfile } from '../profile/ProfileComponent';
 
@@ -159,39 +156,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <RootWrapper>
-                            <Sidebar>
-                                <SidebarHeader>Directory</SidebarHeader>
-                                <XVertical separator={0}>
-                                    <SidebarItemWrapper>
-                                        <SidebarItemHeadLink
-                                            path="/directory"
-                                            title="Organizations"
-                                            icon="organizations"
-                                        />
-                                    </SidebarItemWrapper>
-                                    <SidebarItemWrapper active={true}>
-                                        <SidebarItemHeadLink
-                                            path="/directory/communities"
-                                            title="Communities"
-                                            icon="communities"
-                                        />
-                                    </SidebarItemWrapper>
-                                    <SidebarItemWrapper>
-                                        <SidebarItemHeadLink
-                                            path="/directory/channels"
-                                            title="Channels"
-                                            icon="channels"
-                                        />
-                                    </SidebarItemWrapper>
-                                    <SidebarItemWrapper>
-                                        <SidebarItemHeadLink
-                                            path="/directory/people"
-                                            title="People"
-                                            icon="people"
-                                        />
-                                    </SidebarItemWrapper>
-                                </XVertical>
-                            </Sidebar>
+                            <Sidebar active="communities" />
                             <Container>
                                 {!oid && (
                                     <XVertical separator={0}>
