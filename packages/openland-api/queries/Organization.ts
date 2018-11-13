@@ -105,7 +105,7 @@ export const OrganizationInviteMembersMutation = gql`
 
 export const OrganizationPublicInviteQuery = gql`
     query OrganizationPublicInvite($organizationId: ID){
-        publicInvite: alphaOrganizationPublicInvite(organizationId: $organizationId){
+        publicInvite: alphaOrganizationInviteLink(organizationId: $organizationId){
             id
             key
             ttl
@@ -115,17 +115,11 @@ export const OrganizationPublicInviteQuery = gql`
 
 export const OrganizationCreatePublicInviteMutation = gql`
     mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID){
-        alphaOrganizationCreatePublicInvite(expirationDays: $expirationDays, organizationId: $organizationId){
+        alphaOrganizationRefreshInviteLink(expirationDays: $expirationDays, organizationId: $organizationId){
             id
             key
             ttl
         }
-    }
-`;
-
-export const OrganizationDeletePublicInviteMutation = gql`
-    mutation OrganizationDeletePublicInvite($organizationId: ID){
-        alphaOrganizationDeletePublicInvite(organizationId: $organizationId)
     }
 `;
 

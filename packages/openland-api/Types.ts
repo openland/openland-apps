@@ -5949,7 +5949,7 @@ export interface OrganizationPublicInviteVariables {
 // GraphQL mutation operation: OrganizationCreatePublicInvite
 // ====================================================
 
-export interface OrganizationCreatePublicInvite_alphaOrganizationCreatePublicInvite {
+export interface OrganizationCreatePublicInvite_alphaOrganizationRefreshInviteLink {
   __typename: "Invite";
   id: string;
   key: string;
@@ -5957,26 +5957,11 @@ export interface OrganizationCreatePublicInvite_alphaOrganizationCreatePublicInv
 }
 
 export interface OrganizationCreatePublicInvite {
-  alphaOrganizationCreatePublicInvite: OrganizationCreatePublicInvite_alphaOrganizationCreatePublicInvite;
+  alphaOrganizationRefreshInviteLink: OrganizationCreatePublicInvite_alphaOrganizationRefreshInviteLink;
 }
 
 export interface OrganizationCreatePublicInviteVariables {
   expirationDays?: number | null;
-  organizationId?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: OrganizationDeletePublicInvite
-// ====================================================
-
-export interface OrganizationDeletePublicInvite {
-  alphaOrganizationDeletePublicInvite: string;
-}
-
-export interface OrganizationDeletePublicInviteVariables {
   organizationId?: string | null;
 }
 
