@@ -45,7 +45,7 @@ const ProfileName = Glamorous(XLink)({
     lineHeight: '22px',
     fontWeight: 600,
     letterSpacing: 0,
-    color: '#000000',
+    color: '#000000!important',
     display: 'flex',
     marginTop: '-2px!important',
     marginBottom: 2,
