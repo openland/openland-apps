@@ -260,7 +260,7 @@ interface RoomsInviteComponentProps {
         invitedByUser?: {
             id: string,
             name: string,
-            picture?: string | null
+            photo?: string | null
         }
     };
     noLogin?: boolean;
@@ -285,7 +285,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                     {this.props.invite && this.props.invite.invitedByUser ?
                         <UserInfoWrapper separator={6} justifyContent="center">
                             <UserAvatar
-                                cloudImageUuid={this.props.invite.invitedByUser.picture || undefined}
+                                cloudImageUuid={this.props.invite.invitedByUser.photo || undefined}
                                 style="colorus"
                                 objectName={this.props.invite.invitedByUser.name}
                                 objectId={this.props.invite.invitedByUser.id}
