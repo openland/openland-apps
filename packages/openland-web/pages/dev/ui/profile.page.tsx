@@ -2,7 +2,7 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { OrganizationProfile } from '../../main/profile/ProfileComponent';
+import { OrganizationProfile } from '../../main/profile/OrganizationProfileComponent';
 
 export default withApp('UI Framework - Profile (Organization)', 'viewer', (props) => {
     return (

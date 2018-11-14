@@ -9,7 +9,7 @@ import { MessengerContainer } from '../../../components/messenger/MessengerConta
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
-import { OrganizationProfile } from '../profile/ProfileComponent';
+import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 import PlusIcon from '../../../components/icons/ic-add-medium-2.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';

@@ -13,7 +13,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
 import { RoomsInviteComponent } from '../../../components/messenger/RoomsInviteComponent';
-import { OrganizationProfile } from '../profile/ProfileComponent';
+import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';

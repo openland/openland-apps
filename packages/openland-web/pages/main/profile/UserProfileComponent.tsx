@@ -16,7 +16,7 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { BackButton, Rooms } from './ProfileComponent';
+import { BackButton, Rooms } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';

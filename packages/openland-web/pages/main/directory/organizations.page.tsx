@@ -15,7 +15,7 @@ import {
     Container,
     Results,
 } from './components/Layout';
-import { OrganizationProfile } from '../profile/ProfileComponent';
+import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
