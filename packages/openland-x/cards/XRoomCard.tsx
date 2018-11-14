@@ -25,6 +25,13 @@ const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
     }
 }) as any) as any;
 
+const RoomAvatar = Glamorous(XAvatar)({
+    cursor: 'pointer',
+    '& *': {
+        cursor: 'pointer'
+    }
+});
+
 const RoomTitle = Glamorous.div({
     fontSize: 14,
     fontWeight: 600,
@@ -115,7 +122,7 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal separator={8} alignItems="center" flexGrow={1}>
-                    <XAvatar
+                    <RoomAvatar
                         style="room"
                         cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
                         objectName={room.title}

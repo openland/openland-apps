@@ -7,7 +7,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { SortPicker } from './sortPicker';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { OrganizationCard } from './components/OrganizationCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import {
@@ -19,15 +18,10 @@ import {
 import { OrganizationProfile } from '../profile/ProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-
-export interface SearchCondition {
-    type: 'name' | 'location' | 'organizationType' | 'interest';
-    value: string | string[];
-    label: string;
-}
+import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
 
 interface OrganizationCardsProps {
-    onPageChange?: (q: SearchCondition) => void;
+    onPageChange?: () => void;
     variables: { query?: string, prefix?: string, sort?: string };
     tagsCount: (n: number) => void;
 }
@@ -46,7 +40,7 @@ const OrganizationCards = withExploreOrganizations((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <OrganizationCard key={'_org_card_' + i.node.id} item={i.node} />))
+                        <XOrganizationCard key={'_org_card_' + i.node.id} organization={i.node} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} onPageChange={(props as any).onPageChange} />
                 </XContentWrapper>

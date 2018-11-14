@@ -19,11 +19,15 @@ const UserWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => 
     height: 64,
     '&:hover': {
         backgroundColor: '#f9f9f9'
-    },
+    }
+})));
+
+const UserAvatar = Glamorous(XAvatar)({
+    cursor: 'pointer',
     '& *': {
         cursor: 'pointer!important'
     }
-})));
+});
 
 const UserContent = Glamorous(XHorizontal)({
     flexGrow: 1,
@@ -109,6 +113,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                     <XButton
                         style="ghost"
                         text="You"
+                        enabled={false}
                     />
                 )}
                 {!user.isYou && (
@@ -133,7 +138,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal justifyContent="space-between" separator={8}>
-                    <XAvatar
+                    <UserAvatar
                         cloudImageUuid={user.photo || undefined}
                         objectId={user.id}
                         objectName={user.name}
