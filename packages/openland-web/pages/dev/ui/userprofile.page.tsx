@@ -2,12 +2,12 @@ import '../../../globals';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { OrganizationProfile } from '../../main/profile/ProfileComponent';
+import { UserProfile } from '../../main/profile/UserProfileComponent';
 
-export default withApp('UI Framework - Profile (Organization)', 'viewer', (props) => {
+export default withApp('UI Framework - Profile (User - Visitor)', 'viewer', (props) => {
     return (
         <DevDocsScaffold>
-            <OrganizationProfile organizationId="61gk9KRrl9ComJkvYnvdcddr4o" />
+            <UserProfile userId="LOaDEWDj9zsVv999DDpJiEj05K" />
         </DevDocsScaffold>
     );
 });

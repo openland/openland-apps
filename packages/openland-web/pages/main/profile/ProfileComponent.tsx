@@ -9,7 +9,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
 import { XTag } from 'openland-x/XTag';
-// import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
@@ -38,32 +37,41 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
 
 const BackWrapper = Glamorous.div({
-    background: '#F9F9F9',
+    background: '#f9f9f9',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    cursor: 'pointer',
+});
+
+const BackInner = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
-    cursor: 'pointer',
-    padding: '13px 12px 12px',
+    padding: '13px 0 12px',
     '& i': {
         fontSize: 20,
         marginRight: 6,
-        color: '#c1c7cf'
+        marginLeft: -7,
+        color: 'rgba(0, 0, 0, 0.3)'
     },
     '& span': {
-        fontWeight: 500,
+        fontWeight: 600,
         fontSize: 14,
         lineHeight: '20px',
-        letterSpacing: -0.4,
-        color: '#5c6a81'
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.8)'
     }
 });
 
-export const Back = () => (
+export const BackButton = () => (
     <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
-        <XIcon icon="chevron_left" />
-        <span>Back</span>
+        <XContentWrapper>
+            <BackInner>
+                <XIcon icon="chevron_left" />
+                <span>Back</span>
+            </BackInner>
+        </XContentWrapper>
     </BackWrapper>
 );
 
@@ -806,7 +814,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
 
         return (
             <OrgInfoWrapper innerRef={this.handleRef}>
-                <Back />
+                <BackButton />
                 <Header organizationQuery={this.props.organizationQuery} />
                 <XScrollView height="calc(100% - 160px)">
                     <About organizationQuery={this.props.organizationQuery} />

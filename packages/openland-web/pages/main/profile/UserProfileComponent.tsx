@@ -8,7 +8,6 @@ import { XDate } from 'openland-x-format/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XLink } from 'openland-x/XLink';
-import { XIcon } from 'openland-x/XIcon';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
@@ -21,29 +20,7 @@ import PhoneIcon from './icons/ic-phone.svg';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { Back } from './ProfileComponent';
-
-const BackWrapper = Glamorous.div({
-    background: '#F9F9F9',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    padding: '13px 12px 12px',
-    '& i': {
-        fontSize: 20,
-        marginRight: 6,
-        color: '#c1c7cf'
-    },
-    '& span': {
-        fontWeight: 500,
-        fontSize: 14,
-        lineHeight: '20px',
-        letterSpacing: -0.4,
-        color: '#5c6a81'
-    }
-});
+import { BackButton } from './ProfileComponent';
 
 const HeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -414,7 +391,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
 
         return (
             <div ref={this.handleRef}>
-                <Back />
+                <BackButton />
                 <Header userQuery={this.props.userQuery} />
                 <XScrollView height="calc(100% - 160px)">
                     <About userQuery={this.props.userQuery} />
