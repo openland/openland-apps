@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
-import { XWithRole, hasRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { Organization, OrganizationMemberRole } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -544,16 +544,18 @@ const About = (props: { organizationQuery: Organization }) => {
                     </SectionContent>
                 </Section>
             )}
-            {!org.about && org.isMine && hasRole('admin', org.id) && (
-                <Section separator={0}>
-                    <XSubHeader
-                        title="About"
-                        paddingBottom={0}
-                    />
-                    <SectionContent>
-                        <AboutPlaceholder target={<EditButton>Add a short description</EditButton>} />
-                    </SectionContent>
-                </Section>
+            {!org.about && org.isMine && (
+                <XWithRole role="admin" orgPermission={org.id}>
+                    <Section separator={0}>
+                        <XSubHeader
+                            title="About"
+                            paddingBottom={0}
+                        />
+                        <SectionContent>
+                            <AboutPlaceholder target={<EditButton>Add a short description</EditButton>} />
+                        </SectionContent>
+                    </Section>
+                </XWithRole>
             )}
             {hasLinks && (
                 <Section separator={0}>

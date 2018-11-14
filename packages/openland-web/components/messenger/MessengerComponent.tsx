@@ -14,7 +14,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
-import { XWithRole, hasRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
@@ -498,6 +498,68 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
     }
 }
 
+let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?: string; children?: any }) => {
+    if (props.chatType === 'ChannelConversation') {
+        return (
+            <>
+                <XWithRole role={['editor', 'super-admin']}>
+                    <NavChatLeftContentStyled
+                        path={props.path}
+                        query={{ field: 'editChat', value: 'true' }}
+                        separator={10}
+                        alignItems="center"
+                        flexGrow={0}
+                        maxWidth="calc(100% - 380px)"
+                        width="calc(100% - 380px)"
+                    >
+                        {props.children}
+                    </NavChatLeftContentStyled>
+                </XWithRole>
+                <XWithRole role={['editor', 'super-admin']} negate={true}>
+                    <NavChatLeftContentStyled
+                        path={props.path}
+                        query={props.ownerRole ? { field: 'editChat', value: 'true' } : undefined}
+                        separator={10}
+                        alignItems="center"
+                        flexGrow={0}
+                        maxWidth="calc(100% - 380px)"
+                        width="calc(100% - 380px)"
+                    >
+                        {props.children}
+                    </NavChatLeftContentStyled>
+                </XWithRole>
+            </>
+        );
+    } else if (props.chatType === 'GroupConversation') {
+        return (
+            <NavChatLeftContentStyled
+                path={props.path}
+                query={{ field: 'editChat', value: 'true' }}
+                separator={10}
+                alignItems="center"
+                flexGrow={0}
+                maxWidth="calc(100% - 100px)"
+                width="calc(100% - 100px)"
+            >
+                {props.children}
+            </NavChatLeftContentStyled>
+        );
+    } else {
+        return (
+            <NavChatLeftContentStyled
+                path={props.path}
+                separator={10}
+                alignItems="center"
+                flexGrow={0}
+                maxWidth="calc(100% - 100px)"
+                width="calc(100% - 100px)"
+            >
+                {props.children}
+            </NavChatLeftContentStyled>
+        );
+    }
+};
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' = 'chat';
     if (props.router.query.tab === 'members') {
@@ -537,26 +599,13 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         ownerRole = props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner';
     }
 
-    let headerQuery = undefined;
-    if (props.data.chat.__typename === 'ChannelConversation') {
-        headerQuery = (ownerRole || hasRole(['editor', 'super-admin'])) ? { field: 'editChat', value: 'true' } : undefined;
-    } else if (props.data.chat.__typename === 'GroupConversation') {
-        headerQuery = { field: 'editChat', value: 'true' };
-    }
+    let headerPath = props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined;
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
             <ChatHeaderWrapper>
                 <ChatHeaderContent justifyContent="space-between">
-                    <NavChatLeftContentStyled
-                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined}
-                        query={headerQuery}
-                        separator={10}
-                        alignItems="center"
-                        flexGrow={0}
-                        maxWidth={subtitle === 'Room' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
-                        width={subtitle === 'Room' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
-                    >
+                    <HeaderLeftContent chatType={chatType} ownerRole={ownerRole} path={headerPath}>
                         <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                             <XAvatar
                                 path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
@@ -594,7 +643,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 </SubtitleWrapper>
                             </XVertical>
                         </XHorizontal>
-                    </NavChatLeftContentStyled>
+                    </HeaderLeftContent>
                     <XHorizontal alignItems="center" separator={5}>
                         {props.data.chat.__typename === 'ChannelConversation' && (
                             <XHorizontal separator={14}>
