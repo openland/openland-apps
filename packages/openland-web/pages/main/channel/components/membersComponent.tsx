@@ -22,55 +22,12 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
 import CloseIcon from './icons/ic-close-1.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
+import { XUserCard } from 'openland-x/cards/XUserCard';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
     width: '100%'
-});
-
-const MembersView = Glamorous.div({});
-
-const Member = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
-    cursor: 'pointer',
-    display: 'flex',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    padding: '16px 18px 15px 24px',
-    '&:first-child': {
-        paddingTop: 18
-    },
-    '&:hover': {
-        backgroundColor: '#F9F9F9'
-    }
-})));
-
-const MemberAvatar = Glamorous(XAvatar)({
-    marginRight: 12
-});
-
-const MemberInfo = Glamorous.div({
-    flex: 1
-});
-
-const MemberName = Glamorous.div({
-    fontSize: 14,
-    lineHeight: '20px',
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#5c6a81',
-    marginBottom: 2
-});
-
-const MemberStaff = Glamorous.div({
-    fontSize: 14,
-    lineHeight: '18px',
-    fontWeight: 500,
-    letterSpacing: -0.3,
-    color: '#99a2b0'
-
-});
-
-const MemberTools = Glamorous(XHorizontal)({
-    paddingTop: 4,
 });
 
 const AboutText = Glamorous.div({
@@ -151,58 +108,46 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
     }
 
     render() {
-        let item = this.props.item;
+        let user = this.props.item;
 
         return (
-            <Member
+            <div
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
-                path={'/mail/u/' + item.id}
             >
-                <MemberAvatar
-                    cloudImageUuid={item.photo || undefined}
-                    objectId={item.id}
-                    style="user"
-                    objectName={item.name}
-                />
-                <MemberInfo>
-                    <MemberName>{item.name}</MemberName>
-                    <MemberStaff>{item.primaryOrganization && item.primaryOrganization.name}</MemberStaff>
-                </MemberInfo>
-
-                {item.status === 'member' && (
-                    <MemberTools separator={5}>
+                <XUserCard
+                    user={user}
+                    customButton={(user.status === 'requested') ? (
+                        <>
+                            <Accept
+                                variables={{ userId: user.id, channelId: this.props.channelId }}
+                                isHovered={this.state.isHoveredDecline ? false : this.state.isHovered}
+                                refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }}
+                            />
+                            <div
+                                onMouseEnter={() => this.setState({ isHoveredDecline: true })}
+                                onMouseLeave={() => this.setState({ isHoveredDecline: false })}
+                            >
+                                <DeclineButton
+                                    isHoveredWrapper={this.state.isHovered}
+                                    userId={user.id}
+                                />
+                            </div>
+                        </>
+                    ) : undefined}
+                    customMenu={(user.status === 'member') ? (
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
                             content={(
-                                <XMenuItem style="danger" query={{ field: 'remove', value: item.id }}>
-                                    {(item.isYou ? 'Leave the ' : 'Remove from ') + this.props.removeFrom}
+                                <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>
+                                    {(user.isYou ? 'Leave the ' : 'Remove from ') + this.props.removeFrom}
                                 </XMenuItem>
                             )}
                         />
-                    </MemberTools>
-                )}
-
-                {item.status === 'requested' && (
-                    <MemberTools separator={6}>
-                        <Accept
-                            variables={{ userId: item.id, channelId: this.props.channelId }}
-                            isHovered={this.state.isHoveredDecline ? false : this.state.isHovered}
-                            refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }}
-                        />
-                        <div
-                            onMouseEnter={() => this.setState({ isHoveredDecline: true })}
-                            onMouseLeave={() => this.setState({ isHoveredDecline: false })}
-                        >
-                            <DeclineButton
-                                isHoveredWrapper={this.state.isHovered}
-                                userId={item.id}
-                            />
-                        </div>
-                    </MemberTools>
-                )}
-            </Member>
+                    ) : undefined}
+                />
+            </div>
         );
     }
 }
@@ -274,9 +219,9 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         {this.props.longDescription && <AboutText>{this.props.longDescription}</AboutText>}
                     </>
                 )}
-                {requests.length > 0 && < XWithRole role="admin" orgPermission={this.props.orgId}>
+                {requests.length > 0 && <XWithRole role="admin" orgPermission={this.props.orgId}>
                     <XSubHeader title="Requests" counter={requests.length} />
-                    <MembersView>
+                    <XContentWrapper>
                         {requests.map(m => (
                             <MemberItem
                                 key={m.user.id}
@@ -285,10 +230,10 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                                 removeFrom={this.props.removeFrom}
                             />
                         ))}
-                    </MembersView>
+                    </XContentWrapper>
                 </XWithRole>}
                 <XSubHeader title="Members" counter={members.length} />
-                <MembersView>
+                <XContentWrapper>
                     {(members.length > 1) && members.map(m => (
                         <MemberItem
                             key={m.user.id}
@@ -297,7 +242,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                             removeFrom={this.props.removeFrom}
                         />
                     ))}
-                </MembersView>
+                </XContentWrapper>
                 {(members.length <= 3) && this.props.emptyText && (
                     <EmptyComponent
                         orgId={this.props.orgId}

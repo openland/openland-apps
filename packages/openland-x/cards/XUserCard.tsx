@@ -107,9 +107,8 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
             <>
                 {user.isYou && (
                     <XButton
-                        style={this.state.isHovered ? 'primary' : 'default'}
-                        path={'/settings/profile'}
-                        text="Edit profile"
+                        style="ghost"
+                        text="You"
                     />
                 )}
                 {!user.isYou && (
