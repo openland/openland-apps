@@ -84,7 +84,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
     }
 
     render() {
-        let channelsCount = this.props.item.channels.filter(c => c && !c.hidden).length;
+        let roomsCount = this.props.item.channels.filter(c => c && !c.hidden).length;
         return (
             <CommunityCardWrapper
                 path={'/directory/c/' + this.props.item.id}
@@ -95,7 +95,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                     <XLink path={'/directory/c/' + this.props.item.id}>
                         <CommunityAvatar
                             cloudImageUuid={this.props.item.photo!!}
-                            style="channel"
+                            style="room"
                             objectName={this.props.item.name}
                             objectId={this.props.item.id}
                         />
@@ -103,7 +103,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                     <CommunityContentWrapper>
                         <CommunityInfoWrapper>
                             <CommunityTitle path={'/directory/c/' + this.props.item.id}>{this.props.item.name}</CommunityTitle>
-                            <CommunityCounter>{channelsCount + (channelsCount === 1 ? ' channel' : ' channels')}</CommunityCounter>
+                            <CommunityCounter>{roomsCount + (roomsCount === 1 ? ' room' : ' rooms')}</CommunityCounter>
                         </CommunityInfoWrapper>
                         <CommunityToolsWrapper separator={5}>
                             {this.state.isHovered && (
@@ -121,7 +121,7 @@ export class CommunityCard extends React.Component<CommunityCardProps, { isHover
                                         <XMenuItem href={'/directory/c/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
-                                            <XMenuItem query={{ field: 'createChannel', value: this.props.item.id }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
+                                            <XMenuItem query={{ field: 'createRoom', value: this.props.item.id }}>{TextDirectory.buttonCreateRoom}</XMenuItem>
                                         )}
 
                                         <XWithRole role="admin" orgPermission={this.props.item.id}>

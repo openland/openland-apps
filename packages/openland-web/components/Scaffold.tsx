@@ -23,7 +23,7 @@ import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from './icons/add-2.svg';
 import MessagesIcon from './icons/messages-3.svg';
-import ChannelIcon from './icons/channel-1.svg';
+import RoomIcon from './icons/channel-1.svg';
 import DevToolsIcon from './icons/devtools-2.svg';
 import DirecoryIcon from './icons/directory-2.svg';
 import { XInput } from 'openland-x/XInput';
@@ -485,7 +485,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
                 <>
                     <XMenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
                     <XMenuItem query={{ field: 'createOrganization', value: 'community' }}>{TextGlobal.addCommunity}</XMenuItem>
-                    <XMenuItem query={{ field: 'createChannel', value: 'true' }}>{TextGlobal.addChannel}</XMenuItem>
+                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>{TextGlobal.addRoom}</XMenuItem>
                 </>
             );
         });
@@ -555,7 +555,7 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
-export const ChannelButton = withNotificationCounter((props) => {
+export const RoomButton = withNotificationCounter((props) => {
     return (
         <XPopper
             placement="right"
@@ -565,11 +565,11 @@ export const ChannelButton = withNotificationCounter((props) => {
             style="dark"
             padding={-2}
             content={(
-                <strong>{TextAppBar.items.channel}</strong>
+                <strong>{TextAppBar.items.room}</strong>
             )}
         >
             <NavigatorItem path="/channel" activateForSubpaths={true}>
-                <ChannelIcon />
+                <RoomIcon />
                 {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#f5f7f9" count={props.data.counter.unreadCount} />}
             </NavigatorItem>
         </XPopper>
@@ -659,18 +659,18 @@ export const CreateOrganization = withCreateOrganization((props) => {
     );
 });
 
-export const CreateChannel = withCreateChannel((props) => {
+export const CreateRoom = withCreateChannel((props) => {
     return (
         <XModalForm
             {...props}
             useTopCloser={true}
-            title="Create channel"
-            targetQuery="createChannel"
+            title="Create room"
+            targetQuery="createRoom"
             defaultAction={async (data) => {
-                let oid = props.router.query.createChannel;
-                let channel = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
+                let oid = props.router.query.createRoom;
+                let room = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
                 delay(0).then(() => {
-                    props.router.push('/mail/' + channel.data.channel.id);
+                    props.router.push('/mail/' + room.data.channel.id);
                 });
 
             }}
@@ -679,13 +679,13 @@ export const CreateChannel = withCreateChannel((props) => {
                     name: ''
                 }
             }}
-            submitBtnText="Create channel"
+            submitBtnText="Create room"
         >
             <XVertical separator={8}>
                 <XInput
                     flexGrow={1}
                     size="large"
-                    placeholder="Channel title"
+                    placeholder="Room title"
                     field="input.name"
                 />
                 <XTextArea
@@ -733,7 +733,6 @@ export class Scaffold extends React.Component<{}> {
                                 groupId="scaffold_tooltip"
                                 content={(
                                     <strong>{TextAppBar.items.directory}</strong>
-
                                 )}
                             >
                                 <NavigatorItem path="/directory" activateForSubpaths={true}>
@@ -759,7 +758,7 @@ export class Scaffold extends React.Component<{}> {
                 </ContentView>
 
                 <CreateOrganization />
-                <CreateChannel />
+                <CreateRoom />
             </RootContainer>
         );
     }

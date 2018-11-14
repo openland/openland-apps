@@ -3,11 +3,11 @@ import Glamorous from 'glamorous';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import ChannelIcon from './icons/ic-channels-empty.svg';
+import RoomIcon from './icons/ic-channels-empty.svg';
 import ChatIcon from './icons/ic-organization-empty.svg';
 import ListingIcon from './icons/ic-listings-empty.svg';
 
-const ChannelsLineWidth = [
+const RoomsLineWidth = [
     {
         main: 109,
         sub: 79
@@ -159,23 +159,23 @@ const Shadow = Glamorous.div({
 });
 
 export const Sidebar = () => {
-    let channelsCount = 5;
+    let roomsCount = 5;
     let chatsCount = 4;
     let listingsCount = 3;
 
-    let ChannelsComponents: any[] = [];
+    let RoomsComponents: any[] = [];
     let ChatsComponents: any[] = [];
     let ListingsComponents: any[] = [];
 
-    for (let i = 0; i < channelsCount; i++) {
-        ChannelsComponents.push(
-            <XHorizontal alignItems="center" key={'ChannelsComponents_' + i}>
+    for (let i = 0; i < roomsCount; i++) {
+        RoomsComponents.push(
+            <XHorizontal alignItems="center" key={'RoomsComponents_' + i}>
                 <ChatAvatarWrapper small={true} borderRadius={5}>
-                    <ChannelIcon />
+                    <RoomIcon />
                 </ChatAvatarWrapper>
                 <XVertical separator={4}>
-                    <ChatMainLine width={ChannelsLineWidth[i].main} small={false} />
-                    <ChatSubLine width={ChannelsLineWidth[i].sub} small={true} />
+                    <ChatMainLine width={RoomsLineWidth[i].main} small={false} />
+                    <ChatSubLine width={RoomsLineWidth[i].sub} small={true} />
                 </XVertical>
             </XHorizontal>
         );
@@ -220,9 +220,9 @@ export const Sidebar = () => {
             <Logo />
             <SidebarContent>
                 <SidebarSection>
-                    <SidebarTitle>Channels</SidebarTitle>
+                    <SidebarTitle>Rooms</SidebarTitle>
                     <SectionContent>
-                        {ChannelsComponents}
+                        {RoomsComponents}
                         <Shadow/>
                     </SectionContent>
                 </SidebarSection>

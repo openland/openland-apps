@@ -1,6 +1,6 @@
 export const TextCompose = {
     headerTitle: 'Find or start a conversation',
-    headerNewChannel: 'New channel',
+    headerNewRoom: 'New room',
     searchPlaceholder: 'Whom would you like to message?',
     searchLoading: 'Wait...',
 };

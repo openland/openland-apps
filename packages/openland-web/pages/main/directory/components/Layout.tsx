@@ -2,8 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import ChannelIcon from '../icons/dir-channels.svg';
+import RoomIcon from '../icons/dir-rooms.svg';
 import PeopleIcon from '../icons/dir-people.svg';
 import OrganizationsIcon from '../icons/dir-organizations.svg';
 import CommunityIcon from '../icons/dir-communities.svg';
@@ -117,14 +116,14 @@ const SidebarItemWrapper = Glamorous(XLink)({
 
 interface SidebarItemProps {
     path: string;
-    icon: 'communities' | 'organizations' | 'channels' | 'people';
+    icon: 'communities' | 'organizations' | 'rooms' | 'people';
     active?: boolean;
 }
 
 const SidebarItem = (props: SidebarItemProps) => (
     <SidebarItemWrapper path={props.path} className={props.active ? 'is-active' : ''}>
         <div className="icon-wrapper">
-            {props.icon === 'channels' && <ChannelIcon />}
+            {props.icon === 'rooms' && <RoomIcon />}
             {props.icon === 'people' && <PeopleIcon />}
             {props.icon === 'organizations' && <OrganizationsIcon />}
             {props.icon === 'communities' && <CommunityIcon />}
@@ -175,7 +174,7 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
                 content={(
                     <>
                         <XMenuItem query={{ field: 'createOrganization', value: 'true' }} icon="x-dropdown-organization">{TextDirectory.create.organization}</XMenuItem>
-                        <XMenuItem query={{ field: 'createChannel', value: 'true' }} icon="x-dropdown-channel">{TextDirectory.create.channel}</XMenuItem>
+                        <XMenuItem query={{ field: 'createRoom', value: 'true' }} icon="x-dropdown-room">{TextDirectory.create.room}</XMenuItem>
                         <XMenuItem query={{ field: 'createOrganization', value: 'community' }} icon="x-dropdown-community">{TextDirectory.create.community}</XMenuItem>
                     </>
                 )}
@@ -201,7 +200,7 @@ export const Sidebar = (props: { active?: string }) => (
             <NewButton />
         </SidebarHeader>
         <XVertical separator={0}>
-            <SidebarItem path="/directory" icon="channels" active={props.active === 'channels'} />
+            <SidebarItem path="/directory" icon="rooms" active={props.active === 'rooms'} />
             <SidebarItem path="/directory/people" icon="people" active={props.active === 'people'} />
             <SidebarItem path="/directory/organizations" icon="organizations" active={props.active === 'organizations'} />
             <SidebarItem path="/directory/communities" icon="communities" active={props.active === 'communities'} />

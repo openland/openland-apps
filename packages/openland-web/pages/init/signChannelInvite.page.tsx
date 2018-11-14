@@ -6,7 +6,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from './_text';
 import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
-import { ChannelsInviteComponent } from '../../components/messenger/ChannelsInviteComponent';
+import { RoomsInviteComponent } from '../../components/messenger/RoomsInviteComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withUserInfo } from '../../components/UserInfo';
 import * as Cookie from 'js-cookie';
@@ -50,16 +50,16 @@ const InviteInfo = withChannelInviteInfo((props) => {
             />
             {(props as any).instantRedirect && <XPageRedirect path={(props as any).instantRedirect} />}
             {!(props as any).instantRedirect &&
-                <XTrack event="Join Channel">
+                <XTrack event="Join Room">
                     <Root>
                         <HeaderWrapper>
                             <HeaderLogo />
                         </HeaderWrapper>
                         <Content>
                             {props.data.invite && (
-                                <ChannelsInviteComponent
+                                <RoomsInviteComponent
                                     noLogin={true}
-                                    channel={props.data.invite.channel}
+                                    room={props.data.invite.channel}
                                     invite={props.data.invite}
                                     signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
                                 />
@@ -79,7 +79,7 @@ const InviteInfo = withChannelInviteInfo((props) => {
     );
 }) as React.ComponentType<{ variables: { uuid: string }, redirect: string, instantRedirect?: string }>;
 
-export default withAppBase('Join Channel', withUserInfo((props) => {
+export default withAppBase('Join Room', withUserInfo((props) => {
     let uuid = props.router.routeQuery.uuid;
 
     Cookie.set('x-openland-invite', uuid, { path: '/' });

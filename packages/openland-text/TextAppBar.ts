@@ -1,7 +1,7 @@
 export const TextAppBar = {
     items: {
         home: 'Home',
-        channel: 'Channels',
+        room: 'Rooms',
         mail: 'Messenger',
         explore: 'Explore',
         directory: 'Directory',

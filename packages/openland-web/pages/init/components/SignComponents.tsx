@@ -336,7 +336,7 @@ export const Separator = (props: { marginTop?: number; marginBottom?: number}) =
     </SeparatorStyle>
 );
 
-const ChannelSignupWrapper = Glamorous.div({
+const RoomSignupWrapper = Glamorous.div({
     position: 'relative',
     background: 'rgba(0, 0, 0, 0.8) url(/static/X/signup/background-blur.jpg) no-repeat',
     backgroundSize: 'cover',
@@ -345,20 +345,20 @@ const ChannelSignupWrapper = Glamorous.div({
     minWidth: 650
 });
 
-const ChannelToggler = Glamorous.div({
+const RoomToggler = Glamorous.div({
     position: 'absolute',
     top: 28, right: 37,
     display: 'flex',
     color: '#ffffff'
 });
 
-const ChannelTogglerText = Glamorous.div({
+const RoomTogglerText = Glamorous.div({
     fontSize: 14,
     lineHeight: '24px',
     letterSpacing: -0.15,
 });
 
-const ChannelTogglerLink = Glamorous(XLink)({
+const RoomTogglerLink = Glamorous(XLink)({
     fontSize: 14,
     lineHeight: '24px',
     fontWeight: 600,
@@ -370,7 +370,7 @@ const ChannelTogglerLink = Glamorous(XLink)({
     },
 });
 
-const ChannelSignupBox = Glamorous.div({
+const RoomSignupBox = Glamorous.div({
     background: '#ffffff',
     borderRadius: 10,
     overflow: 'hidden',
@@ -380,7 +380,7 @@ const ChannelSignupBox = Glamorous.div({
     transform: 'translate(-50%, -50%)'
 });
 
-const ChannelSignupHeader = Glamorous.div<{ headerStyle: 'signin' | 'signup' | 'profile' | 'organization' }>([
+const RoomSignupHeader = Glamorous.div<{ headerStyle: 'signin' | 'signup' | 'profile' | 'organization' }>([
     {
         height: 130,
         position: 'relative',
@@ -424,7 +424,7 @@ const ChannelSignupHeader = Glamorous.div<{ headerStyle: 'signin' | 'signup' | '
     } : {},
 ]);
 
-interface ChannelSignup {
+interface RoomSignupProps {
     headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
     text?: string;
     path?: string;
@@ -432,29 +432,29 @@ interface ChannelSignup {
     children?: any;
 }
 
-export const ChannelSignup = (props: ChannelSignup) => {
+export const RoomSignup = (props: RoomSignupProps) => {
     return (
-        <ChannelSignupWrapper>
+        <RoomSignupWrapper>
             {props.text && (
-                <ChannelToggler>
-                    <ChannelTogglerText>{props.text}</ChannelTogglerText>
-                    <ChannelTogglerLink path={props.path}>{props.linkText}</ChannelTogglerLink>
-                </ChannelToggler>
+                <RoomToggler>
+                    <RoomTogglerText>{props.text}</RoomTogglerText>
+                    <RoomTogglerLink path={props.path}>{props.linkText}</RoomTogglerLink>
+                </RoomToggler>
             )}
-            <ChannelSignupBox>
-                <ChannelSignupHeader headerStyle={props.headerStyle} />
+            <RoomSignupBox>
+                <RoomSignupHeader headerStyle={props.headerStyle} />
                 {props.children}
-            </ChannelSignupBox>
-        </ChannelSignupWrapper>
+            </RoomSignupBox>
+        </RoomSignupWrapper>
     );
 };
 
-export const ChannelLoader = Glamorous.div({
+export const RoomLoader = Glamorous.div({
     height: 150,
     position: 'relative'
 });
 
-export const ChannelTerms = Glamorous.div({
+export const RoomTerms = Glamorous.div({
     textAlign: 'center',
     marginTop: -6,
     paddingBottom: 26,
@@ -474,7 +474,7 @@ export const ChannelTerms = Glamorous.div({
     }
 });
 
-export const ChannelTitle = Glamorous.div({
+export const RoomTitle = Glamorous.div({
     textAlign: 'center',
     opacity: 0.9,
     fontSize: 26,
@@ -486,7 +486,7 @@ export const ChannelTitle = Glamorous.div({
     paddingBottom: 9
 });
 
-export const ChannelText = Glamorous.div({
+export const RoomText = Glamorous.div({
     textAlign: 'center',
     opacity: 0.7,
     fontSize: 16,

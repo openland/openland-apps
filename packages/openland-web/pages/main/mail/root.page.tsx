@@ -10,9 +10,9 @@ import { MessengerContainer } from '../../../components/messenger/MessengerConta
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
+import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
-import { ChannelsInviteComponent } from '../../../components/messenger/ChannelsInviteComponent';
+import { RoomsInviteComponent } from '../../../components/messenger/RoomsInviteComponent';
 import { OrganizationProfile } from '../profile/ProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
@@ -95,11 +95,11 @@ export const OrganizationProfilContainer = Glamorous.div({
     flexShrink: 0
 });
 
-export const ChannelInviteFromLink = withChannelInviteInfo((props) => (
+export const RoomInviteFromLink = withChannelInviteInfo((props) => (
     props.data && props.data.invite
         ? props.data.invite.channel.myStatus === 'member'
             ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} />
-            : <ChannelsInviteComponent inviteLink={props.router.routeQuery.uuid} channel={props.data.invite.channel} invite={props.data.invite} />
+            : <RoomsInviteComponent inviteLink={props.router.routeQuery.uuid} room={props.data.invite.channel} invite={props.data.invite} />
         : <XLoader loading={true} />
 ));
 
@@ -162,12 +162,12 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
             );
         }
 
-        let isChannels = props.router.path.endsWith('/channels');
+        let isRooms = props.router.path.endsWith('/channels');
         let isInvite = props.router.path.includes('joinChannel');
         let oid = props.router.routeQuery.organizationId;
         let uid = props.router.routeQuery.userId;
 
-        let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
+        let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' = 'empty';
 
         if (isCompose) {
             tab = 'compose';
@@ -185,8 +185,8 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
             tab = 'invite';
         }
 
-        if (isChannels) {
-            tab = 'channels';
+        if (isRooms) {
+            tab = 'rooms';
         }
 
         if (oid) {
@@ -221,11 +221,11 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                                 {tab === 'conversation' && (
                                     <MessengerComponent conversationId={props.router.routeQuery.conversationId} handlePageTitle={this.handlePageTitle} />
                                 )}
-                                {tab === 'channels' && (
-                                    <ChannelsExploreComponent />
+                                {tab === 'rooms' && (
+                                    <RoomsExploreComponent />
                                 )}
                                 {tab === 'invite' && (
-                                    <ChannelInviteFromLink />
+                                    <RoomInviteFromLink />
                                 )}
                                 {tab === 'organization' && (
                                     <OrganizationProfilContainer>

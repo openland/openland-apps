@@ -7,14 +7,14 @@ import { MessengerComponent } from '../../../components/messenger/MessengerCompo
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
-import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
+import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
 import { OrganizationProfile } from '../profile/ProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 import PlusIcon from '../../../components/icons/ic-add-medium-2.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { ChatContainer, ChatListContainer, ConversationContainer, Header, Title, OrganizationProfilContainer, ChannelInviteFromLink, AddButton } from './root.page';
+import { ChatContainer, ChatListContainer, ConversationContainer, Header, Title, OrganizationProfilContainer, RoomInviteFromLink, AddButton } from './root.page';
 
 export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
     let isCompose = props.router.path.endsWith('/new');
@@ -29,12 +29,12 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
         );
     }
 
-    let isChannels = props.router.path.endsWith('/channels');
+    let isRooms = props.router.path.endsWith('/channels');
     let isInvite = props.router.path.includes('joinChannel');
     let oid = props.router.routeQuery.organizationId;
     let uid = props.router.routeQuery.userId;
 
-    let tab: 'empty' | 'conversation' | 'compose' | 'channels' | 'invite' | 'organization' | 'user' = 'empty';
+    let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' = 'empty';
 
     if (isCompose) {
         tab = 'compose';
@@ -52,8 +52,8 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
         tab = 'invite';
     }
 
-    if (isChannels) {
-        tab = 'channels';
+    if (isRooms) {
+        tab = 'rooms';
     }
 
     if (oid) {
@@ -95,11 +95,11 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
                             {tab === 'conversation' && (
                                 <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
                             )}
-                            {tab === 'channels' && (
-                                <ChannelsExploreComponent />
+                            {tab === 'rooms' && (
+                                <RoomsExploreComponent />
                             )}
                             {tab === 'invite' && (
-                                <ChannelInviteFromLink />
+                                <RoomInviteFromLink />
                             )}
                             {tab === 'organization' && (
                                 <OrganizationProfilContainer>

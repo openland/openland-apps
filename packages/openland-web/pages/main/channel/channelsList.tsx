@@ -3,7 +3,7 @@ import { withChatsAll } from '../../../api/withChatsAll';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XScrollView } from 'openland-x/XScrollView';
-import { TextChannel } from 'openland-text/TextChannel';
+import { TextRoom } from 'openland-text/TextRoom';
 import { XButton } from 'openland-x/XButton';
 
 const ChannelsItemWrapper = Glamorous.div<{ highlighted: boolean }>([
@@ -109,7 +109,7 @@ function randomInteger(min: number, max: number) {
 export const ChannelsList = withChatsAll((props) => (
     <ChannelsListWrapper>
         <ChannelsListGroup>
-            <ChannelsListTitle>{TextChannel.myChannels}</ChannelsListTitle>
+            <ChannelsListTitle>{TextRoom.myRooms}</ChannelsListTitle>
             <ChannelsListItems>
                 {props.data && props.data.chats && props.data.chats.conversations.map((v) => (
                     <ChannelsItem
@@ -122,11 +122,11 @@ export const ChannelsList = withChatsAll((props) => (
             </ChannelsListItems>
         </ChannelsListGroup>
         <ChannelsListGroup>
-            <ChannelsListTitle>{TextChannel.recommended}</ChannelsListTitle>
+            <ChannelsListTitle>{TextRoom.recommended}</ChannelsListTitle>
             <ChannelsListItems>
                 <ChannelsItem path={'/channel/1'} title="Foreign investment" />
                 <ChannelsItem path={'/channel/2'} title="Data and analytics" unread={10}>
-                    <XButton size="tiny" style="primary" text={TextChannel.buttonRequestInvite} />
+                    <XButton size="tiny" style="primary" text={TextRoom.buttonRequestInvite} />
                 </ChannelsItem>
                 <ChannelsItem path={'/channel/3'} title="Request an intro" />
             </ChannelsListItems>

@@ -12,7 +12,7 @@ import ProfileIcon from './components/icons/ic-profile.svg';
 import { withChannelJoin } from '../../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
-import { TextChannel } from 'openland-text/TextChannel';
+import { TextRoom } from 'openland-text/TextRoom';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -118,7 +118,7 @@ const Text = Glamorous.div<{ width?: number, autoMargin?: boolean }>(props => ({
     margin: props.autoMargin ? 'auto' : undefined
 }));
 
-const ChannelTitle = Glamorous.div({
+const RoomTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
     lineHeight: '24px',
@@ -136,7 +136,7 @@ const UserAvatar = Glamorous(XAvatar)({
     }
 });
 
-const ChannelAvatar = Glamorous(XAvatar)({
+const RoomAvatar = Glamorous(XAvatar)({
     width: 60,
     height: 60,
     '& img': {
@@ -148,7 +148,7 @@ const ChannelAvatar = Glamorous(XAvatar)({
     }
 });
 
-const ChannelCounter = Glamorous.div({
+const RoomCounter = Glamorous.div({
     borderRadius: 16,
     backgroundColor: 'rgba(0, 0, 0, 0.04)',
     paddingLeft: 9,
@@ -240,10 +240,10 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
     );
 }) as React.ComponentType<{ invite: string, refetchVars: { conversationId: string }, text: string }>;
 
-interface ChannelsInviteComponentProps {
+interface RoomsInviteComponentProps {
     inviteLink?: string;
     signup?: string;
-    channel: {
+    room: {
         myStatus: string,
         id: string,
         description: string,
@@ -267,11 +267,11 @@ interface ChannelsInviteComponentProps {
     onDirectory?: boolean;
 }
 
-export class ChannelsInviteComponent extends React.Component<ChannelsInviteComponentProps> {
+export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
     render() {
-        let channel = this.props.channel;
-        let joinText = channel.myStatus === 'none' ? (channel.organization && channel.organization.isMine ? 'Join channel' : 'Request invite') : channel.myStatus === 'invited' ? 'Accept invite' : '???';
-        let closePath = this.props.onDirectory ? '/directory/channels' : '/mail/channels';
+        let room = this.props.room;
+        let joinText = room.myStatus === 'none' ? (room.organization && room.organization.isMine ? 'Join room' : 'Request invite') : room.myStatus === 'invited' ? 'Accept invite' : '???';
+        let closePath = this.props.onDirectory ? '/directory/' : '/mail/';
         return (
             <Root>
                 <MainContent>
@@ -295,31 +295,31 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                     }
                     <InfoCardWrapper>
                         <InfoCardHeader separator={8}>
-                            <ChannelAvatar
-                                cloudImageUuid={channel.photo || undefined}
-                                style="channel"
-                                objectName={channel.title}
-                                objectId={channel.id}
+                            <RoomAvatar
+                                cloudImageUuid={room.photo || undefined}
+                                style="room"
+                                objectName={room.title}
+                                objectId={room.id}
                             />
                             <div>
-                                <ChannelTitle>
-                                    {channel.title}
-                                </ChannelTitle>
-                                <ChannelCounter>
+                                <RoomTitle>
+                                    {room.title}
+                                </RoomTitle>
+                                <RoomCounter>
                                     <ProfileIcon />
-                                    <span>{channel.membersCount} {channel.membersCount > 1 ? 'members' : 'member'}</span>
-                                </ChannelCounter>
+                                    <span>{room.membersCount} {room.membersCount > 1 ? 'members' : 'member'}</span>
+                                </RoomCounter>
                             </div>
                         </InfoCardHeader>
                         <InfoCardBody>    
-                            {channel.description || TextChannel.descriptionPlaceholder}
+                            {room.description || TextRoom.descriptionPlaceholder}
                         </InfoCardBody>
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((channel.myStatus === 'none' && !this.props.inviteLink) || channel.myStatus === 'invited') && <JoinButton channelId={channel.id} isMine={!!(channel.organization && channel.organization.isMine)} refetchVars={{ conversationId: channel.id }} text={joinText} />}
-                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: channel.id }} text="Accept invite" />}
-                            {channel.myStatus === 'requested' && (
+                            {((room.myStatus === 'none' && !this.props.inviteLink) || room.myStatus === 'invited') && <JoinButton channelId={room.id} isMine={!!(room.organization && room.organization.isMine)} refetchVars={{ conversationId: room.id }} text={joinText} />}
+                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id }} text="Accept invite" />}
+                            {room.myStatus === 'requested' && (
                                 <XButton
                                     style="ghost"
                                     size="large"
@@ -328,14 +328,14 @@ export class ChannelsInviteComponent extends React.Component<ChannelsInviteCompo
                                     flexShrink={0}
                                 />
                             )}
-                            {channel.myStatus === 'member' && (
+                            {room.myStatus === 'member' && (
                                 <XButton
                                     style="primary"
                                     size="large"
-                                    text="Open channel"
+                                    text="Open room"
                                     alignSelf="center"
                                     flexShrink={0}
-                                    path={'/mail/' + channel.id}
+                                    path={'/mail/' + room.id}
                                 />
                             )}
                         </>

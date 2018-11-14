@@ -9,16 +9,16 @@ import { XButton } from 'openland-x/XButton';
 import { SortPicker } from '../../pages/main/directory/sortPicker';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
-import { EmptyComponent } from './components/view/content/ChannelEmptyComponent';
+import { EmptyComponent } from './components/view/content/RoomEmptyComponent';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
-import { ChannelSetFeatured, ChannelSetHidden } from './MessengerComponent';
+import { RoomSetFeatured, RoomSetHidden } from './MessengerComponent';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { SearchBox } from '../../pages/main/directory/components/SearchBox';
 
-const ChannelsListWrapper = Glamorous(XScrollView)({
+const RoomsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
 });
 
@@ -37,7 +37,7 @@ const StatusTitleMap = {
     requested: 'Pending',
 };
 
-const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
+const RoomItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     height: 64,
     paddingLeft: 16,
     paddingRight: 16,
@@ -63,7 +63,7 @@ const ChannelItemWrapper = makeNavigable(Glamorous(XHorizontal)({
     }
 }) as any) as any;
 
-const ChannelName = Glamorous.div({
+const RoomName = Glamorous.div({
     fontSize: 14,
     fontWeight: 600,
     lineHeight: '22px',
@@ -89,7 +89,7 @@ const MembersText = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)'
 });
 
-interface WithChatSearchChannelsProps {
+interface WithChatSearchRoomsProps {
     onDirectory?: boolean;
     variables: {
         query: string,
@@ -98,7 +98,7 @@ interface WithChatSearchChannelsProps {
     tagsCount: (n: number) => void;
 }
 
-const Channels = withChatSearchChannels((props) => {
+const Rooms = withChatSearchChannels((props) => {
     if (!(props.data && props.data.items)) {
         return <XLoader loading={true} />;
     }
@@ -112,38 +112,38 @@ const Channels = withChatSearchChannels((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map(c => {
-                        let channel = c.node;
-                        let title = (!channel.isRoot && channel.organization ? (channel.organization.name + ' / ') : '') + channel.title;
+                        let room = c.node;
+                        let title = (!room.isRoot && room.organization ? (room.organization.name + ' / ') : '') + room.title;
 
-                        let path = '/mail/' + channel.id;
+                        let path = '/mail/' + room.id;
 
-                        if ((props as any).onDirectory && channel.myStatus !== 'member') {
-                            path = '/directory/ch/' + channel.id;
+                        if ((props as any).onDirectory && room.myStatus !== 'member') {
+                            path = '/directory/r/' + room.id;
                         }
 
                         return (
-                            <ChannelItemWrapper
+                            <RoomItemWrapper
                                 path={path}
                                 key={c.node.id}
                                 alignItems="center"
                             >
                                 <XHorizontal separator={8} alignItems="center" flexGrow={1}>
                                     <XAvatar
-                                        style="channel"
-                                        cloudImageUuid={channel.photo || channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
-                                        objectName={channel.title}
-                                        objectId={channel.id}
+                                        style="room"
+                                        cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
+                                        objectName={room.title}
+                                        objectId={room.id}
                                     />
                                     <XVertical separator={0} flexGrow={1}>
-                                        <ChannelName>{title}</ChannelName>
-                                        <MembersText>{channel.membersCount} {channel.membersCount === 1 ? 'member' : 'members'}</MembersText>
+                                        <RoomName>{title}</RoomName>
+                                        <MembersText>{room.membersCount} {room.membersCount === 1 ? 'member' : 'members'}</MembersText>
                                     </XVertical>
                                 </XHorizontal>
                                 <XButton
-                                    text={StatusTitleMap[channel.myStatus]}
+                                    text={StatusTitleMap[room.myStatus]}
                                     path={path}
                                     style="ghost"
-                                    className={channel.myStatus}
+                                    className={room.myStatus}
                                 />
                                 <XWithRole role={['super-admin', 'editor']}>
                                     <XOverflow
@@ -152,13 +152,13 @@ const Channels = withChatSearchChannels((props) => {
                                         content={(
                                             <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
                                                 <XMenuTitle>Super admin</XMenuTitle>
-                                                <ChannelSetFeatured conversationId={channel.id} val={channel.featured} />
-                                                <ChannelSetHidden conversationId={channel.id} val={channel.hidden} />
+                                                <RoomSetFeatured conversationId={room.id} val={room.featured} />
+                                                <RoomSetHidden conversationId={room.id} val={room.hidden} />
                                             </div>
                                         )}
                                     />
                                 </XWithRole>
-                            </ChannelItemWrapper>
+                            </RoomItemWrapper>
                         );
                     })}
                 </XContentWrapper>
@@ -168,9 +168,9 @@ const Channels = withChatSearchChannels((props) => {
             )}
         </> 
     );
-}) as React.ComponentType<WithChatSearchChannelsProps>;
+}) as React.ComponentType<WithChatSearchRoomsProps>;
 
-interface ChannelsExploreComponentState {
+interface RoomExploreComponentState {
     count: number;
     query: string;
     sort: {
@@ -179,7 +179,7 @@ interface ChannelsExploreComponentState {
     };
 }
 
-export class ChannelsExploreComponent extends React.Component<{ onDirectory?: boolean }, ChannelsExploreComponentState> {
+export class RoomsExploreComponent extends React.Component<{ onDirectory?: boolean }, RoomExploreComponentState> {
     constructor(props: { onDirectory?: boolean }) {
         super(props);
         this.state = {
@@ -236,28 +236,28 @@ export class ChannelsExploreComponent extends React.Component<{ onDirectory?: bo
                 <SearchBox
                     value={this.state.query}
                     onChange={this.onQueryChange}
-                    placeholder="Search channels"
+                    placeholder="Search rooms"
                 />
-                <ChannelsListWrapper>
+                <RoomsListWrapper>
                     {this.state.query.length <= 0 && (
                         <XSubHeader
-                            title="Featured channels"
+                            title="Featured rooms"
                             right={sortBox}
                         />
                     )}
                     {(this.state.query.length > 0 && this.state.count > 0) && (
                         <XSubHeader
-                            title={'Channels'}
+                            title="Rooms"
                             counter={this.state.count}
                             right={sortBox}
                         />
                     )}
-                    <Channels
+                    <Rooms
                         variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }}
                         onDirectory={this.props.onDirectory}
                         tagsCount={this.handleCount}
                     />
-                </ChannelsListWrapper>
+                </RoomsListWrapper>
             </Root>
         );
     }

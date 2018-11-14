@@ -9,7 +9,7 @@ import { withAllChats } from '../../../api/withAllChats';
 import { ChannelsList } from './channelsList';
 import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { XIcon } from 'openland-x/XIcon';
-import { TextChannel } from 'openland-text/TextChannel';
+import { TextRoom } from 'openland-text/TextRoom';
 import { XButton } from 'openland-x/XButton';
 
 let ChannelsContainer = Glamorous.div({
@@ -118,12 +118,12 @@ export default withApp('Channel', 'viewer', withAllChats(withQueryLoader((props)
                     <ChannelsContainer>
                         <ChannelsListContainer>
                             <ChannelsHeader>
-                                <ChannelsHeaderCaption>{TextChannel.headerTitle}</ChannelsHeaderCaption>
+                                <ChannelsHeaderCaption>{TextRoom.headerTitle}</ChannelsHeaderCaption>
                                 <ChannelsHeaderIcon icon="search" />
                             </ChannelsHeader>
                             <ChannelsList />
                             <ChannelsBottomContainer>
-                                <XButton text={TextChannel.buttonCreateChannel} icon="add" />
+                                <XButton text={TextRoom.buttonCreateRoom} icon="add" />
                             </ChannelsBottomContainer>
                         </ChannelsListContainer>
                         <ConversationContainer>

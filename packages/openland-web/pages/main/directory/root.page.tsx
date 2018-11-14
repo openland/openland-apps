@@ -3,7 +3,7 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { ChannelsExploreComponent } from '../../../components/messenger/ChannelsExploreComponent';
+import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
 import {
     RootWrapper,
@@ -13,7 +13,7 @@ import {
 
 class RootComponent extends React.Component<XWithRouter> {
     render() {
-        let tab = 'channels';
+        let tab = 'rooms';
 
         if (this.props.router.routeQuery.conversationId) {
             tab = 'invite';
@@ -21,9 +21,9 @@ class RootComponent extends React.Component<XWithRouter> {
 
         return (
             <RootWrapper>
-                <Sidebar active="channels" />
+                <Sidebar active="rooms" />
                 <Container>
-                    {tab === 'channels' && <ChannelsExploreComponent onDirectory={true}/>}
+                    {tab === 'rooms' && <RoomsExploreComponent onDirectory={true}/>}
                     {tab === 'invite' && <MessengerComponent conversationId={this.props.router.routeQuery.conversationId} onDirectory={true} />}
                 </Container>
             </RootWrapper>
@@ -34,7 +34,7 @@ class RootComponent extends React.Component<XWithRouter> {
 export default withApp('Directory', 'viewer', withRouter((props) => {
     return (
         <>
-            <XDocumentHead title="Channels Directory" />
+            <XDocumentHead title="Rooms Directory" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <RootComponent router={props.router} />

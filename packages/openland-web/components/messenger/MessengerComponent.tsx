@@ -19,7 +19,7 @@ import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
 import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
-import { ChannelsInviteComponent } from './ChannelsInviteComponent';
+import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
 import { XCounter } from 'openland-x/XCounter';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -167,11 +167,11 @@ class SwitchComponent extends React.Component<{ mutation: any, conversationId: s
     }
 }
 
-export const ChannelSetFeatured = withChannelSetFeatured((props) => (
+export const RoomSetFeatured = withChannelSetFeatured((props) => (
     <SwitchComponent mutation={props.setFeatured} val={(props as any).val} fieldName={'featured'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ val: boolean, conversationId: string }>;
 
-export const ChannelSetHidden = withChannelSetHidden((props) => (
+export const RoomSetHidden = withChannelSetHidden((props) => (
     <SwitchComponent mutation={props.setHidden} val={(props as any).val} fieldName={'hidden'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ val: boolean, conversationId: string }>;
 
@@ -237,12 +237,12 @@ const NotificationSettings = withConversationSettingsUpdate((props) => (
     <NotificationSettingsComponent mutation={props.update} settings={(props as any).settings} conversationId={(props as any).conversationId} />
 )) as React.ComponentType<{ settings: { mobileNotifications: string, mute: boolean }, conversationId: string }>;
 
-const ChannelTabs = Glamorous.div({
+const RoomTabs = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
 });
 
-const ChannelTab = Glamorous(XLink)({
+const RoomTab = Glamorous(XLink)({
     padding: '20px 5px 17px',
     borderBottom: '3px solid transparent',
     color: 'rgba(51, 69, 98, 0.5)',
@@ -263,7 +263,7 @@ const ChannelTab = Glamorous(XLink)({
     }
 });
 
-export const ChannelEditComponent = withAlterChat((props) => {
+export const RoomEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
     let editPhotoRef = (props as any).photoRef;
@@ -273,7 +273,7 @@ export const ChannelEditComponent = withAlterChat((props) => {
         <XModalForm
             scrollableContent={true}
             targetQuery="editChat"
-            title="Channel settings"
+            title="Room settings"
             defaultAction={(data) => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
@@ -368,7 +368,7 @@ export const ChatEditComponent = withAlterChat((props) => {
 const AddMemberForm = withSuperAddToChannel((props) => {
     return (
         <XModalFormOld
-            title="Add member to channel"
+            title="Add member to room"
             submitMutation={props.add}
             mutationDirect={true}
             actionName="Add"
@@ -505,7 +505,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     }
 
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
-        return <ChannelsInviteComponent channel={props.data.chat} onDirectory={(props as any).onDirectory} />;
+        return <RoomsInviteComponent room={props.data.chat} onDirectory={(props as any).onDirectory} />;
     }
     let title = props.data.chat.title;
     let titlePath: string | undefined = undefined;
@@ -518,7 +518,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     } else if (props.data.chat.__typename === 'GroupConversation') {
         subtitle = 'Group';
     } else if (props.data.chat.__typename === 'ChannelConversation') {
-        subtitle = 'Channel';
+        subtitle = 'Room';
     } else if (props.data.chat.__typename === 'PrivateConversation') {
         uId = props.data.chat.user.id;
 
@@ -554,8 +554,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         separator={10}
                         alignItems="center"
                         flexGrow={0}
-                        maxWidth={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
-                        width={subtitle === 'Channel' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
+                        maxWidth={subtitle === 'Room' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
+                        width={subtitle === 'Room' ? 'calc(100% - 380px)' : 'calc(100% - 100px)'}
                     >
                         <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                             <XAvatar
@@ -566,7 +566,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     : props.data.chat.__typename === 'GroupConversation'
                                         ? 'group'
                                         : props.data.chat.__typename === 'ChannelConversation'
-                                            ? 'channel'
+                                            ? 'room'
                                             : props.data.chat.__typename === 'PrivateConversation'
                                                 ? 'user'
                                                 : 'colorus'
@@ -598,17 +598,17 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     <XHorizontal alignItems="center" separator={5}>
                         {props.data.chat.__typename === 'ChannelConversation' && (
                             <XHorizontal separator={14}>
-                                <ChannelTabs>
-                                    <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
-                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>
+                                <RoomTabs>
+                                    <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
+                                    <RoomTab query={{ field: 'tab', value: 'members' }}>
                                         <XHorizontal separator={4} alignItems="center">
                                             <span>Members</span>
                                             {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
                                                 <XCounter big={true} count={props.data.chat.memberRequestsCount} />
                                             )}
                                         </XHorizontal>
-                                    </ChannelTab>
-                                </ChannelTabs>
+                                    </RoomTab>
+                                </RoomTabs>
                                 <XHorizontal alignSelf="center" alignItems="center" separator={6}>
                                     <InviteMembersModal
                                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
@@ -624,7 +624,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                             placement="bottom-end"
                                             content={(
                                                 <AboutWrapper separator={2} maxWidth={510}>
-                                                    <AboutTitle>About channel</AboutTitle>
+                                                    <AboutTitle>About room</AboutTitle>
                                                     <AboutText>{props.data.chat.description}</AboutText>
                                                 </AboutWrapper>
                                             )}
@@ -640,10 +640,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
 
                         {props.data.chat.__typename === 'GroupConversation' && (
                             <XHorizontal separator={14}>
-                                <ChannelTabs>
-                                    <ChannelTab query={{ field: 'tab' }} >Discussion</ChannelTab>
-                                    <ChannelTab query={{ field: 'tab', value: 'members' }}>Members</ChannelTab>
-                                </ChannelTabs>
+                                <RoomTabs>
+                                    <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
+                                    <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
+                                </RoomTabs>
                             </XHorizontal>
                         )}
 
@@ -676,8 +676,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                             <>
                                                 <XWithRole role={['editor', 'super-admin']}>
                                                     <XMenuTitle>Super admin</XMenuTitle>
-                                                    <ChannelSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
-                                                    <ChannelSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                                    <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
+                                                    <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
                                                     <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
                                                     <XMenuTitle>Common</XMenuTitle>
                                                     <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
@@ -728,8 +728,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         description={props.data.chat.description}
                         longDescription={props.data.chat.longDescription}
                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
-                        emptyText="To grow the community, invite people to this channel"
-                        removeFrom="channel"
+                        emptyText="To grow the community, invite people to this room"
+                        removeFrom="room"
                     />
                 )}
                 {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
@@ -746,7 +746,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
 
             </XHorizontal>
             <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
-            {props.data.chat.__typename === 'ChannelConversation' && <ChannelEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
+            {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
             <XWithRole role={['super-admin']}>
                 <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />

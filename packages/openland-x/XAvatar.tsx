@@ -12,7 +12,7 @@ import { Query } from 'react-apollo';
 import { UserQuery } from 'openland-api';
 
 export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
-export type XAvatarStyle = 'organization' | 'person' | 'channel' | 'group' | 'colorus' | 'user' | undefined;
+export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
     className?: string;
@@ -85,67 +85,67 @@ let sizeStyles = styleResolver({
 });
 
 let borderRadiusStyles = styleResolverWithProps((props: { style: XAvatarStyle, attach?: 'left' | 'right' | 'both' }) => ({
-    'x-large': (props.style === 'organization' || props.style === 'channel') ? {
+    'x-large': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
     } : { borderRadius: 76 },
-    'large': (props.style === 'organization' || props.style === 'channel') ? {
+    'large': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 65 },
-    's-large': (props.style === 'organization' || props.style === 'channel') ? {
+    's-large': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 65 },
-    'x-medium': (props.style === 'organization' || props.style === 'channel') ? {
+    'x-medium': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 43 },
-    's-medium': (props.style === 'organization' || props.style === 'channel') ? {
+    's-medium': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 33 },
-    'l-medium': (props.style === 'organization' || props.style === 'channel') ? {
+    'l-medium': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 8,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 8,
     } : { borderRadius: 28 },
-    'medium': (props.style === 'organization' || props.style === 'channel') ? {
+    'medium': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 5,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 5,
     } : { borderRadius: 24 },
-    'default': (props.style === 'organization' || props.style === 'channel') ? {
+    'default': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 4,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 4,
     } : { borderRadius: 20 },
-    'small': (props.style === 'organization' || props.style === 'channel') ? {
+    'small': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
     } : { borderRadius: 18 },
-    'l-small': (props.style === 'organization' || props.style === 'channel') ? {
+    'l-small': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
         borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
     } : { borderRadius: 10 },
-    'x-small': (props.style === 'organization' || props.style === 'channel') ? {
+    'x-small': (props.style === 'organization' || props.style === 'room') ? {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 3,
         borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 3,
@@ -209,7 +209,7 @@ const AvatarStub = Glamorous.div({
     '&.org-small': {
         backgroundImage: 'url(\'/static/img/avatars/org-small.svg\')',
     },
-    '&.channel': {
+    '&.room': {
         backgroundImage: 'url(\'/static/img/avatars/channels.svg\')',
     },
     '&.group': {

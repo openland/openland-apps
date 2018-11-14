@@ -11,15 +11,14 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import {
     SignContainer,
     ButtonsWrapper,
-    ImgButton,
     Title,
     Separator,
     Description,
-    ChannelSignup,
-    ChannelLoader,
-    ChannelTerms,
-    ChannelTitle,
-    ChannelText,
+    RoomSignup,
+    RoomLoader,
+    RoomTerms,
+    RoomTitle,
+    RoomText,
     GoogleButton,
     EmailButton
 } from './components/SignComponents';
@@ -37,7 +36,7 @@ const EmptyBlock = Glamorous.div({
     flexShrink: 0
 });
 
-class SignInComponent extends React.Component<{ redirect?: string | null, channelView?: boolean } & XWithRouter, {
+class SignInComponent extends React.Component<{ redirect?: string | null, roomView?: boolean } & XWithRouter, {
 
     googleStarting: boolean,
 
@@ -197,16 +196,16 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
         const signin = this.props.router.path.endsWith('signin');
         let redirect = this.props.router.query.redirect ? ('?redirect=' + encodeURIComponent(this.props.router.query.redirect)) : '';
         console.warn(redirect);
-        return this.props.channelView ? (
-            <ChannelSignup
+        return this.props.roomView ? (
+            <RoomSignup
                 text={signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint}
                 path={(signin ? '/signup' : '/signin') + redirect}
                 linkText={signin ? InitTexts.auth.signup : InitTexts.auth.signin}
                 headerStyle={signin ? 'signin' : 'signup'}
             >
                 {!this.state.fromOutside && !this.state.email && (<>
-                    <ChannelTitle>{signin ? 'Sign in and join the conversation' : 'Sign up and join the conversation'}</ChannelTitle>
-                    <ChannelText>{signin ? 'We are excited to have you back!' : 'Creating an account is free and easy'}</ChannelText>
+                    <RoomTitle>{signin ? 'Sign in and join the conversation' : 'Sign up and join the conversation'}</RoomTitle>
+                    <RoomText>{signin ? 'We are excited to have you back!' : 'Creating an account is free and easy'}</RoomText>
                     <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
                         <GoogleButton
                             onClick={this.loginWithGoogle}
@@ -224,13 +223,13 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         />
                     </ButtonsWrapper>
 
-                    {!signin && <ChannelTerms>By creating an account you are accepting our <XLink href="https://openland.com/terms">Terms of Service</XLink> and <XLink href="https://openland.com/privacy">Privacy Policy</XLink>.</ChannelTerms>}
+                    {!signin && <RoomTerms>By creating an account you are accepting our <XLink href="https://openland.com/terms">Terms of Service</XLink> and <XLink href="https://openland.com/privacy">Privacy Policy</XLink>.</RoomTerms>}
                 </>)}
 
                 {this.state.fromOutside && (this.state.emailSending || this.state.googleStarting) && (
-                    <ChannelLoader>
+                    <RoomLoader>
                         <XLoader loading={true} />
-                    </ChannelLoader>
+                    </RoomLoader>
                 )}
 
                 {this.state.email && !this.state.emailSent && (
@@ -240,7 +239,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                                 <XServiceMessage title={InitTexts.auth.emailInvalid} />
                             </div>
                         )}
-                        <ChannelTitle>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</ChannelTitle>
+                        <RoomTitle>{signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}</RoomTitle>
                         <ButtonsWrapper marginTop={40} width={280}>
                             <XInput type="email" autofocus={true} size="large" onChange={this.emailChanged} value={this.state.emailValue} placeholder={InitTexts.auth.emailPlaceholder} onEnter={this.loginEmailStart} />
                         </ButtonsWrapper>
@@ -260,7 +259,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                                 <XServiceMessage title={InitTexts.auth.codeInvalid} />
                             </div>
                         )}
-                        <ChannelTitle>Please, enter activation code</ChannelTitle>
+                        <RoomTitle>Please, enter activation code</RoomTitle>
                         <ButtonsWrapper marginTop={40} width={280}>
                             <XInput pattern="[0-9]*" type="number" autofocus={true} size="large" onChange={this.codeChanged} value={this.state.codeValue} placeholder={InitTexts.auth.codePlaceholder} onEnter={this.loginCodeStart} />
                         </ButtonsWrapper>
@@ -272,7 +271,7 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
                         </ButtonsWrapper>
                     </div>
                 )}
-            </ChannelSignup>
+            </RoomSignup>
         ) : (
                 <SignContainer
                     signin={signin}
@@ -335,13 +334,13 @@ class SignInComponent extends React.Component<{ redirect?: string | null, channe
 export default withAppBase('Sign In', withRouter((props) => {
     let redirect = props.router.query ? (props.router.query.redirect ? props.router.query.redirect : null) : null;
     const signin = props.router.path.endsWith('signin');
-    const fromChannel = Cookie.get('x-openland-invite');
+    const fromRoom = Cookie.get('x-openland-invite');
 
     return (
         <AuthRouter>
             <XDocumentHead title={signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event={signin ? 'View Signin' : 'View Signup'}>
-                {canUseDOM && <SignInComponent redirect={redirect} router={props.router} channelView={fromChannel ? true : false} />}
+                {canUseDOM && <SignInComponent redirect={redirect} router={props.router} roomView={fromRoom ? true : false} />}
             </XTrack>
         </AuthRouter>
     );

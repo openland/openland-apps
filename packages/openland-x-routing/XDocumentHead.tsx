@@ -68,13 +68,13 @@ const OrgSmartHead = withOrganization(withRouter((props) => {
     }
 }));
 
-const ChannelInviteSmartHead = withChannelInviteInfo(withRouter((props) => {
+const RoomInviteSmartHead = withChannelInviteInfo(withRouter((props) => {
     if (props.data.invite && props.data.invite.channel) {
-        let channel = props.data.invite.channel;
+        let room = props.data.invite.channel;
         let computedOG: OpenGraphObject = {
-            title: channel.title + ' — Private Community at Openland',
-            description: channel.description || 'Openland is a professional messaging service built for productivity and speed. It’s time to move away from endless meetings, disorganized email threads, disconnected team chats, and work invasion in your personal social media. With Openland you can manage all your professional communications in one messaging inbox.',
-            image: channel.socialImage || channel.photo || DEFAULT_OG.image
+            title: room.title + ' — Private Community at Openland',
+            description: room.description || 'Openland is a professional messaging service built for productivity and speed. It’s time to move away from endless meetings, disorganized email threads, disconnected team chats, and work invasion in your personal social media. With Openland you can manage all your professional communications in one messaging inbox.',
+            image: room.socialImage || room.photo || DEFAULT_OG.image
         };
 
         return <SmartHead og={computedOG} url={props.router.href} />;
@@ -123,7 +123,7 @@ export const XDocumentHead = withRouter<{ title?: string | string[], titleWithou
         }
 
         if (p.startsWith('/joinChannel/') || p.startsWith('/joinChannel/')) {
-            return <ChannelInviteSmartHead />;
+            return <RoomInviteSmartHead />;
         }
 
         return <SmartHead url={props.router.href} />;

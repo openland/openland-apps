@@ -25,7 +25,7 @@ import { XFormField, XFormFieldTitle } from 'openland-x-forms/XFormField';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withCreateUserProfileAndOrganization } from '../../api/withCreateUserProfileAndOrganization';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
-import { ChannelSignup, ChannelTitle, ChannelText, ButtonsWrapper } from './components/SignComponents';
+import { RoomSignup, RoomTitle, RoomText, ButtonsWrapper } from './components/SignComponents';
 import { XButton } from 'openland-x/XButton';
 
 const Footer = Glamorous.div({
@@ -163,7 +163,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization((props) => {
     );
 });
 
-class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: boolean }> {
+class RoomCreateProfileFormInner extends React.Component<any, { isOrgView: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -182,11 +182,9 @@ class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: bo
         let props = this.props;
 
         return (
-            <ChannelSignup
-                headerStyle={this.state.isOrgView ? 'organization' : 'profile'}
-            >
-                <ChannelTitle>{this.state.isOrgView ? 'Enter your organization' : 'Introduce yourself'}</ChannelTitle>
-                <ChannelText>{this.state.isOrgView ? 'This will help to make new connections and discover opportunities' : 'Add your name and photo so others can recognize you'}</ChannelText>
+            <RoomSignup headerStyle={this.state.isOrgView ? 'organization' : 'profile'}>
+                <RoomTitle>{this.state.isOrgView ? 'Enter your organization' : 'Introduce yourself'}</RoomTitle>
+                <RoomText>{this.state.isOrgView ? 'This will help to make new connections and discover opportunities' : 'Add your name and photo so others can recognize you'}</RoomText>
                 <ButtonsWrapper marginTop={40} marginBottom={83} width={290}>
                     <XForm
                         defaultData={{
@@ -256,30 +254,30 @@ class ChannelCreateProfileFormInner extends React.Component<any, { isOrgView: bo
                         </ResolveView>
                     </XForm>
                 </ButtonsWrapper>
-            </ChannelSignup>
+            </RoomSignup>
         );
     }
 }
 
-const ChannelCreateProfileForm = withCreateUserProfileAndOrganization((props) => {
+const RoomCreateProfileForm = withCreateUserProfileAndOrganization((props) => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
 
     return (
-        <ChannelCreateProfileFormInner {...props} />
+        <RoomCreateProfileFormInner {...props} />
     );
 });
 
 export default withApp('Create Profile and Organization', 'viewer', (props) => {
-    const fromChannel = Cookie.get('x-openland-invite');
+    const fromRoom = Cookie.get('x-openland-invite');
 
     return (
         <>
             <XDocumentHead title={InitTexts.create_profile.pageTitle} titleSocial={InitTexts.socialPageTitle} />
 
-            {canUseDOM && fromChannel && <ChannelCreateProfileForm />}
-            {canUseDOM && !fromChannel && <CreateProfileForm />}
+            {canUseDOM && fromRoom && <RoomCreateProfileForm />}
+            {canUseDOM && !fromRoom && <CreateProfileForm />}
         </>
     );
 });

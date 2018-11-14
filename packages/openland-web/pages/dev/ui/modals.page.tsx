@@ -36,8 +36,8 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
             <XContent>
                 <XVertical>
 
-                    <XTitle>for channels</XTitle>
-                    <BrowseChannelsModal title="Browse channels" target={<XButton text="Browse channels" />} />
+                    <XTitle>for rooms</XTitle>
+                    <BrowseChannelsModal title="Browse rooms" target={<XButton text="Browse rooms" />} />
 
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>

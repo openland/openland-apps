@@ -39,7 +39,7 @@ export const EmptyComponent = () => (
     <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
         <EmptyContent>
             <Image />
-            <EmptyText>No channel matches your search</EmptyText>
+            <EmptyText>No room matches your search</EmptyText>
         </EmptyContent>
     </EmptyWrapper>
 );

@@ -194,7 +194,7 @@ export class OrganizationCard extends React.Component<OrganizationCardProps, { i
                                         <XMenuItem href={'/directory/o/' + this.props.item.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                                         {this.props.item.isMine && (
-                                            <XMenuItem query={{ field: 'createChannel', value: this.props.item.id }}>{TextDirectory.buttonCreateChannel}</XMenuItem>
+                                            <XMenuItem query={{ field: 'createRoom', value: this.props.item.id }}>{TextDirectory.buttonCreateRoom}</XMenuItem>
                                         )}
 
                                         <XWithRole role="admin" orgPermission={this.props.item.id}>

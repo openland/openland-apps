@@ -22,7 +22,7 @@ import { TextInvites } from 'openland-text/TextInvites';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { ChannelSetFeatured, ChannelSetHidden } from '../../../components/messenger/MessengerComponent';
+import { RoomSetFeatured, RoomSetHidden } from '../../../components/messenger/MessengerComponent';
 import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import TwitterIcon from './icons/twitter-2.svg';
@@ -173,7 +173,7 @@ const Header = (props: { organizationQuery: Organization }) => {
                             flat={true}
                             content={(
                                 <>
-                                    <XMenuItem query={{ field: 'createChannel', value: 'true' }}>Create channel</XMenuItem>
+                                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>Create room</XMenuItem>
                                 </>
                             )}
                         />
@@ -635,7 +635,7 @@ const Members = (props: { organizationQuery: Organization }) => {
     );
 };
 
-const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
+const RoomCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
@@ -645,11 +645,11 @@ const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() =
     cursor: 'pointer'
 })));
 
-const ChannelCardInfo = Glamorous.div({
+const RoomCardInfo = Glamorous.div({
     flex: 1,
 });
 
-const ChannelCardTitle = Glamorous.div({
+const RoomCardTitle = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: '20px',
@@ -658,7 +658,7 @@ const ChannelCardTitle = Glamorous.div({
     marginBottom: 1,
 });
 
-const ChannelCardRole = Glamorous.div({
+const RoomCardRole = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: '20px',
@@ -666,16 +666,16 @@ const ChannelCardRole = Glamorous.div({
     color: '#99a2b0',
 });
 
-const ChannelCardTools = Glamorous(XHorizontal)({
+const RoomCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
-const ChannelAvatar = Glamorous(XAvatar)({
+const RoomAvatar = Glamorous(XAvatar)({
     margin: '0 12px 0 -5px'
 });
 
-interface ChannelCardProps {
-    channel: {
+interface RoomCardProps {
+    room: {
         id: string;
         isRoot: boolean;
         title: string;
@@ -692,38 +692,38 @@ interface ChannelCardProps {
     };
 }
 
-class ChannelCard extends React.Component<ChannelCardProps> {
+class RoomCard extends React.Component<RoomCardProps> {
     state = {
         isHovered: false,
     };
 
     render() {
-        const { channel } = this.props;
+        const { room } = this.props;
         const organization = this.props.organization;
-        const membersCountText = channel.membersCount + ' ' + ((channel.membersCount) > 1 ? 'members' : 'member');
-        const requesetsCountText = (organization && organization.isOwner && channel.memberRequestsCount > 0) ? '• ' + (channel.memberRequestsCount + ' ' + (channel.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
+        const membersCountText = room.membersCount + ' ' + ((room.membersCount) > 1 ? 'members' : 'member');
+        const requesetsCountText = (organization && organization.isOwner && room.memberRequestsCount > 0) ? '• ' + (room.memberRequestsCount + ' ' + (room.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
 
         return (
-            <ChannelCardWrapper
-                path={'/mail/' + channel.id}
+            <RoomCardWrapper
+                path={'/mail/' + room.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
-                <ChannelAvatar
-                    style="channel"
-                    cloudImageUuid={channel.photo || channel.photos[0] || (organization.photo ? organization.photo : undefined)}
-                    objectName={channel.title}
-                    objectId={channel.id}
+                <RoomAvatar
+                    style="room"
+                    cloudImageUuid={room.photo || room.photos[0] || (organization.photo ? organization.photo : undefined)}
+                    objectName={room.title}
+                    objectId={room.id}
                 />
-                <ChannelCardInfo>
-                    <ChannelCardTitle>{(channel.isRoot ? '' : '/') + channel.title}</ChannelCardTitle>
-                    <ChannelCardRole>{membersCountText} {requesetsCountText}</ChannelCardRole>
-                </ChannelCardInfo>
-                <ChannelCardTools separator={5}>
+                <RoomCardInfo>
+                    <RoomCardTitle>{(room.isRoot ? '' : '/') + room.title}</RoomCardTitle>
+                    <RoomCardRole>{membersCountText} {requesetsCountText}</RoomCardRole>
+                </RoomCardInfo>
+                <RoomCardTools separator={5}>
                     <XButton
                         text="View"
                         style={this.state.isHovered ? 'primary' : 'default'}
-                        path={'/mail/' + channel.id}
+                        path={'/mail/' + room.id}
                     />
                     <XWithRole role={['super-admin', 'editor']}>
                         <XOverflow
@@ -732,14 +732,14 @@ class ChannelCard extends React.Component<ChannelCardProps> {
                             content={(
                                 <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
                                     <XMenuTitle>Super admin</XMenuTitle>
-                                    <ChannelSetFeatured conversationId={channel.id} val={channel.featured} />
-                                    <ChannelSetHidden conversationId={channel.id} val={channel.hidden} />
+                                    <RoomSetFeatured conversationId={room.id} val={room.featured} />
+                                    <RoomSetHidden conversationId={room.id} val={room.hidden} />
                                 </div>
                             )}
                         />
                     </XWithRole>
-                </ChannelCardTools>
-            </ChannelCardWrapper>
+                </RoomCardTools>
+            </RoomCardWrapper>
         );
     }
 }
@@ -750,14 +750,14 @@ interface OrganizationProfileInnerProps extends XWithRouter {
     onDirectory?: boolean;
 }
 
-const Channels = (props: { items?: any, organization: any }) => {
+const Rooms = (props: { rooms?: any, organization: any }) => {
     return (
         <>
-            {props.items && (props.items.length > 0) && (
-                <XSubHeader title="Channels" counter={props.items.length} />
+            {props.rooms && (props.rooms.length > 0) && (
+                <XSubHeader title="Rooms" counter={props.rooms.length} />
             )}
-            {props.items.map((c: any, i: any) => (
-                c ? <ChannelCard key={i} channel={c} organization={props.organization} /> : null
+            {props.rooms.map((c: any, i: any) => (
+                c ? <RoomCard key={i} room={c} organization={props.organization} /> : null
             ))}
         </>
     );
@@ -811,7 +811,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
                 <XScrollView height="calc(100% - 160px)">
                     <About organizationQuery={this.props.organizationQuery} />
                     <Members organizationQuery={this.props.organizationQuery} />
-                    <Channels items={org.channels.filter(c => c && !c.hidden)} organization={org} />
+                    <Rooms rooms={org.channels.filter(c => c && !c.hidden)} organization={org} />
                 </XScrollView>
             </OrgInfoWrapper>
         );

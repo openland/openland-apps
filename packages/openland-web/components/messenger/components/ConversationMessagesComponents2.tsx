@@ -103,7 +103,7 @@ interface ConversationMessagesComponentProps {
     conversationType?: string;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
-    channelType: boolean;
+    roomType: boolean;
 }
 
 interface ConversationMessagesComponentState {

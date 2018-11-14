@@ -19,10 +19,10 @@ const EmptyContent = Glamorous.div({
     flexShrink: 0
 });
 
-const Image = Glamorous.div<{ isChannel: boolean }>(props => ({
-    width: props.isChannel ? 434 : 391,
-    height: props.isChannel ? 352 :  380,
-    backgroundImage: props.isChannel
+const Image = Glamorous.div<{ isRoom: boolean }>(props => ({
+    width: props.isRoom ? 434 : 391,
+    height: props.isRoom ? 352 :  380,
+    backgroundImage: props.isRoom
         ? 'url(\'/static/X/messenger/chat-channel-empty.svg\')'
         : 'url(\'/static/X/messenger/chat-empty.svg\')',
     backgroundRepeat: 'no-repeat',
@@ -52,7 +52,7 @@ export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: 
     <EmptyRoot>
         <EmptyContent>
             <ImageWrapper>
-                {props.conversationType === 'ChannelConversation' ? <Image isChannel={true} /> : <Image isChannel={false} />}
+                <Image isRoom={props.conversationType === 'ChannelConversation'} />
             </ImageWrapper>
             {props.conversationType === 'ChannelConversation' && <Text>The discussion hasn’t started yet</Text>}
             {props.conversationType !== 'ChannelConversation' && <Text>No messages yet</Text>}

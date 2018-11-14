@@ -79,7 +79,7 @@ export const EmptyComponent = (props: { text: string, aloneMember: boolean, smal
             <ImageWrapper>
                 <Image smaller={props.smaller} />
             </ImageWrapper>
-            {props.aloneMember && <Text>Grow this channel</Text>}
+            {props.aloneMember && <Text>Grow this room</Text>}
             <InfoText>{props.text}</InfoText>
             <InviteMembersModal
                 orgId={props.orgId}

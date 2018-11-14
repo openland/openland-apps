@@ -23,7 +23,7 @@ class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     }
 }
 
-export default withAppBase('Channel Invite', withChanneJoinlnviteSIgnin((props) => {
+export default withAppBase('Room Invite', withChanneJoinlnviteSIgnin((props) => {
     return (
         <AuthRouter>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />

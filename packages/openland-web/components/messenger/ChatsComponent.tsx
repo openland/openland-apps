@@ -236,7 +236,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
                         : conv.type === 'GroupConversation'
                             ? 'group'
                             : conv.type === 'ChannelConversation'
-                                ? 'channel' :
+                                ? 'room' :
                                 isPrivate ? 'user' : undefined
                     )}
                     objectName={conv.title}

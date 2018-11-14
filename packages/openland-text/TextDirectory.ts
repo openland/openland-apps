@@ -1,7 +1,7 @@
 export const TextDirectory = {
     sidebar: {
         title: 'Directory',
-        channels: 'Channels',
+        rooms: 'Rooms',
         people: 'People',
         organizations: 'Organizations',
         communities: 'Communities',
@@ -10,7 +10,7 @@ export const TextDirectory = {
     create: {
         title: 'New',
         organization: 'New organization',
-        channel: 'New channel',
+        room: 'New room',
         community: 'New community'
     },
 
@@ -30,7 +30,7 @@ export const TextDirectory = {
 
     buttonViewProfile: 'View profile',
     buttonEdit: 'Edit',
-    buttonCreateChannel: 'Create channel',
+    buttonCreateRoom: 'Create room',
     buttonSuperEdit : 'Super edit',
     buttonFollow: 'Follow',
     buttonFollowing: 'Following',
@@ -51,7 +51,7 @@ export const TextDirectory = {
 
     categoryPicker: 'Organization category',
 
-    interestPicker: 'Channels',
+    interestPicker: 'Rooms',
     interestSearchPlaceholder: 'Enter an interest',
-    interestTop: 'Top channels',
+    interestTop: 'Top rooms',
 };

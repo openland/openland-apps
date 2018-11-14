@@ -267,7 +267,7 @@ const About = (props: { userQuery: User }) => {
     );
 };
 
-const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
+const RoomCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     display: 'flex',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     padding: '15px 0 12px 25px',
@@ -277,11 +277,11 @@ const ChannelCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() =
     cursor: 'pointer'
 })));
 
-const ChannelCardInfo = Glamorous.div({
+const RoomCardInfo = Glamorous.div({
     flex: 1,
 });
 
-const ChannelCardTitle = Glamorous.div({
+const RoomCardTitle = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: '20px',
@@ -290,7 +290,7 @@ const ChannelCardTitle = Glamorous.div({
     marginBottom: 1,
 });
 
-const ChannelCardRole = Glamorous.div({
+const RoomCardRole = Glamorous.div({
     fontSize: 14,
     fontWeight: 500,
     lineHeight: '20px',
@@ -298,16 +298,16 @@ const ChannelCardRole = Glamorous.div({
     color: '#99a2b0',
 });
 
-const ChannelCardTools = Glamorous(XHorizontal)({
+const RoomCardTools = Glamorous(XHorizontal)({
     padding: '4px 18px 0'
 });
 
-const ChannelAvatar = Glamorous(XAvatar)({
+const RoomAvatar = Glamorous(XAvatar)({
     margin: '0 12px 0 -5px'
 });
 
-interface ChannelCardProps {
-    channel: {
+interface RoomCardProps {
+    room: {
         id: string,
         title: string,
         hidden: boolean,
@@ -321,38 +321,38 @@ interface ChannelCardProps {
     };
 }
 
-class ChannelCard extends React.Component<ChannelCardProps> {
+class RoomCard extends React.Component<RoomCardProps> {
     state = {
         isHovered: false,
     };
 
     render() {
-        const { channel } = this.props;
+        const { room } = this.props;
 
         return (
-            <ChannelCardWrapper
-                path={'/mail/' + channel.id}
+            <RoomCardWrapper
+                path={'/mail/' + room.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
-                <ChannelAvatar
-                    style="channel"
-                    cloudImageUuid={channel.photo || channel.photos[0] || (channel.organization ? channel.organization.photo || undefined : undefined)}
-                    objectName={channel.title}
-                    objectId={channel.id}
+                <RoomAvatar
+                    style="room"
+                    cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
+                    objectName={room.title}
+                    objectId={room.id}
                 />
-                <ChannelCardInfo>
-                    <ChannelCardTitle>{channel.title}</ChannelCardTitle>
-                    <ChannelCardRole>Member</ChannelCardRole>
-                </ChannelCardInfo>
-                <ChannelCardTools separator={5}>
+                <RoomCardInfo>
+                    <RoomCardTitle>{room.title}</RoomCardTitle>
+                    <RoomCardRole>Member</RoomCardRole>
+                </RoomCardInfo>
+                <RoomCardTools separator={5}>
                     <XButton
                         text="View"
                         style={this.state.isHovered ? 'primary' : 'default'}
-                        path={'/mail/' + channel.id}
+                        path={'/mail/' + room.id}
                     />
-                </ChannelCardTools>
-            </ChannelCardWrapper>
+                </RoomCardTools>
+            </RoomCardWrapper>
         );
     }
 }
@@ -363,14 +363,14 @@ interface UserProfileInnerProps extends XWithRouter {
     onDirectory?: boolean;
 }
 
-const Channels = (props: { channels: any }) => {
+const Rooms = (props: { rooms: any }) => {
     return (
         <>
-            {props.channels && (props.channels.length > 0) && (
-                <XSubHeader title="Channels" counter={props.channels.length} />
+            {props.rooms && (props.rooms.length > 0) && (
+                <XSubHeader title="Roooms" counter={props.rooms.length} />
             )}
-            {props.channels.map((c: any, i: any) => (
-                c ? <ChannelCard key={i} channel={c} /> : null
+            {props.rooms.map((c: any, i: any) => (
+                c ? <RoomCard key={i} room={c} /> : null
             ))}
         </>
     );
@@ -418,7 +418,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
                 <Header userQuery={this.props.userQuery} />
                 <XScrollView height="calc(100% - 160px)">
                     <About userQuery={this.props.userQuery} />
-                    <Channels channels={usr.channels.filter(c => c && !c.hidden)} />
+                    <Rooms rooms={usr.channels.filter(c => c && !c.hidden)} />
                 </XScrollView>
             </div>
         );

@@ -12,7 +12,7 @@ import { ConversationState } from 'openland-engines/messenger/ConversationState'
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
-import ChannelIcon from './components/icons/ic-channel-2.svg';
+import RoomIcon from './components/icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withUserInfo } from '../UserInfo';
@@ -302,9 +302,9 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                 <HeaderWrapper>
                     <Title>{TextCompose.headerTitle}</Title>
                     <HeaderButton
-                        text={TextCompose.headerNewChannel}
-                        icon={<ChannelIcon />}
-                        query={{ field: 'createChannel', value: 'true' }}
+                        text={TextCompose.headerNewRoom}
+                        icon={<RoomIcon />}
+                        query={{ field: 'createRoom', value: 'true' }}
                     />
                 </HeaderWrapper>
                 <ConversationContainer>
