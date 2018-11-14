@@ -63,7 +63,7 @@ const RemoveMemberForm = withSuperAccountMemberRemove((props) => {
     );
 });
 
-const AddFeature = withSuperAccountFeatureAdd((props) => {
+const AddFeature = withSuperAccountFeatureAdd(withQueryLoader((props: any) => {
     return (
         <XModalForm
             title="Add feature to organization"
@@ -73,13 +73,13 @@ const AddFeature = withSuperAccountFeatureAdd((props) => {
             target={<XButton text="Add feature" />}
         >
             <XFormField title="Feature">
-                <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
+                <XForm.Select field="featureId" options={props.data.featureFlags.map((v: any) => ({ value: v.id, title: v.title }))} />
             </XFormField>
         </XModalForm>
     );
-});
+}));
 
-const RemoveFeature = withSuperAccountFeatureRemove((props) => {
+const RemoveFeature = withSuperAccountFeatureRemove(withQueryLoader((props: any) => {
     return (
         <XModalForm
             title="Remove feature from organization"
@@ -90,11 +90,11 @@ const RemoveFeature = withSuperAccountFeatureRemove((props) => {
             target={<XButton style="danger" text="Remove feature" />}
         >
             <XFormField title="Feature">
-                <XForm.Select field="featureId" options={props.data.featureFlags.map((v) => ({ value: v.id, title: v.title }))} />
+                <XForm.Select field="featureId" options={props.data.featureFlags.map((v: any) => ({ value: v.id, title: v.title }))} />
             </XFormField>
         </XModalForm>
     );
-});
+}));
 
 const Edit = withSuperAccountRename((props) => {
     return (
@@ -116,6 +116,7 @@ const Edit = withSuperAccountRename((props) => {
 }) as React.ComponentType<{ orgTitle: string }>;
 
 export default withApp('Super Organization', 'super-admin', withSuperAccount(withQueryLoader((props) => {
+    console.warn(props);
     return (
         <DevToolsScaffold title={props.data.superAccount.title}>
             <XHeader text={props.data.superAccount.title} description={'Current State: ' + props.data.superAccount.state}>
