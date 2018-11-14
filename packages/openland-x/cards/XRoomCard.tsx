@@ -11,7 +11,7 @@ import { XMenuTitle } from 'openland-x/XMenuItem';
 import { RoomSetFeatured, RoomSetHidden } from '../../openland-web/components/messenger/MessengerComponent';
 import { ChatSearchChannel_items_edges_node } from 'openland-api/Types';
 
-const RoomCardsWrapper = makeNavigable(Glamorous(XHorizontal)({
+const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
     height: 64,
     paddingLeft: 16,
     paddingRight: 16,
@@ -58,18 +58,18 @@ const StatusTitleMap = {
     requested: 'Pending',
 };
 
-interface RoomCardProps {
+interface XRoomCardProps {
     room: ChatSearchChannel_items_edges_node;
     path?: string;
     customButton?: any;
     customMenu?: any;
 }
 
-interface RoomCardState {
+interface XRoomCardState {
     isHovered: boolean;
 }
 
-export class XRoomCard extends React.Component<RoomCardProps, RoomCardState> {
+export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
     state = {
         isHovered: false
     };
@@ -107,7 +107,7 @@ export class XRoomCard extends React.Component<RoomCardProps, RoomCardState> {
         ) : customMenu;
 
         return (
-            <RoomCardsWrapper
+            <RoomWrapper
                 path={path || '/mail/' + room.id}
                 key={'room_' + room.id}
                 alignItems="center"
@@ -128,7 +128,7 @@ export class XRoomCard extends React.Component<RoomCardProps, RoomCardState> {
                 </XHorizontal>
                 {this.state.isHovered && button}
                 {menu}
-            </RoomCardsWrapper>
+            </RoomWrapper>
         );
     }
 }

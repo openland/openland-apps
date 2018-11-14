@@ -7,7 +7,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
-import { ProfileCard } from './components/ProfileCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import {
@@ -19,6 +18,7 @@ import {
 import { UserProfile } from '../profile/UserProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XUserCard } from 'openland-x/cards/XUserCard';
 
 interface CommunitiesCardsProps {
     variables: { query?: string, sort?: string };
@@ -39,7 +39,7 @@ const CommunitiesCards = withExplorePeople((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <ProfileCard key={'_org_card_' + i.node.id} item={i.node} onPick={(props as any).onPick} />))
+                        <XUserCard key={'_org_card_' + i.node.id} user={i.node} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/people" />
                 </XContentWrapper>
