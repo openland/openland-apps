@@ -7,67 +7,102 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XDate } from 'openland-x-format/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { XLink } from 'openland-x/XLink';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
-import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import WebsiteIcon from './icons/website-2.svg';
-import LinkedinIcon from './icons/linkedin-2.svg';
-import PhoneIcon from './icons/ic-phone.svg';
+import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
 import { BackButton } from './ProfileComponent';
+import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { withOnline } from '../../../api/withOnline';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { RoomCard } from '../../../components/messenger/RoomsExploreComponent';
+import { XSocialButton } from 'openland-x/XSocialButton';
 
 const HeaderWrapper = Glamorous.div({
-    display: 'flex',
-    position: 'relative',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+    borderBottom: '1px solid #ececec',
+    paddingTop: 16,
+    paddingBottom: 17
 });
 
 const HeaderAvatar = Glamorous.div({
-    padding: 24
+    paddingRight: 18
 });
 
 const HeaderInfo = Glamorous(XVertical)({
-    paddingTop: 23,
+    paddingTop: 7,
 });
 
 const HeaderTitle = Glamorous.div({
-    fontSize: 20,
-    fontWeight: 500,
-    letterSpacing: 0.6,
-    marginRight: 9,
-    lineHeight: '30px',
-    color: '#334562'
-});
-
-const HeaderOrgTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.29,
-    letterSpacing: -0.6,
-    color: '#99a2b0'
+    fontSize: 18,
+    fontWeight: 600,
+    letterSpacing: 0,
+    lineHeight: '20px',
+    color: '#000000'
 });
 
 const HeaderTools = Glamorous.div({
-    padding: 24
+    paddingTop: 13
 });
 
-const LastSeenWrapper = Glamorous.div({
-    alignSelf: 'flex-end',
-    fontSize: 12,
-    fontWeight: 500,
-    color: 'rgb(153, 162, 176)',
-    letterSpacing: -0.2
-});
-
-const OrgName = makeNavigable(Glamorous(XHorizontal)({
+const HeaderOrg = makeNavigable(Glamorous.div({
+    marginTop: 1,
+    marginBottom: -1,
+    fontSize: 13,
+    fontWeight: 600,
+    letterSpacing: 0,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.4)',
     cursor: 'pointer'
 }) as any) as any;
+
+const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
+    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.5)',
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: '18px',
+    marginTop: '7px!important'
+}));
+
+const UserStatus = withOnline(props => {
+    if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
+        return (
+            <StatusWrapper online={false}>
+                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
+            </StatusWrapper>
+        );
+    } else if (props.data.user && props.data.user.online) {
+        return (
+            <StatusWrapper online={true}>
+                Online
+            </StatusWrapper>
+        );
+    } else {
+        return null;
+    }
+}) as React.ComponentType<{ variables: { userId: string } }>;
+
+const Section = Glamorous(XVertical)({
+    paddingTop: 5,
+    borderBottom: '1px solid #ececec',
+    '&:last-child': {
+        borderBottom: 'none'
+    }
+});
+
+const SectionContent = Glamorous(XContentWrapper)({
+    paddingTop: 7,
+    paddingBottom: 24,
+    fontSize: 14,
+    lineHeight: '22px',
+    letterSpacing: 0,
+    color: '#000000'
+});
 
 const AvatarModal = (props: { photo?: string, userName?: string, userId?: string }) => {
     return (
@@ -92,8 +127,8 @@ const AvatarModal = (props: { photo?: string, userName?: string, userId?: string
             target={(
                 <XAvatar
                     cloudImageUuid={props.photo || undefined}
-                    size="s-medium"
-                    style="user"
+                    size="l-medium"
+                    style="colorus"
                     objectName={props.userName}
                     objectId={props.userId}
                 />
@@ -107,251 +142,97 @@ const Header = (props: { userQuery: User }) => {
 
     return (
         <HeaderWrapper>
-            <HeaderAvatar>
-                {usr.photo && <AvatarModal photo={usr.photo} userName={usr.name} userId={usr.id} />}
-                {!usr.photo && (
-                    <XAvatar
-                        cloudImageUuid={undefined}
-                        size="s-medium"
-                        style="user"
-                        objectName={usr.name}
-                        objectId={usr.id}
-                    />
-                )}
-            </HeaderAvatar>
-            <HeaderInfo flexGrow={1} separator={3}>
-                <XHorizontal separator={5}>
-                    <HeaderTitle>{usr.name}</HeaderTitle>
-                    {usr.lastSeen && usr.lastSeen !== 'online' && (
-                        <LastSeenWrapper>
-                            last seen: {usr.lastSeen === 'never_online' ? 'moments ago' : <XDate value={usr.lastSeen} format="humanize_cute" />}
-                        </LastSeenWrapper>
-                    )}
-                </XHorizontal>
-                {usr.primaryOrganization && (
-                    <OrgName separator={2.5} alignItems="center" path={'/directory/o/' + usr.primaryOrganization.id}>
+            <XContentWrapper withFlex={true}>
+                <HeaderAvatar>
+                    {usr.photo && <AvatarModal photo={usr.photo} userName={usr.name} userId={usr.id} />}
+                    {!usr.photo && (
                         <XAvatar
-                            cloudImageUuid={usr.primaryOrganization.photo || undefined}
-                            style="organization"
-                            size="x-small"
-                            objectName={usr.primaryOrganization.name}
-                            objectId={usr.primaryOrganization.id}
+                            cloudImageUuid={undefined}
+                            size="l-medium"
+                            style="colorus"
+                            objectName={usr.name}
+                            objectId={usr.id}
                         />
-                        <HeaderOrgTitle>{usr.primaryOrganization.name}</HeaderOrgTitle>
-                    </OrgName>
-                )}
-            </HeaderInfo>
-            <HeaderTools>
-                {usr.isYou
-                    ? (<XButton
-                        text="Edit profile"
-                        path={'/settings/profile'}
-                    />)
-                    : (<XButton
-                        text="Message"
-                        style="primary"
-                        path={'/mail/' + usr.id}
-                    />)
-                }
-            </HeaderTools>
+                    )}
+                </HeaderAvatar>
+                <HeaderInfo flexGrow={1} separator={0}>
+                    <XHorizontal separator={4}>
+                        <HeaderTitle>{usr.name}</HeaderTitle>
+                        {usr.primaryOrganization && (
+                            <HeaderOrg path={'/directory/o/' + usr.primaryOrganization.id}>
+                                {usr.primaryOrganization.name}
+                            </HeaderOrg>
+                        )}
+                    </XHorizontal>
+                    <UserStatus variables={{ userId: usr.id }} />
+                </HeaderInfo>
+                <HeaderTools>
+                    <XHorizontal separator={8}>
+                        {usr.website && <XSocialButton value={usr.website} style="website" />}
+                        {usr.linkedin && <XSocialButton value={usr.linkedin} style="linkedin" />}
+                        {usr.phone && <XSocialButton value={usr.phone} style="phone" />}
+                        {usr.isYou && (
+                            <XOverflow
+                                placement="bottom-end"
+                                flat={true}
+                                content={(
+                                    <>
+                                        <XMenuItem href="/settings/profile/">Edit profile</XMenuItem>
+                                    </>
+                                )}
+                            />
+                        )}
+                        {!usr.isYou && (
+                            <XButton
+                                text="Message"
+                                style="primary"
+                                path={'/mail/' + usr.id}
+                            />
+                        )}
+                    </XHorizontal>
+                </HeaderTools>
+            </XContentWrapper>
         </HeaderWrapper>
     );
 };
 
-const SectionContent = Glamorous.div<{ withTags?: boolean }>([
-    {
-        display: 'flex',
-        flexWrap: 'wrap',
-        padding: '18px 24px 32px',
-        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-        '&:last-child': {
-            borderBottom: 'none'
-        }
-    },
-    (props) => (props.withTags) ? {
-        padding: '10px 12px 22px 24px',
-
-        '& > div': {
-            margin: '6px 12px 6px 0!important'
-        }
-    } : {}
-]);
-
-const EditButton = Glamorous(XLink)({
-    color: '#99a2b0',
-    height: 32,
-    lineHeight: '32px',
-    fontSize: 14,
-    letterSpacing: -0.2,
-    fontWeight: 500,
-    padding: '0 14px',
-    cursor: 'pointer',
-    '&:hover': {
-        color: '#334562',
-    },
-    '&:active': {
-        color: '#1790ff',
-    },
-});
-
-const SocialIconWrapper = Glamorous.div({
-    margin: '-1px 2px 1px 0',
-    display: 'flex'
-});
-
 const About = (props: { userQuery: User }) => {
     let usr = props.userQuery.user;
-    let hasLinks = (usr.linkedin || usr.website || usr.phone);
-    // let hasLocations = usr.location;
 
     return (
         <>
-            {hasLinks && (
-                <>
-                    <XSubHeader
-                        title="Links"
-                        right={usr.isYou ? (
-                            <EditButton path={'/settings/profile'}>Edit</EditButton>
-                        ) : undefined}
-                    />
+            {usr.about && (
+                <Section separator={0}>
+                    <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
-                        <XHorizontal>
-                            {usr.website && (
-                                <XButton
-                                    href={usr.website}
-                                    icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
-                                    text="Website"
-                                />
-                            )}
-                            {usr.linkedin && (
-                                <XButton
-                                    href={usr.linkedin}
-                                    icon={<SocialIconWrapper><LinkedinIcon /></SocialIconWrapper>}
-                                    text="Linkedin"
-                                />
-                            )}
-                            {usr.phone && (
-                                <XButton
-                                    icon={<SocialIconWrapper><PhoneIcon /></SocialIconWrapper>}
-                                    text={usr.phone}
-                                />
-                            )}
-                        </XHorizontal>
+                        {usr.about}
                     </SectionContent>
-                </>
+                </Section>
             )}
         </>
     );
 };
 
-const RoomCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
-    display: 'flex',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    padding: '15px 0 12px 25px',
-    '&:hover': {
-        backgroundColor: '#F9F9F9'
-    },
-    cursor: 'pointer'
-})));
-
-const RoomCardInfo = Glamorous.div({
-    flex: 1,
-});
-
-const RoomCardTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#1790ff',
-    marginBottom: 1,
-});
-
-const RoomCardRole = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#99a2b0',
-});
-
-const RoomCardTools = Glamorous(XHorizontal)({
-    padding: '4px 18px 0'
-});
-
-const RoomAvatar = Glamorous(XAvatar)({
-    margin: '0 12px 0 -5px'
-});
-
-interface RoomCardProps {
-    room: {
-        id: string,
-        title: string,
-        hidden: boolean,
-        photos: string[],
-        photo?: string,
-        organization: {
-            id: string,
-            name: string,
-            photo?: string,
-        },
-    };
-}
-
-class RoomCard extends React.Component<RoomCardProps> {
-    state = {
-        isHovered: false,
-    };
-
-    render() {
-        const { room } = this.props;
-
+const Rooms = (props: { rooms: any }) => {
+    if (props.rooms && (props.rooms.length > 0)) {
         return (
-            <RoomCardWrapper
-                path={'/mail/' + room.id}
-                onMouseEnter={() => this.setState({ isHovered: true })}
-                onMouseLeave={() => this.setState({ isHovered: false })}
-            >
-                <RoomAvatar
-                    style="room"
-                    cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
-                    objectName={room.title}
-                    objectId={room.id}
-                />
-                <RoomCardInfo>
-                    <RoomCardTitle>{room.title}</RoomCardTitle>
-                    <RoomCardRole>Member</RoomCardRole>
-                </RoomCardInfo>
-                <RoomCardTools separator={5}>
-                    <XButton
-                        text="View"
-                        style={this.state.isHovered ? 'primary' : 'default'}
-                        path={'/mail/' + room.id}
-                    />
-                </RoomCardTools>
-            </RoomCardWrapper>
+            <Section>
+                <XSubHeader title="Roooms" counter={props.rooms.length} paddingBottom={0} />
+                {props.rooms.map((c: any, i: any) => (
+                    c ? <RoomCard key={i} room={c} /> : null
+                ))}
+            </Section>
         );
+    } else {
+        return null;
     }
-}
+};
 
 interface UserProfileInnerProps extends XWithRouter {
     userQuery: User;
     handlePageTitle?: any;
     onDirectory?: boolean;
 }
-
-const Rooms = (props: { rooms: any }) => {
-    return (
-        <>
-            {props.rooms && (props.rooms.length > 0) && (
-                <XSubHeader title="Roooms" counter={props.rooms.length} />
-            )}
-            {props.rooms.map((c: any, i: any) => (
-                c ? <RoomCard key={i} room={c} /> : null
-            ))}
-        </>
-    );
-};
 
 class UserProfileInner extends React.Component<UserProfileInnerProps> {
     pageTitle: string | undefined = undefined;

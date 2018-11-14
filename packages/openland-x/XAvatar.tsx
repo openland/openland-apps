@@ -53,8 +53,8 @@ let sizeStyles = styleResolver({
         fontSize: 16
     },
     'l-medium': {
-        height: 56,
-        width: 56,
+        height: 57,
+        width: 57,
         fontSize: 16
     },
     'medium': {

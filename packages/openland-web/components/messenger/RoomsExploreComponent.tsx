@@ -17,6 +17,7 @@ import { RoomSetFeatured, RoomSetHidden } from './MessengerComponent';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { SearchBox } from '../../pages/main/directory/components/SearchBox';
+import { ChatSearchChannel_items_edges_node } from 'openland-api/Types';
 
 const RoomsListWrapper = Glamorous(XScrollView)({
     flexGrow: 1
@@ -98,6 +99,57 @@ interface WithChatSearchRoomsProps {
     tagsCount: (n: number) => void;
 }
 
+interface RoomCardProps {
+    room: ChatSearchChannel_items_edges_node;
+    path?: string;
+}
+
+export const RoomCard = (props: RoomCardProps) => {
+    let { room, path } = props;
+
+    let title = (!room.isRoot && room.organization ? (room.organization.name + ' / ') : '') + room.title;
+
+    return (
+        <RoomItemWrapper
+            path={path || '/mail/' + room.id}
+            key={'room_' + room.id}
+            alignItems="center"
+        >
+            <XHorizontal separator={8} alignItems="center" flexGrow={1}>
+                <XAvatar
+                    style="room"
+                    cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
+                    objectName={room.title}
+                    objectId={room.id}
+                />
+                <XVertical separator={0} flexGrow={1}>
+                    <RoomName>{title}</RoomName>
+                    <MembersText>{room.membersCount} {room.membersCount === 1 ? 'member' : 'members'}</MembersText>
+                </XVertical>
+            </XHorizontal>
+            <XButton
+                text={StatusTitleMap[room.myStatus]}
+                path={path}
+                style="ghost"
+                className={room.myStatus}
+            />
+            <XWithRole role={['super-admin', 'editor']}>
+                <XOverflow
+                    flat={true}
+                    placement="bottom-end"
+                    content={(
+                        <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
+                            <XMenuTitle>Super admin</XMenuTitle>
+                            <RoomSetFeatured conversationId={room.id} val={room.featured} />
+                            <RoomSetHidden conversationId={room.id} val={room.hidden} />
+                        </div>
+                    )}
+                />
+            </XWithRole>
+        </RoomItemWrapper>
+    );
+};
+
 const Rooms = withChatSearchChannels((props) => {
     if (!(props.data && props.data.items)) {
         return <XLoader loading={true} />;
@@ -113,53 +165,13 @@ const Rooms = withChatSearchChannels((props) => {
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map(c => {
                         let room = c.node;
-                        let title = (!room.isRoot && room.organization ? (room.organization.name + ' / ') : '') + room.title;
-
                         let path = '/mail/' + room.id;
 
                         if ((props as any).onDirectory && room.myStatus !== 'member') {
                             path = '/directory/r/' + room.id;
                         }
 
-                        return (
-                            <RoomItemWrapper
-                                path={path}
-                                key={c.node.id}
-                                alignItems="center"
-                            >
-                                <XHorizontal separator={8} alignItems="center" flexGrow={1}>
-                                    <XAvatar
-                                        style="room"
-                                        cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
-                                        objectName={room.title}
-                                        objectId={room.id}
-                                    />
-                                    <XVertical separator={0} flexGrow={1}>
-                                        <RoomName>{title}</RoomName>
-                                        <MembersText>{room.membersCount} {room.membersCount === 1 ? 'member' : 'members'}</MembersText>
-                                    </XVertical>
-                                </XHorizontal>
-                                <XButton
-                                    text={StatusTitleMap[room.myStatus]}
-                                    path={path}
-                                    style="ghost"
-                                    className={room.myStatus}
-                                />
-                                <XWithRole role={['super-admin', 'editor']}>
-                                    <XOverflow
-                                        flat={true}
-                                        placement="bottom-end"
-                                        content={(
-                                            <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
-                                                <XMenuTitle>Super admin</XMenuTitle>
-                                                <RoomSetFeatured conversationId={room.id} val={room.featured} />
-                                                <RoomSetHidden conversationId={room.id} val={room.hidden} />
-                                            </div>
-                                        )}
-                                    />
-                                </XWithRole>
-                            </RoomItemWrapper>
-                        );
+                        return <RoomCard key={c.node.id} room={room} path={path} />;
                     })}
                 </XContentWrapper>
             )}

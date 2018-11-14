@@ -1,7 +1,13 @@
-import React from 'react';
 import Glamorous from 'glamorous';
 
-export const XContentWrapper = Glamorous.div<{ withPaddingBottom?: boolean}>((props) => ({
+interface XContentWrapperProps {
+    withPaddingBottom?: boolean;
+    withFlex?: boolean;
+}
+
+export const XContentWrapper = Glamorous.div<XContentWrapperProps>((props) => ({
+    position: 'relative',
+    display: props.withFlex ? 'flex' : 'block',
     width: '100%',
     maxWidth: 832,
     margin: '0 auto',

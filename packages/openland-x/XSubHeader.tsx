@@ -2,10 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XContentWrapper } from './XContentWrapper';
 
-const Wrapper = Glamorous.div<{ border?: boolean }>((props) => ({
+const Wrapper = Glamorous.div<{ border?: boolean; paddingTop?: number; paddingBottom?: number }>((props) => ({
     display: 'flex',
     borderTop: props.border ? '1px solid #ececec' : undefined,
-    padding: '11px 0 16px',
+    paddingTop: typeof props.paddingTop === 'undefined' ? 11 : props.paddingTop,
+    paddingBottom: typeof props.paddingBottom === 'undefined' ? 16 : props.paddingBottom,
     position: 'relative',
 }));
 
@@ -43,10 +44,12 @@ interface XSubHeaderProps {
     counter?: string | number;
     right?: any;
     border?: boolean;
+    paddingTop?: number;
+    paddingBottom?: number;
 }
 
 export const XSubHeader = (props: XSubHeaderProps) => (
-    <Wrapper border={props.border}>
+    <Wrapper border={props.border} paddingTop={props.paddingTop} paddingBottom={props.paddingBottom}>
         <Content>
             <Title>
                 {props.title}

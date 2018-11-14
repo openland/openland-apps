@@ -45,10 +45,10 @@ const BackWrapper = Glamorous.div({
     cursor: 'pointer',
 });
 
-const BackInner = Glamorous.div({
-    display: 'flex',
+const BackInner = Glamorous(XContentWrapper)({
     alignItems: 'center',
-    padding: '13px 0 12px',
+    paddingTop: 13,
+    paddingBottom: 12,
     '& i': {
         fontSize: 20,
         marginRight: 6,
@@ -66,12 +66,10 @@ const BackInner = Glamorous.div({
 
 export const BackButton = () => (
     <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
-        <XContentWrapper>
-            <BackInner>
-                <XIcon icon="chevron_left" />
-                <span>Back</span>
-            </BackInner>
-        </XContentWrapper>
+        <BackInner withFlex={true}>
+            <XIcon icon="chevron_left" />
+            <span>Back</span>
+        </BackInner>
     </BackWrapper>
 );
 
