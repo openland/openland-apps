@@ -149,7 +149,6 @@ const SearchPeopleModule = withExplorePeople(props => {
 
 type ComposeComponentRenderProps = {
     messenger: MessengerEngine,
-    conversationId: string,
     me?: UserShort
 };
 
@@ -192,7 +191,13 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
         this.setState({ loading: state.loading, messages: state.messages });
     }
 
-    updateConversation = (props: ComposeComponentRenderProps) => {
+    updateConversation = ({
+        conversationId,
+        messenger,
+    }: {
+        conversationId: string,
+        messenger: any,
+    }) => {
         if (this.unmounter) {
             this.unmounter();
         }
@@ -200,13 +205,14 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             this.unmounter2();
         }
 
-        this.conversation = props.messenger.getConversation(props.conversationId);
-        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-        this.unmounter2 = this.conversation.subscribe(this);
-
+        this.conversation = messenger.getConversation(conversationId);
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
+
+        this.unmounter = this.conversation.engine.mountConversation(conversationId);
+        this.unmounter2 = this.conversation.subscribe(this);
+
         let convState = this.conversation.getState();
 
         this.setState({
@@ -224,15 +230,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             this.unmounter2();
         }
     }
-
-    componentWillMount() {
-        this.updateConversation(this.props);
-    }
-
-    componentWillReceiveProps(props: ComposeComponentRenderProps) {
-        this.updateConversation(props);
-    }
-
+    
     handleChange: OnChangeHandler = (vals) => {
         let nvals: Option<OptionValues>[] = [];
         if (vals === null) {
@@ -250,7 +248,13 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             this.setState({ values: nvals, resolving: true, conversationId: null });
             (async () => {
                 let id = await this.props.messenger.global.resolvePrivateConversation(nvals[0].value!! as string);
-                this.setState({ conversationId: id.id, resolving: false });
+
+                this.setState({ conversationId: id.id, resolving: false }, () => {
+                    this.updateConversation({
+                        conversationId: id.id,
+                        messenger: this.props.messenger,
+                    });
+                });
             })();
         } else if (nvals.length > 1) {
             this.setState({ values: nvals, resolving: true, conversationId: null });
@@ -331,7 +335,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                                 loading={this.state.loading}
                                 me={this.props.me}
                                 conversation={this.props.messenger.getConversation(this.state.conversationId!!)}
-                                conversationId={this.props.conversationId}
+                                conversationId={this.state.conversationId}
                             />
                         )}
                     </MessagesContainer>
@@ -342,10 +346,10 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
     }
 }
 
-export const ComposeComponent = withUserInfo((props: { conversationId: string }) => {
+export const ComposeComponent = withUserInfo((props: any) => {
     return (
         <MessengerContext.Consumer>
-            {messenger => <ComposeComponentRender messenger={messenger!!} conversationId={props.conversationId} me={(props as any).user} />}
+            {messenger => <ComposeComponentRender messenger={messenger!!} me={(props as any).user} />}
         </MessengerContext.Consumer>
     );
 });

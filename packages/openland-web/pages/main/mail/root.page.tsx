@@ -212,7 +212,7 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                             <ConversationContainer>
                                 {tab === 'compose' && (
                                     <MessengerContainer>
-                                        <ComposeComponent conversationId={props.router.routeQuery.conversationId} />
+                                        <ComposeComponent />
                                     </MessengerContainer>
                                 )}
                                 {tab === 'empty' && (
