@@ -90,7 +90,7 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
                 {room.myStatus && (
                     <XButton
                         text={StatusTitleMap[room.myStatus]}
-                        path={path}
+                        path={path || '/mail/' + room.id}
                         style={room.myStatus === 'none' ? 'primary' : 'ghost'}
                     />
                 )}
@@ -120,6 +120,7 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
                 alignItems="center"
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
+                separator={5}
             >
                 <XHorizontal separator={8} alignItems="center" flexGrow={1}>
                     <RoomAvatar

@@ -161,7 +161,7 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                 {!organization.isMine && (
                     <XButton
                         style="primary"
-                        path={'/directory/o/' + organization.id}
+                        path={path || '/directory/o/' + organization.id}
                         text="View"
                     />
                 )}
@@ -206,18 +206,16 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XHorizontal justifyContent="space-between" separator={10}>
-                    <XLink path={'/directory/o/' + organization.id}>
-                        <OrganizationAvatar
-                            cloudImageUuid={organization.photo!!}
-                            size="x-medium"
-                            style="organization"
-                            objectName={organization.name}
-                            objectId={organization.id}
-                        />
-                    </XLink>
+                    <OrganizationAvatar
+                        cloudImageUuid={organization.photo!!}
+                        size="x-medium"
+                        style="organization"
+                        objectName={organization.name}
+                        objectId={organization.id}
+                    />
                     <OrganizationContent>
                         <OrganizationInfo>
-                            <OrganizationTitle path={'/directory/o/' + organization.id}>{organization.name}</OrganizationTitle>
+                            <OrganizationTitle>{organization.name}</OrganizationTitle>
                             {organization.about && <OrganizationAbout>{organization.about}</OrganizationAbout>}
                             {firstMember && (
                                 <OrganizationMembers path={'/directory/u/' + firstMember.user.id}>

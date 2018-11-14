@@ -7,7 +7,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
-import { CommunityCard } from './components/CommunityCard';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import {
@@ -19,6 +18,7 @@ import {
 import { OrganizationProfile } from '../profile/ProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
 
 interface CommunitiesCardsProps {
     variables: { query?: string, sort?: string };
@@ -39,7 +39,7 @@ const CommunitiesCards = withExploreCommunities((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <CommunityCard key={'_org_card_' + i.node.id} item={i.node} />))
+                        <XCommunityCard key={'_org_card_' + i.node.id} community={i.node} />))
                     }
                     <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/communities" />
                 </XContentWrapper>
