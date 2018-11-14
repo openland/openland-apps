@@ -513,7 +513,7 @@ const About = (props: { organizationQuery: Organization }) => {
             {org.isMine && (
                 <XWithRole role="admin" orgPermission={org.id}>
                     {(!org.about || !hasLinks) && (
-                        <Section>
+                        <Section separator={0}>
                             <XSubHeader title="Add sections" />
                             <AddSectionWrapper>
                                 {!org.about && (
@@ -534,7 +534,7 @@ const About = (props: { organizationQuery: Organization }) => {
                 </XWithRole>
             )}
             {org.about && (
-                <Section>
+                <Section separator={0}>
                     <XSubHeader
                         title="About"
                         paddingBottom={0}
@@ -545,7 +545,7 @@ const About = (props: { organizationQuery: Organization }) => {
                 </Section>
             )}
             {!org.about && org.isMine && hasRole('admin', org.id) && (
-                <Section>
+                <Section separator={0}>
                     <XSubHeader
                         title="About"
                         paddingBottom={0}
@@ -556,7 +556,7 @@ const About = (props: { organizationQuery: Organization }) => {
                 </Section>
             )}
             {hasLinks && (
-                <Section>
+                <Section separator={0}>
                     <XSubHeader
                         title="Links"
                         paddingBottom={0}
@@ -609,7 +609,7 @@ const Members = (props: { organizationQuery: Organization }) => {
 
     if (organization.members && organization.members.length > 0) {
         return (
-            <Section>
+            <Section separator={0}>
                 <XSubHeader
                     title={organization.isCommunity ? 'Admins' : 'Organization members'}
                     counter={organization.members.length}
@@ -640,7 +640,7 @@ const Members = (props: { organizationQuery: Organization }) => {
 export const Rooms = (props: { rooms: any }) => {
     if (props.rooms && (props.rooms.length > 0)) {
         return (
-            <Section>
+            <Section separator={0}>
                 <XSubHeader
                     title="Rooms"
                     counter={props.rooms.length}
