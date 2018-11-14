@@ -450,7 +450,10 @@ export const UnBlockUserMutation = gql`
 export const ChatSearchTextQuery = gql`
     query ChatSearchText($query: String!) {
         items: alphaChatTextSearch(query: $query) {
-            ...ConversationShort           
+            id
+            title
+            flexibleId
+            photos
         }
     }
     ${ConversationShort}
