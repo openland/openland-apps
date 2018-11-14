@@ -21,7 +21,6 @@ import { TextInvites } from 'openland-text/TextInvites';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { RoomSetFeatured, RoomSetHidden } from '../../../components/messenger/MessengerComponent';
 import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import TwitterIcon from './icons/twitter-2.svg';
@@ -38,7 +37,7 @@ import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { RoomCard } from '../../../components/messenger/RoomsExploreComponent';
+import { XRoomCard } from 'openland-x/cards/XRoomCard';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -650,7 +649,7 @@ export const Rooms = (props: { rooms: any }) => {
                 />
                 <SectionContent>
                     {props.rooms.map((c: any, i: any) => (
-                        c ? <RoomCard key={i} room={c} /> : null
+                        c ? <XRoomCard key={i} room={c} /> : null
                     ))}
                 </SectionContent>
             </Section>
