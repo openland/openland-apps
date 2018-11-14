@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole, hasRole } from 'openland-x-permissions/XWithRole';
 import { Organization, OrganizationMemberRole } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -38,6 +38,7 @@ import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { RoomCard } from '../../../components/messenger/RoomsExploreComponent';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -74,22 +75,13 @@ export const BackButton = () => (
 );
 
 const HeaderWrapper = Glamorous.div({
-    display: 'flex',
-    position: 'relative',
-    '&:before': {
-        content: ' ',
-        zIndex: 1,
-        height: 1,
-        background: 'rgba(220, 222, 228, 0.45)',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0
-    }
+    borderBottom: '1px solid #ececec',
+    paddingTop: 16,
+    paddingBottom: 17
 });
 
 const HeaderAvatar = Glamorous.div({
-    padding: 24
+    paddingRight: 18
 });
 
 const HeaderInfo = Glamorous.div({
@@ -99,7 +91,7 @@ const HeaderInfo = Glamorous.div({
 });
 
 const HeaderBox = Glamorous.div({
-    padding: '23px 0 5px',
+    paddingTop: 7,
     display: 'flex',
     alignItems: 'center'
 });
@@ -118,103 +110,7 @@ const HeaderFeatured = Glamorous.div({
 });
 
 const HeaderTools = Glamorous.div({
-    padding: 24
-});
-
-const Header = (props: { organizationQuery: Organization }) => {
-    let org = props.organizationQuery.organization;
-
-    return (
-        <HeaderWrapper>
-            <HeaderAvatar>
-                <XAvatar
-                    cloudImageUuid={org.photo || undefined}
-                    size="s-medium"
-                    style="organization"
-                    objectName={org.name}
-                    objectId={org.id}
-                />
-            </HeaderAvatar>
-            <HeaderInfo>
-                <HeaderBox>
-                    <HeaderTitle>{org.name}</HeaderTitle>
-                    {org.featured && (
-                        <HeaderFeatured>
-                            <XTag
-                                text="Featured"
-                                color="green"
-                                rounded={true}
-                                iconLeft="star"
-                                size="small"
-                            />
-                        </HeaderFeatured>
-                    )}
-                </HeaderBox>
-            </HeaderInfo>
-            <HeaderTools>
-                <XHorizontal>
-                    <XWithRole role="super-admin" negate={true}>
-                        <XWithRole role="admin" orgPermission={org.id}>
-                            <XButton
-                                text="Edit profile"
-                                path={'/settings/organization/' + org.id}
-                            />
-                        </XWithRole>
-                    </XWithRole>
-
-                    <XWithRole role="super-admin">
-                        <XButton
-                            text="Edit profile"
-                            path={'/settings/organization/' + org.id}
-                        />
-                        <XButton
-                            text="Super edit"
-                            path={'/super/orgs/' + org.superAccountId}
-                        />
-                    </XWithRole>
-
-                    {org.isMine && (
-                        <XOverflow
-                            placement="bottom-end"
-                            flat={true}
-                            content={(
-                                <>
-                                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>Create room</XMenuItem>
-                                </>
-                            )}
-                        />
-                    )}
-                </XHorizontal>
-            </HeaderTools>
-        </HeaderWrapper>
-    );
-};
-
-const SectionContent = Glamorous.div<{ withTags?: boolean }>([
-    {
-        display: 'flex',
-        flexWrap: 'wrap',
-        padding: '18px 24px 32px',
-        borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-        '&:last-child': {
-            borderBottom: 'none'
-        }
-    },
-    (props) => (props.withTags) ? {
-        padding: '10px 12px 22px 24px',
-
-        '& > div': {
-            margin: '6px 12px 6px 0!important'
-        }
-    } : {}
-]);
-
-const AboutText = Glamorous.div({
-    fontWeight: 500,
-    fontSize: 14,
-    lineHeight: '24px',
-    letterSpacing: -0.4,
-    color: '#5c6a81'
+    paddingTop: 13
 });
 
 const AddSectionWrapper = Glamorous.div({
@@ -262,102 +158,12 @@ const SocialIconWrapper = Glamorous.div({
     display: 'flex'
 });
 
-const About = (props: { organizationQuery: Organization }) => {
-    let org = props.organizationQuery.organization;
-    let hasLinks = (org.linkedin || org.twitter || org.website || org.facebook);
-
-    return (
-        <>
-            {org.isMine && (
-                <XWithRole role="admin" orgPermission={org.id}>
-                    {(!org.about || !hasLinks) && (
-                        <>
-                            <XSubHeader title="Add sections" />
-                            <AddSectionWrapper>
-                                {!org.about && (
-                                    <AddSection>
-                                        <AddSectionText>Describe your organization in a few sentences</AddSectionText>
-                                        <AboutPlaceholder target={<XButton text="About" style="light" icon="add" />} />
-                                    </AddSection>
-                                )}
-                                {!hasLinks && (
-                                    <AddSection>
-                                        <AddSectionText>Add links to your website and social media</AddSectionText>
-                                        <SocialPlaceholder target={<XButton text="Links" style="light" icon="add" />} />
-                                    </AddSection>
-                                )}
-                            </AddSectionWrapper>
-                        </>
-                    )}
-                </XWithRole>
-            )}
-            {org.about && (
-                <>
-                    <XSubHeader
-                        title="About"
-                        right={org.isMine ? (
-                            <XWithRole role="admin" orgPermission={org.id}>
-                                <AboutPlaceholder target={<EditButton>Edit</EditButton>} />
-                            </XWithRole>
-                        ) : undefined}
-                    />
-                    <SectionContent>
-                        <AboutText>{org.about}</AboutText>
-                    </SectionContent>
-                </>
-            )}
-            {hasLinks && (
-                <>
-                    <XSubHeader
-                        title="Links"
-                        right={org.isMine ? (
-                            <XWithRole role="admin" orgPermission={org.id}>
-                                <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
-                            </XWithRole>
-                        ) : undefined}
-                    />
-                    <SectionContent>
-                        <XHorizontal>
-                            {org.website && (
-                                <XButton
-                                    href={org.website}
-                                    icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
-                                    text="Website"
-                                />
-                            )}
-                            {org.facebook && (
-                                <XButton
-                                    href={org.facebook}
-                                    icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
-                                    text="Facebook"
-                                />
-                            )}
-                            {org.linkedin && (
-                                <XButton
-                                    href={org.linkedin}
-                                    icon={<SocialIconWrapper><LinkedinIcon /></SocialIconWrapper>}
-                                    text="Linkedin"
-                                />
-                            )}
-                            {org.twitter && (
-                                <XButton
-                                    href={org.twitter}
-                                    icon={<SocialIconWrapper><TwitterIcon /></SocialIconWrapper>}
-                                    text="Twitter"
-                                />
-                            )}
-                        </XHorizontal>
-                    </SectionContent>
-                </>
-            )}
-        </>
-    );
-};
-
 const MemberCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
     display: 'flex',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    padding: '16px 0 15px',
+    padding: '12px 16px',
+    marginLeft: -16,
+    marginRight: -16,
+    borderRadius: 8,
     cursor: 'pointer',
     '&:hover': {
         backgroundColor: '#F9F9F9'
@@ -365,7 +171,7 @@ const MemberCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() =>
 })));
 
 const MemberCardAvatar = Glamorous.div({
-    padding: '0 12px 0 24px'
+    padding: '0 16px 0 0'
 });
 
 const MemberCardTitle = Glamorous.div({
@@ -413,7 +219,7 @@ const MemberCardRole = Glamorous.div({
 });
 
 const MemberCardTools = Glamorous(XHorizontal)({
-    padding: '4px 18px 0'
+    padding: '4px 0 0 18px'
 });
 
 interface MemberCardProps {
@@ -437,7 +243,6 @@ interface MemberCardProps {
 }
 
 class MemberCard extends React.PureComponent<MemberCardProps> {
-
     state = {
         isHovered: false,
     };
@@ -611,168 +416,258 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
     );
 }) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string, organizationId: string } }>;
 
-const Members = (props: { organizationQuery: Organization }) => {
-    let organization = props.organizationQuery.organization;
-    console.warn(organization);
+const Section = Glamorous(XVertical)({
+    paddingTop: 5,
+    borderBottom: '1px solid #ececec',
+    '&:last-child': {
+        borderBottom: 'none'
+    }
+});
+
+const SectionContent = Glamorous(XContentWrapper)({
+    paddingTop: 7,
+    paddingBottom: 24,
+    fontSize: 14,
+    lineHeight: '22px',
+    letterSpacing: 0,
+    color: '#000000'
+});
+
+const Header = (props: { organizationQuery: Organization }) => {
+    let org = props.organizationQuery.organization;
+
+    return (
+        <HeaderWrapper>
+            <XContentWrapper withFlex={true}>
+                <HeaderAvatar>
+                    <XAvatar
+                        cloudImageUuid={org.photo || undefined}
+                        size="l-medium"
+                        style="organization"
+                        objectName={org.name}
+                        objectId={org.id}
+                    />
+                </HeaderAvatar>
+                <HeaderInfo>
+                    <HeaderBox>
+                        <HeaderTitle>{org.name}</HeaderTitle>
+                        {org.featured && (
+                            <HeaderFeatured>
+                                <XTag
+                                    text="Featured"
+                                    color="green"
+                                    rounded={true}
+                                    iconLeft="star"
+                                    size="small"
+                                />
+                            </HeaderFeatured>
+                        )}
+                    </HeaderBox>
+                </HeaderInfo>
+                <HeaderTools>
+                    <XHorizontal>
+                        <XWithRole role="super-admin" negate={true}>
+                            <XWithRole role="admin" orgPermission={org.id}>
+                                <XButton
+                                    text="Edit profile"
+                                    path={'/settings/organization/' + org.id}
+                                />
+                            </XWithRole>
+                        </XWithRole>
+
+                        <XWithRole role="super-admin">
+                            <XButton
+                                text="Edit profile"
+                                path={'/settings/organization/' + org.id}
+                            />
+                            <XButton
+                                text="Super edit"
+                                path={'/super/orgs/' + org.superAccountId}
+                            />
+                        </XWithRole>
+
+                        {org.isMine && (
+                            <XOverflow
+                                placement="bottom-end"
+                                flat={true}
+                                content={(
+                                    <>
+                                        <XMenuItem query={{ field: 'createRoom', value: 'true' }}>Create room</XMenuItem>
+                                    </>
+                                )}
+                            />
+                        )}
+                    </XHorizontal>
+                </HeaderTools>
+            </XContentWrapper>
+        </HeaderWrapper>
+    );
+};
+
+const About = (props: { organizationQuery: Organization }) => {
+    let org = props.organizationQuery.organization;
+    let hasLinks = (org.linkedin || org.twitter || org.website || org.facebook);
+
     return (
         <>
-            {(organization.members || []).length > 0 && (
-                <>
+            {org.isMine && (
+                <XWithRole role="admin" orgPermission={org.id}>
+                    {(!org.about || !hasLinks) && (
+                        <Section>
+                            <XSubHeader title="Add sections" />
+                            <AddSectionWrapper>
+                                {!org.about && (
+                                    <AddSection>
+                                        <AddSectionText>Describe your organization in a few sentences</AddSectionText>
+                                        <AboutPlaceholder target={<XButton text="About" style="light" icon="add" />} />
+                                    </AddSection>
+                                )}
+                                {!hasLinks && (
+                                    <AddSection>
+                                        <AddSectionText>Add links to your website and social media</AddSectionText>
+                                        <SocialPlaceholder target={<XButton text="Links" style="light" icon="add" />} />
+                                    </AddSection>
+                                )}
+                            </AddSectionWrapper>
+                        </Section>
+                    )}
+                </XWithRole>
+            )}
+            {org.about && (
+                <Section>
                     <XSubHeader
-                        title={organization.isCommunity ? 'Admins' : 'Organization members'}
-                        counter={organization.members.length}
-                        right={organization.isMine ? (
-                            <XWithRole role="admin" orgPermission={organization.id}>
-                                <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" icon="add" />} />
+                        title="About"
+                        paddingBottom={0}
+                    />
+                    <SectionContent>
+                        {org.about}
+                    </SectionContent>
+                </Section>
+            )}
+            {!org.about && org.isMine && hasRole('admin', org.id) && (
+                <Section>
+                    <XSubHeader
+                        title="About"
+                        paddingBottom={0}
+                    />
+                    <SectionContent>
+                        <AboutPlaceholder target={<EditButton>Add a short description</EditButton>} />
+                    </SectionContent>
+                </Section>
+            )}
+            {hasLinks && (
+                <Section>
+                    <XSubHeader
+                        title="Links"
+                        paddingBottom={0}
+                        right={org.isMine ? (
+                            <XWithRole role="admin" orgPermission={org.id}>
+                                <SocialPlaceholder target={<EditButton>Edit</EditButton>} />
                             </XWithRole>
                         ) : undefined}
                     />
-                    {(organization.members || []).map((member, i) => {
-                        return (
-                            <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
-                        );
-                    })}
-                </>
+                    <SectionContent>
+                        <XHorizontal>
+                            {org.website && (
+                                <XButton
+                                    href={org.website}
+                                    icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
+                                    text="Website"
+                                />
+                            )}
+                            {org.facebook && (
+                                <XButton
+                                    href={org.facebook}
+                                    icon={<SocialIconWrapper><WebsiteIcon /></SocialIconWrapper>}
+                                    text="Facebook"
+                                />
+                            )}
+                            {org.linkedin && (
+                                <XButton
+                                    href={org.linkedin}
+                                    icon={<SocialIconWrapper><LinkedinIcon /></SocialIconWrapper>}
+                                    text="Linkedin"
+                                />
+                            )}
+                            {org.twitter && (
+                                <XButton
+                                    href={org.twitter}
+                                    icon={<SocialIconWrapper><TwitterIcon /></SocialIconWrapper>}
+                                    text="Twitter"
+                                />
+                            )}
+                        </XHorizontal>
+                    </SectionContent>
+                </Section>
             )}
-            <RemoveJoinedModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
-            <PermissionsModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id }} />
-            <UpdateUserProfileModal members={organization.members} />
         </>
     );
 };
 
-const RoomCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
-    display: 'flex',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    padding: '15px 0 12px 25px',
-    '&:hover': {
-        backgroundColor: '#F9F9F9'
-    },
-    cursor: 'pointer'
-})));
+const Members = (props: { organizationQuery: Organization }) => {
+    let organization = props.organizationQuery.organization;
 
-const RoomCardInfo = Glamorous.div({
-    flex: 1,
-});
-
-const RoomCardTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#1790ff',
-    marginBottom: 1,
-});
-
-const RoomCardRole = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    letterSpacing: -0.4,
-    color: '#99a2b0',
-});
-
-const RoomCardTools = Glamorous(XHorizontal)({
-    padding: '4px 18px 0'
-});
-
-const RoomAvatar = Glamorous(XAvatar)({
-    margin: '0 12px 0 -5px'
-});
-
-interface RoomCardProps {
-    room: {
-        id: string;
-        isRoot: boolean;
-        title: string;
-        membersCount: number;
-        memberRequestsCount: number;
-        hidden: boolean;
-        featured: boolean;
-        photos: string[];
-        photo?: string;
-    };
-    organization: {
-        isOwner?: boolean;
-        photo?: string;
-    };
-}
-
-class RoomCard extends React.Component<RoomCardProps> {
-    state = {
-        isHovered: false,
-    };
-
-    render() {
-        const { room } = this.props;
-        const organization = this.props.organization;
-        const membersCountText = room.membersCount + ' ' + ((room.membersCount) > 1 ? 'members' : 'member');
-        const requesetsCountText = (organization && organization.isOwner && room.memberRequestsCount > 0) ? '• ' + (room.memberRequestsCount + ' ' + (room.memberRequestsCount > 1 ? 'requests' : 'request')) : undefined;
-
+    if (organization.members && organization.members.length > 0) {
         return (
-            <RoomCardWrapper
-                path={'/mail/' + room.id}
-                onMouseEnter={() => this.setState({ isHovered: true })}
-                onMouseLeave={() => this.setState({ isHovered: false })}
-            >
-                <RoomAvatar
-                    style="room"
-                    cloudImageUuid={room.photo || room.photos[0] || (organization.photo ? organization.photo : undefined)}
-                    objectName={room.title}
-                    objectId={room.id}
+            <Section>
+                <XSubHeader
+                    title={organization.isCommunity ? 'Admins' : 'Organization members'}
+                    counter={organization.members.length}
+                    paddingBottom={0}
+                    right={organization.isMine ? (
+                        <XWithRole role="admin" orgPermission={organization.id}>
+                            <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" icon="add" />} />
+                        </XWithRole>
+                    ) : undefined}
                 />
-                <RoomCardInfo>
-                    <RoomCardTitle>{(room.isRoot ? '' : '/') + room.title}</RoomCardTitle>
-                    <RoomCardRole>{membersCountText} {requesetsCountText}</RoomCardRole>
-                </RoomCardInfo>
-                <RoomCardTools separator={5}>
-                    <XButton
-                        text="View"
-                        style={this.state.isHovered ? 'primary' : 'default'}
-                        path={'/mail/' + room.id}
-                    />
-                    <XWithRole role={['super-admin', 'editor']}>
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            content={(
-                                <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
-                                    <XMenuTitle>Super admin</XMenuTitle>
-                                    <RoomSetFeatured conversationId={room.id} val={room.featured} />
-                                    <RoomSetHidden conversationId={room.id} val={room.hidden} />
-                                </div>
-                            )}
-                        />
-                    </XWithRole>
-                </RoomCardTools>
-            </RoomCardWrapper>
+                <SectionContent>
+                    {organization.members.map((member, i) => {
+                        return (
+                            <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
+                        );
+                    })}
+                </SectionContent>
+                <RemoveJoinedModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
+                <PermissionsModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id }} />
+                <UpdateUserProfileModal members={organization.members} />
+            </Section>
         );
+    } else {
+        return null;
     }
-}
+};
 
-interface OrganizationProfileInnerProps extends XWithRouter {
-    organizationQuery: Organization;
-    handlePageTitle?: any;
-    onDirectory?: boolean;
-}
-
-const Rooms = (props: { rooms?: any, organization: any }) => {
-    return (
-        <>
-            {props.rooms && (props.rooms.length > 0) && (
-                <XSubHeader title="Rooms" counter={props.rooms.length} />
-            )}
-            {props.rooms.map((c: any, i: any) => (
-                c ? <RoomCard key={i} room={c} organization={props.organization} /> : null
-            ))}
-        </>
-    );
+export const Rooms = (props: { rooms: any }) => {
+    if (props.rooms && (props.rooms.length > 0)) {
+        return (
+            <Section>
+                <XSubHeader
+                    title="Rooms"
+                    counter={props.rooms.length}
+                    paddingBottom={0}
+                />
+                <SectionContent>
+                    {props.rooms.map((c: any, i: any) => (
+                        c ? <RoomCard key={i} room={c} /> : null
+                    ))}
+                </SectionContent>
+            </Section>
+        );
+    } else {
+        return null;
+    }
 };
 
 const OrgInfoWrapper = Glamorous.div({
     overflow: 'hidden',
     height: '100%'
 });
+
+interface OrganizationProfileInnerProps extends XWithRouter {
+    organizationQuery: Organization;
+    handlePageTitle?: any;
+    onDirectory?: boolean;
+}
 
 class OrganizationProfileInner extends React.Component<OrganizationProfileInnerProps> {
     pageTitle: string | undefined = undefined;
@@ -814,10 +709,10 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
             <OrgInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header organizationQuery={this.props.organizationQuery} />
-                <XScrollView height="calc(100% - 160px)">
+                <XScrollView height="calc(100% - 137px)">
                     <About organizationQuery={this.props.organizationQuery} />
                     <Members organizationQuery={this.props.organizationQuery} />
-                    <Rooms rooms={org.channels.filter(c => c && !c.hidden)} organization={org} />
+                    <Rooms rooms={org.channels.filter(c => c && !c.hidden)} />
                 </XScrollView>
             </OrgInfoWrapper>
         );

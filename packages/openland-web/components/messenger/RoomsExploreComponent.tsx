@@ -127,12 +127,14 @@ export const RoomCard = (props: RoomCardProps) => {
                     <MembersText>{room.membersCount} {room.membersCount === 1 ? 'member' : 'members'}</MembersText>
                 </XVertical>
             </XHorizontal>
-            <XButton
-                text={StatusTitleMap[room.myStatus]}
-                path={path}
-                style="ghost"
-                className={room.myStatus}
-            />
+            {room.myStatus && (
+                <XButton
+                    text={StatusTitleMap[room.myStatus]}
+                    path={path}
+                    style="ghost"
+                    className={room.myStatus}
+                />
+            )}
             <XWithRole role={['super-admin', 'editor']}>
                 <XOverflow
                     flat={true}

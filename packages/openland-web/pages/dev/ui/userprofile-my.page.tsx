@@ -18,7 +18,9 @@ const MyUserProfile = withUserInfo((props) => {
 export default withApp('UI Framework - Profile (User - Owner)', 'viewer', (props) => {
     return (
         <DevDocsScaffold>
-            <MyUserProfile />
+            <div style={{ height: '100vh', overflow: 'hidden' }}>
+                <MyUserProfile />
+            </div>
         </DevDocsScaffold>
     );
 });

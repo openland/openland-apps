@@ -16,12 +16,11 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { BackButton } from './ProfileComponent';
+import { BackButton, Rooms } from './ProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { RoomCard } from '../../../components/messenger/RoomsExploreComponent';
 import { XSocialButton } from 'openland-x/XSocialButton';
 
 const HeaderWrapper = Glamorous.div({
@@ -213,21 +212,6 @@ const About = (props: { userQuery: User }) => {
     );
 };
 
-const Rooms = (props: { rooms: any }) => {
-    if (props.rooms && (props.rooms.length > 0)) {
-        return (
-            <Section>
-                <XSubHeader title="Roooms" counter={props.rooms.length} paddingBottom={0} />
-                {props.rooms.map((c: any, i: any) => (
-                    c ? <RoomCard key={i} room={c} /> : null
-                ))}
-            </Section>
-        );
-    } else {
-        return null;
-    }
-};
-
 interface UserProfileInnerProps extends XWithRouter {
     userQuery: User;
     handlePageTitle?: any;
@@ -274,7 +258,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
             <div ref={this.handleRef}>
                 <BackButton />
                 <Header userQuery={this.props.userQuery} />
-                <XScrollView height="calc(100% - 160px)">
+                <XScrollView height="calc(100% - 137px)">
                     <About userQuery={this.props.userQuery} />
                     <Rooms rooms={usr.channels.filter(c => c && !c.hidden)} />
                 </XScrollView>
