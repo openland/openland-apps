@@ -62,18 +62,19 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
     } || {}),
 ]);
 
-const CheckIcon = Glamorous.div<{ active?: boolean, square?: boolean }>((props) => ({
+const CheckIcon = Glamorous.div<{ active?: boolean; rounded?: boolean }>((props) => ({
     width: 18,
     height: 18,
-    borderRadius: props.square ? 50 : 3.5,
-    color: '#fff',
-    backgroundColor: props.active ? '#1790ff' : '#fff',
+    borderRadius: props.rounded ? 18 : 4,
+    color: '#ffffff',
+    backgroundColor: props.active ? '#1790ff' : '#ffffff',
     backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
-    backgroundSize: 12,
-    backgroundPosition: 'center',
+    backgroundSize: '10px 8px',
+    backgroundPosition: 'center 4px',
     backgroundRepeat: 'no-repeat',
-    border: '1px solid rgba(97, 126, 156, 0.2)',
-    marginRight: 10,
+    border: '1px solid',
+    borderColor: props.active ? 'transparent' : 'rgba(97, 126, 156, 0.2)',
+    marginRight: 12,
 }));
 
 const CheckSwitcher = Glamorous.div<{ active?: boolean }>((props) => ({
@@ -123,7 +124,7 @@ interface XCheckboxBasicProps {
     checked?: boolean;
     disabled?: boolean;
     hint?: string;
-    square?: boolean;
+    rounded?: boolean;
     loading?: boolean;
     onClick?: React.MouseEventHandler<any>;
 }
@@ -170,7 +171,7 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
                                 <div />
                             </CheckSwitcher>
                         )}
-                        {!this.props.switcher && (<CheckIcon active={this.state.isChecked} square={this.props.square} />)}
+                        {!this.props.switcher && (<CheckIcon active={this.state.isChecked} rounded={this.props.rounded} />)}
                         <span style={{ opacity: this.props.loading ? 0 : 1 }}>{this.props.label}</span>
                         {this.props.loading && <XLoadingCircular className="loading-icon" color="#1790ff" />}
                     </div>
@@ -181,7 +182,17 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
     }
 }
 
-interface XCheckboxGroupProps { elements: string[] | { value: string, label: string, hint?: string }[]; selected?: string[]; onChange?: (value: string[]) => void; divided?: boolean; }
+interface XCheckboxGroupProps {
+    elements: string[] | {
+        value: string,
+        label: string,
+        hint?: string
+    }[];
+    selected?: string[];
+    onChange?: (value: string[]) => void;
+    divided?: boolean;
+}
+
 export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selected?: string[] }> {
 
     static defaultProps = {

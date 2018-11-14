@@ -75,9 +75,9 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     <GroupText>Notify me about...</GroupText>
                                 </XVertical>
                                 <CheckboxWrapper>
-                                    <XCheckbox square={true} label="All new messages" trueValue="ALL" field="input.desktopNotifications" />
-                                    <XCheckbox square={true} label="Direct messages" trueValue="DIRECT" field="input.desktopNotifications" />
-                                    <XCheckbox square={true} label="Nothing" trueValue="NONE" field="input.desktopNotifications" />
+                                    <XCheckbox rounded={true} label="All new messages" trueValue="ALL" field="input.desktopNotifications" />
+                                    <XCheckbox rounded={true} label="Direct messages" trueValue="DIRECT" field="input.desktopNotifications" />
+                                    <XCheckbox rounded={true} label="Nothing" trueValue="NONE" field="input.desktopNotifications" />
                                 </CheckboxWrapper>
                             </XVertical>
                             <XVertical separator={6}>
@@ -86,9 +86,9 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     <GroupText>Notify me about...</GroupText>
                                 </XVertical>
                                 <CheckboxWrapper>
-                                    <XCheckbox square={true} label="All new messages" trueValue="ALL" field="input.mobileNotifications" />
-                                    <XCheckbox square={true} label="Direct messages" trueValue="DIRECT" field="input.mobileNotifications" />
-                                    <XCheckbox square={true} label="Nothing" trueValue="NONE" field="input.mobileNotifications" />
+                                    <XCheckbox rounded={true} label="All new messages" trueValue="ALL" field="input.mobileNotifications" />
+                                    <XCheckbox rounded={true} label="Direct messages" trueValue="DIRECT" field="input.mobileNotifications" />
+                                    <XCheckbox rounded={true} label="Nothing" trueValue="NONE" field="input.mobileNotifications" />
                                 </CheckboxWrapper>
                             </XVertical>
                             <XVertical separator={6}>
@@ -97,11 +97,11 @@ export default withApp('Notifications', 'viewer', withSettings(withQueryLoader((
                                     <GroupText>When you’re busy or not online, Openland can send you email notifications about new messages. We will use <strong>{props.data.settings.primaryEmail}</strong> for notifications.</GroupText>
                                 </XVertical>
                                 <CheckboxWrapper>
-                                    <XCheckbox square={true} label="Notify every 15 minutes" trueValue="MIN_15" field="input.emailFrequency" />
-                                    <XCheckbox square={true} label="Notify maximum once per hour" trueValue="HOUR_1" field="input.emailFrequency" />
-                                    <XCheckbox square={true} label="Notify maximum once per day" trueValue="HOUR_24" field="input.emailFrequency" />
-                                    {/* <XCheckbox square={true} label="Notify maximum once per week" trueValue="WEEK_1" field="input.emailFrequency" /> */}
-                                    <XCheckbox square={true} label="Never notify me" trueValue="NEVER" field="input.emailFrequency" />
+                                    <XCheckbox rounded={true} label="Notify every 15 minutes" trueValue="MIN_15" field="input.emailFrequency" />
+                                    <XCheckbox rounded={true} label="Notify maximum once per hour" trueValue="HOUR_1" field="input.emailFrequency" />
+                                    <XCheckbox rounded={true} label="Notify maximum once per day" trueValue="HOUR_24" field="input.emailFrequency" />
+                                    {/* <XCheckbox rounded={true} label="Notify maximum once per week" trueValue="WEEK_1" field="input.emailFrequency" /> */}
+                                    <XCheckbox rounded={true} label="Never notify me" trueValue="NEVER" field="input.emailFrequency" />
                                 </CheckboxWrapper>
                             </XVertical>
                             <XFormSubmit succesText="Saved!" text="Save changes" style="primary" alignSelf="flex-start" />

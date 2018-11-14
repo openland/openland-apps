@@ -109,7 +109,7 @@ export class SortPicker extends React.Component<{ withoutFeatured?: boolean, sor
                 </PickerWrapper>
                 {!this.props.withoutFeatured && (
                     <CheckboxWrap>
-                        <XCheckboxBasic label="Featured first" value={this.state.featured ? 'f' : ''} trueValue="f" onChange={this.onFeturedChange} />
+                        <XCheckboxBasic label="Featured first" rounded={true} value={this.state.featured ? 'f' : ''} trueValue="f" onChange={this.onFeturedChange} />
                     </CheckboxWrap>
                 )}
             </>
