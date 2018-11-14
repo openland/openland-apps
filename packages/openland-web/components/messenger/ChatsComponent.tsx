@@ -188,7 +188,11 @@ let SelectContext = React.createContext({ select: -1 });
 
 class ConversationComponent extends React.PureComponent<{ conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean, onSelect: () => void }> {
     refComponent: any;
-
+    
+    componentWillUnmount() {
+        console.log('componentWillUnmount ConversationComponent');
+    }
+    
     componentDidMount() {
         this.checkFocus();
     }
@@ -221,6 +225,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
     }
 
     render() {
+        
         let conv = this.props.conversation;
         let isPrivate = conv.type === 'PrivateConversation';
         return (
@@ -592,6 +597,34 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         });
     }
 
+    renderConversationComponent = (props: any ) => (
+        <>
+            {props.items.map((i: any, j: any) => {
+                return (
+                    <SelectContext.Consumer key={i.key}>
+                        {select => {
+                            return (
+                                <ConversationComponent
+                                    key={i.key}
+                                    onSelect={this.onSelect}
+                                    conversation={i}
+                                    selectedItem={select.select === j}
+                                    allowSelection={this.state.allowShortKeys}
+                                />
+                            );
+                        }}
+                    </SelectContext.Consumer>
+
+                );
+            })}
+            {!props.completed && (
+                <LoadingWrapper>
+                    <XButton alignSelf="center" style="flat" loading={true} />
+                </LoadingWrapper>
+            )}
+        </>
+    )
+
     render() {
         let search = this.state.query && this.state.query.length > 0;
         return (
@@ -622,33 +655,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                                     this.items = items;
                                 }}
                                 dataSource={this.props.messenger.dialogList.dataSource}
-                                render={(props) => (
-                                    <>
-                                        {props.items.map((i, j) => {
-                                            return (
-                                                <SelectContext.Consumer key={i.key}>
-                                                    {select => {
-                                                        return (
-                                                            <ConversationComponent
-                                                                key={i.key}
-                                                                conversation={i}
-                                                                onSelect={this.onSelect}
-                                                                selectedItem={select.select === j}
-                                                                allowSelection={this.state.allowShortKeys}
-                                                            />
-                                                        );
-                                                    }}
-                                                </SelectContext.Consumer>
-
-                                            );
-                                        })}
-                                        {!props.completed && (
-                                            <LoadingWrapper>
-                                                <XButton alignSelf="center" style="flat" loading={true} />
-                                            </LoadingWrapper>
-                                        )}
-                                    </>
-                                )}
+                                render={this.renderConversationComponent}
                             />
                         )}
                     </XScrollView2>

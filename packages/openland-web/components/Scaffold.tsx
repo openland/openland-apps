@@ -237,6 +237,10 @@ interface UserPopperProps {
     }[];
 }
 
+const OutherOrgWrapepr = Glamorous(XVertical)({
+    overflow: 'scroll'
+});
+
 class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
     inner = 0;
     constructor(props: UserPopperProps) {
@@ -322,11 +326,11 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                             marginBottom={5}
                                             arrow={null}
                                             content={(
-                                                <XVertical separator="none" ref={this.onInner}>
-                                                    {organizations.map((org, index) => (index >= 1) ? (
+                                                <OutherOrgWrapepr separator="none" ref={this.onInner} maxHeight="90vh">
+                                                    {organizations.sort((a, b) => a.name.localeCompare(b.name)).map((org, index) => (index >= 0) ? (
                                                         <XMenuItem path={'/directory/o/' + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
                                                     ) : null)}
-                                                </XVertical>
+                                                </OutherOrgWrapepr>
                                             )}
                                         >
                                             <XMenuItem iconRight="x-right">Other organizations</XMenuItem>

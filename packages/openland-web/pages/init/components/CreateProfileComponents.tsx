@@ -9,7 +9,8 @@ export const RootContainer = Glamorous.div({
     height: '100vh',
     width: '100%',
     position: 'relative',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    minWidth: 600
 });
 
 export const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
