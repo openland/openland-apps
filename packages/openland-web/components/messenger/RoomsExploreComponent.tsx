@@ -43,13 +43,15 @@ const Rooms = withChatSearchChannels((props) => {
             <XContentWrapper withPaddingBottom={true}>
                 {props.data.items.edges.map(c => {
                     let room = c.node;
-                    let path = '/mail/' + room.id;
-    
-                    if ((props as any).onDirectory && room.myStatus !== 'member') {
-                        path = '/directory/r/' + room.id;
-                    }
-    
-                    return <XRoomCard key={c.node.id} room={room} path={path} />;
+
+                    return (
+                        <XRoomCard
+                            key={c.node.id}
+                            room={room}
+                            path={'/directory/p/' + room.id}
+                            iMember={room.myStatus === 'member'}
+                        />
+                    );
                 })}
             </XContentWrapper>
         );

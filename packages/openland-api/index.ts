@@ -6,6 +6,7 @@ import * as Types from './Types';
 import * as Account from './queries/Account';
 import * as Chats from './queries/Chats';
 import * as FeatureFlag from './queries/FeatureFlag';
+import * as GroupRoom from './queries/GroupRoom';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Settings from './queries/Settings';
@@ -74,6 +75,8 @@ export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
+export const GroupRoomInfoQuery = typedQuery<Types.GroupRoomInfo, Types.GroupRoomInfoVariables>(GroupRoom.GroupRoomInfoQuery);
+export const GroupRoomMembersInfoQuery = typedQuery<Types.GroupRoomMembersInfo, Types.GroupRoomMembersInfoVariables>(GroupRoom.GroupRoomMembersInfoQuery);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const OrganizationQuery = typedQuery<Types.Organization, Types.OrganizationVariables>(Organization.OrganizationQuery);

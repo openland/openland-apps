@@ -70,6 +70,7 @@ interface XRoomCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+    iMember?: boolean;
 }
 
 interface XRoomCardState {
@@ -85,12 +86,18 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
         let { room, path, customButton, customMenu } = this.props;
         let title = (!room.isRoot && room.organization ? (room.organization.name + ' / ') : '') + room.title;
 
+        let buttonPath = '/mail/' + room.id;
+
+        if (this.props.iMember === false) {
+            buttonPath = '/directory/r/' + room.id;
+        }
+
         let button = (typeof customButton === 'undefined') ? (
             <>
                 {room.myStatus && (
                     <XButton
                         text={StatusTitleMap[room.myStatus]}
-                        path={path || '/mail/' + room.id}
+                        path={buttonPath}
                         style={room.myStatus === 'none' ? 'primary' : 'ghost'}
                     />
                 )}

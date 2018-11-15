@@ -5,6 +5,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
+import {RoomGroupProfile} from '../profile/RoomGroupProfileComponent';
 import {
     RootWrapper,
     Sidebar,
@@ -13,18 +14,24 @@ import {
 
 class RootComponent extends React.Component<XWithRouter> {
     render() {
+        const router = this.props.router;
         let tab = 'rooms';
 
-        if (this.props.router.routeQuery.conversationId) {
-            tab = 'invite';
+        if (router.routeQuery.conversationId) {
+            if (router.path.includes('/r/')) {
+                tab = 'invite';
+            } else if (router.path.includes('/p/')) {
+                tab = 'profile';
+            }
         }
 
         return (
             <RootWrapper>
                 <Sidebar active="rooms" />
                 <Container>
-                    {tab === 'rooms' && <RoomsExploreComponent onDirectory={true}/>}
-                    {tab === 'invite' && <MessengerComponent conversationId={this.props.router.routeQuery.conversationId} onDirectory={true} />}
+                    {tab === 'rooms' && <RoomsExploreComponent onDirectory={true} />}
+                    {tab === 'invite' && <MessengerComponent conversationId={router.routeQuery.conversationId} onDirectory={true} />}
+                    {tab === 'profile' && <RoomGroupProfile conversationId={router.routeQuery.conversationId}/>}
                 </Container>
             </RootWrapper>
         );
