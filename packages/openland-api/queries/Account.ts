@@ -12,7 +12,6 @@ export const AccountQuery = gql`
     }
     ${UserShort}
     ${SessionStateFull}
-    ${OrganizationShort}
 `;
 
 export const AccountSettingsQuery = gql`
