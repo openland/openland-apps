@@ -204,7 +204,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     }
                 }
                 if (message.urlAugmentation) {
-                    if (message.urlAugmentation.type === 'intro') {
+                    if (message.urlAugmentation.type === 'intro' && message.urlAugmentation.user) {
                         content.push(
                             <MessageIntroComponent
                                 key="intro"
@@ -219,8 +219,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 conversationType={this.props.conversationType}
                             />
                         );
-                    }
-                    if (message.urlAugmentation.type !== 'intro') {
+                    } else {
                         if (message.urlAugmentation.url.startsWith('https://app.openland.com/o') && message.urlAugmentation.url.includes('listings#')) {
                             content = [];
                         }
