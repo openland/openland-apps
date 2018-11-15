@@ -5,6 +5,8 @@ import { XButton } from './XButton';
 import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import PhoneIcon from './icons/ic-phone.svg';
+import TwitterIcon from './icons/twitter-2.svg';
+import FacebookIcon from './icons/ic-fb.svg';
 
 const SocialIconWrapper = Glamorous.div({
     margin: '0 -16px',
@@ -17,26 +19,31 @@ const SocialIconWrapper = Glamorous.div({
     }
 });
 
-export const XSocialButton = (props: { value: string; style: 'website' | 'linkedin' | 'phone' }) => {
-    let icon;
-    let title;
+interface XSocialButtonProps {
+    value: string;
+    style: 'website' | 'linkedin' | 'phone' | 'facebook' | 'twitter';
+}
+
+const Titles = {
+    website: 'Website',
+    linkedin: 'Linkedin',
+    phone: 'Phone',
+    facebook: 'Facebook',
+    twitter: 'Twitter',
+};
+
+const Icons = {
+    website: <WebsiteIcon />,
+    linkedin: <LinkedinIcon />,
+    phone: <PhoneIcon />,
+    facebook: <FacebookIcon />,
+    twitter: <TwitterIcon />,
+};
+
+export const XSocialButton = (props: XSocialButtonProps) => {
     let href = (props.style === 'phone') ? 'tel:' + props.value : props.value;
-
-    switch (props.style) {
-        case 'website': icon = <WebsiteIcon />; break;
-        case 'linkedin': icon = <LinkedinIcon />; break;
-        case 'phone': icon = <PhoneIcon />; break;
-
-        default: icon = <WebsiteIcon />;
-    }
-
-    switch (props.style) {
-        case 'website': title = 'Website'; break;
-        case 'linkedin': title = 'Linkedin'; break;
-        case 'phone': title = 'Phone'; break;
-
-        default: icon = 'Social';
-    }
+    let icon = Icons[props.style];
+    let title = Titles[props.style];
 
     return (
         <XPopper

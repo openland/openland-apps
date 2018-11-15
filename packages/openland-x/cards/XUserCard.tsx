@@ -93,6 +93,8 @@ interface XUserCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+
+    hideOrganization?: boolean;
 }
 
 interface XUserCardState {
@@ -148,7 +150,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                         <UserInfo>
                             <UserName>
                                 {user.name}
-                                {user.primaryOrganization && <UserOrganization>{user.primaryOrganization.name}</UserOrganization>}
+                                {!this.props.hideOrganization && user.primaryOrganization && <UserOrganization>{user.primaryOrganization.name}</UserOrganization>}
                             </UserName>
                             {user.id && <UserStatus variables={{ userId: user.id }}/>}
                         </UserInfo>

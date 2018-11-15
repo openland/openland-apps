@@ -16,25 +16,20 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { BackButton, Rooms } from './OrganizationProfileComponent';
+import { BackButton, Rooms, Section, SectionContent, HeaderWrapper } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 
-const HeaderWrapper = Glamorous.div({
-    borderBottom: '1px solid #ececec',
-    paddingTop: 16,
-    paddingBottom: 17
-});
-
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18
 });
 
 const HeaderInfo = Glamorous(XVertical)({
-    paddingTop: 7,
+    paddingTop: 1,
+    justifyContent: 'center'
 });
 
 const HeaderTitle = Glamorous.div({
@@ -45,7 +40,7 @@ const HeaderTitle = Glamorous.div({
     color: '#000000'
 });
 
-const HeaderTools = Glamorous.div({
+const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13
 });
 
@@ -85,23 +80,6 @@ const UserStatus = withOnline(props => {
         return null;
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
-
-const Section = Glamorous(XVertical)({
-    paddingTop: 5,
-    borderBottom: '1px solid #ececec',
-    '&:last-child': {
-        borderBottom: 'none'
-    }
-});
-
-const SectionContent = Glamorous(XContentWrapper)({
-    paddingTop: 7,
-    paddingBottom: 24,
-    fontSize: 14,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000'
-});
 
 const AvatarModal = (props: { photo?: string, userName?: string, userId?: string }) => {
     return (
@@ -165,30 +143,28 @@ const Header = (props: { userQuery: User }) => {
                     </XHorizontal>
                     <UserStatus variables={{ userId: usr.id }} />
                 </HeaderInfo>
-                <HeaderTools>
-                    <XHorizontal separator={8}>
-                        {usr.website && <XSocialButton value={usr.website} style="website" />}
-                        {usr.linkedin && <XSocialButton value={usr.linkedin} style="linkedin" />}
-                        {usr.phone && <XSocialButton value={usr.phone} style="phone" />}
-                        {usr.isYou && (
-                            <XOverflow
-                                placement="bottom-end"
-                                flat={true}
-                                content={(
-                                    <>
-                                        <XMenuItem href="/settings/profile/">Edit profile</XMenuItem>
-                                    </>
-                                )}
-                            />
-                        )}
-                        {!usr.isYou && (
-                            <XButton
-                                text="Message"
-                                style="primary"
-                                path={'/mail/' + usr.id}
-                            />
-                        )}
-                    </XHorizontal>
+                <HeaderTools separator={8}>
+                    {usr.website && <XSocialButton value={usr.website} style="website" />}
+                    {usr.linkedin && <XSocialButton value={usr.linkedin} style="linkedin" />}
+                    {usr.phone && <XSocialButton value={usr.phone} style="phone" />}
+                    {usr.isYou && (
+                        <XOverflow
+                            placement="bottom-end"
+                            flat={true}
+                            content={(
+                                <>
+                                    <XMenuItem href="/settings/profile/">Edit profile</XMenuItem>
+                                </>
+                            )}
+                        />
+                    )}
+                    {!usr.isYou && (
+                        <XButton
+                            text="Message"
+                            style="primary"
+                            path={'/mail/' + usr.id}
+                        />
+                    )}
                 </HeaderTools>
             </XContentWrapper>
         </HeaderWrapper>
@@ -258,7 +234,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
             <div ref={this.handleRef}>
                 <BackButton />
                 <Header userQuery={this.props.userQuery} />
-                <XScrollView height="calc(100% - 137px)">
+                <XScrollView height="calc(100% - 136px)">
                     <About userQuery={this.props.userQuery} />
                     <Rooms rooms={usr.channels.filter(c => c && !c.hidden)} />
                 </XScrollView>
