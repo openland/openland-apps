@@ -1,17 +1,22 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
-import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
-import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
+import {
+  MessengerEngine,
+  MessengerContext
+} from 'openland-engines/MessengerEngine';
+import {
+  ConversationEngine,
+  ConversationStateHandler
+} from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MessageListComponent } from './view/MessageListComponent';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
-import { ConversationContainer } from './view/ConversationContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
 import { withUserInfo } from '../../UserInfo';
 import { UserShort } from 'openland-api/Types';
@@ -20,313 +25,352 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
+import {
+  MessagesStateContext,
+  MessagesStateContextProps
+} from './MessagesStateContext';
+
+const ConversationContainer = Glamorous.div({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  height: '100%',
+  flexBasis: '100%',
+  overflow: 'hidden'
+});
 
 interface MessagesComponentProps {
-    conversationId: string;
-    loading: boolean;
-    messenger: MessengerEngine;
-    conversationType?: string;
-    me: UserShort | null;
+  conversationId: string;
+  loading: boolean;
+  messenger: MessengerEngine;
+  conversationType?: string;
+  me: UserShort | null;
 }
 
 interface MessagesComponentState {
-    hideInput: boolean;
-    loading: boolean;
-    messages: ModelMessage[];
+  hideInput: boolean;
+  loading: boolean;
+  messages: ModelMessage[];
 }
 
-const DeleteMessageComponent = withDeleteMessage((props) => {
-    let id = props.router.query.deleteMessage;
-    return (
-        <XModalForm
-            title="Delete message"
-            targetQuery="deleteMessage"
-            submitBtnText="Delete"
-            defaultAction={(data) => {
-                props.deleteMessage({ variables: { messageId: id } });
-            }}
-            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
-        >
-            <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
-        </XModalForm >
-    );
+const DeleteMessageComponent = withDeleteMessage(props => {
+  let id = props.router.query.deleteMessage;
+  return (
+    <XModalForm
+      title="Delete message"
+      targetQuery="deleteMessage"
+      submitBtnText="Delete"
+      defaultAction={data => {
+        props.deleteMessage({ variables: { messageId: id } });
+      }}
+      submitProps={{ succesText: 'Deleted!', style: 'danger' }}
+    >
+      <XText>
+        Are you sure you want to delete this message? This cannot be undone.
+      </XText>
+    </XModalForm>
+  );
 });
 
-const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation((props) => {
-    let id = props.router.query.deleteUrlAugmentation;
-    return (
-        <XModalForm
-            title="Delete url augmentation"
-            targetQuery="deleteUrlAugmentation"
-            submitBtnText="Delete"
-            defaultAction={(data) => {
-                props.deleteUrlAugmentation({ variables: { messageId: id } });
-            }}
-            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
-        >
-            <XText>Are you sure you want to delete this url preview? This cannot be undone.</XText>
-        </XModalForm >
-    );
+const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
+  let id = props.router.query.deleteUrlAugmentation;
+  return (
+    <XModalForm
+      title="Delete url augmentation"
+      targetQuery="deleteUrlAugmentation"
+      submitBtnText="Delete"
+      defaultAction={data => {
+        props.deleteUrlAugmentation({ variables: { messageId: id } });
+      }}
+      submitProps={{ succesText: 'Deleted!', style: 'danger' }}
+    >
+      <XText>
+        Are you sure you want to delete this url preview? This cannot be undone.
+      </XText>
+    </XModalForm>
+  );
 });
 
-const LeaveChatComponent = withChatLeave((props) => {
-    let id = props.router.query.leaveFromChat;
-    return (
-        <XModalForm
-            title="Leave the chat"
-            targetQuery="leaveFromChat"
-            submitBtnText="Leave"
-            defaultAction={(data) => {
-                props.leaveFromChat({ variables: { conversationId: id } });
-            }}
-            submitProps={{ succesText: 'Done!', style: 'danger' }}
-        >
-            <XText>Are you sure you want to leave? You will need to request access to join it again in the future.</XText>
-        </XModalForm >
-    );
+const LeaveChatComponent = withChatLeave(props => {
+  let id = props.router.query.leaveFromChat;
+  return (
+    <XModalForm
+      title="Leave the chat"
+      targetQuery="leaveFromChat"
+      submitBtnText="Leave"
+      defaultAction={data => {
+        props.leaveFromChat({ variables: { conversationId: id } });
+      }}
+      submitProps={{ succesText: 'Done!', style: 'danger' }}
+    >
+      <XText>
+        Are you sure you want to leave? You will need to request access to join
+        it again in the future.
+      </XText>
+    </XModalForm>
+  );
 });
 
-class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements ConversationStateHandler {
-    messagesList = React.createRef<ConversationMessagesComponent>();
-    private conversation: ConversationEngine | null;
-    messageText: string = '';
-    unmounter: (() => void) | null = null;
-    unmounter2: (() => void) | null = null;
+class MessagesComponent
+  extends React.Component<MessagesComponentProps, MessagesComponentState>
+  implements ConversationStateHandler {
+  messagesList = React.createRef<ConversationMessagesComponent>();
+  private conversation: ConversationEngine | null;
+  messageText: string = '';
+  unmounter: (() => void) | null = null;
+  unmounter2: (() => void) | null = null;
 
-    constructor(props: MessagesComponentProps) {
-        super(props);
+  constructor(props: MessagesComponentProps) {
+    super(props);
 
-        this.conversation = null;
-        this.state = {
-            hideInput: false,
-            messages: [],
-            loading: true
-        };
+    this.conversation = null;
+    this.state = {
+      hideInput: false,
+      messages: [],
+      loading: true
+    };
+  }
+
+  onMessageSend = () => {
+    if (this.messagesList.current) {
+      this.messagesList.current.scrollToBottom();
+    }
+  }
+
+  //
+  // Lifecycle
+  //
+
+  onConversationUpdated = (state: ConversationState) => {
+    this.setState({ loading: state.loading, messages: state.messages });
+  }
+
+  updateConversation = (props: MessagesComponentProps) => {
+    if (this.unmounter) {
+      this.unmounter();
+    }
+    if (this.unmounter2) {
+      this.unmounter2();
     }
 
-    onMessageSend = () => {
-        if (this.messagesList.current) {
-            this.messagesList.current.scrollToBottom();
+    this.conversation = props.messenger.getConversation(props.conversationId);
+    this.unmounter = this.conversation.engine.mountConversation(
+      props.conversationId
+    );
+    this.unmounter2 = this.conversation.subscribe(this);
+
+    if (!this.conversation) {
+      throw Error('conversation should be defined here');
+    }
+    let convState = this.conversation.getState();
+
+    this.setState({
+      messages: convState.messages,
+      loading: convState.loading
+    });
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+    if (this.unmounter) {
+      this.unmounter();
+    }
+    if (this.unmounter2) {
+      this.unmounter2();
+    }
+  }
+
+  componentWillMount() {
+    this.updateConversation(this.props);
+  }
+
+  componentWillReceiveProps(props: MessagesComponentProps) {
+    this.updateConversation(props);
+  }
+
+  handleChange = async (text: string) => {
+    let prevLength = this.messageText.length;
+    let curLength = text.length;
+
+    if (prevLength < curLength) {
+      await this.props.messenger.client.client.mutate({
+        mutation: SetTypingMutation.document,
+        variables: {
+          conversationId: this.props.conversationId
         }
+      });
     }
 
-    //
-    // Lifecycle
-    //
-
-    onConversationUpdated = (state: ConversationState) => {
-        this.setState({ loading: state.loading, messages: state.messages });
-    }
-    
-    updateConversation = (props: MessagesComponentProps) => {
-        if (this.unmounter) {
-            this.unmounter();
-        }
-        if (this.unmounter2) {
-            this.unmounter2();
-        }
-    
-        this.conversation = props.messenger.getConversation(props.conversationId);
-        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-        this.unmounter2 = this.conversation.subscribe(this);
-        
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
-        }
-        let convState = this.conversation.getState();
-
-        this.setState({
-            messages: convState.messages,
-            loading: convState.loading
-        });
+    if (prevLength > 0 && curLength <= 0) {
+      // UnSetTyping MUTATION
     }
 
-    componentWillUnmount() {
-        console.log('componentWillUnmount');
-        if (this.unmounter) {
-            this.unmounter();
-        }
-        if (this.unmounter2) {
-            this.unmounter2();
-        }
+    this.messageText = text;
+  }
+
+  handleSend = (text: string) => {
+    if (!this.conversation) {
+      throw Error('conversation should be defined here');
     }
+    this.conversation.sendMessage(text);
+  }
 
-    componentWillMount() {
-        this.updateConversation(this.props);
+  handleSendFile = (file: UploadCare.File) => {
+    if (!this.conversation) {
+      throw Error('conversation should be defined here');
     }
+    this.conversation.sendFile(new UplaodCareUploading(file));
+  }
 
-    componentWillReceiveProps(props: MessagesComponentProps) {
-        this.updateConversation(props);
+  handleShowIput = (show: boolean) => {
+    this.setState({
+      hideInput: !show
+    });
+  }
+
+  //
+  // Rendering
+  //
+
+  render() {
+    if (!this.conversation) {
+      throw Error('conversation should be defined here');
     }
-
-    handleChange = async (text: string) => {
-        let prevLength = this.messageText.length;
-        let curLength = text.length;
-
-        if (prevLength < curLength) {
-            await this.props.messenger.client.client.mutate({
-                mutation: SetTypingMutation.document,
-                variables: {
-                    conversationId: this.props.conversationId
-                }
-            });
-        }
-
-        if (prevLength > 0 && curLength <= 0) {
-            // UnSetTyping MUTATION
-        }
-
-        this.messageText = text;
-    }
-
-    handleSend = (text: string) => {
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
-        }
-        this.conversation.sendMessage(text);
-    }
-
-    handleSendFile = (file: UploadCare.File) => {
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
-        }
-        this.conversation.sendFile(new UplaodCareUploading(file));
-    }
-
-    handleShowIput = (show: boolean) => {
-        this.setState({
-            hideInput: !show
-        });
-    }
-
-    // 
-    // Rendering
-    //
-
-    render() {
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
-        }
-        return (
-            <ConversationContainer>
-                <ConversationMessagesComponent
-                    ref={this.messagesList} 
-                    key={this.props.conversationId}
-                    me={this.props.me}
-                    messages={this.state.messages}
-                    loading={this.state.loading}
-                    conversation={this.conversation}
-                    conversationId={this.props.conversationId}
-                    conversationType={this.props.conversationType}
-                    inputShower={this.handleShowIput}
-                />
-                {this.state.hideInput === false && (
-                    <MessageComposeComponentDraft
-                        conversation={this.conversation}
-                        onChange={this.handleChange}
-                        onSend={this.handleSend}
-                        onSendFile={this.handleSendFile}
-                        enabled={true}
-                        conversationType={this.props.conversationType}
-                        conversationId={this.props.conversationId}
-                        variables={{
-                            conversationId: this.props.conversationId
-                        }}
-                    />
-                )}
-                <DeleteUrlAugmentationComponent/>
-                <DeleteMessageComponent />
-                <LeaveChatComponent />
-            </ConversationContainer>
-        );
-    }
+    return (
+      <ConversationContainer>
+        <ConversationMessagesComponent
+          ref={this.messagesList}
+          key={this.props.conversationId}
+          me={this.props.me}
+          messages={this.state.messages}
+          loading={this.state.loading}
+          conversation={this.conversation}
+          conversationId={this.props.conversationId}
+          conversationType={this.props.conversationType}
+          inputShower={this.handleShowIput}
+        />
+        {this.state.hideInput === false && (
+          <MessageComposeComponentDraft
+            conversation={this.conversation}
+            onChange={this.handleChange}
+            onSend={this.handleSend}
+            onSendFile={this.handleSendFile}
+            enabled={true}
+            conversationType={this.props.conversationType}
+            conversationId={this.props.conversationId}
+            variables={{
+              conversationId: this.props.conversationId
+            }}
+          />
+        )}
+        <DeleteUrlAugmentationComponent />
+        <DeleteMessageComponent />
+        <LeaveChatComponent />
+      </ConversationContainer>
+    );
+  }
 }
 
 const Placeholder = withChatHistory(() => {
-    return (
-        <ConversationContainer>
-            <MessagesContainer>
-                <XLoader loading={true} />
-            </MessagesContainer>
-            <MessageComposeComponentDraft enabled={false} />
-        </ConversationContainer>
-    );
+  return (
+    <ConversationContainer>
+      <MessagesContainer>
+        <XLoader loading={true} />
+      </MessagesContainer>
+      <MessageComposeComponentDraft enabled={false} />
+    </ConversationContainer>
+  );
 });
 
 interface MessengerRootComponentProps {
-    conversationId: string;
-    conversationType?: string;
+  conversationId: string;
+  conversationType?: string;
 }
 
-const MessagesWithUser = withUserInfo((props) => (
-    <MessagesComponent
-        me={props.user}
-        loading={false}
-        conversationId={props.conversationId}
-        messenger={props.messenger}
-        conversationType={props.conversationType}
-    />
-)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
+const MessagesWithUser = withUserInfo(props => (
+  <MessagesComponent
+    me={props.user}
+    loading={false}
+    conversationId={props.conversationId}
+    messenger={props.messenger}
+    conversationType={props.conversationType}
+  />
+)) as React.ComponentType<{
+  conversationId: string;
+  messenger: any;
+  conversationType?: string;
+}>;
 
-export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, MessagesStateContextProps> {
-    constructor(props: MessengerRootComponentProps) {
-        super(props);
+export class MessengerRootComponent extends React.Component<
+  MessengerRootComponentProps,
+  MessagesStateContextProps
+> {
+  constructor(props: MessengerRootComponentProps) {
+    super(props);
 
-        this.state = {
-            editMessageId: null,
-            editMessage: null,
-            forwardMessagesId: null,
-            conversationId: null,
-            replyMessageId: null,
-            replyMessage: null,
-            replyMessageSender: null,
-            setEditMessage: this.setEditMessage,
-            setForwardMessages: this.setForwardMessages,
-            setReplyMessage: this.setReplyMessage
-        };
+    this.state = {
+      editMessageId: null,
+      editMessage: null,
+      forwardMessagesId: null,
+      conversationId: null,
+      replyMessageId: null,
+      replyMessage: null,
+      replyMessageSender: null,
+      setEditMessage: this.setEditMessage,
+      setForwardMessages: this.setForwardMessages,
+      setReplyMessage: this.setReplyMessage
+    };
+  }
+
+  setEditMessage = (id: string | null, message: string | null) => {
+    this.setState({
+      editMessageId: id,
+      editMessage: message
+    });
+  }
+
+  setForwardMessages = (id: string[] | null, conversationId: string | null) => {
+    this.setState({
+      forwardMessagesId: id,
+      conversationId: conversationId
+    });
+  }
+
+  setReplyMessage = (
+    id: string | null,
+    message: string | null,
+    sender: string | null,
+    conversationId: string | null
+  ) => {
+    this.setState({
+      replyMessageId: id,
+      replyMessage: message,
+      replyMessageSender: sender,
+      conversationId: conversationId
+    });
+  }
+
+  render() {
+    // We are not allowing messenger to be rendered on server side: just preload history and that's all
+    if (!canUseDOM) {
+      return (
+        <Placeholder
+          variables={{ conversationId: this.props.conversationId }}
+        />
+      );
     }
-
-    setEditMessage = (id: string | null, message: string | null) => {
-        this.setState({
-            editMessageId: id,
-            editMessage: message
-        });
-    }
-
-    setForwardMessages = (id: string[] | null, conversationId: string | null) => {
-        this.setState({
-            forwardMessagesId: id,
-            conversationId: conversationId
-        });
-    }
-
-    setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
-        this.setState({
-            replyMessageId: id,
-            replyMessage: message,
-            replyMessageSender: sender,
-            conversationId: conversationId
-        });
-    }
-
-    render() {
-        // We are not allowing messenger to be rendered on server side: just preload history and that's all
-        if (!canUseDOM) {
-            return <Placeholder variables={{ conversationId: this.props.conversationId }} />;
-        }
-        return (
-            <MessagesStateContext.Provider value={this.state}>
-                <MessengerContext.Consumer>
-                    {messenger => (
-                        <MessagesWithUser
-                            conversationId={this.props.conversationId}
-                            messenger={messenger}
-                            conversationType={this.props.conversationType}
-                        />
-                    )}
-                </MessengerContext.Consumer>
-            </MessagesStateContext.Provider>
-        );
-    }
+    return (
+      <MessagesStateContext.Provider value={this.state}>
+        <MessengerContext.Consumer>
+          {messenger => (
+            <MessagesWithUser
+              conversationId={this.props.conversationId}
+              messenger={messenger}
+              conversationType={this.props.conversationType}
+            />
+          )}
+        </MessengerContext.Consumer>
+      </MessagesStateContext.Provider>
+    );
+  }
 }
