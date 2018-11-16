@@ -136,7 +136,7 @@ const InviteIcWrap = Glamorous.div({
     height: 40,
     borderRadius: 20,
     border: '1px solid #F2F2F2'
-})
+});
 
 const MembersProvider = (props: MembersProviderProps) => {
     let members = props.members;
