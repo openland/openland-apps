@@ -34,6 +34,8 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XSocialButton } from 'openland-x/XSocialButton';
+import { XMoreCards } from 'openland-x/cards/XMoreCards';
+import { XCreateCard } from 'openland-x/cards/XCreateCard';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -426,21 +428,23 @@ const Members = (props: { organization: Organization_organization }) => {
         return (
             <Section separator={0}>
                 <XSubHeader
-                    title={organization.isCommunity ? 'Admins' : 'Organization members'}
+                    title={organization.isCommunity ? 'Admins' : 'Members'}
                     counter={organization.members.length}
                     paddingBottom={0}
-                    right={organization.isMine ? (
-                        <XWithRole role="admin" orgPermission={organization.id}>
-                            <InvitesToOrganizationModal target={<XButton text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} style="flat" icon="add" />} />
-                        </XWithRole>
-                    ) : undefined}
                 />
                 <SectionContent>
-                    {organization.members.map((member, i) => {
-                        return (
+                    {organization.isMine && (
+                        <XWithRole role="admin" orgPermission={organization.id}>
+                            <InvitesToOrganizationModal
+                                target={<XCreateCard text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} />}
+                            />
+                        </XWithRole>
+                    )}
+                    <XMoreCards>
+                        {organization.members.map((member, i) => (
                             <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
-                        );
-                    })}
+                        ))}
+                    </XMoreCards>
                 </SectionContent>
                 <RemoveJoinedModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
                 <PermissionsModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id }} />
@@ -452,25 +456,49 @@ const Members = (props: { organization: Organization_organization }) => {
     }
 };
 
-export const Rooms = (props: { rooms: any }) => {
-    if (props.rooms && (props.rooms.length > 0)) {
-        return (
-            <Section separator={0}>
-                <XSubHeader
-                    title="Rooms"
-                    counter={props.rooms.length}
-                    paddingBottom={0}
-                />
-                <SectionContent>
-                    {props.rooms.map((c: any, i: any) => (
-                        c ? <XRoomCard key={i} room={c} /> : null
-                    ))}
-                </SectionContent>
-            </Section>
-        );
-    } else {
-        return null;
-    }
+const Rooms = (props: { organization: Organization_organization }) => {
+    let { organization } = props;
+
+    let publicRooms = organization.channels.filter(c => c && !c.hidden);
+    let privateRooms = organization.channels.filter(c => c && c.hidden);
+
+    return (
+        <>
+            {publicRooms && (publicRooms.length > 0) && (
+                <Section separator={0}>
+                    <XSubHeader
+                        title="Public rooms"
+                        counter={publicRooms.length}
+                        paddingBottom={0}
+                    />
+                    <SectionContent>
+                        {organization.isMine && (
+                            <XWithRole role="admin" orgPermission={organization.id}>
+                                <XCreateCard query={{ field: 'createRoom', value: 'true' }} text="Create room" />
+                            </XWithRole>
+                        )}
+                        <XMoreCards>
+                            {publicRooms.map((c: any, i: any) => (<XRoomCard key={i} room={c} />))}
+                        </XMoreCards>
+                    </SectionContent>
+                </Section>
+            )}
+            {organization.isMine && privateRooms && (privateRooms.length > 0) && (
+                <Section separator={0}>
+                    <XSubHeader
+                        title="Private rooms"
+                        counter={privateRooms.length}
+                        paddingBottom={0}
+                    />
+                    <SectionContent>
+                        <XMoreCards>
+                            {privateRooms.map((c: any, i: any) => (<XRoomCard key={i} room={c} />))}
+                        </XMoreCards>
+                    </SectionContent>
+                </Section>
+            )}
+        </>
+    );
 };
 
 const OrgInfoWrapper = Glamorous.div({
@@ -527,7 +555,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
                 <XScrollView height="calc(100% - 136px)">
                     <About organization={organization} />
                     <Members organization={organization} />
-                    <Rooms rooms={organization.channels.filter(c => c && !c.hidden)} />
+                    <Rooms organization={organization} />
                 </XScrollView>
             </OrgInfoWrapper>
         );
