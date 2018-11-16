@@ -8,6 +8,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
+import { TextProfiles } from 'openland-text/TextProfiles';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 
 const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
@@ -98,7 +99,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
             <XButton
                 style="primary"
                 path={path || '/directory/c/' + community.id}
-                text="View"
+                text={TextProfiles.Organization.view}
             />
         ) : customButton;
 
@@ -148,7 +149,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                     <CommunityContent>
                         <CommunityInfo>
                             <CommunityTitle>{community.name}</CommunityTitle>
-                            <CommunityCounter>{roomsCount + (roomsCount === 1 ? ' room' : ' rooms')}</CommunityCounter>
+                            <CommunityCounter>{TextProfiles.Organization.roomsLabel(roomsCount)}</CommunityCounter>
                         </CommunityInfo>
                         <CommunityTools separator={5}>
                             {this.state.isHovered && button}

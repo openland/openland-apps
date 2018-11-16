@@ -1,5 +1,7 @@
 export const TextProfiles = {
     backButton: 'Back',
+    showMore: 'Show more',
+    showLess: 'Show less',
 
     User: {
         you: 'You',
@@ -32,6 +34,14 @@ export const TextProfiles = {
         aboutTitle: 'About',
         membersTitle: (isCommunity: boolean) => isCommunity ? 'Admins' : 'Members',
         requestsTitle: 'Requests',
+
+        hideFromSearch: 'Hide from search',
+        publish: 'Publish',
+
+        youOrganization: 'Your organization',
+        view: 'View',
+        membersMore: (count: number) => count > 1 ? ' +' + (count - 1) + ' more' : '',
+        roomsLabel: (count: number) => count + (count === 1 ? ' room' : ' rooms'),
 
         members: {
             removeFromOrganization: 'Remove from organization',
@@ -67,7 +77,7 @@ export const TextProfiles = {
     },
 
     Room: {
-        membersLabel: (count: number) => count + ' ' + (count === 1 ? 'member' : 'members'),
+        membersLabel: (count: number) => count + (count === 1 ? ' member' : ' members'),
         status: {
             invited: 'Invited',
             member: 'Member',

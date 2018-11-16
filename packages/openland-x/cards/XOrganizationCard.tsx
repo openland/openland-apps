@@ -10,6 +10,7 @@ import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
+import { TextProfiles } from 'openland-text/TextProfiles';
 
 const OrganizationCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
@@ -103,7 +104,7 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
 
 export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
     <XButton
-        text={(props as any).published ? 'Hide from search' : 'Publish'}
+        text={(props as any).published ? TextProfiles.Organization.hideFromSearch : TextProfiles.Organization.publish}
         style="flat"
         action={async () => props.alterPublished({
             variables: {
@@ -154,15 +155,15 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                 {organization.isMine && (
                     <XButton
                         style="ghost"
-                        text={TextDirectory.labelYourOrganization}
+                        text={TextProfiles.Organization.youOrganization}
                         enabled={false}
                     />
                 )}
                 {!organization.isMine && (
                     <XButton
                         style="primary"
+                        text={TextProfiles.Organization.view}
                         path={path || '/directory/o/' + organization.id}
-                        text="View"
                     />
                 )}
             </>
@@ -226,7 +227,7 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                                         style="colorus"
                                         cloudImageUuid={firstMember.user.picture || undefined}
                                     />
-                                    <span>{firstMember.user.name + (organization.members.length > 1 ? (' +' + (organization.members.length - 1) + ' more') : '')}</span>
+                                    <span>{firstMember.user.name + TextProfiles.Organization.membersMore(organization.members.length)}</span>
                                 </OrganizationMembers>
                             )}
                         </OrganizationInfo>

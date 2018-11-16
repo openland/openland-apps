@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
+import { TextProfiles } from 'openland-text/TextProfiles';
 
 const Wrapper = Glamorous.div<{ isShown: boolean }>((props) => ({
     marginBottom: 4,
@@ -59,7 +60,7 @@ export class XMoreCards extends React.Component<XMoreCardsProps, XMoreCardsState
                     <Button
                         onClick={this.toggleShown}
                         icon={this.state.isShown ? 'expand_less' : 'expand_more'}
-                        text={this.state.isShown ? 'Show less' : 'Show more'}
+                        text={this.state.isShown ? TextProfiles.showLess : TextProfiles.showMore}
                         style="flat"
                     />
                 </>
