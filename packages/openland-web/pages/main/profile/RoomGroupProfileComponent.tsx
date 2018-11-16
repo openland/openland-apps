@@ -19,6 +19,7 @@ import IcInvite from './icons/ic-add-blue.svg';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
+import { RemoveMemberModal } from '../channel/components/membersComponent';
 import {
     AddMemberForm,
     RoomEditComponent,
@@ -133,33 +134,6 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
         </>
     );
 };
-
-const RemoveMemberModal = withConversationKick((props) => {
-    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
-    if (!member) {
-        return null;
-    }
-    return (
-        <XModalForm
-            submitProps={{
-                text: 'Remove',
-                style: 'danger',
-            }}
-            title={'Remove ' + member.user.name + ' from ' + (props as any).roomTitle}
-            targetQuery="remove"
-            defaultAction={async (data) => {
-                await props.kick({
-                    variables: {
-                        userId: member.user.id,
-                        conversationId: (props as any).channelId
-                    }
-                });
-            }}
-        >
-            <XText>Are you sure you want to remove {member.user.firstName}? They will no longer be able to participate in the discussion.</XText>
-        </XModalForm>
-    );
-}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string, roomTitle: string }>;
 
 const MemberCard = (props: { member: GroupRoomMembersInfo_members_user, meOwner: boolean }) => {
     let overflowMenu = (

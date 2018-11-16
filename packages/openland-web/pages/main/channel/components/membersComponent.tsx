@@ -148,7 +148,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
     }
 }
 
-const RemoveMemberModal = withConversationKick((props) => {
+export const RemoveMemberModal = withConversationKick((props) => {
     let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
     if (!member) {
         return null;
