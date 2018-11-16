@@ -4,8 +4,6 @@ import { XOverflow } from '../../../../components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XButton } from 'openland-x/XButton';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
@@ -16,14 +14,12 @@ import { withChannelInvite } from '../../../../api/withChannelInvite';
 import { XMutation } from 'openland-x/XMutation';
 import { withConversationKick } from '../../../../api/withConversationKick';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { XText } from 'openland-x/XText';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
 import CloseIcon from './icons/ic-close-1.svg';
-import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XText } from 'openland-x/XText';
 
 const MembersWrapper = Glamorous(XScrollView)({
     height: '100%',
@@ -163,7 +159,7 @@ const RemoveMemberModal = withConversationKick((props) => {
                 text: 'Remove',
                 style: 'danger',
             }}
-            title="Remove member"
+            title={'Remove ' + member.user.name + ' from ' + (props as any).roomTitle}
             targetQuery="remove"
             defaultAction={async (data) => {
                 await props.kick({
@@ -174,22 +170,10 @@ const RemoveMemberModal = withConversationKick((props) => {
                 });
             }}
         >
-            <XHorizontal>
-                <XAvatar
-                    size="medium"
-                    style="colorus"
-                    cloudImageUuid={member.user.picture || undefined}
-                    objectId={member.user.id}
-                    objectName={member.user.name}
-                />
-                <XVertical separator={4} justifyContent="center">
-                    <XText textStyle="h500">{member.user.name}</XText>
-                    {member.primaryOrganization && <XText opacity={0.5} >{member.primaryOrganization.name}</XText>}
-                </XVertical>
-            </XHorizontal>
+            <XText>Are you sure you want to remove {member.user.firstName}? They will no longer be able to participate in the discussion.</XText>
         </XModalForm>
     );
-}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string }>;
+}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string, roomTitle: string }>;
 
 interface ChannelMembersComponentInnerProps {
     data: ChannelMembers;
@@ -253,7 +237,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         text={this.props.emptyText}
                     />
                 )}
-                <RemoveMemberModal members={this.props.data.members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} />
+                <RemoveMemberModal members={this.props.data.members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} roomTitle={this.props.channelTitle} />
             </MembersWrapper >
         );
     }
