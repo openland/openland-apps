@@ -5,9 +5,11 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { User_user } from 'openland-api/Types';
+import { User_user, OrganizationMemberRole } from 'openland-api/Types';
 import { withOnline } from '../../openland-web/api/withOnline';
 import { XDate } from 'openland-x-format/XDate';
+import { XPopper } from 'openland-x/XPopper';
+import AdminIcon from '../icons/ic-star-admin.svg';
 
 const UserWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
@@ -88,12 +90,34 @@ const UserStatus = withOnline(props => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
+const AdminIconWrapper = Glamorous.div({
+    marginRight: 5,
+
+    '& svg *': {
+        fill: '#ffab00'
+    }
+});
+
+const AdminTooltip = () => (
+    <XPopper
+        placement="top"
+        showOnHoverContent={false}
+        showOnHover={true}
+        style="dark"
+        content="Admin"
+    >
+        <AdminIconWrapper>
+            <AdminIcon />
+        </AdminIconWrapper>
+    </XPopper>
+);
+
 interface XUserCardProps {
     user: Partial<User_user>;
     path?: string;
     customButton?: any;
     customMenu?: any;
-
+    role?: OrganizationMemberRole;
     hideOrganization?: boolean;
 }
 
@@ -107,7 +131,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
     };
 
     render() {
-        let { user, path, customButton, customMenu } = this.props;
+        let { user, path, customButton, customMenu, role, hideOrganization } = this.props;
 
         let button = (typeof customButton === 'undefined') ? (
             <>
@@ -149,8 +173,9 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                     <UserContent>
                         <UserInfo>
                             <UserName>
+                                {role && role === 'OWNER' && <AdminTooltip />}
                                 {user.name}
-                                {!this.props.hideOrganization && user.primaryOrganization && <UserOrganization>{user.primaryOrganization.name}</UserOrganization>}
+                                {!hideOrganization && user.primaryOrganization && <UserOrganization>{user.primaryOrganization.name}</UserOrganization>}
                             </UserName>
                             {user.id && <UserStatus variables={{ userId: user.id }}/>}
                         </UserInfo>

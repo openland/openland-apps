@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Organization, OrganizationMemberRole, User_user, Organization_organization } from 'openland-api/Types';
+import { Organization, OrganizationMemberRole, User_user, Organization_organization, Organization_organization_members } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -141,20 +141,22 @@ const EditButton = (props: XButtonProps) => {
 };
 
 interface MemberCardProps {
-    user: User_user;
-    iAmOwner: boolean;
-    isCommunity: boolean;
+    member: Organization_organization_members;
+    organization: Organization_organization;
 }
 
 const MemberCard = (props: MemberCardProps) => {
-    const { user } = props;
+    const { user, role } = props.member;
+    const { isMine, isOwner } = props.organization;
+
     return (
         <XUserCard
             user={user}
             hideOrganization={true}
+            role={isMine ? role : undefined}
             customMenu={(
                 <>
-                    {props.iAmOwner && (
+                    {isOwner && (
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
@@ -169,7 +171,7 @@ const MemberCard = (props: MemberCardProps) => {
                             }
                         />
                     )}
-                    {!props.iAmOwner && (
+                    {!isOwner && (
                         <XWithRole role={['super-admin']}>
                             <XOverflow
                                 placement="bottom-end"
@@ -445,7 +447,7 @@ const Members = (props: { organization: Organization_organization }) => {
                     )}
                     <XMoreCards>
                         {organization.members.map((member, i) => (
-                            <MemberCard key={i} user={member.user} isCommunity={organization.isCommunity} iAmOwner={organization.isOwner} />
+                            <MemberCard key={i} member={member} organization={organization} />
                         ))}
                     </XMoreCards>
                 </SectionContent>
