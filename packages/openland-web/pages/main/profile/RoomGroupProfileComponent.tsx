@@ -1,25 +1,21 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
-import { withConversationKick } from '../../../api/withConversationKick';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
-import { XText } from 'openland-x/XText';
-import { XLink } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import IcInvite from './icons/ic-add-blue.svg';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
+import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     AddMemberForm,
     RoomEditComponent,
@@ -159,26 +155,6 @@ interface MembersProviderProps {
     chatTitle: string;
 }
 
-const InviteButton = Glamorous(XLink)({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.43,
-    color: '#000000',
-    display: 'inline-flex',
-    paddingTop: 12,
-    paddingBottom: 12
-});
-
-const InviteIcWrap = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    border: '1px solid #F2F2F2'
-});
-
 const MembersProvider = (props: MembersProviderProps) => {
     let members = props.members;
     if (members && members.length > 0) {
@@ -191,14 +167,7 @@ const MembersProvider = (props: MembersProviderProps) => {
                 />
                 <SectionContent>
                     {(props.isRoom && props.meOwner) && (
-                        <InviteButton query={{ field: 'addMember', value: 'true' }}>
-                            <XHorizontal alignItems="center">
-                                <InviteIcWrap>
-                                    <IcInvite />
-                                </InviteIcWrap>
-                                <span>Invite people</span>
-                            </XHorizontal>
-                        </InviteButton>
+                        <XCreateCard query={{ field: 'addMember', value: 'true' }} text="Invite people" />
                     )}
                     {members.map((member, i) => (
                         <MemberCard key={i} member={member.user} meOwner={props.meOwner} />
