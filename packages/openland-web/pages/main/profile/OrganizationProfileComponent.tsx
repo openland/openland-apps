@@ -15,7 +15,6 @@ import { AboutPlaceholder, SocialPlaceholder, WebsitePlaceholder } from './place
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView } from 'openland-x/XScrollView';
-import { TextInvites } from 'openland-text/TextInvites';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
@@ -36,6 +35,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
+import { TextProfiles } from 'openland-text/TextProfiles';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -66,7 +66,7 @@ export const BackButton = () => (
     <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
         <BackInner withFlex={true}>
             <XIcon icon="chevron_left" />
-            <span>Back</span>
+            <span>{TextProfiles.backButton}</span>
         </BackInner>
     </BackWrapper>
 );
@@ -164,12 +164,12 @@ const MemberCard = (props: MemberCardProps) => {
                             flat={true}
                             content={
                                 <>
-                                    {isAdmin && <XMenuItem style="danger" query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuRevokeAdmin}</XMenuItem>}
-                                    {!isAdmin && <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuMakeAdmin}</XMenuItem>}
-                                    {!isAdmin && <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>}
+                                    {isAdmin && <XMenuItem style="danger" query={{ field: 'changeRole', value: user.id }}>{TextProfiles.Organization.members.revokeAdminStatus}</XMenuItem>}
+                                    {!isAdmin && <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextProfiles.Organization.members.makeAdmin}</XMenuItem>}
+                                    {!isAdmin && <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextProfiles.Organization.members.removeFromOrganization}</XMenuItem>}
 
                                     <XWithRole role={['super-admin']}>
-                                        <XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
+                                        <XMenuItem query={{ field: 'editUser', value: user.id }}>{TextProfiles.Organization.members.edit}</XMenuItem>
                                     </XWithRole>
                                 </>
                             }
@@ -180,7 +180,7 @@ const MemberCard = (props: MemberCardProps) => {
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
-                                content={<XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
+                                content={<XMenuItem query={{ field: 'editUser', value: user.id }}>{TextProfiles.Organization.members.edit}</XMenuItem>}
                             />
                         </XWithRole>
                     )}
@@ -224,8 +224,8 @@ const UpdateUserProfileModal = withUserProfileUpdate((props) => {
             }
         >
             <XVertical>
-                <XInput field="input.firstName" size="large" placeholder="First name" />
-                <XInput field="input.lastName" size="large" placeholder="Last name" />
+                <XInput field="input.firstName" size="large" placeholder={TextProfiles.Organization.inputs.firstName} />
+                <XInput field="input.lastName" size="large" placeholder={TextProfiles.Organization.inputs.lastName} />
                 <XAvatarUpload field="input.photoRef" />
             </XVertical>
         </XModalForm>
@@ -239,13 +239,11 @@ export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((pro
     }
     return (
         <XModalForm
-            title={TextInvites.membersMgmt.changeRoleTitle(member.user.name, (props as any).orgName)}
+            title={TextProfiles.Organization.members.changeRole.title(member.user.name, (props as any).orgName)}
             defaultData={{
                 role: member.role
             }}
-
             targetQuery="changeRole"
-
             defaultAction={async (data) => {
                 await props.changeRole({
                     variables: {
@@ -254,17 +252,16 @@ export const PermissionsModal = withOrganizationMemberChangeRole(withRouter((pro
                         organizationId: (props as any).orgId
                     }
                 });
-
             }}
             target={(props as any).target}
         >
             <XVertical>
-                <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: 'Admin' }, { value: 'MEMBER', label: 'Member' }]} />
+                <XSelect clearable={false} searchable={false} field="role" options={[{ value: 'OWNER', label: TextProfiles.Organization.roles.OWNER }, { value: 'MEMBER', label: TextProfiles.Organization.roles.MEMBER }]} />
                 <XStoreContext.Consumer>
                     {(store) => {
                         let role = store ? store.readValue('fields.role') : '';
                         return (
-                            <XText>{role === 'OWNER' ? TextInvites.membersMgmt.changeRoleOwnerHint : role === 'MEMBER' ? TextInvites.membersMgmt.changeRoleMemberHint : ''}</XText>
+                            <XText>{TextProfiles.Organization.members.changeRole.hints[role]}</XText>
                         );
                     }}
                 </XStoreContext.Consumer>
@@ -281,10 +278,10 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
     return (
         <XModalForm
             submitProps={{
-                text: TextInvites.membersMgmt.removeSubmit,
+                text: TextProfiles.Organization.members.remove.submit,
                 style: 'danger',
             }}
-            title={TextInvites.membersMgmt.removeTitle(member.user.name, (props as any).orgName)}
+            title={TextProfiles.Organization.members.remove.title(member.user.name, (props as any).orgName)}
             targetQuery="remove"
             defaultAction={async (data) => {
                 await props.remove({
@@ -295,7 +292,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember((props) => {
                 });
             }}
         >
-            <XText>{TextInvites.membersMgmt.removeText(member.user.firstName, (props as any).orgName)}</XText>
+            <XText>{TextProfiles.Organization.members.remove.text(member.user.firstName, (props as any).orgName)}</XText>
         </XModalForm>
     );
 }) as React.ComponentType<{ orgName: string, members: any[], orgId: string, refetchVars: { orgId: string, organizationId: string } }>;
@@ -367,7 +364,7 @@ const Header = (props: { organization: Organization_organization }) => {
 
                     {!(organization.linkedin || organization.twitter || organization.facebook) && (
                         <XWithRole role="admin" orgPermission={organization.id}>
-                            <SocialPlaceholder target={<EditButton text="Add social links" />} />
+                            <SocialPlaceholder target={<EditButton text={TextProfiles.Organization.addSocialLinks} />} />
                         </XWithRole>
                     )}
 
@@ -378,7 +375,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem path={'/settings/organization/' + organization.id}>Edit</XMenuItem>
+                                        <XMenuItem path={'/settings/organization/' + organization.id}>{TextProfiles.Organization.edit}</XMenuItem>
                                     </>
                                 )}
                             />
@@ -391,8 +388,8 @@ const Header = (props: { organization: Organization_organization }) => {
                             flat={true}
                             content={(
                                 <>
-                                    <XMenuItem path={'/settings/organization/' + organization.id}>Edit</XMenuItem>
-                                    <XMenuItem path={'/super/orgs/' + organization.superAccountId}>Super Edit</XMenuItem>
+                                    <XMenuItem path={'/settings/organization/' + organization.id}>{TextProfiles.Organization.edit}</XMenuItem>
+                                    <XMenuItem path={'/super/orgs/' + organization.superAccountId}>{TextProfiles.Organization.superEdit}</XMenuItem>
                                 </>
                             )}
                         />
@@ -410,7 +407,7 @@ const About = (props: { organization: Organization_organization }) => {
         <>
             {organization.about && (
                 <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
+                    <XSubHeader title={TextProfiles.Organization.aboutTitle} paddingBottom={0} />
                     <SectionContent>
                         {organization.about}
                     </SectionContent>
@@ -419,9 +416,9 @@ const About = (props: { organization: Organization_organization }) => {
             {!organization.about && organization.isMine && (
                 <XWithRole role="admin" orgPermission={organization.id}>
                     <Section separator={0}>
-                        <XSubHeader title="About" paddingBottom={0} />
+                        <XSubHeader title={TextProfiles.Organization.aboutTitle} paddingBottom={0} />
                         <SectionContent>
-                            <AboutPlaceholder target={<EditButton text="Add a short description" />} />
+                            <AboutPlaceholder target={<EditButton text={TextProfiles.Organization.addAbout} />} />
                         </SectionContent>
                     </Section>
                 </XWithRole>
@@ -437,7 +434,7 @@ const Members = (props: { organization: Organization_organization }) => {
         return (
             <Section separator={0}>
                 <XSubHeader
-                    title={organization.isCommunity ? 'Admins' : 'Members'}
+                    title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
                     counter={organization.members.length}
                     paddingBottom={0}
                 />
@@ -445,7 +442,7 @@ const Members = (props: { organization: Organization_organization }) => {
                     {organization.isMine && (
                         <XWithRole role="admin" orgPermission={organization.id}>
                             <InvitesToOrganizationModal
-                                target={<XCreateCard text={'Add ' + (organization.isCommunity ? 'admin' : 'members')} />}
+                                target={<XCreateCard text={TextProfiles.Organization.addMembers(organization.isCommunity)} />}
                             />
                         </XWithRole>
                     )}
@@ -476,14 +473,14 @@ const Rooms = (props: { organization: Organization_organization }) => {
             {publicRooms && (publicRooms.length > 0) && (
                 <Section separator={0}>
                     <XSubHeader
-                        title="Public rooms"
+                        title={TextProfiles.Organization.publicRooms}
                         counter={publicRooms.length}
                         paddingBottom={0}
                     />
                     <SectionContent>
                         {organization.isMine && (
                             <XWithRole role="admin" orgPermission={organization.id}>
-                                <XCreateCard query={{ field: 'createRoom', value: 'true' }} text="Create room" />
+                                <XCreateCard query={{ field: 'createRoom', value: 'true' }} text={TextProfiles.Organization.createPublicRoom} />
                             </XWithRole>
                         )}
                         <XMoreCards>
@@ -495,7 +492,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
             {organization.isMine && privateRooms && (privateRooms.length > 0) && (
                 <Section separator={0}>
                     <XSubHeader
-                        title="Private rooms"
+                        title={TextProfiles.Organization.privateRooms}
                         counter={privateRooms.length}
                         paddingBottom={0}
                     />

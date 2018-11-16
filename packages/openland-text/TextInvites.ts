@@ -43,35 +43,6 @@ export const TextInvites = {
 
     sent: 'Invitations sent!',
     copied: 'Copied',
-    
-    membersMgmt: {
-        inviteButton: 'Invite new members',
-
-        removeTitle: (userName: string, orgName: string) => 'Remove ' + userName + ' from ' + orgName,
-        removeText: (userName: string, orgName: string) => 'Are you sure you want to remove ' + userName + '? They will be removed from all internal chats at ' + orgName + '.',
-        removeSubmit: 'Remove from organization',
-
-        cancelInviteTitle: 'Cancel invite for',
-        cancelInviteSubmit: 'Cancel invite',
-
-        changeRoleTitle: (userName: string, orgName: string) => 'Change role of ' + userName + ' in ' + orgName,
-
-        changeRoleOwnerHint: 'Has full control over the organization account, can edit the profile, invite and confirm new members, assign and change roles.',
-        changeRoleMemberHint: 'Members can participate in the organization\'s internal chats.',
-
-        tableChangeRole: 'Manage',
-
-        menuChangeRole: 'Manage permissions',
-        menuRemoveMember: 'Remove from organization',
-        menuCancelInvite: 'Cancel invite',
-        menuMakeAdmin: 'Make admin',
-        menuRevokeAdmin: 'Revoke admin status',
-
-        statusJoined: 'joined ',
-        statusNotJoined: 'invited',
-        statusJoinedFix: 'always been here',
-
-    }
 };
 
 // title=|>|text=|placeholder=
