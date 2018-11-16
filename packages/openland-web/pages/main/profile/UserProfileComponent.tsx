@@ -16,7 +16,7 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { BackButton, Rooms, Section, SectionContent, HeaderWrapper } from './OrganizationProfileComponent';
+import { BackButton, Section, SectionContent, HeaderWrapper } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
@@ -228,15 +228,12 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
     }
 
     render() {
-        let usr = this.props.userQuery.user;
-
         return (
             <div ref={this.handleRef}>
                 <BackButton />
                 <Header userQuery={this.props.userQuery} />
                 <XScrollView height="calc(100% - 136px)">
                     <About userQuery={this.props.userQuery} />
-                    <Rooms rooms={usr.channels.filter(c => c && !c.hidden)} />
                 </XScrollView>
             </div>
         );
