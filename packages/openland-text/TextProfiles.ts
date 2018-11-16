@@ -2,7 +2,16 @@ export const TextProfiles = {
     backButton: 'Back',
 
     User: {
+        message: 'Message',
+        edit: 'Edit profile',
 
+        aboutTitle: 'About',
+
+        status: {
+            online: 'Online',
+            lastSeen: 'Last seen',
+            momentsAgo: 'moments ago'
+        }
     },
 
     Organization: {

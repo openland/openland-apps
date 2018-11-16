@@ -22,6 +22,7 @@ import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
+import { TextProfiles } from 'openland-text/TextProfiles';
 
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18
@@ -67,13 +68,13 @@ const UserStatus = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <StatusWrapper online={false}>
-                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
+                {TextProfiles.User.status.lastSeen} {props.data.user.lastSeen === 'never_online' ? TextProfiles.User.status.momentsAgo : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
             </StatusWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
         return (
             <StatusWrapper online={true}>
-                Online
+                {TextProfiles.User.status.online}
             </StatusWrapper>
         );
     } else {
@@ -153,14 +154,14 @@ const Header = (props: { user: User_user }) => {
                             flat={true}
                             content={(
                                 <>
-                                    <XMenuItem href="/settings/profile/">Edit profile</XMenuItem>
+                                    <XMenuItem href="/settings/profile/">{TextProfiles.User.edit}</XMenuItem>
                                 </>
                             )}
                         />
                     )}
                     {!user.isYou && (
                         <XButton
-                            text="Message"
+                            text={TextProfiles.User.message}
                             style="primary"
                             path={'/mail/' + user.id}
                         />
@@ -178,7 +179,7 @@ const About = (props: { user: User_user }) => {
         <>
             {user.about && (
                 <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
+                    <XSubHeader title={TextProfiles.User.aboutTitle} paddingBottom={0} />
                     <SectionContent>
                         {user.about}
                     </SectionContent>
