@@ -10,6 +10,7 @@ import { withOnline } from '../../openland-web/api/withOnline';
 import { XDate } from 'openland-x-format/XDate';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from '../icons/ic-star-admin.svg';
+import { TextProfiles } from 'openland-text/TextProfiles';
 
 const UserWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
@@ -76,13 +77,13 @@ const UserStatus = withOnline(props => {
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <StatusWrapper online={false}>
-                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
+                {TextProfiles.User.status.lastSeen} {props.data.user.lastSeen === 'never_online' ? TextProfiles.User.status.momentsAgo : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
             </StatusWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
         return (
             <StatusWrapper online={true}>
-                Online
+                {TextProfiles.User.status.online}
             </StatusWrapper>
         );
     } else {
@@ -104,7 +105,7 @@ const AdminTooltip = () => (
         showOnHoverContent={false}
         showOnHover={true}
         style="dark"
-        content="Admin"
+        content={TextProfiles.Organization.roles.OWNER}
     >
         <AdminIconWrapper>
             <AdminIcon />
@@ -138,7 +139,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                 {user.isYou && (
                     <XButton
                         style="ghost"
-                        text="You"
+                        text={TextProfiles.User.you}
                         enabled={false}
                     />
                 )}
@@ -146,7 +147,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                     <XButton
                         style={this.state.isHovered ? 'primary' : 'default'}
                         path={'/mail/' + user.id}
-                        text="Message"
+                        text={TextProfiles.User.message}
                     />
                 )}
             </>

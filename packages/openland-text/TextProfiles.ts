@@ -2,6 +2,7 @@ export const TextProfiles = {
     backButton: 'Back',
 
     User: {
+        you: 'You',
         message: 'Message',
         edit: 'Edit profile',
 
