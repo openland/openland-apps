@@ -206,7 +206,7 @@ const Members = withGroupRoomMembers((props) => {
         members
             ? <MembersProvider members={members}/>
             : <XLoader loading={true} />
-    )
+    );
 }) as React.ComponentType<{ variables: { conversationId: string } }>;
 
 const OrgInfoWrapper = Glamorous.div({
@@ -283,7 +283,7 @@ const RoomGroupProfileProvider = withGroupRoom(withRouter((props) => {
                 />
             )
             : <XLoader loading={true} />
-    )
+    );
 })) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean; handlePageTitle?: any, conversationId: string }>;
 
 export const RoomGroupProfile = (props: { conversationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
