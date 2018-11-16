@@ -1030,7 +1030,7 @@ export interface ChatInfo_chat_GroupConversation {
   settings: ChatInfo_chat_GroupConversation_settings;
   membersCount: number;
   photo: string | null;
-  longDescription: string;
+  longDescription: string | null;
   photoRef: ChatInfo_chat_GroupConversation_photoRef | null;
 }
 
@@ -1091,8 +1091,8 @@ export interface ChatInfo_chat_ChannelConversation {
   isRoot: boolean;
   featured: boolean;
   hidden: boolean;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   socialImageRef: ChatInfo_chat_ChannelConversation_socialImageRef | null;
   socialImage: string | null;
   membersCount: number;
@@ -2053,7 +2053,7 @@ export interface ChatSearchChannel_items_edges_node {
   myStatus: ChannelMembershipStatus;
   photoRef: ChatSearchChannel_items_edges_node_photoRef | null;
   membersCount: number;
-  description: string;
+  description: string | null;
   organization: ChatSearchChannel_items_edges_node_organization | null;
   isRoot: boolean;
 }
@@ -3772,7 +3772,7 @@ export interface ChannelInviteInfo_invite_channel {
   photos: string[];
   isRoot: boolean;
   featured: boolean;
-  description: string;
+  description: string | null;
   myStatus: ChannelMembershipStatus;
   membersCount: number;
   socialImage: string | null;
@@ -4639,6 +4639,40 @@ export interface SuperChannelAddMemberVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Conference
+// ====================================================
+
+export interface Conference_conference_participants_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Conference_conference_participants {
+  __typename: "ConferenceParticipant";
+  id: string;
+  user: Conference_conference_participants_user;
+}
+
+export interface Conference_conference {
+  __typename: "Conference";
+  id: string;
+  participants: Conference_conference_participants[];
+}
+
+export interface Conference {
+  conference: Conference_conference;
+}
+
+export interface ConferenceVariables {
+  id: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 
@@ -4768,8 +4802,8 @@ export interface GroupRoomInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   membersCount: number;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   myRole: string | null;
   membersOnline: number;
   photo: string | null;
@@ -4796,8 +4830,8 @@ export interface GroupRoomInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   membersCount: number;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   myRole: string | null;
   membersOnline: number;
   photo: string | null;

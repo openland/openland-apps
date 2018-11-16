@@ -3159,13 +3159,9 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -3175,13 +3171,9 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4107,38 +4099,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "listed",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "featured",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -6972,7 +6932,7 @@
             "deprecationReason": null
           },
           {
-            "name": "members",
+            "name": "participants",
             "description": "",
             "args": [],
             "type": {
@@ -6986,10 +6946,53 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "User",
+                    "name": "ConferenceParticipant",
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ConferenceParticipant",
+        "description": "",
+        "fields": [
+          {
+            "name": "id",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -12159,8 +12162,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
+                "kind": "OBJECT",
+                "name": "Conference",
                 "ofType": null
               }
             },
@@ -15702,7 +15705,7 @@
             "deprecationReason": null
           },
           {
-            "name": "conferenceWatch",
+            "name": "alphaConferenceWatch",
             "description": "",
             "args": [
               {
@@ -15724,8 +15727,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "UNION",
-                "name": "ConferenceUpdate",
+                "kind": "OBJECT",
+                "name": "Conference",
                 "ofType": null
               }
             },
@@ -15947,86 +15950,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "UNION",
-        "name": "ConferenceUpdate",
-        "description": "",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "Conference",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "ConferenceMemberJoined",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "ConferenceMemberLeft",
-            "ofType": null
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ConferenceMemberJoined",
-        "description": "",
-        "fields": [
-          {
-            "name": "user",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ConferenceMemberLeft",
-        "description": "",
-        "fields": [
-          {
-            "name": "user",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
                 "ofType": null
               }
             },
@@ -17590,54 +17513,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "onOperation",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": true,
-            "deprecationReason": "Use `locations`."
-          },
-          {
-            "name": "onFragment",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": true,
-            "deprecationReason": "Use `locations`."
-          },
-          {
-            "name": "onField",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": true,
-            "deprecationReason": "Use `locations`."
           }
         ],
         "inputFields": null,
@@ -17692,6 +17567,12 @@
           {
             "name": "INLINE_FRAGMENT",
             "description": "Location adjacent to an inline fragment.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "VARIABLE_DEFINITION",
+            "description": "Location adjacent to a variable definition.",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -18421,13 +18302,9 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -18437,13 +18314,9 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -19704,6 +19577,16 @@
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "ConferenceParticipantID",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
       }
     ],
     "directives": [
@@ -20061,6 +19944,16 @@
       },
       {
         "name": "conferenceID",
+        "description": "",
+        "locations": [
+          "ARGUMENT_DEFINITION",
+          "INPUT_FIELD_DEFINITION",
+          "FIELD_DEFINITION"
+        ],
+        "args": []
+      },
+      {
+        "name": "conferenceParticipantID",
         "description": "",
         "locations": [
           "ARGUMENT_DEFINITION",

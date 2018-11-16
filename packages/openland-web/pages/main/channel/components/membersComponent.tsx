@@ -179,8 +179,8 @@ interface ChannelMembersComponentInnerProps {
     data: ChannelMembers;
     channelTitle: string;
     channelId: string;
-    description?: string;
-    longDescription?: string;
+    description?: string | null;
+    longDescription?: string | null;
     orgId: string;
     emptyText?: string;
     removeFrom: string;
@@ -254,4 +254,4 @@ export const ChannelMembersComponent = withChannelMembers((props) => (
         emptyText={(props as any).emptyText}
         removeFrom={(props as any).removeFrom}
     />
-)) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string, longDescription?: string, orgId: string }>;
+)) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string | null, longDescription?: string | null, orgId: string }>;

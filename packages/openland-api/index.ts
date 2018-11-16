@@ -5,6 +5,7 @@ import { typedMutation } from 'openland-y-graphql/typed';
 import * as Types from './Types';
 import * as Account from './queries/Account';
 import * as Chats from './queries/Chats';
+import * as Conferences from './queries/Conferences';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as GroupRoom from './queries/GroupRoom';
 import * as Organization from './queries/Organization';
@@ -71,6 +72,7 @@ export const ChatDeleteMessageMutation = typedMutation<Types.ChatDeleteMessage, 
 export const ChatDeleteUrlAugmentationMutation = typedMutation<Types.ChatDeleteUrlAugmentation, Types.ChatDeleteUrlAugmentationVariables>(Chats.ChatDeleteUrlAugmentationMutation);
 export const ChatEditMessageMutation = typedMutation<Types.ChatEditMessage, Types.ChatEditMessageVariables>(Chats.ChatEditMessageMutation);
 export const SuperChannelAddMemberMutation = typedMutation<Types.SuperChannelAddMember, Types.SuperChannelAddMemberVariables>(Chats.SuperChannelAddMemberMutation);
+export const ConferenceQuery = typedQuery<Types.Conference, Types.ConferenceVariables>(Conferences.ConferenceQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);

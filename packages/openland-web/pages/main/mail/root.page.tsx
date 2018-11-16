@@ -163,11 +163,12 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
         }
 
         let isRooms = props.router.path.endsWith('/channels');
+        let isCall = props.router.path.endsWith('/call');
         let isInvite = props.router.path.includes('joinChannel');
         let oid = props.router.routeQuery.organizationId;
         let uid = props.router.routeQuery.userId;
 
-        let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' = 'empty';
+        let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' | 'conference' = 'empty';
 
         if (isCompose) {
             tab = 'compose';
@@ -187,6 +188,10 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
 
         if (isRooms) {
             tab = 'rooms';
+        }
+
+        if (isCall) {
+            tab = 'conference';
         }
 
         if (oid) {
