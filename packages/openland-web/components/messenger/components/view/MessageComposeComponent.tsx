@@ -595,13 +595,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        let draftChecker = (!replyChecker && !this.state.beDrafted);
+        let draftChecker = !replyChecker;
 
-        if (nextProps.draft && draftChecker) {
+        if (draftChecker) {
+
             let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId);
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 
-            if (!draft) {
+            if (!draft && nextProps.draft) {
                 draft = nextProps.draft;
             }
 
