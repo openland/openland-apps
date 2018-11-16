@@ -302,14 +302,14 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendMessage = (text: string) => {
+    sendMessage = (text: string, mentions: number[] | null) => {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendMessage({
                  conversationId: this.conversationId,
                  message, 
-                 mentions: null,
+                 mentions,
                  callback: this
             });
             let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false } as PendingMessage;

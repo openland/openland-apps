@@ -256,6 +256,8 @@ const MentionEntry = (props: any) => {
     );
 };
 
+const { MentionSuggestions } = mentionPlugin;
+
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beChanged: boolean, suggestions: Array<MentionT> }> {
     constructor(props: XRichTextInputProps) {
@@ -307,19 +309,10 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
         return 'not-handled';
     }
 
-    onChange = (editorState: EditorState) => {
-        if (this.props.value !== undefined && !this.state.beChanged) {
-            this.setState({
-                beChanged: true
-            });
-            return;
-        }
-
-        this.setState({ editorState: editorState });
-
-        if (this.props.onChange) {
-            this.props.onChange(editorState.getCurrentContent().getPlainText());
-        }
+    onChange = (editorState: any) => {
+        this.setState({
+            editorState,
+        });
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
@@ -331,19 +324,23 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
         }
     }
 
+    onAddMention = () => {
+        // get the mention object selected
+    }
+
     render() {
-        const { MentionSuggestions } = mentionPlugin;
 
         if (canUseDOM) {
             return (
                 <Container {...extractFlexProps(this.props)}>
                     <MentionSuggestionsWrapper>
                         <MentionSuggestions
-                            onSearchChange={this.onSearchChange}
-                            suggestions={this.state.suggestions}
-                            entryComponent={MentionEntry}
-                        />
+                              onSearchChange={this.onSearchChange}
+                              suggestions={this.state.suggestions}
+                              onAddMention={this.onAddMention}
+                              entryComponent={MentionEntry}
 
+                        />
                         <Editor
                             editorState={this.state.editorState}
                             onChange={this.onChange}
