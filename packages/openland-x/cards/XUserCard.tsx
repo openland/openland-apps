@@ -11,6 +11,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from '../icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 
 const UserWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
@@ -118,6 +119,7 @@ interface XUserCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+    extraMenu?: any;
     isAdmin?: boolean;
     hideOrganization?: boolean;
 }
@@ -132,7 +134,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
     };
 
     render() {
-        let { user, path, customButton, customMenu, isAdmin, hideOrganization } = this.props;
+        let { user, path, customButton, customMenu, extraMenu, isAdmin, hideOrganization } = this.props;
 
         let button = (typeof customButton === 'undefined') ? (
             <>
@@ -155,6 +157,17 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
 
         let menu = (typeof customMenu === 'undefined') ? (
             <>
+                {extraMenu && (
+                    <XOverflow
+                        flat={true}
+                        placement="bottom-end"
+                        content={(
+                            <div>
+                                {extraMenu}
+                            </div>
+                        )}
+                    />
+                )}
             </>
         ) : customMenu;
 

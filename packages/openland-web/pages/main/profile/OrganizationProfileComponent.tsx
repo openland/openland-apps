@@ -484,7 +484,17 @@ const Rooms = (props: { organization: Organization_organization }) => {
                             </XWithRole>
                         )}
                         <XMoreCards>
-                            {publicRooms.map((c: any, i: any) => (<XRoomCard key={i} room={c} />))}
+                            {publicRooms.map((c: any, i: any) => (
+                                <XRoomCard
+                                    key={i}
+                                    room={c}
+                                    extraMenu={(
+                                        <XWithRole role={['software-developer']}>
+                                            <XMenuItem>Hide room</XMenuItem>
+                                        </XWithRole>
+                                    )}
+                                />
+                            ))}
                         </XMoreCards>
                     </SectionContent>
                 </Section>
@@ -498,7 +508,17 @@ const Rooms = (props: { organization: Organization_organization }) => {
                     />
                     <SectionContent>
                         <XMoreCards>
-                            {privateRooms.map((c: any, i: any) => (<XRoomCard key={i} room={c} />))}
+                            {privateRooms.map((c: any, i: any) => (
+                                <XRoomCard
+                                    key={i}
+                                    room={c}
+                                    extraMenu={(
+                                        <XWithRole role={['software-developer']}>
+                                            <XMenuItem>Unhide</XMenuItem>
+                                        </XWithRole>
+                                    )}
+                                />
+                            ))}
                         </XMoreCards>
                     </SectionContent>
                 </Section>

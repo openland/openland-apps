@@ -80,6 +80,7 @@ interface XCommunityCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+    extraMenu?: any;
 }
 
 interface XCommunityCardState {
@@ -92,7 +93,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
     };
 
     render() {
-        let { community, path, customButton, customMenu } = this.props;
+        let { community, path, customButton, customMenu, extraMenu } = this.props;
         let roomsCount = community.channels.filter(c => c && !c.hidden).length;
 
         let button = (typeof customButton === 'undefined') ? (
@@ -109,6 +110,8 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                 flat={true}
                 content={(
                     <>
+                        {extraMenu}
+
                         <XMenuItem href={'/directory/c/' + community.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                         {community.isMine && (
