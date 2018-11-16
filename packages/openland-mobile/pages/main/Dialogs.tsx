@@ -44,19 +44,34 @@ class DialogsSearch extends React.Component<{ query: string }> {
 
                                     }
 
+                                    /*
+                                        let data: DialogDataSourceItem[] = resp.data.items.map(d => {
+                                            let isOut = d.topMessage ? d.topMessage.sender.id === engine.engine.user.id : undefined;
+                                            let sender = d.topMessage ? isOut ? 'You' : d.topMessage.sender.name : undefined;
+                                            return {
+                                                key: d.id,
+                                                flexibleId: d.flexibleId,
+                                                title: d.title,
+                                                type: d.__typename,
+                                                unread: d.unreadCount,
+                                                photo: d.photos[0],
+                                                sender: sender,
+                                                message: d.topMessage ? formatMessage(d.topMessage) : undefined,
+                                                date: d.topMessage ? parseInt(d.topMessage.date, 10) : undefined,
+                                            };
+                                        });
+                                    */
                                     let data: DialogDataSourceItem[] = resp.data.items.map(d => {
-                                        let isOut = d.topMessage ? d.topMessage.sender.id === engine.engine.user.id : undefined;
-                                        let sender = d.topMessage ? isOut ? 'You' : d.topMessage.sender.name : undefined;
                                         return {
                                             key: d.id,
                                             flexibleId: d.flexibleId,
                                             title: d.title,
                                             type: d.__typename,
-                                            unread: d.unreadCount,
+                                            unread: 0,
                                             photo: d.photos[0],
-                                            sender: sender,
-                                            message: d.topMessage ? formatMessage(d.topMessage) : undefined,
-                                            date: d.topMessage ? parseInt(d.topMessage.date, 10) : undefined,
+                                            sender: undefined,
+                                            message: undefined,
+                                            date: undefined,
                                         };
                                     });
                                     console.warn(resp.data.items);
