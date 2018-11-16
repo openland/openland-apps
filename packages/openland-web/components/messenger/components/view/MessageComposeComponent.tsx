@@ -569,6 +569,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
     componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
         let {
+            editMessage,
+            editMessageId,
             replyMessage,
             replyMessageId,
             replyMessageSender,
@@ -620,6 +622,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     statlesMessage: draft,
                     beDrafted: true
                 };
+            }
+        }
+
+        let focusChecker = this.props.conversationId !== nextProps.conversationId && !editMessage && !editMessageId;
+
+        if (focusChecker) {
+            if (this.input.current) {
+                this.input.current!!.resetAndFocus();
             }
         }
 
