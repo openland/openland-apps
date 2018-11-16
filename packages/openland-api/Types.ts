@@ -4639,6 +4639,40 @@ export interface SuperChannelAddMemberVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Conference
+// ====================================================
+
+export interface Conference_conference_participants_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Conference_conference_participants {
+  __typename: "ConferenceParticipant";
+  id: string;
+  user: Conference_conference_participants_user;
+}
+
+export interface Conference_conference {
+  __typename: "Conference";
+  id: string;
+  participants: Conference_conference_participants[];
+}
+
+export interface Conference {
+  conference: Conference_conference;
+}
+
+export interface ConferenceVariables {
+  id: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 

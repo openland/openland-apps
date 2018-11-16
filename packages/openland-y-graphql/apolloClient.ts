@@ -7,7 +7,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 // import { split } from 'apollo-link';
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from 'openland-api/fragmentTypes.json';
-import { GraphqlTypedQuery } from './typed';
+import { GraphqlTypedQuery, GraphqlTypedMutation } from './typed';
 import { getMainDefinition } from 'apollo-utilities';
 // import LogCache from 'apollo-cache-logger';
 
@@ -71,6 +71,10 @@ export class OpenApolloClient {
 
     async query<TQuery, TVars>(query: GraphqlTypedQuery<TQuery, TVars>, vars?: TVars) {
         return await this.client.query<TQuery>({ query: query.document, variables: vars });
+    }
+
+    async mutate<TMutation, TVars>(mutation: GraphqlTypedMutation<TMutation, TVars>, vars?: TVars) {
+        return await this.client.mutate<TMutation>({ mutation: mutation.document, variables: vars });
     }
 }
 

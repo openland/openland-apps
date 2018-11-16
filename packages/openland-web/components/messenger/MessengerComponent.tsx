@@ -38,6 +38,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
+import { ConferenceComponent } from '../conference/ConferenceComponent';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -468,7 +469,7 @@ interface MessengerWrapperProps {
 class MessengerWrapper extends React.Component<MessengerWrapperProps> {
     pageTitle: string | undefined = undefined;
 
-    constructor (props: MessengerWrapperProps) {
+    constructor(props: MessengerWrapperProps) {
         super(props);
 
         if (this.props.handlePageTitle) {
@@ -477,7 +478,7 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
         }
     }
 
-    componentWillReceiveProps (newProps: MessengerWrapperProps) {
+    componentWillReceiveProps(newProps: MessengerWrapperProps) {
         if (newProps.handlePageTitle) {
             let title = (newProps.chatType === 'PrivateConversation') ? newProps.userName : newProps.chatTitle;
 
@@ -561,9 +562,12 @@ let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?:
 };
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
-    let tab: 'chat' | 'members' = 'chat';
+    let tab: 'chat' | 'members' | 'call' = 'chat';
     if (props.router.query.tab === 'members') {
         tab = 'members';
+    }
+    if (props.router.query.tab === 'call') {
+        tab = 'call';
     }
 
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
@@ -692,6 +696,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 <RoomTabs>
                                     <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
                                     <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
+                                    <XWithRole role="feature-non-production">
+                                        <RoomTab query={{ field: 'tab', value: 'call' }}>Call</RoomTab>
+                                    </XWithRole>
                                 </RoomTabs>
                             </XHorizontal>
                         )}
@@ -793,6 +800,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 )}
 
+                {(props.data.chat.__typename === 'GroupConversation' && tab === 'call') && (
+                    <XWithRole role="feature-non-production">
+                        <ConferenceComponent conversationId={props.data.chat.id} />
+                    </XWithRole>
+                )}
             </XHorizontal>
             <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
