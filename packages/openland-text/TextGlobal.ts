@@ -18,4 +18,12 @@ export const TextGlobal = {
     joinYourOrganization: 'Invite people to your organization',
     joinOpenland: 'Invite people',
     startChat: 'New chat',
+
+    socials: {
+        website: 'Website',
+        linkedin: 'Linkedin',
+        phone: 'Phone',
+        facebook: 'Facebook',
+        twitter: 'Twitter',
+    }
 };

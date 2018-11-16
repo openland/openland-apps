@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper } from './XPopper';
 import { XButton } from './XButton';
+import { TextGlobal } from 'openland-text/TextGlobal';
 import WebsiteIcon from './icons/website-2.svg';
 import LinkedinIcon from './icons/linkedin-2.svg';
 import PhoneIcon from './icons/ic-phone.svg';
@@ -24,14 +25,6 @@ interface XSocialButtonProps {
     style: 'website' | 'linkedin' | 'phone' | 'facebook' | 'twitter';
 }
 
-const Titles = {
-    website: 'Website',
-    linkedin: 'Linkedin',
-    phone: 'Phone',
-    facebook: 'Facebook',
-    twitter: 'Twitter',
-};
-
 const Icons = {
     website: <WebsiteIcon />,
     linkedin: <LinkedinIcon />,
@@ -43,7 +36,7 @@ const Icons = {
 export const XSocialButton = (props: XSocialButtonProps) => {
     let href = (props.style === 'phone') ? 'tel:' + props.value : props.value;
     let icon = Icons[props.style];
-    let title = Titles[props.style];
+    let title = TextGlobal.socials[props.style];
 
     return (
         <XPopper
