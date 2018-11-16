@@ -1464,20 +1464,17 @@ export interface GroupChatFullInfoVariables {
 // GraphQL mutation operation: SendMessage
 // ====================================================
 
-export interface SendMessage_sentMessage {
-  __typename: "ConversationEventMessage";
-  seq: number;
-}
-
 export interface SendMessage {
-  sentMessage: SendMessage_sentMessage;
+  sentMessage: boolean;
 }
 
 export interface SendMessageVariables {
-  conversationId: string;
   message?: string | null;
   file?: string | null;
-  repeatKey: string;
+  repeatKey?: string | null;
+  replyMessages?: string[] | null;
+  mentions?: string[] | null;
+  room: string;
 }
 
 /* tslint:disable */

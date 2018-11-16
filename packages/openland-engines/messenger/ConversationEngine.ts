@@ -1,7 +1,6 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { ChatReadMutation, ChatHistoryQuery, AccountQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
@@ -307,7 +306,12 @@ export class ConversationEngine implements MessageSendHandler {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
-            let key = this.engine.sender.sendMessage(this.conversationId, message, this);
+            let key = this.engine.sender.sendMessage({
+                 conversationId: this.conversationId,
+                 message, 
+                 mentions: null,
+                 callback: this
+            });
             let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false } as PendingMessage;
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
