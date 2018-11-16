@@ -10,6 +10,7 @@ import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { RoomSetFeatured, RoomSetHidden } from '../../openland-web/components/messenger/MessengerComponent';
 import { ChatSearchChannel_items_edges_node } from 'openland-api/Types';
+import { TextProfiles } from 'openland-text/TextProfiles';
 
 const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
     height: 64,
@@ -58,13 +59,6 @@ const RoomMembers = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)'
 });
 
-const StatusTitleMap = {
-    invited: 'Invited',
-    member: 'Member',
-    none: 'Request invite',
-    requested: 'Pending',
-};
-
 interface XRoomCardProps {
     room: ChatSearchChannel_items_edges_node;
     path?: string;
@@ -96,7 +90,7 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
             <>
                 {room.myStatus && (
                     <XButton
-                        text={StatusTitleMap[room.myStatus]}
+                        text={TextProfiles.Room.status[room.myStatus]}
                         path={buttonPath}
                         style={room.myStatus === 'none' ? 'primary' : 'ghost'}
                     />
@@ -138,7 +132,7 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
                     />
                     <XVertical separator={0} flexGrow={1}>
                         <RoomTitle>{title}</RoomTitle>
-                        <RoomMembers>{room.membersCount} {room.membersCount === 1 ? 'member' : 'members'}</RoomMembers>
+                        <RoomMembers>{TextProfiles.Room.membersLabel(room.membersCount)}</RoomMembers>
                     </XVertical>
                 </XHorizontal>
                 {this.state.isHovered && button}

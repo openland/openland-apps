@@ -67,6 +67,12 @@ export const TextProfiles = {
     },
 
     Room: {
-
+        membersLabel: (count: number) => count + ' ' + (count === 1 ? 'member' : 'members'),
+        status: {
+            invited: 'Invited',
+            member: 'Member',
+            none: 'Request invite',
+            requested: 'Pending',
+        }
     }
 };
