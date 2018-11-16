@@ -23,7 +23,6 @@ const Root = Glamorous.div({
 });
 
 interface WithChatSearchRoomsProps {
-    onDirectory?: boolean;
     variables: {
         query: string,
         sort: string
@@ -62,6 +61,10 @@ const Rooms = withChatSearchChannels((props) => {
     }
 }) as React.ComponentType<WithChatSearchRoomsProps>;
 
+interface RoomExploreComponentProps {
+    
+}
+
 interface RoomExploreComponentState {
     count: number;
     query: string;
@@ -71,8 +74,8 @@ interface RoomExploreComponentState {
     };
 }
 
-export class RoomsExploreComponent extends React.Component<{ onDirectory?: boolean }, RoomExploreComponentState> {
-    constructor(props: { onDirectory?: boolean }) {
+export class RoomsExploreComponent extends React.Component<RoomExploreComponentProps, RoomExploreComponentState> {
+    constructor(props: RoomExploreComponentProps) {
         super(props);
         this.state = {
             count: 0,
@@ -146,7 +149,6 @@ export class RoomsExploreComponent extends React.Component<{ onDirectory?: boole
                     )}
                     <Rooms
                         variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }}
-                        onDirectory={this.props.onDirectory}
                         tagsCount={this.handleCount}
                     />
                 </RoomsListWrapper>

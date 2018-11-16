@@ -567,7 +567,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     }
 
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
-        return <RoomsInviteComponent room={props.data.chat} onDirectory={(props as any).onDirectory} />;
+        return <RoomsInviteComponent room={props.data.chat} />;
     }
     let title = props.data.chat.title;
     let titlePath: string | undefined = undefined;
@@ -802,8 +802,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             </XWithRole>
         </MessengerWrapper>
     );
-})) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean, handlePageTitle?: any }>;
+})) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any }>;
 
-export const MessengerComponent = (props: { conversationId: string, onDirectory?: boolean, handlePageTitle?: any }) => {
-    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} onDirectory={props.onDirectory} handlePageTitle={props.handlePageTitle} />);
+export const MessengerComponent = (props: { conversationId: string, handlePageTitle?: any }) => {
+    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} handlePageTitle={props.handlePageTitle} />);
 };

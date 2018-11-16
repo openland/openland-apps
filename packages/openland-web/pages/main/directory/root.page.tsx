@@ -29,9 +29,9 @@ class RootComponent extends React.Component<XWithRouter> {
             <RootWrapper>
                 <Sidebar active="rooms" />
                 <Container>
-                    {tab === 'rooms' && <RoomsExploreComponent onDirectory={true} />}
-                    {tab === 'invite' && <MessengerComponent conversationId={router.routeQuery.conversationId} onDirectory={true} />}
-                    {tab === 'profile' && <RoomGroupProfile conversationId={router.routeQuery.conversationId}/>}
+                    {tab === 'rooms' && <RoomsExploreComponent />}
+                    {tab === 'invite' && <MessengerComponent conversationId={router.routeQuery.conversationId} />}
+                    {tab === 'profile' && <RoomGroupProfile conversationId={router.routeQuery.conversationId} />}
                 </Container>
             </RootWrapper>
         );
