@@ -5,7 +5,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import {RoomGroupProfile} from '../profile/RoomGroupProfileComponent';
+import { RoomGroupProfile } from '../profile/RoomGroupProfileComponent';
 import {
     RootWrapper,
     Sidebar,

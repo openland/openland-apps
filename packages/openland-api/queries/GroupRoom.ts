@@ -45,7 +45,7 @@ export const GroupRoomInfoQuery = gql`
     }
 `;
 
-export const GroupRoomMembersQuery = gql`
+export const GroupRoomMembersInfoQuery = gql`
     query GroupRoomMembersInfo($conversationId: ID!) {
         members: alphaChannelMembers(channelId: $conversationId) {
             user {

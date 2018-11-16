@@ -4,57 +4,16 @@ import { withGroupRoom } from '../../../api/withGroupRoom';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { XIcon } from 'openland-x/XIcon';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import {
     GroupRoomInfo_chat_GroupConversation,
     GroupRoomInfo_chat_ChannelConversation
 } from 'openland-api/Types';
-
-const BackWrapper = Glamorous.div({
-    background: '#f9f9f9',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    cursor: 'pointer',
-});
-
-const BackInner = Glamorous(XContentWrapper)({
-    alignItems: 'center',
-    paddingTop: 13,
-    paddingBottom: 12,
-    '& i': {
-        fontSize: 20,
-        marginRight: 6,
-        marginLeft: -7,
-        color: 'rgba(0, 0, 0, 0.3)'
-    },
-    '& span': {
-        fontWeight: 600,
-        fontSize: 14,
-        lineHeight: '20px',
-        letterSpacing: 0,
-        color: 'rgba(0, 0, 0, 0.8)'
-    }
-});
-
-export const BackButton = () => (
-    <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
-        <BackInner withFlex={true}>
-            <XIcon icon="chevron_left" />
-            <span>Back</span>
-        </BackInner>
-    </BackWrapper>
-);
-
-export const HeaderWrapper = Glamorous.div({
-    borderBottom: '1px solid #ececec',
-    paddingTop: 16,
-    paddingBottom: 16
-});
+import { HeaderWrapper, BackButton, Section, SectionContent } from './OrganizationProfileComponent';
 
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18
@@ -70,23 +29,6 @@ const HeaderTitle = Glamorous.div({
     fontWeight: 600,
     letterSpacing: 0,
     lineHeight: '20px',
-    color: '#000000'
-});
-
-export const Section = Glamorous(XVertical)({
-    paddingTop: 5,
-    borderBottom: '1px solid #ececec',
-    '&:last-child': {
-        borderBottom: 'none'
-    }
-});
-
-export const SectionContent = Glamorous(XContentWrapper)({
-    paddingTop: 7,
-    paddingBottom: 24,
-    fontSize: 14,
-    lineHeight: '22px',
-    letterSpacing: 0,
     color: '#000000'
 });
 
@@ -133,7 +75,7 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
     );
 };
 
-const OrgInfoWrapper = Glamorous.div({
+const RoumGroupInfoWrapper = Glamorous.div({
     overflow: 'hidden',
     height: '100%'
 });
@@ -180,20 +122,19 @@ class RoomGroupProfileInner extends React.Component<OrganizationProfileInnerProp
         let chat = this.props.chat;
 
         return (
-            <OrgInfoWrapper innerRef={this.handleRef}>
+            <RoumGroupInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header chat={chat} />
                 <XScrollView height="calc(100% - 136px)">
                     <About chat={chat} />
                     {/* <Members chat={chat} /> */}
                 </XScrollView>
-            </OrgInfoWrapper>
+            </RoumGroupInfoWrapper>
         );
     }
 }
 
-const OrganizationProvider = withGroupRoom(withRouter((props) => {
-    
+const RoomGroupProvider = withGroupRoom(withRouter((props) => {
     let chat = props.data.chat as GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
 
     return (
@@ -207,11 +148,11 @@ const OrganizationProvider = withGroupRoom(withRouter((props) => {
                 />
             )
             : <XLoader loading={true} />
-    )
+    );
 })) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
 
 export const RoomGroupProfile = (props: { conversationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
-    <OrganizationProvider
+    <RoomGroupProvider
         variables={{ conversationId: props.conversationId }}
         handlePageTitle={props.handlePageTitle}
         onDirectory={props.onDirectory}
