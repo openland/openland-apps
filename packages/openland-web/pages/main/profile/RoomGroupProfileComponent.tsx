@@ -6,14 +6,12 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { AddMemberForm } from '../../../components/messenger/MessengerComponent';
 import IcInvite from './icons/ic-add-blue.svg';
@@ -164,9 +162,7 @@ const MembersProvider = (props: MembersProviderProps) => {
                     ))}
                 </SectionContent>
                 {(props.isRoom && props.meOwner) && (
-                    <XWithRole role={['super-admin']}>
-                        <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
-                    </XWithRole>
+                    <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
                 )}
             </Section>
         );

@@ -730,14 +730,12 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     <div style={{ width: 160 }}>
                                         {props.data.chat.__typename === 'ChannelConversation' && (
                                             <>
-                                                <XWithRole role={['editor', 'super-admin']}>
-                                                    <XMenuTitle>Super admin</XMenuTitle>
-                                                    <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
-                                                    <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
-                                                    <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
-                                                    <XMenuTitle>Common</XMenuTitle>
-                                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                                </XWithRole>
+                                                <XMenuTitle>Super admin</XMenuTitle>
+                                                <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
+                                                <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                                <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
+                                                <XMenuTitle>Common</XMenuTitle>
+                                                <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
 
                                                 <XWithRole role={['editor', 'super-admin']} negate={true}>
                                                     {ownerRole && (
@@ -809,9 +807,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
-            <XWithRole role={['super-admin']}>
-                <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
-            </XWithRole>
+            <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
         </MessengerWrapper>
     );
 })) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any }>;
