@@ -119,34 +119,6 @@ const styleCounterIdentation = styleResolver({
         fontWeight: 600,
     },
 
-    'field': {
-        fontSize: '12px',
-        background: '#bcc3cc',
-        borderRadius: 7,
-        color: '#fff',
-        marginLeft: 6,
-        paddingLeft: 5,
-        paddingRight: 5,
-        marginTop: 2,
-        paddingTop: 1,
-        paddingBottom: 2,
-        fontWeight: 600,
-    },
-
-    'flat': {
-        fontSize: '12px',
-        background: '#bcc3cc',
-        borderRadius: 7,
-        color: '#fff',
-        marginLeft: 6,
-        paddingLeft: 5,
-        paddingRight: 5,
-        marginTop: 2,
-        paddingTop: 1,
-        paddingBottom: 2,
-        fontWeight: 600,
-    },
-
     'button': {
         fontSize: 14,
         fontWeight: 400,
