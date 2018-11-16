@@ -5,7 +5,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { User_user, OrganizationMemberRole } from 'openland-api/Types';
+import { User_user } from 'openland-api/Types';
 import { withOnline } from '../../openland-web/api/withOnline';
 import { XDate } from 'openland-x-format/XDate';
 import { XPopper } from 'openland-x/XPopper';
@@ -117,7 +117,7 @@ interface XUserCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
-    role?: OrganizationMemberRole;
+    isAdmin?: boolean;
     hideOrganization?: boolean;
 }
 
@@ -131,7 +131,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
     };
 
     render() {
-        let { user, path, customButton, customMenu, role, hideOrganization } = this.props;
+        let { user, path, customButton, customMenu, isAdmin, hideOrganization } = this.props;
 
         let button = (typeof customButton === 'undefined') ? (
             <>
@@ -173,7 +173,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                     <UserContent>
                         <UserInfo>
                             <UserName>
-                                {role && role === 'OWNER' && <AdminTooltip />}
+                                {isAdmin && <AdminTooltip />}
                                 {user.name}
                                 {!hideOrganization && user.primaryOrganization && <UserOrganization>{user.primaryOrganization.name}</UserOrganization>}
                             </UserName>

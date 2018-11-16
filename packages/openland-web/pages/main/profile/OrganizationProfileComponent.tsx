@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Organization, OrganizationMemberRole, User_user, Organization_organization, Organization_organization_members } from 'openland-api/Types';
+import { Organization, OrganizationMemberRole, Organization_organization, Organization_organization_members } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -149,11 +149,13 @@ const MemberCard = (props: MemberCardProps) => {
     const { user, role } = props.member;
     const { isMine, isOwner } = props.organization;
 
+    let isAdmin = (isMine) ? role === 'OWNER' : undefined;
+
     return (
         <XUserCard
             user={user}
             hideOrganization={true}
-            role={isMine ? role : undefined}
+            isAdmin={isAdmin}
             customMenu={(
                 <>
                     {isOwner && (
@@ -162,8 +164,10 @@ const MemberCard = (props: MemberCardProps) => {
                             flat={true}
                             content={
                                 <>
-                                    <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
-                                    <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                    {isAdmin && <XMenuItem style="danger" query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuRevokeAdmin}</XMenuItem>}
+                                    {!isAdmin && <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuMakeAdmin}</XMenuItem>}
+                                    {!isAdmin && <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>}
+
                                     <XWithRole role={['super-admin']}>
                                         <XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
                                     </XWithRole>

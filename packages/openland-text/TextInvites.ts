@@ -64,6 +64,8 @@ export const TextInvites = {
         menuChangeRole: 'Manage permissions',
         menuRemoveMember: 'Remove from organization',
         menuCancelInvite: 'Cancel invite',
+        menuMakeAdmin: 'Make admin',
+        menuRevokeAdmin: 'Revoke admin status',
 
         statusJoined: 'joined ',
         statusNotJoined: 'invited',
