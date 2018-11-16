@@ -97,7 +97,7 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
     render() {
         return (
             <>
-                <XDocumentHead title={this.props.statusCode === 404 ? ['Error 404: Not found'] : ['Something went wrong']} />
+                <XDocumentHead title={this.props.statusCode === 404 ? ['Not found'] : ['Something went wrong']} />
                 <XTrack event="View 404">
                     <Root>
                         <HeaderWrapper>
@@ -108,12 +108,7 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                                 <Image />
                                 <Title>{this.props.statusCode === 404 ? 'Not found' : (this.props.message || 'Something went wrong')}</Title>
                                 <Description>
-                                    {this.props.statusCode === 404 && 'We can\'t seem to find the page you are looking for.'}
-                                    {this.props.statusCode !== 404 && (
-                                        <>
-                                            Return home or contact our team at <a href="mailto:hello@openland.com">hello@openland.com</a>
-                                        </>
-                                    )}
+                                    Return home or contact our team at <a href="mailto:hello@openland.com">hello@openland.com</a>
                                 </Description>
                                 <ButtonsWrapper separator={12}>
                                     <Button style="primary" path="/" text="Return home" size="large" />

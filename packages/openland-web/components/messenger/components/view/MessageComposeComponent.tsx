@@ -569,6 +569,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
     componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
         let {
+            editMessage,
+            editMessageId,
             replyMessage,
             replyMessageId,
             replyMessageSender,
@@ -595,13 +597,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        let draftChecker = (!replyChecker && !this.state.beDrafted);
+        let draftChecker = !replyChecker;
 
-        if (nextProps.draft && draftChecker) {
+        if (draftChecker) {
+
             let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId);
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 
-            if (!draft) {
+            if (!draft && nextProps.draft) {
                 draft = nextProps.draft;
             }
 
@@ -619,6 +622,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     statlesMessage: draft,
                     beDrafted: true
                 };
+            }
+        }
+
+        let focusChecker = this.props.conversationId !== nextProps.conversationId && !editMessage && !editMessageId;
+
+        if (focusChecker) {
+            if (this.input.current) {
+                this.input.current!!.resetAndFocus();
             }
         }
 

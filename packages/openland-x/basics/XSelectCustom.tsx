@@ -236,6 +236,7 @@ export class XSelectCustomInputRender extends React.Component<XSelectCustomProps
                         size={rounded ? 'default' : 'large'}
                         text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : v.label}
                         onClick={() => this.onDelete(v.value)}
+                        style="primary"
                     />
                 ))}
                 {!this.props.popper && input}
@@ -413,6 +414,7 @@ export class XSelectCustomUsersRender extends React.Component<XSelectCustomProps
                         size={rounded ? 'default' : 'large'}
                         text={options.find(o => o.value === v.value) ? options.find(o => o.value === v.value)!!.label : options.length === 0 ? 'Loading...' : v.label}
                         onClick={() => this.onDelete(v.value)}
+                        style="primary"
                     />
                 ))}
                 <XPopper

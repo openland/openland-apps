@@ -134,6 +134,7 @@ interface XOrganizationCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+    extraMenu?: any;
 }
 
 interface XOrganizationCardState {
@@ -146,7 +147,7 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
     };
 
     render() {
-        let { organization, path, customButton, customMenu } = this.props;
+        let { organization, path, customButton, customMenu, extraMenu } = this.props;
 
         let firstMember = organization.members[0];
 
@@ -175,6 +176,8 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                 flat={true}
                 content={(
                     <>
+                        {extraMenu}
+
                         <XMenuItem href={'/directory/o/' + organization.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
 
                         {organization.isMine && (

@@ -5,20 +5,24 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles } from './basics/Flex';
 import CloseIcon from './icons/ic-close-1.svg';
 
+type XTagSizeType = 'large' | 'default' | 'small';
+type XTagStyleType = 'default' | 'primary' | 'green' | 'ghost';
+type XTagIconPositionType = 'left' | 'right';
+
 interface XTagProps extends XFlexStyles {
     text?: string;
     icon?: string;
     iconLeft?: string;
-    size?: 'large' | 'default' | 'small';
-    color?: 'primary' | 'default' | 'gray' | 'green' | 'ghost';
+    size?: XTagSizeType;
+    style?: XTagStyleType;
     rounded?: boolean;
     onIconClick?: () => void;
     onClick?: React.MouseEventHandler<any>;
 }
 
 interface StyledXTagProps extends XFlexStyles {
-    tagSize?: 'large' | 'default' | 'small';
-    tagColor?: 'primary' | 'default' | 'gray' | 'green' | 'ghost';
+    tagSize?: XTagSizeType;
+    tagColor?: XTagStyleType;
     pointer?: boolean;
     rounded?: boolean;
     touchable?: boolean;
@@ -94,17 +98,13 @@ let sizeStyles = styleResolver({
 });
 
 let colorStyles = styleResolver({
-    'primary': {
-        backgroundColor: '#eeecfa',
-        color: '#5640d6',
-    },
     'default': {
-        backgroundColor: 'rgba(23, 144, 255, 0.08)',
-        color: '#1790ff',
-    },
-    'gray': {
         backgroundColor: '#f3f3f5',
         color: '#334562',
+    },
+    'primary': {
+        backgroundColor: 'rgba(23, 144, 255, 0.08)',
+        color: '#1790ff',
     },
     'green': {
         backgroundColor: 'rgba(105, 208, 109, 0.18)',
@@ -119,28 +119,20 @@ let colorStyles = styleResolver({
 });
 
 let crossColorStyles = styleResolver({
-    'primary': {
-        color: '#5641d1',
-        opacity: 0.4,
-
-        '& svg *': {
-            fill: '#5641d1'
-        }
-    },
     'default': {
-        color: '#4285f4',
-        opacity: 0.4,
-
-        '& svg *': {
-            fill: '#4285f4'
-        }
-    },
-    'gray': {
         color: '#334562',
         opacity: 0.4,
 
         '& svg *': {
             fill: '#334562'
+        }
+    },
+    'primary': {
+        color: '#4285f4',
+        opacity: 0.4,
+
+        '& svg *': {
+            fill: '#4285f4'
         }
     },
     'green': {
@@ -170,7 +162,6 @@ const XTagWrapper = Glamorous.div<StyledXTagProps>([
         borderRadius: 8,
         whiteSpace: 'nowrap',
         flexShrink: 0,
-        // marginRight: 8,
         marginTop: 4,
         marginBottom: 4,
         cursor: props.pointer ? 'pointer' : undefined,
@@ -197,7 +188,7 @@ const XTagIconWrapper = Glamorous.div<StyledXTagProps>([
     } : {}
 ]);
 
-const XTagIcon = Glamorous(XIcon)<StyledXTagProps & { position: 'left' | 'right' }>([
+const XTagIcon = Glamorous(XIcon)<StyledXTagProps & { position: XTagIconPositionType }>([
     (props) => (props.position === 'right') ? iconsIndentation(props.tagSize) : iconsLeftIndentation(props.tagSize)
 ]);
 
@@ -231,7 +222,7 @@ let customIconsLeftIndentation = styleResolver({
     },
 });
 
-const XTagCustomIcon = Glamorous.div<StyledXTagProps & { position: 'left' | 'right' }>([
+const XTagCustomIcon = Glamorous.div<StyledXTagProps & { position: XTagIconPositionType }>([
     {
         marginTop: 1,
         marginBottom: -1,
@@ -264,7 +255,7 @@ export class XTag extends React.Component<XTagProps> {
         return (
             <XTagWrapper
                 tagSize={this.props.size}
-                tagColor={this.props.color}
+                tagColor={this.props.style}
                 onClick={this.props.onClick}
                 pointer={this.props.onClick !== undefined}
                 rounded={this.props.rounded}
@@ -273,12 +264,12 @@ export class XTag extends React.Component<XTagProps> {
                     <XTagIconWrapper
                         onClick={this.props.onIconClick}
                         touchable={this.props.onIconClick ? true : false}
-                        tagColor={this.props.color}
+                        tagColor={this.props.style}
                     >
                         {this.isCustomIcon(this.props.iconLeft) && (
                             <XTagCustomIcon
                                 position="left"
-                                tagColor={this.props.color}
+                                tagColor={this.props.style}
                             >
                                 {this.getCustomIcon(this.props.iconLeft)}
                             </XTagCustomIcon>
@@ -297,12 +288,12 @@ export class XTag extends React.Component<XTagProps> {
                     <XTagIconWrapper
                         onClick={this.props.onIconClick}
                         touchable={this.props.onIconClick ? true : false}
-                        tagColor={this.props.color}
+                        tagColor={this.props.style}
                     >
                         {this.isCustomIcon(this.props.icon) && (
                             <XTagCustomIcon
                                 position="right"
-                                tagColor={this.props.color}
+                                tagColor={this.props.style}
                             >
                                 {this.getCustomIcon(this.props.icon)}
                             </XTagCustomIcon>

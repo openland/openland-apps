@@ -64,6 +64,7 @@ interface XRoomCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+    extraMenu?: any;
     iMember?: boolean;
 }
 
@@ -77,7 +78,7 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
     };
 
     render () {
-        let { room, path, customButton, customMenu } = this.props;
+        let { room, path, customButton, customMenu, extraMenu } = this.props;
         let title = (!room.isRoot && room.organization ? (room.organization.name + ' / ') : '') + room.title;
 
         let buttonPath = '/mail/' + room.id;
@@ -99,19 +100,36 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
         ) : customButton;
 
         let menu = (typeof customMenu === 'undefined') ? (
-            <XWithRole role={['super-admin', 'editor']}>
-                <XOverflow
-                    flat={true}
-                    placement="bottom-end"
-                    content={(
-                        <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
-                            <XMenuTitle>Super admin</XMenuTitle>
-                            <RoomSetFeatured conversationId={room.id} val={room.featured} />
-                            <RoomSetHidden conversationId={room.id} val={room.hidden} />
-                        </div>
-                    )}
-                />
-            </XWithRole>
+            <>
+                <XWithRole role={['super-admin', 'editor']}>
+                    <XOverflow
+                        flat={true}
+                        placement="bottom-end"
+                        content={(
+                            <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
+                                {extraMenu}
+
+                                <XMenuTitle>Super admin</XMenuTitle>
+                                <RoomSetFeatured conversationId={room.id} val={room.featured} />
+                                <RoomSetHidden conversationId={room.id} val={room.hidden} />
+                            </div>
+                        )}
+                    />
+                </XWithRole>
+                {extraMenu && (
+                    <XWithRole role={['super-admin', 'editor']} negate={true}>
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={(
+                                <div>
+                                    {extraMenu}
+                                </div>
+                            )}
+                        />
+                    </XWithRole>
+                )}
+            </>
         ) : customMenu;
 
         return (

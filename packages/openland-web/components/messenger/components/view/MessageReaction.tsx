@@ -40,7 +40,7 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
 }));
 
 class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
-    defaultReactions = ['❤️', '👍', '😢', '😂', '🤩', '😱'];
+    defaultReactions = ['❤️', '👍', '😢', '😂', '🤩', '😱', '🎉'];
     state = {
         show: false
     };

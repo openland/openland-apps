@@ -26,7 +26,7 @@ export const TextProfiles = {
 
         addSocialLinks: 'Add social links',
         addAbout: 'Add a short description',
-        addMembers: (isCommunity: boolean) => isCommunity ? 'Add admin' : 'Add members',
+        addMembers: (isCommunity: boolean) => isCommunity ? 'Add admin' : 'Invite people',
 
         edit: 'Edit',
         superEdit: 'Super edit',

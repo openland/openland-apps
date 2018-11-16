@@ -128,6 +128,7 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                                 <XTag
                                     text={e.label}
                                     rounded={true}
+                                    style="primary"
                                 />
                             </EntryItem>
                         </div>

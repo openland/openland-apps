@@ -1030,7 +1030,7 @@ export interface ChatInfo_chat_GroupConversation {
   settings: ChatInfo_chat_GroupConversation_settings;
   membersCount: number;
   photo: string | null;
-  longDescription: string;
+  longDescription: string | null;
   photoRef: ChatInfo_chat_GroupConversation_photoRef | null;
 }
 
@@ -1091,8 +1091,8 @@ export interface ChatInfo_chat_ChannelConversation {
   isRoot: boolean;
   featured: boolean;
   hidden: boolean;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   socialImageRef: ChatInfo_chat_ChannelConversation_socialImageRef | null;
   socialImage: string | null;
   membersCount: number;
@@ -2053,7 +2053,7 @@ export interface ChatSearchChannel_items_edges_node {
   myStatus: ChannelMembershipStatus;
   photoRef: ChatSearchChannel_items_edges_node_photoRef | null;
   membersCount: number;
-  description: string;
+  description: string | null;
   organization: ChatSearchChannel_items_edges_node_organization | null;
   isRoot: boolean;
 }
@@ -3772,7 +3772,7 @@ export interface ChannelInviteInfo_invite_channel {
   photos: string[];
   isRoot: boolean;
   featured: boolean;
-  description: string;
+  description: string | null;
   myStatus: ChannelMembershipStatus;
   membersCount: number;
   socialImage: string | null;
@@ -4802,8 +4802,8 @@ export interface GroupRoomInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   membersCount: number;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   myRole: string | null;
   membersOnline: number;
   photo: string | null;
@@ -4830,8 +4830,8 @@ export interface GroupRoomInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   membersCount: number;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   myRole: string | null;
   membersOnline: number;
   photo: string | null;
@@ -5014,6 +5014,62 @@ export interface Organization_organization_members {
   user: Organization_organization_members_user;
 }
 
+export interface Organization_organization_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Organization_organization_requests_user_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Organization_organization_requests_user_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: Organization_organization_requests_user_channels_organization | null;
+}
+
+export interface Organization_organization_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  primaryOrganization: Organization_organization_requests_user_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: Organization_organization_requests_user_channels[];
+}
+
+export interface Organization_organization_requests {
+  __typename: "OrganizationRequestedMember";
+  role: OrganizationMemberRole;
+  user: Organization_organization_requests_user;
+}
+
 export interface Organization_organization_channels {
   __typename: "ChannelConversation";
   id: string;
@@ -5046,6 +5102,7 @@ export interface Organization_organization {
   facebook: string | null;
   linkedin: string | null;
   members: Organization_organization_members[];
+  requests: Organization_organization_requests[];
   channels: (Organization_organization_channels | null)[];
 }
 
@@ -7227,6 +7284,62 @@ export interface OrganizationFull_members {
   user: OrganizationFull_members_user;
 }
 
+export interface OrganizationFull_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface OrganizationFull_requests_user_channels_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface OrganizationFull_requests_user_channels {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  hidden: boolean;
+  photos: string[];
+  photo: string | null;
+  membersCount: number;
+  organization: OrganizationFull_requests_user_channels_organization | null;
+}
+
+export interface OrganizationFull_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  primaryOrganization: OrganizationFull_requests_user_primaryOrganization | null;
+  /**
+   * TODO: Refactor
+   */
+  channels: OrganizationFull_requests_user_channels[];
+}
+
+export interface OrganizationFull_requests {
+  __typename: "OrganizationRequestedMember";
+  role: OrganizationMemberRole;
+  user: OrganizationFull_requests_user;
+}
+
 export interface OrganizationFull_channels {
   __typename: "ChannelConversation";
   id: string;
@@ -7259,6 +7372,7 @@ export interface OrganizationFull {
   facebook: string | null;
   linkedin: string | null;
   members: OrganizationFull_members[];
+  requests: OrganizationFull_requests[];
   channels: (OrganizationFull_channels | null)[];
 }
 

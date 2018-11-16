@@ -13,6 +13,7 @@ import { withChannelJoin } from '../../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { TextRoom } from 'openland-text/TextRoom';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -264,20 +265,18 @@ interface RoomsInviteComponentProps {
         }
     };
     noLogin?: boolean;
-    onDirectory?: boolean;
 }
 
 export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
     render() {
         let room = this.props.room;
         let joinText = room.myStatus === 'none' ? (room.organization && room.organization.isMine ? 'Join room' : 'Request invite') : room.myStatus === 'invited' ? 'Accept invite' : '???';
-        let closePath = this.props.onDirectory ? '/directory/' : '/mail/';
         return (
             <Root>
                 <MainContent>
                     {!this.props.noLogin && (
                         <XHorizontal justifyContent="flex-end">
-                            <Close path={closePath}>
+                            <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
                                 <CloseIcon />
                             </Close>
                         </XHorizontal>

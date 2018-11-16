@@ -24,31 +24,29 @@ export default withApp('UI Framework - Tags', 'viewer', (props) => {
                     </XHorizontal>
                     <XTitle>Colors</XTitle>
                     <XHorizontal>
-                        <XTag color="primary" text="primary" />
                         <XTag text="default" />
-                        <XTag color="gray" text="gray" />
-                        <XTag color="green" text="green" />
-                        <XTag color="ghost" text="gost" />
+                        <XTag style="primary" text="primary" />
+                        <XTag style="green" text="green" />
+                        <XTag style="ghost" text="ghost" />
                     </XHorizontal>
                     <XHorizontal>
-                        <XTag rounded={true} color="primary" text="primary" />
                         <XTag rounded={true} text="default" />
-                        <XTag rounded={true} color="gray" text="gray" />
-                        <XTag rounded={true} color="green" text="green" />
-                        <XTag rounded={true} color="ghost" text="gost" />
+                        <XTag rounded={true} style="primary" text="primary" />
+                        <XTag rounded={true} style="green" text="green" />
+                        <XTag rounded={true} style="ghost" text="ghost" />
                     </XHorizontal>
                     <XTitle>With Icon</XTitle>
                     <XHorizontal>
                         <XTag size="large" text="Automotive" iconLeft="star" />
-                        <XTag text="primary" iconLeft="star" />
+                        <XTag style="primary" text="primary" iconLeft="star" />
                         <XTag size="large" text="Automotive" icon="close" />
-                        <XTag text="primary" icon="close" />
+                        <XTag style="primary" text="primary" icon="close" />
                     </XHorizontal>
                     <XHorizontal>
                         <XTag rounded={true} size="large" text="Automotive" iconLeft="star" />
-                        <XTag rounded={true} text="primary" iconLeft="star" />
+                        <XTag rounded={true} style="primary" text="primary" iconLeft="star" />
                         <XTag rounded={true} size="large" text="Automotive" icon="x-close" />
-                        <XTag rounded={true} text="primary" icon="x-close" />
+                        <XTag rounded={true} style="primary" text="primary" icon="x-close" />
                     </XHorizontal>
                 </XVertical>
             </XContent>

@@ -11,6 +11,7 @@ import { XDate } from 'openland-x-format/XDate';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from '../icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 
 const UserWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
@@ -74,6 +75,10 @@ const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
 }));
 
 const UserStatus = withOnline(props => {
+    if (!props.data) {
+        return null;
+    }
+
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <StatusWrapper online={false}>
@@ -118,6 +123,7 @@ interface XUserCardProps {
     path?: string;
     customButton?: any;
     customMenu?: any;
+    extraMenu?: any;
     isAdmin?: boolean;
     hideOrganization?: boolean;
 }
@@ -132,7 +138,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
     };
 
     render() {
-        let { user, path, customButton, customMenu, isAdmin, hideOrganization } = this.props;
+        let { user, path, customButton, customMenu, extraMenu, isAdmin, hideOrganization } = this.props;
 
         let button = (typeof customButton === 'undefined') ? (
             <>
@@ -155,6 +161,17 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
 
         let menu = (typeof customMenu === 'undefined') ? (
             <>
+                {extraMenu && (
+                    <XOverflow
+                        flat={true}
+                        placement="bottom-end"
+                        content={(
+                            <div>
+                                {extraMenu}
+                            </div>
+                        )}
+                    />
+                )}
             </>
         ) : customMenu;
 
