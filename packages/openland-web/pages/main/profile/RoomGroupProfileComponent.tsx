@@ -6,16 +6,20 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { XIcon } from 'openland-x/XIcon';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { XButton, XButtonProps } from 'openland-x/XButton';
+import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XUserCard } from 'openland-x/cards/XUserCard';
+import { 
+    BackButton, 
+    Section, 
+    SectionContent, 
+    HeaderWrapper 
+} from './OrganizationProfileComponent';
 import {
     GroupRoomInfo_chat_GroupConversation,
     GroupRoomInfo_chat_ChannelConversation,
@@ -48,21 +52,6 @@ const BackInner = Glamorous(XContentWrapper)({
     }
 });
 
-export const BackButton = () => (
-    <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
-        <BackInner withFlex={true}>
-            <XIcon icon="chevron_left" />
-            <span>Back</span>
-        </BackInner>
-    </BackWrapper>
-);
-
-export const HeaderWrapper = Glamorous.div({
-    borderBottom: '1px solid #ececec',
-    paddingTop: 16,
-    paddingBottom: 16
-});
-
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18
 });
@@ -88,23 +77,6 @@ const HeaderMembers = Glamorous.div<{online?: boolean}>(props => ({
 
 const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13
-});
-
-export const Section = Glamorous(XVertical)({
-    paddingTop: 5,
-    borderBottom: '1px solid #ececec',
-    '&:last-child': {
-        borderBottom: 'none'
-    }
-});
-
-export const SectionContent = Glamorous(XContentWrapper)({
-    paddingTop: 7,
-    paddingBottom: 24,
-    fontSize: 14,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000'
 });
 
 const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
