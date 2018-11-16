@@ -3,17 +3,20 @@ import Glamorous from 'glamorous';
 import { withGroupRoom } from '../../../api/withGroupRoom';
 import { withGroupRoomMembers } from '../../../api/withGroupRoom';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XUserCard } from 'openland-x/cards/XUserCard';
+import { AddMemberForm } from '../../../components/messenger/MessengerComponent';
+import IcInvite from './icons/ic-add-blue.svg';
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -108,7 +111,34 @@ const MemberCard = (props: { member: GroupRoomMembersInfo_members_user }) => {
     );
 };
 
-const MembersProvider = (props: { members: GroupRoomMembersInfo_members[]; }) => {
+interface MembersProviderProps {
+    members: GroupRoomMembersInfo_members[];
+    isRoom: boolean;
+    chatId: string;
+    meOwner: boolean;
+}
+
+const InviteButton = Glamorous(XLink)({
+    fontSize: 14,
+    fontWeight: 600,
+    lineHeight: 1.43,
+    color: '#000000',
+    display: 'inline-flex',
+    paddingTop: 12,
+    paddingBottom: 12
+});
+
+const InviteIcWrap = Glamorous.div({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    border: '1px solid #F2F2F2'
+})
+
+const MembersProvider = (props: MembersProviderProps) => {
     let members = props.members;
     if (members && members.length > 0) {
         return (
@@ -119,12 +149,25 @@ const MembersProvider = (props: { members: GroupRoomMembersInfo_members[]; }) =>
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    <XMoreCards>
-                        {members.map((member, i) => (
-                            <MemberCard key={i} member={member.user} />
-                        ))}
-                    </XMoreCards>
+                    {(props.isRoom && props.meOwner) && (
+                        <InviteButton query={{ field: 'addMember', value: 'true' }}>
+                            <XHorizontal alignItems="center">
+                                <InviteIcWrap>
+                                    <IcInvite />
+                                </InviteIcWrap>
+                                <span>Invite people</span>
+                            </XHorizontal>
+                        </InviteButton>
+                    )}
+                    {members.map((member, i) => (
+                        <MemberCard key={i} member={member.user} />
+                    ))}
                 </SectionContent>
+                {(props.isRoom && props.meOwner) && (
+                    <XWithRole role={['super-admin']}>
+                        <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
+                    </XWithRole>
+                )}
             </Section>
         );
     } else {
@@ -136,10 +179,16 @@ const Members = withGroupRoomMembers((props) => {
     let members = props.data.members;
     return (
         members
-            ? <MembersProvider members={members} />
-            : <XLoader loading={true} />
+            ? (
+                <MembersProvider
+                    members={members}
+                    isRoom={(props as any).isRoom}
+                    chatId={(props as any).chatId}
+                    meOwner={(props as any).meOwner}
+                />
+            ) : <XLoader loading={true} />
     );
-}) as React.ComponentType<{ variables: { conversationId: string } }>;
+}) as React.ComponentType<{ variables: { conversationId: string }, isRoom: boolean, chatId: string, meOwner: boolean }>;
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
@@ -182,14 +231,18 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
 
     render() {
         let chat = this.props.chat;
-
         return (
             <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header chat={chat} />
                 <XScrollView height="calc(100% - 136px)">
                     <About chat={chat} />
-                    <Members variables={{ conversationId: this.props.conversationId }} />
+                    <Members
+                        variables={{ conversationId: this.props.conversationId }}
+                        isRoom={chat.__typename === 'ChannelConversation'}
+                        chatId={this.props.conversationId}
+                        meOwner={chat.myRole === 'member' || chat.myRole === 'owner'}
+                    />
                 </XScrollView>
             </OrganizationInfoWrapper>
         );

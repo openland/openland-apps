@@ -365,7 +365,7 @@ export const ChatEditComponent = withAlterChat((props) => {
     );
 }) as React.ComponentType<{ title: string, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
-const AddMemberForm = withSuperAddToChannel((props) => {
+export const AddMemberForm = withSuperAddToChannel((props) => {
     return (
         <XModalFormOld
             title="Add member to room"
