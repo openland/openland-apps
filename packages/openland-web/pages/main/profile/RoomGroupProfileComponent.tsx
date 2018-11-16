@@ -15,10 +15,15 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import {
+    HeaderAvatar,
+    HeaderTitle,
+    HeaderInfo,
+    HeaderTools,
     BackButton,
     Section,
     SectionContent,
-    HeaderWrapper
+    HeaderWrapper,
+    OrganizationInfoWrapper
 } from './OrganizationProfileComponent';
 import {
     GroupRoomInfo_chat_GroupConversation,
@@ -27,57 +32,11 @@ import {
     GroupRoomMembersInfo_members
 } from 'openland-api/Types';
 
-const BackWrapper = Glamorous.div({
-    background: '#f9f9f9',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    cursor: 'pointer',
-});
-
-const BackInner = Glamorous(XContentWrapper)({
-    alignItems: 'center',
-    paddingTop: 13,
-    paddingBottom: 12,
-    '& i': {
-        fontSize: 20,
-        marginRight: 6,
-        marginLeft: -7,
-        color: 'rgba(0, 0, 0, 0.3)'
-    },
-    '& span': {
-        fontWeight: 600,
-        fontSize: 14,
-        lineHeight: '20px',
-        letterSpacing: 0,
-        color: 'rgba(0, 0, 0, 0.8)'
-    }
-});
-
-const HeaderAvatar = Glamorous.div({
-    paddingRight: 18
-});
-
-const HeaderInfo = Glamorous(XVertical)({
-    paddingTop: 1,
-    justifyContent: 'center'
-});
-
-const HeaderTitle = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 600,
-    letterSpacing: 0,
-    lineHeight: '20px',
-    color: '#000000'
-});
-
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
     lineHeight: 1.23,
     color: props.online ? '#1790ff' : '#7F7F7F'
 }));
-
-const HeaderTools = Glamorous(XHorizontal)({
-    paddingTop: 13
-});
 
 const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
@@ -182,11 +141,6 @@ const Members = withGroupRoomMembers((props) => {
     );
 }) as React.ComponentType<{ variables: { conversationId: string } }>;
 
-const OrgInfoWrapper = Glamorous.div({
-    overflow: 'hidden',
-    height: '100%'
-});
-
 interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
     handlePageTitle?: any;
@@ -230,14 +184,14 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
         let chat = this.props.chat;
 
         return (
-            <OrgInfoWrapper innerRef={this.handleRef}>
+            <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header chat={chat} />
                 <XScrollView height="calc(100% - 136px)">
                     <About chat={chat} />
                     <Members variables={{ conversationId: this.props.conversationId }} />
                 </XScrollView>
-            </OrgInfoWrapper>
+            </OrganizationInfoWrapper>
         );
     }
 }
