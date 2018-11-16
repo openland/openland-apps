@@ -74,19 +74,17 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                         path={meOwner ? '/mail/' + chat.id : '/directory/r/' + chat.id}
                     />
                     {meOwner && (
-                        <XOverflow
-                            placement="bottom-end"
-                            flat={true}
-                            content={(
-                                <>
-                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                    <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
-                                </>
-                            )}
-                        />
-                    )}
-                    {meOwner && (
                         <>
+                            <XOverflow
+                                placement="bottom-end"
+                                flat={true}
+                                content={(
+                                    <>
+                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
+                                        <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
+                                    </>
+                                )}
+                            />
                             <LeaveChatComponent />
                             {chat.__typename === 'GroupConversation' && (
                                 <ChatEditComponent
