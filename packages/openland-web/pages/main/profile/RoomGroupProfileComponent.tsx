@@ -15,7 +15,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import IcInvite from './icons/ic-add-blue.svg';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import {LeaveChatComponent} from '../../../components/messenger/components/MessengerRootComponent';
+import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
 import {
     AddMemberForm,
     RoomEditComponent,
@@ -47,8 +47,6 @@ const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
 
 const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
-    // console.log(chat);
-
     let meOwner = (chat.myRole === 'member' || chat.myRole === 'owner');
     return (
         <HeaderWrapper>
@@ -81,14 +79,34 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                             flat={true}
                             content={(
                                 <>
-                                    <XMenuItem href="/settings/profile/">Settings</XMenuItem>
+                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                     <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
                                 </>
                             )}
                         />
                     )}
                     {meOwner && (
-                        <LeaveChatComponent/>
+                        <>
+                            <LeaveChatComponent />
+                            {chat.__typename === 'GroupConversation' && (
+                                <ChatEditComponent
+                                    title={chat.title}
+                                    longDescription={chat.longDescription || undefined}
+                                    photoRef={chat.photoRef}
+                                    refetchVars={{ conversationId: chat.id }}
+                                />
+                            )}
+                            {chat.__typename === 'ChannelConversation' && (
+                                <RoomEditComponent
+                                    title={chat.title}
+                                    description={chat.description}
+                                    longDescription={chat.longDescription}
+                                    socialImageRef={null}
+                                    photoRef={chat.photoRef}
+                                    refetchVars={{ conversationId: chat.id }}
+                                />
+                            )}
+                        </>
                     )}
                 </HeaderTools>
             </XContentWrapper>
