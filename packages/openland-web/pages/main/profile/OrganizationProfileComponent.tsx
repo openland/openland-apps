@@ -305,6 +305,20 @@ export const SectionContent = Glamorous(XContentWrapper)({
     color: '#000000'
 });
 
+let extractHostname = (url: string) => {
+    var hostname = url;
+
+    // find & remove protocol (http, ftp, etc.) and get hostname
+    hostname = url.split('/')[url.indexOf('//') > -1 ? 2 : 0];
+
+    // find & remove port number
+    hostname = hostname.split(':')[0];
+    // find & remove "?"
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+};
+
 const Header = (props: { organization: Organization_organization }) => {
     let { organization } = props;
  
@@ -324,7 +338,7 @@ const Header = (props: { organization: Organization_organization }) => {
                     <HeaderTitle>{organization.name}</HeaderTitle>
                     {organization.website && (
                         <HeaderWebsite href={organization.website}>
-                            {(new URL(organization.website)).hostname}
+                            {extractHostname(organization.website)}
                         </HeaderWebsite>
                     )}
                     {!organization.website && (
