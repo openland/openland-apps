@@ -49,19 +49,27 @@ export class XMoreCards extends React.Component<XMoreCardsProps, XMoreCardsState
     }
 
     render () {
-        return (
-            <>
-                <Wrapper isShown={this.state.isShown}>
+        if (React.Children.count(this.props.children) > 4) {
+            return (
+                <>
+                    <Wrapper isShown={this.state.isShown}>
+                        {this.props.children}
+                    </Wrapper>
+    
+                    <Button
+                        onClick={this.toggleShown}
+                        icon={this.state.isShown ? 'expand_less' : 'expand_more'}
+                        text={this.state.isShown ? 'Show less' : 'Show more'}
+                        style="flat"
+                    />
+                </>
+            );
+        } else {
+            return (
+                <>
                     {this.props.children}
-                </Wrapper>
-
-                <Button
-                    onClick={this.toggleShown}
-                    icon={this.state.isShown ? 'expand_less' : 'expand_more'}
-                    text={this.state.isShown ? 'Show less' : 'Show more'}
-                    style="flat"
-                />
-            </>
-        );
+                </>
+            );
+        }
     }
 }
