@@ -154,26 +154,30 @@ const MemberCard = (props: MemberCardProps) => {
             hideOrganization={true}
             customMenu={(
                 <>
-                    {props.iAmOwner && <XOverflow
-                        placement="bottom-end"
-                        flat={true}
-                        content={
-                            <>
-                                <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
-                                <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
-                                <XWithRole role={['super-admin']}>
-                                    <XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
-                                </XWithRole>
-                            </>
-                        }
-                    />}
-                    {!props.iAmOwner && <XWithRole role={['super-admin']}>
+                    {props.iAmOwner && (
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
-                            content={<XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
+                            content={
+                                <>
+                                    <XMenuItem query={{ field: 'changeRole', value: user.id }}>{TextInvites.membersMgmt.menuChangeRole}</XMenuItem>
+                                    <XMenuItem style="danger" query={{ field: 'remove', value: user.id }}>{TextInvites.membersMgmt.menuRemoveMember}</XMenuItem>
+                                    <XWithRole role={['super-admin']}>
+                                        <XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>
+                                    </XWithRole>
+                                </>
+                            }
                         />
-                    </XWithRole>}
+                    )}
+                    {!props.iAmOwner && (
+                        <XWithRole role={['super-admin']}>
+                            <XOverflow
+                                placement="bottom-end"
+                                flat={true}
+                                content={<XMenuItem query={{ field: 'editUser', value: user.id }}>Edit</XMenuItem>}
+                            />
+                        </XWithRole>
+                    )}
                 </>
             )}
         />
@@ -312,7 +316,6 @@ let extractHostname = (url: string) => {
 
     // find & remove protocol (http, ftp, etc.) and get hostname
     hostname = url.split('/')[url.indexOf('//') > -1 ? 2 : 0];
-
     // find & remove port number
     hostname = hostname.split(':')[0];
     // find & remove "?"
