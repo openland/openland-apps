@@ -247,7 +247,7 @@ interface RoomsInviteComponentProps {
     room: {
         myStatus: string,
         id: string,
-        description: string,
+        description?: string | null,
         isRoot: boolean,
         title: string,
         membersCount: number,
