@@ -80,16 +80,16 @@ const RoumGroupInfoWrapper = Glamorous.div({
     height: '100%'
 });
 
-interface OrganizationProfileInnerProps extends XWithRouter {
+interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
     handlePageTitle?: any;
     onDirectory?: boolean;
 }
 
-class RoomGroupProfileInner extends React.Component<OrganizationProfileInnerProps> {
+class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> {
     pageTitle: string | undefined = undefined;
 
-    constructor(props: OrganizationProfileInnerProps) {
+    constructor(props: RoomGroupProfileInnerProps) {
         super(props);
 
         if (this.props.handlePageTitle) {
@@ -98,7 +98,7 @@ class RoomGroupProfileInner extends React.Component<OrganizationProfileInnerProp
         }
     }
 
-    componentWillReceiveProps(newProps: OrganizationProfileInnerProps) {
+    componentWillReceiveProps(newProps: RoomGroupProfileInnerProps) {
         if (newProps.handlePageTitle) {
             let title = newProps.chat.title;
 
