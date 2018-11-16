@@ -1,16 +1,19 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
+import { withConversationKick } from '../../../api/withConversationKick';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
+import { XText } from 'openland-x/XText';
 import { XLink } from 'openland-x/XLink';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import IcInvite from './icons/ic-add-blue.svg';
 import { XMenuItem } from 'openland-x/XMenuItem';
@@ -131,10 +134,45 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
     );
 };
 
-const MemberCard = (props: { member: GroupRoomMembersInfo_members_user }) => {
+const RemoveMemberModal = withConversationKick((props) => {
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === props.router.query.remove || '')[0];
+    if (!member) {
+        return null;
+    }
+    return (
+        <XModalForm
+            submitProps={{
+                text: 'Remove',
+                style: 'danger',
+            }}
+            title={'Remove ' + member.user.name + ' from ' + (props as any).roomTitle}
+            targetQuery="remove"
+            defaultAction={async (data) => {
+                await props.kick({
+                    variables: {
+                        userId: member.user.id,
+                        conversationId: (props as any).channelId
+                    }
+                });
+            }}
+        >
+            <XText>Are you sure you want to remove {member.user.firstName}? They will no longer be able to participate in the discussion.</XText>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string, roomTitle: string }>;
+
+const MemberCard = (props: { member: GroupRoomMembersInfo_members_user, meOwner: boolean }) => {
+    let overflowMenu = (
+        <XOverflow
+            placement="bottom-end"
+            flat={true}
+            content={<XMenuItem style="danger" query={{ field: 'remove', value: props.member.id }}>Remove from group</XMenuItem>}
+        />
+    )
     return (
         <XUserCard
             user={props.member}
+            customMenu={props.meOwner ? overflowMenu : null}
         />
     );
 };
@@ -144,6 +182,7 @@ interface MembersProviderProps {
     isRoom: boolean;
     chatId: string;
     meOwner: boolean;
+    chatTitle: string;
 }
 
 const InviteButton = Glamorous(XLink)({
@@ -188,11 +227,19 @@ const MembersProvider = (props: MembersProviderProps) => {
                         </InviteButton>
                     )}
                     {members.map((member, i) => (
-                        <MemberCard key={i} member={member.user} />
+                        <MemberCard key={i} member={member.user} meOwner={props.meOwner} />
                     ))}
                 </SectionContent>
                 {(props.isRoom && props.meOwner) && (
                     <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
+                )}
+                {props.meOwner && (
+                    <RemoveMemberModal
+                        members={members}
+                        refetchVars={{ channelId: props.chatId }}
+                        channelId={props.chatId}
+                        roomTitle={props.chatTitle}
+                    />
                 )}
             </Section>
         );
@@ -211,10 +258,11 @@ const Members = withGroupRoomMembers((props) => {
                     isRoom={(props as any).isRoom}
                     chatId={(props as any).chatId}
                     meOwner={(props as any).meOwner}
+                    chatTitle={(props as any).chatTitle}
                 />
             ) : <XLoader loading={true} />
     );
-}) as React.ComponentType<{ variables: { conversationId: string }, isRoom: boolean, chatId: string, meOwner: boolean }>;
+}) as React.ComponentType<{ variables: { conversationId: string }, isRoom: boolean, chatId: string, meOwner: boolean, chatTitle: string }>;
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
@@ -268,6 +316,7 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                         isRoom={chat.__typename === 'ChannelConversation'}
                         chatId={this.props.conversationId}
                         meOwner={chat.myRole === 'member' || chat.myRole === 'owner'}
+                        chatTitle={chat.title}
                     />
                 </XScrollView>
             </OrganizationInfoWrapper>
