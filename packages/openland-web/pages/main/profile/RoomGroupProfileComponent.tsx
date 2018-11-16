@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withGroupRoom } from '../../../api/withGroupRoom';
-import { withGroupRoomMembers } from '../../../api/withGroupRoom';
+import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -13,9 +12,12 @@ import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { AddMemberForm } from '../../../components/messenger/MessengerComponent';
-import { RoomEditComponent } from '../../../components/messenger/MessengerComponent';
 import IcInvite from './icons/ic-add-blue.svg';
+import {
+    AddMemberForm,
+    RoomEditComponent,
+    ChatEditComponent
+} from '../../../components/messenger/MessengerComponent';
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -42,7 +44,9 @@ const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
 
 const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
+    // console.log(chat);
 
+    let meOwner = (chat.myRole === 'member' || chat.myRole === 'owner');
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -63,20 +67,11 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {(chat.myRole === 'member' || chat.myRole === 'owner') ? (
-                        <XButton
-                            text="View"
-                            style="primary"
-                            path={'/mail/' + chat.id}
-                        />
-                    ) : (
-                            <XButton
-                                text="Request invite"
-                                style="primary"
-                                path={'/directory/r/' + chat.id}
-                            />
-                        )
-                    }
+                    <XButton
+                        text={meOwner ? 'View' : 'Request invite'}
+                        style="primary"
+                        path={meOwner ? '/mail/' + chat.id : '/directory/r/' + chat.id}
+                    />
                 </HeaderTools>
             </XContentWrapper>
         </HeaderWrapper>
