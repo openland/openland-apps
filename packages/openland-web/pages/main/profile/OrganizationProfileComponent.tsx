@@ -507,7 +507,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
     );
 };
 
-const OrgInfoWrapper = Glamorous.div({
+const OrganizationInfoWrapper = Glamorous.div({
     overflow: 'hidden',
     height: '100%'
 });
@@ -555,7 +555,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
         let organization = this.props.organizationQuery.organization;
 
         return (
-            <OrgInfoWrapper innerRef={this.handleRef}>
+            <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header organization={organization} />
                 <XScrollView height="calc(100% - 136px)">
@@ -563,7 +563,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
                     <Members organization={organization} />
                     <Rooms organization={organization} />
                 </XScrollView>
-            </OrgInfoWrapper>
+            </OrganizationInfoWrapper>
         );
     }
 }
