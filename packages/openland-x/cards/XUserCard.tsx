@@ -75,6 +75,10 @@ const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
 }));
 
 const UserStatus = withOnline(props => {
+    if (!props.data) {
+        return null;
+    }
+
     if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
         return (
             <StatusWrapper online={false}>

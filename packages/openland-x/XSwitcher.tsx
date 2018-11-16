@@ -1,107 +1,233 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from './XLink';
+import { styleResolver } from 'openland-x-utils/styleResolver';
+import { XContentWrapper } from './XContentWrapper';
 
-interface XSwitcherProps {
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    children: any;
-    fieldStyle?: boolean;
-    flatStyle?: boolean;
-}
+type XSwitcherStyleType = 'default' | 'field' | 'flat' | 'button';
+type XSwitcherAlignSelfType = 'stretch' | 'flex-start' | 'flex-end' | 'center';
 
-const XSwitcherWrapper = Glamorous.div<XSwitcherProps>((props) => ({
-    display: 'flex',
-    alignSelf: props.alignSelf,
-    paddingTop: props.fieldStyle ? 0 : 3,
-    paddingLeft: props.flatStyle ? 0 : props.fieldStyle ? 0 : 9,
-    paddingRight: props.flatStyle ? 0 : props.fieldStyle ? 0 : 9,
-    paddingBottom: props.fieldStyle ? 0 : 2,
-    borderRadius: 4,
-    overflow: 'hidden',
-    boxSizing: 'border-box',
-    backgroundColor: '#ffffff',
-    boxShadow: props.flatStyle ? undefined : '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent',
-    '& > a': {
-        paddingLeft: props.flatStyle ? undefined : 14,
-        paddingRight: props.flatStyle ? undefined : 14,
-        height: props.fieldStyle ? 32 : undefined,
-        fontWeight: 'normal !important',
-        fontStyle: 'normal !important',
-        fontStretch: 'normal !important',
-        lineHeight: props.fieldStyle ? '2.29 !important' : 1.6,
-        letterSpacing: 'normal !important',
-        textAlign: 'center !important',
-        margin: '0 !important',
-        marginRight: props.flatStyle ? '20px !important' : undefined,
-        color: props.fieldStyle ? '#182642 !important' : '#6b7c93',
+const styleIdentation = styleResolver({
+    'default': {
+        padding: '3px 9px 2px',
+        boxShadow: '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent',
+    },
+
+    'field': {
+        padding: 0,
+        boxShadow: '0 0 0 1px rgba(50, 50, 93, .1), 0 2px 5px 0 rgba(50, 50, 93, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent',
+    },
+
+    'flat': {
+        padding: '3px 0 2px',
+    },
+
+    'button': {
+        padding: '18px 0 0',
+    }
+});
+
+const styleItemIdentation = styleResolver({
+    'default': {
+        fontSize: 14,
+        fontWeight: 400,
+        paddingLeft: 14,
+        paddingRight: 14,
+        color: '#6b7c93',
+        lineHeight: 1.6,
+
+        '&.is-active': {
+            fontWeight: 600,
+            color: '#6772e5',
+        }
+    },
+
+    'field': {
+        fontSize: 14,
+        fontWeight: 400,
+        paddingLeft: 14,
+        paddingRight: 14,
+        height: 32,
+        color: '#182642',
+        lineHeight: '2.29',
+
         '&:hover': {
-            backgroundColor: props.fieldStyle ? '#F5F6F8' : undefined
+            backgroundColor: '#F5F6F8'
         },
         '&.is-active': {
-            color: props.fieldStyle ? '#fff !important' : '#6772e5',
-            backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
-            borderBottom: props.flatStyle ? '2px solid #6772e5' : undefined,
+            fontWeight: 600,
+            color: '#fff',
+            backgroundColor: '#4428e0',
 
             '&:hover': {
-                backgroundColor: props.fieldStyle ? '#4428e0 !important' : undefined,
+                backgroundColor: '#4428e0',
             }
         }
-    }
-}));
-
-const XSwitcherItemStyle = Glamorous(XLink)<{ alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center' }>((props) => ({
-    fontSize: 14,
-    fontWeight: 200,
-    cursor: 'pointer',
-    marginRight: 8,
-    alignSelf: props.alignSelf,
-    '&:last-child': {
-        marginRight: 0
     },
-    '&.is-active': {
-        fontWeight: 600,
-    }
-}));
 
-const Counter = Glamorous.span({
-    fontSize: '12px',
-    background: '#bcc3cc',
-    borderRadius: 7,
-    color: '#fff',
-    marginLeft: 6,
-    paddingLeft: 5,
-    paddingRight: 5,
-    marginTop: 2,
-    paddingTop: 1,
-    paddingBottom: 2,
-    fontWeight: 600,
+    'flat': {
+        fontSize: 14,
+        fontWeight: 400,
+        marginRight: 20,
+        color: '#6b7c93',
+        lineHeight: 1.6,
+
+        '&.is-active': {
+            fontWeight: 600,
+            color: '#6772e5',
+            borderBottom: '2px solid #6772e5',
+        }
+    },
+
+    'button': {
+        padding: '0 16px',
+        fontSize: 16,
+        fontWeight: 400,
+        lineHeight: '32px',
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: 16,
+        marginRight: 4,
+
+        '&:first-child': {
+            marginLeft: -16,
+        },
+
+        '&:hover': {
+            color: '#000000',
+        },
+
+        '&.is-active': {
+            color: '#000000',
+            background: '#f5f5f5'
+        }
+    }
 });
+
+const styleCounterIdentation = styleResolver({
+    'default': {
+        fontSize: '12px',
+        background: '#bcc3cc',
+        borderRadius: 7,
+        color: '#fff',
+        marginLeft: 6,
+        paddingLeft: 5,
+        paddingRight: 5,
+        marginTop: 2,
+        paddingTop: 1,
+        paddingBottom: 2,
+        fontWeight: 600,
+    },
+
+    'field': {
+        fontSize: '12px',
+        background: '#bcc3cc',
+        borderRadius: 7,
+        color: '#fff',
+        marginLeft: 6,
+        paddingLeft: 5,
+        paddingRight: 5,
+        marginTop: 2,
+        paddingTop: 1,
+        paddingBottom: 2,
+        fontWeight: 600,
+    },
+
+    'flat': {
+        fontSize: '12px',
+        background: '#bcc3cc',
+        borderRadius: 7,
+        color: '#fff',
+        marginLeft: 6,
+        paddingLeft: 5,
+        paddingRight: 5,
+        marginTop: 2,
+        paddingTop: 1,
+        paddingBottom: 2,
+        fontWeight: 600,
+    },
+
+    'button': {
+        fontSize: 14,
+        fontWeight: 400,
+        lineHeight: '32px',
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.4)',
+        marginLeft: 6,
+
+        '&.is-highlight': {
+            color: '#1790ff'
+        }
+    }
+});
+
+const XSwitcherWrapper = Glamorous.div<{ alignSelf?: XSwitcherAlignSelfType; styleTheme?: XSwitcherStyleType }>([
+    (props) => ({
+        display: 'flex',
+        alignSelf: props.alignSelf,
+        borderRadius: 4,
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        backgroundColor: '#ffffff',
+
+        '& .switcher-item': styleItemIdentation(props.styleTheme),
+        '& .switcher-counter': styleCounterIdentation(props.styleTheme)
+    }),
+    (props) => styleIdentation(props.styleTheme),
+]);
+
+const XSwitcherItemStyle = Glamorous(XLink)<{ alignSelf?: XSwitcherAlignSelfType }>([
+    (props) => ({
+        cursor: 'pointer',
+        alignSelf: props.alignSelf,
+    })
+]);
 
 interface XSwitcherItemProps extends XLinkProps {
     children: any;
-    alignSelf?: 'stretch' | 'flex-start' | 'flex-end' | 'center';
-    count?: string | number;
+    alignSelf?: XSwitcherAlignSelfType;
+    counter?: string | number;
+    highlight?: boolean;
 }
 
-function XSwitcherItem(props: XSwitcherItemProps) {
-    const { alignSelf, children, count, ...other } = props;
+let XSwitcherItem = (props: XSwitcherItemProps) => {
+    const { alignSelf, children, counter, highlight, ...other } = props;
+
     return (
-        <XSwitcherItemStyle alignSelf={props.alignSelf} {...other}>
+        <XSwitcherItemStyle
+            alignSelf={alignSelf}
+            className={'switcher-item' + (highlight ? ' is-highlight' : '')}
+            {...other}
+        >
             {children}
-            {count !== undefined && <Counter>{count}</Counter>}
+            {counter !== undefined && <span className={'switcher-counter' + (highlight ? ' is-highlight' : '')}>{counter}</span>}
         </XSwitcherItemStyle>
     );
+};
+
+interface XSwitcherProps {
+    alignSelf?: XSwitcherAlignSelfType;
+    style?: XSwitcherStyleType;
+    children: any;
 }
 
 export class XSwitcher extends React.Component<XSwitcherProps> {
-
     static Item = XSwitcherItem;
 
     render() {
-        const { children, ...other } = this.props;
+        let { style, alignSelf, children } = this.props;
+
         return (
-            <XSwitcherWrapper {...other}>
-                {children}
+            <XSwitcherWrapper
+                styleTheme={style}
+                alignSelf={alignSelf}
+            >
+                {style === 'button' && (
+                    <XContentWrapper withFlex={true}>
+                        {children}
+                    </XContentWrapper>
+                )}
+                {style !== 'button' && children}
             </XSwitcherWrapper>
         );
     }

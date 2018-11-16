@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Organization, OrganizationMemberRole, Organization_organization, Organization_organization_members } from 'openland-api/Types';
+import { Organization, OrganizationMemberRole, Organization_organization, Organization_organization_members, Organization_organization_requests } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -36,6 +36,8 @@ import { XSocialButton } from 'openland-x/XSocialButton';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { XSwitcher } from 'openland-x/XSwitcher';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -140,12 +142,12 @@ const EditButton = (props: XButtonProps) => {
     );
 };
 
-interface MemberCardProps {
+interface MemberJoinedProps {
     member: Organization_organization_members;
     organization: Organization_organization;
 }
 
-const MemberCard = (props: MemberCardProps) => {
+const MemberJoinedCard = (props: MemberJoinedProps) => {
     const { user, role } = props.member;
     const { isMine, isOwner } = props.organization;
 
@@ -189,6 +191,70 @@ const MemberCard = (props: MemberCardProps) => {
         />
     );
 };
+
+interface MemberRequestCardProps {
+    member: Organization_organization_requests;
+    organization: Organization_organization;
+}
+
+interface MemberRequestCardState {
+    status: 'request' | 'accepted' | 'declined';
+}
+
+class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRequestCardState> {
+    constructor(props: MemberRequestCardProps) {
+        super(props);
+
+        this.state = {
+            status: 'request'
+        };
+    }
+
+    acceptRequest = (e: any) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({
+            status: 'accepted'
+        });
+    }
+
+    declineRequest = (e: any) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({
+            status: 'declined'
+        });
+    }
+
+    render () {
+        const { user } = this.props.member;
+
+        return (
+            <XUserCard
+                user={user}
+                hideOrganization={true}
+                customButton={(
+                    <>
+                        {this.state.status === 'request' && (
+                            <>
+                                <XButton style="primary" text="Accept" onClick={this.acceptRequest} />
+                                <XButton text="Decline" onClick={this.declineRequest} />
+                            </>
+                        )}
+                        {this.state.status === 'accepted' && (
+                            <XButton style="success" text="Accepted" icon="check" />
+                        )}
+                        {this.state.status === 'declined' && (
+                            <XButton style="ghost" text="Declined" enabled={false} />
+                        )}
+                    </>
+                )}
+            />
+        );
+    }
+}
 
 const UpdateUserProfileModal = withUserProfileUpdate((props) => {
     let uid = props.router.query.editUser;
@@ -427,17 +493,33 @@ const About = (props: { organization: Organization_organization }) => {
     );
 };
 
-const Members = (props: { organization: Organization_organization }) => {
+interface MembersProps {
+    organization: Organization_organization;
+    router: XRouter;
+}
+
+const Members = (props: MembersProps) => {
+    let tab: 'members' | 'requests' = 'members';
+
+    if (props.router.query.tab === 'requests') {
+        tab = 'requests';
+    }
+
     let { organization } = props;
 
-    if (organization.members && organization.members.length > 0) {
-        return (
-            <Section separator={0}>
-                <XSubHeader
-                    title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
-                    counter={organization.members.length}
-                    paddingBottom={0}
-                />
+    let joinedMembers = organization.members || [];
+    let requestMembers = organization.requests || [];
+
+    if (joinedMembers.length > 0) {
+        let joinedMembersBox = (withHeader?: boolean) => (
+            <>
+                {withHeader && (
+                    <XSubHeader
+                        title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
+                        counter={joinedMembers.length}
+                        paddingBottom={0}
+                    />
+                )}
                 <SectionContent>
                     {organization.isMine && (
                         <XWithRole role="admin" orgPermission={organization.id}>
@@ -447,11 +529,47 @@ const Members = (props: { organization: Organization_organization }) => {
                         </XWithRole>
                     )}
                     <XMoreCards>
-                        {organization.members.map((member, i) => (
-                            <MemberCard key={i} member={member} organization={organization} />
+                        {joinedMembers.map((member, i) => (
+                            <MemberJoinedCard key={i} member={member} organization={organization} />
                         ))}
                     </XMoreCards>
                 </SectionContent>
+            </>
+        );
+
+        return (
+            <Section separator={0}>
+                {(organization.isMine && requestMembers.length > 0) && (
+                    <>
+                        <XSwitcher style="button">
+                            <XSwitcher.Item
+                                query={{ field: 'tab' }}
+                                counter={joinedMembers.length}
+                            >
+                                {TextProfiles.Organization.membersTitle(organization.isCommunity)}
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'tab', value: 'requests' }}
+                                counter={requestMembers.length}
+                                highlight={true}
+                            >
+                                {TextProfiles.Organization.requestsTitle}
+                            </XSwitcher.Item>
+                        </XSwitcher>
+
+                        {tab === 'members' && joinedMembersBox(false)}
+                        {tab === 'requests' && (
+                            <SectionContent>
+                                {requestMembers.map((member, i) => (
+                                    <MemberRequestCard key={i} member={member} organization={organization} />
+                                ))}
+                            </SectionContent>
+                        )}
+                    </>
+                )}
+
+                {(!organization.isMine || (organization.isMine && requestMembers.length <= 0)) && joinedMembersBox(true)}
+
                 <RemoveJoinedModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id, organizationId: organization.id }} />
                 <PermissionsModal members={organization.members} orgName={organization.name} orgId={organization.id} refetchVars={{ orgId: organization.id }} />
                 <UpdateUserProfileModal members={organization.members} />
@@ -488,18 +606,13 @@ const Rooms = (props: { organization: Organization_organization }) => {
                                 <XRoomCard
                                     key={i}
                                     room={c}
-                                    extraMenu={(
-                                        <XWithRole role={['software-developer']}>
-                                            <XMenuItem>Hide room</XMenuItem>
-                                        </XWithRole>
-                                    )}
                                 />
                             ))}
                         </XMoreCards>
                     </SectionContent>
                 </Section>
             )}
-            {organization.isMine && privateRooms && (privateRooms.length > 0) && (
+            {/* organization.isMine && privateRooms && (privateRooms.length > 0) && (
                 <Section separator={0}>
                     <XSubHeader
                         title={TextProfiles.Organization.privateRooms}
@@ -512,17 +625,12 @@ const Rooms = (props: { organization: Organization_organization }) => {
                                 <XRoomCard
                                     key={i}
                                     room={c}
-                                    extraMenu={(
-                                        <XWithRole role={['software-developer']}>
-                                            <XMenuItem>Unhide</XMenuItem>
-                                        </XWithRole>
-                                    )}
                                 />
                             ))}
                         </XMoreCards>
                     </SectionContent>
                 </Section>
-            )}
+            ) */}
         </>
     );
 };
@@ -580,7 +688,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
                 <Header organization={organization} />
                 <XScrollView height="calc(100% - 136px)">
                     <About organization={organization} />
-                    <Members organization={organization} />
+                    <Members organization={organization} router={this.props.router} />
                     <Rooms organization={organization} />
                 </XScrollView>
             </OrganizationInfoWrapper>

@@ -46,10 +46,10 @@ export default withApp('Super Organizations', 'super-admin', withSuperAccounts(w
                 <AddAccountForm />
             </XHeader>
 
-            <XSwitcherMargin flatStyle={true}>
-                <XSwitcher.Item query={{ field: 'orgState' }} count={orgs.filter((o) => o.state === 'ACTIVATED').length}>ACTIVATED</XSwitcher.Item>
-                <XSwitcher.Item query={{ field: 'orgState', value: 'PENDING' }} count={orgs.filter((o) => o.state === 'PENDING').length}>PENDING</XSwitcher.Item>
-                <XSwitcher.Item query={{ field: 'orgState', value: 'SUSPENDED' }} count={orgs.filter((o) => o.state === 'SUSPENDED').length}>SUSPENDED</XSwitcher.Item>
+            <XSwitcherMargin style="flat">
+                <XSwitcher.Item query={{ field: 'orgState' }} counter={orgs.filter((o) => o.state === 'ACTIVATED').length}>ACTIVATED</XSwitcher.Item>
+                <XSwitcher.Item query={{ field: 'orgState', value: 'PENDING' }} counter={orgs.filter((o) => o.state === 'PENDING').length}>PENDING</XSwitcher.Item>
+                <XSwitcher.Item query={{ field: 'orgState', value: 'SUSPENDED' }} counter={orgs.filter((o) => o.state === 'SUSPENDED').length}>SUSPENDED</XSwitcher.Item>
             </XSwitcherMargin>
 
             <XTable>

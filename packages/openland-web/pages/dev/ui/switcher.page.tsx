@@ -15,13 +15,25 @@ export default withApp('UI Framework - Tabs', 'viewer', (props) => {
                     <XTitle>Switchers</XTitle>
                     <XSwitcher>
                         <XSwitcher.Item query={{ field: 'tab' }}>Tab 1</XSwitcher.Item>
-                        <XSwitcher.Item query={{ field: 'tab', value: '2' }} count={10}>Tab 2</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'tab', value: '2' }} counter={10}>Tab 2</XSwitcher.Item>
                         <XSwitcher.Item query={{ field: 'tab', value: '3' }}>Tab 3</XSwitcher.Item>
                     </XSwitcher>
-                    <XTitle>Flat Style</XTitle>
-                    <XSwitcher flatStyle={true}>
+                    <XTitle>style "field"</XTitle>
+                    <XSwitcher style="field">
                         <XSwitcher.Item query={{ field: 'tab' }}>Tab 1</XSwitcher.Item>
-                        <XSwitcher.Item query={{ field: 'tab', value: '2' }} count={10}>Tab 2</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'tab', value: '2' }} counter={10}>Tab 2</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'tab', value: '3' }}>Tab 3</XSwitcher.Item>
+                    </XSwitcher>
+                    <XTitle>style "flat"</XTitle>
+                    <XSwitcher style="flat">
+                        <XSwitcher.Item query={{ field: 'tab' }}>Tab 1</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'tab', value: '2' }} counter={10}>Tab 2</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'tab', value: '3' }}>Tab 3</XSwitcher.Item>
+                    </XSwitcher>
+                    <XTitle>style "button"</XTitle>
+                    <XSwitcher style="button">
+                        <XSwitcher.Item query={{ field: 'tab' }}>Tab 1</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'tab', value: '2' }} counter={10}>Tab 2</XSwitcher.Item>
                         <XSwitcher.Item query={{ field: 'tab', value: '3' }}>Tab 3</XSwitcher.Item>
                     </XSwitcher>
                 </XVertical>

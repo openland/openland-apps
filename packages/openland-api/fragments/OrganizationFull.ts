@@ -26,6 +26,13 @@ export const OrganizationFull = gql`
             }
         }
 
+        requests: alphaOrganizationMemberRequests{
+            role
+            user{
+                ...UserFull
+            }
+        }
+
         channels: alphaCreatedChannels{
             id
             isRoot
