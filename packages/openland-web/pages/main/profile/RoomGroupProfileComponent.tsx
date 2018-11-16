@@ -138,7 +138,7 @@ const MemberCard = (props: { member: GroupRoomMembersInfo_members_user, meOwner:
             flat={true}
             content={<XMenuItem style="danger" query={{ field: 'remove', value: props.member.id }}>Remove from group</XMenuItem>}
         />
-    )
+    );
     return (
         <XUserCard
             user={props.member}
