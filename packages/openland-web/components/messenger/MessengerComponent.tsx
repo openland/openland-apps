@@ -721,18 +721,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                                 <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
                                                 <XMenuTitle>Common</XMenuTitle>
                                                 <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-
-                                                <XWithRole role={['editor', 'super-admin']} negate={true}>
-                                                    {ownerRole && (
-                                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                                    )}
-                                                    {!ownerRole && (
-                                                        <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
-                                                            <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                                        </XWithRole>
-                                                    )}
-                                                </XWithRole>
                                             </>
+                                        )}
+                                        {props.data.chat.__typename === 'GroupConversation' && (
+                                            <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                         )}
                                         <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave chat</XMenuItem>
                                     </div>

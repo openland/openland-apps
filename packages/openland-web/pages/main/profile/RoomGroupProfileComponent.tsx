@@ -14,6 +14,7 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { AddMemberForm } from '../../../components/messenger/MessengerComponent';
+import { RoomEditComponent } from '../../../components/messenger/MessengerComponent';
 import IcInvite from './icons/ic-add-blue.svg';
 import {
     HeaderAvatar,
