@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Organization, OrganizationMemberRole, User_user } from 'openland-api/Types';
+import { Organization, OrganizationMemberRole, User_user, Organization_organization } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -305,31 +305,30 @@ export const SectionContent = Glamorous(XContentWrapper)({
     color: '#000000'
 });
 
-const Header = (props: { organizationQuery: Organization }) => {
-    let org = props.organizationQuery.organization;
-    let hasSocials = (org.linkedin || org.twitter || org.facebook);
-
+const Header = (props: { organization: Organization_organization }) => {
+    let { organization } = props;
+ 
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <HeaderAvatar>
                     <XAvatar
-                        cloudImageUuid={org.photo || undefined}
+                        cloudImageUuid={organization.photo || undefined}
                         size="l-medium"
                         style="organization"
-                        objectName={org.name}
-                        objectId={org.id}
+                        objectName={organization.name}
+                        objectId={organization.id}
                     />
                 </HeaderAvatar>
                 <HeaderInfo flexGrow={1} separator={0}>
-                    <HeaderTitle>{org.name}</HeaderTitle>
-                    {org.website && (
-                        <HeaderWebsite href={org.website}>
-                            {(new URL(org.website)).hostname}
+                    <HeaderTitle>{organization.name}</HeaderTitle>
+                    {organization.website && (
+                        <HeaderWebsite href={organization.website}>
+                            {(new URL(organization.website)).hostname}
                         </HeaderWebsite>
                     )}
-                    {!org.website && (
-                        <XWithRole role="admin" orgPermission={org.id}>
+                    {!organization.website && (
+                        <XWithRole role="admin" orgPermission={organization.id}>
                             <HeaderAddWebsite>
                                 <WebsitePlaceholder target={<EditButton text="Add website" />} />
                             </HeaderAddWebsite>
@@ -337,24 +336,24 @@ const Header = (props: { organizationQuery: Organization }) => {
                     )}
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {org.linkedin && (<XSocialButton value={org.linkedin} style="linkedin" />)}
-                    {org.twitter && (<XSocialButton value={org.twitter} style="twitter" />)}
-                    {org.facebook && (<XSocialButton value={org.facebook} style="facebook" />)}
+                    {organization.linkedin && (<XSocialButton value={organization.linkedin} style="linkedin" />)}
+                    {organization.twitter && (<XSocialButton value={organization.twitter} style="twitter" />)}
+                    {organization.facebook && (<XSocialButton value={organization.facebook} style="facebook" />)}
 
-                    {!hasSocials && (
-                        <XWithRole role="admin" orgPermission={org.id}>
+                    {!(organization.linkedin || organization.twitter || organization.facebook) && (
+                        <XWithRole role="admin" orgPermission={organization.id}>
                             <SocialPlaceholder target={<EditButton text="Add social links" />} />
                         </XWithRole>
                     )}
 
                     <XWithRole role={['editor', 'super-admin']} negate={true}>
-                        <XWithRole role="admin" orgPermission={org.id}>
+                        <XWithRole role="admin" orgPermission={organization.id}>
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem path={'/settings/organization/' + org.id}>Edit</XMenuItem>
+                                        <XMenuItem path={'/settings/organization/' + organization.id}>Edit</XMenuItem>
                                     </>
                                 )}
                             />
@@ -367,8 +366,8 @@ const Header = (props: { organizationQuery: Organization }) => {
                             flat={true}
                             content={(
                                 <>
-                                    <XMenuItem path={'/settings/organization/' + org.id}>Edit</XMenuItem>
-                                    <XMenuItem path={'/super/orgs/' + org.superAccountId}>Super Edit</XMenuItem>
+                                    <XMenuItem path={'/settings/organization/' + organization.id}>Edit</XMenuItem>
+                                    <XMenuItem path={'/super/orgs/' + organization.superAccountId}>Super Edit</XMenuItem>
                                 </>
                             )}
                         />
@@ -379,29 +378,23 @@ const Header = (props: { organizationQuery: Organization }) => {
     );
 };
 
-const About = (props: { organizationQuery: Organization }) => {
-    let org = props.organizationQuery.organization;
+const About = (props: { organization: Organization_organization }) => {
+    let { organization } = props;
 
     return (
         <>
-            {org.about && (
+            {organization.about && (
                 <Section separator={0}>
-                    <XSubHeader
-                        title="About"
-                        paddingBottom={0}
-                    />
+                    <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
-                        {org.about}
+                        {organization.about}
                     </SectionContent>
                 </Section>
             )}
-            {!org.about && org.isMine && (
-                <XWithRole role="admin" orgPermission={org.id}>
+            {!organization.about && organization.isMine && (
+                <XWithRole role="admin" orgPermission={organization.id}>
                     <Section separator={0}>
-                        <XSubHeader
-                            title="About"
-                            paddingBottom={0}
-                        />
+                        <XSubHeader title="About" paddingBottom={0} />
                         <SectionContent>
                             <AboutPlaceholder target={<EditButton text="Add a short description" />} />
                         </SectionContent>
@@ -412,8 +405,8 @@ const About = (props: { organizationQuery: Organization }) => {
     );
 };
 
-const Members = (props: { organizationQuery: Organization }) => {
-    let organization = props.organizationQuery.organization;
+const Members = (props: { organization: Organization_organization }) => {
+    let { organization } = props;
 
     if (organization.members && organization.members.length > 0) {
         return (
@@ -511,16 +504,16 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
     }
 
     render() {
-        let org = this.props.organizationQuery.organization;
+        let organization = this.props.organizationQuery.organization;
 
         return (
             <OrgInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
-                <Header organizationQuery={this.props.organizationQuery} />
+                <Header organization={organization} />
                 <XScrollView height="calc(100% - 136px)">
-                    <About organizationQuery={this.props.organizationQuery} />
-                    <Members organizationQuery={this.props.organizationQuery} />
-                    <Rooms rooms={org.channels.filter(c => c && !c.hidden)} />
+                    <About organization={organization} />
+                    <Members organization={organization} />
+                    <Rooms rooms={organization.channels.filter(c => c && !c.hidden)} />
                 </XScrollView>
             </OrgInfoWrapper>
         );

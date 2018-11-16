@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withUser } from '../../../api/withUserSimple';
-import { User } from 'openland-api/Types';
+import { User, User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XDate } from 'openland-x-format/XDate';
@@ -114,40 +114,40 @@ const AvatarModal = (props: { photo?: string, userName?: string, userId?: string
     );
 };
 
-const Header = (props: { userQuery: User }) => {
-    let usr = props.userQuery.user;
+const Header = (props: { user: User_user }) => {
+    let { user } = props;
 
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <HeaderAvatar>
-                    {usr.photo && <AvatarModal photo={usr.photo} userName={usr.name} userId={usr.id} />}
-                    {!usr.photo && (
+                    {user.photo && <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />}
+                    {!user.photo && (
                         <XAvatar
                             cloudImageUuid={undefined}
                             size="l-medium"
                             style="colorus"
-                            objectName={usr.name}
-                            objectId={usr.id}
+                            objectName={user.name}
+                            objectId={user.id}
                         />
                     )}
                 </HeaderAvatar>
                 <HeaderInfo flexGrow={1} separator={0}>
                     <XHorizontal separator={4}>
-                        <HeaderTitle>{usr.name}</HeaderTitle>
-                        {usr.primaryOrganization && (
-                            <HeaderOrg path={'/directory/o/' + usr.primaryOrganization.id}>
-                                {usr.primaryOrganization.name}
+                        <HeaderTitle>{user.name}</HeaderTitle>
+                        {user.primaryOrganization && (
+                            <HeaderOrg path={'/directory/o/' + user.primaryOrganization.id}>
+                                {user.primaryOrganization.name}
                             </HeaderOrg>
                         )}
                     </XHorizontal>
-                    <UserStatus variables={{ userId: usr.id }} />
+                    <UserStatus variables={{ userId: user.id }} />
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {usr.website && <XSocialButton value={usr.website} style="website" />}
-                    {usr.linkedin && <XSocialButton value={usr.linkedin} style="linkedin" />}
-                    {usr.phone && <XSocialButton value={usr.phone} style="phone" />}
-                    {usr.isYou && (
+                    {user.website && <XSocialButton value={user.website} style="website" />}
+                    {user.linkedin && <XSocialButton value={user.linkedin} style="linkedin" />}
+                    {user.phone && <XSocialButton value={user.phone} style="phone" />}
+                    {user.isYou && (
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
@@ -158,11 +158,11 @@ const Header = (props: { userQuery: User }) => {
                             )}
                         />
                     )}
-                    {!usr.isYou && (
+                    {!user.isYou && (
                         <XButton
                             text="Message"
                             style="primary"
-                            path={'/mail/' + usr.id}
+                            path={'/mail/' + user.id}
                         />
                     )}
                 </HeaderTools>
@@ -171,16 +171,16 @@ const Header = (props: { userQuery: User }) => {
     );
 };
 
-const About = (props: { userQuery: User }) => {
-    let usr = props.userQuery.user;
+const About = (props: { user: User_user }) => {
+    let { user } = props;
 
     return (
         <>
-            {usr.about && (
+            {user.about && (
                 <Section separator={0}>
                     <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
-                        {usr.about}
+                        {user.about}
                     </SectionContent>
                 </Section>
             )}
@@ -228,12 +228,14 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
     }
 
     render() {
+        let { user } = this.props.userQuery;
+
         return (
             <div ref={this.handleRef}>
                 <BackButton />
-                <Header userQuery={this.props.userQuery} />
+                <Header user={user} />
                 <XScrollView height="calc(100% - 136px)">
-                    <About userQuery={this.props.userQuery} />
+                    <About user={user} />
                 </XScrollView>
             </div>
         );
