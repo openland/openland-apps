@@ -631,7 +631,6 @@ export const CreateOrganization = withCreateOrganization((props) => {
                 }
             }}
         >
-
             <XVertical separator="large">
                 <XFormLoadingContent>
                     <XHorizontal>
@@ -644,6 +643,7 @@ export const CreateOrganization = withCreateOrganization((props) => {
                                 field="input.name"
                                 size="large"
                                 placeholder={texts.namePlaceholder}
+                                autofocus={true}
                             />
                             <XTextArea
                                 placeholder={texts.descriptionPlaceholder}
@@ -687,6 +687,7 @@ export const CreateRoom = withCreateChannel((props) => {
                     size="large"
                     placeholder="Room title"
                     field="input.name"
+                    autofocus={true}
                 />
                 <XTextArea
                     placeholder="Description"
