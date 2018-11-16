@@ -14,11 +14,11 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { 
-    BackButton, 
-    Section, 
-    SectionContent, 
-    HeaderWrapper 
+import {
+    BackButton,
+    Section,
+    SectionContent,
+    HeaderWrapper
 } from './OrganizationProfileComponent';
 import {
     GroupRoomInfo_chat_GroupConversation,
@@ -69,7 +69,7 @@ const HeaderTitle = Glamorous.div({
     color: '#000000'
 });
 
-const HeaderMembers = Glamorous.div<{online?: boolean}>(props => ({
+const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
     lineHeight: 1.23,
     color: props.online ? '#1790ff' : '#7F7F7F'
@@ -102,19 +102,20 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {chat.myRole !== 'member' ? (
-                        <XButton
-                            text="Request invite"
-                            style="primary"
-                            path={'/directory/r/' + chat.id}
-                        />
-                    ) : (
+                    {(chat.myRole === 'member' || chat.myRole === 'owner') ? (
                         <XButton
                             text="View"
                             style="primary"
                             path={'/mail/' + chat.id}
                         />
-                    )}
+                    ) : (
+                            <XButton
+                                text="Request invite"
+                                style="primary"
+                                path={'/directory/r/' + chat.id}
+                            />
+                        )
+                    }
                 </HeaderTools>
             </XContentWrapper>
         </HeaderWrapper>
@@ -140,7 +141,7 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
     );
 };
 
-const MemberCard = (props: {member: GroupRoomMembersInfo_members_user}) => {
+const MemberCard = (props: { member: GroupRoomMembersInfo_members_user }) => {
     return (
         <XUserCard
             user={props.member}
@@ -176,7 +177,7 @@ const Members = withGroupRoomMembers((props) => {
     let members = props.data.members;
     return (
         members
-            ? <MembersProvider members={members}/>
+            ? <MembersProvider members={members} />
             : <XLoader loading={true} />
     );
 }) as React.ComponentType<{ variables: { conversationId: string } }>;
@@ -234,7 +235,7 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                 <Header chat={chat} />
                 <XScrollView height="calc(100% - 136px)">
                     <About chat={chat} />
-                    <Members variables={{conversationId: this.props.conversationId}} />
+                    <Members variables={{ conversationId: this.props.conversationId }} />
                 </XScrollView>
             </OrgInfoWrapper>
         );
