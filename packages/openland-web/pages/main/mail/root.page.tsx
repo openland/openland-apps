@@ -14,6 +14,7 @@ import { RoomsExploreComponent } from '../../../components/messenger/RoomsExplor
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
 import { RoomsInviteComponent } from '../../../components/messenger/RoomsInviteComponent';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
+import { RoomGroupProfile } from '../profile/RoomGroupProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
@@ -165,20 +166,22 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
         let isRooms = props.router.path.endsWith('/channels');
         let isCall = props.router.path.endsWith('/call');
         let isInvite = props.router.path.includes('joinChannel');
+        let isChat = props.router.path.includes('/p/');
+        let cid = props.router.routeQuery.conversationId;
         let oid = props.router.routeQuery.organizationId;
         let uid = props.router.routeQuery.userId;
 
-        let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' | 'conference' = 'empty';
+        let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' | 'conference' | 'chat' = 'empty';
 
         if (isCompose) {
             tab = 'compose';
         }
 
-        if (!isCompose && !props.router.routeQuery.conversationId) {
+        if (!isCompose && !cid) {
             tab = 'empty';
         }
 
-        if (!isCompose && props.router.routeQuery.conversationId) {
+        if (!isCompose && cid) {
             tab = 'conversation';
         }
 
@@ -200,6 +203,10 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
 
         if (uid) {
             tab = 'user';
+        }
+
+        if (cid && isChat) {
+            tab = 'chat';
         }
 
         if (tab === 'empty') {
@@ -240,6 +247,11 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                                 {tab === 'user' && (
                                     <OrganizationProfilContainer>
                                         <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} />
+                                    </OrganizationProfilContainer>
+                                )}
+                                {tab === 'chat' && (
+                                    <OrganizationProfilContainer>
+                                        <RoomGroupProfile conversationId={cid} handlePageTitle={this.handlePageTitle} />
                                     </OrganizationProfilContainer>
                                 )}
                             </ConversationContainer>

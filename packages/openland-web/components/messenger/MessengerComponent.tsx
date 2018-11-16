@@ -502,40 +502,21 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
 let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?: string; children?: any }) => {
     if (props.chatType === 'ChannelConversation') {
         return (
-            <>
-                <XWithRole role={['editor', 'super-admin']}>
-                    <NavChatLeftContentStyled
-                        path={props.path}
-                        query={{ field: 'editChat', value: 'true' }}
-                        separator={10}
-                        alignItems="center"
-                        flexGrow={0}
-                        maxWidth="calc(100% - 380px)"
-                        width="calc(100% - 380px)"
-                    >
-                        {props.children}
-                    </NavChatLeftContentStyled>
-                </XWithRole>
-                <XWithRole role={['editor', 'super-admin']} negate={true}>
-                    <NavChatLeftContentStyled
-                        path={props.path}
-                        query={props.ownerRole ? { field: 'editChat', value: 'true' } : undefined}
-                        separator={10}
-                        alignItems="center"
-                        flexGrow={0}
-                        maxWidth="calc(100% - 380px)"
-                        width="calc(100% - 380px)"
-                    >
-                        {props.children}
-                    </NavChatLeftContentStyled>
-                </XWithRole>
-            </>
+            <NavChatLeftContentStyled
+                path={props.path}
+                separator={10}
+                alignItems="center"
+                flexGrow={0}
+                maxWidth="calc(100% - 380px)"
+                width="calc(100% - 380px)"
+            >
+                {props.children}
+            </NavChatLeftContentStyled>
         );
     } else if (props.chatType === 'GroupConversation') {
         return (
             <NavChatLeftContentStyled
                 path={props.path}
-                query={{ field: 'editChat', value: 'true' }}
                 separator={10}
                 alignItems="center"
                 flexGrow={0}
@@ -604,6 +585,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     }
 
     let headerPath = props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined;
+
+    if (chatType === 'ChannelConversation' || chatType === 'GroupConversation') {
+        headerPath = '/mail/p/' + props.data.chat.id;
+    }
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
