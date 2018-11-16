@@ -13,6 +13,9 @@ import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import IcInvite from './icons/ic-add-blue.svg';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { XOverflow } from '../../../components/Incubator/XOverflow';
+import {LeaveChatComponent} from '../../../components/messenger/components/MessengerRootComponent';
 import {
     AddMemberForm,
     RoomEditComponent,
@@ -72,6 +75,21 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                         style="primary"
                         path={meOwner ? '/mail/' + chat.id : '/directory/r/' + chat.id}
                     />
+                    {meOwner && (
+                        <XOverflow
+                            placement="bottom-end"
+                            flat={true}
+                            content={(
+                                <>
+                                    <XMenuItem href="/settings/profile/">Settings</XMenuItem>
+                                    <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
+                                </>
+                            )}
+                        />
+                    )}
+                    {meOwner && (
+                        <LeaveChatComponent/>
+                    )}
                 </HeaderTools>
             </XContentWrapper>
         </HeaderWrapper>

@@ -70,7 +70,7 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation((props) => {
     );
 });
 
-const LeaveChatComponent = withChatLeave((props) => {
+export const LeaveChatComponent = withChatLeave((props) => {
     let id = props.router.query.leaveFromChat;
     return (
         <XModalForm
