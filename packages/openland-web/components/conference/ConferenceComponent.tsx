@@ -106,24 +106,44 @@ class ConferenceConnection extends React.Component<{
     componentDidMount() {
         console.log('Connection mounted: ' + this.props.id + ': ' + this.props.connection.state);
         this.started = true;
-        this.peerConnection = new RTCPeerConnection({});
+        this.peerConnection = new RTCPeerConnection({
+            iceServers: [{
+                urls: ['turn:35.185.221.195:3478?transport=udp'],
+                username: 'somecalluser',
+                credential: 'samplepassword'
+            }, {
+                urls: ['turn:35.185.221.195:3478?transport=tcp'],
+                username: 'somecalluser',
+                credential: 'samplepassword'
+            }, {
+                urls: ['stun:35.185.221.195:3478?transport=udp'],
+                username: 'somecalluser',
+                credential: 'samplepassword'
+            }, {
+                urls: ['stun:35.185.221.195:3478?transport=tcp'],
+                username: 'somecalluser',
+                credential: 'samplepassword'
+            }]
+        });
         this.peerConnection.onicecandidate = (ev) => {
             backoff(async () => {
                 if (!this.started) {
                     return;
                 }
 
-                console.log(ev);
+                if (ev.candidate) {
+                    console.log('ICE:' + JSON.stringify(ev.candidate));
 
-                this.props.apollo.client.mutate({
-                    mutation: candidatesMutation,
-                    variables: {
-                        id: this.props.id,
-                        peerId: this.props.peerId,
-                        ownPeerId: this.props.ownPeerId,
-                        candidate: JSON.stringify(ev.candidate)
-                    }
-                });
+                    this.props.apollo.client.mutate({
+                        mutation: candidatesMutation,
+                        variables: {
+                            id: this.props.id,
+                            peerId: this.props.peerId,
+                            ownPeerId: this.props.ownPeerId,
+                            candidate: JSON.stringify(ev.candidate)
+                        }
+                    });
+                }
             });
         };
         (this.peerConnection as any).ontrack = (ev: any) => {
@@ -236,6 +256,7 @@ class ConferenceConnection extends React.Component<{
                             if (!this.started) {
                                 return;
                             }
+                            console.log('INCOMING ICE:' + ice);
                             await this.peerConnection.addIceCandidate(JSON.parse(ice));
                         });
                     }
