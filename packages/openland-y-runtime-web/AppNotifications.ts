@@ -1,12 +1,22 @@
 import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { trackError } from 'openland-x-analytics';
+import { Howl } from 'howler';
 
 class AppNotiticationsWeb implements AppNotificationsApi {
     state: AppNotifcationsState;
 
     private watchers: ((state: AppNotifcationsState) => void)[] = [];
     private router: { replaceRoute(path: string): void } | null = null;
+    private sound = new Howl({
+        src: ['/static/sounds/notification.mp3'],
+        onloaderror: () => {
+            console.warn('sound error');
+        },
+        onplayerror: () => {
+            console.warn('sound play error');
+        }
+    });
 
     constructor() {
         if (canUseDOM) {
@@ -82,13 +92,14 @@ class AppNotiticationsWeb implements AppNotificationsApi {
     }
 
     displayNotification(content: { path: string, title: string, body: string, image?: string }) {
+        this.sound.play();
         try {
             if (this.state === 'granted') {
-                let isSafari = (window as any).safari !== undefined;
-                if (!isSafari) {
-                    var audio = new Audio('/static/sounds/notification.mp3');
-                    audio.play();
-                }
+                // let isSafari = (window as any).safari !== undefined;
+                // if (!isSafari) {
+                //     var audio = new Audio('/static/sounds/notification.mp3');
+                //     audio.play();
+                // }
                 let notification = new Notification(content.title, {
                     body: content.body,
                     icon: content.image
