@@ -126,14 +126,14 @@ class ConferenceConnection extends React.Component<{
                 });
             });
         };
-        this.peerConnection.ontrack = (ev) => {
+        (this.peerConnection as any).ontrack = (ev: any) => {
             let audio = new Audio();
             audio.srcObject = ev.streams[0];
             audio.play();
             this.audio.push(audio);
         };
         for (let t of this.props.stream.getTracks()) {
-            this.peerConnection.addTrack(t, this.props.stream);
+            (this.peerConnection as any).addTrack(t, this.props.stream);
         }
         this.handleState();
     }
