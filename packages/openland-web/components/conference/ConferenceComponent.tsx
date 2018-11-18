@@ -93,6 +93,7 @@ class ConferenceConnection extends React.Component<{
     connection: Conference_conference_peers_connection
 }> {
 
+    container = React.createRef<HTMLDivElement>();
     started = false;
     answerHandled = false;
     offerHandled = false;
@@ -148,9 +149,11 @@ class ConferenceConnection extends React.Component<{
         };
         (this.peerConnection as any).ontrack = (ev: any) => {
             let audio = new Audio();
+            audio.autoplay = true;
+            audio.setAttribute('playsinline', 'true');
+            audio.controls = false;
             audio.srcObject = ev.streams[0];
-            audio.play();
-            this.audio.push(audio);
+            this.container.current!.appendChild(audio);
         };
         for (let t of this.props.stream.getTracks()) {
             (this.peerConnection as any).addTrack(t, this.props.stream);
@@ -228,24 +231,23 @@ class ConferenceConnection extends React.Component<{
                 });
             });
         } else if (this.props.connection.state === 'READY') {
-            if (this.readyHandled) {
-                return;
+            if (!this.readyHandled) {
+                this.readyHandled = true;
+
+                backoff(async () => {
+                    if (!this.started) {
+                        return;
+                    }
+
+                    if (!this.remoteDescription) {
+                        let offer = JSON.parse(this.props.connection.sdp!);
+                        await this.peerConnection.setRemoteDescription(offer);
+                        this.remoteDescription = offer;
+                    }
+
+                    this.handleState();
+                });
             }
-            this.readyHandled = true;
-
-            backoff(async () => {
-                if (!this.started) {
-                    return;
-                }
-
-                if (!this.remoteDescription) {
-                    let offer = JSON.parse(this.props.connection.sdp!);
-                    await this.peerConnection.setRemoteDescription(offer);
-                    this.remoteDescription = offer;
-                }
-
-                this.handleState();
-            });
 
             // Apply ICE
             if (this.remoteDescription && this.localDescription) {
@@ -266,7 +268,7 @@ class ConferenceConnection extends React.Component<{
     }
 
     render() {
-        return null;
+        return <div ref={this.container} />;
     }
 }
 
@@ -293,7 +295,7 @@ class ConferenceManager extends React.Component<{ apollo: OpenApolloClient, id: 
         });
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-            this.setState({ mediaStream: stream });
+            setTimeout(() => { this.setState({ mediaStream: stream }); }, 10);
         });
     }
 
