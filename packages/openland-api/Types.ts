@@ -4642,23 +4642,23 @@ export interface SuperChannelAddMemberVariables {
 // GraphQL query operation: Conference
 // ====================================================
 
-export interface Conference_conference_participants_user {
+export interface Conference_conference_peers_user {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface Conference_conference_participants {
-  __typename: "ConferenceParticipant";
+export interface Conference_conference_peers {
+  __typename: "ConferencePeer";
   id: string;
-  user: Conference_conference_participants_user;
+  user: Conference_conference_peers_user;
 }
 
 export interface Conference_conference {
   __typename: "Conference";
   id: string;
-  participants: Conference_conference_participants[];
+  peers: Conference_conference_peers[];
 }
 
 export interface Conference {

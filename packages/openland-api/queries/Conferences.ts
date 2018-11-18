@@ -4,7 +4,7 @@ export const ConferenceQuery = gql`
     query Conference($id: ID!) {
         conference(id: $id) {
             id
-            participants {
+            peers {
                 id
                 user {
                     id

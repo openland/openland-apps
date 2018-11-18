@@ -12,8 +12,27 @@ import { backoff, delay } from 'openland-y-utils/timer';
 let joinMutation = gql`
     mutation ConferenceJoin($id: ID!) {
         conferenceJoin(id: $id) {
+            peerId
+            conference {
+                id
+                peers {
+                    id
+                    user {
+                        id
+                        name
+                        photo
+                    }
+                }
+            }
+        }
+    }
+`;
+
+let leaveMutation = gql`
+    mutation ConferenceLeave($id: ID!, $peerId: ID!) {
+        conferenceLeave(id: $id, peerId: $peerId) {
             id
-            participants {
+            peers {
                 id
                 user {
                     id
@@ -25,11 +44,11 @@ let joinMutation = gql`
     }
 `;
 
-let leaveMutation = gql`
-    mutation ConferenceLeave($id: ID!) {
-        conferenceLeave(id: $id) {
+let keepAliveMutation = gql`
+    mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {
+        conferenceKeepAlive(id: $id, peerId: $peerId) {
             id
-            participants {
+            peers {
                 id
                 user {
                     id
@@ -45,7 +64,7 @@ let watchSubscription = gql`
     subscription ConferenceWatch($id: ID!) {
         alphaConferenceWatch(id: $id) {
             id
-            participants {
+            peers {
                 id
                 user {
                     id
@@ -65,17 +84,18 @@ class ConferenceManager extends React.Component<{ apollo: OpenApolloClient, id: 
         this.subs = this.props.apollo.client.subscribe({ query: watchSubscription, variables: { id: this.props.id } })
             .subscribe({});
         backoff(async () => {
+            let peerId = (await this.props.apollo.client.mutate({ mutation: joinMutation, variables: { id: this.props.id } })).data!.conferenceJoin.peerId as string;
             while (this._mounted) {
-                await this.props.apollo.client.mutate({ mutation: joinMutation, variables: { id: this.props.id } });
+                await this.props.apollo.client.mutate({ mutation: keepAliveMutation, variables: { id: this.props.id, peerId } });
                 await delay(2000);
             }
+            this.props.apollo.client.mutate({ mutation: leaveMutation, variables: { id: this.props.id, peerId } });
         });
     }
 
     componentWillUnmount() {
         this.subs.unsubscribe();
         this._mounted = false;
-        this.props.apollo.client.mutate({ mutation: leaveMutation, variables: { id: this.props.id } });
     }
 
     render() {
@@ -89,15 +109,14 @@ export const ConferenceComponent = (props: { conversationId: string }) => {
             {apollo => (
                 <YQuery query={ConferenceQuery} variables={{ id: props.conversationId }}>
                     {data => {
-                        console.log('yq');
                         if (data.loading) {
                             return <XLoader />;
                         }
                         return (
                             <>
-                                <ConferenceManager apollo={apollo!} id={props.conversationId} />
+                                <ConferenceManager apollo={apollo!} id={data.data!.conference.id} />
                                 <XVertical>
-                                    {data.data!.conference.participants.map((v) => (
+                                    {data.data!.conference.peers.map((v) => (
                                         <XHorizontal key={v.id}>{v.user.name}</XHorizontal>
                                     ))}
                                 </XVertical>

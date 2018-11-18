@@ -6932,7 +6932,7 @@
             "deprecationReason": null
           },
           {
-            "name": "participants",
+            "name": "peers",
             "description": "",
             "args": [],
             "type": {
@@ -6946,7 +6946,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ConferenceParticipant",
+                    "name": "ConferencePeer",
                     "ofType": null
                   }
                 }
@@ -6963,7 +6963,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ConferenceParticipant",
+        "name": "ConferencePeer",
         "description": "",
         "fields": [
           {
@@ -12132,7 +12132,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Conference",
+                "name": "ConferenceJoinResult",
                 "ofType": null
               }
             },
@@ -12145,6 +12145,20 @@
             "args": [
               {
                 "name": "id",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "peerId",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -12176,6 +12190,20 @@
             "args": [
               {
                 "name": "id",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "peerId",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -14606,6 +14634,49 @@
           }
         ],
         "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ConferenceJoinResult",
+        "description": "",
+        "fields": [
+          {
+            "name": "peerId",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "conference",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Conference",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -19587,6 +19658,16 @@
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "ConferencePeerID",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
       }
     ],
     "directives": [
@@ -19954,6 +20035,16 @@
       },
       {
         "name": "conferenceParticipantID",
+        "description": "",
+        "locations": [
+          "ARGUMENT_DEFINITION",
+          "INPUT_FIELD_DEFINITION",
+          "FIELD_DEFINITION"
+        ],
+        "args": []
+      },
+      {
+        "name": "conferencePeerID",
         "description": "",
         "locations": [
           "ARGUMENT_DEFINITION",
