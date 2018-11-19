@@ -10,7 +10,7 @@ export interface XAvatarUploadBasicProps {
     placeholder?: { add: any, change: any };
     file?: UploadedFile | null;
     onChanged?: (file: UploadedFile | null) => void;
-    size?: 'small' | 'normal' | 'large';
+    size?: 'small' | 'normal' | 'large' | 'default';
     initialUrl?: string | null;
     cropParams?: string;
 }
@@ -19,6 +19,10 @@ let DrowAreaSize = styleResolver({
     'small': {
         width: 96,
         height: 96
+    },
+    'default': {
+        width: 120,
+        height: 120
     },
     'normal': {
         width: 160,

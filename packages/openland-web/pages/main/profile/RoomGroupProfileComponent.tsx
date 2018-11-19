@@ -19,7 +19,7 @@ import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     AddMemberForm,
     RoomEditComponent,
-    ChatEditComponent
+    GroupEditComponent
 } from '../../../components/messenger/MessengerComponent';
 import {
     HeaderAvatar,
@@ -87,7 +87,7 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                             />
                             <LeaveChatComponent />
                             {chat.__typename === 'GroupConversation' && (
-                                <ChatEditComponent
+                                <GroupEditComponent
                                     title={chat.title}
                                     longDescription={chat.longDescription || undefined}
                                     photoRef={chat.photoRef}
