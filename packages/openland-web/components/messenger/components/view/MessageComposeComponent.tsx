@@ -32,6 +32,7 @@ import {
     SaveDraftMessageVariables,
     SaveDraftMessage,
     MessageFull_mentions
+    SharedRoomKind
 } from 'openland-api/Types';
 
 const SendMessageWrapper = Glamorous.div({
@@ -298,7 +299,7 @@ const EditView = (props: { title: string, message: string, onCancel: () => void 
 );
 
 export interface MessageComposeComponentProps {
-    conversationType?: string;
+    conversationType?: SharedRoomKind | null;
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;

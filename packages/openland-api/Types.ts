@@ -573,6 +573,171 @@ export interface ChatListVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Dialogs
+// ====================================================
+
+export interface Dialogs_dialogs_items_topMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+}
+
+export interface Dialogs_dialogs_items_topMessage {
+  __typename: "Message";
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  text: string | null;
+  sender: Dialogs_dialogs_items_topMessage_sender;
+}
+
+export interface Dialogs_dialogs_items {
+  __typename: "Dialog";
+  id: string;
+  cid: string;
+  fid: string;
+  kind: DialogKind;
+  title: string;
+  photo: string;
+  unreadCount: number;
+  topMessage: Dialogs_dialogs_items_topMessage | null;
+}
+
+export interface Dialogs_dialogs {
+  __typename: "DialogsConnection";
+  items: Dialogs_dialogs_items[];
+  cursor: string | null;
+}
+
+export interface Dialogs_counter {
+  __typename: "NotificationCounter";
+  id: string;
+  unreadCount: number;
+}
+
+export interface Dialogs {
+  dialogs: Dialogs_dialogs;
+  counter: Dialogs_counter;
+}
+
+export interface DialogsVariables {
+  after?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: Room
+// ====================================================
+
+export interface Room_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: Room_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface Room_room_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface Room_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Room_room_PrivateRoom_user;
+  settings: Room_room_PrivateRoom_settings;
+}
+
+export interface Room_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: Room_room_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface Room_room_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: Room_room_SharedRoom_members_user;
+}
+
+export interface Room_room_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface Room_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  description: string | null;
+  organization: Room_room_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: Room_room_SharedRoom_members[];
+  settings: Room_room_SharedRoom_settings;
+}
+
+export type Room_room = Room_room_PrivateRoom | Room_room_SharedRoom;
+
+export interface Room {
+  room: Room_room | null;
+}
+
+export interface RoomVariables {
+  id: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: ChatLeave
 // ====================================================
 
@@ -7787,6 +7952,33 @@ export interface MessageFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: MessageLightShort
+// ====================================================
+
+export interface MessageLightShort_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+}
+
+export interface MessageLightShort {
+  __typename: "Message";
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  text: string | null;
+  sender: MessageLightShort_sender;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: MessageShort
 // ====================================================
 
@@ -8224,6 +8416,13 @@ export enum ConferencePeerConnectionState {
   WAIT_OFFER = "WAIT_OFFER",
 }
 
+export enum DialogKind {
+  GROUP = "GROUP",
+  INTERNAL = "INTERNAL",
+  PRIVATE = "PRIVATE",
+  PUBLIC = "PUBLIC",
+}
+
 export enum EmailFrequency {
   HOUR_1 = "HOUR_1",
   HOUR_24 = "HOUR_24",
@@ -8247,6 +8446,26 @@ export enum NotificationsDelay {
 export enum OrganizationMemberRole {
   MEMBER = "MEMBER",
   OWNER = "OWNER",
+}
+
+export enum RoomMemberRole {
+  ADMIN = "ADMIN",
+  MEMBER = "MEMBER",
+  OWNER = "OWNER",
+}
+
+export enum SharedRoomKind {
+  GROUP = "GROUP",
+  INTERNAL = "INTERNAL",
+  PUBLIC = "PUBLIC",
+}
+
+export enum SharedRoomMembershipStatus {
+  KICKED = "KICKED",
+  LEFT = "LEFT",
+  MEMBER = "MEMBER",
+  NONE = "NONE",
+  REQUESTED = "REQUESTED",
 }
 
 export enum SuperAccountState {

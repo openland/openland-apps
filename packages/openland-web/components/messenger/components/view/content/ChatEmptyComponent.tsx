@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { SharedRoomKind } from 'openland-api/Types';
 
 const EmptyRoot = Glamorous.div({
     position: 'relative',
@@ -48,14 +49,14 @@ const Text = Glamorous.div({
     marginTop: 8,
 });
 
-export const EmptyBlock = (props: { conversationType?: string, onClick?: (show: boolean) => void }) => (
+export const EmptyBlock = (props: { conversationType?: SharedRoomKind | null, onClick?: (show: boolean) => void }) => (
     <EmptyRoot>
         <EmptyContent>
             <ImageWrapper>
-                <Image isRoom={props.conversationType === 'ChannelConversation'} />
+                <Image isRoom={props.conversationType === 'PUBLIC'} />
             </ImageWrapper>
-            {props.conversationType === 'ChannelConversation' && <Text>The discussion hasn’t started yet</Text>}
-            {props.conversationType !== 'ChannelConversation' && <Text>No messages yet</Text>}
+            {props.conversationType === 'PUBLIC' && <Text>The discussion hasn’t started yet</Text>}
+            {props.conversationType !== 'PUBLIC' && <Text>No messages yet</Text>}
         </EmptyContent>
     </EmptyRoot>
 );

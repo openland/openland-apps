@@ -7,6 +7,7 @@ import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { MessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
+import { DialogsQuery } from 'openland-api/DialogsQuery';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($state: String) {
@@ -115,14 +116,12 @@ export class GlobalStateEngine {
         let start = Date.now();
         let res = (await backoff(async () => {
             return await this.engine.client.client.query({
-                query: ChatListQuery.document
+                query: DialogsQuery.document
             });
         })).data;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
-        let seq = (res as any).chats.seq;
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
-        this.engine.dialogList.handleInitialConversations((res as any).chats.conversations, (res as any).chats.next);
-        console.info('[global] Initial state loaded with seq #' + seq);
+        this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
         // Starting Sequence Watcher
         this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client, this.handleGlobalEvent, this.handleSeqUpdated);

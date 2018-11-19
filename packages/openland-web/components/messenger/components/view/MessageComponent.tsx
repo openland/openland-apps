@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFull, UserShort } from 'openland-api/Types';
+import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
@@ -136,7 +136,7 @@ interface MessageComponentProps {
     conversation: ConversationEngine;
     out: boolean;
     me?: UserShort | null;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | null;
     conversationId: string;
 }
 

@@ -6,7 +6,7 @@ import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
-import { MessageFull, UserShort } from 'openland-api/Types';
+import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
 
@@ -84,7 +84,7 @@ interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
     loadBefore: (id: string) => void;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | null;
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     conversationId: string;

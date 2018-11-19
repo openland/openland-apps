@@ -13,7 +13,7 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
 import { withUserInfo } from '../../UserInfo';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
@@ -27,7 +27,7 @@ interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | null;
     me: UserShort | null;
 }
 
@@ -258,7 +258,7 @@ const Placeholder = withChatHistory(() => {
 
 interface MessengerRootComponentProps {
     conversationId: string;
-    conversationType?: string;
+    conversationType: SharedRoomKind | null;
 }
 
 const MessagesWithUser = withUserInfo((props) => (
@@ -269,7 +269,7 @@ const MessagesWithUser = withUserInfo((props) => (
         messenger={props.messenger}
         conversationType={props.conversationType}
     />
-)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
+)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType: SharedRoomKind | null }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all

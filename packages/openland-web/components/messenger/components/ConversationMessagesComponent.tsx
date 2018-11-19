@@ -8,7 +8,7 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { TypignsComponent, TypingContext } from './TypingsComponent';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 
 const TypingWrapper = Glamorous.div({
     display: 'flex',
@@ -98,7 +98,7 @@ const TypingComponent = (props: { chatId: string }) => (
 interface ConversationMessagesComponentProps {
     conversation: ConversationEngine;
     conversationId: string;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | null;
     loading: boolean;
     messages: ModelMessage[];
     inputShower?: (show: boolean) => void;

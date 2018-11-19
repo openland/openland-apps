@@ -4,6 +4,7 @@ import { MessageFull } from '../fragments/MessageFull';
 import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { MessageShort } from '../fragments/MessageShort';
+import { MessageLightShort } from '../fragments/MessageLightShort';
 import { UserTiny } from '../fragments/UserTiny';
 
 export const ChatListQuery = gql`
@@ -35,6 +36,74 @@ export const ChatListQuery = gql`
     }
     ${MessageShort}
     ${UserTiny}
+`;
+
+export const DialogsQuery = gql`
+    query Dialogs($after: String) {
+        dialogs(first: 20, after: $after) {
+            items {
+                id
+                cid
+                fid
+                kind
+                title
+                photo
+                unreadCount
+                topMessage {
+                    ...MessageLightShort
+                }
+            }
+            cursor
+        }
+        counter: alphaNotificationCounter {
+            id
+            unreadCount
+        }
+    }
+    ${MessageLightShort}
+    ${UserTiny}
+`;
+
+export const RoomQuery = gql`
+    query Room($id: ID!) {
+        room(id: $id){
+            ... on PrivateRoom{
+                id
+                user{
+                    ... UserShort
+                }
+                settings{
+                    mute
+                }
+            } 
+            ... on SharedRoom{
+                id
+                kind
+                title
+                photo
+                description
+                organization{
+                    ... OrganizationShort
+                }
+                membership
+                role
+                membersCount
+                members{
+                    role
+                    membership
+                    user{
+                        ... UserShort
+                    }
+                }
+                settings{
+                    mute
+                }
+            }
+        }
+    }
+    ${MessageLightShort}
+    ${UserShort}
+    ${OrganizationShort}
 `;
 
 export const ChatLeaveMutation = gql`

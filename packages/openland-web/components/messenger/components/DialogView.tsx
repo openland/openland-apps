@@ -23,7 +23,7 @@ let documentIcon = css`
 
 export const DialogView = (props: { item: DialogDataSourceItem }) => {
     let conv = props.item;
-    let isPrivate = props.item.type === 'PrivateConversation';
+    let isPrivate = props.item.kind === 'PRIVATE';
     return (
         <XLink2
             path={'/mail/' + props.item.key}
@@ -39,16 +39,16 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
             selectedHoverBackgroundColor="#4596e1"
         >
             <XAvatar
-                style={(props.item.type === 'SharedConversation'
+                style={(props.item.kind === 'INTERNAL'
                     ? 'organization'
-                    : props.item.type === 'GroupConversation'
+                    : props.item.kind === 'GROUP'
                         ? 'group'
-                        : props.item.type === 'ChannelConversation'
+                        : props.item.kind === 'PUBLIC'
                             ? 'room' :
-                            props.item.type === 'PrivateConversation' ? 'user' : undefined
+                            props.item.kind === 'PRIVATE' ? 'user' : undefined
                 )}
                 objectName={props.item.title}
-                objectId={props.item.flexibleId}
+                objectId={props.item.fid}
                 online={props.item.online}
                 cloudImageUuid={props.item.photo}
             />
