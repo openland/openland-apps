@@ -169,7 +169,7 @@ class EditMessageInlineInner extends React.Component<any> {
 
   componentDidMount() {
     if (this.xRichTextInputRef && this.xRichTextInputRef.current) {
-      this.xRichTextInputRef.current.focus();
+      this.xRichTextInputRef.current.focusToEnd();
     }
   }
 

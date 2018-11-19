@@ -269,10 +269,14 @@ const MentionEntry = (props: any) => {
   );
 };
 
+type XRichTextInputState = {
+  editorState: EditorState;
+  suggestions: Array<MentionT>;
+};
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<
   XRichTextInputProps,
-  { editorState: EditorState; suggestions: Array<MentionT> }
+  XRichTextInputState
 > {
   private editorRef = React.createRef<Editor>();
   constructor(props: XRichTextInputProps) {
@@ -301,6 +305,12 @@ export class XRichTextInput extends React.PureComponent<
     if (this.editorRef.current) {
       this.editorRef.current.focus();
     }
+  }
+
+  focusToEnd = () => {
+    this.setState((state: XRichTextInputState) => ({
+      editorState: EditorState.moveFocusToEnd(state.editorState)
+    }));
   }
 
   reset = () => {
