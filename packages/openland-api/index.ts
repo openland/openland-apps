@@ -68,6 +68,7 @@ export const ChannelInviteLinkQuery = typedQuery<Types.ChannelInviteLink, Types.
 export const ChannelInviteInfoQuery = typedQuery<Types.ChannelInviteInfo, Types.ChannelInviteInfoVariables>(Chats.ChannelInviteInfoQuery);
 export const ChannelJoinInviteLinkMutation = typedMutation<Types.ChannelJoinInviteLink, Types.ChannelJoinInviteLinkVariables>(Chats.ChannelJoinInviteLinkMutation);
 export const ChatUpdateGroupMutation = typedMutation<Types.ChatUpdateGroup, Types.ChatUpdateGroupVariables>(Chats.ChatUpdateGroupMutation);
+export const RoomUpdateDescriptionMutation = typedMutation<Types.RoomUpdateDescription, Types.RoomUpdateDescriptionVariables>(Chats.RoomUpdateDescriptionMutation);
 export const ChatDeleteMessageMutation = typedMutation<Types.ChatDeleteMessage, Types.ChatDeleteMessageVariables>(Chats.ChatDeleteMessageMutation);
 export const ChatDeleteUrlAugmentationMutation = typedMutation<Types.ChatDeleteUrlAugmentation, Types.ChatDeleteUrlAugmentationVariables>(Chats.ChatDeleteUrlAugmentationMutation);
 export const ChatEditMessageMutation = typedMutation<Types.ChatEditMessage, Types.ChatEditMessageVariables>(Chats.ChatEditMessageMutation);

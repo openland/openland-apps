@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
+import { withRoomUpdateDescription } from '../../../api/withRoomUpdateDescription';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -10,6 +12,10 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
@@ -30,7 +36,8 @@ import {
     Section,
     SectionContent,
     HeaderWrapper,
-    OrganizationInfoWrapper
+    OrganizationInfoWrapper,
+    EditButton
 } from './OrganizationProfileComponent';
 import {
     GroupRoomInfo_chat_GroupConversation,
@@ -112,8 +119,39 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
     );
 };
 
+const AboutPlaceholder = withRoomUpdateDescription((props) => {
+    return (
+        <XModalForm
+            defaultData={{
+                conversationId: (props as any).chatId,
+                description: '',
+            }}
+            defaultAction={async (data) => {
+                await props.updateDescription({
+                    variables: {
+                        conversationId: (props as any).chatId,
+                        description: data.input.description
+                    }
+                });
+            }}
+            target={(props as any).target}
+            title="About"
+            useTopCloser={true}
+        >
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField field="fields.input.description">
+                        <XTextArea valueStoreKey="fields.input.description" placeholder="Description" />
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ target: any, chatId: string; }>;
+
 const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
+    let meOwner = chat.myRole === 'member' || chat.myRole === 'owner';
     return (
         <>
             {chat.description && (
@@ -124,6 +162,14 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
                     />
                     <SectionContent>
                         {chat.description}
+                    </SectionContent>
+                </Section>
+            )}
+            {!chat.description && meOwner && (
+                <Section separator={0}>
+                    <XSubHeader title="About" paddingBottom={0} />
+                    <SectionContent>
+                        <AboutPlaceholder target={<EditButton text="Add a short description" />} chatId={chat.id} />
                     </SectionContent>
                 </Section>
             )}

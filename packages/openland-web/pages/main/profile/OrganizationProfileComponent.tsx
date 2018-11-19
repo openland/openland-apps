@@ -130,7 +130,7 @@ const EditButtonWrapper = Glamorous(XButton)({
     }
 });
 
-const EditButton = (props: XButtonProps) => {
+export const EditButton = (props: XButtonProps) => {
     let { style, icon, ...other } = props;
 
     return (

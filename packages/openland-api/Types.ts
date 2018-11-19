@@ -4555,6 +4555,27 @@ export interface ChatUpdateGroupVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: RoomUpdateDescription
+// ====================================================
+
+export interface RoomUpdateDescription_event {
+  __typename: "ConversationUpdateResponse";
+  curSeq: number;
+}
+
+export interface RoomUpdateDescription {
+  event: RoomUpdateDescription_event;
+}
+
+export interface RoomUpdateDescriptionVariables {
+  conversationId: string;
+  description?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: ChatDeleteMessage
 // ====================================================
 
@@ -7694,8 +7715,8 @@ export enum ConferencePeerConnectionState {
   NEED_ANSWER = "NEED_ANSWER",
   NEED_OFFER = "NEED_OFFER",
   READY = "READY",
-  WAITING_ANSWER = "WAITING_ANSWER",
-  WAITING_OFFER = "WAITING_OFFER",
+  WAIT_ANSWER = "WAIT_ANSWER",
+  WAIT_OFFER = "WAIT_OFFER",
 }
 
 export enum EmailFrequency {
