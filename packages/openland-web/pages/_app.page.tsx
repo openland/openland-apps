@@ -9,7 +9,7 @@ import { buildConfig } from '../config';
 import { withData } from './root/withData';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
-import { RootErrorBoundary } from '../components/RootErrorBoundary';
+import { RootErrorBoundary } from './root/RootErrorBoundary';
 import moment from 'moment-timezone';
 import { getClientStorage, SharedStorage } from 'openland-x-utils/SharedStorage';
 import { trackPage } from 'openland-x-analytics';
