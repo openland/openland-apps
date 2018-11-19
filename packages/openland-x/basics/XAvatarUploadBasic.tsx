@@ -34,7 +34,7 @@ let DrowAreaSize = styleResolver({
     },
 });
 
-const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'small' | 'normal' | 'large' }>([
+const DropAreaWrapper = Glamorous.div<{ hasImage: boolean, avatarSize?: 'small' | 'normal' | 'large' | 'default' }>([
     {
         position: 'relative',
         backgroundColor: '#ffffff',
@@ -104,11 +104,12 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
         add: any,
         change: any
     };
-    size?: 'small' | 'normal' | 'large';
+    size?: 'small' | 'normal' | 'large' | 'default';
 }
 
 let AvatarImageSize = {
     'small': 96,
+    'default': 120,
     'normal': 159,
     'large': 241,
 };
