@@ -30,23 +30,25 @@ import {
 } from 'openland-api/Types';
 import { global } from '../../../../globalSingleton';
 
-const SendMessageWrapper = Glamorous.div({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'stretch',
-  width: '100%',
-  minHeight: 114,
-  maxHeight: 330,
-  backgroundColor: XThemeDefault.backyardColor,
-  flexShrink: 0,
-  paddingLeft: 16,
-  paddingRight: 16,
-  paddingTop: 12,
-  paddingBottom: 12,
-  borderTopStyle: 'solid',
-  borderTopWidth: '1px',
-  borderTopColor: XThemeDefault.separatorColor
-});
+const SendMessageWrapper = Glamorous.div<{ hidden?: boolean }>(
+  ({ hidden }: { hidden: boolean }) => ({
+    display: hidden ? 'none' : 'flex',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    width: '100%',
+    minHeight: 114,
+    maxHeight: 330,
+    backgroundColor: XThemeDefault.backyardColor,
+    flexShrink: 0,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderTopStyle: 'solid',
+    borderTopWidth: '1px',
+    borderTopColor: XThemeDefault.separatorColor
+  })
+);
 
 const SendMessageContent = Glamorous(XHorizontal)({
   width: '100%',
@@ -362,7 +364,7 @@ class MessageComposeComponentInner extends React.PureComponent<
     let { message, reply } = this.state;
 
     return (
-      <SendMessageWrapper>
+      <SendMessageWrapper hidden={this.props.hidden}>
         <DropArea
           onSendFile={this.props.onSendFile}
           handleDrop={this.handleDrop}
@@ -412,8 +414,19 @@ class MessageComposeComponentInner extends React.PureComponent<
   }
 }
 
+// withGetDraftMessage(
+
+// draft={props.data.message}
 // withMessageState(
 //   withUserInfo(
+
+// ) as React.ComponentType<
+//   MessageComposeComponentProps & { variables?: { conversationId?: string } }
+// >;
+
+//   )
+// ) as React.ComponentType<MessageComposeWithDraft>;
+
 export const MessageComposeComponent = (props: any) => (
   <MessagesStateContext.Consumer>
     {(state: MessagesStateContextProps) => (
@@ -427,16 +440,3 @@ export const MessageComposeComponent = (props: any) => (
     )}
   </MessagesStateContext.Consumer>
 );
-
-//   )
-// ) as React.ComponentType<MessageComposeWithDraft>;
-
-// withGetDraftMessage(
-
-// draft={props.data.message}
-export const MessageComposeComponentDraft = (props: any) => {
-  return <MessageComposeComponent {...props} />;
-};
-// ) as React.ComponentType<
-//   MessageComposeComponentProps & { variables?: { conversationId?: string } }
-// >;

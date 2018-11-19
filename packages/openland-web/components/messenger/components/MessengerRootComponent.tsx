@@ -14,7 +14,7 @@ import {
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { withChatHistory } from '../../../api/withChatHistory';
-import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
+import { MessageComposeComponent } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
@@ -250,7 +250,7 @@ class MessagesComponent
           inputShower={this.handleShowIput}
         />
         {this.state.hideInput === false && (
-          <MessageComposeComponentDraft
+          <MessageComposeComponent
             conversation={this.conversation}
             onChange={this.handleChange}
             onSend={this.handleSend}
@@ -278,7 +278,7 @@ const Placeholder = () => {
       <MessagesContainer>
         <XLoader loading={true} />
       </MessagesContainer>
-      <MessageComposeComponentDraft enabled={false} />
+      <MessageComposeComponent enabled={false} hidden={true} />
     </ConversationContainer>
   );
 };
@@ -358,26 +358,25 @@ export class MessengerRootComponent extends React.Component<
   render() {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all
 
-    if (true || !canUseDOM) {
-      return (
-        <Placeholder
-          variables={{ conversationId: this.props.conversationId }}
-        />
-      );
+    if (!canUseDOM || this.props.loading) {
+      return <Placeholder />;
     }
 
-    // return (
-    //   <MessagesStateContext.Provider value={this.state}>
-    //     <MessengerContext.Consumer>
-    //       {messenger => (
-    //         <MessagesWithUser
-    //           conversationId={this.props.conversationId}
-    //           messenger={messenger}
-    //           conversationType={this.props.conversationType}
-    //         />
-    //       )}
-    //     </MessengerContext.Consumer>
-    //   </MessagesStateContext.Provider>
-    // );
+    console.log(this.props);
+    const conversationId = this.props.data.chat.id;
+
+    return (
+      <MessagesStateContext.Provider value={this.state}>
+        <MessengerContext.Consumer>
+          {messenger => (
+            <MessagesWithUser
+              conversationId={conversationId}
+              messenger={messenger}
+              conversationType={this.props.conversationType}
+            />
+          )}
+        </MessengerContext.Consumer>
+      </MessagesStateContext.Provider>
+    );
   }
 }
