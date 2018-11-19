@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as qs from 'query-string';
-import { withData } from '../../components/withData';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 
 class LoginStarter extends React.Component<{}, { error: boolean }> {
@@ -25,4 +24,4 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withData('Login', LoginStarter);
+export default LoginStarter;

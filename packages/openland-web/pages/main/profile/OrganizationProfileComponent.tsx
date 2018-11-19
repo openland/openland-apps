@@ -79,16 +79,16 @@ export const HeaderWrapper = Glamorous.div({
     paddingBottom: 16
 });
 
-const HeaderAvatar = Glamorous.div({
+export const HeaderAvatar = Glamorous.div({
     paddingRight: 18
 });
 
-const HeaderInfo = Glamorous(XVertical)({
+export const HeaderInfo = Glamorous(XVertical)({
     paddingTop: 1,
     justifyContent: 'center'
 });
 
-const HeaderTitle = Glamorous.div({
+export const HeaderTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
     letterSpacing: 0,
@@ -109,7 +109,7 @@ const HeaderAddWebsite = Glamorous.div({
     marginBottom: '-6px!important',
 });
 
-const HeaderTools = Glamorous(XHorizontal)({
+export const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13
 });
 
@@ -635,7 +635,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
     );
 };
 
-const OrganizationInfoWrapper = Glamorous.div({
+export const OrganizationInfoWrapper = Glamorous.div({
     overflow: 'hidden',
     height: '100%'
 });

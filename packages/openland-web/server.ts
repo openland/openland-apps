@@ -72,14 +72,18 @@ async function start() {
     //
     // GraphiQL Sandbox
     //
-    server.use('/sandbox', graphiqlExpress(req => ({
-        endpointURL: '/graphql',
-        subscriptionsEndpoint: url.format({
+    server.use('/sandbox', graphiqlExpress(req => {
+        let wsendpoint = url.format({
             host: req!!.get('host'),
-            protocol: req!!.get('host') !== 'localhost' ? 'wss' : 'ws',
+            protocol: (req!!.get('host') !== 'localhost:3000' ? 'wss' : 'ws'),
             pathname: '/graphql'
-        })
-    })));
+        });
+        console.log(wsendpoint);
+        return {
+            endpointURL: '/graphql',
+            subscriptionsEndpoint: wsendpoint
+        };
+    }));
 
     //
     // Favicon support endpoint

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withData } from '../components/withData';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
@@ -13,7 +12,7 @@ const FontDemo = (props: { fontSize: number, fontWeight: string }) => {
     return <FontDemoRender {...props}>Steve Kite {props.fontSize}px/{props.fontWeight}</FontDemoRender>;
 };
 
-export default withData('Compatibitily Table', class Error extends React.Component {
+export default class Error extends React.Component {
     render() {
         return (
             <XHorizontal>
@@ -110,4 +109,4 @@ export default withData('Compatibitily Table', class Error extends React.Compone
             </XHorizontal>
         );
     }
-});
+}

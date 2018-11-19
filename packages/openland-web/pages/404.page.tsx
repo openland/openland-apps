@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { withData } from '../components/withData';
-import { ErrorPage } from '../components/ErrorPage';
+import { ErrorPage } from './root/ErrorPage';
 
-export default withData('Error', class Error extends React.Component {
+export default class Error extends React.Component {
     render() {
         return <ErrorPage statusCode={404} />;
     }
-});
+}

@@ -1030,7 +1030,7 @@ export interface ChatInfo_chat_GroupConversation {
   settings: ChatInfo_chat_GroupConversation_settings;
   membersCount: number;
   photo: string | null;
-  longDescription: string;
+  longDescription: string | null;
   photoRef: ChatInfo_chat_GroupConversation_photoRef | null;
 }
 
@@ -1091,8 +1091,8 @@ export interface ChatInfo_chat_ChannelConversation {
   isRoot: boolean;
   featured: boolean;
   hidden: boolean;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   socialImageRef: ChatInfo_chat_ChannelConversation_socialImageRef | null;
   socialImage: string | null;
   membersCount: number;
@@ -2053,7 +2053,7 @@ export interface ChatSearchChannel_items_edges_node {
   myStatus: ChannelMembershipStatus;
   photoRef: ChatSearchChannel_items_edges_node_photoRef | null;
   membersCount: number;
-  description: string;
+  description: string | null;
   organization: ChatSearchChannel_items_edges_node_organization | null;
   isRoot: boolean;
 }
@@ -3772,7 +3772,7 @@ export interface ChannelInviteInfo_invite_channel {
   photos: string[];
   isRoot: boolean;
   featured: boolean;
-  description: string;
+  description: string | null;
   myStatus: ChannelMembershipStatus;
   membersCount: number;
   socialImage: string | null;
@@ -4639,6 +4639,62 @@ export interface SuperChannelAddMemberVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Conference
+// ====================================================
+
+export interface Conference_conference_peers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Conference_conference_peers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: Conference_conference_peers_user_primaryOrganization | null;
+}
+
+export interface Conference_conference_peers_connection {
+  __typename: "ConferencePeerConnection";
+  state: ConferencePeerConnectionState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface Conference_conference_peers {
+  __typename: "ConferencePeer";
+  id: string;
+  user: Conference_conference_peers_user;
+  connection: Conference_conference_peers_connection | null;
+}
+
+export interface Conference_conference {
+  __typename: "Conference";
+  id: string;
+  peers: Conference_conference_peers[];
+}
+
+export interface Conference {
+  conference: Conference_conference;
+}
+
+export interface ConferenceVariables {
+  id: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 
@@ -4768,8 +4824,8 @@ export interface GroupRoomInfo_chat_GroupConversation {
   flexibleId: string;
   title: string;
   membersCount: number;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   myRole: string | null;
   membersOnline: number;
   photo: string | null;
@@ -4796,8 +4852,8 @@ export interface GroupRoomInfo_chat_ChannelConversation {
   flexibleId: string;
   title: string;
   membersCount: number;
-  description: string;
-  longDescription: string;
+  description: string | null;
+  longDescription: string | null;
   myRole: string | null;
   membersOnline: number;
   photo: string | null;
@@ -6240,6 +6296,54 @@ export interface ExplorePeopleVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: ConferenceFull
+// ====================================================
+
+export interface ConferenceFull_peers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface ConferenceFull_peers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: ConferenceFull_peers_user_primaryOrganization | null;
+}
+
+export interface ConferenceFull_peers_connection {
+  __typename: "ConferencePeerConnection";
+  state: ConferencePeerConnectionState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface ConferenceFull_peers {
+  __typename: "ConferencePeer";
+  id: string;
+  user: ConferenceFull_peers_user;
+  connection: ConferenceFull_peers_connection | null;
+}
+
+export interface ConferenceFull {
+  __typename: "Conference";
+  id: string;
+  peers: ConferenceFull_peers[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: ConversationShort
 // ====================================================
 
@@ -7584,6 +7688,14 @@ export enum ChannelMembershipStatus {
   member = "member",
   none = "none",
   requested = "requested",
+}
+
+export enum ConferencePeerConnectionState {
+  NEED_ANSWER = "NEED_ANSWER",
+  NEED_OFFER = "NEED_OFFER",
+  READY = "READY",
+  WAITING_ANSWER = "WAITING_ANSWER",
+  WAITING_OFFER = "WAITING_OFFER",
 }
 
 export enum EmailFrequency {

@@ -38,6 +38,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
+import { ConferenceComponent } from '../conference/ConferenceComponent';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -319,7 +320,7 @@ export const RoomEditComponent = withAlterChat((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, description: string, longDescription: string, socialImageRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ title: string, photoRef: any, description: string | null, longDescription: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
 
 export const ChatEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
@@ -365,7 +366,7 @@ export const ChatEditComponent = withAlterChat((props) => {
     );
 }) as React.ComponentType<{ title: string, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
-const AddMemberForm = withSuperAddToChannel((props) => {
+export const AddMemberForm = withSuperAddToChannel((props) => {
     return (
         <XModalFormOld
             title="Add member to room"
@@ -468,7 +469,7 @@ interface MessengerWrapperProps {
 class MessengerWrapper extends React.Component<MessengerWrapperProps> {
     pageTitle: string | undefined = undefined;
 
-    constructor (props: MessengerWrapperProps) {
+    constructor(props: MessengerWrapperProps) {
         super(props);
 
         if (this.props.handlePageTitle) {
@@ -477,7 +478,7 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
         }
     }
 
-    componentWillReceiveProps (newProps: MessengerWrapperProps) {
+    componentWillReceiveProps(newProps: MessengerWrapperProps) {
         if (newProps.handlePageTitle) {
             let title = (newProps.chatType === 'PrivateConversation') ? newProps.userName : newProps.chatTitle;
 
@@ -501,40 +502,21 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
 let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?: string; children?: any }) => {
     if (props.chatType === 'ChannelConversation') {
         return (
-            <>
-                <XWithRole role={['editor', 'super-admin']}>
-                    <NavChatLeftContentStyled
-                        path={props.path}
-                        query={{ field: 'editChat', value: 'true' }}
-                        separator={10}
-                        alignItems="center"
-                        flexGrow={0}
-                        maxWidth="calc(100% - 380px)"
-                        width="calc(100% - 380px)"
-                    >
-                        {props.children}
-                    </NavChatLeftContentStyled>
-                </XWithRole>
-                <XWithRole role={['editor', 'super-admin']} negate={true}>
-                    <NavChatLeftContentStyled
-                        path={props.path}
-                        query={props.ownerRole ? { field: 'editChat', value: 'true' } : undefined}
-                        separator={10}
-                        alignItems="center"
-                        flexGrow={0}
-                        maxWidth="calc(100% - 380px)"
-                        width="calc(100% - 380px)"
-                    >
-                        {props.children}
-                    </NavChatLeftContentStyled>
-                </XWithRole>
-            </>
+            <NavChatLeftContentStyled
+                path={props.path}
+                separator={10}
+                alignItems="center"
+                flexGrow={0}
+                maxWidth="calc(100% - 380px)"
+                width="calc(100% - 380px)"
+            >
+                {props.children}
+            </NavChatLeftContentStyled>
         );
     } else if (props.chatType === 'GroupConversation') {
         return (
             <NavChatLeftContentStyled
                 path={props.path}
-                query={{ field: 'editChat', value: 'true' }}
                 separator={10}
                 alignItems="center"
                 flexGrow={0}
@@ -561,9 +543,12 @@ let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?:
 };
 
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
-    let tab: 'chat' | 'members' = 'chat';
+    let tab: 'chat' | 'members' | 'call' = 'chat';
     if (props.router.query.tab === 'members') {
         tab = 'members';
+    }
+    if (props.router.query.tab === 'call') {
+        tab = 'call';
     }
 
     if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
@@ -600,6 +585,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     }
 
     let headerPath = props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined;
+
+    if (chatType === 'ChannelConversation' || chatType === 'GroupConversation') {
+        headerPath = '/mail/p/' + props.data.chat.id;
+    }
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
@@ -692,6 +681,9 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                 <RoomTabs>
                                     <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
                                     <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
+                                    <XWithRole role="feature-non-production">
+                                        <RoomTab query={{ field: 'tab', value: 'call' }}>Call</RoomTab>
+                                    </XWithRole>
                                 </RoomTabs>
                             </XHorizontal>
                         )}
@@ -723,26 +715,16 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     <div style={{ width: 160 }}>
                                         {props.data.chat.__typename === 'ChannelConversation' && (
                                             <>
-                                                <XWithRole role={['editor', 'super-admin']}>
-                                                    <XMenuTitle>Super admin</XMenuTitle>
-                                                    <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
-                                                    <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
-                                                    <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
-                                                    <XMenuTitle>Common</XMenuTitle>
-                                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                                </XWithRole>
-
-                                                <XWithRole role={['editor', 'super-admin']} negate={true}>
-                                                    {ownerRole && (
-                                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                                    )}
-                                                    {!ownerRole && (
-                                                        <XWithRole role={['admin']} orgPermission={props.data.chat.organization ? props.data.chat.organization.id : ''}>
-                                                            <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                                        </XWithRole>
-                                                    )}
-                                                </XWithRole>
+                                                <XMenuTitle>Super admin</XMenuTitle>
+                                                <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
+                                                <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                                <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
+                                                <XMenuTitle>Common</XMenuTitle>
+                                                <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                             </>
+                                        )}
+                                        {props.data.chat.__typename === 'GroupConversation' && (
+                                            <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                         )}
                                         <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave chat</XMenuItem>
                                     </div>
@@ -793,13 +775,16 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     />
                 )}
 
+                {(props.data.chat.__typename === 'GroupConversation' && tab === 'call') && (
+                    <XWithRole role="feature-non-production">
+                        <ConferenceComponent conversationId={props.data.chat.id} />
+                    </XWithRole>
+                )}
             </XHorizontal>
             <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
             {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
-            <XWithRole role={['super-admin']}>
-                <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
-            </XWithRole>
+            <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
         </MessengerWrapper>
     );
 })) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any }>;

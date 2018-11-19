@@ -1,21 +1,37 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withGroupRoom } from '../../../api/withGroupRoom';
-import { withGroupRoomMembers } from '../../../api/withGroupRoom';
+import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { XIcon } from 'openland-x/XIcon';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { XButton, XButtonProps } from 'openland-x/XButton';
+import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XUserCard } from 'openland-x/cards/XUserCard';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
+import { RemoveMemberModal } from '../channel/components/membersComponent';
+import { XCreateCard } from 'openland-x/cards/XCreateCard';
+import {
+    AddMemberForm,
+    RoomEditComponent,
+    ChatEditComponent
+} from '../../../components/messenger/MessengerComponent';
+import {
+    HeaderAvatar,
+    HeaderTitle,
+    HeaderInfo,
+    HeaderTools,
+    BackButton,
+    Section,
+    SectionContent,
+    HeaderWrapper,
+    OrganizationInfoWrapper
+} from './OrganizationProfileComponent';
 import {
     GroupRoomInfo_chat_GroupConversation,
     GroupRoomInfo_chat_ChannelConversation,
@@ -23,93 +39,15 @@ import {
     GroupRoomMembersInfo_members
 } from 'openland-api/Types';
 
-const BackWrapper = Glamorous.div({
-    background: '#f9f9f9',
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    cursor: 'pointer',
-});
-
-const BackInner = Glamorous(XContentWrapper)({
-    alignItems: 'center',
-    paddingTop: 13,
-    paddingBottom: 12,
-    '& i': {
-        fontSize: 20,
-        marginRight: 6,
-        marginLeft: -7,
-        color: 'rgba(0, 0, 0, 0.3)'
-    },
-    '& span': {
-        fontWeight: 600,
-        fontSize: 14,
-        lineHeight: '20px',
-        letterSpacing: 0,
-        color: 'rgba(0, 0, 0, 0.8)'
-    }
-});
-
-export const BackButton = () => (
-    <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
-        <BackInner withFlex={true}>
-            <XIcon icon="chevron_left" />
-            <span>Back</span>
-        </BackInner>
-    </BackWrapper>
-);
-
-export const HeaderWrapper = Glamorous.div({
-    borderBottom: '1px solid #ececec',
-    paddingTop: 16,
-    paddingBottom: 16
-});
-
-const HeaderAvatar = Glamorous.div({
-    paddingRight: 18
-});
-
-const HeaderInfo = Glamorous(XVertical)({
-    paddingTop: 1,
-    justifyContent: 'center'
-});
-
-const HeaderTitle = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 600,
-    letterSpacing: 0,
-    lineHeight: '20px',
-    color: '#000000'
-});
-
-const HeaderMembers = Glamorous.div<{online?: boolean}>(props => ({
+const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
     lineHeight: 1.23,
     color: props.online ? '#1790ff' : '#7F7F7F'
 }));
 
-const HeaderTools = Glamorous(XHorizontal)({
-    paddingTop: 13
-});
-
-export const Section = Glamorous(XVertical)({
-    paddingTop: 5,
-    borderBottom: '1px solid #ececec',
-    '&:last-child': {
-        borderBottom: 'none'
-    }
-});
-
-export const SectionContent = Glamorous(XContentWrapper)({
-    paddingTop: 7,
-    paddingBottom: 24,
-    fontSize: 14,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000'
-});
-
 const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
-
+    let meOwner = (chat.myRole === 'member' || chat.myRole === 'owner');
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -130,18 +68,43 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {chat.myRole !== 'member' ? (
-                        <XButton
-                            text="Request invite"
-                            style="primary"
-                            path={'/directory/r/' + chat.id}
-                        />
-                    ) : (
-                        <XButton
-                            text="View"
-                            style="primary"
-                            path={'/mail/' + chat.id}
-                        />
+                    <XButton
+                        text={meOwner ? 'View' : 'Request invite'}
+                        style="primary"
+                        path={meOwner ? '/mail/' + chat.id : '/directory/r/' + chat.id}
+                    />
+                    {meOwner && (
+                        <>
+                            <XOverflow
+                                placement="bottom-end"
+                                flat={true}
+                                content={(
+                                    <>
+                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
+                                        <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
+                                    </>
+                                )}
+                            />
+                            <LeaveChatComponent />
+                            {chat.__typename === 'GroupConversation' && (
+                                <ChatEditComponent
+                                    title={chat.title}
+                                    longDescription={chat.longDescription || undefined}
+                                    photoRef={chat.photoRef}
+                                    refetchVars={{ conversationId: chat.id }}
+                                />
+                            )}
+                            {chat.__typename === 'ChannelConversation' && (
+                                <RoomEditComponent
+                                    title={chat.title}
+                                    description={chat.description}
+                                    longDescription={chat.longDescription}
+                                    socialImageRef={null}
+                                    photoRef={chat.photoRef}
+                                    refetchVars={{ conversationId: chat.id }}
+                                />
+                            )}
+                        </>
                     )}
                 </HeaderTools>
             </XContentWrapper>
@@ -168,15 +131,31 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
     );
 };
 
-const MemberCard = (props: {member: GroupRoomMembersInfo_members_user}) => {
+const MemberCard = (props: { member: GroupRoomMembersInfo_members_user, meOwner: boolean }) => {
+    let overflowMenu = (
+        <XOverflow
+            placement="bottom-end"
+            flat={true}
+            content={<XMenuItem style="danger" query={{ field: 'remove', value: props.member.id }}>Remove from group</XMenuItem>}
+        />
+    );
     return (
         <XUserCard
             user={props.member}
+            customMenu={props.meOwner ? overflowMenu : null}
         />
     );
 };
 
-const MembersProvider = (props: { members: GroupRoomMembersInfo_members[]; }) => {
+interface MembersProviderProps {
+    members: GroupRoomMembersInfo_members[];
+    isRoom: boolean;
+    chatId: string;
+    meOwner: boolean;
+    chatTitle: string;
+}
+
+const MembersProvider = (props: MembersProviderProps) => {
     let members = props.members;
     if (members && members.length > 0) {
         return (
@@ -187,12 +166,24 @@ const MembersProvider = (props: { members: GroupRoomMembersInfo_members[]; }) =>
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    <XMoreCards>
-                        {members.map((member, i) => (
-                            <MemberCard key={i} member={member.user} />
-                        ))}
-                    </XMoreCards>
+                    {(props.isRoom && props.meOwner) && (
+                        <XCreateCard query={{ field: 'addMember', value: 'true' }} text="Invite people" />
+                    )}
+                    {members.map((member, i) => (
+                        <MemberCard key={i} member={member.user} meOwner={props.meOwner} />
+                    ))}
                 </SectionContent>
+                {(props.isRoom && props.meOwner) && (
+                    <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
+                )}
+                {props.meOwner && (
+                    <RemoveMemberModal
+                        members={members}
+                        refetchVars={{ channelId: props.chatId }}
+                        channelId={props.chatId}
+                        roomTitle={props.chatTitle}
+                    />
+                )}
             </Section>
         );
     } else {
@@ -204,15 +195,17 @@ const Members = withGroupRoomMembers((props) => {
     let members = props.data.members;
     return (
         members
-            ? <MembersProvider members={members}/>
-            : <XLoader loading={true} />
+            ? (
+                <MembersProvider
+                    members={members}
+                    isRoom={(props as any).isRoom}
+                    chatId={(props as any).chatId}
+                    meOwner={(props as any).meOwner}
+                    chatTitle={(props as any).chatTitle}
+                />
+            ) : <XLoader loading={true} />
     );
-}) as React.ComponentType<{ variables: { conversationId: string } }>;
-
-const OrgInfoWrapper = Glamorous.div({
-    overflow: 'hidden',
-    height: '100%'
-});
+}) as React.ComponentType<{ variables: { conversationId: string }, isRoom: boolean, chatId: string, meOwner: boolean, chatTitle: string }>;
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
@@ -255,16 +248,21 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
 
     render() {
         let chat = this.props.chat;
-
         return (
-            <OrgInfoWrapper innerRef={this.handleRef}>
+            <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header chat={chat} />
                 <XScrollView height="calc(100% - 136px)">
                     <About chat={chat} />
-                    <Members variables={{conversationId: this.props.conversationId}} />
+                    <Members
+                        variables={{ conversationId: this.props.conversationId }}
+                        isRoom={chat.__typename === 'ChannelConversation'}
+                        chatId={this.props.conversationId}
+                        meOwner={chat.myRole === 'member' || chat.myRole === 'owner'}
+                        chatTitle={chat.title}
+                    />
                 </XScrollView>
-            </OrgInfoWrapper>
+            </OrganizationInfoWrapper>
         );
     }
 }

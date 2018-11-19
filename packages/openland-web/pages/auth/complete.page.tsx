@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import createHistory from 'history/createBrowserHistory';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
-import { withData } from '../../components/withData';
-import { ErrorPage } from '../../components/ErrorPage';
+import { ErrorPage } from '../root/ErrorPage';
 import { trackError } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 interface AuthResult {
@@ -84,4 +83,4 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     }
 }
 
-export default withData('Auth Complete', AuthenticationHandler);
+export default AuthenticationHandler;
