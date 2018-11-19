@@ -53,6 +53,10 @@ class AppNotiticationsIOS implements AppNotificationsApi {
         Push.requestPermissions();
     }
 
+    playIncomingSound() {
+        // Do nothing
+    }
+
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
         // On android show only when app is visible?
         if (Platform.OS === 'android') {

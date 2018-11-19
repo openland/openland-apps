@@ -91,8 +91,11 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         }
     }
 
-    displayNotification(content: { path: string, title: string, body: string, image?: string }) {
+    playIncomingSound() {
         this.sound.play();
+    }
+
+    displayNotification(content: { path: string, title: string, body: string, image?: string }) {
         try {
             if (this.state === 'granted') {
                 // let isSafari = (window as any).safari !== undefined;
