@@ -287,13 +287,28 @@ class ConferenceManager extends React.Component<{ apollo: OpenApolloClient, id: 
         });
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-            setTimeout(() => { this.setState({ mediaStream: stream }); }, 10);
+            setTimeout(
+                () => {
+                    if (this._mounted) {
+                        this.setState({ mediaStream: stream });
+                    } else {
+                        for (let t of stream.getTracks()) {
+                            t.stop();
+                        }
+                    }
+                },
+                10);
         });
     }
 
     componentWillUnmount() {
         this.subs.unsubscribe();
         this._mounted = false;
+        if (this.state.mediaStream) {
+            for (let t of this.state.mediaStream.getTracks()) {
+                t.stop();
+            }
+        }
     }
 
     render() {
