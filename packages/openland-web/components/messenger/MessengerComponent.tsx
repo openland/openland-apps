@@ -40,16 +40,22 @@ import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { ConferenceComponent } from '../conference/ConferenceComponent';
 
-const ChatHeaderWrapper = Glamorous.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 56,
-  flexShrink: 0,
-  paddingLeft: 20,
-  paddingRight: 20,
-  borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
-});
+const ChatHeaderWrapper = Glamorous.div<{ loading?: boolean; children: any }>(
+  ({ loading }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 56,
+    flexShrink: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
+    ...(loading
+      ? {}
+      : {
+          borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+        })
+  })
+);
 
 const ChatHeaderContent = Glamorous(XHorizontal)({
   alignItems: 'center',
@@ -594,9 +600,6 @@ const LastSeen = withOnline(props => {
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
 interface MessengerWrapperProps {
-  chatTitle: string;
-  chatType: string;
-  userName?: string;
   handlePageTitle?: any;
 }
 
@@ -696,29 +699,32 @@ let HeaderLeftContent = (props: {
 };
 
 type ChatHeaderWrapperInnerProps = {
-  chatType: any;
   data: any;
-  title: any;
   loading: any;
 };
 
-// let title = props.data.chat.title;
-
-// let chatType = props.data.chat.__typename;
 // let userName =
-//   props.data.chat.__typename === 'PrivateConversation'
-//     ? props.data.chat.user.name
-//     : undefined;
+// props.data.chat.__typename === 'PrivateConversation'
+//   ? props.data.chat.user.name
+//   : undefined;
 class ChatHeaderWrapperInner extends React.PureComponent<
   ChatHeaderWrapperInnerProps
 > {
   render() {
-    const { chatType, data, title, loading } = this.props;
+    const { data, loading } = this.props;
 
-    console.log(data);
     if (loading) {
-      return <div />;
+      return (
+        <ChatHeaderWrapper loading={loading}>
+          <ChatHeaderContent justifyContent="space-between">
+            <div />
+          </ChatHeaderContent>
+        </ChatHeaderWrapper>
+      );
     }
+
+    let title = this.props.data.chat.title;
+    let chatType = this.props.data.chat.__typename;
 
     let titlePath: string | undefined = undefined;
 
@@ -974,9 +980,6 @@ class ChatHeaderWrapperInner extends React.PureComponent<
 }
 
 let MessengerComponentLoader = withChat(class extends React.Component<any> {
-  componentWillUnmount() {
-    console.log('MessengerComponentLoader componentWillUnmount');
-  }
   render() {
     const props = this.props;
 
@@ -990,15 +993,15 @@ let MessengerComponentLoader = withChat(class extends React.Component<any> {
       tab = 'call';
     }
 
-    // if (
-    //   props.data.chat.__typename === 'ChannelConversation' &&
-    //   props.data.chat.myStatus !== 'member'
-    // ) {
-    //   return <RoomsInviteComponent room={props.data.chat} />;
-    // }
+    if (
+      props.data.chat &&
+      props.data.chat.__typename === 'ChannelConversation' &&
+      props.data.chat.myStatus !== 'member'
+    ) {
+      return <RoomsInviteComponent room={props.data.chat} />;
+    }
 
-    // conversationId={props.data.chat.id}
-    // conversationType={props.data.chat.__typename}
+    let title = this.props.data.chat && this.props.data.chat.title;
 
     return (
       <MessengerWrapper

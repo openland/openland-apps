@@ -101,6 +101,7 @@ interface MessageComposeComponentInnerProps
   replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
   saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
   draft?: string | null;
+  hidden?: boolean;
 }
 interface MessageComposeComponentInnerState {
   dragOn: boolean;
@@ -287,7 +288,6 @@ class MessageComposeComponentInner extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    console.log('componentWillMount MessageComposeComponentInner');
     window.removeEventListener('dragover', this.handleWindowDragover);
     window.removeEventListener('drop', this.handleWindowDrop);
     window.removeEventListener('keydown', this.keydownHandler);

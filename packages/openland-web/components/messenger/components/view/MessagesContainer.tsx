@@ -44,10 +44,10 @@ const MessagesContainerInner = Glamorous.div({
   }
 });
 
-export const MessagesContainer = (props: { children?: any }) => {
+export const MessagesContainer = (props: { noClassName?: boolean, children?: any }) => {
   return (
     <ChatContainer>
-      <MessagesContainerInner className="messages-wrapper">
+      <MessagesContainerInner className={props.noClassName ? '' : 'messages-wrapper'}>
         {props.children}
       </MessagesContainerInner>
     </ChatContainer>
