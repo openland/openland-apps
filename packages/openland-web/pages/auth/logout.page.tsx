@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
-import { withData } from '../../components/withData';
 
 class LogoutHandler extends React.Component<{}, {}> {
 
@@ -30,4 +29,4 @@ class LogoutHandler extends React.Component<{}, {}> {
     }
 }
 
-export default withData('LogOut', LogoutHandler);
+export default LogoutHandler;

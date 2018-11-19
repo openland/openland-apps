@@ -32,6 +32,9 @@
       "openland-api": [
         "openland-api"
       ],
+      "openland-web": [
+        "openland-web"
+      ],
       "openland-text": [
         "openland-text"
       ],

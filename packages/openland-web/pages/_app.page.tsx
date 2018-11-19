@@ -6,19 +6,23 @@ import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { buildConfig } from '../config';
-import { withData } from '../components/withData2';
+import { withData } from './root/withData';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { RootErrorBoundary } from '../components/RootErrorBoundary';
 import moment from 'moment-timezone';
-import { getClientStorage } from 'openland-x-utils/SharedStorage';
+import { getClientStorage, SharedStorage } from 'openland-x-utils/SharedStorage';
 import { trackPage } from 'openland-x-analytics';
+import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
+import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
+import { Routes } from '../routes';
+import { AppContainer } from './root/AppContainer';
 
-export default withData(class MyApp extends App<{ apollo: OpenApolloClient }> {
+export default withData(class MyApp extends App<{ apollo: OpenApolloClient, storage: SharedStorage, host: string, protocol: string }> {
 
     private isSentryEnabled = false;
 
-    constructor(props: { apollo: OpenApolloClient } & AppProps) {
+    constructor(props: { apollo: OpenApolloClient, storage: SharedStorage, host: string, protocol: string } & AppProps) {
         super(props);
         let cfg = canUseDOM ? loadConfig() : buildConfig();
         if (cfg.sentryEndpoint && cfg.release) {
@@ -54,13 +58,18 @@ export default withData(class MyApp extends App<{ apollo: OpenApolloClient }> {
 
     render() {
         const { Component, pageProps } = this.props;
-
         return (
             <Container>
                 <RootErrorBoundary>
-                    <YApolloProvider client={this.props.apollo}>
-                        <Component {...pageProps} />
-                    </YApolloProvider>
+                    <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
+                        <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
+                            <YApolloProvider client={this.props.apollo}>
+                                <AppContainer>
+                                    <Component {...pageProps} />
+                                </AppContainer>
+                            </YApolloProvider>
+                        </XRouterProvider>
+                    </XStorageProvider>
                 </RootErrorBoundary>
             </Container>
         );

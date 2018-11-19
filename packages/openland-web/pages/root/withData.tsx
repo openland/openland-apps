@@ -2,12 +2,12 @@ import * as React from 'react';
 import { NextAppContext } from 'next/app';
 import { getToken } from 'openland-x-graphql/auth';
 import Head from 'next/head';
-// import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { getDataFromTree } from 'react-apollo';
+import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 
 export function withData(App: React.ComponentType<any>) {
     return class WithData extends React.Component<{ apolloState: any }> {
@@ -15,6 +15,19 @@ export function withData(App: React.ComponentType<any>) {
             let appProps = {};
             if ((App as any).getInitialProps) {
                 appProps = await (App as any).getInitialProps(ctx);
+            }
+
+            let host: string;
+            let protocol: string;
+            let storage: SharedStorage;
+            if (ctx.ctx.req) {
+                host = (ctx.ctx.req as any).get('host');
+                protocol = (ctx.ctx.req as any).protocol;
+                storage = getServerStorage(ctx.ctx);
+            } else {
+                host = window.location.host;
+                protocol = window.location.protocol.replace(':', '');
+                storage = getClientStorage();
             }
 
             let token = getToken(ctx.ctx.req);
@@ -48,7 +61,10 @@ export function withData(App: React.ComponentType<any>) {
             return {
                 ...appProps,
                 apolloState,
-                token
+                token,
+                host,
+                protocol,
+                storage
             };
         }
 
