@@ -4555,27 +4555,6 @@ export interface ChatUpdateGroupVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: RoomUpdateDescription
-// ====================================================
-
-export interface RoomUpdateDescription_event {
-  __typename: "ConversationUpdateResponse";
-  curSeq: number;
-}
-
-export interface RoomUpdateDescription {
-  event: RoomUpdateDescription_event;
-}
-
-export interface RoomUpdateDescriptionVariables {
-  conversationId: string;
-  description?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: ChatDeleteMessage
 // ====================================================
 

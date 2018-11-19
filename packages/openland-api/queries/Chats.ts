@@ -614,14 +614,6 @@ export const ChatUpdateGroupMutation = gql`
     ${UserShort}
 `;
 
-export const RoomUpdateDescriptionMutation = gql`
-    mutation RoomUpdateDescription($conversationId: ID!, $description: String) {
-        event: alphaChatUpdateGroup(conversationId: $conversationId, input: {description: $description}){
-            curSeq
-        }
-    }
-`;
-
 export const ChatDeleteMessageMutation = gql`
     mutation ChatDeleteMessage($messageId: ID!) {
         event: alphaDeleteMessage(messageId: $messageId){

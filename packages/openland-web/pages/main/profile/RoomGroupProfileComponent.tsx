@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
-import { withRoomUpdateDescription } from '../../../api/withRoomUpdateDescription';
+import { withAlterChat } from '../../../api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -18,6 +18,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem } from 'openland-x/XMenuItem';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
@@ -96,6 +97,7 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                             {chat.__typename === 'GroupConversation' && (
                                 <GroupEditComponent
                                     title={chat.title}
+                                    description={chat.description}
                                     longDescription={chat.longDescription || undefined}
                                     photoRef={chat.photoRef}
                                     refetchVars={{ conversationId: chat.id }}
@@ -119,35 +121,57 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
     );
 };
 
-const AboutPlaceholder = withRoomUpdateDescription((props) => {
+const AboutPlaceholder = withAlterChat((props) => {
+    let editTitle = (props as any).title;
+    let editDescription = (props as any).description;
+    let editPhotoRef = (props as any).photoRef;
+    let editSocialImageRef = (props as any).socialImageRef;
+    let editLongDescription = (props as any).longDescription;
     return (
         <XModalForm
-            defaultData={{
-                conversationId: (props as any).chatId,
-                description: '',
-            }}
-            defaultAction={async (data) => {
-                await props.updateDescription({
+            scrollableContent={true}
+            target={(props as any).target}
+            useTopCloser={true}
+            title="Room settings"
+            defaultAction={(data) => {
+                let newTitle = data.input.title;
+                let newDescription = data.input.description;
+                let newPhoto = data.input.photoRef;
+                let newSocialImage = data.input.socialImageRef;
+                let newLongDescription = data.input.longDescription;
+
+                props.alter({
                     variables: {
-                        conversationId: (props as any).chatId,
-                        description: data.input.description
+                        input: {
+                            ...newTitle !== editTitle ? { title: newTitle } : {},
+                            ...newDescription !== editDescription ? { description: newDescription } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
+                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
+                        }
                     }
                 });
             }}
-            target={(props as any).target}
-            title="About"
-            useTopCloser={true}
+            defaultData={{
+                input: {
+                    title: (props as any).title || '',
+                    description: (props as any).description || '',
+                    longDescription: (props as any).longDescription || '',
+                    photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
+                }
+            }}
         >
             <XVertical>
                 <XFormLoadingContent>
                     <XFormField field="fields.input.description">
-                        <XTextArea valueStoreKey="fields.input.description" placeholder="Description" />
+                        <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ target: any, chatId: string; }>;
+}) as React.ComponentType<{ target: any, title: string, photoRef: any, description: string | null, longDescription: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
 
 const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
@@ -169,7 +193,15 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
                 <Section separator={0}>
                     <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
-                        <AboutPlaceholder target={<EditButton text="Add a short description" />} chatId={chat.id} />
+                        <AboutPlaceholder 
+                            title={chat.title} 
+                            description={chat.description} 
+                            longDescription={chat.longDescription} 
+                            socialImageRef={(chat as any).socialImageRef || null} 
+                            photoRef={chat.photoRef} 
+                            refetchVars={{ conversationId: chat.id }}
+                            target={<EditButton text="Add a short description" />}
+                        />
                     </SectionContent>
                 </Section>
             )}
