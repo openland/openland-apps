@@ -4,6 +4,10 @@ import { withEditMessage } from '../../../../api/withMessageState';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import {
+  ForwardRefProviderComponent,
+  RefContext
+} from '../../../ForwardingRefs';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
@@ -43,7 +47,7 @@ export interface XTextInputProps extends XRichTextInputProps {
   valueStoreKey?: string;
 }
 
-class XRichTextInputStored extends React.PureComponent<
+const XRichTextInputStored = class XRichTextInputStoredInner extends React.PureComponent<
   XTextInputProps & { store: XStoreState }
 > {
   onChangeHandler = (value: string) => {
@@ -69,17 +73,24 @@ class XRichTextInputStored extends React.PureComponent<
     }
 
     return (
-      <XRichTextInput
-        autofocus={true}
-        onChange={this.onChangeHandler}
-        value={value}
-        {...other}
-      />
+      <RefContext.Consumer>
+        {({ ref }: any) => (
+          <XRichTextInput
+            ref={ref}
+            autofocus={true}
+            onChange={this.onChangeHandler}
+            value={value}
+            {...other}
+          />
+        )}
+      </RefContext.Consumer>
     );
   }
-}
+};
 
-class XTextInput extends React.PureComponent<XTextInputProps> {
+const XTextInput = class XTextInputInner extends React.PureComponent<
+  XTextInputProps
+> {
   render() {
     let { valueStoreKey, ...other } = this.props;
     if (valueStoreKey) {
@@ -103,38 +114,49 @@ class XTextInput extends React.PureComponent<XTextInputProps> {
     }
     return <XRichTextInput {...other} />;
   }
-}
+};
 
-export const EditMessageComponent = withEditMessage(props => {
-  let id = props.router.query.editMessage;
-  let conversation: ConversationEngine = (props as any).conversation;
-  let message = conversation
-    .getState()
-    .messages.filter(m => isServerMessage(m) && m.id === id)[0];
-  if (!message) {
-    return null;
+class EditMessageComponentInner extends React.PureComponent<any> {
+  textInputRef = React.createRef<XRichTextInput>();
+
+  // componentDidMount() {
+  //   if (this.textInputRef && this.textInputRef.current) {
+  //     this.textInputRef.current.focus();
+  //   }
+  // }
+
+  render() {
+    const props = this.props;
+    let id = props.router.query.editMessage;
+    let conversation: ConversationEngine = (props as any).conversation;
+    let message = conversation
+      .getState()
+      .messages.filter(m => isServerMessage(m) && m.id === id)[0];
+    if (!message) {
+      return null;
+    }
+    return (
+      <XModalForm
+        title="Edit message"
+        width={800}
+        targetQuery="editMessage"
+        defaultAction={data => {
+          props.editMessage({
+            variables: { messageId: id, message: data.message }
+          });
+        }}
+        defaultData={{
+          message: message.message
+        }}
+        submitProps={{ succesText: 'done!' }}
+      >
+        <TextInputWrapper>
+          <XTextInput ref={this.textInputRef} valueStoreKey="fields.message" />
+        </TextInputWrapper>
+      </XModalForm>
+    );
   }
-  return (
-    <XModalForm
-      title="Edit message"
-      width={800}
-      targetQuery="editMessage"
-      defaultAction={data => {
-        props.editMessage({
-          variables: { messageId: id, message: data.message }
-        });
-      }}
-      defaultData={{
-        message: message.message
-      }}
-      submitProps={{ succesText: 'done!' }}
-    >
-      <TextInputWrapper>
-        <XTextInput valueStoreKey="fields.message" />
-      </TextInputWrapper>
-    </XModalForm>
-  );
-}) as React.ComponentType<{ conversation: ConversationEngine }>;
+}
 
 const Footer = Glamorous(XHorizontal)({
   display: 'flex',
@@ -142,38 +164,56 @@ const Footer = Glamorous(XHorizontal)({
   paddingBottom: 5
 });
 
-const EditMessageInline = withEditMessage(props => {
-  let id = (props as any).id;
-  let text = (props as any).text;
-  return (
-    <XForm
-      defaultAction={async data => {
-        await props.editMessage({
-          variables: { messageId: id, message: data.message }
-        });
-        (props as any).onClose();
-      }}
-      defaultData={{
-        message: text
-      }}
-    >
-      <TextInputWrapper>
-        <XTextInput valueStoreKey="fields.message" />
-      </TextInputWrapper>
+class EditMessageInlineInner extends React.Component<any> {
+  xRichTextInputRef = React.createRef<XRichTextInput>();
 
-      <Footer separator={5}>
-        <XFormSubmit text="Save" style="primary" />
-        <XButton
-          text="Cancel"
-          size="r-default"
-          onClick={() => {
-            (props as any).onClose();
-          }}
-        />
-      </Footer>
-    </XForm>
-  );
-}) as React.ComponentType<{ id: string; text: string | null; onClose: any }>;
+  componentDidMount() {
+    if (this.xRichTextInputRef && this.xRichTextInputRef.current) {
+      this.xRichTextInputRef.current.focus();
+    }
+  }
+
+  render() {
+    const props = this.props;
+
+    let id = (props as any).id;
+    let text = (props as any).text;
+    return (
+      <XForm
+        defaultAction={async data => {
+          await props.editMessage({
+            variables: { messageId: id, message: data.message }
+          });
+          (props as any).onClose();
+        }}
+        defaultData={{
+          message: text
+        }}
+      >
+        <TextInputWrapper>
+          <ForwardRefProviderComponent ref={this.xRichTextInputRef}>
+            <XTextInput valueStoreKey="fields.message" />
+          </ForwardRefProviderComponent>
+        </TextInputWrapper>
+
+        <Footer separator={5}>
+          <XFormSubmit text="Save" style="primary" />
+          <XButton
+            text="Cancel"
+            size="r-default"
+            onClick={() => {
+              (props as any).onClose();
+            }}
+          />
+        </Footer>
+      </XForm>
+    );
+  }
+}
+
+const EditMessageInline = withEditMessage(
+  EditMessageInlineInner
+) as React.ComponentType<{ id: string; text: string | null; onClose: any }>;
 
 export class EditMessageInlineWrapper extends React.Component<{
   message: MessageFull;
