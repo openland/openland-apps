@@ -113,15 +113,7 @@ class ConferenceConnection extends React.Component<{
                 username: 'somecalluser',
                 credential: 'samplepassword'
             }, {
-                urls: ['turn:35.185.221.195:3478?transport=tcp'],
-                username: 'somecalluser',
-                credential: 'samplepassword'
-            }, {
                 urls: ['stun:35.185.221.195:3478?transport=udp'],
-                username: 'somecalluser',
-                credential: 'samplepassword'
-            }, {
-                urls: ['stun:35.185.221.195:3478?transport=tcp'],
                 username: 'somecalluser',
                 credential: 'samplepassword'
             }]
