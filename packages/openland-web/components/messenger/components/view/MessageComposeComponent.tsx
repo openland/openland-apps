@@ -117,8 +117,7 @@ class MessageComposeComponentInner extends React.PureComponent<
   MessageComposeComponentInnerProps,
   MessageComposeComponentInnerState
 > {
-  private input = React.createRef<XRichTextInput>();
-  private wasFocused = false;
+  private xRichTextInputRef = React.createRef<XRichTextInput>();
 
   constructor(props: MessageComposeComponentInnerProps) {
     super(props);
@@ -133,7 +132,7 @@ class MessageComposeComponentInner extends React.PureComponent<
   private handleDrop = (e: any) => {
     e.preventDefault();
 
-    this.setState({ dragOn: false, dragUnder: false });
+    this.setState(() => ({ dragOn: false, dragUnder: false }));
     let file = e.dataTransfer.files[0];
     let ucFile = UploadCare.fileFrom('object', file);
 
@@ -143,15 +142,15 @@ class MessageComposeComponentInner extends React.PureComponent<
   }
 
   private handleDragOver = () => {
-    this.setState({ dragUnder: true });
+    this.setState(() => ({ dragUnder: true }));
   }
 
   private handleDragLeave = (e: any) => {
     let file = e.dataTransfer.files[0];
     if (file === undefined) {
-      this.setState({ dragOn: false });
+      this.setState(() => ({ dragOn: false }));
     }
-    this.setState({ dragUnder: false });
+    this.setState(() => ({ dragUnder: false }));
   }
 
   private handleAttach = () => {
@@ -159,11 +158,14 @@ class MessageComposeComponentInner extends React.PureComponent<
       publicKey: getConfig().uploadcareKey!!
     });
     dialog.done(r => {
-      this.setState({ message: '', dragOn: false }, () => {
-        if (this.props.onSendFile) {
-          this.props.onSendFile(r);
+      this.setState(
+        () => ({ message: '', dragOn: false }),
+        () => {
+          if (this.props.onSendFile) {
+            this.props.onSendFile(r);
+          }
         }
-      });
+      );
     });
   }
 
@@ -190,61 +192,63 @@ class MessageComposeComponentInner extends React.PureComponent<
   }
 
   private handleChange = (message: string) => {
-    this.setState({ message });
-    this.props.saveDraft({
-      variables: {
-        conversationId: this.props.conversationId,
-        message
-      }
-    });
+    this.setState(() => ({
+      message
+    }));
 
-    if (this.props.onChange) {
-      this.props.onChange(message);
-    }
+    // if (this.props.draft !== message) {
+    //   this.props.saveDraft({
+    //     variables: {
+    //       conversationId: this.props.conversationId,
+    //       message
+    //     }
+    //   });
+    // }
+
+    // if (this.props.onChange) {
+    //   this.props.onChange(message);
+    // }
   }
 
   private focusIfNeeded = () => {
-    if (this.props.enabled !== false && !this.wasFocused) {
-      this.wasFocused = true;
-      if (this.input.current) {
-        this.input.current.focus();
+    if (this.props.enabled !== false) {
+      if (this.xRichTextInputRef.current) {
+        this.xRichTextInputRef.current.focus();
       }
     }
   }
 
   private handleWindowDragover = (e: any) => {
     e.preventDefault();
-    this.setState({
+    this.setState(() => ({
       dragOn: true
-    });
+    }));
   }
 
   private handleWindowDrop = (e: any) => {
     e.preventDefault();
-    this.setState({
+    this.setState(() => ({
       dragOn: false
-    });
+    }));
   }
 
   private closeReply = () => {
     this.props.messagesContext.setEditMessage(null, null);
     this.props.messagesContext.setReplyMessage(null, null, null, null);
     global.setIsEditMessage(false);
-    this.setState((state: MessageComposeComponentInnerState) => ({
-      ...state,
+    this.setState(() => ({
       reply: null
     }));
-    if (this.input.current) {
-      this.input.current!!.resetAndFocus();
-    }
   }
 
   keydownHandler = (e: any) => {
     let { conversation, user, messagesContext } = this.props;
     let { message, reply } = this.state;
     let hasFocus =
-      this.input.current &&
-      this.input.current.state.editorState.getSelection().getHasFocus();
+      this.xRichTextInputRef.current &&
+      this.xRichTextInputRef.current.state.editorState
+        .getSelection()
+        .getHasFocus();
 
     const isArrowUp = e.code === 'ArrowUp' && !e.altKey && hasFocus;
     const isKeyE = e.code === 'KeyE' && e.ctrlKey;
@@ -277,16 +281,14 @@ class MessageComposeComponentInner extends React.PureComponent<
     window.addEventListener('dragover', this.handleWindowDragover);
     window.addEventListener('drop', this.handleWindowDrop);
     window.addEventListener('keydown', this.keydownHandler);
+    this.onConversationChanged(this.props);
   }
 
   componentWillUnmount() {
+    console.log('componentWillMount MessageComposeComponentInner');
     window.removeEventListener('dragover', this.handleWindowDragover);
     window.removeEventListener('drop', this.handleWindowDrop);
     window.removeEventListener('keydown', this.keydownHandler);
-  }
-
-  componentDidUpdate() {
-    this.focusIfNeeded();
   }
 
   doesHaveReply = (nextProps: MessageComposeComponentInnerProps) => {
@@ -322,33 +324,42 @@ class MessageComposeComponentInner extends React.PureComponent<
         ...newState,
         reply: this.getReplyFromContext(nextProps.messagesContext)
       };
-      if (this.input.current) {
-        this.input.current!!.resetAndFocus();
-      }
     }
 
     return newState;
   }
 
-  componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
-    this.setState(state => {
+  onMessagesContextChanged = (nextProps: any) => {
+    this.setState(() => {
       return {
-        ...state,
         ...this.processReply(nextProps)
       };
     });
   }
 
+  onConversationChanged = (nextProps: any) => {
+    this.setState({
+      message: nextProps.draft || ''
+    });
+  }
+
+  componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
+    if (this.props.messagesContext !== nextProps.messagesContext) {
+      this.onMessagesContextChanged(nextProps);
+      this.focusIfNeeded();
+    }
+    if (
+      this.props.draft !== nextProps.draft ||
+      this.props.conversationId !== nextProps.conversationId
+    ) {
+      this.setState({
+        message: nextProps.draft || ''
+      });
+    }
+  }
+
   render() {
     let { message, reply } = this.state;
-
-    let replyParams = null;
-    if (reply) {
-      replyParams = {
-        ...reply,
-        onCancel: this.closeReply
-      };
-    }
 
     return (
       <SendMessageWrapper>
@@ -362,14 +373,14 @@ class MessageComposeComponentInner extends React.PureComponent<
         />
         <SendMessageContent separator={4} alignItems="center">
           <XVertical separator={6} flexGrow={1} maxWidth="100%">
-            {replyParams && <ReplyView {...replyParams} />}
+            {reply && <ReplyView {...reply} onCancel={this.closeReply} />}
             <TextInputWrapper>
               <XRichTextInput
                 placeholder="Write a message..."
                 flexGrow={1}
                 onChange={this.handleChange}
                 onSubmit={this.handleSend}
-                ref={this.input}
+                ref={this.xRichTextInputRef}
                 value={message}
               />
             </TextInputWrapper>
@@ -401,24 +412,31 @@ class MessageComposeComponentInner extends React.PureComponent<
   }
 }
 
-export const MessageComposeComponent = withMessageState(
-  withUserInfo(props => (
-    <MessagesStateContext.Consumer>
-      {(state: MessagesStateContextProps) => (
-        <MessageComposeComponentInner
-          {...props}
-          messagesContext={state}
-          replyMessage={props.replyMessage}
-          saveDraft={props.saveDraft}
-          draft={props.draft}
-        />
-      )}
-    </MessagesStateContext.Consumer>
-  ))
-) as React.ComponentType<MessageComposeWithDraft>;
+// withMessageState(
+//   withUserInfo(
+export const MessageComposeComponent = (props: any) => (
+  <MessagesStateContext.Consumer>
+    {(state: MessagesStateContextProps) => (
+      <MessageComposeComponentInner
+        {...props}
+        messagesContext={state}
+        replyMessage={props.replyMessage}
+        saveDraft={props.saveDraft}
+        draft={props.draft}
+      />
+    )}
+  </MessagesStateContext.Consumer>
+);
 
-export const MessageComposeComponentDraft = withGetDraftMessage(props => {
-  return <MessageComposeComponent draft={props.data.message} {...props} />;
-}) as React.ComponentType<
-  MessageComposeComponentProps & { variables?: { conversationId?: string } }
->;
+//   )
+// ) as React.ComponentType<MessageComposeWithDraft>;
+
+// withGetDraftMessage(
+
+// draft={props.data.message}
+export const MessageComposeComponentDraft = (props: any) => {
+  return <MessageComposeComponent {...props} />;
+};
+// ) as React.ComponentType<
+//   MessageComposeComponentProps & { variables?: { conversationId?: string } }
+// >;

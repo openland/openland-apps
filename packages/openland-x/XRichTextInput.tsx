@@ -290,30 +290,35 @@ export class XRichTextInput extends React.PureComponent<
   }
 
   componentDidMount() {
+    // console.log('XRichTextInput componentDidMount');
     if (this.props.autofocus) {
       this.focus();
     }
   }
 
   onSearchChange = ({ value }: any) => {
+    // console.log('XRichTextInput onSearchChange');
     this.setState({
       suggestions: defaultSuggestionsFilter(value, mentionsData)
     });
   }
 
   focus = () => {
+    // console.log('XRichTextInput focus');
     if (this.editorRef.current) {
       this.editorRef.current.focus();
     }
   }
 
   focusToEnd = () => {
+    // console.log('XRichTextInput focusToEnd');
     this.setState((state: XRichTextInputState) => ({
       editorState: EditorState.moveFocusToEnd(state.editorState)
     }));
   }
 
   reset = () => {
+    // console.log('XRichTextInput reset');
     this.setState(src => ({
       editorState: EditorState.push(
         src.editorState,
@@ -324,6 +329,7 @@ export class XRichTextInput extends React.PureComponent<
   }
 
   resetAndFocus = () => {
+    // console.log('XRichTextInput resetAndFocus');
     this.setState(
       src => ({
         editorState: EditorState.push(
@@ -339,6 +345,7 @@ export class XRichTextInput extends React.PureComponent<
   }
 
   onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
+    // console.log('XRichTextInput onHandleKey');
     if (command === 'x-editor-submit') {
       if (this.props.onSubmit) {
         this.props.onSubmit();
@@ -349,6 +356,7 @@ export class XRichTextInput extends React.PureComponent<
   }
 
   onChange = (editorState: EditorState) => {
+    // console.log('XRichTextInput onChange');
     this.setState({ editorState }, () => {
       if (this.props.onChange) {
         this.props.onChange(editorState.getCurrentContent().getPlainText());
@@ -357,6 +365,8 @@ export class XRichTextInput extends React.PureComponent<
   }
 
   componentWillReceiveProps(nextProps: XRichTextInputProps) {
+    // console.log('XRichTextInput componentWillReceiveProps');
+
     const currentText = this.state.editorState
       .getCurrentContent()
       .getPlainText();
@@ -371,6 +381,7 @@ export class XRichTextInput extends React.PureComponent<
   }
 
   render() {
+    // console.log('XRichTextInput render');
     const { MentionSuggestions } = mentionPlugin;
 
     if (canUseDOM) {

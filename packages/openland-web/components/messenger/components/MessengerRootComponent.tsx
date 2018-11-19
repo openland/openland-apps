@@ -171,7 +171,7 @@ class MessagesComponent
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
+    console.log('MessagesComponent componentWillUnmount');
     if (this.unmounter) {
       this.unmounter();
     }
@@ -271,7 +271,8 @@ class MessagesComponent
   }
 }
 
-const Placeholder = withChatHistory(() => {
+// withChatHistory(
+const Placeholder = () => {
   return (
     <ConversationContainer>
       <MessagesContainer>
@@ -280,7 +281,7 @@ const Placeholder = withChatHistory(() => {
       <MessageComposeComponentDraft enabled={false} />
     </ConversationContainer>
   );
-});
+};
 
 interface MessengerRootComponentProps {
   conversationId: string;
@@ -322,6 +323,10 @@ export class MessengerRootComponent extends React.Component<
     };
   }
 
+  componentWillUnmount() {
+    console.log('MessengerRootComponent componentWillUnmount');
+  }
+
   setEditMessage = (id: string | null, message: string | null) => {
     this.setState({
       editMessageId: id,
@@ -352,25 +357,27 @@ export class MessengerRootComponent extends React.Component<
 
   render() {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all
-    if (!canUseDOM) {
+
+    if (true || !canUseDOM) {
       return (
         <Placeholder
           variables={{ conversationId: this.props.conversationId }}
         />
       );
     }
-    return (
-      <MessagesStateContext.Provider value={this.state}>
-        <MessengerContext.Consumer>
-          {messenger => (
-            <MessagesWithUser
-              conversationId={this.props.conversationId}
-              messenger={messenger}
-              conversationType={this.props.conversationType}
-            />
-          )}
-        </MessengerContext.Consumer>
-      </MessagesStateContext.Provider>
-    );
+
+    // return (
+    //   <MessagesStateContext.Provider value={this.state}>
+    //     <MessengerContext.Consumer>
+    //       {messenger => (
+    //         <MessagesWithUser
+    //           conversationId={this.props.conversationId}
+    //           messenger={messenger}
+    //           conversationType={this.props.conversationType}
+    //         />
+    //       )}
+    //     </MessengerContext.Consumer>
+    //   </MessagesStateContext.Provider>
+    // );
   }
 }

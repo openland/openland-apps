@@ -212,7 +212,7 @@ class EditMessageInlineInner extends React.Component<any> {
 }
 
 const EditMessageInline = withEditMessage(
-  EditMessageInlineInner
+  EditMessageInlineInner as any
 ) as React.ComponentType<{ id: string; text: string | null; onClose: any }>;
 
 export class EditMessageInlineWrapper extends React.Component<{
