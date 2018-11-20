@@ -4,6 +4,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
+import { Text, View } from 'react-native';
 
 const FastButton = css`
     border-radius: 20px;
@@ -52,23 +53,40 @@ class SecondText extends React.Component {
     }
 }
 
+class ThirdText extends React.Component {
+    render() {
+        let ch: any[] = [];
+        for (let a = 0; a < 1000; a++) {
+            ch.push(<View marginTop={20} marginBottom={20} key={'b-' + a}><Text>button</Text></View>);
+        }
+        return (
+            <XVertical>
+                {ch}
+            </XVertical>
+        );
+    }
+}
+
 export default class Perf extends React.Component {
     render() {
         return (
             <XVertical>
                 <XHorizontal>
-                    <XButton text="First" query={{ field: 'tab' }} />
-                    <XButton text="Second" query={{ field: 'tab', value: '2' }} />
-                    <XButton text="Third" query={{ field: 'tab', value: '3' }} />
+                    <XButton text="0" query={{ field: 'tab' }} />
+                    <XButton text="1" query={{ field: 'tab', value: '1' }} />
+                    <XButton text="2" query={{ field: 'tab', value: '2' }} />
+                    <XButton text="3" query={{ field: 'tab', value: '3' }} />
                 </XHorizontal>
                 <XRouterContext.Consumer>
                     {ctx => {
-                        if (ctx!.query.tab === '2') {
+                        if (ctx!.query.tab === '1') {
+                            return <FirstText />;
+                        } else if (ctx!.query.tab === '2') {
                             return <SecondText />;
                         } else if (ctx!.query.tab === '3') {
-                            return null;
+                            return <ThirdText />;
                         } else {
-                            return <FirstText />;
+                            return null;
                         }
                     }}
                 </XRouterContext.Consumer>
