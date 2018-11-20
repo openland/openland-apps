@@ -67,3 +67,4 @@ org.eclipse.buildship.core.prefs
 .classpath
 android/captures
 ios/Pods
+.linaria-cache
