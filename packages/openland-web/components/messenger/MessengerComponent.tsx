@@ -1230,8 +1230,6 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
             tab = 'call';
         }
 
-        console.log(tab);
-
         if (
             props.data.chat &&
             props.data.chat.__typename === 'ChannelConversation' &&
