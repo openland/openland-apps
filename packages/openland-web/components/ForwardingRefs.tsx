@@ -5,7 +5,7 @@ export const RefContext = React.createContext({});
 export const withRefComponent = (Component: any) => {
   return (props: any) => (
     <RefContext.Consumer>
-      {({ ref }: any) => <Component ref={ref} {...props} />}
+      {({ editRef }: any) => <Component ref={editRef} {...props} />}
     </RefContext.Consumer>
   );
 };
@@ -13,7 +13,7 @@ export const withRefComponent = (Component: any) => {
 export const ForwardRefProvider = (Component: any) => {
   return React.forwardRef((props: any, forwardRef: any) => {
     return (
-      <RefContext.Provider value={{ ref: forwardRef }}>
+      <RefContext.Provider value={{ editRef: forwardRef }}>
         <Component {...props} />
       </RefContext.Provider>
     );

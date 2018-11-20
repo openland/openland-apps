@@ -74,9 +74,9 @@ const XRichTextInputStored = class XRichTextInputStoredInner extends React.PureC
 
     return (
       <RefContext.Consumer>
-        {({ ref }: any) => (
+        {({ editRef }: any) => (
           <XRichTextInput
-            ref={ref}
+            ref={editRef}
             autofocus={true}
             onChange={this.onChangeHandler}
             value={value}
@@ -191,7 +191,7 @@ class EditMessageInlineInner extends React.Component<any> {
         }}
       >
         <TextInputWrapper>
-          <ForwardRefProviderComponent ref={this.xRichTextInputRef}>
+          <ForwardRefProviderComponent  ref={this.xRichTextInputRef}>
             <XTextInput valueStoreKey="fields.message" />
           </ForwardRefProviderComponent>
         </TextInputWrapper>

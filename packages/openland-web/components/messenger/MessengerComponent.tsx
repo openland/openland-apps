@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withChat } from '../../api/withChat';
-import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -601,7 +600,31 @@ const LastSeen = withOnline(props => {
 
 interface MessengerWrapperProps {
   handlePageTitle?: any;
+  data: any;
+  loading: boolean;
 }
+
+const getTitle = (data: any) => {
+  return data.chat.title;
+};
+
+const getTypename = (data: any) => {
+  return data.chat.__typename;
+};
+
+const getUsername = (data: any) => {
+  return data.chat.__typename === 'PrivateConversation'
+    ? data.chat.user.name
+    : undefined;
+};
+
+const getPageTitle = (data: any) => {
+  let chatType = getTypename(data);
+  let userName = getUsername(data);
+  let title = getTitle(data);
+
+  return chatType === 'PrivateConversation' ? userName : title;
+};
 
 class MessengerWrapper extends React.Component<MessengerWrapperProps> {
   pageTitle: string | undefined = undefined;
@@ -609,37 +632,25 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
   constructor(props: MessengerWrapperProps) {
     super(props);
 
-    // let title = props.data.chat.title;
+    const data = props.data;
 
-    // let chatType = props.data.chat.__typename;
-    // let userName =
-    //   props.data.chat.__typename === 'PrivateConversation'
-    //     ? props.data.chat.user.name
-    //     : undefined;
-
-    // if (this.props.handlePageTitle) {
-    //   this.pageTitle =
-    //     this.props.chatType === 'PrivateConversation'
-    //       ? this.props.userName
-    //       : this.props.chatTitle;
-    //   this.props.handlePageTitle(this.pageTitle);
-    // }
+    if (this.props.handlePageTitle && !props.loading) {
+      this.pageTitle = getPageTitle(data);
+      this.props.handlePageTitle(this.pageTitle);
+    }
   }
 
-  //   componentWillReceiveProps(newProps: MessengerWrapperProps) {
-  //     if (newProps.handlePageTitle) {
-  //       let title =
-  //         newProps.chatType === 'PrivateConversation'
-  //           ? newProps.userName
-  //           : newProps.chatTitle;
+  componentWillReceiveProps(newProps: MessengerWrapperProps) {
+    const data = newProps.data;
+    if (newProps.handlePageTitle && !newProps.loading) {
+      let title = getPageTitle(data);
 
-  //       if (title !== this.pageTitle) {
-  //         this.pageTitle = title;
-
-  //         newProps.handlePageTitle(title);
-  //       }
-  //     }
-  //   }
+      if (title !== this.pageTitle) {
+        this.pageTitle = title;
+        newProps.handlePageTitle(title);
+      }
+    }
+  }
 
   render() {
     return (
@@ -723,8 +734,8 @@ class ChatHeaderWrapperInner extends React.PureComponent<
       );
     }
 
-    let title = this.props.data.chat.title;
-    let chatType = this.props.data.chat.__typename;
+    let title = getTitle(data);
+    let chatType = getTypename(data);
 
     let titlePath: string | undefined = undefined;
 
@@ -979,11 +990,9 @@ class ChatHeaderWrapperInner extends React.PureComponent<
   }
 }
 
-let MessengerComponentLoader = withChat(class extends React.Component<any> {
+let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
   render() {
     const props = this.props;
-
-    console.log(props);
 
     let tab: 'chat' | 'members' | 'call' = 'chat';
     if (props.router.query.tab === 'members') {
@@ -1005,6 +1014,7 @@ let MessengerComponentLoader = withChat(class extends React.Component<any> {
 
     return (
       <MessengerWrapper
+        loading={props.loading}
         data={props.data}
         handlePageTitle={(props as any).handlePageTitle}
       >

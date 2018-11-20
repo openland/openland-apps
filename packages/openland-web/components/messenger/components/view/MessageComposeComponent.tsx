@@ -14,7 +14,7 @@ import { MutationFunc } from 'react-apollo';
 import { DropArea } from './DropArea';
 import { ReplyView } from './ReplyView';
 import { PostIntroModal } from './content/PostIntroModal';
-import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
+import { UserInfoComponentProps } from '../../../UserInfo';
 import {
   MessagesStateContext,
   MessagesStateContextProps
@@ -348,7 +348,6 @@ class MessageComposeComponentInner extends React.PureComponent<
   componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
     if (this.props.messagesContext !== nextProps.messagesContext) {
       this.onMessagesContextChanged(nextProps);
-      this.focusIfNeeded();
     }
     if (
       this.props.draft !== nextProps.draft ||
@@ -415,17 +414,7 @@ class MessageComposeComponentInner extends React.PureComponent<
 }
 
 // withGetDraftMessage(
-
 // draft={props.data.message}
-// withMessageState(
-//   withUserInfo(
-
-// ) as React.ComponentType<
-//   MessageComposeComponentProps & { variables?: { conversationId?: string } }
-// >;
-
-//   )
-// ) as React.ComponentType<MessageComposeWithDraft>;
 
 export const MessageComposeComponent = withMessageState((props: any) => (
   <MessagesStateContext.Consumer>
