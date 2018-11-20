@@ -9,7 +9,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
-import { XDate } from 'openland-x-format/XDate';
+import { XDate } from 'openland-x/XDate';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
@@ -37,8 +37,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
-import { ConferenceComponent } from '../conference/ConferenceComponent';
-import { conforms } from 'lodash-es';
+import { TalkBarComponent } from '../conference/TalkBarComponent';
+import { TalkContext } from '../conference/TalkProviderComponent';
 
 const ChatHeaderWrapper = Glamorous.div<{ loading?: boolean; children: any }>(
   ({ loading }) => ({
@@ -340,6 +340,58 @@ const RoomTab = Glamorous(XLink)({
     borderColor: '#1790ff'
   }
 });
+
+export const GroupEditComponent = withAlterChat((props) => {
+  let editTitle = (props as any).title;
+  let editPhotoRef = (props as any).photoRef;
+  let editDescription = (props as any).description;
+  let editLongDescription = (props as any).longDescription;
+  return (
+      <XModalForm
+          targetQuery="editChat"
+          title="Group settings"
+          useTopCloser={true}
+          defaultAction={(data) => {
+              let newTitle = data.input.title;
+              let newDescription = data.input.description;
+              let newPhoto = data.input.photoRef;
+              let newLongDescription = data.input.longDescription;
+
+              props.alter({
+                  variables: {
+                      input: {
+                          ...newTitle !== editTitle ? { title: newTitle } : {},
+                          ...newDescription !== editDescription ? { description: newDescription } : {},
+                          ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                          ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
+                      }
+                  }
+              });
+          }}
+          defaultData={{
+              input: {
+                  title: (props as any).title || '',
+                  description: (props as any).description || '',
+                  photoRef: sanitizeIamgeRef((props as any).photoRef),
+                  longDescription: (props as any).longDescription || '',
+              }
+          }}
+      >
+          <XVertical separator={12}>
+              <XHorizontal separator={12}>
+                  <XAvatarUpload size="default" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                  <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
+                      <XInput field="input.title" flexGrow={1} title="Group name" size="large" />
+                      <XWithRole role="feature-chat-embedded-attach">
+                          <XInput field="input.longDescription" flexGrow={1} title="Attach link" size="large" />
+                      </XWithRole>
+                  </XVertical>
+              </XHorizontal>
+              <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
+          </XVertical>
+      </XModalForm>
+  );
+}) as React.ComponentType<{ title: string, description: string | null, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
 export const RoomEditComponent = withAlterChat(props => {
   let editTitle = (props as any).title;
@@ -735,6 +787,8 @@ class ChatHeaderWrapperInner extends React.PureComponent<
       );
     }
 
+    const props = this.props;
+
     let title = getTitle(data);
     let chatType = getTypename(data);
 
@@ -869,6 +923,11 @@ class ChatHeaderWrapperInner extends React.PureComponent<
                   alignItems="center"
                   separator={6}
                 >
+                  <XWithRole role="feature-non-production">
+                      <TalkContext.Consumer>
+                          {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                      </TalkContext.Consumer>
+                  </XWithRole>
                   <InviteMembersModal
                     orgId={
                       data.chat.organization ? data.chat.organization.id : ''
@@ -1026,6 +1085,7 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
         <ChatHeaderWrapperInner
           {...{ data: props.data, loading: props.loading }}
         />
+        {!props.loading && <TalkBarComponent conversationId={props.data.chat!.id} />}
         <XHorizontal
           justifyContent="center"
           width="100%"
@@ -1077,13 +1137,6 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
                 orgId={''}
                 removeFrom="group"
               />
-            )}
-          {!props.loading &&
-            props.data.chat.__typename === 'GroupConversation' &&
-            tab === 'call' && (
-              <XWithRole role="feature-non-production">
-                <ConferenceComponent conversationId={props.data.chat.id} />
-              </XWithRole>
             )}
         </XHorizontal>
 
