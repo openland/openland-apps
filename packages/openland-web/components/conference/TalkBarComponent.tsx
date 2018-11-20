@@ -52,7 +52,10 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         />
                                     ))}
                                     {ctx.cid === props.conversationId && (
-                                        <XButton style="success" text={ctx.state === 'connecting' ? 'Connecting' : 'Leave'} onClick={() => ctx.leaveCall()} />
+                                        <>
+                                            <XButton style="success" text={ctx.muted ? 'Unmute' : 'Mute'} onClick={() => ctx.toggleMute()} />
+                                            <XButton style="success" text={ctx.state === 'connecting' ? 'Connecting' : 'Leave'} onClick={() => ctx.leaveCall()} />
+                                        </>
                                     )}
                                     {ctx.cid !== props.conversationId && (
                                         <XButton style="success" text={ctx.cid ? 'Leave' : 'Join'} onClick={ctx.cid ? () => ctx.leaveCall() : () => ctx.joinCall(props.conversationId)} />

@@ -7,6 +7,7 @@ import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 export interface TalkMediaComponentProps {
     id: string;
     peerId: string;
+    muted: boolean;
 }
 
 export interface TalkMediaComponentState {
@@ -26,6 +27,15 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
             setTimeout(
                 () => {
                     if (this._mounted) {
+                        if (this.props.muted) {
+                            for (let t of stream.getAudioTracks()) {
+                                t.enabled = false;
+                            }
+                        } else {
+                            for (let t of stream.getAudioTracks()) {
+                                t.enabled = true;
+                            }
+                        }
                         this.setState({ mediaStream: stream });
                     } else {
                         for (let t of stream.getTracks()) {
@@ -35,6 +45,21 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
                 },
                 10);
         });
+    }
+
+    componentWillReceiveProps(nextProps: TalkMediaComponentProps) {
+        if (nextProps.muted !== this.props.muted && this.state.mediaStream) {
+            let stream = this.state.mediaStream!;
+            if (nextProps.muted) {
+                for (let t of stream.getAudioTracks()) {
+                    t.enabled = false;
+                }
+            } else {
+                for (let t of stream.getAudioTracks()) {
+                    t.enabled = true;
+                }
+            }
+        }
     }
 
     componentWillUnmount() {
