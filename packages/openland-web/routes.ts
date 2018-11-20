@@ -255,6 +255,7 @@ routes.add('/super/users', '/dev/users');
 routes.add('/super/users/', '/dev/users');
 
 routes.add('/compatibility', '/compat');
+routes.add('/performance', '/perf/perf');
 
 //
 // Authentication
