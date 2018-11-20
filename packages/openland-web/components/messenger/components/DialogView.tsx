@@ -14,6 +14,7 @@ let content = css`
     flex-grow: 1;
     padding: 8px 12px 8px 16px;
     position: relative;
+    min-width: 0px;
 `;
 
 let top = css`
@@ -54,6 +55,7 @@ let date = css`
 let body = css`
     display: flex;
     flex-direction: row;
+    min-width: 0px;
 `;
 
 let contentText = css`
@@ -66,7 +68,7 @@ let contentText = css`
     font-size: 13px;
     font-weight: 400;
     line-height: 17px;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.5);
     overflow: hidden;
 
     & > span {
@@ -81,6 +83,17 @@ let contentText = css`
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
+
+    & svg {
+        display: inline-block;
+        vertical-align: top;
+        margin: 1px 5px -1px 1px;
+
+        &.document {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    },
 `;
 
 let counter = css`
@@ -99,6 +112,7 @@ let item = css`
     padding-top: 4px;
     padding-bottom: 4px;
     position: relative;
+    min-width: 0px;
 
     &:hover, &:focus {
         background-color: rgba(23, 144, 255, 0.05);
