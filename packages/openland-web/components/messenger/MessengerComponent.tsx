@@ -1033,7 +1033,7 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
         <ChatHeaderWrapperInner
           {...{ data: props.data, loading: props.loading }}
         />
-        <TalkBarComponent conversationId={props.data.chat!.id} />
+        {!props.loading && <TalkBarComponent conversationId={props.data.chat!.id} />}
         <XHorizontal
           justifyContent="center"
           width="100%"
