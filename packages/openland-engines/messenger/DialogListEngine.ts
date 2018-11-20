@@ -170,6 +170,7 @@ export class DialogListEngine {
     }
 
     handleNewMessage = async (event: any, visible: boolean) => {
+        console.log(event);
         const conversationId = event.cid as string;
         const unreadCount = event.unread as number;
 
