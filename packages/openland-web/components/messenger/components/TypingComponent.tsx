@@ -4,32 +4,32 @@ import { TypignsComponent, TypingContext } from './TypingsComponent';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const TypingWrapper = Glamorous.div({
-  display: 'flex',
-  alignItems: 'flex-start',
-  width: '100%',
-  flexShrink: 0,
-  position: 'absolute',
-  bottom: 0,
-  left: 0
+    display: 'flex',
+    alignItems: 'flex-start',
+    width: '100%',
+    flexShrink: 0,
+    position: 'absolute',
+    bottom: 0,
+    left: 0
 });
 
 const TypingContent = Glamorous(XHorizontal)({
-  backgroundColor: '#fff',
-  maxHeight: 33,
-  maxWidth: 800,
-  paddingLeft: 62,
-  paddingRight: 40,
-  margin: 'auto'
+    backgroundColor: '#fff',
+    maxHeight: 33,
+    maxWidth: 800,
+    paddingLeft: 62,
+    paddingRight: 40,
+    margin: 'auto'
 });
 
 const TypingString = Glamorous.div({
-  opacity: 0.5,
-  fontSize: 12,
-  fontWeight: 500,
-  letterSpacing: -0.2,
-  color: '#334562',
-  marginTop: 8,
-  marginBottom: 8
+    opacity: 0.5,
+    fontSize: 12,
+    fontWeight: 500,
+    letterSpacing: -0.2,
+    color: '#334562',
+    marginTop: 8,
+    marginBottom: 8
 });
 
 // const TypingAvatarWrapper = Glamorous.div({
@@ -56,14 +56,18 @@ const TypingString = Glamorous.div({
 //     }
 // });
 export class TypingComponent extends React.PureComponent<{ chatId: string }> {
-  render() {
-    return (
-      <TypingWrapper>
-        <TypignsComponent conversatonId={this.props.chatId}>
-          <TypingContext.Consumer>
-            {typing => (
-              <TypingContent separator={5} alignItems="center" flexGrow={1}>
-                {/* {typing.users && (
+    render() {
+        return (
+            <TypingWrapper>
+                <TypignsComponent conversatonId={this.props.chatId}>
+                    <TypingContext.Consumer>
+                        {typing => (
+                            <TypingContent
+                                separator={5}
+                                alignItems="center"
+                                flexGrow={1}
+                            >
+                                {/* {typing.users && (
                               <TypingAvatarWrapper>
                                   {typing.users.map((i, j) => (
                                       <TypingAvatar
@@ -77,12 +81,14 @@ export class TypingComponent extends React.PureComponent<{ chatId: string }> {
                                   ))}
                               </TypingAvatarWrapper>
                           )} */}
-                {typing.typing && <TypingString>{typing.typing}</TypingString>}
-              </TypingContent>
-            )}
-          </TypingContext.Consumer>
-        </TypignsComponent>
-      </TypingWrapper>
-    );
-  }
+                                {typing.typing && (
+                                    <TypingString>{typing.typing}</TypingString>
+                                )}
+                            </TypingContent>
+                        )}
+                    </TypingContext.Consumer>
+                </TypignsComponent>
+            </TypingWrapper>
+        );
+    }
 }

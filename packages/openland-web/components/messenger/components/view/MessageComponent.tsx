@@ -5,6 +5,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
+import { XDate } from 'openland-x/XDate';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { MessageImageComponent } from './content/MessageImageComponent';
@@ -26,7 +27,6 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import ReplyIcon from '../icons/ic-reply.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
-import { XDate } from 'openland-x/XDate';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -347,7 +347,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     </XHorizontal>
                 </MessageContainer>
             );
-        }        
+        }
         
         return (
             <MessageContainer className="full-message" compact={false} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>
