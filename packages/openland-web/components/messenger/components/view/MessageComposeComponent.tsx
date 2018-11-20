@@ -191,6 +191,9 @@ class MessageComposeComponentInner extends React.PureComponent<
         }
       }
       this.handleChange('');
+      if (this.xRichTextInputRef.current) {
+        this.xRichTextInputRef.current.resetAndFocus();
+      }
     }
   }
 

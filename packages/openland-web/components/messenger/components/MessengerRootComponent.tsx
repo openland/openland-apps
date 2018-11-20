@@ -147,7 +147,7 @@ const MessagesComponent = class
     this.setState({ loading: state.loading, messages: state.messages });
   }
 
-  updateConversation = () => {
+  updateConversation = (data: any) => {
     if (this.unmounter) {
       this.unmounter();
     }
@@ -155,15 +155,14 @@ const MessagesComponent = class
       this.unmounter2();
     }
 
-    if (!this.state.conversationId) {
-      return;
-    }
+    const conversationId = data.chat.id;
+    const conversationType = data.chat.__type;
 
     this.conversation = this.props.messenger.getConversation(
-      this.state.conversationId
+      conversationId
     );
     this.unmounter = this.conversation.engine.mountConversation(
-      this.state.conversationId
+      conversationId
     );
     this.unmounter2 = this.conversation.subscribe(this);
 
@@ -173,6 +172,8 @@ const MessagesComponent = class
     let convState = this.conversation.getState();
 
     this.setState({
+      conversationId,
+      conversationType,
       messages: convState.messages,
       loading: convState.loading
     });
@@ -188,17 +189,9 @@ const MessagesComponent = class
   }
 
   componentWillReceiveProps(props: MessagesComponentProps) {
-    if (!props.loading) {
-      const data = props.data;
-      this.setState(
-        {
-          conversationId: data.chat.id,
-          conversationType: data.chat.__type
-        },
-        () => {
-          this.updateConversation();
-        }
-      );
+    const data = props.data;
+    if (!props.loading && data && data.chat && this.state.conversationId !== data.chat.id) {
+      this.updateConversation(data);
     }
   }
 
@@ -351,7 +344,7 @@ export class MessengerRootComponent extends React.Component<
 
     return (
       <ConversationContainer>
-        {!canUseDOM ||
+        {!canUseDOM &&
           (this.props.loading && (
             <MessagesContainer noClassName>
               <XLoader loading={!canUseDOM || this.props.loading} />
