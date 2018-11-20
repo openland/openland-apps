@@ -1,6 +1,6 @@
 import { CSSProperties } from 'glamorous';
 
-function neutral(alpha: number) {
+export function neutral(alpha: number) {
     let v = Math.round(240 * (1 - alpha));
     return 'rgb(' + v + ', ' + v + ', ' + v + ')';
 }
