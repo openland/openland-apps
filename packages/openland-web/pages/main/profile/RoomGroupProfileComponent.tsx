@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
+import { withAlterChat } from '../../../api/withAlterChat';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -10,8 +12,13 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem } from 'openland-x/XMenuItem';
+import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
@@ -19,7 +26,7 @@ import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     AddMemberForm,
     RoomEditComponent,
-    ChatEditComponent
+    GroupEditComponent
 } from '../../../components/messenger/MessengerComponent';
 import {
     HeaderAvatar,
@@ -30,7 +37,8 @@ import {
     Section,
     SectionContent,
     HeaderWrapper,
-    OrganizationInfoWrapper
+    OrganizationInfoWrapper,
+    EditButton
 } from './OrganizationProfileComponent';
 import {
     GroupRoomInfo_chat_GroupConversation,
@@ -87,8 +95,9 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                             />
                             <LeaveChatComponent />
                             {chat.__typename === 'GroupConversation' && (
-                                <ChatEditComponent
+                                <GroupEditComponent
                                     title={chat.title}
+                                    description={chat.description}
                                     longDescription={chat.longDescription || undefined}
                                     photoRef={chat.photoRef}
                                     refetchVars={{ conversationId: chat.id }}
@@ -112,8 +121,61 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
     );
 };
 
+const AboutPlaceholder = withAlterChat((props) => {
+    let editTitle = (props as any).title;
+    let editDescription = (props as any).description;
+    let editPhotoRef = (props as any).photoRef;
+    let editSocialImageRef = (props as any).socialImageRef;
+    let editLongDescription = (props as any).longDescription;
+    return (
+        <XModalForm
+            scrollableContent={true}
+            target={(props as any).target}
+            useTopCloser={true}
+            title="Room settings"
+            defaultAction={(data) => {
+                let newTitle = data.input.title;
+                let newDescription = data.input.description;
+                let newPhoto = data.input.photoRef;
+                let newSocialImage = data.input.socialImageRef;
+                let newLongDescription = data.input.longDescription;
+
+                props.alter({
+                    variables: {
+                        input: {
+                            ...newTitle !== editTitle ? { title: newTitle } : {},
+                            ...newDescription !== editDescription ? { description: newDescription } : {},
+                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
+                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
+                        }
+                    }
+                });
+            }}
+            defaultData={{
+                input: {
+                    title: (props as any).title || '',
+                    description: (props as any).description || '',
+                    longDescription: (props as any).longDescription || '',
+                    photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
+                }
+            }}
+        >
+            <XVertical>
+                <XFormLoadingContent>
+                    <XFormField field="fields.input.description">
+                        <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
+                    </XFormField>
+                </XFormLoadingContent>
+            </XVertical>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ target: any, title: string, photoRef: any, description: string | null, longDescription: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
+
 const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
     let chat = props.chat;
+    let meOwner = chat.myRole === 'member' || chat.myRole === 'owner';
     return (
         <>
             {chat.description && (
@@ -124,6 +186,22 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
                     />
                     <SectionContent>
                         {chat.description}
+                    </SectionContent>
+                </Section>
+            )}
+            {!chat.description && meOwner && (
+                <Section separator={0}>
+                    <XSubHeader title="About" paddingBottom={0} />
+                    <SectionContent>
+                        <AboutPlaceholder 
+                            title={chat.title} 
+                            description={chat.description} 
+                            longDescription={chat.longDescription} 
+                            socialImageRef={(chat as any).socialImageRef || null} 
+                            photoRef={chat.photoRef} 
+                            refetchVars={{ conversationId: chat.id }}
+                            target={<EditButton text="Add a short description" />}
+                        />
                     </SectionContent>
                 </Section>
             )}

@@ -76,8 +76,8 @@ export class XModalForm extends React.Component<XModalFormProps> {
                         </FooterSubActions>
                         <XModalFooter>
                             <XHorizontal>
-                                <XForm.Submit style={this.props.actionStyle || 'primary'} text={this.props.actionName || 'Save'} />
                                 <XButton text="Cancel" autoClose={true} />
+                                <XForm.Submit style={this.props.actionStyle || 'primary'} text={this.props.actionName || 'Save'} />
                             </XHorizontal>
                         </XModalFooter>
                     </Footer>
