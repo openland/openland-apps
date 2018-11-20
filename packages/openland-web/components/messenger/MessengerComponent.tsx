@@ -341,6 +341,58 @@ const RoomTab = Glamorous(XLink)({
   }
 });
 
+export const GroupEditComponent = withAlterChat((props) => {
+  let editTitle = (props as any).title;
+  let editPhotoRef = (props as any).photoRef;
+  let editDescription = (props as any).description;
+  let editLongDescription = (props as any).longDescription;
+  return (
+      <XModalForm
+          targetQuery="editChat"
+          title="Group settings"
+          useTopCloser={true}
+          defaultAction={(data) => {
+              let newTitle = data.input.title;
+              let newDescription = data.input.description;
+              let newPhoto = data.input.photoRef;
+              let newLongDescription = data.input.longDescription;
+
+              props.alter({
+                  variables: {
+                      input: {
+                          ...newTitle !== editTitle ? { title: newTitle } : {},
+                          ...newDescription !== editDescription ? { description: newDescription } : {},
+                          ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                          ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
+                      }
+                  }
+              });
+          }}
+          defaultData={{
+              input: {
+                  title: (props as any).title || '',
+                  description: (props as any).description || '',
+                  photoRef: sanitizeIamgeRef((props as any).photoRef),
+                  longDescription: (props as any).longDescription || '',
+              }
+          }}
+      >
+          <XVertical separator={12}>
+              <XHorizontal separator={12}>
+                  <XAvatarUpload size="default" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
+                  <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
+                      <XInput field="input.title" flexGrow={1} title="Group name" size="large" />
+                      <XWithRole role="feature-chat-embedded-attach">
+                          <XInput field="input.longDescription" flexGrow={1} title="Attach link" size="large" />
+                      </XWithRole>
+                  </XVertical>
+              </XHorizontal>
+              <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
+          </XVertical>
+      </XModalForm>
+  );
+}) as React.ComponentType<{ title: string, description: string | null, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
+
 export const RoomEditComponent = withAlterChat(props => {
   let editTitle = (props as any).title;
   let editDescription = (props as any).description;
