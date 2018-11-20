@@ -439,6 +439,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private onMessagesUpdated = () => {
+        console.log('Messages updated');
         if (this.isOpen) {
             this.markReadIfNeeded();
         }
