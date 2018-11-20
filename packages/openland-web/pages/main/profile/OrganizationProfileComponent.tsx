@@ -380,13 +380,15 @@ export const SectionContent = Glamorous(XContentWrapper)({
     color: '#000000'
 });
 
-let extractHostname = (url: string) => {
+export let extractHostname = (url: string) => {
     var hostname = url;
 
     // find & remove protocol (http, ftp, etc.) and get hostname
     hostname = url.split('/')[url.indexOf('//') > -1 ? 2 : 0];
+
     // find & remove port number
     hostname = hostname.split(':')[0];
+
     // find & remove "?"
     hostname = hostname.split('?')[0];
 
