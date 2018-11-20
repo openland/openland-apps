@@ -11,9 +11,9 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
-import { DownloadState } from 'openland-shared/DownloadManagerInterface';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
+import { DownloadState } from 'openland-mobile/utils/DownloadManagerInterface';
 
 const styles = StyleSheet.create({
     name: {

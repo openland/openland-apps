@@ -7,11 +7,10 @@ import { ASText } from 'react-native-async-view/ASText';
 import { formatBytes } from '../../utils/formatBytes';
 import { formatTime } from '../../utils/formatTime';
 import { Platform } from 'react-native';
-import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { DownloadManagerInstance } from '../../../openland-mobile/files/DownloadManager';
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
-import { DownloadState } from '../../../openland-shared/DownloadManagerInterface';
 import { UploadManagerInstance } from '../../files/UploadManager';
+import { DownloadState } from 'openland-mobile/utils/DownloadManagerInterface';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));

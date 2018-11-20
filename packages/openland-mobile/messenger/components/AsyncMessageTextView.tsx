@@ -9,8 +9,8 @@ import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
-import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { resolveInternalLink } from '../../components/ZText';
+import { layoutMedia } from 'openland-web/components/messenger/components/view/content/utils/MediaLayout';
 
 const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
