@@ -37,7 +37,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
-import { ConferenceComponent } from '../conference/ConferenceComponent';
+import { TalkBarComponent } from '../conference/TalkBarComponent';
+import { TalkContext } from '../conference/TalkProviderComponent';
 
 const ChatHeaderWrapper = Glamorous.div<{ loading?: boolean; children: any }>(
   ({ loading }) => ({
@@ -734,6 +735,8 @@ class ChatHeaderWrapperInner extends React.PureComponent<
       );
     }
 
+    const props = this.props;
+
     let title = getTitle(data);
     let chatType = getTypename(data);
 
@@ -868,6 +871,11 @@ class ChatHeaderWrapperInner extends React.PureComponent<
                   alignItems="center"
                   separator={6}
                 >
+                  <XWithRole role="feature-non-production">
+                      <TalkContext.Consumer>
+                          {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                      </TalkContext.Consumer>
+                  </XWithRole>
                   <InviteMembersModal
                     orgId={
                       data.chat.organization ? data.chat.organization.id : ''
@@ -1025,6 +1033,7 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
         <ChatHeaderWrapperInner
           {...{ data: props.data, loading: props.loading }}
         />
+        <TalkBarComponent conversationId={props.data.chat!.id} />
         <XHorizontal
           justifyContent="center"
           width="100%"
@@ -1076,13 +1085,6 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
                 orgId={''}
                 removeFrom="group"
               />
-            )}
-          {!props.loading &&
-            props.data.chat.__typename === 'GroupConversation' &&
-            tab === 'call' && (
-              <XWithRole role="feature-non-production">
-                <ConferenceComponent conversationId={props.data.chat.id} />
-              </XWithRole>
             )}
         </XHorizontal>
 
