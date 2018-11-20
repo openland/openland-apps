@@ -16,10 +16,10 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XSelect } from 'openland-x/XSelect';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { DateFormater } from 'openland-x-format/XDate';
 import { Query } from '../../../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
+import { DateFormater } from 'openland-x/XDate';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,

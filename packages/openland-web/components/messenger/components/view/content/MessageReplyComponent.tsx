@@ -4,12 +4,12 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { XDate } from 'openland-x-format/XDate';
 import { MessageFull_reply_sender, MessageFull_reply_fileMetadata } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
 import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
+import { XDate } from 'openland-x/XDate';
 
 const MessageContainer = Glamorous.div({
     position: 'relative',

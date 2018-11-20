@@ -4,7 +4,6 @@ import { withUser } from '../../../api/withUserSimple';
 import { User, User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XDate } from 'openland-x-format/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
@@ -23,6 +22,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { XDate } from 'openland-x/XDate';
 
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18

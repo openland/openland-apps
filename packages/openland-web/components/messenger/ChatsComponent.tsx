@@ -9,7 +9,6 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCounter } from 'openland-x/XCounter';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XDate } from 'openland-x-format/XDate';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { withChatSearchText } from '../../api/withChatSearchText';
@@ -24,6 +23,7 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
+import { XDate } from 'openland-x/XDate';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',

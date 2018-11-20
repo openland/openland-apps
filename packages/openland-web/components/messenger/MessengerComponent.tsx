@@ -10,7 +10,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
-import { XDate } from 'openland-x-format/XDate';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
@@ -40,6 +39,7 @@ import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
+import { XDate } from 'openland-x/XDate';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
