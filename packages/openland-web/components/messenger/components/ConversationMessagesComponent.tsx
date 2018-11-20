@@ -37,7 +37,7 @@ export class ConversationMessagesComponentInner extends React.PureComponent<
       <>
         {!this.props.loading && (
           <MessageListComponent
-            me={this.props.user.id}
+            me={this.props.user}
             loadBefore={this.loadBefore}
             conversation={this.props.conversation}
             conversationType={this.props.conversationType}

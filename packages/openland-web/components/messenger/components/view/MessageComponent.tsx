@@ -280,7 +280,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (content.length === 0) {
             content.push(<MessageTextComponent message={''} key={'text'} isService={false} isEdited={edited} />);
         }
-
+        
         // menu
         let menu = isServerMessage(message) && this.props.out ?
             (
@@ -349,6 +349,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             );
         }
 
+        
+        
         return (
             <MessageContainer className="full-message" compact={false} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>
                 <XHorizontal alignSelf="stretch">

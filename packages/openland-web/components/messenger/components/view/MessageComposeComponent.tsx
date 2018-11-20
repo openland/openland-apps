@@ -427,7 +427,7 @@ class MessageComposeComponentInner extends React.PureComponent<
 //   )
 // ) as React.ComponentType<MessageComposeWithDraft>;
 
-export const MessageComposeComponent = (props: any) => (
+export const MessageComposeComponent = withMessageState((props: any) => (
   <MessagesStateContext.Consumer>
     {(state: MessagesStateContextProps) => (
       <MessageComposeComponentInner
@@ -439,4 +439,4 @@ export const MessageComposeComponent = (props: any) => (
       />
     )}
   </MessagesStateContext.Consumer>
-);
+));
