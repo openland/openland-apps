@@ -9,7 +9,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
-import { XDate } from 'openland-x-format/XDate';
+import { XDate } from 'openland-x/XDate';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
@@ -38,7 +38,6 @@ import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { ConferenceComponent } from '../conference/ConferenceComponent';
-import { conforms } from 'lodash-es';
 
 const ChatHeaderWrapper = Glamorous.div<{ loading?: boolean; children: any }>(
   ({ loading }) => ({
