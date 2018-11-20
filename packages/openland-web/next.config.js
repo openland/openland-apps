@@ -2,6 +2,7 @@
 const path = require('path');
 const withTypescript = require('@zeit/next-typescript');
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
+const withCSS = require('@zeit/next-css');
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -42,7 +43,12 @@ const config = {
                 path.resolve(dir + '/../')
             ],
             exclude: /node_modules/,
-            use: defaultLoaders.babel,
+            use: [defaultLoaders.babel, {
+                loader: 'linaria/loader',
+                options: {
+                    sourceMap: process.env.NODE_ENV !== 'production',
+                },
+            }],
         });
 
         // HACK: Quick fix to resolve the custom babel config in root
@@ -197,4 +203,4 @@ const config = {
     assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
 };
 
-module.exports = withBundleAnalyzer(config);
+module.exports = withCSS(withBundleAnalyzer(config));

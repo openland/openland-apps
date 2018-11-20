@@ -7,7 +7,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XTitle } from 'openland-x/XTitle';
-import { XGroup } from 'openland-x/XGroup';
 
 const EXAMPLE = 'https://theblueraft.files.wordpress.com/2010/08/aang.jpg';
 
@@ -39,11 +38,9 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="organization" />
                             <XAvatar style="organization" src={EXAMPLE} />
 
-                            <XGroup>
-                                <XAvatar style="organization" src={EXAMPLE} />
-                                <XAvatar style="organization" />
-                                <XAvatar style="organization" src={EXAMPLE} />
-                            </XGroup>
+                            <XAvatar style="organization" src={EXAMPLE} />
+                            <XAvatar style="organization" />
+                            <XAvatar style="organization" src={EXAMPLE} />
                         </XHorizontal>
 
                         <XTitle>x-large</XTitle>
@@ -54,11 +51,9 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="organization" size="x-large" />
                             <XAvatar style="organization" src={EXAMPLE} size="x-large" />
 
-                            <XGroup>
-                                <XAvatar style="organization" size="x-large" src={EXAMPLE} />
-                                <XAvatar style="organization" size="x-large" />
-                                <XAvatar style="organization" size="x-large" src={EXAMPLE} />
-                            </XGroup>
+                            <XAvatar style="organization" size="x-large" src={EXAMPLE} />
+                            <XAvatar style="organization" size="x-large" />
+                            <XAvatar style="organization" size="x-large" src={EXAMPLE} />
                         </XHorizontal>
 
                         <XTitle>large</XTitle>
@@ -69,11 +64,9 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="organization" size="large" />
                             <XAvatar style="organization" src={EXAMPLE} size="large" />
 
-                            <XGroup>
-                                <XAvatar style="organization" size="large" src={EXAMPLE} />
-                                <XAvatar style="organization" size="large" />
-                                <XAvatar style="organization" size="large" src={EXAMPLE} />
-                            </XGroup>
+                            <XAvatar style="organization" size="large" src={EXAMPLE} />
+                            <XAvatar style="organization" size="large" />
+                            <XAvatar style="organization" size="large" src={EXAMPLE} />
                         </XHorizontal>
 
                         <XTitle>medium</XTitle>
@@ -84,11 +77,9 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="organization" size="medium" />
                             <XAvatar style="organization" src={EXAMPLE} size="medium" />
 
-                            <XGroup>
-                                <XAvatar style="organization" size="medium" src={EXAMPLE} />
-                                <XAvatar style="organization" size="medium" />
-                                <XAvatar style="organization" size="medium" src={EXAMPLE} />
-                            </XGroup>
+                            <XAvatar style="organization" size="medium" src={EXAMPLE} />
+                            <XAvatar style="organization" size="medium" />
+                            <XAvatar style="organization" size="medium" src={EXAMPLE} />
                         </XHorizontal>
 
                         <XTitle>small</XTitle>
@@ -99,11 +90,9 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar style="organization" size="small" />
                             <XAvatar style="organization" src={EXAMPLE} size="small" />
 
-                            <XGroup>
-                                <XAvatar style="organization" size="small" src={EXAMPLE} />
-                                <XAvatar style="organization" size="small" />
-                                <XAvatar style="organization" size="small" src={EXAMPLE} />
-                            </XGroup>
+                            <XAvatar style="organization" size="small" src={EXAMPLE} />
+                            <XAvatar style="organization" size="small" />
+                            <XAvatar style="organization" size="small" src={EXAMPLE} />
                         </XHorizontal>
 
                     </XVertical>

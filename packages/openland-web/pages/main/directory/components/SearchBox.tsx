@@ -12,23 +12,34 @@ const SearchWrapper = Glamorous.div({
 
 const SearchInner = Glamorous(XHorizontal)({
     height: 60,
-    '& > div > div': {
-        height: 59,
-        border: 'none',
-        fontSize: 16,
-        fontWeight: 500,
-        '&:focus-within': {
-            boxShadow: 'none',
-            border: 'none'
-        }
-    },
-    '& > div svg > g > path:last-child': {
-        fill: 'rgba(0, 0, 0, 0.25)'
-    },
+
     '& > div:focus-within': {
-        '& svg > g > path:last-child': {
+        '& .search-icon > g > path:last-child': {
             fill: 'rgba(23, 144, 255, 0.5)'
         }
+    },
+    '& .search-icon': {
+        marginLeft: '2px!important',
+
+        '& > g > path:last-child': {
+            fill: 'rgba(0, 0, 0, 0.25)'
+        },
+    }
+});
+
+const SearchInput = Glamorous(XInput)({
+    height: 59,
+    marginTop: -2,
+    border: 'none',
+    fontSize: 16,
+    fontWeight: 500,
+    '&:focus-within': {
+        boxShadow: 'none',
+        border: 'none'
+    },
+
+    '& > input, & > .input-placeholder': {
+        paddingLeft: 14
     }
 });
 
@@ -54,8 +65,8 @@ export class SearchBox extends React.Component<SearchBoxProps> {
                 <XContentWrapper>
                     <SearchInner justifyContent="space-between" alignItems="center" flexShrink={0}>
                         <XHorizontal separator={0} alignItems="center" flexGrow={1}>
-                            <SearchIcon />
-                            <XInput
+                            <SearchIcon className="search-icon" />
+                            <SearchInput
                                 value={this.props.value}
                                 onChange={this.onChange}
                                 flexGrow={1}

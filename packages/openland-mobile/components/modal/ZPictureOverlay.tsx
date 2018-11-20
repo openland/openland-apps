@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll, Alert } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
-import { layoutMedia } from 'openland-shared/utils/layoutMedia';
 import { XPImage } from 'openland-xp/XPImage';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
@@ -11,6 +10,7 @@ import { ActionSheetBuilder } from '../ActionSheet';
 import Share from 'react-native-share';
 import UUID from 'uuid/v4';
 import RNFetchBlob from 'rn-fetch-blob';
+import { layoutMedia } from 'openland-web/components/messenger/components/view/content/utils/MediaLayout';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 

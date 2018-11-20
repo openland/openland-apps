@@ -163,6 +163,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 <XSubHeader
                                                     title="All organizations"
                                                     right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                    paddingBottom={12}
                                                 />
                                             )}
                                             {(query.length > 0) && (orgCount > 0) && (
@@ -170,6 +171,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     title="Organizations"
                                                     counter={orgCount}
                                                     right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                    paddingBottom={12}
                                                 />
                                             )}
                                             <Organizations

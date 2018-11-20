@@ -51,7 +51,7 @@ const SidebarWrapper = Glamorous.div({
 
 const SidebarHeader = Glamorous.div({
     display: 'flex',
-    padding: '15px 16px 18px',
+    padding: '14px 15px 19px 17px',
 
     '& > span': {
         flex: 1,

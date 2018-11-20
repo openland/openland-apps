@@ -15,7 +15,10 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 const OrganizationCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     cursor: 'pointer',
     backgroundColor: '#fff',
-    padding: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 15,
+    paddingRight: 11,
     marginLeft: -16,
     marginRight: -16,
     borderRadius: 8,
@@ -83,11 +86,14 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
     display: 'flex',
     flexAlign: 'center',
     marginTop: 8,
+    marginLeft: -2,
     cursor: 'pointer',
     '& *': {
         cursor: 'pointer'
     },
     '& span': {
+        marginTop: 1,
+        marginBottom: -1,
         marginLeft: 8,
         fontSize: 13,
         letterSpacing: 0,

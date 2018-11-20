@@ -4,7 +4,6 @@ import { withUser } from '../../../api/withUserSimple';
 import { User, User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XDate } from 'openland-x-format/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
@@ -16,13 +15,14 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { BackButton, Section, SectionContent, HeaderWrapper } from './OrganizationProfileComponent';
+import { BackButton, Section, SectionContent, HeaderWrapper, extractHostname } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { XDate } from 'openland-x/XDate';
 
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18
@@ -145,7 +145,7 @@ const Header = (props: { user: User_user }) => {
                     <UserStatus variables={{ userId: user.id }} />
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {user.website && <XSocialButton value={user.website} style="website" />}
+                    {user.website && <XSocialButton value={user.website} style="website" placeholder={extractHostname(user.website)} />}
                     {user.linkedin && <XSocialButton value={user.linkedin} style="linkedin" />}
                     {user.phone && <XSocialButton value={user.phone} style="phone" />}
                     {user.isYou && (
