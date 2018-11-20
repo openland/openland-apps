@@ -18,7 +18,6 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
     private handleScroll = throttle(() => { this.updateDimensions(); }, 100);
 
     private handleRef = (src: any) => {
-        
         if (src !== null) {
             this.scroller = src;
         }
