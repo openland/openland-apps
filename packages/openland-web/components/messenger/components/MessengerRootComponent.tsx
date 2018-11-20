@@ -147,7 +147,11 @@ const MessagesComponent = class
     this.setState({ loading: state.loading, messages: state.messages });
   }
 
-  updateConversation = (data: any) => {
+  updateConversation = (props: any) => {
+    if (props.loading || !props.data || !props.data.chat || this.state.conversationId === props.data.chat.id) {
+      return;
+    }
+
     if (this.unmounter) {
       this.unmounter();
     }
@@ -155,8 +159,8 @@ const MessagesComponent = class
       this.unmounter2();
     }
 
-    const conversationId = data.chat.id;
-    const conversationType = data.chat.__type;
+    const conversationId = props.data.chat.id;
+    const conversationType = props.data.chat.__type;
 
     this.conversation = this.props.messenger.getConversation(
       conversationId
@@ -188,11 +192,12 @@ const MessagesComponent = class
     }
   }
 
+  componentWillMount() {
+    this.updateConversation(this.props);
+  }
+
   componentWillReceiveProps(props: MessagesComponentProps) {
-    const data = props.data;
-    if (!props.loading && data && data.chat && this.state.conversationId !== data.chat.id) {
-      this.updateConversation(data);
-    }
+    this.updateConversation(props);
   }
 
   handleChange = async (text: string) => {

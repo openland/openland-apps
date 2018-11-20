@@ -38,6 +38,7 @@ import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { ConferenceComponent } from '../conference/ConferenceComponent';
+import { conforms } from 'lodash-es';
 
 const ChatHeaderWrapper = Glamorous.div<{ loading?: boolean; children: any }>(
   ({ loading }) => ({
@@ -904,7 +905,7 @@ class ChatHeaderWrapperInner extends React.PureComponent<
             {data.chat.__typename === 'GroupConversation' && (
               <XHorizontal separator={14}>
                 <RoomTabs>
-                  <RoomTab query={{ field: 'tab' }}>Discussion</RoomTab>
+                  <RoomTab query={{ field: 'tab', value: 'discussion' }}>Discussion</RoomTab>
                   <RoomTab query={{ field: 'tab', value: 'members' }}>
                     Members
                   </RoomTab>
@@ -1002,6 +1003,8 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
       tab = 'call';
     }
 
+    console.log(tab);
+
     if (
       props.data.chat &&
       props.data.chat.__typename === 'ChannelConversation' &&
@@ -1011,6 +1014,8 @@ let MessengerComponentLoader = withChat(class extends React.PureComponent<any> {
     }
 
     let title = this.props.data.chat && this.props.data.chat.title;
+
+    console.log(this.props);
 
     return (
       <MessengerWrapper
