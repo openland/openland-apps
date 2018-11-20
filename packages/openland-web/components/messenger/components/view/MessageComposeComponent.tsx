@@ -16,419 +16,441 @@ import { ReplyView } from './ReplyView';
 import { PostIntroModal } from './content/PostIntroModal';
 import { UserInfoComponentProps } from '../../../UserInfo';
 import {
-  MessagesStateContext,
-  MessagesStateContextProps
+    MessagesStateContext,
+    MessagesStateContextProps
 } from '../MessagesStateContext';
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { AttachmentRaw } from './AttachmentRaw';
 import {
-  ReplyMessageVariables,
-  ReplyMessage,
-  SaveDraftMessageVariables,
-  SaveDraftMessage
+    ReplyMessageVariables,
+    ReplyMessage,
+    SaveDraftMessageVariables,
+    SaveDraftMessage
 } from 'openland-api/Types';
 import { global } from '../../../../globalSingleton';
 
 const SendMessageWrapper = Glamorous.div<{ hidden?: boolean }>(
-  ({ hidden }: { hidden: boolean }) => ({
-    display: hidden ? 'none' : 'flex',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    width: '100%',
-    minHeight: 114,
-    maxHeight: 330,
-    backgroundColor: XThemeDefault.backyardColor,
-    flexShrink: 0,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 12,
-    paddingBottom: 12,
-    borderTopStyle: 'solid',
-    borderTopWidth: '1px',
-    borderTopColor: XThemeDefault.separatorColor
-  })
+    ({ hidden }: { hidden: boolean }) => ({
+        display: hidden ? 'none' : 'flex',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        width: '100%',
+        minHeight: 114,
+        maxHeight: 330,
+        backgroundColor: XThemeDefault.backyardColor,
+        flexShrink: 0,
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingTop: 12,
+        paddingBottom: 12,
+        borderTopStyle: 'solid',
+        borderTopWidth: '1px',
+        borderTopColor: XThemeDefault.separatorColor
+    })
 );
 
 const SendMessageContent = Glamorous(XHorizontal)({
-  width: '100%',
-  maxWidth: 800,
-  flexBasis: '100%',
-  paddingLeft: 45,
-  paddingRight: 45
+    width: '100%',
+    maxWidth: 800,
+    flexBasis: '100%',
+    paddingLeft: 45,
+    paddingRight: 45
 });
 
 const TextInputWrapper = Glamorous.div({
-  flexGrow: 1,
-  maxHeight: '100%',
-  maxWidth: '100%',
-  '& > div': {
+    flexGrow: 1,
     maxHeight: '100%',
-    height: '100%',
-    '& .DraftEditor-root': {
-      overflow: 'auto',
-      borderRadius: 10,
-      backgroundColor: '#ffffff',
-      border: 'solid 1px #ececec',
-      minHeight: 40,
-      maxHeight: 255,
-      paddingTop: 9,
-      paddingBottom: 9,
-      paddingLeft: 16,
-      paddingRight: 40
+    maxWidth: '100%',
+    '& > div': {
+        maxHeight: '100%',
+        height: '100%',
+        '& .DraftEditor-root': {
+            overflow: 'auto',
+            borderRadius: 10,
+            backgroundColor: '#ffffff',
+            border: 'solid 1px #ececec',
+            minHeight: 40,
+            maxHeight: 255,
+            paddingTop: 9,
+            paddingBottom: 9,
+            paddingLeft: 16,
+            paddingRight: 40
+        }
     }
-  }
 });
 export interface MessageComposeComponentProps {
-  conversationType?: string;
-  conversationId?: string;
-  conversation?: ConversationEngine;
-  enabled?: boolean;
-  onSend?: (text: string) => void;
-  onSendFile?: (file: UploadCare.File) => void;
-  onChange?: (text: string) => void;
+    conversationType?: string;
+    conversationId?: string;
+    conversation?: ConversationEngine;
+    enabled?: boolean;
+    onSend?: (text: string) => void;
+    onSendFile?: (file: UploadCare.File) => void;
+    onChange?: (text: string) => void;
 }
 
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
-  draft?: string | null;
+    draft?: string | null;
 }
 
 interface MessageComposeComponentInnerProps
-  extends MessageComposeComponentProps,
-    XWithRouter,
-    UserInfoComponentProps {
-  messagesContext: MessagesStateContextProps;
-  replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
-  saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
-  draft?: string | null;
-  hidden?: boolean;
+    extends MessageComposeComponentProps,
+        XWithRouter,
+        UserInfoComponentProps {
+    messagesContext: MessagesStateContextProps;
+    replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
+    saveDraft: MutationFunc<
+        SaveDraftMessage,
+        Partial<SaveDraftMessageVariables>
+    >;
+    draft?: string | null;
+    hidden?: boolean;
 }
 interface MessageComposeComponentInnerState {
-  dragOn: boolean;
-  dragUnder: boolean;
-  message: string;
-  reply: {
-    id: string;
-    title: string;
+    dragOn: boolean;
+    dragUnder: boolean;
     message: string;
-  } | null;
+    reply: {
+        id: string;
+        title: string;
+        message: string;
+    } | null;
 }
 
 // window.localStorage.setItem('conversation_draft_' + this.props.conversationId, src);
 
 class MessageComposeComponentInner extends React.PureComponent<
-  MessageComposeComponentInnerProps,
-  MessageComposeComponentInnerState
+    MessageComposeComponentInnerProps,
+    MessageComposeComponentInnerState
 > {
-  private xRichTextInputRef = React.createRef<XRichTextInput>();
+    private xRichTextInputRef = React.createRef<XRichTextInput>();
 
-  constructor(props: MessageComposeComponentInnerProps) {
-    super(props);
-    this.state = {
-      dragOn: false,
-      dragUnder: false,
-      message: '',
-      reply: null
-    };
-  }
-
-  private handleDrop = (e: any) => {
-    e.preventDefault();
-
-    this.setState(() => ({ dragOn: false, dragUnder: false }));
-    let file = e.dataTransfer.files[0];
-    let ucFile = UploadCare.fileFrom('object', file);
-
-    if (this.props.onSendFile) {
-      this.props.onSendFile(ucFile);
+    constructor(props: MessageComposeComponentInnerProps) {
+        super(props);
+        this.state = {
+            dragOn: false,
+            dragUnder: false,
+            message: '',
+            reply: null
+        };
     }
-  }
 
-  private handleDragOver = () => {
-    this.setState(() => ({ dragUnder: true }));
-  }
-
-  private handleDragLeave = (e: any) => {
-    let file = e.dataTransfer.files[0];
-    if (file === undefined) {
-      this.setState(() => ({ dragOn: false }));
-    }
-    this.setState(() => ({ dragUnder: false }));
-  }
-
-  private handleAttach = () => {
-    let dialog = UploadCare.openDialog(null, {
-      publicKey: getConfig().uploadcareKey!!
-    });
-    dialog.done(r => {
-      this.setState(
-        () => ({ message: '', dragOn: false }),
-        () => {
-          if (this.props.onSendFile) {
-            this.props.onSendFile(r);
-          }
-        }
-      );
-    });
-  }
-
-  private handleSend = () => {
-    const { onSend, messagesContext, replyMessage } = this.props;
-    const { conversationId } = messagesContext;
-    let { message, reply } = this.state;
-
-    message = message.trim();
-
-    if (message.length > 0) {
-      if (reply && conversationId && message) {
-        replyMessage({
-          variables: { conversationId, message, replyMessages: [reply.id] }
-        });
-        this.closeReply();
-      } else {
-        if (onSend) {
-          onSend(message);
-        }
-      }
-      this.handleChange('');
-      if (this.xRichTextInputRef.current) {
-        this.xRichTextInputRef.current.resetAndFocus();
-      }
-    }
-  }
-
-  private handleChange = (message: string) => {
-    this.setState(() => ({
-      message
-    }));
-
-    // if (this.props.draft !== message) {
-    //   this.props.saveDraft({
-    //     variables: {
-    //       conversationId: this.props.conversationId,
-    //       message
-    //     }
-    //   });
-    // }
-
-    // if (this.props.onChange) {
-    //   this.props.onChange(message);
-    // }
-  }
-
-  private focusIfNeeded = () => {
-    if (this.props.enabled !== false) {
-      if (this.xRichTextInputRef.current) {
-        this.xRichTextInputRef.current.focus();
-      }
-    }
-  }
-
-  private handleWindowDragover = (e: any) => {
-    e.preventDefault();
-    this.setState(() => ({
-      dragOn: true
-    }));
-  }
-
-  private handleWindowDrop = (e: any) => {
-    e.preventDefault();
-    this.setState(() => ({
-      dragOn: false
-    }));
-  }
-
-  private closeReply = () => {
-    this.props.messagesContext.setEditMessage(null, null);
-    this.props.messagesContext.setReplyMessage(null, null, null, null);
-    global.setIsEditMessage(false);
-    this.setState(() => ({
-      reply: null
-    }));
-  }
-
-  keydownHandler = (e: any) => {
-    let { conversation, user, messagesContext } = this.props;
-    let { message, reply } = this.state;
-    let hasFocus =
-      this.xRichTextInputRef.current &&
-      this.xRichTextInputRef.current.state.editorState
-        .getSelection()
-        .getHasFocus();
-
-    const isArrowUp = e.code === 'ArrowUp' && !e.altKey && hasFocus;
-    const isKeyE = e.code === 'KeyE' && e.ctrlKey;
-
-    if (
-      conversation &&
-      message.length === 0 &&
-      (isArrowUp || isKeyE) &&
-      !reply
-    ) {
-      const messages = conversation.getState().messages;
-      let filteredMessages = messages.filter(
-        (m: any) =>
-          isServerMessage(m) && m.message && user && m.sender.id === user.id
-      );
-      let lastMessage = filteredMessages[filteredMessages.length - 1];
-      if (lastMessage && isServerMessage(lastMessage)) {
+    private handleDrop = (e: any) => {
         e.preventDefault();
-        messagesContext.setEditMessage(lastMessage.id, lastMessage.message);
-        global.setIsEditMessage(true);
-      }
-    }
-    if (e.code === 'Escape' && reply) {
-      this.closeReply();
-    }
-  }
 
-  componentDidMount() {
-    this.focusIfNeeded();
-    window.addEventListener('dragover', this.handleWindowDragover);
-    window.addEventListener('drop', this.handleWindowDrop);
-    window.addEventListener('keydown', this.keydownHandler);
-    this.onConversationChanged(this.props);
-  }
+        this.setState(() => ({ dragOn: false, dragUnder: false }));
+        let file = e.dataTransfer.files[0];
+        let ucFile = UploadCare.fileFrom('object', file);
 
-  componentWillUnmount() {
-    window.removeEventListener('dragover', this.handleWindowDragover);
-    window.removeEventListener('drop', this.handleWindowDrop);
-    window.removeEventListener('keydown', this.keydownHandler);
-  }
-
-  doesHaveReply = (nextProps: MessageComposeComponentInnerProps) => {
-    let {
-      replyMessage,
-      replyMessageId,
-      replyMessageSender,
-      conversationId
-    } = nextProps.messagesContext;
-
-    return (
-      replyMessage && replyMessageId && replyMessageSender && conversationId
-    );
-  }
-
-  getReplyFromContext = (messagesContext: any) => {
-    let { replyMessageId, replyMessage, replyMessageSender } = messagesContext;
-
-    return {
-      title: replyMessageSender,
-      id: replyMessageId,
-      message: replyMessage
-    };
-  }
-
-  processReply = (nextProps: MessageComposeComponentInnerProps) => {
-    let newState: any = {};
-    let replyChecker = this.doesHaveReply(nextProps);
-
-    if (replyChecker) {
-      global.setIsEditMessage(true);
-      newState = {
-        ...newState,
-        reply: this.getReplyFromContext(nextProps.messagesContext)
-      };
+        if (this.props.onSendFile) {
+            this.props.onSendFile(ucFile);
+        }
     }
 
-    return newState;
-  }
-
-  onMessagesContextChanged = (nextProps: any) => {
-    this.setState(() => {
-      return {
-        ...this.processReply(nextProps)
-      };
-    });
-  }
-
-  onConversationChanged = (nextProps: any) => {
-    this.setState({
-      message: nextProps.draft || ''
-    });
-  }
-
-  componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
-    if (this.props.messagesContext !== nextProps.messagesContext) {
-      this.onMessagesContextChanged(nextProps);
+    private handleDragOver = () => {
+        this.setState(() => ({ dragUnder: true }));
     }
-    if (
-      this.props.draft !== nextProps.draft ||
-      this.props.conversationId !== nextProps.conversationId
-    ) {
-      this.setState({
-        message: nextProps.draft || ''
-      });
+
+    private handleDragLeave = (e: any) => {
+        let file = e.dataTransfer.files[0];
+        if (file === undefined) {
+            this.setState(() => ({ dragOn: false }));
+        }
+        this.setState(() => ({ dragUnder: false }));
     }
-  }
 
-  render() {
-    let { message, reply } = this.state;
+    private handleAttach = () => {
+        let dialog = UploadCare.openDialog(null, {
+            publicKey: getConfig().uploadcareKey!!
+        });
+        dialog.done(r => {
+            this.setState(
+                () => ({ message: '', dragOn: false }),
+                () => {
+                    if (this.props.onSendFile) {
+                        this.props.onSendFile(r);
+                    }
+                }
+            );
+        });
+    }
 
-    return (
-      <SendMessageWrapper hidden={this.props.hidden}>
-        <DropArea
-          onSendFile={this.props.onSendFile}
-          handleDrop={this.handleDrop}
-          handleDragOver={this.handleDragOver}
-          handleDragLeave={this.handleDragLeave}
-          dragOn={this.state.dragOn}
-          dragUnder={this.state.dragUnder}
-        />
-        <SendMessageContent separator={4} alignItems="center">
-          <XVertical separator={6} flexGrow={1} maxWidth="100%">
-            {reply && <ReplyView {...reply} onCancel={this.closeReply} />}
-            <TextInputWrapper>
-              <XRichTextInput
-                placeholder="Write a message..."
-                flexGrow={1}
-                onChange={this.handleChange}
-                onSubmit={this.handleSend}
-                ref={this.xRichTextInputRef}
-                value={message}
-              />
-            </TextInputWrapper>
-            <XHorizontal
-              alignItems="center"
-              justifyContent="space-between"
-              flexGrow={1}
-            >
-              <AttachmentRaw
-                enabled={this.props.enabled}
-                handleAttach={this.handleAttach}
-              />
-              <XButton
-                text="Send"
-                style="primary"
-                action={this.handleSend}
-                iconRight="send"
-                enabled={this.props.enabled}
-              />
-            </XHorizontal>
-          </XVertical>
-        </SendMessageContent>
-        <PostIntroModal
-          targetQuery="addItro"
-          conversationId={this.props.conversationId || ''}
-        />
-      </SendMessageWrapper>
-    );
-  }
+    private handleSend = () => {
+        const { onSend, messagesContext, replyMessage } = this.props;
+        const { conversationId } = messagesContext;
+        let { message, reply } = this.state;
+
+        message = message.trim();
+
+        if (message.length > 0) {
+            if (reply && conversationId && message) {
+                replyMessage({
+                    variables: {
+                        conversationId,
+                        message,
+                        replyMessages: [reply.id]
+                    }
+                });
+                this.closeReply();
+            } else {
+                if (onSend) {
+                    onSend(message);
+                }
+            }
+            this.handleChange('');
+            if (this.xRichTextInputRef.current) {
+                this.xRichTextInputRef.current.resetAndFocus();
+            }
+        }
+    }
+
+    private handleChange = (message: string) => {
+        this.setState(() => ({
+            message
+        }));
+
+        // if (this.props.draft !== message) {
+        //   this.props.saveDraft({
+        //     variables: {
+        //       conversationId: this.props.conversationId,
+        //       message
+        //     }
+        //   });
+        // }
+
+        // if (this.props.onChange) {
+        //   this.props.onChange(message);
+        // }
+    }
+
+    private focusIfNeeded = () => {
+        if (this.props.enabled !== false) {
+            if (this.xRichTextInputRef.current) {
+                this.xRichTextInputRef.current.focus();
+            }
+        }
+    }
+
+    private handleWindowDragover = (e: any) => {
+        e.preventDefault();
+        this.setState(() => ({
+            dragOn: true
+        }));
+    }
+
+    private handleWindowDrop = (e: any) => {
+        e.preventDefault();
+        this.setState(() => ({
+            dragOn: false
+        }));
+    }
+
+    private closeReply = () => {
+        this.props.messagesContext.setEditMessage(null, null);
+        this.props.messagesContext.setReplyMessage(null, null, null, null);
+        global.setIsEditMessage(false);
+        this.setState(() => ({
+            reply: null
+        }));
+    }
+
+    keydownHandler = (e: any) => {
+        let { conversation, user, messagesContext } = this.props;
+        let { message, reply } = this.state;
+        let hasFocus =
+            this.xRichTextInputRef.current &&
+            this.xRichTextInputRef.current.state.editorState
+                .getSelection()
+                .getHasFocus();
+
+        const isArrowUp = e.code === 'ArrowUp' && !e.altKey && hasFocus;
+        const isKeyE = e.code === 'KeyE' && e.ctrlKey;
+
+        if (
+            conversation &&
+            message.length === 0 &&
+            (isArrowUp || isKeyE) &&
+            !reply
+        ) {
+            const messages = conversation.getState().messages;
+            let filteredMessages = messages.filter(
+                (m: any) =>
+                    isServerMessage(m) &&
+                    m.message &&
+                    user &&
+                    m.sender.id === user.id
+            );
+            let lastMessage = filteredMessages[filteredMessages.length - 1];
+            if (lastMessage && isServerMessage(lastMessage)) {
+                e.preventDefault();
+                messagesContext.setEditMessage(
+                    lastMessage.id,
+                    lastMessage.message
+                );
+                global.setIsEditMessage(true);
+            }
+        }
+        if (e.code === 'Escape' && reply) {
+            this.closeReply();
+        }
+    }
+
+    componentDidMount() {
+        this.focusIfNeeded();
+        window.addEventListener('dragover', this.handleWindowDragover);
+        window.addEventListener('drop', this.handleWindowDrop);
+        window.addEventListener('keydown', this.keydownHandler);
+        this.onConversationChanged(this.props);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('dragover', this.handleWindowDragover);
+        window.removeEventListener('drop', this.handleWindowDrop);
+        window.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    doesHaveReply = (nextProps: MessageComposeComponentInnerProps) => {
+        let {
+            replyMessage,
+            replyMessageId,
+            replyMessageSender,
+            conversationId
+        } = nextProps.messagesContext;
+
+        return (
+            replyMessage &&
+            replyMessageId &&
+            replyMessageSender &&
+            conversationId
+        );
+    }
+
+    getReplyFromContext = (messagesContext: any) => {
+        let {
+            replyMessageId,
+            replyMessage,
+            replyMessageSender
+        } = messagesContext;
+
+        return {
+            title: replyMessageSender,
+            id: replyMessageId,
+            message: replyMessage
+        };
+    }
+
+    processReply = (nextProps: MessageComposeComponentInnerProps) => {
+        let newState: any = {};
+        let replyChecker = this.doesHaveReply(nextProps);
+
+        if (replyChecker) {
+            global.setIsEditMessage(true);
+            newState = {
+                ...newState,
+                reply: this.getReplyFromContext(nextProps.messagesContext)
+            };
+        }
+
+        return newState;
+    }
+
+    onMessagesContextChanged = (nextProps: any) => {
+        this.setState(() => {
+            return {
+                ...this.processReply(nextProps)
+            };
+        });
+    }
+
+    onConversationChanged = (nextProps: any) => {
+        this.setState({
+            message: nextProps.draft || ''
+        });
+    }
+
+    componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
+        if (this.props.messagesContext !== nextProps.messagesContext) {
+            this.onMessagesContextChanged(nextProps);
+        }
+        if (
+            this.props.draft !== nextProps.draft ||
+            this.props.conversationId !== nextProps.conversationId
+        ) {
+            this.setState({
+                message: nextProps.draft || ''
+            });
+        }
+    }
+
+    render() {
+        let { message, reply } = this.state;
+
+        return (
+            <SendMessageWrapper hidden={this.props.hidden}>
+                <DropArea
+                    onSendFile={this.props.onSendFile}
+                    handleDrop={this.handleDrop}
+                    handleDragOver={this.handleDragOver}
+                    handleDragLeave={this.handleDragLeave}
+                    dragOn={this.state.dragOn}
+                    dragUnder={this.state.dragUnder}
+                />
+                <SendMessageContent separator={4} alignItems="center">
+                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                        {reply && (
+                            <ReplyView {...reply} onCancel={this.closeReply} />
+                        )}
+                        <TextInputWrapper>
+                            <XRichTextInput
+                                placeholder="Write a message..."
+                                flexGrow={1}
+                                onChange={this.handleChange}
+                                onSubmit={this.handleSend}
+                                ref={this.xRichTextInputRef}
+                                value={message}
+                            />
+                        </TextInputWrapper>
+                        <XHorizontal
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flexGrow={1}
+                        >
+                            <AttachmentRaw
+                                enabled={this.props.enabled}
+                                handleAttach={this.handleAttach}
+                            />
+                            <XButton
+                                text="Send"
+                                style="primary"
+                                action={this.handleSend}
+                                iconRight="send"
+                                enabled={this.props.enabled}
+                            />
+                        </XHorizontal>
+                    </XVertical>
+                </SendMessageContent>
+                <PostIntroModal
+                    targetQuery="addItro"
+                    conversationId={this.props.conversationId || ''}
+                />
+            </SendMessageWrapper>
+        );
+    }
 }
 
 // withGetDraftMessage(
 // draft={props.data.message}
 
 export const MessageComposeComponent = withMessageState((props: any) => (
-  <MessagesStateContext.Consumer>
-    {(state: MessagesStateContextProps) => (
-      <MessageComposeComponentInner
-        {...props}
-        messagesContext={state}
-        replyMessage={props.replyMessage}
-        saveDraft={props.saveDraft}
-        draft={props.draft}
-      />
-    )}
-  </MessagesStateContext.Consumer>
+    <MessagesStateContext.Consumer>
+        {(state: MessagesStateContextProps) => (
+            <MessageComposeComponentInner
+                {...props}
+                messagesContext={state}
+                replyMessage={props.replyMessage}
+                saveDraft={props.saveDraft}
+                draft={props.draft}
+            />
+        )}
+    </MessagesStateContext.Consumer>
 ));
