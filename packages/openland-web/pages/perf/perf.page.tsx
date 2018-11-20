@@ -39,11 +39,17 @@ class FirstText extends React.Component {
     }
 }
 
+class FastWrapper extends React.PureComponent {
+    render() {
+        return <div className={FastButton}>button</div>;
+    }
+}
+
 class SecondText extends React.Component {
     render() {
         let ch: any[] = [];
         for (let a = 0; a < 1000; a++) {
-            ch.push(<div className={FastButton} key={'b-' + a}>button</div>);
+            ch.push(<FastWrapper key={'b-' + a} />);
         }
         return (
             <XVertical>
