@@ -657,6 +657,11 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                                     </RoomTab>
                                 </RoomTabs>
                                 <XHorizontal alignSelf="center" alignItems="center" separator={6}>
+                                    <XWithRole role="feature-non-production">
+                                        <TalkContext.Consumer>
+                                            {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                                        </TalkContext.Consumer>
+                                    </XWithRole>
                                     <InviteMembersModal
                                         orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
                                         channelTitle={title}
