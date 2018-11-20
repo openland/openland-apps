@@ -38,7 +38,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
-import { ConferenceComponent } from '../conference/ConferenceComponent';
+import { TalkBarComponent } from '../conference/TalkBarComponent';
+import { TalkContext } from '../conference/TalkProviderComponent';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -677,14 +678,16 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         )}
 
                         {props.data.chat.__typename === 'GroupConversation' && (
-                            <XHorizontal separator={14}>
+                            <XHorizontal separator={14} alignItems="center">
                                 <RoomTabs>
                                     <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
                                     <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
-                                    <XWithRole role="feature-non-production">
-                                        <RoomTab query={{ field: 'tab', value: 'call' }}>Call</RoomTab>
-                                    </XWithRole>
                                 </RoomTabs>
+                                <XWithRole role="feature-non-production">
+                                    <TalkContext.Consumer>
+                                        {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                                    </TalkContext.Consumer>
+                                </XWithRole>
                             </XHorizontal>
                         )}
 
@@ -734,6 +737,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     </XHorizontal>
                 </ChatHeaderContent>
             </ChatHeaderWrapper>
+            <TalkBarComponent conversationId={props.data.chat!.id} />
             <XHorizontal
                 justifyContent="center"
                 width="100%"
@@ -773,12 +777,6 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         orgId={''}
                         removeFrom="group"
                     />
-                )}
-
-                {(props.data.chat.__typename === 'GroupConversation' && tab === 'call') && (
-                    <XWithRole role="feature-non-production">
-                        <ConferenceComponent conversationId={props.data.chat.id} />
-                    </XWithRole>
                 )}
             </XHorizontal>
             <ChatEditComponent title={props.data.chat.title} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />

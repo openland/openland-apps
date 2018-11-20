@@ -5,8 +5,10 @@ import { PushEngineComponent } from 'openland-web/components/push/PushEngineComp
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { UserInfoProvider } from 'openland-web/components/UserInfo';
 import { MessengerProvider } from 'openland-web/components/messenger/MessengerProvider';
+import { YApolloProvider, YApolloContext } from 'openland-y-graphql/YApolloProvider';
+import { TalkProviderComponent } from 'openland-web/components/conference/TalkProviderComponent';
 
-export const AppContainer =  withAccountQuery(withQueryLoader((props) => {
+export const AppContainer = withAccountQuery(withQueryLoader((props) => {
     let hasMessenger = !!props.data.me;
     return (
         <>
@@ -20,7 +22,13 @@ export const AppContainer =  withAccountQuery(withQueryLoader((props) => {
                 roles={props.data.myPermissions.roles}
             >
                 <MessengerProvider user={hasMessenger ? props.data.me!! : undefined}>
-                    {props.children}
+                    <YApolloContext.Consumer>
+                        {apollo => (
+                            <TalkProviderComponent client={apollo!}>
+                                {props.children}
+                            </TalkProviderComponent>
+                        )}
+                    </YApolloContext.Consumer>
                 </MessengerProvider>
             </UserInfoProvider>
         </>
