@@ -347,9 +347,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     </XHorizontal>
                 </MessageContainer>
             );
-        }
-
-        
+        }        
         
         return (
             <MessageContainer className="full-message" compact={false} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>

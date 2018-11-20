@@ -180,7 +180,7 @@ class ComposeComponentRender extends React.Component<
   ComposeComponentRenderProps,
   ComposeComponentRenderState
 > {
-  conversationMessages = React.createRef<ConversationMessagesComponent>();
+  conversationMessages = React.createRef<any>();
   private conversation: ConversationEngine | null;
   unmounter: (() => void) | null = null;
   unmounter2: (() => void) | null = null;

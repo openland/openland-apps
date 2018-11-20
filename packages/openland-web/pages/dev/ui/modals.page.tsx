@@ -8,8 +8,7 @@ import { XTitle } from 'openland-x/XTitle';
 import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
-
-import { BrowseChannelsModal } from '../../main/channel/components/browseChannelsModal';
+import { BrowseChannelsModal } from '../../../pages/main/modals/browseChannelsModal';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 
