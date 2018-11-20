@@ -8,6 +8,85 @@ import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 
+let content = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 8px 12px 8px 16px;
+    position: relative;
+`;
+
+let top = css`
+    display: flex;
+    flex-direction: row;
+    height: 18px;
+    margin-bottom: 4px;
+`;
+
+let title = css`
+    display: flex;
+    flex-grow: 1;
+    height: 18px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    color: rgb(0, 0, 0, 0.8);
+
+    & > span {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    },
+`;
+
+let date = css`
+    display: flex;
+    height: 18px;
+    color: rgba(0, 0, 0, 0.3);
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-transform: uppercase;
+`;
+
+let body = css`
+    display: flex;
+    flex-direction: row;
+`;
+
+let contentText = css`
+    display: flex;
+    height: 34px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0px;
+    min-width: 0px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 17px;
+    color: rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+
+    & > span {
+        display: block;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    // Webkit line clamp
+    & > span {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+`;
+
+let counter = css`
+    padding-left: 10px;
+`;
+
 let item = css`
     display: flex;
     height: 72px;
@@ -20,8 +99,10 @@ let item = css`
     padding-top: 4px;
     padding-bottom: 4px;
     position: relative;
+
     &:hover, &:focus {
         background-color: rgba(23, 144, 255, 0.05);
+
         &:hover {
             background-color: rgba(0, 0, 0, 0.05);
             color: #334562;
@@ -30,129 +111,23 @@ let item = css`
 
     &.is-active {
         background-color: #4596e1;
+
         &:hover {
             background-color: #4596e1;
-            color: #334562;
         }
-        & .title, .content {
-            color: #fff !important;
-            opacity: 1 !important;
+
+        .${title} {
+            color: #ffffff;
         }
-        & .date {
-            color: rgba(255, 255, 255, 0.8) !important;
+
+        .${contentText} {
+            color: #ffffff;
         }
-        & .header:before {
-            display: none;
+
+        .${date} {
+            color: rgba(255, 255, 255, 0.8);
         }
     }
-`;
-
-let content = css`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0px;
-    min-width: 0px;
-    align-items: stretch;
-    align-self: stretch;
-    padding-left: 12px;
-    padding-right: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    position: relative;
-`;
-
-let top = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: 0px;
-    height: 18px;
-    margin-bottom: 4px;
-`;
-
-let title = css`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0px;
-    height: 18px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 20px;
-    color: rgb(40,40,40);
-    /* fontSize: 14,
-    fontWeight: 600,
-    lineHeight: '20px',
-    color: neutral(0.8) */
-    & > span: {
-        white-pace: nowrap;
-        overflow: hidden;
-        text-Overflow: ellipsis;
-    },
-`;
-
-let body = css`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0px;
-    min-width: 0px;
-`;
-
-let date = css`
-    display: flex;
-    flex-direction: row;
-    align-self: flex-start;
-    align-items: flex-end;
-    flex-shrink: 0px;
-    height: 18px;
-    color: rgba(0, 0, 0, 0.3);
-    margin-left: 5px;
-
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 16px;
-    text-transform: uppercase;
-`;
-
-let contentText = css`
-    display: flex;
-    height: 34px;
-    opacity: 0.8;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0px;
-    min-width: 0px;
-
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 17px;
-
-    overflow: hidden;
-    /* & span {
-        display: block;
-        height: '100%',
-        overflow: 'hidden',
-    }, */
-
-    /* // Webkit line clamp
-    '& > span': {
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-    '&.with-unread': {
-        paddingRight: 32,
-    } */
 `;
 
 export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem }> {
@@ -197,7 +172,7 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
                             )}
                         </div>
                         {conv.unread > 0 && (
-                            <div><XCounter big={true} count={conv.unread} /></div>
+                            <div className={counter}><XCounter big={true} count={conv.unread} /></div>
                         )}
                     </div>
                 </div>
