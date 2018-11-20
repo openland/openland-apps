@@ -6,7 +6,22 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
 
 const FastButton = css`
-    width: 100px
+    border-radius: 20px;
+    height: 40px;
+    line-height: 38px;
+    font-size: 15;
+    letter-spacing: 0;
+    font-weight: 600;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #1790ff;
+    color: #ffffff;
+    border: solid 1px transparent;
+
+    &:hover {
+        background-color: #1585ed;
+        color: #ffffff;
+    }
 `;
 
 class FirstText extends React.Component {
