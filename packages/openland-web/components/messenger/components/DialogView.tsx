@@ -12,7 +12,7 @@ let content = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 8px 12px 8px 16px;
+    padding: 0 12px 0 16px;
     position: relative;
     min-width: 0px;
 `;
@@ -21,7 +21,7 @@ let top = css`
     display: flex;
     flex-direction: row;
     height: 18px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     min-width: 0px;
 `;
 
@@ -50,7 +50,7 @@ let date = css`
     margin-left: 5px;
     font-size: 12px;
     font-weight: 600;
-    line-height: 16px;
+    line-height: 18px;
     text-transform: uppercase;
     white-space: nowrap;
 `;
