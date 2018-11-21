@@ -364,7 +364,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     className="compact-message"
                     compact={true}
                     isHovered={this.state.isEditView || this.state.isMenuOpen || isSelect}
-                    isEditView={this.state.isEditView || isSelect}
+                    isEditView={this.state.isEditView}
                 >
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
@@ -404,7 +404,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 className="full-message"
                 compact={false}
                 isHovered={this.state.isEditView || this.state.isMenuOpen || isSelect}
-                isEditView={this.state.isEditView || isSelect}
+                isEditView={this.state.isEditView}
             >
                 <XHorizontal alignSelf="stretch">
                     {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
