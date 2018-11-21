@@ -786,7 +786,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 )}
             </XHorizontal>
         </ChatHeaderContent>
-    )
+    );
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
