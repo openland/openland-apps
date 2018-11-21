@@ -4,9 +4,9 @@ export interface MessagesStateContextProps {
     editMessageId: string | null;
     editMessage: string | null;
     setEditMessage: (id: string | null, message: string | null) => void;
-    forwardMessagesId: string[] | null;
+    forwardMessagesId: Set<string> | null;
     conversationId: string | null;
-    setForwardMessages: (id: string[] | null, conversationId: string | null) => void;
+    setForwardMessages: (id: Set<string> | null, conversationId: string | null) => void;
     replyMessageId: string | null;
     replyMessage: string | null;
     replyMessageSender: string | null;
@@ -27,7 +27,7 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
             message: message
         };
     },
-    setForwardMessages: (id: string[] | null, conversationId: string | null) => {
+    setForwardMessages: (id: Set<string> | null, conversationId: string | null) => {
         return {
             id: id, 
             conversationId: conversationId
