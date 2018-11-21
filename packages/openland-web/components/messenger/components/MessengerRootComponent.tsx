@@ -284,4 +284,4 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
             )}
         </MessengerContext.Consumer>
     );
-}
+};
