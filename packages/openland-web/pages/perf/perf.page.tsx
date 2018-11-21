@@ -5,6 +5,7 @@ import { XButton } from 'openland-x/XButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
 import { Text, View } from 'react-native';
+import { XView } from 'openland-x/XView';
 
 const FastButton = css`
     border-radius: 20px;
@@ -63,7 +64,7 @@ class ThirdText extends React.Component {
     render() {
         let ch: any[] = [];
         for (let a = 0; a < 1000; a++) {
-            ch.push(<View marginTop={20} marginBottom={20} key={'b-' + a}><Text>button</Text></View>);
+            ch.push(<XView margin={20} marginTop={20} marginBottom={20} key={'b-' + a}>button</XView>);
         }
         return (
             <XVertical>
