@@ -516,8 +516,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private closeEditor = () => {
-        this.props.messagesContext.setEditMessage(null, null);
-        this.props.messagesContext.setReplyMessage(null, null, null, null);
+        this.props.messagesContext.resetAll();
         (document as any).isEditMessage = false;
         this.setState({
             message: '',
@@ -551,6 +550,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentDidMount() {
+        console.log(this.props);
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -575,18 +575,29 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessageId,
             replyMessageSender,
             forwardMessagesId,
+            forwardMessages,
+            useForwardMessages,
             conversationId
         } = nextProps.messagesContext;
 
-        console.log(nextProps);
+        // console.log(nextProps);
 
         let newState: any = {};
 
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
 
-        if ((this.props.conversationId !== nextProps.conversationId) || (editMessage && editMessageId && forwardMessagesId)) {
-            this.props.messagesContext.setForwardMessages(null, null);
+        if ((this.props.conversationId !== nextProps.conversationId)) {
+            if (!useForwardMessages) {
+
+            }
+            if (forwardMessagesId && forwardMessages) {
+                console.log(nextProps);
+            }
         }
+
+        // if (editMessage && editMessageId) {
+        //     this.props.messagesContext.setForwardMessages(null, null);
+        // }
 
         if (replyChecker) {
             (document as any).isEditMessage = true;
@@ -602,7 +613,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
-            this.props.messagesContext.setForwardMessages(null, null);
+            // this.props.messagesContext.setForwardMessages(null, null);
         }
 
         let draftChecker = !replyChecker;

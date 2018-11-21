@@ -159,17 +159,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         });
     }
 
-    setEditMessage = () => {
+    setEditMessage = (e: any) => {
         let { message, messagesContext } = this.props;
         if (isServerMessage(this.props.message)) {
+            e.stopPropagation();
+            messagesContext.resetAll();
             messagesContext.setEditMessage((message as MessageFull).id, message.message);
         }
     }
 
-    setReplyMessage = () => {
+    setReplyMessage = (e: any) => {
         let { message, conversationId, messagesContext } = this.props;
 
         if (isServerMessage(message)) {
+            e.stopPropagation();
+            messagesContext.resetAll();
             messagesContext.setReplyMessage((message as MessageFull).id, message.message, (message as MessageFull).sender.name, conversationId);
         }
     }
@@ -200,7 +204,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     }
 
     hideEditView = () => {
-        this.props.messagesContext.setEditMessage(null, null);
+        this.props.messagesContext.resetAll();
     }
 
     render() {

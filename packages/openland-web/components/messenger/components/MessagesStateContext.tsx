@@ -7,12 +7,16 @@ export interface MessagesStateContextProps {
     forwardMessagesId: Set<string> | null;
     conversationId: string | null;
     setForwardMessages: (id: Set<string> | null, conversationId: string | null) => void;
-    forwardMessages: (e: boolean) => void;
+    forwardMessages: () => void;
     useForwardMessages: boolean;
+    useForwardPlaceholder: boolean;
+    useForwardHeader: boolean;
+    changeForwardConverstion: () => void;
     replyMessageId: string | null;
     replyMessage: string | null;
     replyMessageSender: string | null;
     setReplyMessage: (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => void;
+    resetAll: () => void;
 }
 
 export const MessagesStateContext = React.createContext<MessagesStateContextProps>({
@@ -24,27 +28,12 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     forwardMessagesId: null,
     conversationId: null,
     useForwardMessages: false,
-    setEditMessage: (id: string | null, message: string | null) => {
-        return {
-            id: id, 
-            message: message
-        };
-    },
-    setForwardMessages: (id: Set<string> | null, conversationId: string | null) => {
-        return {
-            id: id, 
-            conversationId: conversationId
-        };
-    },
-    forwardMessages: (e: boolean) => {
-        return e;
-    },
-    setReplyMessage: (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
-        return {
-            id: id,
-            message: message,
-            sender: sender,
-            conversationId: conversationId
-        };
-    }
+    useForwardPlaceholder: false,
+    useForwardHeader: false,
+    setEditMessage: () => null,
+    setForwardMessages: () => null,
+    forwardMessages: () => null,
+    changeForwardConverstion: () => null,
+    setReplyMessage: () => null,
+    resetAll: () => null
 });

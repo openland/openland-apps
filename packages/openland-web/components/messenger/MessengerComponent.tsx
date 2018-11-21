@@ -113,8 +113,7 @@ const FrowardPlaceholder = (props: { state: MessagesStateContextProps }) => {
         <ForwardRoot>
             <CloseIcon
                 onClick={() => {
-                    state.forwardMessages(false);
-                    state.setForwardMessages(null, null);
+                    state.resetAll();
                 }}
             />
             <ImageWrapper>
@@ -663,8 +662,7 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                         <span>{size} {size === 1 ? 'message selected' : 'messages selected'}</span>
                         <CloseIcon
                             onClick={() => {
-                                props.state.forwardMessages(false);
-                                props.state.setForwardMessages(null, null);
+                                props.state.resetAll();
                             }}
                         />
                     </XHorizontal>
@@ -672,7 +670,7 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                 <XButton
                     text="Forward"
                     style="primary"
-                    onClick={() => props.state.forwardMessages(true)}
+                    onClick={() => props.state.forwardMessages()}
                 />
             </ChatHeaderContent>
         );
@@ -879,27 +877,17 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         </ChatHeaderContent>
     );
 
-    let isSelectedView = false;
     let messagesState = ((props as any).state as MessagesStateContextProps);
-    let selectedMessage = messagesState.forwardMessagesId;
-
-    if (selectedMessage && selectedMessage.size > 0) {
-        isSelectedView = true;
-    }
-    let forwardPlaceholder = false;
-    if (messagesState.useForwardMessages && isSelectedView) {
-        forwardPlaceholder = true;
-    }
+    let selectedHeader = messagesState.useForwardHeader;
+    let placeholder = messagesState.useForwardPlaceholder;
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
-            {forwardPlaceholder && <FrowardPlaceholder state={messagesState} />}
+            {placeholder && <FrowardPlaceholder state={messagesState} />}
             <ChatHeaderWrapper>
-                {isSelectedView ? (
+                {selectedHeader ? (
                     <ForwardHeader state={(props as any).state} />
-                ) : (
-                        headerRender()
-                    )}
+                ) : headerRender()}
             </ChatHeaderWrapper>
             <TalkBarComponent conversationId={props.data.chat!.id} />
             <XHorizontal
@@ -969,40 +957,73 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
             replyMessageId: null,
             replyMessage: null,
             replyMessageSender: null,
+            useForwardMessages: false,
+            useForwardPlaceholder: false,
+            useForwardHeader: false,
             setEditMessage: this.setEditMessage,
             setForwardMessages: this.setForwardMessages,
             forwardMessages: this.forwardMessages,
-            useForwardMessages: false,
-            setReplyMessage: this.setReplyMessage
+            setReplyMessage: this.setReplyMessage,
+            changeForwardConverstion: this.changeForwardConverstion,
+            resetAll: this.resetAll,
         };
     }
 
-    setEditMessage = (id: string | null, message: string | null) => {
+    private setEditMessage = (id: string | null, message: string | null) => {
         this.setState({
             editMessageId: id,
             editMessage: message
         });
     }
 
-    setForwardMessages = (id: Set<string> | null, conversationId: string | null) => {
+    private setForwardMessages = (id: Set<string> | null, conversationId: string | null) => {
+        let useHeader = false;
+        if (id && id.size > 0) {
+            useHeader = true;
+        }
         this.setState({
             forwardMessagesId: id,
-            conversationId: conversationId
+            conversationId: conversationId,
+            useForwardHeader: useHeader
         });
     }
 
-    forwardMessages = (e: boolean) => {
+    private forwardMessages = () => {
         this.setState({
-            useForwardMessages: e
+            useForwardMessages: true,
+            useForwardPlaceholder: true,
+            useForwardHeader: false
         });
     }
 
-    setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
+    private setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
         this.setState({
             replyMessageId: id,
             replyMessage: message,
             replyMessageSender: sender,
             conversationId: conversationId
+        });
+    }
+
+    private changeForwardConverstion = () => {
+        this.setState({
+            useForwardPlaceholder: false,
+            useForwardHeader: false
+        });
+    }
+
+    private resetAll = () => {
+        this.setState({
+            editMessageId: null,
+            editMessage: null,
+            forwardMessagesId: null,
+            conversationId: null,
+            replyMessageId: null,
+            replyMessage: null,
+            replyMessageSender: null,
+            useForwardMessages: false,
+            useForwardPlaceholder: false,
+            useForwardHeader: false
         });
     }
 
