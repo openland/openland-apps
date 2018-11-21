@@ -68,7 +68,12 @@ class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
         return (
             <XHorizontal separator={2} alignItems="center">
                 {this.defaultReactions.map((r: string) => (
-                    <ReactionItem onClick={() => { this.handleSetReaction(r); }}>
+                    <ReactionItem
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            this.handleSetReaction(r);
+                        }}
+                    >
                         {emojify(r, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
                     </ReactionItem>
                 ))}
@@ -91,7 +96,8 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
         }
     }
 
-    switch = () => {
+    switch = (e: any) => {
+        e.stopPropagation();
         this.setState({
             show: !this.state.show
         });
@@ -164,7 +170,8 @@ const UsersLabel = Glamorous.div({
 });
 
 class SingleReaction extends React.PureComponent<{ messageId: string, reaction: string, isMy: boolean, mutation: MutationFunc<{}> }> {
-    handleChangeReaction = () => {
+    handleChangeReaction = (e: any) => {
+        e.stopPropagation();
         this.props.mutation({
             variables: {
                 messageId: this.props.messageId,
