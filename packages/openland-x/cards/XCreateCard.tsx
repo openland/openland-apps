@@ -5,13 +5,14 @@ import AddIcon from '../icons/ic-add-medium.svg';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 
 const Wrapper = Glamorous(XHorizontal)({
-    height: 64,
+    height: 62,
     paddingLeft: 16,
     paddingRight: 16,
     flexShrink: 0,
     cursor: 'pointer',
     marginLeft: -16,
     marginRight: -16,
+    paddingTop: 2,
     borderRadius: 8,
     alignItems: 'center',
     '&:hover': {

@@ -113,7 +113,8 @@ export const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13
 });
 
-const EditButtonWrapper = Glamorous(XButton)({
+const EditButtonWrapper = Glamorous(XButton)<XButtonProps & { big?: boolean }>((props) => ({
+    fontSize: props.big ? 14 : 13,
     display: 'inline-block!important',
     background: 'none!important',
     border: 'none!important',
@@ -126,11 +127,12 @@ const EditButtonWrapper = Glamorous(XButton)({
     },
 
     '& .icon.material': {
-        marginLeft: -4
+        marginLeft: -4,
+        marginRight: props.big ? 3 : 4
     }
-});
+}));
 
-export const EditButton = (props: XButtonProps) => {
+export const EditButton = (props: XButtonProps & { big?: boolean }) => {
     let { style, icon, ...other } = props;
 
     return (
@@ -484,9 +486,9 @@ const About = (props: { organization: Organization_organization }) => {
             {!organization.about && organization.isMine && (
                 <XWithRole role="admin" orgPermission={organization.id}>
                     <Section separator={0}>
-                        <XSubHeader title={TextProfiles.Organization.aboutTitle} paddingBottom={0} />
-                        <SectionContent>
-                            <AboutPlaceholder target={<EditButton text={TextProfiles.Organization.addAbout} />} />
+                        <XSubHeader title={TextProfiles.Organization.aboutTitle} paddingBottom={0} marginBottom={-5} />
+                        <SectionContent style={{ paddingBottom: 16 }}>
+                            <AboutPlaceholder target={<EditButton text={TextProfiles.Organization.addAbout} big={true} />} />
                         </SectionContent>
                     </Section>
                 </XWithRole>
@@ -520,6 +522,7 @@ const Members = (props: MembersProps) => {
                         title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
                         counter={joinedMembers.length}
                         paddingBottom={0}
+                        marginBottom={-3}
                     />
                 )}
                 <SectionContent>
