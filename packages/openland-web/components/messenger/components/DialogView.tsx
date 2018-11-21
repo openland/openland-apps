@@ -7,23 +7,7 @@ import { XDate } from 'openland-x/XDate';
 import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
 import { XCounter } from 'openland-x/XCounter';
-
-let content = css`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 0 12px 0 16px;
-    position: relative;
-    min-width: 0px;
-`;
-
-let top = css`
-    display: flex;
-    flex-direction: row;
-    height: 18px;
-    margin-bottom: 3px;
-    min-width: 0px;
-`;
+import { XView } from 'openland-x/XView';
 
 let title = css`
     display: flex;
@@ -53,12 +37,6 @@ let date = css`
     line-height: 18px;
     text-transform: uppercase;
     white-space: nowrap;
-`;
-
-let body = css`
-    display: flex;
-    flex-direction: row;
-    min-width: 0px;
 `;
 
 let contentText = css`
@@ -97,10 +75,6 @@ let contentText = css`
             margin-bottom: 0;
         }
     },
-`;
-
-let counter = css`
-    padding-left: 10px;
 `;
 
 let item = css`
@@ -162,12 +136,25 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
                     online={this.props.item.online}
                     cloudImageUuid={this.props.item.photo}
                 />
-                <div className={content}>
-                    <div className={top}>
+                <XView
+                    flexDirection="column"
+                    flexGrow={1}
+                    flexShrink={1}
+                    paddingLeft={12}
+                    paddingRight={16}
+                    minWidth={0}
+                >
+                    <XView
+                        flexDirection="row"
+                        flexGrow={1}
+                        flexShrink={0}
+                        minWidth={0}
+                        marginBottom={3}
+                    >
                         <div className={title}><span>{this.props.item.title}</span></div>
                         {this.props.item.date && <div className={date}><XDate value={this.props.item.date.toString()} format="datetime_short" /></div>}
-                    </div>
-                    <div className={body}>
+                    </XView>
+                    <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
                         <div className={contentText}>
                             {conv.typing || (
                                 <>
@@ -184,10 +171,10 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
                             )}
                         </div>
                         {conv.unread > 0 && (
-                            <div className={counter}><XCounter big={true} count={conv.unread} /></div>
+                            <XView paddingLeft={12} alignSelf="center"><XCounter big={true} count={conv.unread} /></XView>
                         )}
-                    </div>
-                </div>
+                    </XView>
+                </XView>
             </XLink>
         );
     }

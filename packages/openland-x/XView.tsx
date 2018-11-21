@@ -4,6 +4,18 @@ import * as glamor from 'glamor';
 export interface XViewProps {
 
     //
+    // Flex Grow
+    //
+
+    flexGrow?: number | null;
+    flexShrink?: number | null;
+    flexBasis?: number | null;
+    flexDirection?: 'row' | 'column' | null;
+    alignSelf?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
+    alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
+    justifyContent?: 'flex-start' | 'flex-end' | 'center' | null;
+
+    //
     // Sizing
     //
 
@@ -30,13 +42,29 @@ export interface XViewProps {
 
     borderRadius?: number | string | null;
     backgroundColor?: string | null;
+    hoverBackgroundColor?: string | null;
 
     children?: any;
 }
 
+const base = glamor.css({
+    display: 'flex',
+    flexGrow: 0,
+    flexShrink: 0,
+    flexDirection: 'column'
+}).toString();
+
 const styles = new Map<string, string>();
 
 export const XView = (props: XViewProps) => {
+
+    let flexGrow: number | undefined;
+    let flexShrink: number | undefined;
+    let flexBasis: number | undefined;
+    let flexDirection: 'row' | 'column' | undefined;
+    let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
+    let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
+    let justifyContent: 'flex-start' | 'flex-end' | 'center' | undefined;
 
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
@@ -57,6 +85,7 @@ export const XView = (props: XViewProps) => {
 
     let borderRadius: number | string | undefined;
     let backgroundColor: string | undefined;
+    let hoverBackgroundColor: string | undefined;
 
     //
     // Resolve visual styles
@@ -67,6 +96,35 @@ export const XView = (props: XViewProps) => {
     }
     if (props.backgroundColor !== undefined && props.backgroundColor !== null) {
         backgroundColor = props.backgroundColor;
+    }
+    if (props.hoverBackgroundColor !== undefined && props.hoverBackgroundColor !== null) {
+        hoverBackgroundColor = props.hoverBackgroundColor;
+    }
+
+    //
+    // Flex Styles
+    //
+
+    if (props.flexGrow !== undefined && props.flexGrow !== null) {
+        flexGrow = props.flexGrow;
+    }
+    if (props.flexShrink !== undefined && props.flexShrink !== null) {
+        flexShrink = props.flexShrink;
+    }
+    if (props.flexBasis !== undefined && props.flexBasis !== null) {
+        flexBasis = props.flexBasis;
+    }
+    if (props.flexDirection !== undefined && props.flexDirection !== null) {
+        flexDirection = props.flexDirection;
+    }
+    if (props.alignSelf !== undefined && props.alignSelf !== null) {
+        alignSelf = props.alignSelf;
+    }
+    if (props.alignItems !== undefined && props.alignItems !== null) {
+        alignItems = props.alignItems;
+    }
+    if (props.justifyContent !== undefined && props.justifyContent !== null) {
+        justifyContent = props.justifyContent;
     }
 
     //
@@ -141,7 +199,57 @@ export const XView = (props: XViewProps) => {
     // Resolve Class Names
     //
 
-    let css: string[] = [];
+    let css: string[] = [base];
+
+    if (flexGrow !== undefined) {
+        let key = 'flex-grow: ' + flexGrow;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ flexGrow: flexGrow }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (flexShrink !== undefined) {
+        let key = 'flex-shrink: ' + flexShrink;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ flexShrink: flexShrink }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (flexBasis !== undefined) {
+        let key = 'flex-basis: ' + flexBasis;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ flexBasis: flexBasis }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (flexDirection !== undefined) {
+        let key = 'flex-direction: ' + flexDirection;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ flexDirection: flexDirection }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (alignSelf !== undefined) {
+        let key = 'align-self: ' + alignSelf;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ alignSelf: alignSelf }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (alignItems !== undefined) {
+        let key = 'align-items: ' + alignItems;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ alignItems: alignItems }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (justifyContent !== undefined) {
+        let key = 'justify-content: ' + justifyContent;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ justifyContent: justifyContent }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
 
     if (marginTop !== undefined) {
         let key = 'margin-top: ' + marginTop;
@@ -255,6 +363,17 @@ export const XView = (props: XViewProps) => {
         let key = 'background-color: ' + backgroundColor;
         if (!styles.has(key)) {
             styles.set(key, glamor.css({ backgroundColor: backgroundColor }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (hoverBackgroundColor !== undefined) {
+        let key = 'hover-background-color: ' + hoverBackgroundColor;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({
+                '&:hover, &:focus': {
+                    backgroundColor: hoverBackgroundColor
+                }
+            }).toString());
         }
         css.push(styles.get(key)!);
     }
