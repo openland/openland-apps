@@ -12,7 +12,7 @@ let content = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 8px 12px 8px 16px;
+    padding: 0 12px 0 16px;
     position: relative;
     min-width: 0px;
 `;
@@ -21,7 +21,8 @@ let top = css`
     display: flex;
     flex-direction: row;
     height: 18px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
+    min-width: 0px;
 `;
 
 let title = css`
@@ -32,6 +33,7 @@ let title = css`
     font-weight: 600;
     line-height: 18px;
     color: rgb(0, 0, 0, 0.8);
+    min-width: 0px;
 
     & > span {
         display: block;
@@ -48,8 +50,9 @@ let date = css`
     margin-left: 5px;
     font-size: 12px;
     font-weight: 600;
-    line-height: 16px;
+    line-height: 18px;
     text-transform: uppercase;
+    white-space: nowrap;
 `;
 
 let body = css`
@@ -115,12 +118,7 @@ let item = css`
     min-width: 0px;
 
     &:hover, &:focus {
-        background-color: rgba(23, 144, 255, 0.05);
-
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: #334562;
-        }
+        background-color: rgba(0, 0, 0, 0.05);
     }
 
     &.is-active {
