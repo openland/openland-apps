@@ -231,7 +231,10 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                                     <MessengerEmptyComponent />
                                 )}
                                 {tab === 'conversation' && (
-                                    <MessengerComponent conversationId={props.router.routeQuery.conversationId} handlePageTitle={this.handlePageTitle} />
+                                    <MessengerComponent
+                                        conversationId={props.router.routeQuery.conversationId}
+                                        handlePageTitle={this.handlePageTitle}
+                                    />
                                 )}
                                 {tab === 'rooms' && (
                                     <RoomsExploreComponent />

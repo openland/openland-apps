@@ -40,6 +40,7 @@ import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
 import { XDate } from 'openland-x/XDate';
+import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -602,6 +603,14 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
             <ChatHeaderWrapper>
+                {/* <MessagesStateContext.Consumer>
+                    {(state: MessagesStateContextProps) => (
+                        <>
+                            {console.log(state)}
+                            asdasdasd
+                        </>
+                    )}
+                </MessagesStateContext.Consumer> */}
                 <ChatHeaderContent justifyContent="space-between">
                     <HeaderLeftContent chatType={chatType} ownerRole={ownerRole} path={headerPath}>
                         <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
@@ -800,6 +809,61 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     );
 })) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any }>;
 
-export const MessengerComponent = (props: { conversationId: string, handlePageTitle?: any }) => {
-    return (<MessengerComponentLoader variables={{ conversationId: props.conversationId }} handlePageTitle={props.handlePageTitle} />);
-};
+interface MessengerComponentProps {
+    conversationId: string;
+    handlePageTitle?: any;
+}
+
+export class MessengerComponent extends React.Component<MessengerComponentProps, MessagesStateContextProps> {
+
+    constructor(props: MessengerComponentProps) {
+        super(props);
+
+        this.state = {
+            editMessageId: null,
+            editMessage: null,
+            forwardMessagesId: null,
+            conversationId: null,
+            replyMessageId: null,
+            replyMessage: null,
+            replyMessageSender: null,
+            setEditMessage: this.setEditMessage,
+            setForwardMessages: this.setForwardMessages,
+            setReplyMessage: this.setReplyMessage
+        };
+    }
+
+    setEditMessage = (id: string | null, message: string | null) => {
+        this.setState({
+            editMessageId: id,
+            editMessage: message
+        });
+    }
+
+    setForwardMessages = (id: Set<string> | null, conversationId: string | null) => {
+        this.setState({
+            forwardMessagesId: id,
+            conversationId: conversationId
+        });
+    }
+
+    setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
+        this.setState({
+            replyMessageId: id,
+            replyMessage: message,
+            replyMessageSender: sender,
+            conversationId: conversationId
+        });
+    }
+
+    render() {
+        return (
+            <MessagesStateContext.Provider value={this.state}>
+                <MessengerComponentLoader
+                    variables={{ conversationId: this.props.conversationId }}
+                    handlePageTitle={this.props.handlePageTitle}
+                />
+            </MessagesStateContext.Provider>
+        );
+    }
+}
