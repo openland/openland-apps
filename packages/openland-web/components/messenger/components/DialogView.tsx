@@ -22,6 +22,7 @@ let top = css`
     flex-direction: row;
     height: 18px;
     margin-bottom: 4px;
+    min-width: 0px;
 `;
 
 let title = css`
@@ -32,6 +33,7 @@ let title = css`
     font-weight: 600;
     line-height: 18px;
     color: rgb(0, 0, 0, 0.8);
+    min-width: 0px;
 
     & > span {
         display: block;
