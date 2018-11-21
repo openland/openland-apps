@@ -170,7 +170,7 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageUrlA
         }
 
         return (
-            <Container href={href} path={path}>
+            <Container href={href} path={path} onClick={(e: any) => e.stopPropagation()}>
                 <ContentWrapper>
                     {hostname && (
                         <Hostname>
