@@ -7,6 +7,8 @@ export interface MessagesStateContextProps {
     forwardMessagesId: Set<string> | null;
     conversationId: string | null;
     setForwardMessages: (id: Set<string> | null, conversationId: string | null) => void;
+    forwardMessages: (e: boolean) => void;
+    useForwardMessages: boolean;
     replyMessageId: string | null;
     replyMessage: string | null;
     replyMessageSender: string | null;
@@ -21,6 +23,7 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     replyMessage: null,
     forwardMessagesId: null,
     conversationId: null,
+    useForwardMessages: false,
     setEditMessage: (id: string | null, message: string | null) => {
         return {
             id: id, 
@@ -32,6 +35,9 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
             id: id, 
             conversationId: conversationId
         };
+    },
+    forwardMessages: (e: boolean) => {
+        return e;
     },
     setReplyMessage: (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
         return {

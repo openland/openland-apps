@@ -582,6 +582,7 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                 <XButton
                     text="Forward"
                     style="primary"
+                    onClick={() => props.state.forwardMessages(true)}
                 />
             </ChatHeaderContent>
         );
@@ -795,6 +796,10 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     if (selectedMessage && selectedMessage.size > 0) {
         isSelectedView = true;
     }
+    let forwardPlaceholder = false;
+    if (messagesState.useForwardMessages) {
+        forwardPlaceholder = true;
+    }
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
@@ -875,6 +880,8 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
             replyMessageSender: null,
             setEditMessage: this.setEditMessage,
             setForwardMessages: this.setForwardMessages,
+            forwardMessages: this.forwardMessages,
+            useForwardMessages: false,
             setReplyMessage: this.setReplyMessage
         };
     }
@@ -890,6 +897,12 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
         this.setState({
             forwardMessagesId: id,
             conversationId: conversationId
+        });
+    }
+
+    forwardMessages = (e: boolean) => {
+        this.setState({
+            useForwardMessages: e
         });
     }
 

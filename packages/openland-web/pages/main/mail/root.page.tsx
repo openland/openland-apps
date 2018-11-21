@@ -34,8 +34,7 @@ export let ChatContainer = Glamorous.div({
     width: '100%',
     flexGrow: 1,
     flexShrink: 0,
-    overflow: 'hidden',
-    position: 'absolute'
+    overflow: 'hidden'
 });
 
 export let ChatListContainer = Glamorous.div({
