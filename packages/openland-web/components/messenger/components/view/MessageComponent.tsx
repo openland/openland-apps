@@ -60,7 +60,7 @@ const Check = Glamorous.div({
     height: 18,
     borderRadius: 9,
     backgroundColor: '#1790ff'
-})
+});
 
 const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, isEditView: boolean }>((props) => ({
     display: 'flex',
@@ -186,7 +186,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
         if (forwardMessagesId && selectedMessageId) {
             if (forwardMessagesId.has(message.id)) {
-                selectedMessageId.delete(message.id)
+                selectedMessageId.delete(message.id);
                 messagesContext.setForwardMessages(selectedMessageId, conversationId);
             } else {
                 selectedMessageId.add(message.id);
