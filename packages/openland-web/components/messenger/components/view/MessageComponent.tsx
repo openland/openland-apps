@@ -136,7 +136,7 @@ interface MessageComponentProps {
     conversation: ConversationEngine;
     out: boolean;
     me?: UserShort | null;
-    conversationType?: SharedRoomKind | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId: string;
 }
 
@@ -412,6 +412,38 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             content.push(<MessageTextComponent message={''} mentions={null} key={'text'} isService={false} isEdited={edited} />);
         }
 
+        // menu
+        let menu = isServerMessage(message) && this.props.out ?
+            (
+                <XVertical className="menu">
+                    <XOverflow
+                        show={this.state.isMenuOpen}
+                        flat={true}
+                        placement="bottom-end"
+                        onClickTarget={this.switchMenu}
+                        content={
+                            <>
+                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
+                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
+                            </>
+                        }
+                    />
+                </XVertical>
+            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
+                <XWithRole role="super-admin">
+                    <XVertical className="menu">
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
+                        />
+                    </XVertical>
+                </XWithRole>
+            ) : null;
+        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+            menu = null;
+        }
+
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
@@ -457,14 +489,14 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 isEditView={this.state.isEditView}
             >
                 <XHorizontal alignSelf="stretch">
-                    {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
+                    {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
                         <UserPopper
                             user={this.props.sender}
                             isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
                             startSelected={hideMenu}
                         />
                     )}
-                    {this.props.sender && (this.props.conversationType === 'PrivateConversation') && (
+                    {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
                         <UserAvatar user={this.props.sender} startSelected={hideMenu} />
                     )}
                     <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>

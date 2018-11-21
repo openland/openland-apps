@@ -5,6 +5,7 @@ import { ConversationShort } from '../fragments/ConversationShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { MessageShort } from '../fragments/MessageShort';
 import { MessageLightShort } from '../fragments/MessageLightShort';
+import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 
 export const ChatListQuery = gql`
@@ -480,33 +481,21 @@ export const UnBlockUserMutation = gql`
 
 export const ChatSearchTextQuery = gql`
     query ChatSearchText($query: String!) {
-        items: alphaChatTextSearch(query: $query) {
-            id
+        items: betaDialogTextSearch(query: $query) {
+            id: cid
             title
-            flexibleId
-            photos
+            flexibleId: fid
+            photo
         }
     }
-    ${ConversationShort}
-    ${MessageFull}
-    ${UserShort}
 `;
 
 export const ChatSearchChannelQuery = gql`
     query ChatSearchChannel($query: String, $sort: String, $page: Int) {
-        items: alphaChannels(query: $query, sort: $sort, page: $page, first: 25) {
+        items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
-                    ...ConversationShort
-                    membersCount
-                    featured
-                    hidden
-                    description
-                    myStatus
-                    organization{
-                        ...OrganizationShort
-                    }
-                    isRoot
+                    ... RoomFull
                 }
                 cursor
             }
@@ -520,8 +509,7 @@ export const ChatSearchChannelQuery = gql`
             }
         }
     }
-    ${ConversationShort}
-    ${MessageFull}
+    ${RoomFull}
     ${UserShort}
     ${OrganizationShort}
 `;
@@ -633,24 +621,25 @@ export const ChannelInviteLinkQuery = gql`
     }
 `;
 
-export const ChannelInviteInfoQuery = gql`
-    query ChannelInviteInfo($uuid: String!) {
-        invite: alphaChannelInviteInfo(uuid: $uuid){
-            channel{
+export const RoomInviteInfoQuery = gql`
+    query RoomInviteInfo($invite: String!) {
+        invite: betaRoomInviteInfo(invite: $invite){
+            room{
                 id
+                kind
                 title
                 photo
-                photos
-                isRoot
-                featured
                 description
-                myStatus
-                membersCount
-                socialImage
                 organization{
-                    id
-                    isMine
-                    name
+                    ... OrganizationShort
+                }
+                membersCount
+                members{
+                    role
+                    membership
+                    user{
+                        ... UserShort
+                    }
                 }
             }            
             invitedByUser{
@@ -658,6 +647,8 @@ export const ChannelInviteInfoQuery = gql`
             }
         }
     }
+    ${RoomFull}
+    ${OrganizationShort}
     ${UserShort}
 `;
 

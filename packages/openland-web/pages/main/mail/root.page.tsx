@@ -98,9 +98,9 @@ export const OrganizationProfilContainer = Glamorous.div({
 
 export const RoomInviteFromLink = withChannelInviteInfo((props) => (
     props.data && props.data.invite
-        ? props.data.invite.channel.myStatus === 'member'
-            ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} />
-            : <RoomsInviteComponent inviteLink={props.router.routeQuery.uuid} room={props.data.invite.channel} invite={props.data.invite} />
+        ? props.data.invite.room.membership === 'MEMBER'
+            ? <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+            : <RoomsInviteComponent inviteLink={props.router.routeQuery.invte} room={props.data.invite.room} invite={props.data.invite} />
         : <XLoader loading={true} />
 ));
 

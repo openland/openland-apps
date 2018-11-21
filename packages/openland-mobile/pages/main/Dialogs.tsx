@@ -12,7 +12,7 @@ import { ZQuery } from '../../components/ZQuery';
 import { ChatSearchTextQuery } from 'openland-api';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ASView } from 'react-native-async-view/ASView';
-import { DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
+import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZLoader } from '../../components/ZLoader';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -66,13 +66,12 @@ class DialogsSearch extends React.Component<{ query: string }> {
                                             key: d.id,
                                             flexibleId: d.flexibleId,
                                             title: d.title,
-                                            type: d.__typename,
                                             unread: 0,
-                                            photo: d.photos[0],
+                                            photo: d.photo,
                                             sender: undefined,
                                             message: undefined,
                                             date: undefined,
-                                        };
+                                        } as DialogDataSourceItem;
                                     });
                                     console.warn(resp.data.items);
 

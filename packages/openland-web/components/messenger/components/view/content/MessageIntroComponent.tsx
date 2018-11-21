@@ -199,7 +199,7 @@ interface MessageIntroComponentProps {
     messageId: string;
     meId: string;
     senderId: string;
-    conversationType?: SharedRoomKind | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
 }
 
 const Counter = Glamorous.div<{ alignSelf?: string, accepted: boolean }>(props => ({

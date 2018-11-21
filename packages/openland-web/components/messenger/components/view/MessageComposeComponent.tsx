@@ -299,7 +299,7 @@ const EditView = (props: { title: string, message: string, onCancel: () => void 
 );
 
 export interface MessageComposeComponentProps {
-    conversationType?: SharedRoomKind | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;

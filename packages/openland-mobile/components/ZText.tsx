@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
 import { Text, Linking, StyleProp, TextStyle, Alert } from 'react-native';
-import { ChannelInviteInfoQuery } from 'openland-api';
+import { RoomInviteInfoQuery } from 'openland-api';
 import { getMessenger } from '../utils/messenger';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 
@@ -11,7 +11,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             startLoader();
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.client.query({ query: ChannelInviteInfoQuery.document, variables: { uuid: uuid } });
+                let info: any = await getMessenger().engine.client.client.query({ query: RoomInviteInfoQuery.document, variables: { uuid: uuid } });
                 if (info.data && info.data.invite) {
                     let channelId = info.data.invite.channel.id;
                     getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: channelId });

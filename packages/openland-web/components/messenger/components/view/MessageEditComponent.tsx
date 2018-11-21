@@ -126,7 +126,7 @@ const EditMessageInline = withEditMessage((props) => {
 
             <Footer separator={5}>
                 <XFormSubmit text="Save" style="primary" />
-                <XButton text="Cancel" size="r-default" onClick={() => { (props as any).onClose(); }} />
+                <XButton text="Cancel" size="default" onClick={() => { (props as any).onClose(); }} />
             </Footer>
         </XForm>
     );

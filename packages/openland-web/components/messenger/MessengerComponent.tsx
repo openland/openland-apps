@@ -878,7 +878,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                 {tab === 'chat' && (
                     <MessengerRootComponent
                         conversationId={props.data.room!.id}
-                        conversationType={sharedRoom && sharedRoom.kind}
+                        conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
                     />
                 )}
                 {(sharedRoom && tab === 'members') && (

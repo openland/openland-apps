@@ -117,7 +117,7 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                                         conversation={{
                                             sender: i.topMessage ? (props.user && (i.topMessage.sender.id === props.user.id) ? 'You' : i.topMessage.sender.name) : undefined,
                                             key: i.id,
-                                            fid: i.fid,
+                                            flexibleId: i.flexibleId,
                                             message: i.topMessage && formatMessage(i.topMessage),
                                             kind: i.kind,
                                             title: i.title,

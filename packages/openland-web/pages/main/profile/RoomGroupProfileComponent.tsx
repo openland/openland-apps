@@ -107,7 +107,6 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                                 <RoomEditComponent
                                     title={chat.title}
                                     description={chat.description}
-                                    longDescription={chat.longDescription}
                                     socialImageRef={null}
                                     photoRef={chat.photoRef}
                                     refetchVars={{ conversationId: chat.id }}

@@ -49,7 +49,7 @@ const Text = Glamorous.div({
     marginTop: 8,
 });
 
-export const EmptyBlock = (props: { conversationType?: SharedRoomKind | null, onClick?: (show: boolean) => void }) => (
+export const EmptyBlock = (props: { conversationType?: SharedRoomKind | 'PRIVATE', onClick?: (show: boolean) => void }) => (
     <EmptyRoot>
         <EmptyContent>
             <ImageWrapper>

@@ -70,7 +70,7 @@ export default withAppBase('Waitlist', (props) => {
                     <MessagePageContent title={InitTexts.waitlist.title}>
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
                         <ButtonGroup>
-                            <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" size="medium" flexGrow={1} />
+                            <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" flexGrow={1} />
                         </ButtonGroup>
                         <MailText>Questions? <a href="mailto:hello@openland.com">hello@openland.com</a></MailText>
                     </MessagePageContent>

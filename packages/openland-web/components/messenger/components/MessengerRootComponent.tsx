@@ -27,7 +27,7 @@ interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
-    conversationType?: SharedRoomKind | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
 }
 
@@ -258,7 +258,7 @@ const Placeholder = withChatHistory(() => {
 
 interface MessengerRootComponentProps {
     conversationId: string;
-    conversationType: SharedRoomKind | null;
+    conversationType: SharedRoomKind | 'PRIVATE';
 }
 
 const MessagesWithUser = withUserInfo((props) => (
@@ -269,7 +269,7 @@ const MessagesWithUser = withUserInfo((props) => (
         messenger={props.messenger}
         conversationType={props.conversationType}
     />
-)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType: SharedRoomKind | null }>;
+)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType: SharedRoomKind | 'PRIVATE' }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all

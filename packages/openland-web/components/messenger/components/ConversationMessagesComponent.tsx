@@ -98,7 +98,7 @@ const TypingComponent = (props: { chatId: string }) => (
 interface ConversationMessagesComponentProps {
     conversation: ConversationEngine;
     conversationId: string;
-    conversationType?: SharedRoomKind | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     loading: boolean;
     messages: ModelMessage[];
     inputShower?: (show: boolean) => void;

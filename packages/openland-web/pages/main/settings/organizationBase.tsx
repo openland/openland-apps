@@ -132,6 +132,7 @@ export const OrganizationSettigs = ((props: any) => {
 
                                 input: {
                                     name: props.data.organizationProfile.name,
+                                    about: props.data.organizationProfile.about,
                                     photo: props.data.organizationProfile.photoRef,
                                     photoRef: sanitizeIamgeRef(props.data.organizationProfile.photoRef),
                                     published: props.data.organizationProfile.published ? 'published' : 'unpublished',
@@ -148,6 +149,7 @@ export const OrganizationSettigs = ((props: any) => {
                                     variables: {
                                         input: {
                                             name: data.input.name,
+                                            about: data.input.about,
                                             photoRef: data.input.photoRef,
                                             alphaPublished: data.input.published === 'published',
                                             alphaEditorial: data.input.editorial === 'editorial',
@@ -166,6 +168,7 @@ export const OrganizationSettigs = ((props: any) => {
                                     <XHorizontal separator={12}>
                                         <XVertical flexGrow={1} maxWidth={480}>
                                             <XInput field="input.name" size="large" placeholder="Organization name" />
+                                            <XInput field="input.about" size="large" placeholder="About" />
                                             <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
                                             <XInput field="input.twitter" placeholder="Twitter" size="large" />
                                             <XInput field="input.facebook" placeholder="Facebook" size="large" />

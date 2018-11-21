@@ -10,6 +10,7 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { ListingsComponent } from './components/listingsComponent';
+import { SharedRoomKind } from 'openland-api/Types';
 
 const ChatRoot = Glamorous(XVertical)({
     width: '100%',
@@ -137,7 +138,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 </ChannelTools>
             </ChannelHeader>
             <ChannelWrapper>
-                {(!isListingsTab && !isMembersTab) && (<MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} />)}
+                {(!isListingsTab && !isMembersTab) && (<MessengerRootComponent key={props.data.chat.id} conversationId={props.data.chat.id} conversationType={SharedRoomKind.PUBLIC}/>)}
                 {(isListingsTab && !isMembersTab) && (<ListingsComponent />)}
             </ChannelWrapper>
         </ChatRoot>

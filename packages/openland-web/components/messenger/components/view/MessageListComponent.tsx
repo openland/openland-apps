@@ -84,7 +84,7 @@ interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
     loadBefore: (id: string) => void;
-    conversationType?: SharedRoomKind | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     conversationId: string;

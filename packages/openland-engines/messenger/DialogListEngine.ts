@@ -1,14 +1,14 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { ConversationShort, Dialogs_dialogs, Dialogs_dialogs_items, Dialogs_dialogs_items_topMessage } from 'openland-api/Types';
+import { ConversationShort, Dialogs_dialogs, Dialogs_dialogs_items, Dialogs_dialogs_items_topMessage, Room_room_SharedRoom, Room_room_PrivateRoom, RoomFull } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { ChatListQuery, ChatInfoQuery } from 'openland-api';
+import { ChatListQuery, ChatInfoQuery, DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 export interface DialogDataSourceItem {
     key: string;
-    fid: string;
+    flexibleId: string;
     title: string;
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
     photo?: string;
@@ -30,7 +30,7 @@ export function formatMessage(message: Dialogs_dialogs_items_topMessage): string
 
 export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => ({
     key: c.cid,
-    fid: c.fid,
+    flexibleId: c.fid,
     kind: c.kind,
     title: c.title,
     photo: c.photo,
@@ -43,6 +43,15 @@ export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => ({
     fileMeta: undefined,
     online: false,
 });
+
+export const extractDialogFRomRoom = (c: RoomFull, uid: string) => ({
+    key: c.id,
+    flexibleId: c.id,
+    kind: c.__typename === 'SharedRoom' ? c.kind : 'PRIVATE',
+    title: c.__typename === 'SharedRoom' ? c.title : c.user.name,
+    photo: c.__typename === 'SharedRoom' ? c.photo : c.user.photo,
+    unread: 0,
+} as DialogDataSourceItem);
 
 export class DialogListEngine {
 
@@ -150,18 +159,72 @@ export class DialogListEngine {
         }
     }
 
+    handleNewMessage = async (event: any, visible: boolean) => {
+        console.log(event);
+        const conversationId = event.cid as string;
+        const unreadCount = event.unread as number;
+
+        // Write message to datasource
+        let res = this.dataSource.getItem(conversationId);
+        let isOut = event.message.sender.id === this.engine.user.id;
+        let sender = isOut ? 'You' : event.message.sender.name;
+        if (res) {
+            this.dataSource.updateItem({
+                ...res,
+                unread: (!visible || res.unread > unreadCount) ? unreadCount : res.unread,
+                isOut: isOut,
+                sender: sender,
+                messageId: event.message.id,
+                message: formatMessage(event.message),
+                date: parseInt(event.message.date, 10),
+                fileMeta: event.message.fileMetadata,
+            });
+            this.dataSource.moveItem(res.key, 0);
+        } else {
+            if (event.message.serviceMetadata && event.message.serviceMetadata.__typename === 'KickServiceMetadata') {
+                return;
+            }
+
+            let info = await this.engine.client.query(RoomQuery, { id: conversationId });
+
+            let sharedRoom = info.data.room!.__typename === 'SharedRoom' ? info.data.room as Room_room_SharedRoom : null;
+            let privateRoom = info.data.room!.__typename === 'PrivateRoom' ? info.data.room as Room_room_PrivateRoom : null;
+            let room = (sharedRoom || privateRoom)!;
+
+            this.dataSource.addItem(
+                {
+                    key: conversationId,
+                    flexibleId: room.id,
+                    kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
+                    title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
+                    photo: (sharedRoom ? sharedRoom.photo : privateRoom ? privateRoom.user.photo : undefined) || undefined,
+                    unread: unreadCount,
+                    isOut: isOut,
+                    sender: sender,
+                    messageId: event.message.id,
+                    message: formatMessage(event.message),
+                    date: parseInt(event.message.date, 10),
+                    fileMeta: event.message.fileMetadata,
+                    online: privateRoom ? privateRoom.user.online : false,
+                },
+                0);
+        }
+    }
+
     loadNext = async () => {
         if (!this.loading && this.next !== null) {
             this.loading = true;
             let start = Date.now();
-            let initialDialogs: any = await backoff(async () => {
+            let res: any = await backoff(async () => {
                 try {
-                    return await this.engine.client.client.query({
-                        query: ChatListQuery.document,
-                        variables: {
-                            ...this.next !== undefined ? { after: this.next } : {}
-                        }
-                    });
+                    return (await backoff(async () => {
+                        return await this.engine.client.client.query({
+                            query: DialogsQuery.document,
+                            variables: {
+                                ...this.next !== undefined ? { after: this.next } : {}
+                            }
+                        });
+                    }));
                 } catch (e) {
                     console.warn(e);
                     throw e;
@@ -169,25 +232,12 @@ export class DialogListEngine {
             });
             console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
-            this.next = initialDialogs.data.chats.next;
-            this.dialogListCallback(this.dialogs.map(i => i.id));
+            this.next = res.data.dialogs.cursor;
+            this.dialogs = [...this.dialogs, ...res.data.dialogs.items];
+            this.dialogListCallback(this.dialogs.map(i => i.cid));
 
             // Write to datasource
-            let converted = initialDialogs.data.chats.conversations.map((c: any) => ({
-                key: c.id,
-                flexibleId: c.flexibleId,
-                type: c.__typename,
-                title: c.title,
-                photo: (c as any).photo || (c.photos.length > 0 ? c.photos[0] : undefined),
-                unread: c.unreadCount,
-                isOut: c.topMessage ? c.topMessage!!.sender.id === this.engine.user.id : undefined,
-                sender: c.topMessage ? (c.topMessage!!.sender.id === this.engine.user.id ? 'You' : c.topMessage!!.sender.name) : undefined,
-                message: c.topMessage ? formatMessage(c.topMessage) : undefined,
-                messageId: c.topMessage ? formatMessage(c.topMessage.id) : undefined,
-                date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
-                fileMeta: c.topMessage ? c.topMessage.fileMetadata : undefined,
-                online: false,
-            }));
+            let converted = res.data.dialogs.items.map((c: any) => extractDialog(c, this.engine.user.id));
             this.dataSource.loadedMore(converted, !this.next);
 
             this.loading = false;
