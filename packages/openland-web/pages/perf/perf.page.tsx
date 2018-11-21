@@ -64,7 +64,18 @@ class ThirdText extends React.Component {
     render() {
         let ch: any[] = [];
         for (let a = 0; a < 1000; a++) {
-            ch.push(<XView margin={20} marginTop={20} marginBottom={20} key={'b-' + a}>button</XView>);
+            ch.push(
+                <XView
+                    key={'b-' + a}
+                    height={40}
+                    borderRadius={20}
+                    paddingLeft={20}
+                    paddingRight={20}
+                    backgroundColor="#1790ff"
+                >
+                    button
+                </XView>
+            );
         }
         return (
             <XVertical>
