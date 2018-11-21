@@ -52,6 +52,7 @@ let date = css`
     font-weight: 600;
     line-height: 16px;
     text-transform: uppercase;
+    white-space: nowrap;
 `;
 
 let body = css`
