@@ -266,20 +266,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         );
                     }
                 }
-                if ((message as MessageFull).reply) {
-                    let replyMessage = (message as MessageFull).reply![0];
-                    content.push(
-                        <MessageReplyComponent
-                            sender={replyMessage.sender}
-                            date={replyMessage.date}
-                            message={replyMessage.message}
-                            id={replyMessage.id}
-                            key={'reply'}
-                            edited={replyMessage.edited}
-                            file={replyMessage.file}
-                            fileMetadata={replyMessage.fileMetadata}
-                        />
-                    );
+                if ((message as MessageFull).reply && (message as MessageFull).reply!.length > 0) {
+                    (message as MessageFull).reply!.map((i, j) => {
+                        content.push(
+                            <MessageReplyComponent
+                                sender={i.sender}
+                                date={i.date}
+                                message={i.message}
+                                id={i.id}
+                                key={'reply_message' + i.id + j}
+                                edited={i.edited}
+                                file={i.file}
+                                fileMetadata={i.fileMetadata}
+                            />
+                        );
+                    });
                 }
                 date = <XDate value={message.date} format="time" />;
             }
