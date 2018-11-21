@@ -44,7 +44,7 @@ import { MessagesStateContext, MessagesStateContextProps } from './components/Me
 import CloseIcon from './components/icons/ic-close.svg';
 
 const ForwardRoot = Glamorous.div({
-    position: 'relative',
+    position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -52,6 +52,10 @@ const ForwardRoot = Glamorous.div({
     height: '100%',
     padding: 28,
     flexShrink: 0,
+    left: 0,
+    top: 0,
+    zIndex: 2,
+    backgroundColor: '#fff',
     '& > svg': {
         position: 'absolute',
         right: 20,
@@ -885,65 +889,60 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
 
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
-            {forwardPlaceholder ? (
-                <FrowardPlaceholder state={messagesState} />
-            ) : (
-                    <>
-                        <ChatHeaderWrapper>
-                            {isSelectedView ? (
-                                <ForwardHeader state={(props as any).state} />
-                            ) : (
-                                    headerRender()
-                                )}
-                        </ChatHeaderWrapper>
-                        <TalkBarComponent conversationId={props.data.chat!.id} />
-                        <XHorizontal
-                            justifyContent="center"
-                            width="100%"
-                            height="calc(100% - 56px)"
-                            separator={0}
-                        >
-                            <XWithRole role="feature-chat-embedded-attach">
-                                {(props.data.chat as any).longDescription && (props.data.chat as any).longDescription.startsWith('http') && (
-                                    <iframe allow="microphone; camera" style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
-                                )}
-                            </XWithRole>
-                            {tab === 'chat' && (
-                                <MessengerRootComponent
-                                    conversationId={props.data.chat.id}
-                                    conversationType={props.data.chat.__typename}
-                                />
-                            )}
-                            {(props.data.chat.__typename === 'ChannelConversation' && tab === 'members') && (
-                                <ChannelMembersComponent
-                                    channelTitle={title}
-                                    key={props.data.chat.id + '_members'}
-                                    variables={{ channelId: props.data.chat.id }}
-                                    description={props.data.chat.description}
-                                    longDescription={props.data.chat.longDescription}
-                                    orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
-                                    emptyText="To grow the community, invite people to this room"
-                                    removeFrom="room"
-                                />
-                            )}
-                            {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
-                                <ChannelMembersComponent
-                                    channelTitle={title}
-                                    key={props.data.chat.id + '_members'}
-                                    variables={{ channelId: props.data.chat.id }}
-                                    description={undefined}
-                                    longDescription={undefined}
-                                    orgId={''}
-                                    removeFrom="group"
-                                />
-                            )}
-                        </XHorizontal>
-                        <GroupEditComponent title={props.data.chat.title} description={(props.data.chat as any).description || null} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
-                        {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
-
-                        <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
-                    </>
+            {forwardPlaceholder && <FrowardPlaceholder state={messagesState} />}
+            <ChatHeaderWrapper>
+                {isSelectedView ? (
+                    <ForwardHeader state={(props as any).state} />
+                ) : (
+                        headerRender()
+                    )}
+            </ChatHeaderWrapper>
+            <TalkBarComponent conversationId={props.data.chat!.id} />
+            <XHorizontal
+                justifyContent="center"
+                width="100%"
+                height="calc(100% - 56px)"
+                separator={0}
+            >
+                <XWithRole role="feature-chat-embedded-attach">
+                    {(props.data.chat as any).longDescription && (props.data.chat as any).longDescription.startsWith('http') && (
+                        <iframe allow="microphone; camera" style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
+                    )}
+                </XWithRole>
+                {tab === 'chat' && (
+                    <MessengerRootComponent
+                        conversationId={props.data.chat.id}
+                        conversationType={props.data.chat.__typename}
+                    />
                 )}
+                {(props.data.chat.__typename === 'ChannelConversation' && tab === 'members') && (
+                    <ChannelMembersComponent
+                        channelTitle={title}
+                        key={props.data.chat.id + '_members'}
+                        variables={{ channelId: props.data.chat.id }}
+                        description={props.data.chat.description}
+                        longDescription={props.data.chat.longDescription}
+                        orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
+                        emptyText="To grow the community, invite people to this room"
+                        removeFrom="room"
+                    />
+                )}
+                {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
+                    <ChannelMembersComponent
+                        channelTitle={title}
+                        key={props.data.chat.id + '_members'}
+                        variables={{ channelId: props.data.chat.id }}
+                        description={undefined}
+                        longDescription={undefined}
+                        orgId={''}
+                        removeFrom="group"
+                    />
+                )}
+            </XHorizontal>
+            <GroupEditComponent title={props.data.chat.title} description={(props.data.chat as any).description || null} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
+            {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
+
+            <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
         </MessengerWrapper>
     );
 })) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
