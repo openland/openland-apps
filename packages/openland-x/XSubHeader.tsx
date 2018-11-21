@@ -2,11 +2,21 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XContentWrapper } from './XContentWrapper';
 
-const Wrapper = Glamorous.div<{ border?: boolean; paddingTop?: number; paddingBottom?: number }>((props) => ({
+interface WrapperProps {
+    border?: boolean;
+    paddingTop?: number;
+    paddingBottom?: number;
+    marginTop?: number;
+    marginBottom?: number;
+}
+
+const Wrapper = Glamorous.div<WrapperProps>((props) => ({
     display: 'flex',
     borderTop: props.border ? '1px solid #ececec' : undefined,
     paddingTop: typeof props.paddingTop === 'undefined' ? 11 : props.paddingTop,
     paddingBottom: typeof props.paddingBottom === 'undefined' ? 16 : props.paddingBottom,
+    marginTop: typeof props.marginTop === 'undefined' ? 0 : props.marginTop,
+    marginBottom: typeof props.marginBottom === 'undefined' ? 0 : props.marginBottom,
     position: 'relative',
 }));
 
@@ -39,23 +49,24 @@ const Right = Glamorous.div({
     
 });
 
-interface XSubHeaderProps {
+interface XSubHeaderProps extends WrapperProps {
     title: string;
     counter?: string | number;
     right?: any;
-    border?: boolean;
-    paddingTop?: number;
-    paddingBottom?: number;
 }
 
-export const XSubHeader = (props: XSubHeaderProps) => (
-    <Wrapper border={props.border} paddingTop={props.paddingTop} paddingBottom={props.paddingBottom}>
-        <Content>
-            <Title>
-                {props.title}
-                {props.counter && (<Counter>{props.counter}</Counter>)}
-            </Title>
-            {props.right && (<Right>{props.right}</Right>)}
-        </Content>
-    </Wrapper>
-);
+export const XSubHeader = (props: XSubHeaderProps) => {
+    let { title, counter, right, ...other} = props;
+
+    return (
+        <Wrapper {...other}>
+            <Content>
+                <Title>
+                    {title}
+                    {counter && (<Counter>{counter}</Counter>)}
+                </Title>
+                {right && (<Right>{right}</Right>)}
+            </Content>
+        </Wrapper>
+    );
+};
