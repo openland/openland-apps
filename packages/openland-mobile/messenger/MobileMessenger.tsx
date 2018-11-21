@@ -18,7 +18,7 @@ import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigM
 import { Clipboard, Alert, AlertIOS, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
-import { MessageSetReactionMutation, MessageUnsetReactionMutation, ChatEditMessageMutation, ChatDeleteMessageMutation } from 'openland-api';
+import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 
 interface ASAvatarProps {
@@ -267,7 +267,7 @@ export class MobileMessenger {
                         async (text) => {
                             startLoader();
                             try {
-                                await this.engine.client.client.mutate({ mutation: ChatEditMessageMutation.document, variables: { messageId: message.id, message: text } });
+                                await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
                             } catch (e) {
                                 Alert.alert(e.message);
                             }
@@ -289,7 +289,7 @@ export class MobileMessenger {
                             text: 'Delete', style: 'destructive', onPress: async () => {
                                 startLoader();
                                 try {
-                                    await this.engine.client.client.mutate({ mutation: ChatDeleteMessageMutation.document, variables: { messageId: message.id } });
+                                    await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
                                 } catch (e) {
                                     Alert.alert(e.message);
                                 }

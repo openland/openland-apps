@@ -242,7 +242,7 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
 interface RoomsInviteComponentProps {
     inviteLink?: string;
     signup?: string;
-    room: Room_room_SharedRoom;
+    room: Partial<Room_room_SharedRoom>;
     invite?: {
         invitedByUser?: {
             id: string,
@@ -301,8 +301,8 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((room.membership === 'NONE' && !this.props.inviteLink)) && <JoinButton channelId={room.id} refetchVars={{ conversationId: room.id }} text="Request Invite" />}
-                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id }} text="Accept invite" />}
+                            {((room.membership === 'NONE' && !this.props.inviteLink)) && <JoinButton channelId={room.id!} refetchVars={{ conversationId: room.id! }} text="Request Invite" />}
+                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id! }} text="Accept invite" />}
                             {room.membership === 'REQUESTED' && (
                                 <XButton
                                     style="ghost"

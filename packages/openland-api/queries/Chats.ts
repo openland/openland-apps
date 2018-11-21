@@ -1,43 +1,11 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { MessageFull } from '../fragments/MessageFull';
-import { ConversationShort } from '../fragments/ConversationShort';
+import { RoomMessageFull } from '../fragments/MessageFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { MessageShort } from '../fragments/MessageShort';
+import { RoomMessageShort } from '../fragments/MessageShort';
 import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
-
-export const ChatListQuery = gql`
-    query ChatList($after: String) {
-        chats: alphaChats(first: 20, after: $after) {
-            conversations {
-                id
-                flexibleId
-                title
-                photos
-                unreadCount
-                ... on GroupConversation{
-                    photo
-                }
-                ... on ChannelConversation{
-                    photo
-                    myStatus
-                }
-                topMessage {
-                    ...MessageShort
-                }
-            }
-            next
-        }
-        counter: alphaNotificationCounter {
-            id
-            unreadCount
-        }
-    }
-    ${MessageShort}
-    ${UserTiny}
-`;
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -53,6 +21,9 @@ export const DialogsQuery = gql`
                 topMessage {
                     ...MessageLightShort
                 }
+                betaTopMessage {
+                    ...RoomMessageShort
+                }
             }
             cursor
         }
@@ -63,74 +34,36 @@ export const DialogsQuery = gql`
     }
     ${MessageLightShort}
     ${UserTiny}
+    ${RoomMessageShort}
 `;
 
 export const RoomQuery = gql`
     query Room($id: ID!) {
         room(id: $id){
-            ... on PrivateRoom{
-                id
-                user{
-                    ... UserShort
-                }
-                settings{
-                    mute
-                }
-            } 
-            ... on SharedRoom{
-                id
-                kind
-                title
-                photo
-                description
-                organization{
-                    ... OrganizationShort
-                }
-                membership
-                role
-                membersCount
-                members{
-                    role
-                    membership
-                    user{
-                        ... UserShort
-                    }
-                }
-                settings{
-                    mute
-                }
-            }
+            ... RoomFull
         }
     }
-    ${MessageLightShort}
+    ${RoomFull}
     ${UserShort}
     ${OrganizationShort}
 `;
 
-export const ChatLeaveMutation = gql`
-    mutation ChatLeave($conversationId: ID!) {
-        alphaChatLeave(conversationId: $conversationId) {
-            curSeq
-        }
-    }
-`;
-
 export const MessageSetReactionMutation = gql`
     mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
-        alphaChatSetReaction(messageId: $messageId, reaction: $reaction)
+        betaReactionSet(mid: $messageId, reaction: $reaction)
     }
 `;
 
 export const SwitchReactionMutation = gql`
     mutation SwitchReaction($messageId: ID!, $from: String!, $to: String!) {
-        alphaChatSetReaction(messageId: $messageId, reaction: $to)
-        alphaChatUnsetReaction(messageId: $messageId, reaction: $from)
+        betaReactionSet(mid: $messageId, reaction: $to)
+        betaReactionRemove(mid: $messageId, reaction: $from)
     }
 `;
 
 export const MessageUnsetReactionMutation = gql`
     mutation MessageUnsetReaction($messageId: ID!, $reaction: String!) {
-        alphaChatUnsetReaction(messageId: $messageId, reaction: $reaction)
+        betaReactionRemove(mid: $messageId, reaction: $reaction)
     }
 `;
 
@@ -155,211 +88,13 @@ export const GlobalCounterQuery = gql`
     }
 `;
 
-export const ChatHistoryQuery = gql`
-    query ChatHistory($conversationId: ID!, $before: ID) {
-        messages: alphaLoadMessages(conversationId: $conversationId, first: 30, before: $before) {
-            seq
-            messages {
-                ...MessageFull
-            }
+export const RoomHistoryQuery = gql`
+    query RoomHistory($roomId: ID!, $before: ID) {
+        messages: roomMessages(roomId: $roomId, first: 30, before: $before) {
+            ...RoomMessageFull
         }
     }
-    ${MessageFull}
-    ${UserShort}
-`;
-
-export const ChatInfoQuery = gql`
-    query ChatInfo($conversationId: ID!) {
-        chat: alphaChat(conversationId: $conversationId) {
-            id
-            flexibleId
-            title
-            photos
-            unreadCount
-            settings{
-                id
-                mobileNotifications
-                mute
-            }
-            ... on SharedConversation {
-                organization {
-                    id
-                }
-            }
-            ... on PrivateConversation {
-                blocked
-                user {
-                    ...UserShort
-                }
-            }
-            ... on GroupConversation {
-                membersCount
-                photo
-                longDescription
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-            }
-            ... on ChannelConversation {
-                myStatus
-                photo
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-                isRoot
-                featured
-                hidden
-                description
-                longDescription
-                socialImageRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-                socialImage
-                myStatus
-                membersCount
-                memberRequestsCount
-                organization{
-                    id
-                    isMine
-                    isOwner: alphaIsOwner
-                    name
-                }
-                myRole
-            }
-        }
-    }
-    ${UserShort}
-`;
-
-export const ChatFullInfoQuery = gql`
-    query ChatFullInfo($conversationId: ID!) {
-        chat: alphaChat(conversationId: $conversationId) {
-            id
-            flexibleId
-            title
-            photos
-            unreadCount
-               settings{
-                id
-                mobileNotifications
-                mute
-            }
-            ... on PrivateConversation {
-                user {
-                    ...UserShort
-                }
-            }
-            ... on GroupConversation {
-                members {
-                    ...UserShort
-                }
-                photo
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-            }
-            ... on ChannelConversation {
-                myStatus
-                members {
-                    ...UserShort
-                }
-                photo
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-            }
-            ... on SharedConversation {
-                organizations {
-                    ...OrganizationShort
-                }
-            }
-        }
-    }
-    ${OrganizationShort}
-    ${UserShort}
-`;
-
-export const GroupChatFullInfoQuery = gql`
-    query GroupChatFullInfo($conversationId: ID!) {
-        chat: alphaChat(conversationId: $conversationId) {
-            id
-            flexibleId
-            title
-            photos
-            unreadCount
-             settings{
-                id
-                mobileNotifications
-                mute
-            }
-            ... on ChannelConversation {
-                photo
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-                organization{
-                    id
-                    isMine
-                    isOwner: alphaIsOwner
-                    name
-                }
-            }
-            ... on GroupConversation {
-                photo
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
-                }
-            }
-        }
-        members: alphaGroupConversationMembers(conversationId: $conversationId) {
-            user {
-                ...UserShort
-            }
-            role
-        }
-    }
+    ${RoomMessageFull}
     ${UserShort}
 `;
 
@@ -370,28 +105,17 @@ export const SendMessageMutation = gql`
 `;
 
 export const ReplyMessageMutation = gql`
-    mutation ReplyMessage($conversationId: ID!, $message: String, $replyMessages: [ID!]) {
-        replyMessage: alphaSendMessage(conversationId: $conversationId, message: $message, replyMessages: $replyMessages) {
-            seq
-        }
+    mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!]) {
+        replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages)
     }
 `;
 
-export const ChatReadMutation = gql`
-    mutation ChatRead($conversationId: ID!, $messageId: ID!) {
-        alphaReadChat(conversationId: $conversationId, messageId: $messageId) {
-            counter {
-                id
-                unreadCount
-            }
-            conversation {
-                id
-                unreadCount
-            }
-        }
+export const RoomReadMutation = gql`
+    mutation RoomRead($roomId: ID!, $messageId: ID!) {
+        roomRead(id: $roomId, mid: $messageId)
     }
 `;
-
+// keep it until web compose redesigned
 export const ChatSearchGroupQuery = gql`
     query ChatSearchGroup($members: [ID!]!) {
         group: alphaChatSearch(members: $members) {
@@ -401,37 +125,23 @@ export const ChatSearchGroupQuery = gql`
     }
 `;
 
-export const ChatCreateGroupMutation = gql`
-    mutation ChatCreateGroup($members: [ID!]!, $message: String, $title: String, $photoRef: ImageRefInput) {
-        group: alphaChatCreateGroup(members: $members, message: $message, title: $title, photoRef: $photoRef) {
+export const RoomCreateMutation = gql`
+    mutation RoomCreate($kind: SharedRoomKind!, $members: [ID!]!, $message: String, $title: String, $description: String, $photoRef: ImageRefInput, $organizationId: ID) {
+        room: betaRoomCreate(kind: $kind, members: $members, message: $message, title: $title, description: $description, photoRef: $photoRef, organizationId: $organizationId) {
             id
         }
     }
 `;
 
-export const ChatCreateIntroMutation = gql`
-    mutation ChatCreateIntro($conversationId: ID!, $userId: ID!, $about: String, $file: String) {
-        intro: alphaSendIntro(conversationId: $conversationId, userId: $userId, about: $about, file: $file, message: $about) {
-            seq
-            message {
-                urlAugmentation {
-                    extra {
-                        ... on User {
-                            ...UserShort
-                        }
-                    }
-                }
-            }
-        }
+export const RoomCreateIntroMutation = gql`
+    mutation RoomCreateIntro($roomId: ID!, $userId: ID!, $about: String, $file: String) {
+        intro: betaIntroSend(room: $roomId, uid: $userId, about: $about, file: $file, message: $about)
     }
-    ${UserShort}
 `;
 
-export const ChatEditIntroMutation = gql`
-    mutation ChatEditIntro($messageId: ID!, $userId: ID!, $about: String, $file: String) {
-        intro: alphaEditIntro(messageId: $messageId, userId: $userId, about: $about, file: $file, message: $about) {
-            seq
-        }
+export const RoomEditIntroMutation = gql`
+    mutation RoomEditIntro($messageId: ID!, $userId: ID!, $about: String, $file: String) {
+        intro: betaIntroEdit(mid: $messageId, uid: $userId, about: $about, file: $file, message: $about)
     }
 `;
 
@@ -447,40 +157,59 @@ export const CancelTypingMutation = gql`
     }
 `;
 
-export const ChatAddMemberMutation = gql`
-    mutation ChatAddMember($conversationId: ID!, $userId: ID!) {
-        alphaChatInviteToGroup(conversationId: $conversationId, invites: [{userId: $userId, role: "member"}]){
-            chat{
+export const RoomAddMemberMutation = gql`
+    mutation RoomAddMember($roomId: ID!, $userId: ID!) {
+        betaRoomInvite(roomId: $roomId, invites: [{userId: $userId, role: MEMBER}]){
+            ...on SharedRoom{
                 id
+                members{
+                    role
+                    user{
+                        ...UserShort
+                    }
+                }
+            }
+            }
+    }
+    ${UserShort}
+`;
+
+export const RoomAddMembersMutation = gql`
+    mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
+        betaRoomInvite(roomId: $roomId, invites: $invites){
+            ...on SharedRoom{
+                id
+                members{
+                    role
+                    membership
+                    user{
+                        ...UserShort
+                    }
+                }
             }
         }
     }
 `;
 
-export const ChatAddMembersMutation = gql`
-    mutation ChatAddMembers($conversationId: ID!, $invites: [GroupConversationInvite!]!) {
-        alphaChatInviteToGroup(conversationId: $conversationId, invites: $invites){
-            chat{
+export const RoomKickMutation = gql`
+    mutation RoomKick($roomId: ID!, $userId: ID!) {
+        betaRoomKick(roomId: $roomId, userId: $userId){
+            ...on SharedRoom{
                 id
+                members{
+                    role
+                    membership
+                    user{
+                        ...UserShort
+                    }
+                }
             }
         }
     }
 `;
 
-export const BlockUserMutation = gql`
-    mutation BlockUser($userId: ID!) {
-        blockUser: alphaBlockUser(userId: $userId)
-    }
-`;
-
-export const UnBlockUserMutation = gql`
-    mutation UnBlockUser($userId: ID!, $conversationId: ID) {
-        blockUser: alphaUnblockUser(userId: $userId, conversationId: $conversationId)
-    }
-`;
-
-export const ChatSearchTextQuery = gql`
-    query ChatSearchText($query: String!) {
+export const RoomSearchTextQuery = gql`
+    query RoomSearchText($query: String!) {
         items: betaDialogTextSearch(query: $query) {
             id: cid
             title
@@ -490,8 +219,8 @@ export const ChatSearchTextQuery = gql`
     }
 `;
 
-export const ChatSearchChannelQuery = gql`
-    query ChatSearchChannel($query: String, $sort: String, $page: Int) {
+export const RoomSearchQuery = gql`
+    query RoomSearch($query: String, $sort: String, $page: Int) {
         items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
@@ -514,110 +243,99 @@ export const ChatSearchChannelQuery = gql`
     ${OrganizationShort}
 `;
 
-export const CreateChannelMutation = gql`
-    mutation CreateChannel($title: String!, $message: String, $description: String, $photoRef: ImageRefInput, $oid: ID) {
-        channel: alphaChannelCreate(title: $title, message: $message, description: $description, photoRef: $photoRef, oid: $oid){
-            id
+export const RoomAlterFeaturedMutation = gql`
+    mutation RoomAlterFeatured($roomId: ID!, $featured: Boolean!) {
+        betaRoomAlterFeatured(roomId: $roomId, featured: $featured){
+            ... RoomFull
         }
     }
-`;
-
-export const ChannelSetFeaturedMutation = gql`
-    mutation ChannelSetFeatured($channelId: ID!, $featured: Boolean!) {
-        alphaChannelSetFeatured(channelId: $channelId, featured: $featured){
-            ... ConversationShort
-        }
-    }
-    ${ConversationShort}
-    ${MessageFull}
+    ${RoomFull}
+    ${OrganizationShort}
     ${UserShort}
 `;
 
-export const ChannelSetHiddenMutation = gql`
-    mutation ChannelSetHidden($channelId: ID!, $hidden: Boolean!) {
-        alphaChannelHideFromSearch(channelId: $channelId, hidden: $hidden){
-            ... ConversationShort
+export const RoomAlterHiddenMutation = gql`
+     mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
+        betaRoomAlterListed(roomId: $roomId, listed: $listed){
+            ... RoomFull
         }
     }
-    ${ConversationShort}
-    ${MessageFull}
+    ${RoomFull}
+    ${OrganizationShort}
     ${UserShort}
 `;
 
-export const ChannelMembersQuery = gql`
-    query ChannelMembers($channelId: ID!){
-        members: alphaChannelMembers(channelId: $channelId){
+export const RoomMembersQuery = gql`
+    query RoomMembers($roomId: ID!){
+        members: roomMembers(roomId: $roomId){
            user{
                ...UserShort
            }
            role
-           status
+           membership
         }
     }
     ${UserShort}
 `;
 
-export const ChannelInviteMutation = gql`
-    mutation ChannelInvite($channelId: ID!, $userId: ID!) {
-        alphaChannelInvite(channelId: $channelId, userId: $userId){
-            chat{
-                id
-            }
-        }
-    }
-`;
-
-export const ConversationKickMutation = gql`
-    mutation ConversationKick($conversationId: ID!, $userId: ID!) {
-        alphaChatKickFromGroup(conversationId: $conversationId, userId: $userId){
-            chat{
-                id
-            }
-        }
-    }
-`;
-
-export const ConversationSettingsUpdateMutation = gql`
-    mutation ConversationSettingsUpdate($settings: UpdateConversationSettingsInput!, $conversationId: ID!) {
-        alphaUpdateConversationSettings(settings: $settings, conversationId: $conversationId) {
+export const RoomSettingsUpdateMutation = gql`
+    mutation RoomSettingsUpdate($settings: RoomUserNotificaionSettingsInput!, $roomId: ID!) {
+        betaRoomUpdateUserNotificationSettings(settings: $settings, roomId: $roomId) {
             id
-            mobileNotifications
             mute
         }
     }
 `;
 
-export const ChannelJoinMutation = gql`
-    mutation ChannelJoin($channelId: ID!) {
-        join: alphaChannelJoin(channelId: $channelId){
-            chat{
+export const RoomJoinMutation = gql`
+    mutation RoomJoin($roomId: ID!) {
+        join: betaRoomJoin(roomId: $roomId){
+            ...on SharedRoom{
                 id
+                members{
+                    role
+                    membership
+                    user{
+                        ...UserShort
+                    }
+                }
             }
         }
     }
 `;
 
-export const ChannelInviteMembersMutation = gql`
-    mutation ChannelInviteMembers($channelId: ID!, $inviteRequests: [ChannelInviteRequest!]!) {
-        alphaChannelInviteMembers(channelId: $channelId, inviteRequests: $inviteRequests)
+export const RoomSendEmailInviteMutation = gql`
+    mutation RoomSendEmailInvite($roomId: ID!, $inviteRequests: [RoomInviteEmailRequest!]!) {
+        betaRoomInviteLinkSendEmail(roomId: $roomId, inviteRequests: $inviteRequests)
     }
 `;
 
-export const ChannelJoinInviteMutation = gql`
-    mutation ChannelJoinInvite($invite: String!) {
-        alphaChannelJoinInvite(invite: $invite)
+export const RoomJoinInviteLinkMutation = gql`
+    mutation RoomJoinInviteLink($invite: String!) {
+        join: betaRoomInviteLinkJoin(invite: $invite){
+            ...on SharedRoom{
+                id
+                members{
+                    role
+                    membership
+                    user{
+                        ...UserShort
+                    }
+                }
+            }
+        }
     }
 `;
 
-export const ChannelRenewInviteLinkMutation = gql`
-    mutation ChannelRenewInviteLink($channelId: ID!) {
-        link: alphaChannelRenewInviteLink(channelId: $channelId)
+export const RoomRenewInviteLinkMutation = gql`
+    mutation RoomRenewInviteLink($roomId: ID!) {
+        link: betaRoomInviteLinkRenew(roomId: $roomId)
     }
 `;
 
-export const ChannelInviteLinkQuery = gql`
-    query ChannelInviteLink($channelId: ID!) {
-        link: alphaChannelInviteLink(channelId: $channelId)
+export const RoomInviteLinkQuery = gql`
+    query RoomInviteLink($roomId: ID!) {
+        link: betaRoomInviteLink(roomId: $roomId)
     }
 `;
 
@@ -641,6 +359,7 @@ export const RoomInviteInfoQuery = gql`
                         ... UserShort
                     }
                 }
+                membership
             }            
             invitedByUser{
                 ...UserShort
@@ -652,56 +371,31 @@ export const RoomInviteInfoQuery = gql`
     ${UserShort}
 `;
 
-export const ChannelJoinInviteLinkMutation = gql`
-    mutation ChannelJoinInviteLink($invite: String!) {
-        cannelId: alphaChannelJoinInvite(invite: $invite)
-    }
-`;
-
-export const ChatUpdateGroupMutation = gql`
-    mutation ChatUpdateGroup($conversationId: ID!, $input: UpdateGroupInput!) {
-        event: alphaChatUpdateGroup(conversationId: $conversationId, input: $input){
-            chat{
-               ...ConversationShort
-            }
-            curSeq
+export const RoomUpdateMutation = gql`
+    mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
+        betaRoomUpdate(roomId: $roomId, input: $input){
+            ...RoomFull
         }
     }
-    ${ConversationShort}
-    ${MessageFull}
+    ${RoomFull}
+    ${OrganizationShort}
     ${UserShort}
 `;
 
-export const ChatDeleteMessageMutation = gql`
-    mutation ChatDeleteMessage($messageId: ID!) {
-        event: alphaDeleteMessage(messageId: $messageId){
-            seq
-            messageId
-        }
+export const RoomDeleteMessageMutation = gql`
+    mutation RoomDeleteMessage($messageId: ID!) {
+        betaMessageDelete(mid: $messageId)
     }
 `;
 
-export const ChatDeleteUrlAugmentationMutation = gql`
-    mutation ChatDeleteUrlAugmentation($messageId: ID!) {
-        event: alphaDeleteMessageUrlAugmentation(messageId: $messageId){
-            seq
-        }
+export const RoomDeleteUrlAugmentationMutation = gql`
+    mutation RoomDeleteUrlAugmentation($messageId: ID!) {
+        betaMessageDeleteAugmentation(mid: $messageId)
     }
 `;
 
-export const ChatEditMessageMutation = gql`
-    mutation ChatEditMessage($messageId: ID!, $message: String) {
-        event: alphaEditMessage(messageId: $messageId, message: $message){
-            seq
-            message{
-                id
-            }
-        }
-    }
-`;
-
-export const SuperChannelAddMemberMutation = gql`
-    mutation SuperChannelAddMember($id: ID!, $userId: ID!){
-        superAccountChannelMemberAdd(id: $id, userId: $userId)
+export const RoomEditMessageMutation = gql`
+    mutation RoomEditMessage($messageId: ID!, $message: String) {
+        betaMessageEdit(mid: $messageId, message: $message)
     }
 `;

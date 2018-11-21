@@ -6,9 +6,9 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { DialogItemViewAsync } from '../../messenger/MobileMessenger';
 import { extractDialog, extractDialogFRomRoom } from 'openland-engines/messenger/DialogListEngine';
-import { ChatSearchChannelQuery } from 'openland-api';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { RoomSearchQuery } from 'openland-api';
 
 class ChannelSearchComponent extends React.Component<PageProps & { query: string }> {
     render() {
@@ -16,7 +16,7 @@ class ChannelSearchComponent extends React.Component<PageProps & { query: string
             <ZAsyncRoutedList
                 key={this.props.query}
                 style={{ flexGrow: 1 }}
-                query={ChatSearchChannelQuery}
+                query={RoomSearchQuery}
                 variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]), query: this.props.query }}
                 renderItem={(item) => {
                     return (
@@ -37,7 +37,7 @@ class ChannelsComponent extends React.PureComponent<PageProps> {
                     <ZAsyncRoutedList
                         overscrollCompensation={true}
                         style={{ flexGrow: 1 }}
-                        query={ChatSearchChannelQuery}
+                        query={RoomSearchQuery}
                         variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }}
                         renderItem={(item) => {
                             return (

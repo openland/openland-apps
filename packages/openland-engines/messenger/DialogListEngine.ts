@@ -1,10 +1,9 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { ConversationShort, Dialogs_dialogs, Dialogs_dialogs_items, Dialogs_dialogs_items_topMessage, Room_room_SharedRoom, Room_room_PrivateRoom, RoomFull } from 'openland-api/Types';
+import { Dialogs_dialogs_items, Dialogs_dialogs_items_topMessage, Room_room_SharedRoom, Room_room_PrivateRoom, RoomFull } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { ChatListQuery, ChatInfoQuery, DialogsQuery, RoomQuery } from 'openland-api';
+import { DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 export interface DialogDataSourceItem {
     key: string;
@@ -24,8 +23,29 @@ export interface DialogDataSourceItem {
     fileMeta?: { isImage?: boolean };
 }
 
-export function formatMessage(message: Dialogs_dialogs_items_topMessage): string {
-    return message.text || '';
+export function formatMessage(message: Dialogs_dialogs_items_topMessage | any): string {
+    if (message.__typename === 'Message') {
+        return message.text || '';
+    }
+    if (message.message) {
+        return message.message;
+    } else if (message.file) {
+        if (message.fileMetadata) {
+            if (message.fileMetadata.isImage) {
+                if (message.fileMetadata.imageFormat === 'GIF') {
+                    return 'GIF';
+                } else {
+                    return 'Photo';
+                }
+            } else {
+                return message.fileMetadata.name;
+            }
+        } else {
+            return 'Document';
+        }
+    } else {
+        return '';
+    }
 }
 
 export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => ({
@@ -37,10 +57,10 @@ export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => ({
     unread: c.unreadCount,
     isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
     sender: c.topMessage ? (c.topMessage!!.sender.id === uid ? 'You' : c.topMessage!!.sender.name) : undefined,
-    message: c.topMessage ? formatMessage(c.topMessage) : undefined,
+    message: formatMessage(c.betaTopMessage),
     messageId: c.topMessage ? c.topMessage.id : undefined,
     date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
-    fileMeta: undefined,
+    fileMeta: c.betaTopMessage ? c.betaTopMessage.fileMetadata || undefined : undefined,
     online: false,
 });
 

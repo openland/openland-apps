@@ -88,7 +88,7 @@ export default withAppBase('Join Room', withUserInfo((props) => {
         <>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
-                <InviteInfo variables={{ invite: invite }} redirect={'/acceptChannelInvite/' + invite} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + uuid : undefined} />
+                <InviteInfo variables={{ invite: invite }} redirect={'/acceptChannelInvite/' + invite} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + invite : undefined} />
             </XTrack>
         </>
     );

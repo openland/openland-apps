@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { ChatReadMutation, ChatHistoryQuery, AccountQuery } from 'openland-api';
+import { RoomReadMutation, RoomHistoryQuery, AccountQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
@@ -165,9 +165,9 @@ export class ConversationEngine implements MessageSendHandler {
         let initialChat = await backoff(async () => {
             try {
                 return await this.engine.client.client.query({
-                    query: ChatHistoryQuery.document,
+                    query: RoomHistoryQuery.document,
                     variables: {
-                        conversationId: this.conversationId
+                        roomId: this.conversationId
                     }
                 });
             } catch (e) {
@@ -253,7 +253,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
             let loaded = await backoff(() => this.engine.client.client.query({
-                query: ChatHistoryQuery.document,
+                query: RoomHistoryQuery.document,
                 variables: { conversationId: this.conversationId, before: id },
                 fetchPolicy: 'network-only'
             }));
@@ -465,10 +465,10 @@ export class ConversationEngine implements MessageSendHandler {
         if (id !== null && id !== this.lastTopMessageRead) {
             this.lastTopMessageRead = id;
             this.engine.client.client.mutate({
-                mutation: ChatReadMutation.document,
+                mutation: RoomReadMutation.document,
                 variables: {
-                    conversationId: this.conversationId,
-                    messageId: id
+                    id: this.conversationId,
+                    mid: id
                 }
             });
         }
@@ -480,13 +480,13 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received new message');
             // Write message to store
             let data = this.engine.client.client.readQuery({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId }
+                query: RoomHistoryQuery.document,
+                variables: { roomId: this.conversationId }
             });
             (data as any).messages.messages = [event.message, ...(data as any).messages.messages];
             this.engine.client.client.writeQuery({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId },
+                query: RoomHistoryQuery.document,
+                variables: { roomId: this.conversationId },
                 data: data
             });
             if (event.message.repeatKey) {
@@ -524,13 +524,13 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received delete message');
             // Write message to store
             let data = this.engine.client.client.readQuery({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId }
+                query: RoomHistoryQuery.document,
+                variables: { roomId: this.conversationId }
             });
             (data as any).messages.messages = (data as any).messages.messages.filter((m: any) => m.id !== event.message.id);
             this.engine.client.client.writeQuery({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId },
+                query: RoomHistoryQuery.document,
+                variables: { roomId: this.conversationId },
                 data: data
             });
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
@@ -549,14 +549,14 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received edit message');
             // Write message to store
             let data = this.engine.client.client.readQuery({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId }
+                query: RoomHistoryQuery.document,
+                variables: { roomId: this.conversationId }
             });
             (data as any).messages.seq = event.seq;
             (data as any).messages.messages = (data as any).messages.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
             this.engine.client.client.writeQuery({
-                query: ChatHistoryQuery.document,
-                variables: { conversationId: this.conversationId },
+                query: RoomHistoryQuery.document,
+                variables: { roomId: this.conversationId },
                 data: data
             });
             this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);

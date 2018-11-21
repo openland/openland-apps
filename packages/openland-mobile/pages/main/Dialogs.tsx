@@ -9,13 +9,13 @@ import { SSearchControler } from 'react-native-s/SSearchController';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZQuery } from '../../components/ZQuery';
-import { ChatSearchTextQuery } from 'openland-api';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ASView } from 'react-native-async-view/ASView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZLoader } from '../../components/ZLoader';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { RoomSearchTextQuery } from 'openland-api';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
@@ -26,7 +26,7 @@ class DialogsSearch extends React.Component<{ query: string }> {
                 {r => (
                     <MobileMessengerContext.Consumer>
                         {engine => (
-                            <ZQuery query={ChatSearchTextQuery} variables={{ query: this.props.query }}>
+                            <ZQuery query={RoomSearchTextQuery} variables={{ query: this.props.query }}>
                                 {resp => {
 
                                     if (resp.loading) {

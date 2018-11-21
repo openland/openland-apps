@@ -4,18 +4,16 @@ import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemBase } from '../../components/ZListItemBase';
 import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { UserError } from 'openland-y-forms/errorHandling';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ChatCreateGroupMutation } from 'openland-api';
 import { Modals } from '../main/modals/Modals';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
+import { RoomCreateMutation } from 'openland-api';
 
 interface CreateGroupComponentState {
     query: string;
@@ -37,7 +35,7 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
             <>
                 <SHeader title="New group" />
                 <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
-                <YMutation mutation={ChatCreateGroupMutation}>
+                <YMutation mutation={RoomCreateMutation}>
                     {create => (
                         <ZForm
                             ref={this.ref}
@@ -54,6 +52,7 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                                             try {
                                                 let res = await create({
                                                     variables: {
+                                                        kind: SharedRoomKind.GROUP,
                                                         title: src.title,
                                                         photoRef: src.photoRef,
                                                         members: users.map(u => u.id)

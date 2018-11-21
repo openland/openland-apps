@@ -1,13 +1,14 @@
 import { MessengerEngine } from '../MessengerEngine';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
-import { ChatListQuery, GlobalCounterQuery, ChatInfoQuery, ChatSearchGroupQuery } from 'openland-api';
+import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { MessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { DialogsQuery } from 'openland-api/DialogsQuery';
+import { RoomQuery } from 'openland-api';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($state: String) {
@@ -139,14 +140,14 @@ export class GlobalStateEngine {
 
     resolvePrivateConversation = async (uid: string) => {
         let res = await this.engine.client.client.query({
-            query: ChatInfoQuery.document,
+            query: RoomQuery.document,
             variables: {
-                conversationId: uid
+                id: uid
             }
         });
         return {
-            id: (res.data as any).chat.id as string,
-            flexibleId: (res.data as any).chat.flexibleId as string
+            id: (res.data as any).room.id as string,
+            flexibleId: uid
         };
     }
 

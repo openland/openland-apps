@@ -3,4 +3,4 @@ import * as Chats from './queries/Chats';
 import * as Types from './Types';
 import { typedMutation } from 'openland-y-graphql/typed';
 
-export const ConversationKickMutation = typedMutation<Types.ConversationKick, Types.ConversationKickVariables>(Chats.ConversationKickMutation);
+export const RoomAlterHiddenMutation = typedMutation<Types.RoomAlterHidden, Types.RoomAlterHiddenVariables>(Chats.RoomAlterHiddenMutation);
