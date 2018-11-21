@@ -41,6 +41,7 @@ import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
 import { XDate } from 'openland-x/XDate';
 import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
+import CloseIcon from './components/icons/ic-close.svg';
 
 const ChatHeaderWrapper = Glamorous.div({
     display: 'flex',
@@ -552,6 +553,43 @@ let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?:
     }
 };
 
+const ClearButton = Glamorous.div({
+    fontSize: 16,
+    lineHeight: 1.38,
+    color: '#000',
+    '& svg': {
+        marginTop: 3,
+        cursor: 'pointer',
+
+        '&:hover > g > path:last-child': {
+            fill: '#000'
+        }
+    }
+});
+
+const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
+    const { forwardMessagesId } = props.state;
+    if (forwardMessagesId && forwardMessagesId.size) {
+        let size = forwardMessagesId.size;
+        return (
+            <ChatHeaderContent justifyContent="space-between" alignItems="center">
+                <ClearButton>
+                    <XHorizontal separator={2} alignItems="center">
+                        <span>{size} {size === 1 ? 'message selected' : 'messages selected'}</span>
+                        <CloseIcon onClick={() => props.state.setForwardMessages(null, null)} />
+                    </XHorizontal>
+                </ClearButton>
+                <XButton
+                    text="Forward"
+                    style="primary"
+                />
+            </ChatHeaderContent>
+        );
+    } else {
+        return null;
+    }
+};
+
 let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let tab: 'chat' | 'members' | 'call' = 'chat';
     if (props.router.query.tab === 'members') {
@@ -568,8 +606,8 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let titlePath: string | undefined = undefined;
 
     let subtitle = '';
-    let subtitlePath = undefined;
-    let uId = null;
+    let subtitlePath: string | undefined = undefined;
+    let uId: string | null = null;
     if (props.data.chat.__typename === 'SharedConversation') {
         subtitle = 'Organization';
     } else if (props.data.chat.__typename === 'GroupConversation') {
@@ -600,164 +638,170 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         headerPath = '/mail/p/' + props.data.chat.id;
     }
 
+    const headerRender = () => (
+        <ChatHeaderContent justifyContent="space-between">
+            <HeaderLeftContent chatType={chatType} ownerRole={ownerRole} path={headerPath}>
+                <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
+                    <XAvatar
+                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
+                        size="small"
+                        style={(props.data.chat.__typename === 'SharedConversation'
+                            ? 'organization'
+                            : props.data.chat.__typename === 'GroupConversation'
+                                ? 'group'
+                                : props.data.chat.__typename === 'ChannelConversation'
+                                    ? 'room'
+                                    : props.data.chat.__typename === 'PrivateConversation'
+                                        ? 'user'
+                                        : 'colorus'
+                        )}
+                        cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
+                        objectName={title}
+                        objectId={props.data.chat.flexibleId}
+                    />
+                    <XVertical separator="none" maxWidth="calc(100% - 48px)">
+                        <TitleWrapper separator={3}>
+                            <Title path={titlePath}>
+                                {title}
+                            </Title>
+                            {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                <SubTitle path={subtitlePath} inTop={true}>{subtitle}</SubTitle>
+                            )}
+                        </TitleWrapper>
+                        <SubtitleWrapper>
+                            {(props.data.chat.__typename !== 'PrivateConversation') && (
+                                <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
+                            )}
+                            {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                                <LastSeen variables={{ userId: uId }} />
+                            )}
+                        </SubtitleWrapper>
+                    </XVertical>
+                </XHorizontal>
+            </HeaderLeftContent>
+            <XHorizontal alignItems="center" separator={5}>
+                {props.data.chat.__typename === 'ChannelConversation' && (
+                    <XHorizontal separator={14}>
+                        <RoomTabs>
+                            <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
+                            <RoomTab query={{ field: 'tab', value: 'members' }}>
+                                <XHorizontal separator={4} alignItems="center">
+                                    <span>Members</span>
+                                    {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
+                                        <XCounter big={true} count={props.data.chat.memberRequestsCount} />
+                                    )}
+                                </XHorizontal>
+                            </RoomTab>
+                        </RoomTabs>
+                        <XHorizontal alignSelf="center" alignItems="center" separator={6}>
+                            <XWithRole role="feature-non-production">
+                                <TalkContext.Consumer>
+                                    {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                                </TalkContext.Consumer>
+                            </XWithRole>
+                            <InviteMembersModal
+                                orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
+                                channelTitle={title}
+                                channelId={props.data.chat.id}
+                                target={(
+                                    <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
+                                )}
+                            />
+                            {props.data.chat.description && (
+                                <XPopper
+                                    showOnHover={true}
+                                    placement="bottom-end"
+                                    content={(
+                                        <AboutWrapper separator={2} maxWidth={510}>
+                                            <AboutTitle>About room</AboutTitle>
+                                            <AboutText>{props.data.chat.description}</AboutText>
+                                        </AboutWrapper>
+                                    )}
+                                >
+                                    <InfoButton>
+                                        <IconInfo />
+                                    </InfoButton>
+                                </XPopper>
+                            )}
+                        </XHorizontal>
+                    </XHorizontal>
+                )}
+
+                {props.data.chat.__typename === 'GroupConversation' && (
+                    <XHorizontal separator={14} alignItems="center">
+                        <RoomTabs>
+                            <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
+                            <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
+                        </RoomTabs>
+                        <XWithRole role="feature-non-production">
+                            <TalkContext.Consumer>
+                                {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                            </TalkContext.Consumer>
+                        </XWithRole>
+                    </XHorizontal>
+                )}
+
+                <XOverflow
+                    flat={true}
+                    placement="bottom-end"
+                    notificationStyle={true}
+                    content={(
+                        <div style={{ width: 160 }}>
+                            <XMenuTitle>Notifications</XMenuTitle>
+                            <NotificationSettings settings={props.data.chat.settings} conversationId={props.data.chat.id} />
+
+                            {props.data.chat.__typename === 'PrivateConversation' && (
+                                <BlockButton
+                                    blocked={(props.data.chat as any).blocked}
+                                    userId={(props.data.chat as any).user.id}
+                                    refetchVars={{ conversationId: props.data.chat.id }}
+                                />
+                            )}
+                        </div>
+                    )}
+                />
+                {props.data.chat.__typename !== 'PrivateConversation' && (
+                    <XOverflow
+                        flat={true}
+                        placement="bottom-end"
+                        content={(
+                            <div style={{ width: 160 }}>
+                                {props.data.chat.__typename === 'ChannelConversation' && (
+                                    <>
+                                        <XMenuTitle>Super admin</XMenuTitle>
+                                        <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
+                                        <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                        <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
+                                        <XMenuTitle>Common</XMenuTitle>
+                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
+                                    </>
+                                )}
+                                {props.data.chat.__typename === 'GroupConversation' && (
+                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
+                                )}
+                                <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave chat</XMenuItem>
+                            </div>
+                        )}
+                    />
+                )}
+            </XHorizontal>
+        </ChatHeaderContent>
+    )
+
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
             <ChatHeaderWrapper>
-                {/* <MessagesStateContext.Consumer>
-                    {(state: MessagesStateContextProps) => (
-                        <>
-                            {console.log(state)}
-                            asdasdasd
-                        </>
-                    )}
-                </MessagesStateContext.Consumer> */}
-                <ChatHeaderContent justifyContent="space-between">
-                    <HeaderLeftContent chatType={chatType} ownerRole={ownerRole} path={headerPath}>
-                        <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
-                            <XAvatar
-                                path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
-                                size="small"
-                                style={(props.data.chat.__typename === 'SharedConversation'
-                                    ? 'organization'
-                                    : props.data.chat.__typename === 'GroupConversation'
-                                        ? 'group'
-                                        : props.data.chat.__typename === 'ChannelConversation'
-                                            ? 'room'
-                                            : props.data.chat.__typename === 'PrivateConversation'
-                                                ? 'user'
-                                                : 'colorus'
-                                )}
-                                cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
-                                objectName={title}
-                                objectId={props.data.chat.flexibleId}
-                            />
-                            <XVertical separator="none" maxWidth="calc(100% - 48px)">
-                                <TitleWrapper separator={3}>
-                                    <Title path={titlePath}>
-                                        {title}
-                                    </Title>
-                                    {(uId && props.data.chat.__typename === 'PrivateConversation') && (
-                                        <SubTitle path={subtitlePath} inTop={true}>{subtitle}</SubTitle>
-                                    )}
-                                </TitleWrapper>
-                                <SubtitleWrapper>
-                                    {(props.data.chat.__typename !== 'PrivateConversation') && (
-                                        <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
-                                    )}
-                                    {(uId && props.data.chat.__typename === 'PrivateConversation') && (
-                                        <LastSeen variables={{ userId: uId }} />
-                                    )}
-                                </SubtitleWrapper>
-                            </XVertical>
-                        </XHorizontal>
-                    </HeaderLeftContent>
-                    <XHorizontal alignItems="center" separator={5}>
-                        {props.data.chat.__typename === 'ChannelConversation' && (
-                            <XHorizontal separator={14}>
-                                <RoomTabs>
-                                    <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
-                                    <RoomTab query={{ field: 'tab', value: 'members' }}>
-                                        <XHorizontal separator={4} alignItems="center">
-                                            <span>Members</span>
-                                            {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
-                                                <XCounter big={true} count={props.data.chat.memberRequestsCount} />
-                                            )}
-                                        </XHorizontal>
-                                    </RoomTab>
-                                </RoomTabs>
-                                <XHorizontal alignSelf="center" alignItems="center" separator={6}>
-                                    <XWithRole role="feature-non-production">
-                                        <TalkContext.Consumer>
-                                            {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
-                                        </TalkContext.Consumer>
-                                    </XWithRole>
-                                    <InviteMembersModal
-                                        orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
-                                        channelTitle={title}
-                                        channelId={props.data.chat.id}
-                                        target={(
-                                            <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
-                                        )}
-                                    />
-                                    {props.data.chat.description && (
-                                        <XPopper
-                                            showOnHover={true}
-                                            placement="bottom-end"
-                                            content={(
-                                                <AboutWrapper separator={2} maxWidth={510}>
-                                                    <AboutTitle>About room</AboutTitle>
-                                                    <AboutText>{props.data.chat.description}</AboutText>
-                                                </AboutWrapper>
-                                            )}
-                                        >
-                                            <InfoButton>
-                                                <IconInfo />
-                                            </InfoButton>
-                                        </XPopper>
-                                    )}
-                                </XHorizontal>
-                            </XHorizontal>
-                        )}
-
-                        {props.data.chat.__typename === 'GroupConversation' && (
-                            <XHorizontal separator={14} alignItems="center">
-                                <RoomTabs>
-                                    <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
-                                    <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
-                                </RoomTabs>
-                                <XWithRole role="feature-non-production">
-                                    <TalkContext.Consumer>
-                                        {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
-                                    </TalkContext.Consumer>
-                                </XWithRole>
-                            </XHorizontal>
-                        )}
-
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            notificationStyle={true}
-                            content={(
-                                <div style={{ width: 160 }}>
-                                    <XMenuTitle>Notifications</XMenuTitle>
-                                    <NotificationSettings settings={props.data.chat.settings} conversationId={props.data.chat.id} />
-
-                                    {props.data.chat.__typename === 'PrivateConversation' && (
-                                        <BlockButton
-                                            blocked={(props.data.chat as any).blocked}
-                                            userId={(props.data.chat as any).user.id}
-                                            refetchVars={{ conversationId: props.data.chat.id }}
-                                        />
-                                    )}
-                                </div>
-                            )}
-                        />
-                        {props.data.chat.__typename !== 'PrivateConversation' && (
-                            <XOverflow
-                                flat={true}
-                                placement="bottom-end"
-                                content={(
-                                    <div style={{ width: 160 }}>
-                                        {props.data.chat.__typename === 'ChannelConversation' && (
-                                            <>
-                                                <XMenuTitle>Super admin</XMenuTitle>
-                                                <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
-                                                <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
-                                                <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
-                                                <XMenuTitle>Common</XMenuTitle>
-                                                <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                            </>
-                                        )}
-                                        {props.data.chat.__typename === 'GroupConversation' && (
-                                            <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                        )}
-                                        <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave chat</XMenuItem>
-                                    </div>
-                                )}
-                            />
-                        )}
-                    </XHorizontal>
-                </ChatHeaderContent>
+                <MessagesStateContext.Consumer>
+                    {(state: MessagesStateContextProps) => {
+                        if (state.forwardMessagesId && state.forwardMessagesId.size > 0) {
+                            return (
+                                <ForwardHeader state={state} />
+                            );
+                        } else {
+                            return headerRender();
+                        }
+                    }}
+                </MessagesStateContext.Consumer>
             </ChatHeaderWrapper>
             <TalkBarComponent conversationId={props.data.chat!.id} />
             <XHorizontal
