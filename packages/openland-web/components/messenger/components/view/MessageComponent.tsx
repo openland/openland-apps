@@ -177,7 +177,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     selectMessage = () => {
         let { message, conversationId, messagesContext } = this.props;
 
-        if (!isServerMessage(message)) {
+        if (!isServerMessage(message) || this.state.isEditView) {
             return;
         }
 
