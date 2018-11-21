@@ -788,20 +788,22 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         </ChatHeaderContent>
     );
 
+    let isSelectedView = false;
+    let messagesState = ((props as any).state as MessagesStateContextProps);
+    let selectedMessage = messagesState.forwardMessagesId;
+
+    if (selectedMessage && selectedMessage.size > 0) {
+        isSelectedView = true;
+    }
+
     return (
         <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
             <ChatHeaderWrapper>
-                <MessagesStateContext.Consumer>
-                    {(state: MessagesStateContextProps) => {
-                        if (state.forwardMessagesId && state.forwardMessagesId.size > 0) {
-                            return (
-                                <ForwardHeader state={state} />
-                            );
-                        } else {
-                            return headerRender();
-                        }
-                    }}
-                </MessagesStateContext.Consumer>
+                {isSelectedView ? (
+                    <ForwardHeader state={(props as any).state} />
+                ) : (
+                    headerRender()
+                )}
             </ChatHeaderWrapper>
             <TalkBarComponent conversationId={props.data.chat!.id} />
             <XHorizontal
@@ -851,7 +853,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
             <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
         </MessengerWrapper>
     );
-})) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any }>;
+})) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
 
 interface MessengerComponentProps {
     conversationId: string;
@@ -903,10 +905,15 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
     render() {
         return (
             <MessagesStateContext.Provider value={this.state}>
-                <MessengerComponentLoader
-                    variables={{ conversationId: this.props.conversationId }}
-                    handlePageTitle={this.props.handlePageTitle}
-                />
+                <MessagesStateContext.Consumer>
+                    {(state: MessagesStateContextProps) => (
+                        <MessengerComponentLoader
+                            variables={{ conversationId: this.props.conversationId }}
+                            handlePageTitle={this.props.handlePageTitle}
+                            state={state}
+                        />
+                    )}
+                </MessagesStateContext.Consumer>
             </MessagesStateContext.Provider>
         );
     }
