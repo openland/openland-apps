@@ -111,10 +111,12 @@ const FrowardPlaceholder = (props: { state: MessagesStateContextProps }) => {
 
     return (
         <ForwardRoot>
-            <CloseIcon onClick={() => {
-                state.forwardMessages(false);
-                state.setForwardMessages(null, null);
-            }} />
+            <CloseIcon
+                onClick={() => {
+                    state.forwardMessages(false);
+                    state.setForwardMessages(null, null);
+                }}
+            />
             <ImageWrapper>
                 <Image />
                 <XVertical separator={6} alignItems="center">
@@ -659,10 +661,12 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                 <ClearButton>
                     <XHorizontal separator={2} alignItems="center">
                         <span>{size} {size === 1 ? 'message selected' : 'messages selected'}</span>
-                        <CloseIcon onClick={() => {
-                            props.state.forwardMessages(false);
-                            props.state.setForwardMessages(null, null);
-                        }} />
+                        <CloseIcon
+                            onClick={() => {
+                                props.state.forwardMessages(false);
+                                props.state.setForwardMessages(null, null);
+                            }}
+                        />
                     </XHorizontal>
                 </ClearButton>
                 <XButton

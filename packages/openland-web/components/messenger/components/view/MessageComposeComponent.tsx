@@ -578,6 +578,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             conversationId
         } = nextProps.messagesContext;
 
+        console.log(nextProps);
+
         let newState: any = {};
 
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
