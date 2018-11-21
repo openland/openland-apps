@@ -522,6 +522,7 @@ const Members = (props: MembersProps) => {
                         title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
                         counter={joinedMembers.length}
                         paddingBottom={0}
+                        marginBottom={-3}
                     />
                 )}
                 <SectionContent>
