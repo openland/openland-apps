@@ -9,42 +9,15 @@ import { XCounter } from 'openland-x/XCounter';
 import { XView } from 'openland-x/XView';
 import { XLink2 } from 'openland-x/XLink2';
 
-let contentText = css`
-    display: flex;
-    height: 34px;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0px;
-    min-width: 0px;
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 17px;
-    /* color: rgba(0, 0, 0, 0.5); */
-    overflow: hidden;
+let iconClass = css`
+    display: inline-block;
+    vertical-align: top;
+    margin: 1px 5px -1px 1px;
+`;
 
-    & > span {
-        display: block;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    // Webkit line clamp
-    & > span {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-
-    & svg {
-        display: inline-block;
-        vertical-align: top;
-        margin: 1px 5px -1px 1px;
-
-        &.document {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-    },
+let documentIcon = css`
+    margin-top: 0;
+    margin-bottom: 0;
 `;
 
 export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem }> {
@@ -132,21 +105,31 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
                         color="rgba(0, 0, 0, 0.5)"
                         selectedColor="#fff"
                     >
-                        <div className={contentText}>
+                        <XView
+                            height={34}
+                            flexGrow={1}
+                            flexShrink={1}
+                            flexBasis={0}
+                            minWidth={0}
+                            fontSize={13}
+                            fontWeight="400"
+                            lineHeight="17px"
+                            overflow="hidden"
+                        >
                             {conv.typing || (
                                 <>
                                     {!!(conv.message) && !conv.fileMeta && (
                                         <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
                                     )}
                                     {conv.fileMeta && conv.fileMeta.isImage && (
-                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon />Image</span>
+                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon className={iconClass} />Image</span>
                                     )}
                                     {conv.fileMeta && !conv.fileMeta.isImage && (
-                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className="document" />Document</span>
+                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className={iconClass + ' ' + documentIcon} />Document</span>
                                     )}
                                 </>
                             )}
-                        </div>
+                        </XView>
                         {conv.unread > 0 && (
                             <XView paddingLeft={12} alignSelf="center"><XCounter big={true} count={conv.unread} /></XView>
                         )}
