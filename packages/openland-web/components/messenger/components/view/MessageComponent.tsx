@@ -416,7 +416,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     {this.props.sender && (this.props.conversationType === 'PrivateConversation') && (
                         <UserAvatar user={this.props.sender} />
                     )}
-                    <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 60px)'}>
+                    <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>
                         <XHorizontal justifyContent="space-between">
                             <XHorizontal separator={4}>
                                 <XHorizontal separator={4} alignItems="center">
