@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as glamor from 'glamor';
 
+export const XViewContext = React.createContext<boolean>(false);
+
 export interface XViewProps {
 
     //
@@ -43,7 +45,16 @@ export interface XViewProps {
     borderRadius?: number | string | null;
     backgroundColor?: string | null;
     hoverBackgroundColor?: string | null;
+    cursor?: 'pointer';
 
+    //
+    // Other
+    //
+
+    as?: 'div' | 'a';
+    onClick?: React.MouseEventHandler<any>;
+    target?: string;
+    href?: any;
     children?: any;
 }
 
@@ -378,5 +389,22 @@ export const XView = (props: XViewProps) => {
         css.push(styles.get(key)!);
     }
 
-    return <div className={css.join(' ')}>{props.children}</div>;
+    return (
+        <XViewContext.Consumer>{active => {
+            let className = css.join(' ');
+            if (props.as === 'a') {
+                return (
+                    <a className={className} onClick={props.onClick} target={props.target} href={props.href}>
+                        {props.children}
+                    </a>
+                );
+            } else {
+                return (
+                    <div className={className} onClick={props.onClick}>
+                        {props.children}
+                    </div>
+                );
+            }
+        }}</XViewContext.Consumer>
+    );
 };
