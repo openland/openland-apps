@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as glamor from 'glamor';
 
-export const XViewContext = React.createContext<boolean>(false);
+export const XViewSelectedContext = React.createContext<boolean>(false);
 
 export interface XViewProps {
 
@@ -43,14 +43,35 @@ export interface XViewProps {
     //
 
     borderRadius?: number | string | null;
+    color?: string | null;
+    cursor?: 'pointer';
+
     backgroundColor?: string | null;
     hoverBackgroundColor?: string | null;
-    cursor?: 'pointer';
+
+    //
+    // Selection
+    //
+    selectedColor?: string | null;
+    selectedBackgroundColor?: string | null;
+    selectedHoverBackgroundColor?: string | null;
+
+    //
+    // Fonts
+    //
+
+    fontSize?: number | null;
+    fontWeight?: '400' | '600';
+    lineHeight?: number | string | null;
+    overflow?: 'hidden' | null;
+    textOverflow?: 'ellipsis' | null;
+    whiteSpace?: 'nowrap' | null;
 
     //
     // Other
     //
 
+    selected?: boolean;
     as?: 'div' | 'a';
     onClick?: React.MouseEventHandler<any>;
     target?: string;
@@ -67,7 +88,7 @@ const base = glamor.css({
 
 const styles = new Map<string, string>();
 
-export const XView = (props: XViewProps) => {
+const XViewContainer = (props: XViewProps) => {
 
     let flexGrow: number | undefined;
     let flexShrink: number | undefined;
@@ -97,6 +118,14 @@ export const XView = (props: XViewProps) => {
     let borderRadius: number | string | undefined;
     let backgroundColor: string | undefined;
     let hoverBackgroundColor: string | undefined;
+    let color: string | undefined;
+
+    let fontSize: number | undefined;
+    let fontWeight: '400' | '600' | undefined;
+    let lineHeight: number | string | undefined;
+    let overflow: 'hidden' | undefined;
+    let textOverflow: 'ellipsis' | undefined;
+    let whiteSpace: 'nowrap' | undefined;
 
     //
     // Resolve visual styles
@@ -110,6 +139,42 @@ export const XView = (props: XViewProps) => {
     }
     if (props.hoverBackgroundColor !== undefined && props.hoverBackgroundColor !== null) {
         hoverBackgroundColor = props.hoverBackgroundColor;
+    }
+    if (props.selectedBackgroundColor !== undefined && props.selectedBackgroundColor !== null) {
+        if (props.selected) {
+            backgroundColor = props.selectedBackgroundColor;
+        }
+    }
+    if (props.selectedHoverBackgroundColor !== undefined && props.selectedHoverBackgroundColor !== null) {
+        if (props.selected) {
+            hoverBackgroundColor = props.selectedHoverBackgroundColor;
+        }
+    }
+    if (props.color !== undefined && props.color !== null) {
+        color = props.color;
+    }
+    if (props.selectedColor !== undefined && props.selectedColor !== null) {
+        if (props.selected) {
+            color = props.selectedColor;
+        }
+    }
+    if (props.fontSize !== undefined && props.fontSize !== null) {
+        fontSize = props.fontSize;
+    }
+    if (props.fontWeight !== undefined && props.fontWeight !== null) {
+        fontWeight = props.fontWeight;
+    }
+    if (props.lineHeight !== undefined && props.lineHeight !== null) {
+        lineHeight = props.lineHeight;
+    }
+    if (props.overflow !== undefined && props.overflow !== null) {
+        overflow = props.overflow;
+    }
+    if (props.textOverflow !== undefined && props.textOverflow !== null) {
+        textOverflow = props.textOverflow;
+    }
+    if (props.whiteSpace !== undefined && props.whiteSpace !== null) {
+        whiteSpace = props.whiteSpace;
     }
 
     //
@@ -388,23 +453,93 @@ export const XView = (props: XViewProps) => {
         }
         css.push(styles.get(key)!);
     }
+    if (hoverBackgroundColor !== undefined) {
+        let key = 'hover-background-color: ' + hoverBackgroundColor;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({
+                '&:hover, &:focus': {
+                    backgroundColor: hoverBackgroundColor
+                }
+            }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (color !== undefined) {
+        let key = 'color: ' + color;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ color: color }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (fontSize !== undefined) {
+        let key = 'font-size: ' + fontSize;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ fontSize: fontSize }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (fontWeight !== undefined) {
+        let key = 'font-weight: ' + fontWeight;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ fontWeight: fontWeight }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (lineHeight !== undefined) {
+        let key = 'line-height: ' + lineHeight;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ lineHeight: lineHeight }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (overflow !== undefined) {
+        let key = 'overflow: ' + overflow;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ overflow: overflow }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (textOverflow !== undefined) {
+        let key = 'text-overflow: ' + textOverflow;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ textOverflow: textOverflow }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (whiteSpace !== undefined) {
+        let key = 'white-space: ' + whiteSpace;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ whiteSpace: whiteSpace }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
 
-    return (
-        <XViewContext.Consumer>{active => {
-            let className = css.join(' ');
-            if (props.as === 'a') {
-                return (
-                    <a className={className} onClick={props.onClick} target={props.target} href={props.href}>
-                        {props.children}
-                    </a>
-                );
-            } else {
-                return (
-                    <div className={className} onClick={props.onClick}>
-                        {props.children}
-                    </div>
-                );
-            }
-        }}</XViewContext.Consumer>
-    );
+    let className = css.join(' ');
+    if (props.as === 'a') {
+        return (
+            <a className={className} onClick={props.onClick} target={props.target} href={props.href}>
+                {props.children}
+            </a>
+        );
+    } else {
+        return (
+            <div className={className} onClick={props.onClick}>
+                {props.children}
+            </div>
+        );
+    }
+};
+
+export const XView = (props: XViewProps) => {
+    let shouldTrackSelected = props.selected === undefined && (
+        props.selectedBackgroundColor || props.selectedHoverBackgroundColor || props.selectedColor);
+    if (shouldTrackSelected) {
+        return (
+            <XViewSelectedContext.Consumer>
+                {selected => (<XViewContainer selected={selected} {...props} />)}
+            </XViewSelectedContext.Consumer>
+        );
+    } else {
+        return (<XViewContainer {...props} />);
+    }
 };

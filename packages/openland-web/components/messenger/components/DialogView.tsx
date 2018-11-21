@@ -1,43 +1,13 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
-import { XLink } from 'openland-x/XLink';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView } from 'openland-x/XView';
-
-let title = css`
-    display: flex;
-    flex-grow: 1;
-    height: 18px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 18px;
-    color: rgb(0, 0, 0, 0.8);
-    min-width: 0px;
-
-    & > span {
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    },
-`;
-
-let date = css`
-    display: flex;
-    height: 18px;
-    color: rgba(0, 0, 0, 0.3);
-    margin-left: 5px;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 18px;
-    text-transform: uppercase;
-    white-space: nowrap;
-`;
+import { XLink2 } from 'openland-x/XLink2';
 
 let contentText = css`
     display: flex;
@@ -49,7 +19,7 @@ let contentText = css`
     font-size: 13px;
     font-weight: 400;
     line-height: 17px;
-    color: rgba(0, 0, 0, 0.5);
+    /* color: rgba(0, 0, 0, 0.5); */
     overflow: hidden;
 
     & > span {
@@ -77,51 +47,24 @@ let contentText = css`
     },
 `;
 
-let item = css`
-    display: flex;
-    height: 72px;
-    font-size: 15px;
-    font-weight: 500;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 16px;
-    padding-right: 0px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    position: relative;
-    min-width: 0px;
-
-    &:hover, &:focus {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    &.is-active {
-        background-color: #4596e1;
-
-        &:hover {
-            background-color: #4596e1;
-        }
-
-        .${title} {
-            color: #ffffff;
-        }
-
-        .${contentText} {
-            color: #ffffff;
-        }
-
-        .${date} {
-            color: rgba(255, 255, 255, 0.8);
-        }
-    }
-`;
-
 export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem }> {
     render() {
         let conv = this.props.item;
         let isPrivate = this.props.item.type === 'PrivateConversation';
         return (
-            <XLink className={item} path={'/mail/' + this.props.item.flexibleId}>
+            <XLink2
+                path={'/mail/' + this.props.item.flexibleId}
+                height={72}
+                flexDirection="row"
+                paddingLeft={16}
+                paddingTop={4}
+                paddingBottom={4}
+                minWidth={0}
+                alignItems="center"
+                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                selectedBackgroundColor="#4596e1"
+                selectedHoverBackgroundColor="#4596e1"
+            >
                 <XAvatar
                     style={(this.props.item.type === 'SharedConversation'
                         ? 'organization'
@@ -151,10 +94,44 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
                         minWidth={0}
                         marginBottom={3}
                     >
-                        <div className={title}><span>{this.props.item.title}</span></div>
-                        {this.props.item.date && <div className={date}><XDate value={this.props.item.date.toString()} format="datetime_short" /></div>}
+                        <XView
+                            flexGrow={1}
+                            flexShrink={1}
+                            minWidth={0}
+                            fontSize={14}
+                            fontWeight="600"
+                            lineHeight="18px"
+                            color="#000"
+                            selectedColor="#fff"
+                            overflow="hidden"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                        >
+                            {this.props.item.title}
+                        </XView>
+                        {this.props.item.date && (
+                            <XView
+                                height={18}
+                                color="rgba(0, 0, 0, 0.3)"
+                                selectedColor="rgba(255, 255, 255, 0.8)"
+                                marginLeft={5}
+                                fontSize={12}
+                                fontWeight="600"
+                                lineHeight="18px"
+                                whiteSpace="nowrap"
+                            >
+                                <XDate value={this.props.item.date.toString()} format="datetime_short" />
+                            </XView>
+                        )}
                     </XView>
-                    <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
+                    <XView
+                        flexDirection="row"
+                        minWidth={0}
+                        flexGrow={1}
+                        flexShrink={1}
+                        color="rgba(0, 0, 0, 0.5)"
+                        selectedColor="#fff"
+                    >
                         <div className={contentText}>
                             {conv.typing || (
                                 <>
@@ -175,7 +152,7 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
                         )}
                     </XView>
                 </XView>
-            </XLink>
+            </XLink2>
         );
     }
 }
