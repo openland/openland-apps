@@ -117,12 +117,7 @@ let item = css`
     min-width: 0px;
 
     &:hover, &:focus {
-        background-color: rgba(23, 144, 255, 0.05);
-
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: #334562;
-        }
+        background-color: rgba(0, 0, 0, 0.05);
     }
 
     &.is-active {
