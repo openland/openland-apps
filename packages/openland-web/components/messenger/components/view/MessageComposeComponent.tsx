@@ -574,12 +574,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessage,
             replyMessageId,
             replyMessageSender,
+            forwardMessagesId,
             conversationId
         } = nextProps.messagesContext;
 
         let newState: any = {};
 
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
+
+        if ((this.props.conversationId !== nextProps.conversationId) || (editMessage && editMessageId && forwardMessagesId)) {
+            this.props.messagesContext.setForwardMessages(null, null);
+        }
 
         if (replyChecker) {
             (document as any).isEditMessage = true;
@@ -595,6 +600,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
+            this.props.messagesContext.setForwardMessages(null, null);
         }
 
         let draftChecker = !replyChecker;

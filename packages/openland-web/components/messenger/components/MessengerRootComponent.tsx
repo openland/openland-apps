@@ -294,7 +294,7 @@ export class MessengerRootComponent extends React.Component<MessengerRootCompone
         });
     }
 
-    setForwardMessages = (id: string[] | null, conversationId: string | null) => {
+    setForwardMessages = (id: Set<string> | null, conversationId: string | null) => {
         this.setState({
             forwardMessagesId: id,
             conversationId: conversationId
