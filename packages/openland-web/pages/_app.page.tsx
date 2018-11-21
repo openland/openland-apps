@@ -1,3 +1,4 @@
+import './_app.css';
 import './init';
 import '../globals';
 import React from 'react';
