@@ -100,6 +100,21 @@ const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props 
     }
 }));
 
+const ReplyMessageWrapper = Glamorous.div({
+    position: 'relative',
+    '&::before': {
+        display: 'block',
+        content: ' ',
+        position: 'absolute',
+        left: 0,
+        top: 12,
+        bottom: 4,
+        width: 3,
+        borderRadius: 3,
+        backgroundColor: '#1790ff'
+    }
+});
+
 const ReplyButton = Glamorous(XLink)({
     // opacity: 0,
     display: 'flex',
@@ -280,21 +295,23 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     }
                 }
                 if ((message as MessageFull).reply && (message as MessageFull).reply!.length > 0) {
-                    (message as MessageFull).reply!.map((i, j) => {
-                        content.push(
-                            <MessageReplyComponent
-                                mentions={message.mentions}
-                                sender={i.sender}
-                                date={i.date}
-                                message={i.message}
-                                id={i.id}
-                                key={'reply_message' + i.id + j}
-                                edited={i.edited}
-                                file={i.file}
-                                fileMetadata={i.fileMetadata}
-                            />
-                        );
-                    });
+                    content.push(
+                        <ReplyMessageWrapper key={'reply_message' + message.id}>
+                            {(message as MessageFull).reply!.map((i, j) => (
+                                <MessageReplyComponent
+                                    mentions={message.mentions}
+                                    sender={i.sender}
+                                    date={i.date}
+                                    message={i.message}
+                                    id={i.id}
+                                    key={'reply_message' + i.id + j}
+                                    edited={i.edited}
+                                    file={i.file}
+                                    fileMetadata={i.fileMetadata}
+                                />
+                            ))}
+                        </ReplyMessageWrapper>
+                    );
                 }
                 date = <XDate value={message.date} format="time" />;
             }

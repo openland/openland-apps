@@ -24,17 +24,6 @@ const MessageContainer = Glamorous.div({
     borderRadius: 6,
     '& .time': {
         opacity: '1 !important'
-    },
-    '&::before': {
-        display: 'block',
-        content: ' ',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 4,
-        width: 3,
-        borderRadius: 3,
-        backgroundColor: '#1790ff'
     }
 });
 
