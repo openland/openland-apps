@@ -4,7 +4,7 @@ import { XOverflow } from '../../../../components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XButton } from 'openland-x/XButton';
-import { XScrollView } from 'openland-x/XScrollView';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
@@ -21,7 +21,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XText } from 'openland-x/XText';
 
-const MembersWrapper = Glamorous(XScrollView)({
+const MembersWrapper = Glamorous(XScrollView2)({
     height: '100%',
     width: '100%'
 });

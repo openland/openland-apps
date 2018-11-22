@@ -10,7 +10,7 @@ import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView } from 'openland-x/XScrollView';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
 import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
@@ -235,9 +235,9 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
             <div ref={this.handleRef}>
                 <BackButton />
                 <Header user={user} />
-                <XScrollView height="calc(100% - 136px)">
+                <XScrollView2 height="calc(100% - 136px)">
                     <About user={user} />
-                </XScrollView>
+                </XScrollView2>
             </div>
         );
     }

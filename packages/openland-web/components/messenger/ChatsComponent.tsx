@@ -7,7 +7,6 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XCounter } from 'openland-x/XCounter';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
@@ -15,15 +14,12 @@ import { withChatSearchText } from '../../api/withChatSearchText';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import SearchIcon from '../icons/ic-search-small.svg';
-import PhotoIcon from './components/icons/ic-photo.svg';
-import FileIcon from './components/icons/ic-file-2.svg';
 import { withUserInfo } from '../UserInfo';
 import { XFont } from 'openland-x/XFont';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
-import { XDate } from 'openland-x/XDate';
 import { DialogView } from './components/DialogView';
 
 const ItemContainer = Glamorous.a({

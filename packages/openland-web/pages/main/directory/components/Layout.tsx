@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
-import { XScrollView } from 'openland-x/XScrollView';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 import RoomIcon from '../icons/dir-rooms.svg';
 import PeopleIcon from '../icons/dir-people.svg';
 import OrganizationsIcon from '../icons/dir-organizations.svg';
@@ -32,7 +32,7 @@ export const Container = Glamorous.div({
     }
 });
 
-export const Results = Glamorous(XScrollView)({
+export const Results = Glamorous(XScrollView2)({
     height: 'calc(100vh - 61px)'
 });
 

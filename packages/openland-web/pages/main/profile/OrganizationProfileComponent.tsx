@@ -14,7 +14,7 @@ import { XButton, XButtonProps } from 'openland-x/XButton';
 import { AboutPlaceholder, SocialPlaceholder, WebsitePlaceholder } from './placeholders';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { XScrollView } from 'openland-x/XScrollView';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
@@ -691,11 +691,11 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
             <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header organization={organization} />
-                <XScrollView height="calc(100% - 136px)">
+                <XScrollView2 height="calc(100% - 136px)">
                     <About organization={organization} />
                     <Members organization={organization} router={this.props.router} />
                     <Rooms organization={organization} />
-                </XScrollView>
+                </XScrollView2>
             </OrganizationInfoWrapper>
         );
     }
