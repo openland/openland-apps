@@ -328,7 +328,7 @@ interface MessageComposeComponentInnerState {
     message: string;
     statlesMessage?: string;
     statlesMessageReply?: string;
-    statlesMessageId?: string;
+    statlesMessageId?: Set<string> | string;
     statlesMessageSender?: string;
     statlesChatId?: string;
     beDrafted: boolean;
@@ -393,11 +393,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
             if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
                 if (statlesChatId) {
+                    let messages: string[];
+                    if (typeof(statlesMessageId) === 'string') {
+                        messages = [statlesMessageId];
+                    } else {
+                        messages = [...statlesMessageId];
+                    }
                     this.props.replyMessage({
                         variables: {
                             conversationId: statlesChatId,
                             message: message,
-                            replyMessages: statlesMessageId
+                            replyMessages: messages
                         }
                     });
                 }
@@ -550,7 +556,18 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentDidMount() {
-        console.log(this.props);
+        const { messagesContext } = this.props;
+        if (messagesContext.useForwardMessages && messagesContext.forwardMessagesId && messagesContext.conversationId) {
+            messagesContext.changeForwardConverstion();
+            this.setState({
+                message: '',
+                statlesMessage: undefined,
+                statlesMessageReply: `Forward ${messagesContext.forwardMessagesId.size} messages`,
+                statlesMessageId: messagesContext.forwardMessagesId,
+                statlesMessageSender: 'Forward',
+                statlesChatId: this.props.conversationId
+            });
+        }
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -575,29 +592,28 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessageId,
             replyMessageSender,
             forwardMessagesId,
-            forwardMessages,
             useForwardMessages,
             conversationId
         } = nextProps.messagesContext;
-
-        // console.log(nextProps);
 
         let newState: any = {};
 
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
 
         if ((this.props.conversationId !== nextProps.conversationId)) {
-            if (!useForwardMessages) {
-
-            }
-            if (forwardMessagesId && forwardMessages) {
-                console.log(nextProps);
+            if (useForwardMessages && forwardMessagesId) {
+                this.props.messagesContext.changeForwardConverstion();
+                newState = {
+                    ...newState,
+                    message: '',
+                    statlesMessage: undefined,
+                    statlesMessageReply: `Forward ${forwardMessagesId.size} messages`,
+                    statlesMessageId: forwardMessagesId,
+                    statlesMessageSender: 'Forward',
+                    statlesChatId: nextProps.conversationId
+                };
             }
         }
-
-        // if (editMessage && editMessageId) {
-        //     this.props.messagesContext.setForwardMessages(null, null);
-        // }
 
         if (replyChecker) {
             (document as any).isEditMessage = true;
@@ -613,10 +629,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
-            // this.props.messagesContext.setForwardMessages(null, null);
         }
 
-        let draftChecker = !replyChecker;
+        let draftChecker = !replyChecker && !useForwardMessages;
 
         if (draftChecker) {
 
