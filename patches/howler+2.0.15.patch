@@ -1,0 +1,12 @@
+patch-package
+--- a/node_modules/howler/src/howler.core.js
++++ b/node_modules/howler/src/howler.core.js
+@@ -279,7 +279,7 @@
+       var self = this || Howler;
+ 
+       // Only run this on mobile devices if audio isn't already eanbled.
+-      var isMobile = /iPhone|iPad|iPod|Android|BlackBerry|BB10|Silk|Mobi|Chrome/i.test(self._navigator && self._navigator.userAgent);
++      var isMobile = /iPhone|iPad|iPod|Android|BlackBerry|BB10|Silk|Mobi|Chrome|Safari/i.test(self._navigator && self._navigator.userAgent);
+       if (self._mobileEnabled || !self.ctx || !isMobile) {
+         return;
+       }

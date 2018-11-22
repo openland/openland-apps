@@ -9,7 +9,6 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCounter } from 'openland-x/XCounter';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XDate } from 'openland-x-format/XDate';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { withChatSearchText } from '../../api/withChatSearchText';
@@ -24,6 +23,8 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
+import { XDate } from 'openland-x/XDate';
+import { DialogView } from './components/DialogView';
 
 const ItemContainer = Glamorous.a({
     display: 'flex',
@@ -188,11 +189,11 @@ let SelectContext = React.createContext({ select: -1 });
 
 class ConversationComponent extends React.PureComponent<{ conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean, onSelect: () => void }> {
     refComponent: any;
-    
+
     componentWillUnmount() {
         console.log('componentWillUnmount ConversationComponent');
     }
-    
+
     componentDidMount() {
         this.checkFocus();
     }
@@ -225,56 +226,57 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
     }
 
     render() {
-        
-        let conv = this.props.conversation;
-        let isPrivate = conv.type === 'PrivateConversation';
-        return (
-            <Item path={'/mail/' + conv.key} onClick={this.props.onSelect} ref={this.handleRef}>
-                <ConversationAvatar
-                    style={(conv.type === 'SharedConversation'
-                        ? 'organization'
-                        : conv.type === 'GroupConversation'
-                            ? 'group'
-                            : conv.type === 'ChannelConversation'
-                                ? 'room' :
-                                isPrivate ? 'user' : undefined
-                    )}
-                    objectName={conv.title}
-                    objectId={conv.flexibleId}
-                    online={conv.online}
-                    cloudImageUuid={conv.photo}
-                />
-                <Header className="header">
-                    <Main>
-                        <Title className="title"><span>{conv.title}</span></Title>
-                        {conv.date && <Date className="date"><XDate value={conv.date.toString()} format="datetime_short" /></Date>}
-                    </Main>
-                    <Content>
-                        <ContentText className={'content' + ((conv.unread > 0) ? ' with-unread' : '')}>
-                            {conv.typing || (
-                                <>
-                                    {!!(conv.message) && !conv.fileMeta && (
-                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
-                                    )}
-                                    {conv.fileMeta && conv.fileMeta.isImage && (
-                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon />Image</span>
-                                    )}
-                                    {conv.fileMeta && !conv.fileMeta.isImage && (
-                                        <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className="document" />Document</span>
-                                    )}
-                                </>
-                            )}
-                        </ContentText>
-                        {conv.unread > 0 && (
-                            <ContentCounter>
-                                <XCounter big={true} count={conv.unread} />
-                                {/* <XCounter big={true} count={props.unread} bgColor={(props.settings && props.settings.mute) ? '#9f9f9f' : undefined} /> */}
-                            </ContentCounter>
-                        )}
-                    </Content>
-                </Header>
-            </Item>
-        );
+
+        return (<DialogView item={this.props.conversation} />);
+        // let conv = this.props.conversation;
+        // let isPrivate = conv.type === 'PrivateConversation';
+        // return (
+        //     <Item path={'/mail/' + conv.key} onClick={this.props.onSelect} ref={this.handleRef}>
+        //         <ConversationAvatar
+        //             style={(conv.type === 'SharedConversation'
+        //                 ? 'organization'
+        //                 : conv.type === 'GroupConversation'
+        //                     ? 'group'
+        //                     : conv.type === 'ChannelConversation'
+        //                         ? 'room' :
+        //                         isPrivate ? 'user' : undefined
+        //             )}
+        //             objectName={conv.title}
+        //             objectId={conv.flexibleId}
+        //             online={conv.online}
+        //             cloudImageUuid={conv.photo}
+        //         />
+        //         <Header className="header">
+        //             <Main>
+        //                 <Title className="title"><span>{conv.title}</span></Title>
+        //                 {conv.date && <Date className="date"><XDate value={conv.date.toString()} format="datetime_short" /></Date>}
+        //             </Main>
+        //             <Content>
+        //                 <ContentText className={'content' + ((conv.unread > 0) ? ' with-unread' : '')}>
+        //                     {conv.typing || (
+        //                         <>
+        //                             {!!(conv.message) && !conv.fileMeta && (
+        //                                 <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
+        //                             )}
+        //                             {conv.fileMeta && conv.fileMeta.isImage && (
+        //                                 <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon />Image</span>
+        //                             )}
+        //                             {conv.fileMeta && !conv.fileMeta.isImage && (
+        //                                 <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className="document" />Document</span>
+        //                             )}
+        //                         </>
+        //                     )}
+        //                 </ContentText>
+        //                 {conv.unread > 0 && (
+        //                     <ContentCounter>
+        //                         <XCounter big={true} count={conv.unread} />
+        //                         {/* <XCounter big={true} count={props.unread} bgColor={(props.settings && props.settings.mute) ? '#9f9f9f' : undefined} /> */}
+        //                     </ContentCounter>
+        //                 )}
+        //             </Content>
+        //         </Header>
+        //     </Item>
+        // );
     }
 }
 
@@ -597,7 +599,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         });
     }
 
-    renderConversationComponent = (props: any ) => (
+    renderConversationComponent = (props: any) => (
         <>
             {props.items.map((i: any, j: any) => {
                 return (

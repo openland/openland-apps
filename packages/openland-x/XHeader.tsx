@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XBullet } from './XBullet';
 import XStyles from './XStyles';
 
 const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
@@ -48,8 +47,6 @@ interface XCardHeaderProps {
     truncateDescription?: boolean;
     truncateTitle?: boolean;
     filter?: string;
-    bullet?: string | null;
-    bulletColor?: 'red' | 'blue' | 'green' | 'yellow';
     separated?: boolean;
 }
 
@@ -101,11 +98,6 @@ export class XHeader extends React.Component<XCardHeaderProps> {
                     <TargetDivStyle ellipcise={this.props.truncateTitle} alignItems="center">
                         {target}
                         <div>{this.props.text}</div>
-                        {this.props.bullet && (
-                            <BulletWrapper>
-                                <XBullet color={this.props.bulletColor || 'green'}>{this.props.bullet}</XBullet>
-                            </BulletWrapper>
-                        )}
                     </TargetDivStyle>
 
                 </XCardTitle>

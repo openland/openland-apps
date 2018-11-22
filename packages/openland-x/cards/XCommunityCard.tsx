@@ -13,7 +13,10 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 
 const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
     backgroundColor: '#fff',
-    padding: '12px 16px',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 16,
+    paddingRight: 11,
     marginLeft: -16,
     marginRight: -16,
     borderRadius: 8,

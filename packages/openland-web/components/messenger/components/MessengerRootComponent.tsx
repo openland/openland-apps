@@ -6,7 +6,7 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MessageListComponent } from './view/MessageListComponent';
+import { MentionDataT } from 'openland-x/XRichTextInput';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
@@ -20,7 +20,6 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -28,6 +27,7 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
     conversationType?: string;
     me: UserShort | null;
+    mentionsData: MentionDataT[];
 }
 
 interface MessagesComponentState {
@@ -70,7 +70,7 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation((props) => {
     );
 });
 
-const LeaveChatComponent = withChatLeave((props) => {
+export const LeaveChatComponent = withChatLeave((props) => {
     let id = props.router.query.leaveFromChat;
     return (
         <XModalForm
@@ -87,6 +87,26 @@ const LeaveChatComponent = withChatLeave((props) => {
     );
 });
 
+const mentionsData = [
+    {
+        name: 'Matthew Russell',
+        title: 'Senior Software Engineer',
+        avatar:
+            'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg'
+    },
+    {
+        name: 'Julian Krispel-Samsel',
+        title: 'United Kingdom',
+        avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
+        online: true
+    },
+    {
+        name: 'Jyoti Puri',
+        title: 'New Delhi, India',
+        avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
+        isMyself: true
+    },
+];
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements ConversationStateHandler {
     messagesList = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
@@ -118,7 +138,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading, messages: state.messages });
     }
-    
+
     updateConversation = (props: MessagesComponentProps) => {
         if (this.unmounter) {
             this.unmounter();
@@ -126,11 +146,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (this.unmounter2) {
             this.unmounter2();
         }
-    
+
         this.conversation = props.messenger.getConversation(props.conversationId);
         this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
         this.unmounter2 = this.conversation.subscribe(this);
-        
+
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
@@ -143,7 +163,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }
@@ -184,7 +203,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
-        this.conversation.sendMessage(text, [167]);
+
+        this.conversation.sendMessage(text);
     }
 
     handleSendFile = (file: UploadCare.File) => {
@@ -211,7 +231,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         return (
             <ConversationContainer>
                 <ConversationMessagesComponent
-                    ref={this.messagesList} 
+                    ref={this.messagesList}
                     key={this.props.conversationId}
                     me={this.props.me}
                     messages={this.state.messages}
@@ -223,11 +243,13 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 />
                 {this.state.hideInput === false && (
                     <MessageComposeComponentDraft
+                        mentionsData={mentionsData}
                         conversation={this.conversation}
                         onChange={this.handleChange}
                         onSend={this.handleSend}
                         onSendFile={this.handleSendFile}
                         enabled={true}
+                        // mentionsData={this.props.mentionsData}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
@@ -235,7 +257,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         }}
                     />
                 )}
-                <DeleteUrlAugmentationComponent/>
+                <DeleteUrlAugmentationComponent />
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
             </ConversationContainer>
@@ -269,64 +291,20 @@ const MessagesWithUser = withUserInfo((props) => (
     />
 )) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
 
-export class MessengerRootComponent extends React.Component<MessengerRootComponentProps, MessagesStateContextProps> {
-    constructor(props: MessengerRootComponentProps) {
-        super(props);
-
-        this.state = {
-            editMessageId: null,
-            editMessage: null,
-            forwardMessagesId: null,
-            conversationId: null,
-            replyMessageId: null,
-            replyMessage: null,
-            replyMessageSender: null,
-            setEditMessage: this.setEditMessage,
-            setForwardMessages: this.setForwardMessages,
-            setReplyMessage: this.setReplyMessage
-        };
+export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
+    // We are not allowing messenger to be rendered on server side: just preload history and that's all
+    if (!canUseDOM) {
+        return <Placeholder variables={{ conversationId: props.conversationId }} />;
     }
-
-    setEditMessage = (id: string | null, message: string | null) => {
-        this.setState({
-            editMessageId: id,
-            editMessage: message
-        });
-    }
-
-    setForwardMessages = (id: string[] | null, conversationId: string | null) => {
-        this.setState({
-            forwardMessagesId: id,
-            conversationId: conversationId
-        });
-    }
-
-    setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
-        this.setState({
-            replyMessageId: id,
-            replyMessage: message,
-            replyMessageSender: sender,
-            conversationId: conversationId
-        });
-    }
-
-    render() {
-        // We are not allowing messenger to be rendered on server side: just preload history and that's all
-        if (!canUseDOM) {
-            return <Placeholder variables={{ conversationId: this.props.conversationId }} />;
-        }
-        return (
-            <MessagesStateContext.Provider value={this.state}>
-                <MessengerContext.Consumer>
-                    {messenger => (
-                        <MessagesWithUser
-                            conversationId={this.props.conversationId}
-                            messenger={messenger}
-                            conversationType={this.props.conversationType}
-                        />
-                    )}
-                </MessengerContext.Consumer>
-            </MessagesStateContext.Provider>
-        );
-    }
-}
+    return (
+        <MessengerContext.Consumer>
+            {messenger => (
+                <MessagesWithUser
+                    conversationId={props.conversationId}
+                    messenger={messenger}
+                    conversationType={props.conversationType}
+                />
+            )}
+        </MessengerContext.Consumer>
+    );
+};

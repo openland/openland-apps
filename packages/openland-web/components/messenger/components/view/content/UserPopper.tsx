@@ -7,7 +7,7 @@ import { MessageFull_sender } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { withOnline } from '../../../../../api/withOnline';
-import { XDate } from 'openland-x-format/XDate';
+import { XDate } from 'openland-x/XDate';
 
 const showAnimation = glamor.keyframes({
     '0%': {

@@ -43,12 +43,12 @@ class PhoneVerifyComponent extends React.Component<PageProps, { phone: string, c
     }
     render() {
         let countryCodeText = '';
-        let country = countries.filter(c => c.phone === this.state.code)[0];
-        if (!country) {
-            countryCodeText = 'Invalid country code';
-        } else {
-            countryCodeText = country.emoji + country.name;
-        }
+        // let country = countries.filter(c => c.phone === this.state.code)[0];
+        // if (!country) {
+        //     countryCodeText = 'Invalid country code';
+        // } else {
+        //     countryCodeText = country.emoji + country.name;
+        // }
         return (
             <>
                 <SHeader title="Verify phone" />
@@ -156,7 +156,7 @@ class CountryPickerComponent extends React.Component<PageProps> {
     constructor(props: any) {
         super(props);
         let q = '';
-        let list = countries.filter(e => !q || ([...e.name.split(' '), e.name]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
+        let list: any[] = []; // countries.filter(e => !q || ([...e.name.split(' '), e.name]).filter(s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase())).length > 0);
         this.dataSource = new DataSource<{ key: string, name: string, phone: string, code: string }>(() => false);
         this.dataSource.initialize(list.map(c => ({ ...c, key: c.code })), true);
         this.dataView = new ASDataView(this.dataSource, (c) => (

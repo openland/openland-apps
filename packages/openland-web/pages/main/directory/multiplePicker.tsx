@@ -17,11 +17,12 @@ const EntryTitle = Glamorous.div({
     height: 40,
     fontSize: 14,
     fontWeight: 600,
-    letterSpacing: -0.2,
-    color: '#99a2b0',
+    letterSpacing: 0,
+    color: 'rgba(0, 0, 0, 0.5)',
     paddingLeft: 16,
     paddingRight: 16,
-    marginTop: 8
+    marginTop: 7,
+    marginBottom: 1,
 });
 
 const EntryWrapper = Glamorous(XVertical)({
@@ -39,19 +40,18 @@ export const EntryItem = Glamorous.div<{ selected: boolean, hover?: boolean }>((
     paddingLeft: 16,
     paddingRight: 16,
     fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.43,
-    color: props.selected ? '#1790ff' : '#334562',
-    letterSpacing: -0.2,
-    backgroundColor: props.selected ? '#F9F9F9' : undefined,
+    fontWeight: 400,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.8)',
+    letterSpacing: 0,
+    backgroundColor: props.selected ? '#f6f6f6' : undefined,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     cursor: 'pointer',
     ':hover': {
         ...(props.hover ? {
-            color: '#1790ff',
-            backgroundColor: '#F9F9F9'
+            backgroundColor: '#f6f6f6'
         } : {})
     }
 }));

@@ -12,10 +12,10 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
-import { DateFormater } from 'openland-x-format/XDate';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
+import { DateFormater } from 'openland-x/XDate';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,

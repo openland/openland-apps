@@ -37,17 +37,7 @@ import { withCreateChannel } from '../api/withCreateChannel';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
-
-//
-// Root
-//
-
-const RootContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    minWidth: 800
-});
+import { XView } from 'openland-x/XView';
 
 // 
 // Navigation
@@ -365,24 +355,6 @@ let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
         <InvitesGlobalModal targetQuery="invite_global" target={null} />
     </XVertical>
 ));
-
-//
-// Content
-//
-
-const ContentView = Glamorous.div<{ marginLeft: number }>((props) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100%',
-    backgroundColor: XThemeDefault.backgroundColor,
-    flex: 1,
-    order: 2,
-    minWidth: 0,
-    maxWidth: '100%',
-    position: 'relative',
-    zIndex: 0,
-    marginLeft: props.marginLeft
-}));
 
 //
 // Menu
@@ -704,14 +676,17 @@ export class Scaffold extends React.Component<{}> {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
 
-    keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
-
     render() {
         let menu = findChild(this.props.children, '_isSidebarMenu');
         let content = findChild(this.props.children, '_isSidebarContent');
 
         return (
-            <RootContainer>
+            <XView
+                flexDirection="row"
+                minWidth={800}
+                flexGrow={1}
+                flexBasis={0}
+            >
                 <NavigationWrapper
                     activeSearch={false}
                 >
@@ -754,13 +729,22 @@ export class Scaffold extends React.Component<{}> {
                     </NavigationScroller>
                     {menu}
                 </NavigationWrapper>
-                <ContentView marginLeft={menu !== undefined ? 342 : 64}>
-                    {content}
-                </ContentView>
 
                 <CreateOrganization />
                 <CreateRoom />
-            </RootContainer>
+
+                <XView
+                    flexDirection="column"
+                    backgroundColor={XThemeDefault.backgroundColor}
+                    flexGrow={1}
+                    flexBasis={0}
+                    flexShrink={1}
+                    minWidth={0}
+                    marginLeft={menu !== undefined ? 342 : 64}
+                >
+                    {content}
+                </XView>
+            </XView>
         );
     }
 }

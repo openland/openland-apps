@@ -11,6 +11,7 @@ import { XLink } from 'openland-x/XLink';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
+import { MentionDataT } from 'openland-x/XRichTextInput';
 import { getConfig } from '../../../../config';
 import { MutationFunc } from 'react-apollo';
 import PhotoIcon from '../icons/ic-photo-2.svg';
@@ -297,6 +298,7 @@ const EditView = (props: { title: string, message: string, onCancel: () => void 
 );
 
 export interface MessageComposeComponentProps {
+    mentionsData: MentionDataT[];
     conversationType?: string;
     conversationId?: string;
     conversation?: ConversationEngine;
@@ -311,6 +313,7 @@ interface MessageComposeWithDraft extends MessageComposeComponentProps {
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
+    mentionsData: MentionDataT[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
@@ -516,8 +519,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     private closeEditor = () => {
-        this.props.messagesContext.setEditMessage(null, null);
-        this.props.messagesContext.setReplyMessage(null, null, null, null);
+        this.props.messagesContext.resetAll();
         (document as any).isEditMessage = false;
         this.setState({
             message: '',
@@ -536,7 +538,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         let { message, statlesMessageId } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && !statlesMessageId) {
+        if ((message && message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && !statlesMessageId) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
@@ -551,6 +553,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentDidMount() {
+        console.log(this.props);
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -574,12 +577,30 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessage,
             replyMessageId,
             replyMessageSender,
+            forwardMessagesId,
+            forwardMessages,
+            useForwardMessages,
             conversationId
         } = nextProps.messagesContext;
+
+        // console.log(nextProps);
 
         let newState: any = {};
 
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
+
+        if ((this.props.conversationId !== nextProps.conversationId)) {
+            if (!useForwardMessages) {
+                //
+            }
+            if (forwardMessagesId && forwardMessages) {
+                console.log(nextProps);
+            }
+        }
+
+        // if (editMessage && editMessageId) {
+        //     this.props.messagesContext.setForwardMessages(null, null);
+        // }
 
         if (replyChecker) {
             (document as any).isEditMessage = true;
@@ -595,6 +616,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
+            // this.props.messagesContext.setForwardMessages(null, null);
         }
 
         let draftChecker = !replyChecker;
@@ -652,6 +674,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             stateMessage = statlesMessageReply;
         }
 
+        console.log(this.props.mentionsData);
+      
         return (
             <SendMessageWrapper>
                 <DropArea
@@ -675,6 +699,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                         )}
                         <TextInputWrapper>
                             <XRichTextInput
+                                mentionsData={this.props.mentionsData}
                                 placeholder="Write a message..."
                                 flexGrow={1}
                                 onChange={this.handleChange}
@@ -744,6 +769,9 @@ export const MessageComposeComponent = withMessageState(withUserInfo((props) => 
 
 export const MessageComposeComponentDraft = withGetDraftMessage(props => {
     return (
-        <MessageComposeComponent draft={props.data.message} {...props} />
+        <MessageComposeComponent 
+            draft={props.data.message} 
+            {...props} 
+        />
     );
 }) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string } }>;

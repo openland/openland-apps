@@ -23,7 +23,7 @@ const styleIdentation = styleResolver({
     },
 
     'button': {
-        padding: '18px 0 0',
+        padding: '18px 0 5px',
     }
 });
 
@@ -83,7 +83,7 @@ const styleItemIdentation = styleResolver({
         padding: '0 16px',
         fontSize: 16,
         fontWeight: 400,
-        lineHeight: '32px',
+        lineHeight: '31px',
         letterSpacing: 0,
         color: 'rgba(0, 0, 0, 0.5)',
         borderRadius: 16,

@@ -17,6 +17,7 @@ export class NotificationsEngine {
     }
 
     handleIncomingMessage = async (cid: string, msg: any) => {
+
         let settings = this.engine.client.client.readQuery<SettingsQueryType>({
             query: SettingsQuery.document
         })!!.settings;
@@ -32,6 +33,7 @@ export class NotificationsEngine {
         }
 
         if (!info.settings.mute) {
+            AppNotifications.playIncomingSound();
             let conversationId = info.flexibleId;
             if (msg.message) {
                 AppNotifications.displayNotification({

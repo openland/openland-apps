@@ -20,11 +20,6 @@ const SocialIconWrapper = Glamorous.div({
     }
 });
 
-interface XSocialButtonProps {
-    value: string;
-    style: 'website' | 'linkedin' | 'phone' | 'facebook' | 'twitter';
-}
-
 const Icons = {
     website: <WebsiteIcon />,
     linkedin: <LinkedinIcon />,
@@ -33,10 +28,16 @@ const Icons = {
     twitter: <TwitterIcon />,
 };
 
+interface XSocialButtonProps {
+    value: string;
+    style: 'website' | 'linkedin' | 'phone' | 'facebook' | 'twitter';
+    placeholder?: string;
+}
+
 export const XSocialButton = (props: XSocialButtonProps) => {
     let href = (props.style === 'phone') ? 'tel:' + props.value : props.value;
     let icon = Icons[props.style];
-    let title = TextGlobal.socials[props.style];
+    let title = props.placeholder || TextGlobal.socials[props.style];
 
     return (
         <XPopper

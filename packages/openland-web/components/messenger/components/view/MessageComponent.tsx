@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
-import { XDate } from 'openland-x-format/XDate';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { MessageImageComponent } from './content/MessageImageComponent';
@@ -27,6 +26,7 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import ReplyIcon from '../icons/ic-reply.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
+import { XDate } from 'openland-x/XDate';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -55,7 +55,14 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: 'rgba(0, 0, 0, 0.4)',
 }));
 
-const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, isSelected: boolean }>((props) => ({
+const Check = Glamorous.div({
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#1790ff'
+});
+
+const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, isEditView: boolean }>((props) => ({
     display: 'flex',
     flexDirection: props.compact ? 'row' : 'column',
     paddingLeft: props.compact ? 7 : 10,
@@ -65,6 +72,7 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, 
     width: '100%',
     marginTop: props.compact ? undefined : 12,
     borderRadius: 6,
+    cursor: 'pointer',
     '& .time': {
         opacity: props.compact ? 0 : 1
     },
@@ -74,12 +82,12 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, 
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
         opacity: 0,
-        display: props.isSelected ? 'none' : undefined
+        display: props.isEditView ? 'none' : undefined
     },
     '&:hover': {
         backgroundColor: '#F9F9F9',
         '& .menu-wrapper, & .time, & .reactions-wrapper .reaction-button': {
-            opacity: props.isSelected ? 0 : 1
+            opacity: props.isEditView ? 0 : 1
         }
     },
     '&': (props.isHovered) ? { backgroundColor: '#F9F9F9' } : {}
@@ -118,17 +126,17 @@ interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
-class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isSelected: boolean, isMenuOpen: boolean }> {
+class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean, isMenuOpen: boolean }) => {
         if (isServerMessage(props.message)) {
             if (props.messagesContext.editMessageId === props.message.id) {
                 return {
-                    isSelected: true,
+                    isEditView: true,
                     isMenuOpen: false
                 };
             } else {
                 return {
-                    isSelected: false
+                    isEditView: false
                 };
             }
         }
@@ -140,7 +148,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         super(props);
 
         this.state = {
-            isSelected: false,
+            isEditView: false,
             isMenuOpen: false
         };
     }
@@ -151,23 +159,52 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         });
     }
 
-    setEditMessage = () => {
-        let { message } = this.props;
+    setEditMessage = (e: any) => {
+        let { message, messagesContext } = this.props;
         if (isServerMessage(this.props.message)) {
-            this.props.messagesContext.setEditMessage((message as MessageFull).id, message.message);
+            e.stopPropagation();
+            messagesContext.resetAll();
+            messagesContext.setEditMessage((message as MessageFull).id, message.message);
         }
     }
 
-    setReplyMessage = () => {
-        let { message, conversationId } = this.props;
+    setReplyMessage = (e: any) => {
+        let { message, conversationId, messagesContext } = this.props;
 
-        if (isServerMessage(this.props.message)) {
-            this.props.messagesContext.setReplyMessage((message as MessageFull).id, message.message, (message as MessageFull).sender.name, conversationId);
+        if (isServerMessage(message)) {
+            e.stopPropagation();
+            messagesContext.resetAll();
+            messagesContext.setReplyMessage((message as MessageFull).id, message.message, (message as MessageFull).sender.name, conversationId);
+        }
+    }
+
+    selectMessage = () => {
+        let { message, conversationId, messagesContext } = this.props;
+
+        if (!isServerMessage(message) || this.state.isEditView) {
+            return;
+        }
+
+        let { forwardMessagesId } = messagesContext;
+        let selectedMessageId = forwardMessagesId;
+
+        if (forwardMessagesId && selectedMessageId) {
+            if (forwardMessagesId.has(message.id)) {
+                selectedMessageId.delete(message.id);
+                messagesContext.setForwardMessages(selectedMessageId, conversationId);
+            } else {
+                selectedMessageId.add(message.id);
+                messagesContext.setForwardMessages(selectedMessageId, conversationId);
+            }
+        } else if (!forwardMessagesId && !selectedMessageId) {
+            selectedMessageId = new Set<string>();
+            selectedMessageId.add(message.id);
+            messagesContext.setForwardMessages(selectedMessageId, conversationId);
         }
     }
 
     hideEditView = () => {
-        this.props.messagesContext.setEditMessage(null, null);
+        this.props.messagesContext.resetAll();
     }
 
     render() {
@@ -177,7 +214,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         let edited = isServerMessage(this.props.message) && this.props.message.edited;
 
         if (isServerMessage(message)) {
-            if (this.state.isSelected && message.message) {
+            if (this.state.isEditView && message.message) {
                 content.push(<EditMessageInlineWrapper message={message} key={'editForm'} onClose={this.hideEditView} />);
             } else {
                 if (message.message && message.message.length > 0) {
@@ -192,7 +229,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
                     let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
                     let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
-    
+
                     if (message.fileMetadata!!.isImage && !!w && !!h) {
                         if (message.fileMetadata!!.imageFormat === 'GIF') {
                             content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
@@ -233,20 +270,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         );
                     }
                 }
-                if ((message as MessageFull).reply) {
-                    let replyMessage = (message as MessageFull).reply![0];
-                    content.push(
-                        <MessageReplyComponent
-                            sender={replyMessage.sender}
-                            date={replyMessage.date}
-                            message={replyMessage.message}
-                            id={replyMessage.id}
-                            key={'reply'}
-                            edited={replyMessage.edited}
-                            file={replyMessage.file}
-                            fileMetadata={replyMessage.fileMetadata}
-                        />
-                    );
+                if ((message as MessageFull).reply && (message as MessageFull).reply!.length > 0) {
+                    (message as MessageFull).reply!.map((i, j) => {
+                        content.push(
+                            <MessageReplyComponent
+                                sender={i.sender}
+                                date={i.date}
+                                message={i.message}
+                                id={i.id}
+                                key={'reply_message' + i.id + j}
+                                edited={i.edited}
+                                file={i.file}
+                                fileMetadata={i.fileMetadata}
+                            />
+                        );
+                    });
                 }
                 date = <XDate value={message.date} format="time" />;
             }
@@ -318,9 +356,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             isIntro = true;
         }
 
+        let isSelect = false;
+        let { forwardMessagesId } = this.props.messagesContext;
+        if (forwardMessagesId) {
+            isSelect = forwardMessagesId.has((message as MessageFull).id);
+        }
+
         if (this.props.compact) {
             return (
-                <MessageContainer className="compact-message" compact={true} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>
+                <MessageContainer
+                    onClick={this.selectMessage}
+                    className="compact-message"
+                    compact={true}
+                    isHovered={this.state.isEditView || this.state.isMenuOpen || isSelect}
+                    isEditView={this.state.isEditView}
+                >
                     <DateComponent small={true} className="time">{date}</DateComponent>
                     <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
                         <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
@@ -333,24 +383,34 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 />
                             )}
                         </MessageCompactContent>
-                        <XHorizontal alignItems="center" separator={0} alignSelf="flex-start" className="menu-wrapper">
-                            <XHorizontal alignItems="center" separator={6}>
-                                <ReplyButton onClick={this.setReplyMessage}>
-                                    <ReplyIcon />
-                                </ReplyButton>
-                                {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                                    <ReactionComponent messageId={(message as MessageFull).id} />
-                                )}
-                            </XHorizontal>
-                            {menu}
-                        </XHorizontal>
+                        {isSelect ? (
+                            <Check />
+                        ) : (
+                                <XHorizontal alignItems="center" separator={0} alignSelf="flex-start" className="menu-wrapper">
+                                    <XHorizontal alignItems="center" separator={6}>
+                                        <ReplyButton onClick={this.setReplyMessage}>
+                                            <ReplyIcon />
+                                        </ReplyButton>
+                                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                                            <ReactionComponent messageId={(message as MessageFull).id} />
+                                        )}
+                                    </XHorizontal>
+                                    {menu}
+                                </XHorizontal>
+                            )}
                     </XHorizontal>
                 </MessageContainer>
             );
         }
 
         return (
-            <MessageContainer className="full-message" compact={false} isHovered={this.state.isSelected || this.state.isMenuOpen} isSelected={this.state.isSelected}>
+            <MessageContainer
+                onClick={this.selectMessage}
+                className="full-message"
+                compact={false}
+                isHovered={this.state.isEditView || this.state.isMenuOpen || isSelect}
+                isEditView={this.state.isEditView}
+            >
                 <XHorizontal alignSelf="stretch">
                     {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
                         <UserPopper
@@ -361,7 +421,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     {this.props.sender && (this.props.conversationType === 'PrivateConversation') && (
                         <UserAvatar user={this.props.sender} />
                     )}
-                    <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 60px)'}>
+                    <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>
                         <XHorizontal justifyContent="space-between">
                             <XHorizontal separator={4}>
                                 <XHorizontal separator={4} alignItems="center">
@@ -370,17 +430,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 </XHorizontal>
                                 <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
-                            <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
-                                <XHorizontal alignItems="center" separator={6}>
-                                    <ReplyButton onClick={this.setReplyMessage}>
-                                        <ReplyIcon />
-                                    </ReplyButton>
-                                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                                        <ReactionComponent messageId={(message as MessageFull).id} />
-                                    )}
-                                </XHorizontal>
-                                {menu}
-                            </XHorizontal>
+                            {isSelect ? (
+                                <Check />
+                            ) : (
+                                    <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
+                                        <XHorizontal alignItems="center" separator={6}>
+                                            <ReplyButton onClick={this.setReplyMessage}>
+                                                <ReplyIcon />
+                                            </ReplyButton>
+                                            {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                                                <ReactionComponent messageId={(message as MessageFull).id} />
+                                            )}
+                                        </XHorizontal>
+                                        {menu}
+                                    </XHorizontal>
+                                )}
                         </XHorizontal>
                         {content}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (

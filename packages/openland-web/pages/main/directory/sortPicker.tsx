@@ -20,7 +20,7 @@ const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
     fontSize: 14,
     '& .icon': {
         fontSize: 22,
-        marginRight: '5px!important'
+        marginRight: '8px!important'
     },
     '& > div': {
         paddingLeft: '10px!important',
@@ -64,11 +64,12 @@ class SortControlledPicker extends React.Component<SortControlledPickerProps> {
 }
 
 const CheckboxWrap = Glamorous.div({
-    marginTop: 8,
+    marginTop: 11,
     marginLeft: -10,
+    marginBottom: -6,
     marginRight: -10,
     paddingLeft: 16,
-    paddingTop: 16,
+    paddingTop: 18,
     paddingRight: 16,
     borderTop: '1px solid #f1f2f5',
 });
@@ -122,6 +123,8 @@ export class SortPicker extends React.Component<{ withoutFeatured?: boolean, sor
                 content={content}
                 onClickOutside={this.close}
                 arrow={null}
+                marginTop={8}
+                marginRight={-1}
                 contentContainer={(
                     <ContentWrapper />
                 )}

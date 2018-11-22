@@ -11,7 +11,7 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { UserQuery } from 'openland-api';
 
-export type XAvatarSize = 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
+export type XAvatarSize = 'm-small' | 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;
 
 export interface XAvatarStyleProps extends XFlexStyles {
@@ -80,6 +80,11 @@ let sizeStyles = styleResolver({
     'x-small': {
         height: 16,
         width: 16,
+        fontSize: 8
+    },
+    'm-small': {
+        height: 28,
+        width: 28,
         fontSize: 8
     }
 });
@@ -253,31 +258,31 @@ const AvatarWrapper = Glamorous.div<StyledAvatarProps>([...AvatarBehaviour,
 ]);
 
 const DotSize = {
-    'x-large':  17,
-    'large':    16,
-    's-large':  15,
+    'x-large': 17,
+    'large': 16,
+    's-large': 15,
     'x-medium': 14,
     's-medium': 13,
     'l-medium': 12,
-    'medium':   11,
-    'default':  11,
-    'small':    10,
-    'l-small':  8,
-    'x-small':  8
+    'medium': 11,
+    'default': 11,
+    'small': 10,
+    'l-small': 8,
+    'x-small': 8
 };
 
 const DotPosition = {
-    'x-large':  14,
-    'large':    11,
-    's-large':  7,
+    'x-large': 14,
+    'large': 11,
+    's-large': 7,
     'x-medium': 5,
     's-medium': 3,
     'l-medium': 2,
-    'medium':   1,
-    'default':  0,
-    'small':    0,
-    'l-small':  0,
-    'x-small':  -1
+    'medium': 1,
+    'default': 0,
+    'small': 0,
+    'l-small': 0,
+    'x-small': -1
 };
 
 const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({

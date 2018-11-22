@@ -221,7 +221,7 @@ export class GlobalStateEngine {
 
             // Notifications
             let res = this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
-            if (!visible && !event.isOut) {
+            if (!visible && event.message.sender.id !== this.engine.user.id) {
                 this.engine.notifications.handleIncomingMessage(event.cid, event.message);
             }
 

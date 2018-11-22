@@ -1,20 +1,19 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { View, Text, Image, StyleSheet, TextStyle, TouchableHighlight, Alert, Linking, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, TextStyle, TouchableHighlight } from 'react-native';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
-import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
 import { PageProps } from '../../../components/PageProps';
 // import { FastHeader } from 'react-native-fast-navigation/FastHeader';
 // import { FastHeaderButton } from 'react-native-fast-navigation/FastHeaderButton';
-import { formatBytes } from 'openland-shared/utils/formatBytes';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
-import { DownloadState } from 'openland-shared/DownloadManagerInterface';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { formatBytes } from 'openland-mobile/utils/formatBytes';
+import { DownloadState } from 'openland-mobile/utils/DownloadManagerInterface';
 
 const styles = StyleSheet.create({
     name: {
