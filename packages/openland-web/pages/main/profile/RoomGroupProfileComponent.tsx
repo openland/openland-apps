@@ -40,12 +40,9 @@ import {
     OrganizationInfoWrapper,
     EditButton
 } from './OrganizationProfileComponent';
-import {
-    GroupRoomInfo_chat_GroupConversation,
-    GroupRoomInfo_chat_ChannelConversation,
-    GroupRoomMembersInfo_members_user,
-    GroupRoomMembersInfo_members
-} from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomFull_SharedRoom_members } from 'openland-api/Types';
+import { withRoomMembers } from '../../../api/withRoomMembers';
+import { withRoom } from '../../../api/withRoom';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
@@ -53,9 +50,9 @@ const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     color: props.online ? '#1790ff' : '#7F7F7F'
 }));
 
-const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
+const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meOwner = (chat.myRole === 'member' || chat.myRole === 'owner');
+    let meOwner = (chat.role === 'MEMBER' || chat.role === 'OWNER');
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -72,7 +69,7 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                     <HeaderTitle>{chat.title}</HeaderTitle>
                     <XHorizontal separator={3.5}>
                         <HeaderMembers>{chat.membersCount} members</HeaderMembers>
-                        {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>}
+                        {/* {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>} */}
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={8}>
@@ -94,24 +91,11 @@ const Header = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomI
                                 )}
                             />
                             <LeaveChatComponent />
-                            {chat.__typename === 'GroupConversation' && (
-                                <GroupEditComponent
-                                    title={chat.title}
-                                    description={chat.description}
-                                    longDescription={chat.longDescription || undefined}
-                                    photoRef={chat.photoRef}
-                                    refetchVars={{ conversationId: chat.id }}
-                                />
-                            )}
-                            {chat.__typename === 'ChannelConversation' && (
-                                <RoomEditComponent
-                                    title={chat.title}
-                                    description={chat.description}
-                                    socialImageRef={null}
-                                    photoRef={chat.photoRef}
-                                    refetchVars={{ conversationId: chat.id }}
-                                />
-                            )}
+                            <RoomEditComponent
+                                title={chat.title}
+                                description={chat.description}
+                                photoRef={chat.photo}
+                            />
                         </>
                     )}
                 </HeaderTools>
@@ -125,7 +109,6 @@ const AboutPlaceholder = withAlterChat((props) => {
     let editDescription = (props as any).description;
     let editPhotoRef = (props as any).photoRef;
     let editSocialImageRef = (props as any).socialImageRef;
-    let editLongDescription = (props as any).longDescription;
     return (
         <XModalForm
             scrollableContent={true}
@@ -144,7 +127,6 @@ const AboutPlaceholder = withAlterChat((props) => {
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                             ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
                             ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
@@ -170,11 +152,11 @@ const AboutPlaceholder = withAlterChat((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ target: any, title: string, photoRef: any, description: string | null, longDescription: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ target: any, title: string, photoRef: any, description: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
 
-const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation }) => {
+const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meOwner = chat.myRole === 'member' || chat.myRole === 'owner';
+    let meOwner = chat.role === 'OWNER' || chat.role === 'ADMIN';
     return (
         <>
             {chat.description && (
@@ -192,12 +174,11 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
                 <Section separator={0}>
                     <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
-                        <AboutPlaceholder 
-                            title={chat.title} 
-                            description={chat.description} 
-                            longDescription={chat.longDescription} 
-                            socialImageRef={(chat as any).socialImageRef || null} 
-                            photoRef={chat.photoRef} 
+                        <AboutPlaceholder
+                            title={chat.title}
+                            description={chat.description}
+                            socialImageRef={(chat as any).socialImageRef || null}
+                            photoRef={chat.photo}
                             refetchVars={{ conversationId: chat.id }}
                             target={<EditButton text="Add a short description" />}
                         />
@@ -208,25 +189,24 @@ const About = (props: { chat: GroupRoomInfo_chat_GroupConversation | GroupRoomIn
     );
 };
 
-const MemberCard = (props: { member: GroupRoomMembersInfo_members_user, meOwner: boolean }) => {
+const MemberCard = (props: { member: RoomFull_SharedRoom_members, meOwner: boolean }) => {
     let overflowMenu = (
         <XOverflow
             placement="bottom-end"
             flat={true}
-            content={<XMenuItem style="danger" query={{ field: 'remove', value: props.member.id }}>Remove from group</XMenuItem>}
+            content={<XMenuItem style="danger" query={{ field: 'remove', value: props.member.user.id }}>Remove from group</XMenuItem>}
         />
     );
     return (
         <XUserCard
-            user={props.member}
+            user={props.member.user}
             customMenu={props.meOwner ? overflowMenu : null}
         />
     );
 };
 
 interface MembersProviderProps {
-    members: GroupRoomMembersInfo_members[];
-    isRoom: boolean;
+    members: RoomFull_SharedRoom_members[];
     chatId: string;
     meOwner: boolean;
     chatTitle: string;
@@ -243,20 +223,19 @@ const MembersProvider = (props: MembersProviderProps) => {
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    {(props.isRoom && props.meOwner) && (
+                    {(props.meOwner) && (
                         <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />
                     )}
                     {members.map((member, i) => (
-                        <MemberCard key={i} member={member.user} meOwner={props.meOwner} />
+                        <MemberCard key={i} member={member} meOwner={props.meOwner} />
                     ))}
                 </SectionContent>
-                {(props.isRoom && props.meOwner) && (
+                {(props.meOwner) && (
                     <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
                 )}
                 {props.meOwner && (
                     <RemoveMemberModal
                         members={members}
-                        refetchVars={{ channelId: props.chatId }}
                         channelId={props.chatId}
                         roomTitle={props.chatTitle}
                     />
@@ -268,24 +247,23 @@ const MembersProvider = (props: MembersProviderProps) => {
     }
 };
 
-const Members = withGroupRoomMembers((props) => {
+const Members = withRoomMembers((props) => {
     let members = props.data.members;
     return (
         members
             ? (
                 <MembersProvider
                     members={members}
-                    isRoom={(props as any).isRoom}
                     chatId={(props as any).chatId}
                     meOwner={(props as any).meOwner}
                     chatTitle={(props as any).chatTitle}
                 />
             ) : <XLoader loading={true} />
     );
-}) as React.ComponentType<{ variables: { conversationId: string }, isRoom: boolean, chatId: string, meOwner: boolean, chatTitle: string }>;
+}) as React.ComponentType<{ variables: { roomId: string }, chatId: string, meOwner: boolean, chatTitle: string }>;
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
-    chat: GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
+    chat: Room_room_SharedRoom;
     handlePageTitle?: any;
     onDirectory?: boolean;
     conversationId: string;
@@ -332,10 +310,9 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                 <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
                     <Members
-                        variables={{ conversationId: this.props.conversationId }}
-                        isRoom={chat.__typename === 'ChannelConversation'}
+                        variables={{ roomId: this.props.conversationId }}
                         chatId={this.props.conversationId}
-                        meOwner={chat.myRole === 'member' || chat.myRole === 'owner'}
+                        meOwner={chat.role === 'ADMIN' || chat.role === 'OWNER'}
                         chatTitle={chat.title}
                     />
                 </XScrollView2>
@@ -344,8 +321,8 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
     }
 }
 
-const RoomGroupProfileProvider = withGroupRoom(withRouter((props) => {
-    let chat = props.data.chat as GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
+const RoomGroupProfileProvider = withRoom(withRouter((props) => {
+    let chat = props.data.room as Room_room_SharedRoom;
     return (
         chat
             ? (
@@ -359,11 +336,11 @@ const RoomGroupProfileProvider = withGroupRoom(withRouter((props) => {
             )
             : <XLoader loading={true} />
     );
-})) as React.ComponentType<{ variables: { conversationId: string }, onDirectory?: boolean; handlePageTitle?: any, conversationId: string }>;
+})) as React.ComponentType<{ variables: { id: string }, onDirectory?: boolean; handlePageTitle?: any, conversationId: string }>;
 
 export const RoomGroupProfile = (props: { conversationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
     <RoomGroupProfileProvider
-        variables={{ conversationId: props.conversationId }}
+        variables={{ id: props.conversationId }}
         handlePageTitle={props.handlePageTitle}
         onDirectory={props.onDirectory}
         conversationId={props.conversationId}

@@ -1003,8 +1003,8 @@ export interface RoomRead {
 }
 
 export interface RoomReadVariables {
-  roomId: string;
-  messageId: string;
+  id: string;
+  mid: string;
 }
 
 /* tslint:disable */
@@ -5275,127 +5275,6 @@ export interface FeatureFlagDisable {
 export interface FeatureFlagDisableVariables {
   accountId: string;
   featureId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GroupRoomInfo
-// ====================================================
-
-export interface GroupRoomInfo_chat_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-}
-
-export interface GroupRoomInfo_chat_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface GroupRoomInfo_chat_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: GroupRoomInfo_chat_GroupConversation_photoRef_crop | null;
-}
-
-export interface GroupRoomInfo_chat_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  membersCount: number;
-  description: string | null;
-  longDescription: string | null;
-  myRole: string | null;
-  membersOnline: number;
-  photo: string | null;
-  photoRef: GroupRoomInfo_chat_GroupConversation_photoRef | null;
-}
-
-export interface GroupRoomInfo_chat_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface GroupRoomInfo_chat_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: GroupRoomInfo_chat_ChannelConversation_photoRef_crop | null;
-}
-
-export interface GroupRoomInfo_chat_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  membersCount: number;
-  description: string | null;
-  longDescription: string | null;
-  myRole: string | null;
-  membersOnline: number;
-  photo: string | null;
-  photoRef: GroupRoomInfo_chat_ChannelConversation_photoRef | null;
-}
-
-export type GroupRoomInfo_chat = GroupRoomInfo_chat_AnonymousConversation | GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
-
-export interface GroupRoomInfo {
-  chat: GroupRoomInfo_chat;
-}
-
-export interface GroupRoomInfoVariables {
-  conversationId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GroupRoomMembersInfo
-// ====================================================
-
-export interface GroupRoomMembersInfo_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface GroupRoomMembersInfo_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: GroupRoomMembersInfo_members_user_primaryOrganization | null;
-}
-
-export interface GroupRoomMembersInfo_members {
-  __typename: "ChannelMember";
-  user: GroupRoomMembersInfo_members_user;
-}
-
-export interface GroupRoomMembersInfo {
-  members: GroupRoomMembersInfo_members[];
-}
-
-export interface GroupRoomMembersInfoVariables {
-  conversationId: string;
 }
 
 /* tslint:disable */

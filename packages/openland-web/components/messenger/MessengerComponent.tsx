@@ -15,7 +15,7 @@ import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
-import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
+import { RoomMembersComponent } from '../../pages/main/channel/components/membersComponent';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
@@ -337,7 +337,6 @@ export const RoomEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
     let editPhotoRef = (props as any).photoRef;
-    let editSocialImageRef = (props as any).socialImageRef;
     return (
         <XModalForm
             scrollableContent={true}
@@ -348,7 +347,6 @@ export const RoomEditComponent = withAlterChat((props) => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
-                let newSocialImage = data.input.socialImageRef;
 
                 props.alter({
                     variables: {
@@ -356,7 +354,6 @@ export const RoomEditComponent = withAlterChat((props) => {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
                             ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
                     }
                 });
@@ -365,9 +362,7 @@ export const RoomEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
-                    longDescription: (props as any).longDescription || '',
                     photoRef: sanitizeIamgeRef((props as any).photoRef),
-                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
                 }
             }}
         >
@@ -386,7 +381,7 @@ export const RoomEditComponent = withAlterChat((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, description: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ title: string, photoRef: any, description: string | null }>;
 
 export const GroupEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
@@ -875,10 +870,10 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                     />
                 )}
                 {(sharedRoom && tab === 'members') && (
-                    <ChannelMembersComponent
+                    <RoomMembersComponent
                         channelTitle={title}
                         key={props.data.room!.id + '_members'}
-                        variables={{ channelId: sharedRoom.id }}
+                        variables={{ roomId: sharedRoom.id }}
                         description={sharedRoom.description}
                         orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                         removeFrom="room"

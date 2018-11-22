@@ -173,7 +173,7 @@ export const RemoveMemberModal = withConversationKick((props) => {
             <XText>Are you sure you want to remove {member.user.firstName}? They will no longer be able to participate in the discussion.</XText>
         </XModalForm>
     );
-}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string, roomTitle: string }>;
+}) as React.ComponentType<{ members: any[], channelId: string, roomTitle: string }>;
 
 interface ChannelMembersComponentInnerProps {
     data: RoomMembers;
@@ -237,23 +237,21 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         text={this.props.emptyText}
                     />
                 )}
-                <RemoveMemberModal members={this.props.data.members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} roomTitle={this.props.channelTitle} />
+                <RemoveMemberModal members={this.props.data.members} channelId={this.props.channelId} roomTitle={this.props.channelTitle} />
             </MembersWrapper >
         );
     }
 }
 
-export const ChannelMembersComponent = withChannelMembers((props) => {
-    return (
-        <ChannelMembersComponentInner
-            data={props.data}
-            channelTitle={(props as any).channelTitle}
-            channelId={(props.variables as any).channelId}
-            description={(props as any).description}
-            longDescription={(props as any).longDescription}
-            orgId={(props as any).orgId}
-            emptyText={(props as any).emptyText}
-            removeFrom={(props as any).removeFrom}
-        />
-    );
-}) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string | null, longDescription?: string | null, orgId: string }>;
+export const RoomMembersComponent = withChannelMembers((props) => (
+    <ChannelMembersComponentInner
+        data={props.data}
+        channelTitle={(props as any).channelTitle}
+        channelId={(props.variables as any).channelId}
+        description={(props as any).description}
+        longDescription={(props as any).longDescription}
+        orgId={(props as any).orgId}
+        emptyText={(props as any).emptyText}
+        removeFrom={(props as any).removeFrom}
+    />
+)) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { roomId: string }, description?: string | null, longDescription?: string | null, orgId: string }>;
