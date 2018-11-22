@@ -165,7 +165,7 @@ export const RemoveMemberModal = withConversationKick((props) => {
                 await props.kick({
                     variables: {
                         userId: member.user.id,
-                        roomId: (props as any).channelId
+                        roomId: (props as any).roomId
                     }
                 });
             }}
@@ -173,7 +173,7 @@ export const RemoveMemberModal = withConversationKick((props) => {
             <XText>Are you sure you want to remove {member.user.firstName}? They will no longer be able to participate in the discussion.</XText>
         </XModalForm>
     );
-}) as React.ComponentType<{ members: any[], channelId: string, roomTitle: string }>;
+}) as React.ComponentType<{ members: any[], roomId: string, roomTitle: string }>;
 
 interface ChannelMembersComponentInnerProps {
     data: RoomMembers;
@@ -237,7 +237,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         text={this.props.emptyText}
                     />
                 )}
-                <RemoveMemberModal members={this.props.data.members} channelId={this.props.channelId} roomTitle={this.props.channelTitle} />
+                <RemoveMemberModal members={this.props.data.members} roomId={this.props.channelId} roomTitle={this.props.channelTitle} />
             </MembersWrapper >
         );
     }

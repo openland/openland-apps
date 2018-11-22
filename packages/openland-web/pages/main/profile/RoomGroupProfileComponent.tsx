@@ -236,7 +236,7 @@ const MembersProvider = (props: MembersProviderProps) => {
                 {props.meOwner && (
                     <RemoveMemberModal
                         members={members}
-                        channelId={props.chatId}
+                        roomId={props.chatId}
                         roomTitle={props.chatTitle}
                     />
                 )}

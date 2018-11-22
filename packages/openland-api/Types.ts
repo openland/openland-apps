@@ -590,6 +590,7 @@ export interface Room_room_SharedRoom_members {
 
 export interface Room_room_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -832,7 +833,6 @@ export interface RoomHistory_messages_reactions {
   reaction: string;
 }
 
-<<<<<<< HEAD
 export interface ChatHistory_messages_messages_mentions {
   __typename: "User";
   id: string;
@@ -841,9 +841,6 @@ export interface ChatHistory_messages_messages_mentions {
 }
 
 export interface ChatHistory_messages_messages_urlAugmentation_imageInfo {
-=======
-export interface RoomHistory_messages_urlAugmentation_imageInfo {
->>>>>>> wip migrate conversations -> rooms
   __typename: "FileMetadata";
   imageWidth: number | null;
   imageHeight: number | null;
@@ -928,7 +925,6 @@ export interface RoomHistory_messages {
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
-<<<<<<< HEAD
   serviceMetadata: ChatHistory_messages_messages_serviceMetadata | null;
   fileMetadata: ChatHistory_messages_messages_fileMetadata | null;
   sender: ChatHistory_messages_messages_sender;
@@ -936,14 +932,6 @@ export interface RoomHistory_messages {
   reactions: ChatHistory_messages_messages_reactions[];
   mentions: ChatHistory_messages_messages_mentions[] | null;
   urlAugmentation: ChatHistory_messages_messages_urlAugmentation | null;
-=======
-  serviceMetadata: RoomHistory_messages_serviceMetadata | null;
-  fileMetadata: RoomHistory_messages_fileMetadata | null;
-  sender: RoomHistory_messages_sender;
-  reply: RoomHistory_messages_reply[] | null;
-  reactions: RoomHistory_messages_reactions[];
-  urlAugmentation: RoomHistory_messages_urlAugmentation | null;
->>>>>>> wip migrate conversations -> rooms
   date: any;
 }
 
@@ -1422,6 +1410,7 @@ export interface RoomSearch_items_edges_node_members {
 
 export interface RoomSearch_items_edges_node_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -1519,7 +1508,6 @@ export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_organization
   photo: string | null;
 }
 
-<<<<<<< HEAD
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
@@ -1538,38 +1526,11 @@ export interface SendMessageVariables {
   replyMessages?: string[] | null;
   mentions?: string[] | null;
   room: string;
-=======
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-  user: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user;
->>>>>>> wip migrate conversations -> rooms
 }
 
 export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -1679,6 +1640,7 @@ export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members {
 
 export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -5036,11 +4998,18 @@ export interface ConferenceOffer_peerConnectionOffer_peers_connection {
   ice: string[];
 }
 
+<<<<<<< HEAD
 export interface ConferenceOffer_peerConnectionOffer_peers {
   __typename: "ConferencePeer";
   id: string;
   user: ConferenceOffer_peerConnectionOffer_peers_user;
   connection: ConferenceOffer_peerConnectionOffer_peers_connection | null;
+=======
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+>>>>>>> fix room mute
 }
 
 export interface ConferenceOffer_peerConnectionOffer {
@@ -8282,6 +8251,7 @@ export interface RoomFull_SharedRoom_members {
 
 export interface RoomFull_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 

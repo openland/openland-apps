@@ -31,6 +31,7 @@ export const RoomFull = gql`
                     }
                 }
                 settings{
+                    id
                     mute
                 }
             }

@@ -261,7 +261,7 @@ export const RoomSetHidden = withChannelSetHidden((props) => (
     <SwitchComponent mutation={props.setHidden} val={(props as any).val} fieldName={'hidden'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ val: boolean, conversationId: string }>;
 
-class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mute: boolean }, conversationId: string }, { settings: { mute: boolean } }> {
+class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mute: boolean }, roomId: string }, { settings: { mute: boolean } }> {
     constructor(props: any) {
         super(props);
         this.state = { settings: props.settings };
@@ -273,7 +273,7 @@ class NotificationSettingsComponent extends React.Component<{ mutation: any, set
                 settings: {
                     mute: mute
                 },
-                conversationId: this.props.conversationId,
+                roomId: this.props.roomId,
             }
         });
     }
@@ -304,8 +304,8 @@ class NotificationSettingsComponent extends React.Component<{ mutation: any, set
 }
 
 const NotificationSettings = withConversationSettingsUpdate((props) => (
-    <NotificationSettingsComponent mutation={props.update} settings={(props as any).settings} conversationId={(props as any).conversationId} />
-)) as React.ComponentType<{ settings: { mute: boolean | null }, conversationId: string }>;
+    <NotificationSettingsComponent mutation={props.update} settings={(props as any).settings} roomId={(props as any).roomId} />
+)) as React.ComponentType<{ settings: { mute: boolean | null }, roomId: string }>;
 
 const RoomTabs = Glamorous.div({
     display: 'flex',
@@ -812,7 +812,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                     content={(
                         <div style={{ width: 160 }}>
                             <XMenuTitle>Notifications</XMenuTitle>
-                            <NotificationSettings settings={(sharedRoom || privateRoom)!.settings} conversationId={props.data.room!.id} />
+                            <NotificationSettings settings={(sharedRoom || privateRoom)!.settings} roomId={props.data.room!.id} />
                         </div>
                     )}
                 />
