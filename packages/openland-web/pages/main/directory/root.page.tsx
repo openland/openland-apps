@@ -5,12 +5,12 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import { RoomGroupProfile } from '../profile/RoomGroupProfileComponent';
 import {
     RootWrapper,
     Sidebar,
     Container
 } from './components/Layout';
+import { RoomProfile } from '../profile/RoomProfileComponent';
 
 class RootComponent extends React.Component<XWithRouter> {
     render() {
@@ -31,7 +31,7 @@ class RootComponent extends React.Component<XWithRouter> {
                 <Container>
                     {tab === 'rooms' && <RoomsExploreComponent />}
                     {tab === 'invite' && <MessengerComponent conversationId={router.routeQuery.conversationId} />}
-                    {tab === 'profile' && <RoomGroupProfile conversationId={router.routeQuery.conversationId} />}
+                    {tab === 'profile' && <RoomProfile conversationId={router.routeQuery.conversationId} />}
                 </Container>
             </RootWrapper>
         );

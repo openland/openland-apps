@@ -41,7 +41,6 @@ import {
     EditButton
 } from './OrganizationProfileComponent';
 import { Room_room_SharedRoom, RoomFull_SharedRoom_members } from 'openland-api/Types';
-import { withRoomMembers } from '../../../api/withRoomMembers';
 import { withRoom } from '../../../api/withRoom';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
@@ -92,6 +91,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                             />
                             <LeaveChatComponent />
                             <RoomEditComponent
+                                roomId={chat.id}
                                 title={chat.title}
                                 description={chat.description}
                                 photoRef={chat.photo}
@@ -231,7 +231,7 @@ const MembersProvider = (props: MembersProviderProps) => {
                     ))}
                 </SectionContent>
                 {(props.meOwner) && (
-                    <AddMemberForm channelId={props.chatId} refetchVars={{ conversationId: props.chatId }} />
+                    <AddMemberForm roomId={props.chatId} />
                 )}
                 {props.meOwner && (
                     <RemoveMemberModal
@@ -246,21 +246,6 @@ const MembersProvider = (props: MembersProviderProps) => {
         return null;
     }
 };
-
-const Members = withRoomMembers((props) => {
-    let members = props.data.members;
-    return (
-        members
-            ? (
-                <MembersProvider
-                    members={members}
-                    chatId={(props as any).chatId}
-                    meOwner={(props as any).meOwner}
-                    chatTitle={(props as any).chatTitle}
-                />
-            ) : <XLoader loading={true} />
-    );
-}) as React.ComponentType<{ variables: { roomId: string }, chatId: string, meOwner: boolean, chatTitle: string }>;
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: Room_room_SharedRoom;
@@ -309,8 +294,8 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                 <Header chat={chat} />
                 <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
-                    <Members
-                        variables={{ roomId: this.props.conversationId }}
+                    <MembersProvider
+                        members={chat.members}
                         chatId={this.props.conversationId}
                         meOwner={chat.role === 'ADMIN' || chat.role === 'OWNER'}
                         chatTitle={chat.title}
@@ -338,7 +323,7 @@ const RoomGroupProfileProvider = withRoom(withRouter((props) => {
     );
 })) as React.ComponentType<{ variables: { id: string }, onDirectory?: boolean; handlePageTitle?: any, conversationId: string }>;
 
-export const RoomGroupProfile = (props: { conversationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
+export const RoomProfile = (props: { conversationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
     <RoomGroupProfileProvider
         variables={{ id: props.conversationId }}
         handlePageTitle={props.handlePageTitle}

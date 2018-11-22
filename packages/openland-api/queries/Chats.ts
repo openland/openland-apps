@@ -160,73 +160,45 @@ export const CancelTypingMutation = gql`
 export const RoomAddMemberMutation = gql`
     mutation RoomAddMember($roomId: ID!, $userId: ID!) {
         betaRoomInvite(roomId: $roomId, invites: [{userId: $userId, role: MEMBER}]){
-            ...on SharedRoom{
-                id
-                members{
-                    role
-                    user{
-                        ...UserShort
-                    }
-                }
-            }
-            }
+           ...RoomFull
+        }
     }
     ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomAddMembersMutation = gql`
     mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
         betaRoomInvite(roomId: $roomId, invites: $invites){
-            ...on SharedRoom{
-                id
-                members{
-                    role
-                    membership
-                    user{
-                        ...UserShort
-                    }
-                }
-            }
+           ...RoomFull
         }
     }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomKickMutation = gql`
     mutation RoomKick($roomId: ID!, $userId: ID!) {
         betaRoomKick(roomId: $roomId, userId: $userId){
-            ...on SharedRoom{
-                id
-                membership
-                role
-                members{
-                    role
-                    membership
-                    user{
-                        ...UserShort
-                    }
-                }
-            }
+           ...RoomFull
         }
     }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomLeaveMutation = gql`
     mutation RoomLeave($roomId: ID!) {
         betaRoomLeave(roomId: $roomId){
-            ...on SharedRoom{
-                id
-                membership
-                role
-                members{
-                    role
-                    membership
-                    user{
-                        ...UserShort
-                    }
-                }
-            }
+           ...RoomFull
         }
     }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomSearchTextQuery = gql`
@@ -311,20 +283,12 @@ export const RoomSettingsUpdateMutation = gql`
 export const RoomJoinMutation = gql`
     mutation RoomJoin($roomId: ID!) {
         join: betaRoomJoin(roomId: $roomId){
-            ...on SharedRoom{
-                id
-                membership
-                role
-                members{
-                    role
-                    membership
-                    user{
-                        ...UserShort
-                    }
-                }
-            }
+           ...RoomFull
         }
     }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomSendEmailInviteMutation = gql`
@@ -336,20 +300,12 @@ export const RoomSendEmailInviteMutation = gql`
 export const RoomJoinInviteLinkMutation = gql`
     mutation RoomJoinInviteLink($invite: String!) {
         join: betaRoomInviteLinkJoin(invite: $invite){
-            ...on SharedRoom{
-                id
-                membership
-                role
-                members{
-                    role
-                    membership
-                    user{
-                        ...UserShort
-                    }
-                }
-            }
+           ...RoomFull
         }
     }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomRenewInviteLinkMutation = gql`
@@ -367,33 +323,12 @@ export const RoomInviteLinkQuery = gql`
 export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
         invite: betaRoomInviteInfo(invite: $invite){
-            room{
-                id
-                kind
-                title
-                photo
-                description
-                organization{
-                    ... OrganizationShort
-                }
-                membersCount
-                members{
-                    role
-                    membership
-                    user{
-                        ... UserShort
-                    }
-                }
-                membership
-            }            
-            invitedByUser{
-                ...UserShort
-            }
+           ...RoomFull
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
     ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomUpdateMutation = gql`

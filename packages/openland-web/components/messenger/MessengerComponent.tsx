@@ -350,10 +350,12 @@ export const RoomEditComponent = withAlterChat((props) => {
 
                 props.alter({
                     variables: {
+                        roomId: (props as any).roomId,
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            // TODO: recover edit photo
+                            // ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
                         }
                     }
                 });
@@ -362,7 +364,7 @@ export const RoomEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    // photoRef: sanitizeIamgeRef((props as any).photoRef),
                 }
             }}
         >
@@ -381,57 +383,7 @@ export const RoomEditComponent = withAlterChat((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, description: string | null }>;
-
-export const GroupEditComponent = withAlterChat((props) => {
-    let editTitle = (props as any).title;
-    let editPhotoRef = (props as any).photoRef;
-    let editDescription = (props as any).description;
-    let editLongDescription = (props as any).longDescription;
-    return (
-        <XModalForm
-            targetQuery="editChat"
-            title="Group settings"
-            useTopCloser={true}
-            defaultAction={(data) => {
-                let newTitle = data.input.title;
-                let newDescription = data.input.description;
-                let newPhoto = data.input.photoRef;
-
-                props.alter({
-                    variables: {
-                        input: {
-                            ...newTitle !== editTitle ? { title: newTitle } : {},
-                            ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                        }
-                    }
-                });
-            }}
-            defaultData={{
-                input: {
-                    title: (props as any).title || '',
-                    description: (props as any).description || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef),
-                    longDescription: (props as any).longDescription || '',
-                }
-            }}
-        >
-            <XVertical separator={12}>
-                <XHorizontal separator={12}>
-                    <XAvatarUpload size="default" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-                    <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                        <XInput field="input.title" flexGrow={1} title="Group name" size="large" />
-                        <XWithRole role="feature-chat-embedded-attach">
-                            <XInput field="input.longDescription" flexGrow={1} title="Attach link" size="large" />
-                        </XWithRole>
-                    </XVertical>
-                </XHorizontal>
-                <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
-            </XVertical>
-        </XModalForm>
-    );
-}) as React.ComponentType<{ title: string, description: string | null, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ title: string, photoRef: any, description: string | null, roomId: string }>;
 
 export const AddMemberForm = withRoomAddMembers((props) => {
     return (
@@ -441,14 +393,14 @@ export const AddMemberForm = withRoomAddMembers((props) => {
             mutationDirect={true}
             actionName="Add"
             targetQuery="addMember"
-            defaultValues={{ id: (props as any).channelId }}
+            defaultValues={{ roomId: (props as any).roomId }}
         >
             <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XFormField>
         </XModalFormOld>
     );
-}) as React.ComponentType<{ refetchVars: { conversationId: string }, channelId: string }>;
+}) as React.ComponentType<{ roomId: string }>;
 
 const InviteButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -871,9 +823,10 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                 )}
                 {(sharedRoom && tab === 'members') && (
                     <RoomMembersComponent
+                        roomId={sharedRoom.id}
+                        members={sharedRoom.members}
                         channelTitle={title}
                         key={props.data.room!.id + '_members'}
-                        variables={{ roomId: sharedRoom.id }}
                         description={sharedRoom.description}
                         orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                         removeFrom="room"
@@ -886,10 +839,10 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                     </XWithRole>
                 )}
             </XHorizontal>
-            {sharedRoom && sharedRoom.kind === 'PUBLIC' && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} socialImageRef={undefined} photoRef={sharedRoom.photo} refetchVars={{ conversationId: props.data.room!.id }} />}
+            {sharedRoom && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} photoRef={sharedRoom.photo} roomId={sharedRoom.id} />}
 
-            <AddMemberForm channelId={props.data.room!.id} refetchVars={{ conversationId: props.data.room!.id }} />
-        </MessengerWrapper >
+            <AddMemberForm roomId={props.data.room!.id} />
+        </MessengerWrapper>
     );
 })) as React.ComponentType<{ variables: { id: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
 
