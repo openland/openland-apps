@@ -445,7 +445,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (messages.length > 0) {
             this.props.replyMessage({
                 variables: {
-                    conversationId: this.props.conversationId,
+                    roomId: this.props.conversationId,
                     message: message,
                     replyMessages: messages
                 }

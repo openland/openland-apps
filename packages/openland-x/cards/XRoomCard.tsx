@@ -9,7 +9,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { RoomSetFeatured, RoomSetHidden } from '../../openland-web/components/messenger/MessengerComponent';
-import { ChatSearchChannel_items_edges_node, SharedRoomKind } from 'openland-api/Types';
+import { SharedRoomKind, Room_room, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 
 const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
@@ -60,7 +60,7 @@ const RoomMembers = Glamorous.div({
 });
 
 interface XRoomCardProps {
-    room: ChatSearchChannel_items_edges_node;
+    room: Room_room_SharedRoom;
     path?: string;
     customButton?: any;
     customMenu?: any;

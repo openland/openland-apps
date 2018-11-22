@@ -217,7 +217,7 @@ const JoinButton = withChannelJoin((props) => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                await props.join({ variables: { channelId: (props as any).channelId } });
+                await props.join({ variables: { roomId: (props as any).channelId } });
             }}
         />
     );

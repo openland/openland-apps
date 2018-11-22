@@ -38,6 +38,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XView } from 'openland-x/XView';
+import { SharedRoomKind } from 'openland-api/Types';
 
 const NavigationContainer = Glamorous.div({
     minHeight: '100%',
@@ -627,9 +628,9 @@ export const CreateRoom = withCreateChannel((props) => {
             targetQuery="createRoom"
             defaultAction={async (data) => {
                 let oid = props.router.query.createRoom;
-                let room = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, oid: oid !== 'true' ? oid : undefined } });
+                let room = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, organizationId: oid !== 'true' ? oid : undefined, kind: SharedRoomKind.PUBLIC } });
                 delay(0).then(() => {
-                    props.router.push('/mail/' + room.data.channel.id);
+                    props.router.push('/mail/' + room.data.room.id);
                 });
 
             }}

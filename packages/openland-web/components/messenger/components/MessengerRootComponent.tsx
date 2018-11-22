@@ -17,11 +17,12 @@ import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
-import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import {
     MessageFull_mentions
 } from 'openland-api/Types';
+import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
+import { withChatLeave } from 'openland-web/api/withChatLeave';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -79,7 +80,7 @@ export const LeaveChatComponent = withChatLeave((props) => {
             targetQuery="leaveFromChat"
             submitBtnText="Leave"
             defaultAction={(data) => {
-                props.leaveFromChat({ variables: { conversationId: id } });
+                props.leaveFromChat({ variables: { roomId: id } });
             }}
             submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
@@ -274,7 +275,7 @@ const MessagesWithUser = withUserInfo((props) => (
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all
     if (!canUseDOM) {
-        return <Placeholder variables={{ conversationId: props.conversationId }} />;
+        return <Placeholder variables={{ roomId: props.conversationId }} />;
     }
     return (
         <MessengerContext.Consumer>

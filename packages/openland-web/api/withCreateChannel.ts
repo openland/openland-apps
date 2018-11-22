@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { CreateChannelMutation } from 'openland-api';
+import { RoomCreateMutation } from 'openland-api';
 
-export const withCreateChannel = graphqlMutation(CreateChannelMutation, 'createChannel');
+export const withCreateChannel = graphqlMutation(RoomCreateMutation, 'createChannel');

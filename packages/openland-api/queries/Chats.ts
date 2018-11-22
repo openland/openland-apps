@@ -196,6 +196,27 @@ export const RoomKickMutation = gql`
         betaRoomKick(roomId: $roomId, userId: $userId){
             ...on SharedRoom{
                 id
+                membership
+                role
+                members{
+                    role
+                    membership
+                    user{
+                        ...UserShort
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export const RoomLeaveMutation = gql`
+    mutation RoomLeave($roomId: ID!) {
+        betaRoomLeave(roomId: $roomId){
+            ...on SharedRoom{
+                id
+                membership
+                role
                 members{
                     role
                     membership
@@ -292,6 +313,8 @@ export const RoomJoinMutation = gql`
         join: betaRoomJoin(roomId: $roomId){
             ...on SharedRoom{
                 id
+                membership
+                role
                 members{
                     role
                     membership
@@ -315,6 +338,8 @@ export const RoomJoinInviteLinkMutation = gql`
         join: betaRoomInviteLinkJoin(invite: $invite){
             ...on SharedRoom{
                 id
+                membership
+                role
                 members{
                     role
                     membership

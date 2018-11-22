@@ -32,7 +32,7 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
                                 <ZListItemGroup >
                                     <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`Join Openland! - Messaging for smart people https://app.openland.com/joinChannel/${data.data!.link}`)} />
                                     <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/joinChannel/${data.data!.link}` })} />
-                                    <YMutation mutation={RoomRenewInviteLinkMutation} variables={{ roomId: this.props.router.params.id }} refetchQueriesVars={[{ query: ChannelInviteLinkQuery, variables: { roomId: this.props.router.params.id } }]}>
+                                    <YMutation mutation={RoomRenewInviteLinkMutation} variables={{ roomId: this.props.router.params.id }} refetchQueriesVars={[{ query: RoomInviteLinkQuery, variables: { roomId: this.props.router.params.id } }]}>
                                         {renew => <ZListItem
                                             appearance="action"
                                             text="Renew link"

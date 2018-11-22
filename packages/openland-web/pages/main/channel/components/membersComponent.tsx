@@ -8,7 +8,7 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
-import { ChannelMembers, UserShort } from 'openland-api/Types';
+import { UserShort, RoomMembers, SharedRoomMembershipStatus } from 'openland-api/Types';
 import { XLoader } from 'openland-x/XLoader';
 import { withChannelInvite } from '../../../../api/withChannelInvite';
 import { XMutation } from 'openland-x/XMutation';
@@ -84,7 +84,7 @@ const Accept = withChannelInvite((props) => {
 }) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
 
 interface MemberItemProps {
-    item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort;
+    item: { status: SharedRoomMembershipStatus} & UserShort;
     channelId: string;
     removeFrom: string;
 }
@@ -113,7 +113,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
             >
                 <XUserCard
                     user={user}
-                    customButton={(user.status === 'requested') ? (
+                    customButton={(user.status === 'REQUESTED') ? (
                         <>
                             <Accept
                                 variables={{ userId: user.id, channelId: this.props.channelId }}
@@ -131,7 +131,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
                             </div>
                         </>
                     ) : undefined}
-                    customMenu={(user.status === 'member') ? (
+                    customMenu={(user.status === 'MEMBER') ? (
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
@@ -165,7 +165,7 @@ export const RemoveMemberModal = withConversationKick((props) => {
                 await props.kick({
                     variables: {
                         userId: member.user.id,
-                        conversationId: (props as any).channelId
+                        roomId: (props as any).channelId
                     }
                 });
             }}
@@ -176,7 +176,7 @@ export const RemoveMemberModal = withConversationKick((props) => {
 }) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string, roomTitle: string }>;
 
 interface ChannelMembersComponentInnerProps {
-    data: ChannelMembers;
+    data: RoomMembers;
     channelTitle: string;
     channelId: string;
     description?: string | null;
@@ -192,8 +192,8 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
             return <XLoader loading={true} />;
         }
 
-        let requests = this.props.data.members.filter(m => m.status === 'requested');
-        let members = this.props.data.members.filter(m => m.status === 'member');
+        let requests = this.props.data.members.filter(m => m.membership === 'REQUESTED');
+        let members = this.props.data.members.filter(m => m.membership === 'MEMBER');
 
         return (
             <MembersWrapper>
@@ -209,7 +209,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         {requests.map(m => (
                             <MemberItem
                                 key={m.user.id}
-                                item={{ status: m.status as any, ...m.user }}
+                                item={{ status: m.membership as any, ...m.user }}
                                 channelId={this.props.channelId}
                                 removeFrom={this.props.removeFrom}
                             />
@@ -221,7 +221,7 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                     {(members.length > 1) && members.map(m => (
                         <MemberItem
                             key={m.user.id}
-                            item={{ status: m.status as any, ...m.user }}
+                            item={{ status: m.membership as any, ...m.user }}
                             channelId={this.props.channelId}
                             removeFrom={this.props.removeFrom}
                         />

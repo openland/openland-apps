@@ -6,16 +6,13 @@ import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemBase } from '../../components/ZListItemBase';
-import { GroupChatFullInfoQuery } from 'openland-api/GroupChatFullInfoQuery';
 import { Modals } from './modals/Modals';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { ConversationKickMutation, ConversationSettingsUpdateMutation, ChatUpdateGroupMutation } from 'openland-api';
-import { ChatAddMembersMutation } from 'openland-api';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, Room_room_SharedRoom } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
@@ -23,6 +20,8 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { XPStyles } from 'openland-xp/XPStyles';
+import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery } from 'openland-api';
+import { RoomAddMemberMutation } from 'openland-api/queries/Chats';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -46,24 +45,24 @@ class ProfileGroupComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Info" />
-                <ZQuery query={GroupChatFullInfoQuery} variables={{ conversationId: this.props.router.params.id }}>
+                <ZQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
                     {(resp) => {
-                        if (resp.data.chat.__typename !== 'GroupConversation' && resp.data.chat.__typename !== 'ChannelConversation') {
+                        let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
+                        if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC') ) {
                             throw Error('');
                         }
-                        let groupOrChannel = resp.data.chat.__typename === 'GroupConversation' ? 'group' : 'channel';
-                        let setOrChange = (resp.data.chat.photo || resp.data.chat.photos.length > 0) ? 'Change' : 'Set';
+                        let setOrChange = sharedRoom.photo ? 'Change' : 'Set';
                         return (
                             <SScrollView>
                                 <ZListItemHeader
-                                    title={resp.data.chat.title}
-                                    subtitle={resp.data.members.length + ' members'}
-                                    photo={(resp.data.chat as any).photo || (resp.data.chat.photos.length > 0 ? resp.data.chat.photos[0] : undefined)}
-                                    id={resp.data.chat.id}
+                                    title={sharedRoom.title}
+                                    subtitle={sharedRoom.members.length + ' members'}
+                                    photo={sharedRoom.photo}
+                                    id={sharedRoom.id}
                                 />
 
                                 <ZListItemGroup header={'Settings'}>
-                                    <YMutation mutation={ChatUpdateGroupMutation} {...{ leftIcon: true }}>
+                                    <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZAvatarPicker
                                                 showLoaderOnUpload={true}
@@ -72,14 +71,14 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     return <ZListItem
                                                         onPress={props.showPicker}
                                                         leftIcon={require('assets/ic-cell-photo-ios.png')}
-                                                        text={`${setOrChange} ${groupOrChannel} photo`}
+                                                        text={`${setOrChange} room photo`}
                                                         navigationIcon
                                                     />;
                                                 }}
                                                 onChanged={(val) => {
                                                     save({
                                                         variables: {
-                                                            conversationId: this.props.router.params.id,
+                                                            roomId: this.props.router.params.id,
                                                             input: {
                                                                 photoRef: val
                                                             }
@@ -91,7 +90,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         )}
                                     </YMutation>
 
-                                    <YMutation mutation={ChatUpdateGroupMutation} {...{ leftIcon: true }}>
+                                    <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZListItem
                                                 leftIcon={require('assets/ic-cell-name-ios.png')}
@@ -100,19 +99,19 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                 onPress={() =>
                                                     Modals.showTextEdit(
                                                         this.props.router,
-                                                        resp.data.chat.title,
-                                                        async (src) => await save({ variables: { input: {title: src}, conversationId: resp.data.chat.id } })
+                                                        sharedRoom!.title,
+                                                        async (src) => await save({ variables: { input: { title: src }, roomId: sharedRoom!.id } })
                                                     )
                                                 }
                                             />
                                         )}
                                     </YMutation>
-                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ leftIcon: true }}>
+                                    <YMutation mutation={RoomSettingsUpdateMutation} {...{ leftIcon: true }}>
                                         {(update) => {
                                             let toggle = async () => {
                                                 startLoader();
                                                 try {
-                                                    await update({ variables: { conversationId: resp.data.chat.id, settings: { mute: !resp.data.chat.settings.mute } } });
+                                                    await update({ variables: { roomId: sharedRoom!.id, settings: { mute: !sharedRoom!.settings.mute } } });
                                                 } catch (e) {
                                                     Alert.alert(e.message);
                                                 }
@@ -122,7 +121,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                 <ZListItem
                                                     leftIcon={require('assets/ic-cell-notif-ios.png')}
                                                     text="Notifications"
-                                                    toggle={!resp.data.chat.settings.mute}
+                                                    toggle={!sharedRoom!.settings.mute}
                                                     onToggle={toggle}
                                                     onPress={toggle}
                                                 />
@@ -130,19 +129,19 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         }
                                         }
                                     </YMutation>
-                                    {resp.data.chat.__typename === 'ChannelConversation' && resp.data.chat.organization!.isOwner &&
+                                    {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER') &&
                                         < ZListItem
                                             leftIcon={require('assets/ic-cell-link-ios.png')}
                                             text="Invite via Link"
                                             path="ChannelInviteLinkModal"
-                                            pathParams={{ id: resp.data.chat.id }}
+                                            pathParams={{ id: sharedRoom.id }}
                                         />}
                                 </ZListItemGroup>
 
                                 <ZListItemGroup header="Members">
 
                                     <SDeferred>
-                                        <YMutation mutation={ChatAddMembersMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]} >
+                                        <YMutation mutation={RoomAddMemberMutation} >
                                             {(add) => (
                                                 <TouchableHighlight
                                                     underlayColor={XPStyles.colors.selectedListItem}
@@ -153,7 +152,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                 title: 'Add', action: async (users) => {
                                                                     startLoader();
                                                                     try {
-                                                                        await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: resp.data.chat.id } });
+                                                                        await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: sharedRoom!.id } });
                                                                         this.props.router.back();
                                                                     } catch (e) {
                                                                         Alert.alert(e.message);
@@ -162,7 +161,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                 }
                                                             },
                                                             'Add members',
-                                                            resp.data.members.map(m => m.user.id)
+                                                            sharedRoom!.members.map(m => m.user.id)
                                                         );
                                                     }}
                                                 >
@@ -177,8 +176,8 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                 </TouchableHighlight>
                                             )}
                                         </YMutation>
-                                        {resp.data.members.map((v) => (
-                                            <YMutation mutation={ConversationKickMutation} refetchQueriesVars={[{ query: GroupChatFullInfoQuery, variables: { conversationId: this.props.router.params.id } }]}>
+                                        {sharedRoom.members.map((v) => (
+                                            <YMutation mutation={RoomKickMutation} refetchQueriesVars={[{ query: RoomInviteInfoQuery, variables: { roomId: this.props.router.params.id } }]}>
                                                 {(kick) => (
                                                     <View>
                                                         <UserViewAsync
@@ -193,7 +192,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                             onPress: async () => {
                                                                                 startLoader();
                                                                                 try {
-                                                                                    await kick({ variables: { userId: v.user.id, conversationId: this.props.router.params.id } });
+                                                                                    await kick({ variables: { userId: v.user.id, roomId: this.props.router.params.id } });
                                                                                 } catch (e) {
                                                                                     Alert.alert(e.message);
                                                                                 }

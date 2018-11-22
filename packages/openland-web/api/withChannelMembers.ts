@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { ChannelMembersQuery } from 'openland-api';
+import { RoomMembersQuery } from 'openland-api';
 
-export const withChannelMembers = graphqlRouted(ChannelMembersQuery);
+export const withChannelMembers = graphqlRouted(RoomMembersQuery);

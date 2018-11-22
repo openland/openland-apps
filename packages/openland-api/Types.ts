@@ -1282,6 +1282,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_members {
 export interface RoomKick_betaRoomKick_SharedRoom {
   __typename: "SharedRoom";
   id: string;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   members: RoomKick_betaRoomKick_SharedRoom_members[];
 }
 
@@ -1294,6 +1296,63 @@ export interface RoomKick {
 export interface RoomKickVariables {
   roomId: string;
   userId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomLeave
+// ====================================================
+
+export interface RoomLeave_betaRoomLeave_PrivateRoom {
+  __typename: "PrivateRoom";
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomLeave_betaRoomLeave_SharedRoom_members_user;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  members: RoomLeave_betaRoomLeave_SharedRoom_members[];
+}
+
+export type RoomLeave_betaRoomLeave = RoomLeave_betaRoomLeave_PrivateRoom | RoomLeave_betaRoomLeave_SharedRoom;
+
+export interface RoomLeave {
+  betaRoomLeave: RoomLeave_betaRoomLeave;
+}
+
+export interface RoomLeaveVariables {
+  roomId: string;
 }
 
 /* tslint:disable */
@@ -1759,6 +1818,8 @@ export interface RoomJoin_join_SharedRoom_members {
 export interface RoomJoin_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   members: RoomJoin_join_SharedRoom_members[];
 }
 
@@ -1833,6 +1894,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_members {
 export interface RoomJoinInviteLink_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   members: RoomJoinInviteLink_join_SharedRoom_members[];
 }
 

@@ -1,5 +1,5 @@
 
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ChannelInviteMembersMutation } from 'openland-api';
+import { RoomSendEmailInviteMutation } from 'openland-api';
 
-export const withChanneSendlnviteLink = graphqlMutation(ChannelInviteMembersMutation, 'send');
+export const withChanneSendlnviteLink = graphqlMutation(RoomSendEmailInviteMutation, 'send');

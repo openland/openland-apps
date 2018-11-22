@@ -11,7 +11,6 @@ import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
@@ -31,7 +30,6 @@ import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
 import { UserSelect } from '../../api/UserSelect';
-import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
@@ -39,6 +37,7 @@ import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { ConferenceComponent } from '../conference/ConferenceComponent';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
 
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
@@ -220,10 +219,6 @@ class BlockSwitcherComponent extends React.Component<{ unblock: any, block: any,
         );
     }
 }
-
-const BlockButton = withBlockUser((props) => (
-    <BlockSwitcherComponent block={props.block} unblock={props.unblock} blocked={(props as any).blocked} userId={(props as any).userId} refetchVars={(props as any).refetchVars} />
-)) as React.ComponentType<{ blocked: boolean, userId: string, refetchVars: { conversationId: string } }>;
 
 class SwitchComponent extends React.Component<{ mutation: any, conversationId: string, val: boolean, fieldName: string, refetchVars: { conversationId: string } }, { val: boolean }> {
     constructor(props: any) {
@@ -407,7 +402,6 @@ export const GroupEditComponent = withAlterChat((props) => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
-                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
@@ -415,7 +409,6 @@ export const GroupEditComponent = withAlterChat((props) => {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
                             ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
                         }
                     }
                 });
@@ -445,11 +438,11 @@ export const GroupEditComponent = withAlterChat((props) => {
     );
 }) as React.ComponentType<{ title: string, description: string | null, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
 
-export const AddMemberForm = withSuperAddToChannel((props) => {
+export const AddMemberForm = withRoomAddMembers((props) => {
     return (
         <XModalFormOld
             title="Add member to room"
-            submitMutation={props.add}
+            submitMutation={props.addMember}
             mutationDirect={true}
             actionName="Add"
             targetQuery="addMember"

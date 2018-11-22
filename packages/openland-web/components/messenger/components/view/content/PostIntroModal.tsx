@@ -423,7 +423,7 @@ const MutationProvider = withIntro((props) => (
             } else {
                 await props.createIntro({
                     variables: {
-                        conversationId: (props as any).conversationId,
+                        roomId: (props as any).conversationId,
                         userId: input.userId[0],
                         about: input.about,
                         file: input.file

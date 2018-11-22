@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ConversationKickMutation, ChannelMembersQuery } from 'openland-api';
+import { RoomKickMutation } from 'openland-api';
 
-export const withConversationKick = graphqlMutation(ConversationKickMutation, 'kick', {refetchQueries: [ChannelMembersQuery]});
+export const withConversationKick = graphqlMutation(RoomKickMutation, 'kick');
