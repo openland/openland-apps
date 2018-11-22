@@ -4,7 +4,7 @@ import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XRichTextInput } from 'openland-x/XRichTextInput';
+import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
 import { ChannelMembers_members } from 'openland-api/Types';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
@@ -347,7 +347,7 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
         return [];
     }
     return data.map(({user: { id, name, photo, online, isYou }}) => {
-        return { id, name, avatar: photo, online, isYou };
+        return { id, name: removeEmojiFromText(name), avatar: photo, online, isYou };
     });
 };
 
@@ -399,9 +399,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
-
+        debugger;
         return this.props.members.filter(({user: { name }}) => {
-            return mentionsNames.indexOf(`@${name}`) !== -1;
+            return mentionsNames.indexOf(`@${removeEmojiFromText(name)}`) !== -1;
         }).map(({user}) => user);
     }
 
@@ -613,7 +613,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         } = nextProps.messagesContext;
 
         if (nextProps.members && nextProps.members !== this.props.members) {
-            this.listOfMembersNames = nextProps.members.map(({user: {name}}: {user: {name: string}}) => `@${name}`);
+            this.listOfMembersNames = nextProps.members.map(({user: {name}}: {user: {name: string}}) => `@${removeEmojiFromText(name)}`);
         }
 
         let newState: any = {};

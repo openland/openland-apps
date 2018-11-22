@@ -6,7 +6,7 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
-import { MentionComponentInner } from 'openland-x/XRichTextInput';
+import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
 
 export interface MessageTextComponentProps {
     mentions: MessageFull_mentions[] | null;
@@ -74,8 +74,8 @@ function indexes(source: string, find: string) {
     return result;
 }
 
-const SimpleComponent = ({ children }: any) => {
-    return <span style={{color: 'red'}}>{children}</span>;
+const getMentionString = (str: string) => {
+    return `@${removeEmojiFromText(str)}`;
 };
 
 class MessageWithMentionsTextComponent extends React.PureComponent<{
@@ -96,15 +96,15 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             // splitting message
             const arr: any = [];
             splittedTextArray.forEach((item: any) => {
-                item.split(`@${name}`).forEach((splitted: any) => arr.push(splitted));
+                item.split(getMentionString(name)).forEach((splitted: any) => arr.push(splitted));
             });
 
             splittedTextArray = arr;
 
             // matching mentions
-            const result = indexes(text, name);
+            const result = indexes(text, removeEmojiFromText(name));
             result.forEach((index) => {
-                mentionMatchesMap[index] = name;
+                mentionMatchesMap[index] = removeEmojiFromText(name);
             });
         });
 
@@ -116,11 +116,11 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 
         const splittedArray: any = [];
         mentions.forEach(({ name }: any) => {
-            splittedArray.push(text.split(`@${name}`));
+            splittedArray.push(text.split(getMentionString(name)));
         });
 
         const checkIsYou = (name: string) => {
-            const myMention = mentions.find((mention) => mention.name === name);
+            const myMention = mentions.find((mention) => removeEmojiFromText(mention.name) === name);
             return myMention ? myMention.isYou : false; 
         };
 
