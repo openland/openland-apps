@@ -673,8 +673,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (statlesMessageReply) {
             stateMessage = statlesMessageReply;
         }
-
-        console.log(this.props.mentionsData);
       
         return (
             <SendMessageWrapper>

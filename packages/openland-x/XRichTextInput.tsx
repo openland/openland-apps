@@ -127,7 +127,7 @@ export type MentionDataT = {
     name: string,
     title: string,
     avatar: string,
-    isMyself?: boolean;
+    isYou?: boolean;
     online?: boolean;
 };
 
@@ -153,8 +153,8 @@ const positionSuggestions = ({ state, props }: any) => {
 
 const MentionComponent = Glamorous.span(
     {},
-    ({ isMyself }: { isMyself: boolean }) => {
-        if (isMyself) {
+    ({ isYou }: { isYou: boolean }) => {
+        if (isYou) {
             return {
                 // different style for myself mention
                 color: 'red',
@@ -171,7 +171,7 @@ const mentionPlugin = createMentionPlugin({
     mentionComponent: (props: any) => {
         return (
             <MentionComponent
-                isMyself={props.mention.isMyself}
+                isYou={props.mention.isYou}
                 className={props.className}
                 // eslint-disable-next-line no-alert
                 onClick={() => console.log('Clicked on the Mention!')}
@@ -308,14 +308,14 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         }
     }
 
-    componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value && !this.state.beChanged) {
-            const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(state)
-            });
-        }
-    }
+    // componentWillReceiveProps(nextProps: XRichTextInputProps) {
+    //     if (this.props.value !== nextProps.value && !this.state.beChanged) {
+    //         const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
+    //         this.setState({
+    //             editorState: EditorState.moveFocusToEnd(state)
+    //         });
+    //     }
+    // }
 
     render() {
         if (canUseDOM) {

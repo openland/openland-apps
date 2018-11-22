@@ -80,6 +80,7 @@ export interface DataSourceMessageItem {
     };
     urlAugmentation?: MessageFull_urlAugmentation;
     reactions?: MessageFull_reactions[];
+    mentions?: MessageFull_mentions[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -94,6 +95,8 @@ export interface DataSourceDateItem {
 }
 
 export function convertMessage(src: MessageFullFragment & { local?: boolean }, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
+    
+    console.log(src);
     return {
         type: 'message',
         id: src.id,

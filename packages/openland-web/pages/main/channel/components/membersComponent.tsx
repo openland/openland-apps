@@ -243,15 +243,18 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
     }
 }
 
-export const ChannelMembersComponent = withChannelMembers((props) => (
-    <ChannelMembersComponentInner
-        data={props.data}
-        channelTitle={(props as any).channelTitle}
-        channelId={(props.variables as any).channelId}
-        description={(props as any).description}
-        longDescription={(props as any).longDescription}
-        orgId={(props as any).orgId}
-        emptyText={(props as any).emptyText}
-        removeFrom={(props as any).removeFrom}
-    />
-)) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string | null, longDescription?: string | null, orgId: string }>;
+export const ChannelMembersComponent = withChannelMembers((props) => {
+    console.log(JSON.stringify(props.data.members, null, 2));
+    return (
+        <ChannelMembersComponentInner
+            data={props.data}
+            channelTitle={(props as any).channelTitle}
+            channelId={(props.variables as any).channelId}
+            description={(props as any).description}
+            longDescription={(props as any).longDescription}
+            orgId={(props as any).orgId}
+            emptyText={(props as any).emptyText}
+            removeFrom={(props as any).removeFrom}
+        />
+    );
+}) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string | null, longDescription?: string | null, orgId: string }>;

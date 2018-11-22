@@ -87,26 +87,62 @@ export const LeaveChatComponent = withChatLeave((props) => {
     );
 });
 
-const mentionsData = [
+const withChannelMembersData = [
     {
-        name: 'Matthew Russell',
-        title: 'Senior Software Engineer',
-        avatar:
-            'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg'
+      'user': {
+        'id': 'WDZbkEbBelIVyYAX6KgltyyPWB',
+        'name': 'Sergey Lapin',
+        'firstName': 'Sergey',
+        'lastName': 'Lapin',
+        'photo': 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/512x512/0,0/',
+        'email': 'lapanoid@gmail.com',
+        'online': true,
+        'lastSeen': 'online',
+        'isYou': true,
+        'primaryOrganization': {
+          'id': '61gk9KRrl9ComJkvYnvdcddr4o',
+          'name': 'Openland',
+          'photo': 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/-/crop/1024x1024/0,0/',
+          '__typename': 'Organization'
+        },
+        '__typename': 'User'
+      },
+      'role': 'member',
+      'status': 'member',
+      '__typename': 'ChannelMember'
     },
     {
-        name: 'Julian Krispel-Samsel',
-        title: 'United Kingdom',
-        avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
-        online: true
-    },
-    {
-        name: 'Jyoti Puri',
-        title: 'New Delhi, India',
-        avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
-        isMyself: true
-    },
-];
+      'user': {
+        'id': '1pkzZ9z6YzTaxv0P6YvXCLv9yy',
+        'name': 'dev lapin',
+        'firstName': 'dev',
+        'lastName': 'lapin',
+        'photo': null,
+        'email': 'sergey.lapin.dev@gmail.com',
+        'online': false,
+        'lastSeen': '1542201066365',
+        'isYou': false,
+        'primaryOrganization': {
+          'id': 'nqmMBKalDlfl0RVrqoMAHWXdrA',
+          'name': 'openland',
+          'photo': null,
+          '__typename': 'Organization'
+        },
+        '__typename': 'User'
+      },
+      'role': 'owner',
+      'status': 'member',
+      '__typename': 'ChannelMember'
+    }
+  ];
+
+const convertChannelMembersDataToMentionsData = (data: any) => {
+    return data.map(({user: { id, name, photo, online, isYou }}) => {
+        return { id, name, avatar: photo, online, isYou };
+    });
+};
+
+const mentionsData = convertChannelMembersDataToMentionsData(withChannelMembersData);
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements ConversationStateHandler {
     messagesList = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
@@ -204,7 +240,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             throw Error('conversation should be defined here');
         }
 
-        this.conversation.sendMessage(text);
+        this.conversation.sendMessage(text, ['1pkzZ9z6YzTaxv0P6YvXCLv9yy', 'WDZbkEbBelIVyYAX6KgltyyPWB']);
         // this.conversation.sendMessage(text, [167]);
     }
 
@@ -250,7 +286,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         onSend={this.handleSend}
                         onSendFile={this.handleSendFile}
                         enabled={true}
-                        // mentionsData={this.props.mentionsData}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
