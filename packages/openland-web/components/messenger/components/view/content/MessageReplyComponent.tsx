@@ -4,7 +4,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { MessageFull_reply_sender, MessageFull_reply_fileMetadata, MessageFull_mentions } from 'openland-api/Types';
+import { MessageFull_reply_sender, MessageFull_reply_fileMetadata } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
 import { MessageImageComponent } from './MessageImageComponent';
@@ -72,7 +72,6 @@ const DateComponent = Glamorous.div({
 
 interface ReplyMessageProps {
     sender: MessageFull_reply_sender;
-    mentions: MessageFull_mentions[] | null;
     id: string;
     date: any;
     message: string | null;
@@ -86,7 +85,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
     let content = [];
     if (props.message) {
         content.push(
-            <MessageTextComponent message={props.message} mentions={props.mentions} key={'reply-text'} isService={false} isEdited={props.edited} />
+            <MessageTextComponent message={props.message} key={'reply-text'} isService={false} isEdited={props.edited} />
         );
     }
     if (props.file) {
