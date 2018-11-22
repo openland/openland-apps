@@ -294,10 +294,8 @@ export const GroupChatFullInfoQuery = gql`
 `;
 
 export const SendMessageMutation = gql`
-    mutation SendMessage($conversationId: ID!, $message: String, $file: String, $repeatKey: String!) {
-        sentMessage: alphaSendMessage(conversationId: $conversationId, message: $message, file: $file, repeatKey: $repeatKey) {
-            seq
-        }
+    mutation SendMessage($message: String, $file: String, $repeatKey: String, $replyMessages: [ID!], $mentions: [ID!], $room: ID!) {
+        sentMessage: betaMessageSend(message: $message, file: $file, repeatKey: $repeatKey, replyMessages: $replyMessages, mentions: $mentions, room: $room)
     }
 `;
 
