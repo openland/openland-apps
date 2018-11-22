@@ -222,7 +222,6 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }

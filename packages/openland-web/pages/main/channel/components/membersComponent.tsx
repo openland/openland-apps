@@ -244,7 +244,6 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
 }
 
 export const ChannelMembersComponent = withChannelMembers((props) => {
-    console.log(JSON.stringify(props.data.members, null, 2));
     return (
         <ChannelMembersComponentInner
             data={props.data}

@@ -95,8 +95,6 @@ export interface DataSourceDateItem {
 }
 
 export function convertMessage(src: MessageFullFragment & { local?: boolean }, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
-    
-    console.log(src);
     return {
         type: 'message',
         id: src.id,

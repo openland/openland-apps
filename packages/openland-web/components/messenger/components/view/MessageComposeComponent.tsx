@@ -5,13 +5,13 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
+import { ChannelMembers_members } from 'openland-api/Types';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
-import { MentionDataT } from 'openland-x/XRichTextInput';
 import { getConfig } from '../../../../config';
 import { MutationFunc } from 'react-apollo';
 import PhotoIcon from '../icons/ic-photo-2.svg';
@@ -25,6 +25,7 @@ import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
+import { withChannelMembers } from '../../../../api/withChannelMembers';
 import {
     ChatEditMessageVariables,
     ChatEditMessage,
@@ -298,7 +299,6 @@ const EditView = (props: { title: string, message: string, onCancel: () => void 
 );
 
 export interface MessageComposeComponentProps {
-    mentionsData: MentionDataT[];
     conversationType?: string;
     conversationId?: string;
     conversation?: ConversationEngine;
@@ -308,12 +308,16 @@ export interface MessageComposeComponentProps {
     onChange?: (text: string) => void;
 }
 
+interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
+    members: ChannelMembers_members[];
+}
+
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
     draft?: string | null;
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    mentionsData: MentionDataT[];
+    members: ChannelMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
@@ -336,6 +340,15 @@ interface MessageComposeComponentInnerState {
     statlesChatId?: string;
     beDrafted: boolean;
 }
+
+const convertChannelMembersDataToMentionsData = (data: any) => {
+    if (!data) {
+        return [];
+    }
+    return data.map(({user: { id, name, photo, online, isYou }}) => {
+        return { id, name, avatar: photo, online, isYou };
+    });
+};
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps, MessageComposeComponentInnerState> {
 
@@ -673,7 +686,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (statlesMessageReply) {
             stateMessage = statlesMessageReply;
         }
-      
+
+        const mentionsData = convertChannelMembersDataToMentionsData(this.props.members);
+        
         return (
             <SendMessageWrapper>
                 <DropArea
@@ -697,7 +712,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                         )}
                         <TextInputWrapper>
                             <XRichTextInput
-                                mentionsData={this.props.mentionsData}
+                                mentionsData={mentionsData}
                                 placeholder="Write a message..."
                                 flexGrow={1}
                                 onChange={this.handleChange}
@@ -751,25 +766,36 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 }
 
-export const MessageComposeComponent = withMessageState(withUserInfo((props) => (
-    <MessagesStateContext.Consumer>
-        {(state: MessagesStateContextProps) => (
-            <MessageComposeComponentInner
-                {...props}
-                messagesContext={state}
-                replyMessage={props.replyMessage}
-                saveDraft={props.saveDraft}
-                draft={props.draft}
-            />
-        )}
-    </MessagesStateContext.Consumer>
-))) as React.ComponentType<MessageComposeWithDraft>;
+export const MessageComposeComponent = withMessageState(withUserInfo((props) => {
+    return (
+        <MessagesStateContext.Consumer>
+            {(state: MessagesStateContextProps) => (
+                <MessageComposeComponentInner
+                    {...props}
+                    messagesContext={state}
+                    replyMessage={props.replyMessage}
+                    saveDraft={props.saveDraft}
+                    draft={props.draft}
+                />
+            )}
+        </MessagesStateContext.Consumer>
+    );
+})) as React.ComponentType<MessageComposeWithChannelMembers>;
+
+const MessageComposeComponentChannelMembers = withChannelMembers(props => {
+    return (
+        <MessageComposeComponent 
+            members={props.data.members} 
+            {...props} 
+        />
+    );
+}) as React.ComponentType<MessageComposeComponentProps>;
 
 export const MessageComposeComponentDraft = withGetDraftMessage(props => {
     return (
-        <MessageComposeComponent 
+        <MessageComposeComponentChannelMembers 
             draft={props.data.message} 
             {...props} 
         />
     );
-}) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string } }>;
+}) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string, channelId?: string } }>;

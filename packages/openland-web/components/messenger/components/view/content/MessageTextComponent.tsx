@@ -114,16 +114,16 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     });
 
     return (
-        <span>
+        <>
             {splittedTextArray.map((textItem: any, key: any) => {
-                return (<>
+                return (<span key={key}>
                     {textItem}
                     <SimpleComponent>
                         {mentionMatchesArray[key]}
                     </SimpleComponent>
-                </>);
+                </span>);
             })}
-        </span>
+        </>
     );
   }
 }
