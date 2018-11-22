@@ -13,8 +13,8 @@ const ContentWrapper = Glamorous(XPopper.Content)({
 });
 
 const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
-    backgroundColor: props.activated ? '#fff' : 'none',
-    borderColor: props.activated ? '#dcdee4' : 'none',
+    backgroundColor: props.activated ? '#f6f6f6' : 'none',
+    borderColor: props.activated ? 'transparent!important' : 'none',
     borderRadius: 10,
     fontWeight: 400,
     fontSize: 14,

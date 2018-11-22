@@ -6,7 +6,13 @@ export const XViewSelectedContext = React.createContext<boolean>(false);
 export interface XViewProps {
 
     //
-    // Flex Grow
+    // Position
+    //
+
+    position?: 'relative' | 'absolute' | 'fixed' | null;
+
+    //
+    // Flex
     //
 
     flexGrow?: number | null;
@@ -31,12 +37,12 @@ export interface XViewProps {
     paddingBottom?: number | null;
     paddingLeft?: number | null;
     paddingRight?: number | null;
-    height?: number | null;
-    width?: number | null;
-    minHeight?: number | null;
-    minWidth?: number | null;
-    maxHeight?: number | null;
-    maxWidth?: number | null;
+    height?: number | string | null;
+    width?: number | string | null;
+    minHeight?: number | string | null;
+    minWidth?: number | string | null;
+    maxHeight?: number | string | null;
+    maxWidth?: number | string | null;
 
     //
     // Visual
@@ -90,6 +96,8 @@ const styles = new Map<string, string>();
 
 const XViewContainer = (props: XViewProps) => {
 
+    let position: 'relative' | 'absolute' | 'fixed' | undefined;
+
     let flexGrow: number | undefined;
     let flexShrink: number | undefined;
     let flexBasis: number | undefined;
@@ -108,12 +116,12 @@ const XViewContainer = (props: XViewProps) => {
     let paddingRight: number | undefined;
     let paddingLeft: number | undefined;
 
-    let width: number | undefined;
-    let height: number | undefined;
-    let minWidth: number | undefined;
-    let minHeight: number | undefined;
-    let maxWidth: number | undefined;
-    let maxHeight: number | undefined;
+    let width: number | string | undefined;
+    let height: number | string | undefined;
+    let minWidth: number | string | undefined;
+    let minHeight: number | string | undefined;
+    let maxWidth: number | string | undefined;
+    let maxHeight: number | string | undefined;
 
     let borderRadius: number | string | undefined;
     let backgroundColor: string | undefined;
@@ -175,6 +183,14 @@ const XViewContainer = (props: XViewProps) => {
     }
     if (props.whiteSpace !== undefined && props.whiteSpace !== null) {
         whiteSpace = props.whiteSpace;
+    }
+
+    //
+    // Position
+    //
+
+    if (props.position !== undefined && props.position !== null) {
+        position = props.position;
     }
 
     //
@@ -510,6 +526,13 @@ const XViewContainer = (props: XViewProps) => {
         let key = 'white-space: ' + whiteSpace;
         if (!styles.has(key)) {
             styles.set(key, glamor.css({ whiteSpace: whiteSpace }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (position !== undefined) {
+        let key = 'position: ' + position;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ position: position }).toString());
         }
         css.push(styles.get(key)!);
     }

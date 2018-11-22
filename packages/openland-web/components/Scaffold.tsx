@@ -39,19 +39,6 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XView } from 'openland-x/XView';
 
-// 
-// Navigation
-//
-
-const NavigationWrapper = Glamorous.div<{ activeSearch: boolean }>((props) => ({
-    height: '100%',
-    display: 'flex',
-    flexShrink: 0,
-    order: 1,
-    position: 'fixed',
-    zIndex: props.activeSearch ? 1 : 0
-}));
-
 const NavigationContainer = Glamorous.div({
     minHeight: '100%',
     flexGrow: 1,
@@ -680,6 +667,66 @@ export class Scaffold extends React.Component<{}> {
         let menu = findChild(this.props.children, '_isSidebarMenu');
         let content = findChild(this.props.children, '_isSidebarContent');
 
+        let contentView = (
+            <XView
+                flexDirection="column"
+                backgroundColor={XThemeDefault.backgroundColor}
+                flexGrow={1}
+                flexBasis={0}
+                flexShrink={1}
+                minWidth={0}
+                marginLeft={menu !== undefined ? 342 : 64}
+            >
+                {content}
+            </XView>
+        );
+        let menuView = (
+            <XView
+                flexDirection="row"
+                height="100%"
+                position="fixed"
+            >
+                <NavigationScroller>
+                    <NavigationContainer>
+                        <XLink path="/">
+                            <Logo />
+                        </XLink>
+
+                        <NavigationDivider top={0} bottom={16} />
+
+                        <MessengerButton />
+
+                        <XPopper
+                            placement="right"
+                            showOnHoverContent={false}
+                            showOnHover={true}
+                            style="dark"
+                            padding={-2}
+                            groupId="scaffold_tooltip"
+                            content={(
+                                <strong>{TextAppBar.items.directory}</strong>
+                            )}
+                        >
+                            <NavigatorItem path="/directory" activateForSubpaths={true}>
+                                <DirecoryIcon />
+                            </NavigatorItem>
+                        </XPopper>
+                        <BottomNavigation>
+                            <AddMenu />
+                            <XWithRole role={['super-admin', 'software-developer']}>
+                                <AdminMenu />
+                            </XWithRole>
+                            <NavigationDivider top={10} bottom={10} />
+                            <NavigatorItem>
+                                <UserProfile />
+                            </NavigatorItem>
+                        </BottomNavigation>
+                    </NavigationContainer>
+                </NavigationScroller>
+                {menu}
+            </XView>
+        );
+
         return (
             <XView
                 flexDirection="row"
@@ -687,63 +734,12 @@ export class Scaffold extends React.Component<{}> {
                 flexGrow={1}
                 flexBasis={0}
             >
-                <NavigationWrapper
-                    activeSearch={false}
-                >
-                    <NavigationScroller>
-                        <NavigationContainer>
-                            <XLink path="/">
-                                <Logo />
-                            </XLink>
-
-                            <NavigationDivider top={0} bottom={16} />
-
-                            <MessengerButton />
-
-                            <XPopper
-                                placement="right"
-                                showOnHoverContent={false}
-                                showOnHover={true}
-                                style="dark"
-                                padding={-2}
-                                groupId="scaffold_tooltip"
-                                content={(
-                                    <strong>{TextAppBar.items.directory}</strong>
-                                )}
-                            >
-                                <NavigatorItem path="/directory" activateForSubpaths={true}>
-                                    <DirecoryIcon />
-                                </NavigatorItem>
-                            </XPopper>
-                            <BottomNavigation>
-                                <AddMenu />
-                                <XWithRole role={['super-admin', 'software-developer']}>
-                                    <AdminMenu />
-                                </XWithRole>
-                                <NavigationDivider top={10} bottom={10} />
-                                <NavigatorItem>
-                                    <UserProfile />
-                                </NavigatorItem>
-                            </BottomNavigation>
-                        </NavigationContainer>
-                    </NavigationScroller>
-                    {menu}
-                </NavigationWrapper>
+                {contentView}
+                {menuView}
 
                 <CreateOrganization />
                 <CreateRoom />
 
-                <XView
-                    flexDirection="column"
-                    backgroundColor={XThemeDefault.backgroundColor}
-                    flexGrow={1}
-                    flexBasis={0}
-                    flexShrink={1}
-                    minWidth={0}
-                    marginLeft={menu !== undefined ? 342 : 64}
-                >
-                    {content}
-                </XView>
             </XView>
         );
     }
