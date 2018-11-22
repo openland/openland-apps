@@ -253,11 +253,11 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
             let loaded = await backoff(() => this.engine.client.client.query({
                 query: RoomHistoryQuery.document,
-                variables: { conversationId: this.conversationId, before: id },
+                variables: { roomId: this.conversationId, before: id },
                 fetchPolicy: 'network-only'
             }));
 
-            let history = [...(loaded.data as any).messages.messages].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+            let history = [...(loaded.data as any).messages].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
             history.reverse();
 
             this.messages = [...history, ...this.messages];
@@ -272,7 +272,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (this.dataSource.getSize() > 0) {
                 prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
             }
-            let sourceFragments = [...(loaded.data as any).messages.messages as MessageFullFragment[]];
+            let sourceFragments = [...(loaded.data as any).messages as MessageFullFragment[]];
             for (let i = 0; i < sourceFragments.length; i++) {
                 if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                     let d = new Date(parseInt(prevDate, 10));
@@ -482,7 +482,7 @@ export class ConversationEngine implements MessageSendHandler {
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId }
             });
-            (data as any).messages.messages = [event.message, ...(data as any).messages.messages];
+            (data as any).messages = [event.message, ...(data as any).messages];
             this.engine.client.client.writeQuery({
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId },
@@ -526,7 +526,7 @@ export class ConversationEngine implements MessageSendHandler {
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId }
             });
-            (data as any).messages.messages = (data as any).messages.messages.filter((m: any) => m.id !== event.message.id);
+            (data as any).messages = (data as any).messages.filter((m: any) => m.id !== event.message.id);
             this.engine.client.client.writeQuery({
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId },
@@ -552,7 +552,7 @@ export class ConversationEngine implements MessageSendHandler {
                 variables: { roomId: this.conversationId }
             });
             (data as any).messages.seq = event.seq;
-            (data as any).messages.messages = (data as any).messages.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
+            (data as any).messages = (data as any).messages.map((m: any) => m.id !== event.message.id ? m : event.message);
             this.engine.client.client.writeQuery({
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId },

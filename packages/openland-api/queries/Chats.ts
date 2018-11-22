@@ -111,8 +111,8 @@ export const ReplyMessageMutation = gql`
 `;
 
 export const RoomReadMutation = gql`
-    mutation RoomRead($roomId: ID!, $messageId: ID!) {
-        roomRead(id: $roomId, mid: $messageId)
+    mutation RoomRead($id: ID!, $mid: ID!) {
+        roomRead(id: $id, mid: $mid)
     }
 `;
 // keep it until web compose redesigned
