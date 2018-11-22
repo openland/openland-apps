@@ -267,14 +267,12 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         this.state = {
             suggestions: this.props.mentionsData || [],
             beChanged: false,
-            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
+            editorState: EditorState.createWithContent(ContentState.createFromText(props.value || ''))
         };
     }
 
     componentDidMount() {
-        if (this.props.autofocus) {
-            this.focus();
-        }
+        this.focus();
     }
 
     onSearchChange = ({ value }: any) => {
@@ -285,9 +283,18 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     focus = () => {
-        if (this.editorRef.current) {
-            this.editorRef.current.focus();
-        }
+        setTimeout(
+            () => {
+                if (this.editorRef && this.editorRef.current) {
+                    this.editorRef.current.focus();
+                }
+
+                this.setState({
+                    editorState: EditorState.moveFocusToEnd(this.state.editorState)
+                });
+            }, 
+            0
+        );
     }
 
     reset = () => {
@@ -311,26 +318,36 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     onChange = (editorState: EditorState) => {
-        this.setState(
-            { 
-                editorState,
-                beChanged: true
-            }, 
-            () => {
-                if (this.props.onChange) {
-                    this.props.onChange(editorState.getCurrentContent().getPlainText());
-                }
+        this.setState({ editorState }, () => {
+            if (this.props.onChange) {
+                this.props.onChange(
+                    editorState.getCurrentContent().getPlainText()
+                );
             }
-         );
+        });
+    }
+
+    updateOnProps = (nextProps: XRichTextInputProps) => {
+        const currentText = this.state.editorState
+            .getCurrentContent()
+            .getPlainText();
+
+        if (currentText !== nextProps.value) {
+            this.setState({
+                editorState: EditorState.moveFocusToEnd(
+                    EditorState.createWithContent(
+                        ContentState.createFromText(nextProps.value || '')
+                    )
+                )
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value && !this.state.beChanged) {
-            const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(state)
-            });
+        if (nextProps.value === this.props.value) {
+            return;
         }
+        this.updateOnProps(nextProps);
     }
 
     render() {
