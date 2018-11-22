@@ -394,7 +394,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
                 if (statlesChatId) {
                     let messages: string[];
-                    if (typeof(statlesMessageId) === 'string') {
+                    if (typeof (statlesMessageId) === 'string') {
                         messages = [statlesMessageId];
                     } else {
                         messages = [...statlesMessageId];
@@ -441,7 +441,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         this.changeDraft(src);
-
     }
 
     private localDraftSaver = (src: string) => {
@@ -601,6 +600,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
 
         if ((this.props.conversationId !== nextProps.conversationId)) {
+            newState = {
+                ...newState,
+                beDrafted: false
+            };
             if (useForwardMessages && forwardMessagesId) {
                 this.props.messagesContext.changeForwardConverstion();
                 newState = {
@@ -633,8 +636,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
         let draftChecker = !replyChecker && !useForwardMessages;
 
-        if (draftChecker) {
-
+        if (draftChecker && !this.state.beDrafted) {
             let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId);
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 

@@ -265,7 +265,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
             beChanged: false,
             editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
         };
-
     }
     private editorRef = React.createRef<Editor>();
 
@@ -308,14 +307,10 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     onChange = (editorState: EditorState) => {
-        if (this.props.value !== undefined && !this.state.beChanged) {
-            this.setState({
-                beChanged: true
-            });
-            return;
-        }
-
-        this.setState({ editorState: editorState });
+        this.setState({ 
+            editorState: editorState,
+            beChanged: true
+         });
 
         if (this.props.onChange) {
             this.props.onChange(editorState.getCurrentContent().getPlainText());
@@ -323,7 +318,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value) {
+        if (this.props.value !== nextProps.value && !this.state.beChanged) {
             const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
             this.setState({
                 editorState: EditorState.moveFocusToEnd(state)
