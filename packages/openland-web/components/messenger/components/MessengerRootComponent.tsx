@@ -6,7 +6,7 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MessageListComponent } from './view/MessageListComponent';
+import { MentionDataT } from 'openland-x/XRichTextInput';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
@@ -27,6 +27,7 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
     conversationType?: string;
     me: UserShort | null;
+    mentionsData: MentionDataT[];
 }
 
 interface MessagesComponentState {
@@ -86,6 +87,26 @@ export const LeaveChatComponent = withChatLeave((props) => {
     );
 });
 
+const mentionsData = [
+    {
+        name: 'Matthew Russell',
+        title: 'Senior Software Engineer',
+        avatar:
+            'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg'
+    },
+    {
+        name: 'Julian Krispel-Samsel',
+        title: 'United Kingdom',
+        avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
+        online: true
+    },
+    {
+        name: 'Jyoti Puri',
+        title: 'New Delhi, India',
+        avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
+        isMyself: true
+    },
+];
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState> implements ConversationStateHandler {
     messagesList = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
@@ -142,7 +163,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }
@@ -184,6 +204,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             throw Error('conversation should be defined here');
         }
         this.conversation.sendMessage(text);
+        // this.conversation.sendMessage(text, [167]);
     }
 
     handleSendFile = (file: UploadCare.File) => {
@@ -222,11 +243,13 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 />
                 {this.state.hideInput === false && (
                     <MessageComposeComponentDraft
+                        mentionsData={mentionsData}
                         conversation={this.conversation}
                         onChange={this.handleChange}
                         onSend={this.handleSend}
                         onSendFile={this.handleSendFile}
                         enabled={true}
+                        // mentionsData={this.props.mentionsData}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
