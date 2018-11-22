@@ -6,7 +6,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XStore } from 'openland-y-store/XStore';
 import { XTitle } from 'openland-x/XTitle';
-import { XLoadingBar } from 'openland-x/XLoadingBar';
 import { XButton } from 'openland-x/XButton';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 
@@ -19,7 +18,6 @@ class Toggler extends React.Component<{}, { visible: boolean }> {
         console.warn(this.state.visible);
         return (
             <XVertical>
-                <XLoadingBar visible={this.state.visible} />
                 <XButton text="Toggle" onClick={() => this.setState({ visible: !this.state.visible })} />
             </XVertical>
         );
