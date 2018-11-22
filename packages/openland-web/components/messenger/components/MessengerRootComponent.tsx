@@ -30,7 +30,6 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
     conversationType?: string;
     me: UserShort | null;
-    mentionsData: MentionDataT[];
 }
 
 interface MessagesComponentState {

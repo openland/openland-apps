@@ -314,11 +314,11 @@ interface MessageComposeWithDraft extends MessageComposeComponentProps {
 }
 
 interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
-    members: ChannelMembers_members[];
+    members?: ChannelMembers_members[];
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    members: ChannelMembers_members[];
+    members?: ChannelMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
@@ -346,7 +346,8 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
     if (!data) {
         return [];
     }
-    return data.map(({user: { id, name, photo, online, isYou }}) => {
+    return data.map(({user}: any) => {
+        const { id, name, photo, online, isYou } = user;
         return { id, name: removeEmojiFromText(name), avatar: photo, online, isYou };
     });
 };
@@ -399,7 +400,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
-        debugger;
         return this.props.members.filter(({user: { name }}) => {
             return mentionsNames.indexOf(`@${removeEmojiFromText(name)}`) !== -1;
         }).map(({user}) => user);
@@ -807,7 +807,7 @@ const MessageComposeComponentChannelMembers = withChannelMembers(props => {
             {...props} 
         />
     );
-}) as React.ComponentType<MessageComposeComponentProps>;
+}) as React.ComponentType<MessageComposeComponentProps & { draft: string | null }>;
 
 export const MessageComposeComponentDraft = withGetDraftMessage(props => {
     return (

@@ -249,7 +249,7 @@ export interface XRichTextInputProps extends XFlexStyles {
     onSubmit?: () => void;
     placeholder?: string;
     autofocus?: boolean;
-    mentionsData: MentionDataT[];
+    mentionsData?: MentionDataT[];
 }
 
 type XRichTextInputState = { 

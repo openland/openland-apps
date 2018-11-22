@@ -50,7 +50,7 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
         let tx = this.state.text.trim();
         if (tx.length > 0) {
             this.setState({ text: '' });
-            this.engine.sendMessage(tx);
+            this.engine.sendMessage(tx, null);
         }
         AsyncStorage.removeItem('compose_draft_' + this.props.chat.id);
 
