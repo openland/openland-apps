@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-// import decorateComponentWithProps from 'decorate-component-with-props';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -11,11 +10,7 @@ import createMentionPlugin, {
     MentionT,
     defaultSuggestionsFilter
 } from 'draft-js-mention-plugin';
-import Mention from 'draft-js-mention-plugin/lib/Mention';
-
-// console.log(Mention)
 import { XAvatar } from 'openland-x/XAvatar';
-import { XSGroupItemProps } from 'openland-xs/XSGroupItem';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
@@ -128,36 +123,15 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export interface XRichTextInputProps extends XFlexStyles {
-    onChange?: (value: string) => void;
-    value?: string;
-    onSubmit?: () => void;
-    placeholder?: string;
-    autofocus?: boolean;
-}
+export type MentionDataT = {
+    name: string,
+    title: string,
+    avatar: string,
+    isMyself?: boolean;
+    online?: boolean;
+};
 
 /// Mentions
-
-export const mentionsData = [
-    {
-        name: 'Matthew Russell',
-        title: 'Senior Software Engineer',
-        avatar:
-            'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg'
-    },
-    {
-        name: 'Julian Krispel-Samsel',
-        title: 'United Kingdom',
-        avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
-        online: true
-    },
-    {
-        name: 'Jyoti Puri',
-        title: 'New Delhi, India',
-        avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
-        isMyself: true
-    },
-];
 
 const positionSuggestions = ({ state, props }: any) => {
     let transform;
@@ -191,7 +165,6 @@ const MentionComponent = Glamorous.span(
 );
 
 const mentionPlugin = createMentionPlugin({
-    mentions: mentionsData,
     entityMutability: 'IMMUTABLE',
     mentionPrefix: '@',
     positionSuggestions,
@@ -256,18 +229,35 @@ const MentionEntry = (props: any) => {
     );
 };
 
+const { MentionSuggestions } = mentionPlugin;
+export interface XRichTextInputProps extends XFlexStyles {
+    onChange?: (value: string) => void;
+    value?: string;
+    onSubmit?: () => void;
+    placeholder?: string;
+    autofocus?: boolean;
+    mentionsData: MentionDataT[];
+}
+
+type XRichTextInputState = { 
+    editorState: EditorState, 
+    beChanged: boolean, 
+    suggestions: Array<MentionT> 
+};
+
 /// End Mentions
-export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { editorState: EditorState, beChanged: boolean, suggestions: Array<MentionT> }> {
+export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRichTextInputState> {
+    private editorRef = React.createRef<Editor>();
     constructor(props: XRichTextInputProps) {
         super(props);
+        
         this.state = {
-            suggestions: mentionsData,
+            suggestions: this.props.mentionsData || [],
             beChanged: false,
             editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
         };
 
     }
-    private editorRef = React.createRef<Editor>();
 
     componentDidMount() {
         if (this.props.autofocus) {
@@ -276,6 +266,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     onSearchChange = ({ value }: any) => {
+        const mentionsData = this.props.mentionsData || [];
         this.setState({
             suggestions: defaultSuggestionsFilter(value, mentionsData)
         });
@@ -332,8 +323,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
     }
 
     render() {
-        const { MentionSuggestions } = mentionPlugin;
-
         if (canUseDOM) {
             return (
                 <Container {...extractFlexProps(this.props)}>
@@ -351,7 +340,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, { e
                             keyBindingFn={keyBinding}
                             handleKeyCommand={this.onHandleKey}
                             ref={this.editorRef}
-                            plugins={[emojiPlugin, mentionPlugin]}
+                            plugins={[emojiPlugin, mentionPlugin.MentionSuggestions]}
                         />
                     </MentionSuggestionsWrapper>
                     <EmojiSuggestions />
