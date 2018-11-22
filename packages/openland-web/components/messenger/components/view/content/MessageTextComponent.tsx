@@ -2,11 +2,14 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
+import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
+import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
 
 export interface MessageTextComponentProps {
+    mentions: MessageFull_mentions[] | null;
     message: string;
     isService: boolean;
     isEdited: boolean;
@@ -61,6 +64,82 @@ export let isInternalLink = (url: string) => {
 
 const asciiToUnicodeCache = new Map();
 
+function indexes(source: string, find: string) {
+    let result = [];
+    for (let i = 0; i < source.length; ++i) {
+        if (source.substring(i, i + find.length) === find) {
+            result.push(i);
+        }
+    }
+    return result;
+}
+
+const getMentionString = (str: string) => {
+    return `@${removeEmojiFromText(str)}`;
+};
+
+class MessageWithMentionsTextComponent extends React.PureComponent<{
+    text: string;
+    mentions: MessageFull_mentions[];
+}> {
+    checkIsYou = (mentionName: string) => {
+        const res = this.props.mentions.find(({ name }: any) => name ===  mentionName);
+        return res ? res.isYou : false;
+    }
+
+    render() {
+        const { text, mentions } = this.props;
+   
+        let splittedTextArray: any = [text];
+        let mentionMatchesMap: any = {};
+        mentions.forEach(({ name }: any) => {
+            // splitting message
+            const arr: any = [];
+            splittedTextArray.forEach((item: any) => {
+                item.split(getMentionString(name)).forEach((splitted: any) => arr.push(splitted));
+            });
+
+            splittedTextArray = arr;
+
+            // matching mentions
+            const result = indexes(text, removeEmojiFromText(name));
+            result.forEach((index) => {
+                mentionMatchesMap[index] = removeEmojiFromText(name);
+            });
+        });
+
+        const mentionMatchesArray: any = [];
+
+        Object.keys(mentionMatchesMap).sort((a: any, b: any) => a - b).forEach((key) => {
+            mentionMatchesArray.push(mentionMatchesMap[key]);
+        });
+
+        const splittedArray: any = [];
+        mentions.forEach(({ name }: any) => {
+            splittedArray.push(text.split(getMentionString(name)));
+        });
+
+        const checkIsYou = (name: string) => {
+            const myMention = mentions.find((mention) => removeEmojiFromText(mention.name) === name);
+            return myMention ? myMention.isYou : false; 
+        };
+
+        return (
+            <>
+                {splittedTextArray.map((textItem: any, key: any) => {
+                    const isYou = checkIsYou(mentionMatchesArray[key]);
+                    return (<span key={key}>
+                        {textItem}
+                        <MentionComponentInner isYou={isYou}>
+                            {mentionMatchesArray[key]}
+                        </MentionComponentInner>
+                    </span>);
+                })}
+            </>
+        );
+    }
+}
+
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
     private preprocessed: Span[];
     big = false;
@@ -114,7 +193,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
     }
 
     render() {
-        // let { message } = this.props;
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -139,6 +217,10 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
                 let text = v.text!!;
+
+                if (this.props.mentions && this.props.mentions.length !== 0) {
+                    return <MessageWithMentionsTextComponent key={'text-' + i} text={text} mentions={this.props.mentions} />;
+                }
 
                 if (this.textSticker) {
                     text = text.slice(1, text.length - 1);

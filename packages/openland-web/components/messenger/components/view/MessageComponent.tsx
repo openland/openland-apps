@@ -230,7 +230,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
                         content.push(null);
                     } else {
-                        content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} isEdited={edited} />);
+                        content.push(<MessageTextComponent message={message.message} mentions={message.mentions} key={'text'} isService={message.isService} isEdited={edited} />);
                     }
                 }
                 if (message.file && !message.urlAugmentation) {
@@ -283,6 +283,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     (message as MessageFull).reply!.map((i, j) => {
                         content.push(
                             <MessageReplyComponent
+                                mentions={message.mentions}
                                 sender={i.sender}
                                 date={i.date}
                                 message={i.message}
@@ -299,7 +300,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             }
         } else {
             if (message.message && message.message.length > 0) {
-                content.push(<MessageTextComponent message={message.message} key={'text'} isService={false} isEdited={edited} />);
+                content.push(<MessageTextComponent message={message.message} mentions={message.mentions} key={'text'} isService={false} isEdited={edited} />);
             }
             if (message.file) {
                 content.push(
@@ -325,7 +326,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
         // Handle unknown messages: display empty message
         if (content.length === 0) {
-            content.push(<MessageTextComponent message={''} key={'text'} isService={false} isEdited={edited} />);
+            content.push(<MessageTextComponent message={''} mentions={null} key={'text'} isService={false} isEdited={edited} />);
         }
 
         // menu

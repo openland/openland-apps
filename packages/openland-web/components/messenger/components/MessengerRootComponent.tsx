@@ -6,7 +6,7 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MessageListComponent } from './view/MessageListComponent';
+import { MentionDataT } from 'openland-x/XRichTextInput';
 import { withChatHistory } from '../../../api/withChatHistory';
 import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
@@ -20,6 +20,9 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import {
+    MessageFull_mentions
+} from 'openland-api/Types';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -27,6 +30,7 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
     conversationType?: string;
     me: UserShort | null;
+    mentionsData: MentionDataT[];
 }
 
 interface MessagesComponentState {
@@ -142,7 +146,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }
@@ -179,11 +182,12 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.messageText = text;
     }
 
-    handleSend = (text: string) => {
+    handleSend = (text: string, mentions: MessageFull_mentions[] | null) => {
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
-        this.conversation.sendMessage(text);
+
+        this.conversation.sendMessage(text, mentions);
     }
 
     handleSendFile = (file: UploadCare.File) => {
@@ -230,7 +234,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
-                            conversationId: this.props.conversationId
+                            conversationId: this.props.conversationId,
+                            channelId: this.props.conversationId,
                         }}
                     />
                 )}
