@@ -171,10 +171,19 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     setReplyMessage = (e: any) => {
         let { message, conversationId, messagesContext } = this.props;
 
+        let messageText = message.message;
+
+        if ((message as MessageFull).file && !(message as MessageFull).urlAugmentation) {
+            messageText = 'File';
+            if ((message as MessageFull).fileMetadata!!.isImage) {
+                messageText = 'Photo';
+            }
+        }
+
         if (isServerMessage(message)) {
             e.stopPropagation();
             messagesContext.resetAll();
-            messagesContext.setReplyMessage((message as MessageFull).id, message.message, (message as MessageFull).sender.name, conversationId);
+            messagesContext.setReplyMessage((message as MessageFull).id, messageText, (message as MessageFull).sender.name, conversationId);
         }
     }
 
