@@ -26,7 +26,7 @@ export class DialogView extends React.PureComponent<{ item: DialogDataSourceItem
         let isPrivate = this.props.item.type === 'PrivateConversation';
         return (
             <XLink2
-                path={'/mail/' + this.props.item.flexibleId}
+                path={'/mail/' + this.props.item.key}
                 height={72}
                 flexDirection="row"
                 paddingLeft={16}
