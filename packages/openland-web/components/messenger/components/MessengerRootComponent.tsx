@@ -22,7 +22,7 @@ import {
     MessageFull_mentions
 } from 'openland-api/Types';
 import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
-import { withChatLeave } from 'openland-web/api/withChatLeave';
+import { withChatLeave } from '../../../api/withChatLeave';
 
 interface MessagesComponentProps {
     conversationId: string;

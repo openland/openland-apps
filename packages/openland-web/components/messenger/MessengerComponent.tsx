@@ -37,7 +37,7 @@ import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { ConferenceComponent } from '../conference/ConferenceComponent';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
-import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
+import { withRoomAddMembers } from '../../api/withRoomAddMembers';
 
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
