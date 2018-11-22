@@ -27,8 +27,6 @@ import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
 import {
-    ChatEditMessageVariables,
-    ChatEditMessage,
     ReplyMessageVariables,
     ReplyMessage,
     SaveDraftMessageVariables,
@@ -336,7 +334,7 @@ interface MessageComposeComponentInnerState {
     message: string;
     statlesMessage?: string;
     statlesMessageReply?: string;
-    statlesMessageId?: string;
+    statlesMessageId?: Set<string> | string;
     statlesMessageSender?: string;
     statlesChatId?: string;
     beDrafted: boolean;
@@ -353,7 +351,7 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
 };
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps, MessageComposeComponentInnerState> {
-    listOfMembersNames: string[];
+
     constructor(props: any) {
         super(props);
         let message = window.localStorage.getItem('conversation_draft_' + props.conversationId) || '';
@@ -372,10 +370,8 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             statlesMessageId: undefined,
             statlesMessageSender: undefined,
             statlesChatId: undefined,
-            beDrafted: false,
+            beDrafted: false
         };
-
-        this.listOfMembersNames = [];
     }
 
     private input = React.createRef<XRichTextInput>();
@@ -411,7 +407,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             statlesMessage,
             statlesMessageReply,
             statlesMessageId,
-            statlesChatId,
+            statlesChatId
         } = this.state as any;
 
         if (message.trim().length > 0) {
@@ -426,11 +422,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
             if ((statlesMessage || statlesMessageReply) && statlesMessageId) {
                 if (statlesChatId) {
+                    let messages: string[];
+                    if (typeof(statlesMessageId) === 'string') {
+                        messages = [statlesMessageId];
+                    } else {
+                        messages = [...statlesMessageId];
+                    }
                     this.props.replyMessage({
                         variables: {
                             conversationId: statlesChatId,
                             message: message,
-                            replyMessages: statlesMessageId
+                            replyMessages: messages
                         }
                     });
                 }
@@ -508,6 +510,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         });
 
         let file = e.dataTransfer.files[0];
+
         let ucFile = UploadCare.fileFrom('object', file);
 
         if (this.props.onSendFile) {
@@ -568,7 +571,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         let { message, statlesMessageId } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((message && message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && !statlesMessageId) {
+        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && !statlesMessageId) {
             let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
@@ -583,6 +586,18 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentDidMount() {
+        const { messagesContext } = this.props;
+        if (messagesContext.useForwardMessages && messagesContext.forwardMessagesId && messagesContext.conversationId) {
+            messagesContext.changeForwardConverstion();
+            this.setState({
+                message: '',
+                statlesMessage: undefined,
+                statlesMessageReply: `Forward ${messagesContext.forwardMessagesId.size} messages`,
+                statlesMessageId: messagesContext.forwardMessagesId,
+                statlesMessageSender: 'Forward',
+                statlesChatId: this.props.conversationId
+            });
+        }
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -607,7 +622,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessageId,
             replyMessageSender,
             forwardMessagesId,
-            forwardMessages,
             useForwardMessages,
             conversationId
         } = nextProps.messagesContext;
@@ -621,17 +635,19 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         let replyChecker = (replyMessage && replyMessageId && replyMessageSender && conversationId);
 
         if ((this.props.conversationId !== nextProps.conversationId)) {
-            if (!useForwardMessages) {
-                //
-            }
-            if (forwardMessagesId && forwardMessages) {
-                console.log(nextProps);
+            if (useForwardMessages && forwardMessagesId) {
+                this.props.messagesContext.changeForwardConverstion();
+                newState = {
+                    ...newState,
+                    message: '',
+                    statlesMessage: undefined,
+                    statlesMessageReply: `Forward ${forwardMessagesId.size} messages`,
+                    statlesMessageId: forwardMessagesId,
+                    statlesMessageSender: 'Forward',
+                    statlesChatId: nextProps.conversationId
+                };
             }
         }
-
-        // if (editMessage && editMessageId) {
-        //     this.props.messagesContext.setForwardMessages(null, null);
-        // }
 
         if (replyChecker) {
             (document as any).isEditMessage = true;
@@ -647,7 +663,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
-            // this.props.messagesContext.setForwardMessages(null, null);
         }
 
         let draftChecker = !replyChecker;
