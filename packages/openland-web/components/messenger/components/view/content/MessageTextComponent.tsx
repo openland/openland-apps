@@ -2,11 +2,13 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { preprocessText, Span } from './utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
+import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
 
 export interface MessageTextComponentProps {
+    mentions: MessageFull_mentions[];
     message: string;
     isService: boolean;
     isEdited: boolean;
@@ -61,6 +63,71 @@ export let isInternalLink = (url: string) => {
 
 const asciiToUnicodeCache = new Map();
 
+function indexes(source: string, find: string) {
+    let result = [];
+    for (let i = 0; i < source.length; ++i) {
+        if (source.substring(i, i + find.length) === find) {
+            result.push(i);
+        }
+    }
+    return result;
+}
+
+const SimpleComponent = ({ children }: any) => {
+    return <span style={{color: 'red'}}>{children}</span>;
+};
+
+class MessageWithMentionsTextComponent extends React.PureComponent<{
+    text: string;
+    mentions: MessageFull_mentions[];
+}> {
+  render() {
+    const { text, mentions } = this.props;
+      
+    let splittedTextArray: any = [text];
+    let mentionMatchesMap: any = {};
+    mentions.forEach(({ name }: any) => {
+        // splitting message
+        const arr: any = [];
+        splittedTextArray.forEach((item: any) => {
+            item.split(`@${name}`).forEach((splitted: any) => arr.push(splitted));
+        });
+
+        splittedTextArray = arr;
+
+        // matching mentions
+        const result = indexes(text, name);
+        result.forEach((index) => {
+            mentionMatchesMap[index] = name;
+        });
+    });
+
+    const mentionMatchesArray: any = [];
+
+    Object.keys(mentionMatchesMap).sort((a: any, b: any) => a - b).forEach((key) => {
+        mentionMatchesArray.push(mentionMatchesMap[key]);
+    });
+
+    const splittedArray: any = [];
+    mentions.forEach(({ name }: any) => {
+        splittedArray.push(text.split(`@${name}`));
+    });
+
+    return (
+        <span>
+            {splittedTextArray.map((textItem: any, key: any) => {
+                return (<>
+                    {textItem}
+                    <SimpleComponent>
+                        {mentionMatchesArray[key]}
+                    </SimpleComponent>
+                </>);
+            })}
+        </span>
+    );
+  }
+}
+
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
     private preprocessed: Span[];
     big = false;
@@ -114,7 +181,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
     }
 
     render() {
-        // let { message } = this.props;
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -139,6 +205,10 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
                 let text = v.text!!;
+
+                if (this.props.mentions && this.props.mentions.length !== 0) {
+                    return <MessageWithMentionsTextComponent key={'text-' + i} text={text} mentions={this.props.mentions} />;
+                }
 
                 if (this.textSticker) {
                     text = text.slice(1, text.length - 1);

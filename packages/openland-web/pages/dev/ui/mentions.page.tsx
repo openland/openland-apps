@@ -7,7 +7,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
-import { mentionsData } from 'openland-x/XRichTextInput';
 import createMentionPlugin, {
     defaultSuggestionsFilter
 } from 'draft-js-mention-plugin';

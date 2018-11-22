@@ -221,7 +221,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     if (message.urlAugmentation && message.urlAugmentation.type === 'intro') {
                         content.push(null);
                     } else {
-                        content.push(<MessageTextComponent message={message.message} key={'text'} isService={message.isService} isEdited={edited} />);
+                        content.push(<MessageTextComponent message={message.message} mentions={message.mentions} key={'text'} isService={message.isService} isEdited={edited} />);
                     }
                 }
                 if (message.file && !message.urlAugmentation) {
