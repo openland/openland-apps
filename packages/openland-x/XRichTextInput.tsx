@@ -256,7 +256,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             beChanged: false,
             editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
         };
-
     }
 
     componentDidMount() {
@@ -298,23 +297,24 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         return 'not-handled';
     }
 
-    onChange = (editorState: any) => {
-        this.setState({
-            editorState,
-        });
+    onChange = (editorState: EditorState) => {
+        this.setState({ 
+            editorState: editorState,
+            beChanged: true
+         });
+
+        if (this.props.onChange) {
+            this.props.onChange(editorState.getCurrentContent().getPlainText());
+        }
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value) {
+        if (this.props.value !== nextProps.value && !this.state.beChanged) {
             const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
             this.setState({
                 editorState: EditorState.moveFocusToEnd(state)
             });
         }
-    }
-
-    onAddMention = () => {
-        // get the mention object selected
     }
 
     render() {
@@ -323,11 +323,11 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 <Container {...extractFlexProps(this.props)}>
                     <MentionSuggestionsWrapper>
                         <MentionSuggestions
-                              onSearchChange={this.onSearchChange}
-                              suggestions={this.state.suggestions}
-                              onAddMention={this.onAddMention}
-                              entryComponent={MentionEntry}
+                            onSearchChange={this.onSearchChange}
+                            suggestions={this.state.suggestions}
+                            entryComponent={MentionEntry}
                         />
+
                         <Editor
                             editorState={this.state.editorState}
                             onChange={this.onChange}

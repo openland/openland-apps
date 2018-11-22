@@ -205,6 +205,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
 
         this.conversation.sendMessage(text);
+        // this.conversation.sendMessage(text, [167]);
     }
 
     handleSendFile = (file: UploadCare.File) => {
