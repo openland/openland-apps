@@ -151,16 +151,19 @@ const positionSuggestions = ({ state, props }: any) => {
     };
 };
 
-const MentionComponent = Glamorous.span(
+export const MentionComponentInner = Glamorous.span(
     {},
     ({ isYou }: { isYou: boolean }) => {
         if (isYou) {
             return {
-                // different style for myself mention
-                color: 'red',
+                backgroundColor: '#fff6e5',
+                color: '#1790ff'
             };
         }
-        return {};
+        return {
+            backgroundColor: '#e6f3ff',
+            color: '#1790ff'
+        };
     }
 );
 
@@ -170,14 +173,14 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponent
+            <MentionComponentInner
                 isYou={props.mention.isYou}
                 className={props.className}
                 // eslint-disable-next-line no-alert
                 onClick={() => console.log('Clicked on the Mention!')}
             >
                 {props.children}
-            </MentionComponent>
+            </MentionComponentInner>
         );
     },
 });

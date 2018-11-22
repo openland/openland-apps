@@ -6,9 +6,10 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
+import { MentionComponentInner } from 'openland-x/XRichTextInput';
 
 export interface MessageTextComponentProps {
-    mentions: MessageFull_mentions[];
+    mentions: MessageFull_mentions[] | null;
     message: string;
     isService: boolean;
     isEdited: boolean;
@@ -81,51 +82,58 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     text: string;
     mentions: MessageFull_mentions[];
 }> {
-  render() {
-    const { text, mentions } = this.props;
-      
-    let splittedTextArray: any = [text];
-    let mentionMatchesMap: any = {};
-    mentions.forEach(({ name }: any) => {
-        // splitting message
-        const arr: any = [];
-        splittedTextArray.forEach((item: any) => {
-            item.split(`@${name}`).forEach((splitted: any) => arr.push(splitted));
+    checkIsYou = (mentionName: string) => {
+        const res = this.props.mentions.find(({ name }: any) => name ===  mentionName);
+        return res ? res.isYou : false;
+    }
+
+    render() {
+        const { text, mentions } = this.props;
+
+        console.log(mentions);
+   
+        let splittedTextArray: any = [text];
+        let mentionMatchesMap: any = {};
+        mentions.forEach(({ name }: any) => {
+            // splitting message
+            const arr: any = [];
+            splittedTextArray.forEach((item: any) => {
+                item.split(`@${name}`).forEach((splitted: any) => arr.push(splitted));
+            });
+
+            splittedTextArray = arr;
+
+            // matching mentions
+            const result = indexes(text, name);
+            result.forEach((index) => {
+                mentionMatchesMap[index] = name;
+            });
         });
 
-        splittedTextArray = arr;
+        const mentionMatchesArray: any = [];
 
-        // matching mentions
-        const result = indexes(text, name);
-        result.forEach((index) => {
-            mentionMatchesMap[index] = name;
+        Object.keys(mentionMatchesMap).sort((a: any, b: any) => a - b).forEach((key) => {
+            mentionMatchesArray.push(mentionMatchesMap[key]);
         });
-    });
 
-    const mentionMatchesArray: any = [];
+        const splittedArray: any = [];
+        mentions.forEach(({ name }: any) => {
+            splittedArray.push(text.split(`@${name}`));
+        });
 
-    Object.keys(mentionMatchesMap).sort((a: any, b: any) => a - b).forEach((key) => {
-        mentionMatchesArray.push(mentionMatchesMap[key]);
-    });
-
-    const splittedArray: any = [];
-    mentions.forEach(({ name }: any) => {
-        splittedArray.push(text.split(`@${name}`));
-    });
-
-    return (
-        <>
-            {splittedTextArray.map((textItem: any, key: any) => {
-                return (<span key={key}>
-                    {textItem}
-                    <SimpleComponent>
-                        {mentionMatchesArray[key]}
-                    </SimpleComponent>
-                </span>);
-            })}
-        </>
-    );
-  }
+        return (
+            <>
+                {splittedTextArray.map((textItem: any, key: any) => {
+                    return (<span key={key}>
+                        {textItem}
+                        <MentionComponentInner isYou={false}>
+                            {mentionMatchesArray[key]}
+                        </MentionComponentInner>
+                    </span>);
+                })}
+            </>
+        );
+    }
 }
 
 export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
@@ -236,6 +244,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             }
         });
 
+        console.log(parts);
         return (
             <TextWrapper big={this.big || this.insane || this.mouthpiece} isService={this.props.isService}>
                 {parts}

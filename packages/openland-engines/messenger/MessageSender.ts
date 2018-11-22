@@ -2,7 +2,7 @@ import UUID from 'uuid/v4';
 import { SendMessageMutation } from 'openland-api/SendMessageMutation';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { UploadingFile, UploadStatus } from './types';
-
+import { MessageFull_mentions } from 'openland-api/Types';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -14,7 +14,7 @@ type MessageBodyT = {
     message: string | null;
     file: string | null;
     replyMessages: number[] | null;
-    mentions: number[] | null;
+    mentions: MessageFull_mentions[] | null;
 };
 
 export class MessageSender {
@@ -100,7 +100,7 @@ export class MessageSender {
     }: {
         conversationId: string;
         message: string;
-        mentions: number[] | null;
+        mentions: MessageFull_mentions[] | null;
         callback: MessageSendHandler;
     }) {
         message = message.trim();
@@ -111,7 +111,7 @@ export class MessageSender {
 
         this.doSendMessage({
             file: null,
-            mentions: mentions,
+            mentions,
             replyMessages: null,
             conversationId,
             message,
@@ -123,10 +123,12 @@ export class MessageSender {
 
     async sendMessageAsync({
         conversationId,
-        message
+        message,
+        mentions
     }: {
         conversationId: string;
         message: string;
+        mentions: MessageFull_mentions[] | null;
     }) {
         await new Promise<string>((resolve, reject) => {
             let handler: MessageSendHandler = {
@@ -143,7 +145,7 @@ export class MessageSender {
             this.sendMessage({
                 conversationId,
                 message,
-                mentions: null,
+                mentions,
                 callback: handler
             });
         });
@@ -182,6 +184,8 @@ export class MessageSender {
         };
 
         this.pending.set(key, messageBody);
+
+        const { mentions: mentionsToStrings, ...restMessageBody } = messageBody;
         (async () => {
             let start = Date.now();
             try {
@@ -189,7 +193,8 @@ export class MessageSender {
                     mutation: SendMessageMutation.document,
                     variables: {
                         repeatKey: key,
-                        ...messageBody
+                        mentions: mentionsToStrings ? mentionsToStrings.map(({id}) => id) : null,
+                        ...restMessageBody
                     }
                 });
             } catch (e) {

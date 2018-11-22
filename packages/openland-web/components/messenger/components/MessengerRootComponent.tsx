@@ -20,6 +20,9 @@ import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import {
+    MessageFull_mentions
+} from 'openland-api/Types';
 
 interface MessagesComponentProps {
     conversationId: string;
@@ -179,13 +182,12 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.messageText = text;
     }
 
-    handleSend = (text: string) => {
+    handleSend = (text: string, mentions: MessageFull_mentions[] | null) => {
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
 
-        this.conversation.sendMessage(text, ['1pkzZ9z6YzTaxv0P6YvXCLv9yy', 'WDZbkEbBelIVyYAX6KgltyyPWB']);
-        // this.conversation.sendMessage(text, [167]);
+        this.conversation.sendMessage(text, mentions);
     }
 
     handleSendFile = (file: UploadCare.File) => {

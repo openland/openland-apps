@@ -32,7 +32,8 @@ import {
     ReplyMessageVariables,
     ReplyMessage,
     SaveDraftMessageVariables,
-    SaveDraftMessage
+    SaveDraftMessage,
+    MessageFull_mentions
 } from 'openland-api/Types';
 
 const SendMessageWrapper = Glamorous.div({
@@ -303,17 +304,17 @@ export interface MessageComposeComponentProps {
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
-    onSend?: (text: string) => void;
+    onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
 }
 
-interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
-    members: ChannelMembers_members[];
-}
-
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
     draft?: string | null;
+}
+
+interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
+    members: ChannelMembers_members[];
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
@@ -351,7 +352,7 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
 };
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps, MessageComposeComponentInnerState> {
-
+    listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
         let message = window.localStorage.getItem('conversation_draft_' + props.conversationId) || '';
@@ -370,8 +371,10 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             statlesMessageId: undefined,
             statlesMessageSender: undefined,
             statlesChatId: undefined,
-            beDrafted: false
+            beDrafted: false,
         };
+
+        this.listOfMembersNames = [];
     }
 
     private input = React.createRef<XRichTextInput>();
@@ -390,19 +393,34 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         });
     }
 
+    getMentions = (str: string) => {
+        if (!this.props.members) {
+            return null;
+        }
+
+        const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
+
+        return this.props.members.filter(({user: { name }}) => {
+            return mentionsNames.indexOf(`@${name}`) !== -1;
+        }).map(({user}) => user);
+    }
+
     private handleSend = () => {
         let {
             message,
             statlesMessage,
             statlesMessageReply,
             statlesMessageId,
-            statlesChatId
+            statlesChatId,
         } = this.state as any;
 
+        debugger;
         if (message.trim().length > 0) {
             let msg = message.trim();
             if (this.props.onSend && !statlesMessageId) {
-                this.props.onSend(msg);
+                let mentions = this.getMentions(msg);
+
+                this.props.onSend(msg, mentions);
                 this.setState({
                     beDrafted: false
                 });
@@ -491,7 +509,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         });
 
         let file = e.dataTransfer.files[0];
-
         let ucFile = UploadCare.fileFrom('object', file);
 
         if (this.props.onSendFile) {
@@ -545,6 +562,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (this.input.current) {
             this.input.current!!.resetAndFocus();
         }
+        this.listOfMembersNames = [];
     }
 
     keydownHandler = (e: any) => {
@@ -566,7 +584,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentDidMount() {
-        console.log(this.props);
         this.focusIfNeeded();
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -596,7 +613,9 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             conversationId
         } = nextProps.messagesContext;
 
-        // console.log(nextProps);
+        if (nextProps.members && nextProps.members !== this.props.members) {
+            this.listOfMembersNames = nextProps.members.map(({user: {name}}: {user: {name: string}}) => `@${name}`);
+        }
 
         let newState: any = {};
 

@@ -807,6 +807,7 @@ export interface ChatHistory_messages_messages_mentions {
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChatHistory_messages_messages_urlAugmentation_imageInfo {
@@ -1924,6 +1925,7 @@ export interface ChatSearchChannel_items_edges_node_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo {
@@ -2245,6 +2247,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -2473,6 +2476,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -2717,6 +2721,7 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -2982,6 +2987,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -3210,6 +3216,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -3454,6 +3461,7 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -4002,6 +4010,7 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_men
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -4230,6 +4239,7 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_mention
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -4474,6 +4484,7 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_menti
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -6943,6 +6954,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -7171,6 +7183,7 @@ export interface ConversationShort_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -7415,6 +7428,7 @@ export interface ConversationShort_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -7671,6 +7685,7 @@ export interface MessageFull_mentions {
   __typename: "User";
   id: string;
   name: string;
+  isYou: boolean;
 }
 
 export interface MessageFull_urlAugmentation_imageInfo {

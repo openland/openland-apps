@@ -58,7 +58,8 @@ export const MessageFull = gql`
     }
     mentions: mentions {
         id
-        name
+        name,
+        isYou
     }
     urlAugmentation{
         type

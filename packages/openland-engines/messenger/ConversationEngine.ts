@@ -303,7 +303,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendMessage = (text: string, mentions: number[] | null) => {
+    sendMessage = (text: string, mentions: MessageFull_mentions[] | null) => {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
@@ -313,7 +313,7 @@ export class ConversationEngine implements MessageSendHandler {
                  mentions,
                  callback: this
             });
-            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false } as PendingMessage;
+            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, mentions } as PendingMessage;
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();

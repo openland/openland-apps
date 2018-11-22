@@ -1,10 +1,11 @@
-import { MessageFull } from 'openland-api/Types';
+import { MessageFull, MessageFull_mentions } from 'openland-api/Types';
 
 export interface PendingMessage {
     date: string;
     key: string;
     progress: number;
     message: string | null;
+    mentions: MessageFull_mentions[] | null;
     file: string | null;
     uri?: string;
     fileSize?: number;

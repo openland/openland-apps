@@ -270,12 +270,13 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
         }
     }
 
-    handleSend = async (msg: string) => {
+    handleSend = async (msg: string, mentions: string[] | null) => {
         if (this.state.values.length === 1) {
             let id = await this.props.messenger.global.resolvePrivateConversation(this.state.values[0].value!! as string);
             await this.props.messenger.sender.sendMessageAsync({
                 conversationId: id.id,
-                message: msg
+                message: msg,
+                mentions
             });
             Router.replaceRoute('/mail/' + id.flexibleId);
         } else if (this.state.values.length > 1) {
@@ -283,7 +284,8 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             if (id) {
                 await this.props.messenger.sender.sendMessageAsync({
                     conversationId: id.id,
-                    message: msg
+                    message: msg,
+                    mentions
                 });
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
