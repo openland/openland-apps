@@ -59,7 +59,10 @@ const Check = Glamorous.div({
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#1790ff'
+    backgroundColor: '#1790ff',
+    backgroundImage: 'url(\'/static/img/icons/check-form.svg\')',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center'
 });
 
 const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, isEditView: boolean }>((props) => ({
