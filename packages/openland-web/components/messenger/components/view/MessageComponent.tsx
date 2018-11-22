@@ -187,7 +187,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     }
 
     setReplyMessage = (e: any) => {
-        let { message, conversationId, messagesContext } = this.props;
+        let { message, messagesContext } = this.props;
 
         let messageText = message.message;
 
@@ -201,12 +201,12 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (isServerMessage(message)) {
             e.stopPropagation();
             messagesContext.resetAll();
-            messagesContext.setReplyMessage((message as MessageFull).id, messageText, (message as MessageFull).sender.name, conversationId);
+            messagesContext.setReplyMessage((message as MessageFull).id, messageText, (message as MessageFull).sender.name);
         }
     }
 
     selectMessage = () => {
-        let { message, conversationId, messagesContext } = this.props;
+        let { message, messagesContext } = this.props;
 
         if (!isServerMessage(message) || this.state.isEditView) {
             return;
@@ -218,15 +218,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (forwardMessagesId && selectedMessageId) {
             if (forwardMessagesId.has(message.id)) {
                 selectedMessageId.delete(message.id);
-                messagesContext.setForwardMessages(selectedMessageId, conversationId);
+                messagesContext.setForwardMessages(selectedMessageId);
             } else {
                 selectedMessageId.add(message.id);
-                messagesContext.setForwardMessages(selectedMessageId, conversationId);
+                messagesContext.setForwardMessages(selectedMessageId);
             }
         } else if (!forwardMessagesId && !selectedMessageId) {
             selectedMessageId = new Set<string>();
             selectedMessageId.add(message.id);
-            messagesContext.setForwardMessages(selectedMessageId, conversationId);
+            messagesContext.setForwardMessages(selectedMessageId);
         }
     }
 

@@ -953,7 +953,6 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
-            conversationId: null,
             replyMessageId: null,
             replyMessage: null,
             replyMessageSender: null,
@@ -976,14 +975,13 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
         });
     }
 
-    private setForwardMessages = (id: Set<string> | null, conversationId: string | null) => {
+    private setForwardMessages = (id: Set<string> | null) => {
         let useHeader = false;
         if (id && id.size > 0) {
             useHeader = true;
         }
         this.setState({
             forwardMessagesId: id,
-            conversationId: conversationId,
             useForwardHeader: useHeader
         });
     }
@@ -996,12 +994,11 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
         });
     }
 
-    private setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
+    private setReplyMessage = (id: string | null, message: string | null, sender: string | null) => {
         this.setState({
             replyMessageId: id,
             replyMessage: message,
-            replyMessageSender: sender,
-            conversationId: conversationId
+            replyMessageSender: sender
         });
     }
 
@@ -1017,7 +1014,6 @@ export class MessengerComponent extends React.Component<MessengerComponentProps,
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
-            conversationId: null,
             replyMessageId: null,
             replyMessage: null,
             replyMessageSender: null,

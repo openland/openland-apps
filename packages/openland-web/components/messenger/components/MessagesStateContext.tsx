@@ -5,8 +5,7 @@ export interface MessagesStateContextProps {
     editMessage: string | null;
     setEditMessage: (id: string | null, message: string | null) => void;
     forwardMessagesId: Set<string> | null;
-    conversationId: string | null;
-    setForwardMessages: (id: Set<string> | null, conversationId: string | null) => void;
+    setForwardMessages: (id: Set<string> | null) => void;
     forwardMessages: () => void;
     useForwardMessages: boolean;
     useForwardPlaceholder: boolean;
@@ -15,7 +14,7 @@ export interface MessagesStateContextProps {
     replyMessageId: string | null;
     replyMessage: string | null;
     replyMessageSender: string | null;
-    setReplyMessage: (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => void;
+    setReplyMessage: (id: string | null, message: string | null, sender: string | null) => void;
     resetAll: () => void;
 }
 
@@ -26,7 +25,6 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     replyMessageSender: null,
     replyMessage: null,
     forwardMessagesId: null,
-    conversationId: null,
     useForwardMessages: false,
     useForwardPlaceholder: false,
     useForwardHeader: false,
