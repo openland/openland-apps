@@ -172,6 +172,7 @@ const mentionPlugin = createMentionPlugin({
     mentionPrefix: '@',
     positionSuggestions,
     mentionComponent: (props: any) => {
+        console.log(props.mention);
         return (
             <MentionComponentInner
                 isYou={props.mention.isYou}

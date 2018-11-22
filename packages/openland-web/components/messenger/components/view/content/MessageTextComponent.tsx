@@ -89,8 +89,6 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 
     render() {
         const { text, mentions } = this.props;
-
-        console.log(mentions);
    
         let splittedTextArray: any = [text];
         let mentionMatchesMap: any = {};
@@ -121,12 +119,18 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             splittedArray.push(text.split(`@${name}`));
         });
 
+        const checkIsYou = (name: string) => {
+            const myMention = mentions.find((mention) => mention.name === name);
+            return myMention ? myMention.isYou : false; 
+        };
+
         return (
             <>
                 {splittedTextArray.map((textItem: any, key: any) => {
+                    const isYou = checkIsYou(mentionMatchesArray[key]);
                     return (<span key={key}>
                         {textItem}
-                        <MentionComponentInner isYou={false}>
+                        <MentionComponentInner isYou={isYou}>
                             {mentionMatchesArray[key]}
                         </MentionComponentInner>
                     </span>);
@@ -244,7 +248,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             }
         });
 
-        console.log(parts);
         return (
             <TextWrapper big={this.big || this.insane || this.mouthpiece} isService={this.props.isService}>
                 {parts}

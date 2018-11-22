@@ -414,7 +414,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             statlesChatId,
         } = this.state as any;
 
-        debugger;
         if (message.trim().length > 0) {
             let msg = message.trim();
             if (this.props.onSend && !statlesMessageId) {
