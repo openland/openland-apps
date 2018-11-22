@@ -351,7 +351,7 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
 };
 
 class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps, MessageComposeComponentInnerState> {
-
+    listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
         let message = window.localStorage.getItem('conversation_draft_' + props.conversationId) || '';
@@ -372,6 +372,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             statlesChatId: undefined,
             beDrafted: false
         };
+        this.listOfMembersNames = [];
     }
 
     private input = React.createRef<XRichTextInput>();
