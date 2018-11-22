@@ -178,19 +178,18 @@ export class ConversationEngine implements MessageSendHandler {
         if (!this.isStarted) {
             return;
         }
-        this.messages = [...(initialChat.data as any).messages.messages];
+        this.messages = [...(initialChat.data as any).messages];
         this.messages.reverse();
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
-        let seq = (initialChat.data as any).messages.seq as number;
-        console.info('Initial state for ' + this.conversationId + ' loaded with seq #' + seq);
+        console.info('Initial state for ' + this.conversationId);
         this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId });
         this.onMessagesUpdated();
 
         // Update Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
-        let sourceFragments = [...(initialChat.data as any).messages.messages as MessageFullFragment[]];
+        let sourceFragments = [...(initialChat.data as any).messages as MessageFullFragment[]];
         let prevDate: string | undefined;
         for (let i = 0; i < sourceFragments.length; i++) {
 
