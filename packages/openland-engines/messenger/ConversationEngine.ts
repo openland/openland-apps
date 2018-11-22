@@ -1,10 +1,11 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { ChatReadMutation, ChatHistoryQuery, AccountQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
+import { SequenceWatcher } from '../core/SequenceWatcher';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -80,7 +81,6 @@ export interface DataSourceMessageItem {
     };
     urlAugmentation?: MessageFull_urlAugmentation;
     reactions?: MessageFull_reactions[];
-    mentions?: MessageFull_mentions[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -303,17 +303,12 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendMessage = (text: string, mentions: MessageFull_mentions[] | null) => {
+    sendMessage = (text: string) => {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
-            let key = this.engine.sender.sendMessage({
-                 conversationId: this.conversationId,
-                 message, 
-                 mentions,
-                 callback: this
-            });
-            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, mentions } as PendingMessage;
+            let key = this.engine.sender.sendMessage(this.conversationId, message, this);
+            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false } as PendingMessage;
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();

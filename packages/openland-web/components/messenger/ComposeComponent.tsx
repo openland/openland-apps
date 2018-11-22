@@ -222,6 +222,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
     }
 
     componentWillUnmount() {
+        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }
@@ -270,23 +271,15 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
         }
     }
 
-    handleSend = async (msg: string, mentions: string[] | null) => {
+    handleSend = async (msg: string) => {
         if (this.state.values.length === 1) {
             let id = await this.props.messenger.global.resolvePrivateConversation(this.state.values[0].value!! as string);
-            await this.props.messenger.sender.sendMessageAsync({
-                conversationId: id.id,
-                message: msg,
-                mentions
-            });
+            await this.props.messenger.sender.sendMessageAsync(id.id, msg);
             Router.replaceRoute('/mail/' + id.flexibleId);
         } else if (this.state.values.length > 1) {
             let id = await this.props.messenger.global.resolveGroup(this.state.values.map((v) => v.value!! as string));
             if (id) {
-                await this.props.messenger.sender.sendMessageAsync({
-                    conversationId: id.id,
-                    message: msg,
-                    mentions
-                });
+                await this.props.messenger.sender.sendMessageAsync(id.id, msg);
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
                 let res = await this.props.messenger.client.client.mutate({

@@ -803,13 +803,6 @@ export interface ChatHistory_messages_messages_reactions {
   reaction: string;
 }
 
-export interface ChatHistory_messages_messages_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChatHistory_messages_messages_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -900,7 +893,6 @@ export interface ChatHistory_messages_messages {
   sender: ChatHistory_messages_messages_sender;
   reply: ChatHistory_messages_messages_reply[] | null;
   reactions: ChatHistory_messages_messages_reactions[];
-  mentions: ChatHistory_messages_messages_mentions[] | null;
   urlAugmentation: ChatHistory_messages_messages_urlAugmentation | null;
   date: any;
 }
@@ -1472,17 +1464,20 @@ export interface GroupChatFullInfoVariables {
 // GraphQL mutation operation: SendMessage
 // ====================================================
 
+export interface SendMessage_sentMessage {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
 export interface SendMessage {
-  sentMessage: boolean;
+  sentMessage: SendMessage_sentMessage;
 }
 
 export interface SendMessageVariables {
+  conversationId: string;
   message?: string | null;
   file?: string | null;
-  repeatKey?: string | null;
-  replyMessages?: string[] | null;
-  mentions?: string[] | null;
-  room: string;
+  repeatKey: string;
 }
 
 /* tslint:disable */
@@ -1921,13 +1916,6 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reactions {
   reaction: string;
 }
 
-export interface ChatSearchChannel_items_edges_node_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -2018,7 +2006,6 @@ export interface ChatSearchChannel_items_edges_node_topMessage {
   sender: ChatSearchChannel_items_edges_node_topMessage_sender;
   reply: ChatSearchChannel_items_edges_node_topMessage_reply[] | null;
   reactions: ChatSearchChannel_items_edges_node_topMessage_reactions[];
-  mentions: ChatSearchChannel_items_edges_node_topMessage_mentions[] | null;
   urlAugmentation: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -2243,13 +2230,6 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   reaction: string;
 }
 
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -2340,7 +2320,6 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender;
   reply: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions[];
-  mentions: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions[] | null;
   urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -2472,13 +2451,6 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   reaction: string;
 }
 
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -2569,7 +2541,6 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender;
   reply: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply[] | null;
   reactions: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions[];
-  mentions: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions[] | null;
   urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -2717,13 +2688,6 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   reaction: string;
 }
 
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -2814,7 +2778,6 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender;
   reply: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply[] | null;
   reactions: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions[];
-  mentions: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions[] | null;
   urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -2983,13 +2946,6 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   reaction: string;
 }
 
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -3080,7 +3036,6 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender;
   reply: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions[];
-  mentions: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions[] | null;
   urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -3212,13 +3167,6 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   reaction: string;
 }
 
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -3309,7 +3257,6 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender;
   reply: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply[] | null;
   reactions: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions[];
-  mentions: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions[] | null;
   urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -3457,13 +3404,6 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   reaction: string;
 }
 
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -3554,7 +3494,6 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender;
   reply: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply[] | null;
   reactions: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions[];
-  mentions: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions[] | null;
   urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -4006,13 +3945,6 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_rea
   reaction: string;
 }
 
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -4103,7 +4035,6 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage {
   sender: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sender;
   reply: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply[] | null;
   reactions: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reactions[];
-  mentions: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions[] | null;
   urlAugmentation: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -4235,13 +4166,6 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactio
   reaction: string;
 }
 
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -4332,7 +4256,6 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage {
   sender: ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender;
   reply: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply[] | null;
   reactions: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactions[];
-  mentions: ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions[] | null;
   urlAugmentation: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -4480,13 +4403,6 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_react
   reaction: string;
 }
 
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -4577,7 +4493,6 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage {
   sender: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sender;
   reply: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply[] | null;
   reactions: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reactions[];
-  mentions: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions[] | null;
   urlAugmentation: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -6950,13 +6865,6 @@ export interface ConversationShort_AnonymousConversation_topMessage_reactions {
   reaction: string;
 }
 
-export interface ConversationShort_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -7047,7 +6955,6 @@ export interface ConversationShort_AnonymousConversation_topMessage {
   sender: ConversationShort_AnonymousConversation_topMessage_sender;
   reply: ConversationShort_AnonymousConversation_topMessage_reply[] | null;
   reactions: ConversationShort_AnonymousConversation_topMessage_reactions[];
-  mentions: ConversationShort_AnonymousConversation_topMessage_mentions[] | null;
   urlAugmentation: ConversationShort_AnonymousConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -7179,13 +7086,6 @@ export interface ConversationShort_GroupConversation_topMessage_reactions {
   reaction: string;
 }
 
-export interface ConversationShort_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -7276,7 +7176,6 @@ export interface ConversationShort_GroupConversation_topMessage {
   sender: ConversationShort_GroupConversation_topMessage_sender;
   reply: ConversationShort_GroupConversation_topMessage_reply[] | null;
   reactions: ConversationShort_GroupConversation_topMessage_reactions[];
-  mentions: ConversationShort_GroupConversation_topMessage_mentions[] | null;
   urlAugmentation: ConversationShort_GroupConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -7424,13 +7323,6 @@ export interface ConversationShort_ChannelConversation_topMessage_reactions {
   reaction: string;
 }
 
-export interface ConversationShort_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -7521,7 +7413,6 @@ export interface ConversationShort_ChannelConversation_topMessage {
   sender: ConversationShort_ChannelConversation_topMessage_sender;
   reply: ConversationShort_ChannelConversation_topMessage_reply[] | null;
   reactions: ConversationShort_ChannelConversation_topMessage_reactions[];
-  mentions: ConversationShort_ChannelConversation_topMessage_mentions[] | null;
   urlAugmentation: ConversationShort_ChannelConversation_topMessage_urlAugmentation | null;
   date: any;
 }
@@ -7681,13 +7572,6 @@ export interface MessageFull_reactions {
   reaction: string;
 }
 
-export interface MessageFull_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
 export interface MessageFull_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -7778,7 +7662,6 @@ export interface MessageFull {
   sender: MessageFull_sender;
   reply: MessageFull_reply[] | null;
   reactions: MessageFull_reactions[];
-  mentions: MessageFull_mentions[] | null;
   urlAugmentation: MessageFull_urlAugmentation | null;
   date: any;
 }

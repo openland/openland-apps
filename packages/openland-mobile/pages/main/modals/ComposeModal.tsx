@@ -52,18 +52,12 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                 try {
                     if (ids.length === 1) {
                         let id = await this.props.messenger.global.resolvePrivateConversation(ids[0]);
-                        await this.props.messenger.sender.sendMessageAsync({
-                            conversationId: id.id,
-                            message: msg
-                        });
+                        await this.props.messenger.sender.sendMessageAsync(id.id, msg);
                         // this.props.navigation.replace('Conversation', { id: id.id });
-                } else {
+                    } else {
                         let id = await this.props.messenger.global.resolveGroup(ids);
                         if (id) {
-                            await this.props.messenger.sender.sendMessageAsync({
-                                conversationId: id.id,
-                                message: msg
-                            });
+                            await this.props.messenger.sender.sendMessageAsync(id.id, msg);
                             // this.props.navigation.replace('Conversation', { id: id.id });
                         } else {
                             let res = await this.props.messenger.client.client.mutate({
