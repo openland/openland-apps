@@ -234,6 +234,56 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         this.props.messagesContext.resetAll();
     }
 
+    private menuRender = (isCompact: boolean) => {
+        const { message } = this.props;
+
+        let menu = isServerMessage(message) && this.props.out ?
+            (
+                <XVertical className="menu">
+                    <XOverflow
+                        show={this.state.isMenuOpen}
+                        flat={true}
+                        placement="bottom-end"
+                        onClickTarget={this.switchMenu}
+                        content={
+                            <>
+                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
+                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
+                            </>
+                        }
+                    />
+                </XVertical>
+            ) : (isServerMessage(message) && this.props.conversationType === 'ChannelConversation') ? (
+                <XWithRole role="super-admin">
+                    <XVertical className="menu">
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
+                        />
+                    </XVertical>
+                </XWithRole>
+            ) : null;
+
+        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+            menu = null;
+        }
+
+        return (
+            <XHorizontal alignItems="center" separator={0} alignSelf={isCompact ? 'flex-start' : undefined} className="menu-wrapper">
+                <XHorizontal alignItems="center" separator={6}>
+                    <ReplyButton onClick={this.setReplyMessage}>
+                        <ReplyIcon />
+                    </ReplyButton>
+                    {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
+                        <ReactionComponent messageId={(message as MessageFull).id} />
+                    )}
+                </XHorizontal>
+                {menu}
+            </XHorizontal>
+        );
+    }
+
     render() {
         const { message } = this.props;
         let content: any[] = [];
@@ -350,38 +400,6 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             content.push(<MessageTextComponent message={''} mentions={null} key={'text'} isService={false} isEdited={edited} />);
         }
 
-        // menu
-        let menu = isServerMessage(message) && this.props.out ?
-            (
-                <XVertical className="menu">
-                    <XOverflow
-                        show={this.state.isMenuOpen}
-                        flat={true}
-                        placement="bottom-end"
-                        onClickTarget={this.switchMenu}
-                        content={
-                            <>
-                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
-                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
-                            </>
-                        }
-                    />
-                </XVertical>
-            ) : (isServerMessage(message) && this.props.conversationType === 'ChannelConversation') ? (
-                <XWithRole role="super-admin">
-                    <XVertical className="menu">
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
-                        />
-                    </XVertical>
-                </XWithRole>
-            ) : null;
-        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
-            menu = null;
-        }
-
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
@@ -416,19 +434,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         </MessageCompactContent>
                         {isSelect ? (
                             <Check />
-                        ) : (
-                                <XHorizontal alignItems="center" separator={0} alignSelf="flex-start" className="menu-wrapper">
-                                    <XHorizontal alignItems="center" separator={6}>
-                                        <ReplyButton onClick={this.setReplyMessage}>
-                                            <ReplyIcon />
-                                        </ReplyButton>
-                                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                                            <ReactionComponent messageId={(message as MessageFull).id} />
-                                        )}
-                                    </XHorizontal>
-                                    {menu}
-                                </XHorizontal>
-                            )}
+                        ) : this.menuRender(true)}
                     </XHorizontal>
                 </MessageContainer>
             );
@@ -463,19 +469,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             </XHorizontal>
                             {isSelect ? (
                                 <Check />
-                            ) : (
-                                    <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
-                                        <XHorizontal alignItems="center" separator={6}>
-                                            <ReplyButton onClick={this.setReplyMessage}>
-                                                <ReplyIcon />
-                                            </ReplyButton>
-                                            {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                                                <ReactionComponent messageId={(message as MessageFull).id} />
-                                            )}
-                                        </XHorizontal>
-                                        {menu}
-                                    </XHorizontal>
-                                )}
+                            ) : this.menuRender(false)}
                         </XHorizontal>
                         {content}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
