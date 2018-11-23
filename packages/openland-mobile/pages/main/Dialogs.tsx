@@ -44,23 +44,6 @@ class DialogsSearch extends React.Component<{ query: string }> {
 
                                     }
 
-                                    /*
-                                        let data: DialogDataSourceItem[] = resp.data.items.map(d => {
-                                            let isOut = d.topMessage ? d.topMessage.sender.id === engine.engine.user.id : undefined;
-                                            let sender = d.topMessage ? isOut ? 'You' : d.topMessage.sender.name : undefined;
-                                            return {
-                                                key: d.id,
-                                                flexibleId: d.flexibleId,
-                                                title: d.title,
-                                                type: d.__typename,
-                                                unread: d.unreadCount,
-                                                photo: d.photos[0],
-                                                sender: sender,
-                                                message: d.topMessage ? formatMessage(d.topMessage) : undefined,
-                                                date: d.topMessage ? parseInt(d.topMessage.date, 10) : undefined,
-                                            };
-                                        });
-                                    */
                                     let data: DialogDataSourceItem[] = resp.data.items.map(d => {
                                         return {
                                             key: d.id,
@@ -79,8 +62,8 @@ class DialogsSearch extends React.Component<{ query: string }> {
                                         <SScrollView keyboardDismissMode="on-drag">
                                             <View style={{ flexDirection: 'column', width: '100%' }}>
                                                 {data.map((item) => (
-                                                    <ASView style={{ height: 80 }}>
-                                                        <DialogItemViewAsync item={item} onPress={() => r!!.push('Conversation', { id: item.key })} />
+                                                    <ASView style={{ height: 48 }}>
+                                                        <DialogItemViewAsync item={item} compact={true} onPress={() => r!!.push('Conversation', { id: item.key })} />
                                                     </ASView>
                                                 ))}
                                             </View>

@@ -16,7 +16,7 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Channel invite link" />
+                <SHeader title="Room invite link" />
                 <SScrollView>
                     <YQuery query={RoomInviteLinkQuery} variables={{ roomId: this.props.router.params.id }}>
                         {data => (

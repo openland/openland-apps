@@ -192,7 +192,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                 }
 
                                             } else {
-                                                return <ConversationRoot provider={modal!!} key={privateRoom!.id} router={this.props.router} engine={messenger!!} chat={privateRoom!} />;
+                                                return <ConversationRoot provider={modal!!} key={(sharedRoom || privateRoom)!.id} router={this.props.router} engine={messenger!!} chat={(sharedRoom || privateRoom)!} />;
                                             }
                                         }}
 

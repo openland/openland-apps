@@ -42,14 +42,14 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
     render() {
         return (
             <>
-                <SHeader title="New Channel" />
+                <SHeader title="New room" />
                 <SHeaderButton title="Create" onPress={() => { this.ref.current!.submitForm(); }} />
                 <YMutation mutation={RoomCreateMutation}>
                     {(create) => (<ZForm
                         ref={this.ref}
                         action={async (src) => {
                             if (!src.title) {
-                                throw new UserError('Channel name can\'t be empty');
+                                throw new UserError('Room name can\'t be empty');
                             }
                             let channel = await create({
                                 variables: {

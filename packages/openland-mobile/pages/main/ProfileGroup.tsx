@@ -12,7 +12,7 @@ import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { UserShort, Room_room_SharedRoom } from 'openland-api/Types';
+import { UserShort, Room_room_SharedRoom, RoomMemberRole } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
@@ -20,8 +20,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { XPStyles } from 'openland-xp/XPStyles';
-import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery } from 'openland-api';
-import { RoomAddMemberMutation } from 'openland-api/queries/Chats';
+import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation } from 'openland-api';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -141,7 +140,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 <ZListItemGroup header="Members">
 
                                     <SDeferred>
-                                        <YMutation mutation={RoomAddMemberMutation} >
+                                        <YMutation mutation={RoomAddMembersMutation} >
                                             {(add) => (
                                                 <TouchableHighlight
                                                     underlayColor={XPStyles.colors.selectedListItem}
@@ -152,7 +151,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                 title: 'Add', action: async (users) => {
                                                                     startLoader();
                                                                     try {
-                                                                        await add({ variables: { invites: users.map(u => ({ userId: u.id, role: 'member' })), conversationId: sharedRoom!.id } });
+                                                                        await add({ variables: { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: sharedRoom!.id } });
                                                                         this.props.router.back();
                                                                     } catch (e) {
                                                                         Alert.alert(e.message);

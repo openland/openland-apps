@@ -20,7 +20,7 @@ class ChannelSearchComponent extends React.Component<PageProps & { query: string
                 variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]), query: this.props.query }}
                 renderItem={(item) => {
                     return (
-                        <DialogItemViewAsync item={{ ...extractDialogFRomRoom(item, getMessenger().engine.user.id), message: item.description || undefined }} onPress={() => this.props.router.push('Conversation', { flexibleId: item.id })} />
+                        <DialogItemViewAsync item={{ ...extractDialogFRomRoom(item, getMessenger().engine.user.id), message: item.description || undefined }} compact={true} onPress={() => this.props.router.push('Conversation', { flexibleId: item.id })} />
                     );
                 }}
             />
