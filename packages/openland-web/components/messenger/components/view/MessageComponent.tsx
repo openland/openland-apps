@@ -290,6 +290,16 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         let date: any = null;
         let edited = isServerMessage(this.props.message) && this.props.message.edited;
 
+        let isSelect = false;
+        let hideMenu = false;
+        let { forwardMessagesId } = this.props.messagesContext;
+        if (forwardMessagesId) {
+            isSelect = forwardMessagesId.has((message as MessageFull).id);
+            if (forwardMessagesId.size > 0) {
+                hideMenu = true;
+            }
+        }
+
         if (isServerMessage(message)) {
             if (this.state.isEditView && message.message) {
                 content.push(<EditMessageInlineWrapper message={message} key={'editForm'} onClose={this.hideEditView} />);
@@ -312,7 +322,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         if (message.fileMetadata!!.imageFormat === 'GIF') {
                             content.push(<MessageAnimationComponent key={'file'} file={file} fileName={name} width={w} height={h} />);
                         } else {
-                            content.push(<MessageImageComponent key={'file'} file={file} fileName={name} width={w} height={h} />);
+                            content.push(<MessageImageComponent key={'file'} file={file} fileName={name} width={w} height={h} startSelected={hideMenu} />);
                         }
                     } else {
                         content.push(<MessageFileComponent key={'file'} file={file} fileName={name} fileSize={size} />);
@@ -403,16 +413,6 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
-        }
-
-        let isSelect = false;
-        let hideMenu = false;
-        let { forwardMessagesId } = this.props.messagesContext;
-        if (forwardMessagesId) {
-            isSelect = forwardMessagesId.has((message as MessageFull).id);
-            if (forwardMessagesId.size > 0) {
-                hideMenu = true;
-            }
         }
 
         if (this.props.compact) {

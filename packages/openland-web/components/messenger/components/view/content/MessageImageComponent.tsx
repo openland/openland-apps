@@ -60,6 +60,7 @@ interface MessageImageComponentProps {
     fileName?: string;
     width: number;
     height: number;
+    startSelected: boolean;
 }
 
 export class MessageImageComponent extends React.PureComponent<MessageImageComponentProps, { isOpen: boolean }> {
@@ -72,6 +73,9 @@ export class MessageImageComponent extends React.PureComponent<MessageImageCompo
     }
 
     handleOpen = (e: any) => {
+        if (this.props.startSelected) {
+            return;
+        }
         e.stopPropagation();
         this.setState({
             isOpen: true
