@@ -245,7 +245,7 @@ const MembersProvider = (props: MembersProviderProps) => {
                 />
                 <SectionContent>
                     {(props.isRoom && props.meOwner) && (
-                        <XCreateCard query={{ field: 'addMember', value: 'true' }} text="Invite people" />
+                        <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />
                     )}
                     {members.map((member, i) => (
                         <MemberCard key={i} member={member.user} meOwner={props.meOwner} />

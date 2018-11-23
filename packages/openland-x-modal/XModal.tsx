@@ -254,7 +254,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             this.setState((state) => ({ isOpen: false }));
         } else if (this.props.targetQuery) {
             if (this.lastRouter) {
-                this.lastRouter!!.pushQuery(this.props.targetQuery!!);
+                this.lastRouter!!.replaceQuery(this.props.targetQuery!!, undefined); // this will delete targetQuery
             }
         }
     }
