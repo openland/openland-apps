@@ -406,9 +406,13 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         let isSelect = false;
+        let hideMenu = false;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
             isSelect = forwardMessagesId.has((message as MessageFull).id);
+            if (forwardMessagesId.size > 0) {
+                hideMenu = true;
+            }
         }
 
         if (this.props.compact) {
@@ -432,9 +436,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 />
                             )}
                         </MessageCompactContent>
-                        {isSelect ? (
-                            <Check />
-                        ) : this.menuRender(true)}
+                        {hideMenu ? (isSelect ? (<Check />) : null) : this.menuRender(true)}
                     </XHorizontal>
                 </MessageContainer>
             );
@@ -467,9 +469,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                 </XHorizontal>
                                 <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
-                            {isSelect ? (
-                                <Check />
-                            ) : this.menuRender(false)}
+                            {hideMenu ? (isSelect ? (<Check />) : null) : this.menuRender(true)}
                         </XHorizontal>
                         {content}
                         {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
