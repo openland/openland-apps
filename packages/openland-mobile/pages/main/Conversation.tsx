@@ -123,68 +123,74 @@ class ConversationComponent extends React.Component<PageProps> {
                                             let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
                                             let privateRoom = resp.data.room!.__typename === 'PrivateRoom' ? resp.data.room! as Room_room_PrivateRoom : null;
 
-                                            if (sharedRoom && sharedRoom.kind === 'PUBLIC' && sharedRoom.membership !== 'MEMBER') {
-                                                return (
-                                                    <>
-                                                        <SHeaderView>
-                                                            <ChatHeader conversationId={sharedRoom.id} router={this.props.router} />
-                                                        </SHeaderView>
-                                                        <ASView
-                                                            style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                                                        >
-                                                            <ASFlex
-                                                                width={Dimensions.get('window').width}
-                                                                height={Dimensions.get('window').height}
+                                            if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
+                                                if (sharedRoom.kind === 'PUBLIC') {
+                                                    return (
+                                                        <>
+                                                            <SHeaderView>
+                                                                <ChatHeader conversationId={sharedRoom.id} router={this.props.router} />
+                                                            </SHeaderView>
+                                                            <ASView
+                                                                style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                                                             >
-                                                                <ASImage
-                                                                    source={require('assets/img-chat-3.jpg')}
+                                                                <ASFlex
                                                                     width={Dimensions.get('window').width}
                                                                     height={Dimensions.get('window').height}
-                                                                />
-                                                            </ASFlex>
-                                                        </ASView>
-                                                        <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
+                                                                >
+                                                                    <ASImage
+                                                                        source={require('assets/img-chat-3.jpg')}
+                                                                        width={Dimensions.get('window').width}
+                                                                        height={Dimensions.get('window').height}
+                                                                    />
+                                                                </ASFlex>
+                                                            </ASView>
+                                                            <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
 
-                                                            <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
-                                                                <XPAvatar
-                                                                    src={sharedRoom.photo}
-                                                                    size={100}
-                                                                    placeholderKey={sharedRoom.id}
-                                                                    placeholderTitle={sharedRoom.title}
-                                                                />
-                                                                <View flexDirection="column" zIndex={-1}>
-                                                                    <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} />
-                                                                    <Text style={{ fontSize: 20, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
-                                                                    <Text style={{ fontSize: 15, color: '#8a8a8f', textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
-                                                                    <Text style={{ fontSize: 14, color: '#8a8a8f', textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
+                                                                <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
+                                                                    <XPAvatar
+                                                                        src={sharedRoom.photo}
+                                                                        size={100}
+                                                                        placeholderKey={sharedRoom.id}
+                                                                        placeholderTitle={sharedRoom.title}
+                                                                    />
+                                                                    <View flexDirection="column" zIndex={-1}>
+                                                                        <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} />
+                                                                        <Text style={{ fontSize: 20, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
+                                                                        <Text style={{ fontSize: 15, color: '#8a8a8f', textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
+                                                                        <Text style={{ fontSize: 14, color: '#8a8a8f', textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
+                                                                    </View>
                                                                 </View>
-                                                            </View>
-                                                            <View alignSelf="center" marginBottom={46}>
-                                                                <YMutation mutation={RoomJoinMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
-                                                                    {(join) => (
-                                                                        <ZRoundedButton
-                                                                            style="big"
-                                                                            uppercase={false}
-                                                                            title={sharedRoom!.membership === 'REQUESTED' ? 'Invite requested' : 'Request invite'}
-                                                                            onPress={async () => {
-                                                                                startLoader();
-                                                                                try {
-                                                                                    await join({ variables: { roomId: sharedRoom!.id } });
-                                                                                } catch (e) {
-                                                                                    Alert.alert(e.message);
-                                                                                }
-                                                                                stopLoader();
+                                                                <View alignSelf="center" marginBottom={46}>
+                                                                    <YMutation mutation={RoomJoinMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
+                                                                        {(join) => (
+                                                                            <ZRoundedButton
+                                                                                style="big"
+                                                                                uppercase={false}
+                                                                                title={sharedRoom!.membership === 'REQUESTED' ? 'Invite requested' : 'Request invite'}
+                                                                                onPress={async () => {
+                                                                                    startLoader();
+                                                                                    try {
+                                                                                        await join({ variables: { roomId: sharedRoom!.id } });
+                                                                                    } catch (e) {
+                                                                                        Alert.alert(e.message);
+                                                                                    }
+                                                                                    stopLoader();
 
-                                                                            }}
-                                                                        />
-                                                                    )}
-                                                                </YMutation>
-                                                            </View>
+                                                                                }}
+                                                                            />
+                                                                        )}
+                                                                    </YMutation>
+                                                                </View>
 
-                                                        </ASSafeAreaView>
+                                                            </ASSafeAreaView>
 
-                                                    </>
-                                                );
+                                                        </>
+                                                    );
+                                                } else {
+                                                    this.props.router.back();
+                                                    return null;
+                                                }
+
                                             } else {
                                                 return <ConversationRoot provider={modal!!} key={privateRoom!.id} router={this.props.router} engine={messenger!!} chat={privateRoom!} />;
                                             }

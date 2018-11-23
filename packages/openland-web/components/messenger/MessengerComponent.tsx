@@ -38,6 +38,7 @@ import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { ConferenceComponent } from '../conference/ConferenceComponent';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { withRoomAddMembers } from '../../api/withRoomAddMembers';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
@@ -336,7 +337,8 @@ const RoomTab = Glamorous(XLink)({
 export const RoomEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
-    let editPhotoRef = (props as any).photoRef;
+    let editPhotoRef = (props as any).photo;
+    let editSocialImageRef = (props as any).socialImage;
     return (
         <XModalForm
             scrollableContent={true}
@@ -347,15 +349,15 @@ export const RoomEditComponent = withAlterChat((props) => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
-
+                let newSocialImage = data.input.socialImageRef;
                 props.alter({
                     variables: {
                         roomId: (props as any).roomId,
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            // TODO: recover edit photo
-                            // ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
+                            ...newPhoto.uuid !== editPhotoRef ? { photoRef: sanitizeIamgeRef(newPhoto) } : {},
+                            ...newSocialImage.uuid !== editSocialImageRef ? { socialImageRef: sanitizeIamgeRef(newSocialImage) } : {},
                         }
                     }
                 });
@@ -364,7 +366,8 @@ export const RoomEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
-                    // photoRef: sanitizeIamgeRef((props as any).photoRef),
+                    photoRef: { uuid: (props as any).photo },
+                    socialImageRef:  (props as any).socialImage ? { uuid: (props as any).socialImage } : undefined,
                 }
             }}
         >
@@ -383,7 +386,7 @@ export const RoomEditComponent = withAlterChat((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, description: string | null, roomId: string }>;
+}) as React.ComponentType<{ title: string, photo: string, socialImage: string | null, description: string | null, roomId: string }>;
 
 export const AddMemberForm = withRoomAddMembers((props) => {
     return (
@@ -623,7 +626,11 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
     let privateRoom: Room_room_PrivateRoom | null = props.data.room!.__typename === 'PrivateRoom' ? props.data.room as any : null;
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
-        return <RoomsInviteComponent room={sharedRoom} />;
+        if (sharedRoom.kind === 'PUBLIC') {
+            return <RoomsInviteComponent room={sharedRoom} />;
+        } else {
+            return <XPageRedirect path="/mail" />;
+        }
     }
     let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
     let titlePath: string | undefined = undefined;
@@ -839,7 +846,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                     </XWithRole>
                 )}
             </XHorizontal>
-            {sharedRoom && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} photoRef={sharedRoom.photo} roomId={sharedRoom.id} />}
+            {sharedRoom && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} photo={sharedRoom.photo} socialImage={sharedRoom.socialImage} roomId={sharedRoom.id} />}
 
             <AddMemberForm roomId={props.data.room!.id} />
         </MessengerWrapper>

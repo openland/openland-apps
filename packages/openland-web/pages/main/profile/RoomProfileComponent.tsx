@@ -94,7 +94,8 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 roomId={chat.id}
                                 title={chat.title}
                                 description={chat.description}
-                                photoRef={chat.photo}
+                                photo={chat.photo}
+                                socialImage={chat.socialImage}
                             />
                         </>
                     )}

@@ -16,6 +16,7 @@ export const RoomFull = gql`
                 kind
                 title
                 photo
+                socialImage
                 description
                 organization{
                     ... OrganizationShort
