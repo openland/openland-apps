@@ -295,10 +295,11 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                     variables: {
                         kind: 'GROUP',
                         message: msg,
+                        title: this.state.values.map((v) => v.label).join(', '),
                         members: this.state.values.map((v) => v.value)
                     }
                 });
-                Router.replaceRoute('/mail/' + (res.data as any).group.id);
+                Router.replaceRoute('/mail/' + (res.data as any).room.id);
             }
         }
     }
