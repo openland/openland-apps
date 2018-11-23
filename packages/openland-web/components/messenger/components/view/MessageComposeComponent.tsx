@@ -419,23 +419,36 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 });
             }
             if ((floatingMessage || forwardMessageReply) && forwardMessageId) {
-                let messages: string[];
-                if (typeof (forwardMessageId) === 'string') {
-                    messages = [forwardMessageId];
-                } else {
-                    messages = [...forwardMessageId];
-                }
-                this.props.replyMessage({
-                    variables: {
-                        conversationId: this.props.conversationId,
-                        message: message,
-                        replyMessages: messages
-                    }
-                });
+                this.replyMessages();
             }
-            this.closeEditor();
-            this.changeDraft('');
-            this.localDraftCleaner();
+        } else if (forwardMessageReply && forwardMessageId) {
+            this.replyMessages();
+        }
+        this.closeEditor();
+        this.changeDraft('');
+        this.localDraftCleaner();
+    }
+
+    private replyMessages = () => {
+        let {
+            message,
+            forwardMessageId
+        } = this.state;
+
+        let messages: string[] = [];
+        if (typeof (forwardMessageId) === 'string') {
+            messages = [forwardMessageId];
+        } else if (typeof (forwardMessageId) === 'object') {
+            messages = [...forwardMessageId];
+        }
+        if (messages.length > 0) {
+            this.props.replyMessage({
+                variables: {
+                    conversationId: this.props.conversationId,
+                    message: message,
+                    replyMessages: messages
+                }
+            });
         }
     }
 
