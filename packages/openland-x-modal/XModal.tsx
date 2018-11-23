@@ -241,7 +241,9 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
     }
 
     onTargetClick = () => {
-        this.setState((state) => ({ isOpen: true }));
+        this.setState({ 
+            isOpen: true 
+        });
     }
 
     onModalCloseRequest = () => {

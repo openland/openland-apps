@@ -171,13 +171,13 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         };
     }
 
-    switchMenu = () => {
+    private switchMenu = () => {
         this.setState({
             isMenuOpen: !this.state.isMenuOpen
         });
     }
 
-    setEditMessage = (e: any) => {
+    private setEditMessage = (e: any) => {
         let { message, messagesContext } = this.props;
         if (isServerMessage(this.props.message)) {
             e.stopPropagation();
@@ -186,7 +186,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
     }
 
-    setReplyMessage = (e: any) => {
+    private setReplyMessage = (e: any) => {
         let { message, messagesContext } = this.props;
 
         let messageText = message.message;
@@ -205,10 +205,10 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
     }
 
-    selectMessage = () => {
+    private selectMessage = () => {
         let { message, messagesContext } = this.props;
 
-        if (!isServerMessage(message) || this.state.isEditView) {
+        if (!isServerMessage(message) || this.state.isEditView || document.body.classList[0] === 'ReactModal__Body--open') {
             return;
         }
 
@@ -230,7 +230,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
     }
 
-    hideEditView = () => {
+    private hideEditView = () => {
         this.props.messagesContext.resetAll();
     }
 
@@ -251,20 +251,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         content.push(<MessageTextComponent message={message.message} mentions={message.mentions} key={'text'} isService={message.isService} isEdited={edited} />);
                     }
                 }
-                if (message.file && !message.urlAugmentation) {
-                    let w = message.fileMetadata!!.imageWidth ? message.fileMetadata!!.imageWidth!! : undefined;
-                    let h = message.fileMetadata!!.imageHeight ? message.fileMetadata!!.imageHeight!! : undefined;
-                    let name = message.fileMetadata!!.name ? message.fileMetadata!!.name!! : undefined;
-                    let size = message.fileMetadata!!.size ? message.fileMetadata!!.size!! : undefined;
+                const { file, fileMetadata } = message;
+                if (file && !message.urlAugmentation) {
+                    let w = fileMetadata!!.imageWidth ? fileMetadata!!.imageWidth!! : undefined;
+                    let h = fileMetadata!!.imageHeight ? fileMetadata!!.imageHeight!! : undefined;
+                    let name = fileMetadata!!.name ? fileMetadata!!.name!! : undefined;
+                    let size = fileMetadata!!.size ? fileMetadata!!.size!! : undefined;
 
                     if (message.fileMetadata!!.isImage && !!w && !!h) {
                         if (message.fileMetadata!!.imageFormat === 'GIF') {
-                            content.push(<MessageAnimationComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
+                            content.push(<MessageAnimationComponent key={'file'} file={file} fileName={name} width={w} height={h} />);
                         } else {
-                            content.push(<MessageImageComponent key={'file'} file={message.file} fileName={name} width={w} height={h} />);
+                            content.push(<MessageImageComponent key={'file'} file={file} fileName={name} width={w} height={h} />);
                         }
                     } else {
-                        content.push(<MessageFileComponent key={'file'} file={message.file} fileName={name} fileSize={size} />);
+                        content.push(<MessageFileComponent key={'file'} file={file} fileName={name} fileSize={size} />);
                     }
                 }
                 if (message.urlAugmentation) {

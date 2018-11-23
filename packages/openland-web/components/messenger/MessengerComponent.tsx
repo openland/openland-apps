@@ -667,11 +667,18 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                         />
                     </XHorizontal>
                 </ClearButton>
-                <XButton
-                    text="Forward"
-                    style="primary"
-                    onClick={() => props.state.forwardMessages()}
-                />
+                <XHorizontal alignItems="center" separator={5}>
+                    <XButton
+                        text="Reply"
+                        style="primary"
+                        onClick={() => props.state.forwardMessages()}
+                    />
+                    <XButton
+                        text="Forward"
+                        style="primary"
+                        onClick={() => props.state.forwardMessages()}
+                    />
+                </XHorizontal>
             </ChatHeaderContent>
         );
     } else {
