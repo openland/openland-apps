@@ -74,7 +74,7 @@ const RoomInviteSmartHead = withChannelInviteInfo(withRouter((props) => {
         let computedOG: OpenGraphObject = {
             title: room.title + ' — Private Community at Openland',
             description: room.description || 'Openland is a professional messaging service built for productivity and speed. It’s time to move away from endless meetings, disorganized email threads, disconnected team chats, and work invasion in your personal social media. With Openland you can manage all your professional communications in one messaging inbox.',
-            image: room.photo || DEFAULT_OG.image
+            image: room.socialImage || room.photo || DEFAULT_OG.image
         };
 
         return <SmartHead og={computedOG} url={props.router.href} />;
