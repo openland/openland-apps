@@ -134,14 +134,14 @@ export const RoomCreateMutation = gql`
 `;
 
 export const RoomCreateIntroMutation = gql`
-    mutation RoomCreateIntro($roomId: ID!, $userId: ID!, $about: String, $file: String) {
-        intro: betaIntroSend(room: $roomId, uid: $userId, about: $about, file: $file, message: $about)
+    mutation RoomCreateIntro($roomId: ID!, $uid: ID!, $about: String, $file: String) {
+        intro: betaIntroSend(room: $roomId, uid: $uid, about: $about, file: $file, message: $about)
     }
 `;
 
 export const RoomEditIntroMutation = gql`
-    mutation RoomEditIntro($messageId: ID!, $userId: ID!, $about: String, $file: String) {
-        intro: betaIntroEdit(mid: $messageId, uid: $userId, about: $about, file: $file, message: $about)
+    mutation RoomEditIntro($messageId: ID!, $uid: ID!, $about: String, $file: String) {
+        intro: betaIntroEdit(mid: $messageId, uid: $uid, about: $about, file: $file, message: $about)
     }
 `;
 
@@ -323,7 +323,12 @@ export const RoomInviteLinkQuery = gql`
 export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
         invite: betaRoomInviteInfo(invite: $invite){
-           ...RoomFull
+            room{
+                ...RoomFull
+            }
+            invitedByUser{
+                ...UserShort
+            }
         }
     }
     ${UserShort}

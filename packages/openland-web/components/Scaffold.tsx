@@ -628,7 +628,7 @@ export const CreateRoom = withCreateChannel((props) => {
             targetQuery="createRoom"
             defaultAction={async (data) => {
                 let oid = props.router.query.createRoom;
-                let room = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, organizationId: oid !== 'true' ? oid : undefined, kind: SharedRoomKind.PUBLIC } });
+                let room = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, organizationId: oid !== 'true' ? oid : undefined, members: [], kind: SharedRoomKind.PUBLIC } });
                 delay(0).then(() => {
                     props.router.push('/mail/' + room.data.room.id);
                 });
