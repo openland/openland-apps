@@ -636,8 +636,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     floatingMessage: undefined,
                     forwardMessageReply: `Forward ${forwardMessagesId.size} messages`,
                     forwardMessageId: forwardMessagesId,
-                    forwardMessageSender: 'Forward',
-                    statlesChatId: nextProps.conversationId
+                    forwardMessageSender: 'Forward'
                 };
             }
         }

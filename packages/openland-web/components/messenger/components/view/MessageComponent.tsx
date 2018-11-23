@@ -372,6 +372,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                                     edited={i.edited}
                                     file={i.file}
                                     fileMetadata={i.fileMetadata}
+                                    startSelected={hideMenu}
                                 />
                             ))}
                         </ReplyMessageWrapper>

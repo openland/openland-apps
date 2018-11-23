@@ -68,6 +68,7 @@ interface ReplyMessageProps {
     edited: boolean;
     file: string | null;
     fileMetadata: MessageFull_reply_fileMetadata | null;
+    startSelected: boolean;
 }
 
 export const MessageReplyComponent = (props: ReplyMessageProps) => {
@@ -88,7 +89,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
             if (props.fileMetadata!!.imageFormat === 'GIF') {
                 content.push(<MessageAnimationComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
             } else {
-                content.push(<MessageImageComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
+                content.push(<MessageImageComponent key={'file'} file={props.file} fileName={name} width={w} height={h} startSelected={props.startSelected} />);
             }
         } else {
             content.push(<MessageFileComponent key={'file'} file={props.file} fileName={name} fileSize={size} />);
