@@ -576,6 +576,11 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     keydownHandler = (e: any) => {
+        let { forwardMessagesId } = this.props.messagesContext;
+        if (forwardMessagesId && forwardMessagesId.size > 0) {
+            return;
+        }
+
         let { message, forwardMessageId } = this.state;
         let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
 
