@@ -137,12 +137,10 @@ export class EditMessageInlineWrapper extends React.Component<{ message: Message
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
-        (document as any).isEditMessage = true;
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
-        (document as any).isEditMessage = false;
     }
 
     render() {

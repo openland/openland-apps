@@ -4,10 +4,8 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { DialogListEngine, DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
-import { makeNavigable } from 'openland-x/Navigable';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { withChatSearchText } from '../../api/withChatSearchText';
@@ -15,171 +13,12 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import SearchIcon from '../icons/ic-search-small.svg';
 import { withUserInfo } from '../UserInfo';
-import { XFont } from 'openland-x/XFont';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
 import { DialogView } from './components/DialogView';
-
-const ItemContainer = Glamorous.a({
-    display: 'flex',
-    height: 72,
-    fontSize: 15,
-    fontWeight: 500,
-    color: '#334562',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 0,
-    paddingTop: 4,
-    paddingBottom: 4,
-    position: 'relative',
-    '&:hover, &:focus': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.05)',
-            color: '#334562'
-        }
-    },
-    '&.is-active': {
-        backgroundColor: '#4596e1',
-        '&:hover': {
-            backgroundColor: '#4596e1',
-            color: '#334562'
-        },
-        '& .title, .content': {
-            color: '#fff !important',
-            opacity: '1 !important'
-        },
-        '& .date': {
-            color: 'rgba(255, 255, 255, 0.8) !important',
-        },
-        '& .header:before': {
-            display: 'none'
-        },
-    },
-    '&:last-child .header:before': {
-        display: 'none'
-    }
-});
-
-const Header = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    alignItems: 'stretch',
-    paddingLeft: 12,
-    paddingRight: 16,
-    paddingTop: 8,
-    maxWidth: 'calc(100% - 40px)',
-    position: 'relative',
-    height: 72,
-    '&:before': {
-        content: ' ',
-        display: 'block',
-        position: 'absolute',
-        left: 11, bottom: 0, right: 0,
-        height: 1,
-        backgroundColor: '#ececec'
-    }
-});
-
-const Main = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexGrow: 0,
-    flexShrink: 1,
-    height: 18,
-    marginBottom: 4
-});
-
-const Title = Glamorous.div({
-    ...XFont.h400,
-    display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
-    flexBasis: '0px',
-    height: 18,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '& > span': {
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-    },
-});
-
-const Date = Glamorous.div({
-    ...XFont.h100,
-    display: 'flex',
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    alignItems: 'flex-end',
-    flexShrink: 0,
-    height: 18,
-    color: 'rgba(0, 0, 0, 0.3)',
-    marginLeft: 5
-});
-
-const Content = Glamorous.div<{ counterColor?: string }>(props => ({
-    '& svg': {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        margin: '1px 5px -1px 1px',
-        '&.document': {
-            marginTop: 0,
-            marginBottom: 0
-        }
-    },
-}));
-
-const ContentText = Glamorous.div({
-    ...XFont.b300,
-    height: 34,
-    opacity: 0.8,
-
-    '& span': {
-        display: 'block',
-        height: '100%',
-        overflow: 'hidden',
-    },
-
-    // Webkit line clamp
-    '& > span': {
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-    '&.with-unread': {
-        paddingRight: 32,
-    }
-});
-
-const ContentCounter = Glamorous.div({
-    position: 'absolute',
-    right: 16,
-    bottom: 8,
-});
-
-const ConversationAvatar = Glamorous(XAvatar)({
-
-});
-
-let Item = makeNavigable((props) => (
-    <ItemContainer
-        href={props.href}
-        target={props.hrefTarget}
-        onClick={props.onClick}
-        className={props.active ? 'is-active' : undefined}
-        innerRef={(props as any).ref}
-        tabIndex={0}
-    >
-        {props.children}
-    </ItemContainer>
-)) as React.ComponentType<{ ref: (e: any) => void, path: string, onClick?: () => void }>;
+import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
 
 let SelectContext = React.createContext({ select: -1 });
 
@@ -222,57 +61,9 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
     }
 
     render() {
-
-        return (<DialogView item={this.props.conversation} />);
-        // let conv = this.props.conversation;
-        // let isPrivate = conv.type === 'PrivateConversation';
-        // return (
-        //     <Item path={'/mail/' + conv.key} onClick={this.props.onSelect} ref={this.handleRef}>
-        //         <ConversationAvatar
-        //             style={(conv.type === 'SharedConversation'
-        //                 ? 'organization'
-        //                 : conv.type === 'GroupConversation'
-        //                     ? 'group'
-        //                     : conv.type === 'ChannelConversation'
-        //                         ? 'room' :
-        //                         isPrivate ? 'user' : undefined
-        //             )}
-        //             objectName={conv.title}
-        //             objectId={conv.flexibleId}
-        //             online={conv.online}
-        //             cloudImageUuid={conv.photo}
-        //         />
-        //         <Header className="header">
-        //             <Main>
-        //                 <Title className="title"><span>{conv.title}</span></Title>
-        //                 {conv.date && <Date className="date"><XDate value={conv.date.toString()} format="datetime_short" /></Date>}
-        //             </Main>
-        //             <Content>
-        //                 <ContentText className={'content' + ((conv.unread > 0) ? ' with-unread' : '')}>
-        //                     {conv.typing || (
-        //                         <>
-        //                             {!!(conv.message) && !conv.fileMeta && (
-        //                                 <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
-        //                             )}
-        //                             {conv.fileMeta && conv.fileMeta.isImage && (
-        //                                 <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon />Image</span>
-        //                             )}
-        //                             {conv.fileMeta && !conv.fileMeta.isImage && (
-        //                                 <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className="document" />Document</span>
-        //                             )}
-        //                         </>
-        //                     )}
-        //                 </ContentText>
-        //                 {conv.unread > 0 && (
-        //                     <ContentCounter>
-        //                         <XCounter big={true} count={conv.unread} />
-        //                         {/* <XCounter big={true} count={props.unread} bgColor={(props.settings && props.settings.mute) ? '#9f9f9f' : undefined} /> */}
-        //                     </ContentCounter>
-        //                 )}
-        //             </Content>
-        //         </Header>
-        //     </Item>
-        // );
+        return (
+            <DialogView item={this.props.conversation} />
+        );
     }
 }
 
@@ -380,6 +171,7 @@ const LoadingWrapper = Glamorous.div({
 interface ChatsComponentInnerProps extends XWithRouter {
     emptyState: boolean;
     messenger: MessengerEngine;
+    state: MessagesStateContextProps;
 }
 
 interface ChatsComponentInnerState {
@@ -537,7 +329,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         }
 
         if (!this.props.emptyState && e.code === 'Escape') {
-            if (stayChecker || (document as any).isEditMessage) {
+            if (stayChecker || this.props.state.editMessageId) {
                 return;
             }
 
@@ -670,28 +462,31 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
 const ChatsComponentWrapper = withRouter((props) => {
     return (
-        <ChatsComponentInner
-            emptyState={(props as any).emptyState}
-            router={props.router}
-            messenger={(props as any).messenger}
-        />
+        <MessagesStateContext.Consumer>
+            {(state: MessagesStateContextProps) => (
+                <ChatsComponentInner
+                    emptyState={(props as any).emptyState}
+                    router={props.router}
+                    messenger={(props as any).messenger}
+                    state={state}
+                />
+            )}
+        </MessagesStateContext.Consumer>
     );
-}) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine; }>;
+}) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine }>;
 
-export class ChatsComponent extends React.PureComponent<{ emptyState: boolean }> {
-    render() {
-        if (!canUseDOM) {
-            return null;
-        }
-        return (
-            <MessengerContext.Consumer>
-                {messenger => (
-                    <ChatsComponentWrapper
-                        emptyState={this.props.emptyState}
-                        messenger={messenger}
-                    />
-                )}
-            </MessengerContext.Consumer>
-        );
+export const ChatsComponent = (props: { emptyState: boolean }) => {
+    if (!canUseDOM) {
+        return null;
     }
-}
+    return (
+        <MessengerContext.Consumer>
+            {messenger => (
+                <ChatsComponentWrapper
+                    emptyState={props.emptyState}
+                    messenger={messenger}
+                />
+            )}
+        </MessengerContext.Consumer>
+    );
+};

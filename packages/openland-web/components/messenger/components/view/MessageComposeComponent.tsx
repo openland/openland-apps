@@ -561,7 +561,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
     private closeEditor = () => {
         this.props.messagesContext.resetAll();
-        (document as any).isEditMessage = false;
         this.setState({
             message: '',
             floatingMessage: undefined,
@@ -590,7 +589,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             if (messageData && isServerMessage(messageData)) {
                 e.preventDefault();
                 this.props.messagesContext.setEditMessage(messageData.id, messageData.message);
-                (document as any).isEditMessage = true;
             }
         }
         if (e.code === 'Escape' && forwardMessageId) {
@@ -660,7 +658,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         if (replyChecker) {
-            (document as any).isEditMessage = true;
             newState = {
                 ...newState,
                 message: '',
