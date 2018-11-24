@@ -95,6 +95,12 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
             content.push(<MessageFileComponent key={'file'} file={props.file} fileName={name} fileSize={size} />);
         }
     }
+    let orgPath: string | undefined = undefined;
+    let usrPath: string | undefined;
+    if (props.sender!!.primaryOrganization && !props.startSelected) {
+        orgPath = '/mail/o/' + props.sender!!.primaryOrganization!!.id;
+        usrPath = '/mail/u/' + props.sender!!.id;
+    }
     return (
         <MessageContainer>
             <XVertical separator={4}>
@@ -105,12 +111,12 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                         objectName={props.sender!!.name}
                         objectId={props.sender!!.id}
                         cloudImageUuid={props.sender ? props.sender.photo : undefined}
-                        path={'/mail/u/' + props.sender!!.id}
+                        path={usrPath}
                     />
                     <MessageWrapper separator={2} flexGrow={1}>
                         <XHorizontal separator={5} alignItems="center">
                             <Name>{props.sender!!.name}</Name>
-                            {props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + props.sender!!.primaryOrganization!!.id}>{props.sender!!.primaryOrganization!!.name}</Organization>}
+                            {props.sender!!.primaryOrganization && <Organization path={orgPath}>{props.sender!!.primaryOrganization!!.name}</Organization>}
                         </XHorizontal>
                         <DateComponent className="time">{date}</DateComponent>
                     </MessageWrapper>

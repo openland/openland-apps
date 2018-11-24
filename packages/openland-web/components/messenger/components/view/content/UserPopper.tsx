@@ -32,7 +32,10 @@ const showAnimation = glamor.keyframes({
 });
 
 const UserAvatarWrapper = Glamorous(XAvatar)({
-    marginTop: 3
+    marginTop: 3,
+    '& *': {
+        cursor: 'pointer'
+    }
 });
 
 const Container = Glamorous(XPopper.Content)({
@@ -102,8 +105,12 @@ const Status = withOnline(props => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
-export class UserAvatar extends React.Component<{ user: MessageFull_sender }> {
+export class UserAvatar extends React.PureComponent<{ user: MessageFull_sender, startSelected: boolean }> {
     render() {
+        let usrPath: string | undefined = undefined;
+        if (!this.props.startSelected) {
+            usrPath = '/mail/u/' + this.props.user.id;
+        }
         return (
             <UserAvatarWrapper
                 size="small"
@@ -111,14 +118,18 @@ export class UserAvatar extends React.Component<{ user: MessageFull_sender }> {
                 objectName={this.props.user.name}
                 objectId={this.props.user.id}
                 cloudImageUuid={this.props.user.photo || undefined}
-                path={'/mail/u/' + this.props.user.id}
+                path={usrPath}
             />
         );
     }
 }
 
-export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) => {
+export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, startSelected: boolean }) => {
     let { user, isMe } = props;
+    let usrPath: string | undefined = undefined;
+    if (!props.startSelected) {
+        usrPath = '/mail/u/' + user.id;
+    }
     let content = (
         <Wrapper>
             <XHorizontal>
@@ -128,7 +139,7 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) =
                     objectName={user.name}
                     objectId={user.id}
                     cloudImageUuid={user.photo || undefined}
-                    path={'/mail/u/' + user.id}
+                    path={usrPath}
                 />
                 <Status variables={{ userId: user.id }} />
             </XHorizontal>
@@ -148,7 +159,7 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean }) =
             placement="bottom-start"
             marginLeft={-2}
         >
-            <UserAvatar user={user} />
+            <UserAvatar user={user} startSelected={props.startSelected} />
         </XPopper>
     );
 };

@@ -415,6 +415,10 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
         }
+        let orgPath: string | undefined = undefined;
+        if (this.props.sender!!.primaryOrganization && !hideMenu) {
+            orgPath = '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
+        }
 
         if (this.props.compact) {
             return (
@@ -456,17 +460,18 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         <UserPopper
                             user={this.props.sender}
                             isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                            startSelected={hideMenu}
                         />
                     )}
                     {this.props.sender && (this.props.conversationType === 'PrivateConversation') && (
-                        <UserAvatar user={this.props.sender} />
+                        <UserAvatar user={this.props.sender} startSelected={hideMenu} />
                     )}
                     <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>
                         <XHorizontal justifyContent="space-between">
                             <XHorizontal separator={4}>
                                 <XHorizontal separator={4} alignItems="center">
                                     <Name>{this.props.sender!!.name}</Name>
-                                    {this.props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + this.props.sender!!.primaryOrganization!!.id}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                    {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                 </XHorizontal>
                                 <DateComponent className="time">{date}</DateComponent>
                             </XHorizontal>
