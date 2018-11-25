@@ -22,9 +22,9 @@ export default class OpenlandDocument extends Document {
     constructor(props: DocumentProps) {
         super(props);
         const { __NEXT_DATA__, ids } = props;
-        if (ids) {
-            __NEXT_DATA__.ids = this.props.ids;
-        }
+        // if (ids) {
+        //     __NEXT_DATA__.ids = this.props.ids;
+        // }
     }
 
     render() {
@@ -66,6 +66,7 @@ export default class OpenlandDocument extends Document {
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
 
                     {/* Config */}
+                    <script dangerouslySetInnerHTML={{ __html: 'window.GLAMOR_IDS=\'' + JSON.stringify(this.props.ids) + '\'' }} />
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
                 </Head>
                 <body>

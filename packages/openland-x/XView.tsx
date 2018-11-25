@@ -86,23 +86,20 @@ export interface XViewProps {
     children?: any;
 }
 
-const base = glamor.css({
-    display: 'flex',
-    flexGrow: 0,
-    flexShrink: 0,
-    flexDirection: 'column'
-}).toString();
-
 const styles = new Map<string, string>();
+
+const base = glamor.css({
+    display: 'flex'
+}).toString();
 
 const XViewContainer = (props: XViewProps) => {
 
     let position: 'relative' | 'absolute' | 'fixed' | undefined;
 
-    let flexGrow: number | undefined;
-    let flexShrink: number | undefined;
+    let flexGrow: number | undefined = 0;
+    let flexShrink: number | undefined = 0;
     let flexBasis: number | undefined;
-    let flexDirection: 'row' | 'column' | undefined;
+    let flexDirection: 'row' | 'column' | undefined = 'column';
     let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;

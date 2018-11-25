@@ -18,6 +18,11 @@ import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
 import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
+import { rehydrate } from 'glamor';
+
+if (canUseDOM) {
+    rehydrate(JSON.parse((window as any).GLAMOR_IDS));
+}
 
 export default withData(class MyApp extends App<{ apollo: OpenApolloClient, storage: SharedStorage, host: string, protocol: string }> {
 
