@@ -39,10 +39,12 @@ export default withApp('Home', 'viewer', (props) => {
                             margin={16}
                             maxWidth={860}
                         >
-                            <XView flexDirection="row">
+                            <XView flexDirection="row" alignItems="center">
                                 <XTitle marginTop={8}>All updates</XTitle>
                                 <XView flexGrow={1} />
                                 <XSelect value="all" multi={false} options={[{ value: 'all', label: 'All' }, { value: 'rejected', label: 'Rejected' }]} />
+                                <XView width={16}/>
+                                <XButton style="primary" text="New Post" />
                             </XView>
                             <Post
                                 source="founders"
