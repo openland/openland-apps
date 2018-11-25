@@ -5,12 +5,13 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { XTitle } from 'openland-x/XTitle';
 import { XButton } from 'openland-x/XButton';
+import { XLink } from 'openland-x/XLink';
 
-const Post = (props: { title: string, date: number, kind: 'public' | 'anonymous' | 'introduction' }) => {
+const Post = (props: { source: string, title: string, date: number, kind: 'public' | 'anonymous' | 'introduction' }) => {
     return (
-        <XView borderRadius={8} padding={16} marginTop={8} marginBottom={8} level="1" alignItems="stretch">
-            <XTitle marginTop={8} marginBottom={24}>{props.kind} {props.title}</XTitle>
-            <XView flexDirection="row" justifyContent="flex-end"> <XButton text="Direct Message" /> <XButton text="Discuss" /> </XView>
+        <XView borderRadius={8} padding={16} marginTop={8} marginBottom={8} level="1" alignItems="stretch" backgroundColor={props.kind === 'anonymous' ? '#abe3c5' : undefined}>
+            <XTitle marginTop={8} marginBottom={24}>{props.source} {props.kind} {props.title}</XTitle>
+            <XView flexDirection="row" justifyContent="space-between"> <XButton text="Direct Message" /> <XButton text="Discuss" /> </XView>
         </XView>
     );
 };
@@ -23,7 +24,9 @@ export default withApp('Home', 'viewer', (props) => {
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XView flexDirection="row" alignItems="stretch" justifyContent="center">
                         <XView flexDirection="column" width={200}>
-                            {}
+                            {/* <XLink>#hiring</XLink>
+                            <XLink>#advice</XLink>
+                            <XLink>#intro</XLink> */}
                         </XView>
                         <XView
                             flexDirection="column"
@@ -35,23 +38,29 @@ export default withApp('Home', 'viewer', (props) => {
                             maxWidth={860}
                         >
                             <Post
-                                title="Need a hire a new CEO"
+                                source="founders"
+                                title="Need to hire a new CEO"
                                 date={Date.now()}
                                 kind="anonymous"
                             />
                             <Post
+                                source="founders"
                                 title="How to fire our CTO without problems? NEED ADVICE"
                                 date={Date.now()}
                                 kind="public"
                             />
                             <Post
-                                title="Introduction for good Product Manager (write @diana)"
+                                source="sales"
+                                title="Introduction for a good Product Manager (write @diana)"
                                 date={Date.now()}
                                 kind="introduction"
                             />
                         </XView>
-                        <XView flexDirection="column" width={200}>
-                            {}
+                        <XView flexDirection="column" width={200} alignItems="center" marginTop={16}>
+                            <XTitle>Hot topics</XTitle>
+                            <XLink>#hiring</XLink>
+                            <XLink>#advice</XLink>
+                            <XLink>#intro</XLink>
                         </XView>
                     </XView>
                 </Scaffold.Content>

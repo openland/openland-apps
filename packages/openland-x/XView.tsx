@@ -21,7 +21,7 @@ export interface XViewProps {
     flexDirection?: 'row' | 'column' | null;
     alignSelf?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
-    justifyContent?: 'flex-start' | 'flex-end' | 'center' | null;
+    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | null;
 
     //
     // Sizing
@@ -105,7 +105,7 @@ const XViewContainer = (props: XViewProps) => {
     let flexDirection: 'row' | 'column' | undefined;
     let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
-    let justifyContent: 'flex-start' | 'flex-end' | 'center' | undefined;
+    let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;
 
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
