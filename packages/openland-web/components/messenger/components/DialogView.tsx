@@ -5,6 +5,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
+import ForwardIcon from './icons/ic-reply.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView } from 'openland-x/XView';
 import { XLink2 } from 'openland-x/XLink2';
@@ -119,6 +120,9 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
                             <>
                                 {!!(conv.message) && !conv.fileMeta && (
                                     <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
+                                )}
+                                {!conv.message && !conv.fileMeta && (
+                                    <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <ForwardIcon className={iconClass + ' ' + documentIcon} />Forward</span>
                                 )}
                                 {conv.fileMeta && conv.fileMeta.isImage && (
                                     <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon className={iconClass} />Image</span>
