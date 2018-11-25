@@ -6,10 +6,10 @@ import { Scaffold } from 'openland-web/components/Scaffold';
 import { XTitle } from 'openland-x/XTitle';
 import { XButton } from 'openland-x/XButton';
 
-const Post = (props: { title: string, date: number, kind: 'public' | 'anonymous' }) => {
+const Post = (props: { title: string, date: number, kind: 'public' | 'anonymous' | 'introduction' }) => {
     return (
         <XView borderRadius={8} padding={16} marginTop={8} marginBottom={8} level="1" alignItems="stretch">
-            <XTitle marginTop={8} marginBottom={24}>{props.title}</XTitle>
+            <XTitle marginTop={8} marginBottom={24}>{props.kind} {props.title}</XTitle>
             <XView flexDirection="row" justifyContent="flex-end"> <XButton text="Direct Message" /> <XButton text="Discuss" /> </XView>
         </XView>
     );
@@ -34,8 +34,21 @@ export default withApp('Home', 'viewer', (props) => {
                             margin={16}
                             maxWidth={860}
                         >
-                            <Post title="Need a hire a new CEO" date={Date.now()} kind="anonymous" />
-                            <Post title="How to fire our CTO without problems? NEED ADVICE" date={Date.now()} kind="public" />
+                            <Post
+                                title="Need a hire a new CEO"
+                                date={Date.now()}
+                                kind="anonymous"
+                            />
+                            <Post
+                                title="How to fire our CTO without problems? NEED ADVICE"
+                                date={Date.now()}
+                                kind="public"
+                            />
+                            <Post
+                                title="Introduction for good Product Manager (write @diana)"
+                                date={Date.now()}
+                                kind="introduction"
+                            />
                         </XView>
                         <XView flexDirection="column" width={200}>
                             {}
