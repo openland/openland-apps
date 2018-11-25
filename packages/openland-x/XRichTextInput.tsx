@@ -254,7 +254,6 @@ export interface XRichTextInputProps extends XFlexStyles {
 
 type XRichTextInputState = { 
     editorState: EditorState, 
-    beChanged: boolean, 
     suggestions: Array<MentionT> 
 };
 
@@ -266,7 +265,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         
         this.state = {
             suggestions: this.props.mentionsData || [],
-            beChanged: false,
             editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
         };
     }
@@ -279,25 +277,36 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
 
     onSearchChange = ({ value }: any) => {
         const mentionsData = this.props.mentionsData || [];
-        this.setState({
-            suggestions: defaultSuggestionsFilter(value, mentionsData)
+        window.requestAnimationFrame(() => {
+            this.setState({
+                suggestions: defaultSuggestionsFilter(value, mentionsData)
+            });
         });
     }
 
     focus = () => {
-        if (this.editorRef.current) {
-            this.editorRef.current.focus();
-        }
+        window.requestAnimationFrame(() => {
+            this.setState({
+                editorState: EditorState.moveFocusToEnd(this.state.editorState)
+            });
+            if (this.editorRef.current) {
+                this.editorRef.current.focus();
+            }
+        });
     }
 
     reset = () => {
-        this.setState((src) => ({
-            editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range')
-        }));
+        window.requestAnimationFrame(() => {
+            this.setState((src) => ({
+                editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range')
+            }));
+        });
     }
 
     resetAndFocus = () => {
-        this.setState((src) => ({ editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range') }), () => { this.focus(); });
+        window.requestAnimationFrame(() => {
+            this.setState((src) => ({ editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range') }), () => { this.focus(); });
+        });
     }
 
     onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
@@ -314,7 +323,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         this.setState(
             { 
                 editorState,
-                beChanged: true
             }, 
             () => {
                 if (this.props.onChange) {
@@ -325,11 +333,18 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value && !this.state.beChanged) {
-            const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(state)
-            });
+        if (this.props.value !== nextProps.value) {
+            if (
+                this.state.editorState.getCurrentContent().getPlainText() !==
+                nextProps.value
+            ) {
+                const state = EditorState.createWithContent(
+                    ContentState.createFromText(nextProps.value || '')
+                );
+                this.setState({
+                    editorState: EditorState.moveFocusToEnd(state)
+                });
+            }
         }
     }
 
