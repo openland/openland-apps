@@ -24,17 +24,6 @@ const MessageContainer = Glamorous.div({
     borderRadius: 6,
     '& .time': {
         opacity: '1 !important'
-    },
-    '&::before': {
-        display: 'block',
-        content: ' ',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 4,
-        width: 3,
-        borderRadius: 3,
-        backgroundColor: '#1790ff'
     }
 });
 
@@ -79,6 +68,7 @@ interface ReplyMessageProps {
     edited: boolean;
     file: string | null;
     fileMetadata: MessageFull_reply_fileMetadata | null;
+    startSelected: boolean;
 }
 
 export const MessageReplyComponent = (props: ReplyMessageProps) => {
@@ -99,11 +89,17 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
             if (props.fileMetadata!!.imageFormat === 'GIF') {
                 content.push(<MessageAnimationComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
             } else {
-                content.push(<MessageImageComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
+                content.push(<MessageImageComponent key={'file'} file={props.file} fileName={name} width={w} height={h} startSelected={props.startSelected} />);
             }
         } else {
             content.push(<MessageFileComponent key={'file'} file={props.file} fileName={name} fileSize={size} />);
         }
+    }
+    let orgPath: string | undefined = undefined;
+    let usrPath: string | undefined;
+    if (props.sender!!.primaryOrganization && !props.startSelected) {
+        orgPath = '/mail/o/' + props.sender!!.primaryOrganization!!.id;
+        usrPath = '/mail/u/' + props.sender!!.id;
     }
     return (
         <MessageContainer>
@@ -115,12 +111,12 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                         objectName={props.sender!!.name}
                         objectId={props.sender!!.id}
                         cloudImageUuid={props.sender ? props.sender.photo : undefined}
-                        path={'/mail/u/' + props.sender!!.id}
+                        path={usrPath}
                     />
                     <MessageWrapper separator={2} flexGrow={1}>
                         <XHorizontal separator={5} alignItems="center">
                             <Name>{props.sender!!.name}</Name>
-                            {props.sender!!.primaryOrganization && <Organization path={'/mail/o/' + props.sender!!.primaryOrganization!!.id}>{props.sender!!.primaryOrganization!!.name}</Organization>}
+                            {props.sender!!.primaryOrganization && <Organization path={orgPath}>{props.sender!!.primaryOrganization!!.name}</Organization>}
                         </XHorizontal>
                         <DateComponent className="time">{date}</DateComponent>
                     </MessageWrapper>

@@ -72,6 +72,12 @@ routes.add('/home/', '/main/home/main');
 routes.add('/new/invite', '/main/onboarding/invite');
 
 //
+// Feed
+//
+
+routes.add('/feed', '/main/feed/root');
+
+//
 // Directory
 //
 

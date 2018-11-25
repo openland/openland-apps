@@ -44,10 +44,8 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
             hostName: this.props.hostName,
             path,
             query,
-
             route,
             routeQuery,
-
             push: this.push,
             pushQuery: this.pushQuery,
             pushQueryParams: this.pushQueryParams,
@@ -94,9 +92,15 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         this.props.routes.Router.replaceRoute(path)
             .then(this.scrollToTop);
     }
+
     replaceQuery = (field: string, value?: string) => {
+        let q = qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value }));
+        if (q !== '') {
+            q = '?' + q;
+        }
+
         let pathParts = this.xRouterState.path.split('#');
-        this.props.routes.Router.replaceRoute(pathParts[0] + qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value })));
+        this.props.routes.Router.replaceRoute(pathParts[0] + q);
     }
 
     replaceQueryParams = (params?: {}) => {

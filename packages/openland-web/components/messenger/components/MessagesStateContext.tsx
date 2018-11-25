@@ -5,28 +5,26 @@ export interface MessagesStateContextProps {
     editMessage: string | null;
     setEditMessage: (id: string | null, message: string | null) => void;
     forwardMessagesId: Set<string> | null;
-    conversationId: string | null;
-    setForwardMessages: (id: Set<string> | null, conversationId: string | null) => void;
+    setForwardMessages: (id: Set<string> | null) => void;
     forwardMessages: () => void;
     useForwardMessages: boolean;
     useForwardPlaceholder: boolean;
     useForwardHeader: boolean;
     changeForwardConverstion: () => void;
-    replyMessageId: string | null;
-    replyMessage: string | null;
-    replyMessageSender: string | null;
-    setReplyMessage: (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => void;
+    replyMessagesId: Set<string> | null;
+    replyMessages: Set<string> | null;
+    replyMessagesSender: Set<string> | null;
+    setReplyMessages: (id: Set<string> | null, messages: Set<string> | null, sender: Set<string> | null) => void;
     resetAll: () => void;
 }
 
 export const MessagesStateContext = React.createContext<MessagesStateContextProps>({
     editMessageId: null,
     editMessage: null,
-    replyMessageId: null,
-    replyMessageSender: null,
-    replyMessage: null,
+    replyMessagesId: null,
+    replyMessagesSender: null,
+    replyMessages: null,
     forwardMessagesId: null,
-    conversationId: null,
     useForwardMessages: false,
     useForwardPlaceholder: false,
     useForwardHeader: false,
@@ -34,6 +32,6 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     setForwardMessages: () => null,
     forwardMessages: () => null,
     changeForwardConverstion: () => null,
-    setReplyMessage: () => null,
+    setReplyMessages: () => null,
     resetAll: () => null
 });

@@ -11,29 +11,20 @@ let config = buildConfig();
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
-        const content = page.html || page.errorHtml;
-        if (!content) {
-            return {
-                ...page,
-                glamCss: '',
-                ids: []
-            };
-        } else {
-            const styles = renderStaticOptimized(() => content);
-            return {
-                ...page,
-                glamCss: styles.css,
-                ids: styles.ids
-            };
-        }
+        const styles = renderStaticOptimized(() => page.html || page.errorHtml || '');
+        return {
+            ...page,
+            glamCss: styles.css,
+            ids: styles.ids
+        };
     }
 
     constructor(props: DocumentProps) {
         super(props);
         const { __NEXT_DATA__, ids } = props;
-        if (ids) {
-            __NEXT_DATA__.ids = this.props.ids;
-        }
+        // if (ids) {
+        //     __NEXT_DATA__.ids = this.props.ids;
+        // }
     }
 
     render() {
@@ -46,7 +37,7 @@ export default class OpenlandDocument extends Document {
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
 
-                    {/* ORDER IS IMPORTANT! */}                   
+                    {/* ORDER IS IMPORTANT! */}
                     <link rel="apple-touch-icon" sizes="57x57" href="/static/img/favicon/apple-icon-57x57.png" />
                     <link rel="apple-touch-icon" sizes="60x60" href="/static/img/favicon/apple-icon-60x60.png" />
                     <link rel="apple-touch-icon" sizes="72x72" href="/static/img/favicon/apple-icon-72x72.png" />
@@ -75,6 +66,7 @@ export default class OpenlandDocument extends Document {
                     <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
 
                     {/* Config */}
+                    <script dangerouslySetInnerHTML={{ __html: 'window.GLAMOR_IDS=\'' + JSON.stringify(this.props.ids) + '\'' }} />
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
                 </Head>
                 <body>

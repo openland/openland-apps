@@ -5,6 +5,7 @@ export const TextAppBar = {
         mail: 'Messenger',
         explore: 'Explore',
         directory: 'Directory',
+        feed: 'Feed',
         addListing: 'Add listing',
         map: 'Map',
         prospecting: 'Prospecting',

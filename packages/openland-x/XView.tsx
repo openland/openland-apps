@@ -21,7 +21,7 @@ export interface XViewProps {
     flexDirection?: 'row' | 'column' | null;
     alignSelf?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
-    justifyContent?: 'flex-start' | 'flex-end' | 'center' | null;
+    justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | null;
 
     //
     // Sizing
@@ -49,6 +49,7 @@ export interface XViewProps {
     //
 
     borderRadius?: number | string | null;
+    level?: '1' | null;
     color?: string | null;
     cursor?: 'pointer';
 
@@ -85,26 +86,23 @@ export interface XViewProps {
     children?: any;
 }
 
-const base = glamor.css({
-    display: 'flex',
-    flexGrow: 0,
-    flexShrink: 0,
-    flexDirection: 'column'
-}).toString();
-
 const styles = new Map<string, string>();
+
+const base = glamor.css({
+    display: 'flex'
+}).toString();
 
 const XViewContainer = (props: XViewProps) => {
 
     let position: 'relative' | 'absolute' | 'fixed' | undefined;
 
-    let flexGrow: number | undefined;
-    let flexShrink: number | undefined;
+    let flexGrow: number | undefined = 0;
+    let flexShrink: number | undefined = 0;
     let flexBasis: number | undefined;
-    let flexDirection: 'row' | 'column' | undefined;
+    let flexDirection: 'row' | 'column' | undefined = 'column';
     let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
-    let justifyContent: 'flex-start' | 'flex-end' | 'center' | undefined;
+    let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;
 
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
@@ -124,6 +122,7 @@ const XViewContainer = (props: XViewProps) => {
     let maxHeight: number | string | undefined;
 
     let borderRadius: number | string | undefined;
+    let level: '1' | undefined;
     let backgroundColor: string | undefined;
     let hoverBackgroundColor: string | undefined;
     let color: string | undefined;
@@ -138,7 +137,9 @@ const XViewContainer = (props: XViewProps) => {
     //
     // Resolve visual styles
     //
-
+    if (props.level !== undefined && props.level !== null) {
+        level = props.level;
+    }
     if (props.borderRadius !== undefined && props.borderRadius !== null) {
         borderRadius = props.borderRadius;
     }
@@ -533,6 +534,15 @@ const XViewContainer = (props: XViewProps) => {
         let key = 'position: ' + position;
         if (!styles.has(key)) {
             styles.set(key, glamor.css({ position: position }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (level !== undefined) {
+        let key = 'level: ' + level;
+        if (!styles.has(key)) {
+            if (level === '1') {
+                styles.set(key, glamor.css({ border: '1px solid #ececec' }).toString());
+            }
         }
         css.push(styles.get(key)!);
     }

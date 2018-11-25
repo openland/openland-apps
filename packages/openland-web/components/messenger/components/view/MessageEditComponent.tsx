@@ -1,9 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withEditMessage } from '../../../../api/withMessageState';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { isServerMessage } from 'openland-engines/messenger/types';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
@@ -96,33 +93,6 @@ class XTextInput extends React.PureComponent<XTextInputProps> {
     }
 }
 
-export const EditMessageComponent = withEditMessage((props) => {
-    let id = props.router.query.editMessage;
-    let conversation: ConversationEngine = (props as any).conversation;
-    let message = conversation.getState().messages.filter(m => isServerMessage(m) && m.id === id)[0];
-    if (!message) {
-        return null;
-    }
-    return (
-        <XModalForm
-            title="Edit message"
-            width={800}
-            targetQuery="editMessage"
-            defaultAction={(data) => {
-                props.editMessage({ variables: { messageId: id, message: data.message } });
-            }}
-            defaultData={{
-                message: message.message
-            }}
-            submitProps={{ succesText: 'done!' }}
-        >
-            <TextInputWrapper>
-                <XTextInput valueStoreKey="fields.message" />
-            </TextInputWrapper>
-        </XModalForm>
-    );
-}) as React.ComponentType<{ conversation: ConversationEngine }>;
-
 const Footer = Glamorous(XHorizontal)({
     display: 'flex',
     paddingTop: 10,
@@ -167,12 +137,10 @@ export class EditMessageInlineWrapper extends React.Component<{ message: Message
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
-        (document as any).isEditMessage = true;
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keydownHandler);
-        (document as any).isEditMessage = false;
     }
 
     render() {

@@ -25,8 +25,9 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { MessagesStateContext, MessagesStateContextProps } from '../../../components/messenger/components/MessagesStateContext';
 
-export let ChatContainer = Glamorous.div({
+export const ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
@@ -37,7 +38,7 @@ export let ChatContainer = Glamorous.div({
     overflow: 'hidden'
 });
 
-export let ChatListContainer = Glamorous.div({
+export const ChatListContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -55,7 +56,7 @@ export let ChatListContainer = Glamorous.div({
     }
 });
 
-export let ConversationContainer = Glamorous.div({
+export const ConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -134,10 +135,89 @@ class ChatListContainerWrapper extends React.PureComponent<{ emptyState: boolean
     }
 }
 
-class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTitle: string | undefined }> {
-    state = {
-        pageTitle: undefined
-    };
+interface MessagePageInnerState extends MessagesStateContextProps {
+    pageTitle: string | undefined;
+}
+
+class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageInnerState> {
+    constructor(props: { router: XRouter }) {
+        super(props);
+
+        this.state = {
+            pageTitle: undefined,
+            editMessageId: null,
+            editMessage: null,
+            forwardMessagesId: null,
+            replyMessagesId: null,
+            replyMessages: null,
+            replyMessagesSender: null,
+            useForwardMessages: false,
+            useForwardPlaceholder: false,
+            useForwardHeader: false,
+            setEditMessage: this.setEditMessage,
+            setForwardMessages: this.setForwardMessages,
+            forwardMessages: this.forwardMessages,
+            setReplyMessages: this.setReplyMessages,
+            changeForwardConverstion: this.changeForwardConverstion,
+            resetAll: this.resetAll
+        };
+    }
+
+    private setEditMessage = (id: string | null, message: string | null) => {
+        this.setState({
+            editMessageId: id,
+            editMessage: message
+        });
+    }
+
+    private setForwardMessages = (id: Set<string> | null) => {
+        let useHeader = false;
+        if (id && id.size > 0) {
+            useHeader = true;
+        }
+        this.setState({
+            forwardMessagesId: id,
+            useForwardHeader: useHeader
+        });
+    }
+
+    private forwardMessages = () => {
+        this.setState({
+            useForwardMessages: true,
+            useForwardPlaceholder: true,
+            useForwardHeader: false
+        });
+    }
+
+    private setReplyMessages = (id: Set<string> | null, messages: Set<string> | null, sender: Set<string> | null) => {
+        this.setState({
+            replyMessagesId: id,
+            replyMessages: messages,
+            replyMessagesSender: sender,
+            forwardMessagesId: null
+        });
+    }
+
+    private changeForwardConverstion = () => {
+        this.setState({
+            useForwardPlaceholder: false,
+            useForwardHeader: false
+        });
+    }
+
+    private resetAll = () => {
+        this.setState({
+            editMessageId: null,
+            editMessage: null,
+            forwardMessagesId: null,
+            replyMessagesId: null,
+            replyMessages: null,
+            replyMessagesSender: null,
+            useForwardMessages: false,
+            useForwardPlaceholder: false,
+            useForwardHeader: false
+        });
+    }
 
     handlePageTitle = (title?: string) => {
         this.setState({
@@ -217,47 +297,49 @@ class MessagePageInner extends React.PureComponent<{ router: XRouter }, { pageTi
                 <XDocumentHead title={pageTitle} />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
-                        <ChatContainer>
-                            <ChatListContainerWrapper emptyState={tab === 'empty'} />
+                        <MessagesStateContext.Provider value={this.state}>
+                            <ChatContainer>
+                                <ChatListContainerWrapper emptyState={tab === 'empty'} />
 
-                            <ConversationContainer>
-                                {tab === 'compose' && (
-                                    <MessengerContainer>
-                                        <ComposeComponent />
-                                    </MessengerContainer>
-                                )}
-                                {tab === 'empty' && (
-                                    <MessengerEmptyComponent />
-                                )}
-                                {tab === 'conversation' && (
-                                    <MessengerComponent
-                                        conversationId={props.router.routeQuery.conversationId}
-                                        handlePageTitle={this.handlePageTitle}
-                                    />
-                                )}
-                                {tab === 'rooms' && (
-                                    <RoomsExploreComponent />
-                                )}
-                                {tab === 'invite' && (
-                                    <RoomInviteFromLink />
-                                )}
-                                {tab === 'organization' && (
-                                    <OrganizationProfilContainer>
-                                        <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} />
-                                    </OrganizationProfilContainer>
-                                )}
-                                {tab === 'user' && (
-                                    <OrganizationProfilContainer>
-                                        <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} />
-                                    </OrganizationProfilContainer>
-                                )}
-                                {tab === 'chat' && (
-                                    <OrganizationProfilContainer>
-                                        <RoomGroupProfile conversationId={cid} handlePageTitle={this.handlePageTitle} />
-                                    </OrganizationProfilContainer>
-                                )}
-                            </ConversationContainer>
-                        </ChatContainer>
+                                <ConversationContainer>
+                                    {tab === 'compose' && (
+                                        <MessengerContainer>
+                                            <ComposeComponent />
+                                        </MessengerContainer>
+                                    )}
+                                    {tab === 'empty' && (
+                                        <MessengerEmptyComponent />
+                                    )}
+                                    {tab === 'conversation' && (
+                                        <MessengerComponent
+                                            conversationId={props.router.routeQuery.conversationId}
+                                            handlePageTitle={this.handlePageTitle}
+                                        />
+                                    )}
+                                    {tab === 'rooms' && (
+                                        <RoomsExploreComponent />
+                                    )}
+                                    {tab === 'invite' && (
+                                        <RoomInviteFromLink />
+                                    )}
+                                    {tab === 'organization' && (
+                                        <OrganizationProfilContainer>
+                                            <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} />
+                                        </OrganizationProfilContainer>
+                                    )}
+                                    {tab === 'user' && (
+                                        <OrganizationProfilContainer>
+                                            <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} />
+                                        </OrganizationProfilContainer>
+                                    )}
+                                    {tab === 'chat' && (
+                                        <OrganizationProfilContainer>
+                                            <RoomGroupProfile conversationId={cid} handlePageTitle={this.handlePageTitle} />
+                                        </OrganizationProfilContainer>
+                                    )}
+                                </ConversationContainer>
+                            </ChatContainer>
+                        </MessagesStateContext.Provider>
                     </Scaffold.Content>
                 </Scaffold>
             </>

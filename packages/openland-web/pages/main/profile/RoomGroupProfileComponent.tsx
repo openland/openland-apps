@@ -10,7 +10,7 @@ import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView } from 'openland-x/XScrollView';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
@@ -245,7 +245,7 @@ const MembersProvider = (props: MembersProviderProps) => {
                 />
                 <SectionContent>
                     {(props.isRoom && props.meOwner) && (
-                        <XCreateCard query={{ field: 'addMember', value: 'true' }} text="Invite people" />
+                        <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />
                     )}
                     {members.map((member, i) => (
                         <MemberCard key={i} member={member.user} meOwner={props.meOwner} />
@@ -330,7 +330,7 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
             <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
                 <Header chat={chat} />
-                <XScrollView height="calc(100% - 136px)">
+                <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
                     <Members
                         variables={{ conversationId: this.props.conversationId }}
@@ -339,7 +339,7 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                         meOwner={chat.myRole === 'member' || chat.myRole === 'owner'}
                         chatTitle={chat.title}
                     />
-                </XScrollView>
+                </XScrollView2>
             </OrganizationInfoWrapper>
         );
     }

@@ -23,7 +23,7 @@ interface NavigableProps {
     href?: string;
     path?: string;
     anchor?: string;
-    query?: { field: string, value?: string, clear?: boolean };
+    query?: { field: string, value?: string, clear?: boolean, replace?: boolean };
     autoClose?: boolean;
 
     // Activation
@@ -80,14 +80,26 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
         }
 
         onClick: React.MouseEventHandler<any> = (e) => {
+            const { 
+                __router, 
+                __modal,
+                path, 
+                query, 
+                replace, 
+                anchor, 
+                enabled, 
+                onClick, 
+                autoClose, 
+                href 
+            } = this.props;
 
             // Anchors are handled by default - no need to preventDefault
-            if (this.props.anchor) {
+            if (anchor) {
                 return;
             }
 
             // Ignore if disabled
-            if (this.props.enabled === false) {
+            if (enabled === false) {
                 e.preventDefault();
                 return;
             }
@@ -99,9 +111,8 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 return;
             }
 
-            // Handling custom onClick
-            if (this.props.onClick) {
-                this.props.onClick(e);
+            if (onClick) {
+                onClick(e);
             }
 
             // What if event was prevented on callback above?
@@ -109,30 +120,32 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 return;
             }
 
-            // Auto close modal
-            if (this.props.autoClose && this.props.__modal.close) {
-                this.props.__modal.close();
+            if (autoClose && __modal.close) {
+                __modal.close();
             }
 
             // Handling click itself
-            if (this.props.path || this.props.query) {
+            if (path || query) {
 
                 // First of all preventing default behavior
                 e.preventDefault();
                 e.stopPropagation();
-
                 // Invoke router
-                if (this.props.__router) {
-                    if (this.props.path) {
-                        console.warn(this.props.path);
-                        if (typeof(this.props.path) === 'string') {
-                            this.props.__router.push(this.props.path);
+                if (__router) {
+                    if (path) {
+                        console.warn(path);
+                        if (typeof(path) === 'string') {
+                            __router.push(path);
                         }
-                    } else if (this.props.query) {
-                        this.props.__router.pushQuery(this.props.query.field, this.props.query.value, this.props.query.clear);
+                    } else if (query) {
+                        if (query.replace) {
+                            __router.replaceQuery(query.field, query.value);
+                        } else {
+                            __router.pushQuery(query.field, query.value, query.clear);
+                        }
                     }
                 }
-            } else if (this.props.href) {
+            } else if (href) {
                 // Do nothing for href-based props - allow default browser action
             } else {
                 // If nothing is provided, just prevent default behaviour

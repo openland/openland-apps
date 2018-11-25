@@ -60,38 +60,68 @@ interface MessageImageComponentProps {
     fileName?: string;
     width: number;
     height: number;
+    startSelected: boolean;
 }
 
-export const MessageImageComponent = (props: MessageImageComponentProps) => {
-    let dimensions = layoutMedia(props.width, props.height);
-    let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
-    return (
-        <XModal
-            useTopCloser={true}
-            width={dimensions2.width}
-            heading={null}
-            transparent={true}
-            body={(
-                <ModalBody>
-                    <ModalCloser autoClose={true} className="closer">
-                        <ModalCloseIcon />
-                    </ModalCloser>
-                    <ModalPic
-                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                        resize={'fill'}
-                        width={dimensions2.width}
-                        height={dimensions2.height}
-                    />
-                    <ImgDownload
-                        className="download-button"
-                        href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
-                    >
-                        <DownloadButtonIcon />
-                    </ImgDownload>
-                </ModalBody>
-            )}
-            target={(
-                <ImgWrapper>
+export class MessageImageComponent extends React.PureComponent<MessageImageComponentProps, { isOpen: boolean }> {
+    constructor(props: MessageImageComponentProps) {
+        super(props);
+
+        this.state = {
+            isOpen: false
+        };
+    }
+
+    handleOpen = (e: any) => {
+        if (this.props.startSelected) {
+            return;
+        }
+        e.stopPropagation();
+        this.setState({
+            isOpen: true
+        });
+    }
+
+    handleClose = () => {
+        this.setState({
+            isOpen: false
+        });
+    }
+
+    render() {
+        const { props } = this;
+        let dimensions = layoutMedia(props.width, props.height);
+        let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
+        return (
+            <>
+                <XModal
+                    useTopCloser={true}
+                    width={dimensions2.width}
+                    heading={null}
+                    transparent={true}
+                    isOpen={this.state.isOpen}
+                    onClosed={this.handleClose}
+                    body={(
+                        <ModalBody>
+                            <ModalCloser autoClose={true} className="closer">
+                                <ModalCloseIcon />
+                            </ModalCloser>
+                            <ModalPic
+                                srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                                resize={'fill'}
+                                width={dimensions2.width}
+                                height={dimensions2.height}
+                            />
+                            <ImgDownload
+                                className="download-button"
+                                href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
+                            >
+                                <DownloadButtonIcon />
+                            </ImgDownload>
+                        </ModalBody>
+                    )}
+                />
+                <ImgWrapper onClick={this.handleOpen}>
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
@@ -99,7 +129,7 @@ export const MessageImageComponent = (props: MessageImageComponentProps) => {
                         height={dimensions.height}
                     />
                 </ImgWrapper>
-            )}
-        />
-    );
-};
+            </>
+        );
+    }
+}

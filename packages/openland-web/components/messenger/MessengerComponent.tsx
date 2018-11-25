@@ -667,11 +667,18 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                         />
                     </XHorizontal>
                 </ClearButton>
-                <XButton
-                    text="Forward"
-                    style="primary"
-                    onClick={() => props.state.forwardMessages()}
-                />
+                <XHorizontal alignItems="center" separator={5}>
+                    <XButton
+                        text="Reply"
+                        style="primary"
+                        onClick={() => props.state.setReplyMessages(props.state.forwardMessagesId, null, null)}
+                    />
+                    <XButton
+                        text="Forward"
+                        style="primary"
+                        onClick={() => props.state.forwardMessages()}
+                    />
+                </XHorizontal>
             </ChatHeaderContent>
         );
     } else {
@@ -944,102 +951,14 @@ interface MessengerComponentProps {
     handlePageTitle?: any;
 }
 
-export class MessengerComponent extends React.Component<MessengerComponentProps, MessagesStateContextProps> {
-
-    constructor(props: MessengerComponentProps) {
-        super(props);
-
-        this.state = {
-            editMessageId: null,
-            editMessage: null,
-            forwardMessagesId: null,
-            conversationId: null,
-            replyMessageId: null,
-            replyMessage: null,
-            replyMessageSender: null,
-            useForwardMessages: false,
-            useForwardPlaceholder: false,
-            useForwardHeader: false,
-            setEditMessage: this.setEditMessage,
-            setForwardMessages: this.setForwardMessages,
-            forwardMessages: this.forwardMessages,
-            setReplyMessage: this.setReplyMessage,
-            changeForwardConverstion: this.changeForwardConverstion,
-            resetAll: this.resetAll,
-        };
-    }
-
-    private setEditMessage = (id: string | null, message: string | null) => {
-        this.setState({
-            editMessageId: id,
-            editMessage: message
-        });
-    }
-
-    private setForwardMessages = (id: Set<string> | null, conversationId: string | null) => {
-        let useHeader = false;
-        if (id && id.size > 0) {
-            useHeader = true;
-        }
-        this.setState({
-            forwardMessagesId: id,
-            conversationId: conversationId,
-            useForwardHeader: useHeader
-        });
-    }
-
-    private forwardMessages = () => {
-        this.setState({
-            useForwardMessages: true,
-            useForwardPlaceholder: true,
-            useForwardHeader: false
-        });
-    }
-
-    private setReplyMessage = (id: string | null, message: string | null, sender: string | null, conversationId: string | null) => {
-        this.setState({
-            replyMessageId: id,
-            replyMessage: message,
-            replyMessageSender: sender,
-            conversationId: conversationId
-        });
-    }
-
-    private changeForwardConverstion = () => {
-        this.setState({
-            useForwardPlaceholder: false,
-            useForwardHeader: false
-        });
-    }
-
-    private resetAll = () => {
-        this.setState({
-            editMessageId: null,
-            editMessage: null,
-            forwardMessagesId: null,
-            conversationId: null,
-            replyMessageId: null,
-            replyMessage: null,
-            replyMessageSender: null,
-            useForwardMessages: false,
-            useForwardPlaceholder: false,
-            useForwardHeader: false
-        });
-    }
-
-    render() {
-        return (
-            <MessagesStateContext.Provider value={this.state}>
-                <MessagesStateContext.Consumer>
-                    {(state: MessagesStateContextProps) => (
-                        <MessengerComponentLoader
-                            variables={{ conversationId: this.props.conversationId }}
-                            handlePageTitle={this.props.handlePageTitle}
-                            state={state}
-                        />
-                    )}
-                </MessagesStateContext.Consumer>
-            </MessagesStateContext.Provider>
-        );
-    }
-}
+export const MessengerComponent = (props: MessengerComponentProps) => (
+    <MessagesStateContext.Consumer>
+        {(state: MessagesStateContextProps) => (
+            <MessengerComponentLoader
+                variables={{ conversationId: props.conversationId }}
+                handlePageTitle={props.handlePageTitle}
+                state={state}
+            />
+        )}
+    </MessagesStateContext.Consumer>
+);
