@@ -668,11 +668,11 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                     </XHorizontal>
                 </ClearButton>
                 <XHorizontal alignItems="center" separator={5}>
-                    {/* <XButton
+                    <XButton
                         text="Reply"
                         style="primary"
-                        onClick={() => props.state.forwardMessages()}
-                    /> */}
+                        onClick={() => props.state.setReplyMessages(props.state.forwardMessagesId, null, null)}
+                    />
                     <XButton
                         text="Forward"
                         style="primary"

@@ -148,16 +148,16 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
-            replyMessageId: null,
-            replyMessage: null,
-            replyMessageSender: null,
+            replyMessagesId: null,
+            replyMessages: null,
+            replyMessagesSender: null,
             useForwardMessages: false,
             useForwardPlaceholder: false,
             useForwardHeader: false,
             setEditMessage: this.setEditMessage,
             setForwardMessages: this.setForwardMessages,
             forwardMessages: this.forwardMessages,
-            setReplyMessage: this.setReplyMessage,
+            setReplyMessages: this.setReplyMessages,
             changeForwardConverstion: this.changeForwardConverstion,
             resetAll: this.resetAll
         };
@@ -189,11 +189,12 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         });
     }
 
-    private setReplyMessage = (id: string | null, message: string | null, sender: string | null) => {
+    private setReplyMessages = (id: Set<string> | null, messages: Set<string> | null, sender: Set<string> | null) => {
         this.setState({
-            replyMessageId: id,
-            replyMessage: message,
-            replyMessageSender: sender
+            replyMessagesId: id,
+            replyMessages: messages,
+            replyMessagesSender: sender,
+            forwardMessagesId: null
         });
     }
 
@@ -209,9 +210,9 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
-            replyMessageId: null,
-            replyMessage: null,
-            replyMessageSender: null,
+            replyMessagesId: null,
+            replyMessages: null,
+            replyMessagesSender: null,
             useForwardMessages: false,
             useForwardPlaceholder: false,
             useForwardHeader: false

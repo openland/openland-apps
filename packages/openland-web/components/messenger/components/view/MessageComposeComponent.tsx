@@ -625,12 +625,12 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     }
 
     componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
-        let {
+        const {
             editMessage,
             editMessageId,
-            replyMessage,
-            replyMessageId,
-            replyMessageSender,
+            replyMessages,
+            replyMessagesId,
+            replyMessagesSender,
             forwardMessagesId,
             useForwardMessages
         } = nextProps.messagesContext;
@@ -640,8 +640,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         let newState: any = {};
-
-        let replyChecker = (replyMessage && replyMessageId && replyMessageSender);
 
         if ((this.props.conversationId !== nextProps.conversationId)) {
             if (useForwardMessages && forwardMessagesId) {
@@ -657,21 +655,35 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        if (replyChecker) {
-            newState = {
-                ...newState,
-                message: '',
-                floatingMessage: undefined,
-                forwardMessageReply: replyMessage,
-                forwardMessageId: replyMessageId,
-                forwardMessageSender: replyMessageSender
-            };
+        if (replyMessagesId) {
+            if (replyMessages && replyMessagesSender) {
+                const messageReply = [...replyMessages!][0];
+                const messageId = [...replyMessagesId!][0];
+                const messageSender = [...replyMessagesSender!][0];
+                newState = {
+                    ...newState,
+                    message: '',
+                    floatingMessage: undefined,
+                    forwardMessageReply: messageReply,
+                    forwardMessageId: messageId,
+                    forwardMessageSender: messageSender
+                };
+            } else {
+                newState = {
+                    ...newState,
+                    message: '',
+                    floatingMessage: undefined,
+                    forwardMessageReply: `Reply ${replyMessagesId.size} messages`,
+                    forwardMessageId: replyMessagesId,
+                    forwardMessageSender: 'Reply'
+                };
+            }
             if (this.input.current) {
                 this.input.current!!.resetAndFocus();
             }
         }
 
-        let draftChecker = !replyChecker;
+        let draftChecker = !(replyMessages && replyMessagesId && replyMessagesSender);
 
         if (draftChecker) {
 

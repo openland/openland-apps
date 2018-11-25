@@ -186,22 +186,23 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
     }
 
-    private setReplyMessage = (e: any) => {
+    private setReplyMessages = (e: any) => {
         let { message, messagesContext } = this.props;
-
-        let messageText = message.message;
-
-        if ((message as MessageFull).file && !(message as MessageFull).urlAugmentation) {
-            messageText = 'File';
-            if ((message as MessageFull).fileMetadata!!.isImage) {
-                messageText = 'Photo';
-            }
-        }
 
         if (isServerMessage(message)) {
             e.stopPropagation();
             messagesContext.resetAll();
-            messagesContext.setReplyMessage((message as MessageFull).id, messageText, (message as MessageFull).sender.name);
+            let singleReplyMessageMessage = new Set().add(message.message);
+            let singleReplyMessageId = new Set().add((message as MessageFull).id);
+            let singleReplyMessageSender = new Set().add((message as MessageFull).sender.name);
+
+            if ((message as MessageFull).file && !(message as MessageFull).urlAugmentation) {
+                singleReplyMessageMessage = new Set().add('File');
+                if ((message as MessageFull).fileMetadata!!.isImage) {
+                    singleReplyMessageMessage = new Set().add('Photo');
+                }
+            }
+            messagesContext.setReplyMessages(singleReplyMessageId, singleReplyMessageMessage, singleReplyMessageSender);
         }
     }
 
@@ -272,7 +273,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         return (
             <XHorizontal alignItems="center" separator={0} alignSelf={isCompact ? 'flex-start' : undefined} className="menu-wrapper">
                 <XHorizontal alignItems="center" separator={6}>
-                    <ReplyButton onClick={this.setReplyMessage}>
+                    <ReplyButton onClick={this.setReplyMessages}>
                         <ReplyIcon />
                     </ReplyButton>
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
