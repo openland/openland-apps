@@ -49,6 +49,7 @@ export interface XViewProps {
     //
 
     borderRadius?: number | string | null;
+    level?: '1' | null;
     color?: string | null;
     cursor?: 'pointer';
 
@@ -124,6 +125,7 @@ const XViewContainer = (props: XViewProps) => {
     let maxHeight: number | string | undefined;
 
     let borderRadius: number | string | undefined;
+    let level: '1' | undefined;
     let backgroundColor: string | undefined;
     let hoverBackgroundColor: string | undefined;
     let color: string | undefined;
@@ -138,7 +140,9 @@ const XViewContainer = (props: XViewProps) => {
     //
     // Resolve visual styles
     //
-
+    if (props.level !== undefined && props.level !== null) {
+        level = props.level;
+    }
     if (props.borderRadius !== undefined && props.borderRadius !== null) {
         borderRadius = props.borderRadius;
     }
@@ -533,6 +537,15 @@ const XViewContainer = (props: XViewProps) => {
         let key = 'position: ' + position;
         if (!styles.has(key)) {
             styles.set(key, glamor.css({ position: position }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (level !== undefined) {
+        let key = 'level: ' + level;
+        if (!styles.has(key)) {
+            if (level === '1') {
+                styles.set(key, glamor.css({ border: '1px solid #ececec' }).toString());
+            }
         }
         css.push(styles.get(key)!);
     }
