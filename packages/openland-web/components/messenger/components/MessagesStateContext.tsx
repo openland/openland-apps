@@ -11,19 +11,19 @@ export interface MessagesStateContextProps {
     useForwardPlaceholder: boolean;
     useForwardHeader: boolean;
     changeForwardConverstion: () => void;
-    replyMessageId: string | null;
-    replyMessage: string | null;
-    replyMessageSender: string | null;
-    setReplyMessage: (id: string | null, message: string | null, sender: string | null) => void;
+    replyMessagesId: Set<string> | null;
+    replyMessages: Set<string> | null;
+    replyMessagesSender: Set<string> | null;
+    setReplyMessages: (id: Set<string> | null, messages: Set<string> | null, sender: Set<string> | null) => void;
     resetAll: () => void;
 }
 
 export const MessagesStateContext = React.createContext<MessagesStateContextProps>({
     editMessageId: null,
     editMessage: null,
-    replyMessageId: null,
-    replyMessageSender: null,
-    replyMessage: null,
+    replyMessagesId: null,
+    replyMessagesSender: null,
+    replyMessages: null,
     forwardMessagesId: null,
     useForwardMessages: false,
     useForwardPlaceholder: false,
@@ -32,6 +32,6 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     setForwardMessages: () => null,
     forwardMessages: () => null,
     changeForwardConverstion: () => null,
-    setReplyMessage: () => null,
+    setReplyMessages: () => null,
     resetAll: () => null
 });
